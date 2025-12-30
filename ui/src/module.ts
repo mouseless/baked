@@ -140,7 +140,7 @@ export default defineNuxtModule<ModuleOptions>({
     // plugins that comes through the app descriptor
     for(const plugin of app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
-      addPlugin(resolver[camelize(plugin.resolver)].resolve(join(plugin.basePath, plugin.name)));
+      addPlugin(resolver[camelize(plugin.resolver ?? "MetaUrl")].resolve(join(plugin.basePath, plugin.name)));
     }
 
     // default plugins (last add, first run)
