@@ -229,7 +229,7 @@ Publish.Event("my-button-clicked");
 Publish.PageContextValue("my-value");
 // redirects app to given route
 Local.UseRedirect("/return-page");
-// sends configrued request to remote endpoint
+// sends configured request to a remote endpoint
 Remote("some/endpoint",
   // goes to a page after remote action
   postAction: Local.UseRedirect("/return-page"),
