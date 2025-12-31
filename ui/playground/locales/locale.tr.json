@@ -107,6 +107,7 @@
   "Spec: B link": "B bağlantısı",
   "Spec: Button": "Buton",
   "Spec: Cancel": "Vazgeç",
+  "Spec: Custom Exception Message": "Özel Exception Mesajı",
   "Spec: Data": "Veri",
   "Spec: Data 1": "Data 1",
   "Spec: Data 2": "Data 2",
@@ -166,5 +167,7 @@
   "Spec: Total": "Toplam",
   "Spec: Test": "Test",
   "Spec: Test Text": "Test Metni",
+  "Spec: Service Unavailable": "Servis Kullanılamıyor",
+  "Spec: The service is currently unavailable. Please try again later.": "Servis şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
   "Spec: You do not have the permission to view the address or data specified": "Bu adrese veya belirtilen verilere erişim izniniz yok."
 }

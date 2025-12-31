@@ -277,7 +277,12 @@ export default {
 
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
-      [ei.statusCode]: { title: ei.title, message: ei.message }
+      [ei.statusCode]: {
+        title: ei.title,
+        message: ei.message,
+        showSafeLinks: ei.showSafeLinks,
+        customMessage: ei.customMessage
+      }
     }), {});
 
     return {
@@ -287,15 +292,19 @@ export default {
     };
   },
 
-  anErrorPageInfo({ statusCode, title, message } = {}) {
+  anErrorPageInfo({ statusCode, title, message, showSafeLinks, customMessage } = {}) {
     statusCode = $(statusCode, "500");
     title = $(title, "Test Title");
     message = $(message, "Test message");
+    showSafeLinks = $(showSafeLinks, false);
+    customMessage = $(customMessage, false);
 
     return {
       statusCode,
       title,
-      message
+      message,
+      showSafeLinks,
+      customMessage
     };
   },
 
@@ -790,15 +799,23 @@ export default {
     };
   },
 
-  aToken({ accessExpired, admin } = {}) {
+  aToken({ accessExpired, admin, expiresAt } = {}) {
     accessExpired = $(accessExpired, false);
     admin = $(admin, false);
+    expiresAt = $(expiresAt, null);
+
+    let access = accessExpired ? expiredAccessToken :
+      admin ? adminUiToken :
+        accessToken;
+
+    if(expiresAt !== null) {
+      const exp = Math.floor(expiresAt / 1000);
+      const payload = Buffer.from(JSON.stringify({ exp })).toString("base64");
+      access = `eyJhbGciOiJIUzI1NiJ9.${payload}.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0`;
+    }
 
     return {
-      access:
-        accessExpired ? expiredAccessToken :
-          admin ? adminUiToken :
-            accessToken,
+      access,
       refresh: refreshToken
     };
   },

@@ -152,5 +152,5 @@
   "Update": "Güncelle",
   "Uses page descriptors as route template and extract parameters": "Sayfa tanımlayıcılarını yol şablonu olarak kullanır ve yol parametrelerini çıkartır",
   "Value": "Değer",
-  "You do not have the permision to view the address or data specified.": "Belirtilen adresi veya veriyi görüntüleme izniniz yok."
+  "You do not have the permission to view the address or data specified.": "Belirtilen adresi veya veriyi görüntüleme izniniz yok."
 }

@@ -46,7 +46,7 @@ export default defineNuxtPlugin({
       // this is to prevent any unintended result when user is not authorized while it should be
       //
       // -10 is to leave a room just in case it is needed
-      Number.MIN_SAFE_INTEGER - 10
+      Number.MIN_SAFE_INTEGER + 10
     );
 
     $router.beforeEach(async to => {

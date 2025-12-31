@@ -2,5 +2,7 @@
 
 public interface IPlugin
 {
+    string BasePath { get; }
     string Name { get; }
+    PluginResolver Resolver { get; }
 }

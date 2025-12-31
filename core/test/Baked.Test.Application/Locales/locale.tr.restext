@@ -20,7 +20,9 @@ Route Parameter Is Not Valid=Route Parametresi Geçerli Değil
 Save=Kaydet
 The page you want to view is either deleted or outdated.=Görüntülemek istediğiniz sayfa silinmiş veya güncel değil.
 Unexpected Error=Beklenmeyen Hata
-You do not have the permision to view the address or data specified.=Belirtilen adresi veya veriyi görüntüleme izniniz yok.
+You do not have the permission to view the address or data specified.=Belirtilen adresi veya veriyi görüntüleme izniniz yok.
+Service Unavailable=Servis Kullanılamıyor
+The service is currently unavailable. Please try again later.=Servis şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.
 
 // test project keys =//
 {0} should be unique={0} benzersiz olmalıdır
