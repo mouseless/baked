@@ -61,10 +61,22 @@ export default function() {
     globalThis.addEventListener("token-changed", callback);
   }
 
+  function offChanged(callback) {
+    globalThis.removeEventListener("token-changed", callback);
+  }
+
+  function decode(value) {
+    const { access } = JSON.parse(value);
+
+    return JSON.parse(atob(access.split(".")[1]));
+  }
+
   return {
     current,
     setCurrent,
-    onChanged
+    onChanged,
+    offChanged,
+    decode
   };
 };
 

@@ -107,6 +107,7 @@
   "Spec: B link": "B link",
   "Spec: Button": "Button",
   "Spec: Cancel": "Cancel",
+  "Spec: Custom Exception Message": "Custom Exception Message",
   "Spec: Data": "Data",
   "Spec: Data 1": "Data 1",
   "Spec: Data 2": "Data 2",
@@ -167,5 +168,7 @@
   "Spec: Toggle Dialog": "Toggle Dialog",
   "Spec: Test": "Test",
   "Spec: Test Text": "Test Text",
+  "Spec: Service Unavailable": "Service Unavailable",
+  "Spec: The service is currently unavailable. Please try again later.": "The service is currently unavailable. Please try again later.",
   "Spec: You do not have the permission to view the address or data specified": "You do not have the permission to view the address or data specified."
 }

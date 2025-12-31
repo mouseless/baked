@@ -219,3 +219,9 @@
   safe to use API configurations such as HTTP method of `ActionModelAttribute`
 - Unlike schema conventions, UI component conventions were allowed to be added
   to non API method and parameters, fixed
+
+## Bugfixes
+
+- Nested types in generic classes were causing build error, fixed
+- Adding configured plugins was causing error when resolver was not defined,
+  fixed by defaulting resolver to `MetaUrl`

@@ -20,7 +20,9 @@ Route Parameter Is Not Valid=Route Parameter Is Not Valid
 Save=Save
 The page you want to view is either deleted or outdated.=The page you want to view is either deleted or outdated.
 Unexpected Error=Unexpected Error
-You do not have the permision to view the address or data specified.=You do not have the permision to view the address or data specified.
+You do not have the permission to view the address or data specified.=You do not have the permission to view the address or data specified.
+Service Unavailable=Service Unavailable
+The service is currently unavailable. Please try again later.=The service is currently unavailable. Please try again later.
 
 // test project keys =//
 {0} should be unique={0} should be unique
