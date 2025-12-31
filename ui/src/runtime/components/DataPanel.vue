@@ -13,25 +13,26 @@
     @update:collapsed="onCollapsed"
   >
     <template
-      v-if="$slots.parameters || parameters.length > 0"
+      v-if="$slots.inputs || inputs.length > 0"
       #icons
     >
       <template v-if="isMd">
-        <Parameters
-          v-if="parameters.length > 0"
-          :parameters="parameters"
-          class="text-xs"
-          @ready="onReady"
-          @changed="onChanged"
-        />
-        <slot
-          v-if="$slots.parameters"
-          name="parameters"
-        />
+        <div class="flex gap-2 text-xs">
+          <Inputs
+            v-if="inputs.length > 0"
+            :inputs="inputs"
+            @ready="onReady"
+            @changed="onChanged"
+          />
+          <slot
+            v-if="$slots.inputs"
+            name="inputs"
+          />
+        </div>
       </template>
       <template v-else>
         <Button
-          v-if="parameters.length > 0 || $slots.parameters"
+          v-if="inputs.length > 0 || $slots.inputs"
           variant="text"
           icon="pi pi-sliders-h"
           class="lg:hidden"
@@ -41,21 +42,20 @@
         <PersistentPopover ref="popover">
           <div
             class="
-              flex flex-row flex-start
-              justify-between w-full
-              gap-4 text-xs px-2 py-2
+              flex flex-col gap-2 min-w-24
+              w-full px-2 py-2 text-xs
             "
           >
-            <Parameters
-              v-if="parameters.length > 0"
-              :parameters="parameters"
-              class="text-xs"
+            <Inputs
+              v-if="inputs.length > 0"
+              :inputs="inputs"
+              input-class="max-md:w-full"
               @ready="onReady"
               @changed="onChanged"
             />
             <slot
-              v-if="$slots.parameters"
-              name="parameters"
+              v-if="$slots.inputs"
+              name="inputs"
             />
           </div>
         </PersistentPopover>
@@ -81,7 +81,7 @@
 <script setup>
 import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { Message, Panel, Button } from "primevue";
-import { Bake, Parameters, PersistentPopover } from "#components";
+import { Bake, Inputs, PersistentPopover } from "#components";
 import { useBreakpoints, useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
 
 const { value: { panelStates } } = useUiStates();
@@ -91,39 +91,38 @@ const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization({ group: "DataPanel" });
 const panel = useTemplateRef("panel");
-const popover = ref();
-
-function togglePopover(event) {
-  popover.value.toggle(event);
-}
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
 
-const { collapsed, content, localizeTitle, parameters, title: titleData } = schema;
+const { collapsed, content, inputs, localizeTitle, title: titleData } = schema;
 
-const injectedData = context.injectData();
+const contextData = context.injectContextData();
 const path = context.injectPath();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
-const ready = ref(parameters.length === 0); // it is ready when there is no parameter
+const ready = ref(inputs.length === 0); // it is ready when there is no parameter
 const uniqueKey = ref("");
+const popover = ref();
 
 const values = ref({});
-if(parameters.length > 0) {
-  context.provideData(values, "Custom");
+if(inputs.length > 0) {
+  contextData.parent["parameters"] = values;
 }
 
-const title = ref(dataFetcher.get({ data: titleData, injectedData }));
+const title = ref(dataFetcher.get({ data: titleData, contextData }));
 const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
 
 onMounted(async() => {
   if(shouldLoadTitle) {
-    title.value = await dataFetcher.fetch({ data: titleData, injectedData });
+    title.value = await dataFetcher.fetch({ data: titleData, contextData });
   }
 });
+
+function togglePopover(event) {
+  popover.value.toggle(event);
+}
 
 function onCollapsed(collapsed) {
   panelStates[path] = collapsed;

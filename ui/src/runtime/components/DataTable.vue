@@ -24,9 +24,9 @@
     </template>
     <Column
       v-for="column in columns"
-      :key="column.prop"
+      :key="column.key"
       :header="l(column.title)"
-      :field="column.prop"
+      :field="column.key"
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
       :exportable="column.exportable"
@@ -39,49 +39,69 @@
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
-        <Skeleton
-          v-if="loading"
-          class="min-h-5"
-        />
-        <Bake
-          v-else-if="data"
-          :name="`rows/${index}/${column.prop}`"
-          :descriptor="{
-            ...conditional.find(column.component, row.$getRow()),
-            data: {
-              type: 'Inline',
-              value: row[column.prop].value
-            }
-          }"
-        />
-        <span v-else>-</span>
+        <AwaitLoading :skeleton="{ class:'min-h-5' }">
+          <ProvideParentContext
+            v-if="data"
+            :data="row.$getRow()"
+            data-key="row"
+          >
+            <Bake
+              :name="`rows/${index}/${column.key}`"
+              :descriptor="column.component"
+            />
+          </ProvideParentContext>
+          <span v-else>-</span>
+        </AwaitLoading>
       </template>
     </Column>
     <Column
-      v-if="exportOptions"
+      v-if="exportOptions || actions"
       :pt="{
         bodyCell: { class: 'max-xs:!inset-auto' },
-        headerCell: { class: 'max-xs:!inset-auto' }
+        headerCell: { class: 'max-xs:!inset-auto' },
+        columnHeaderContent: 'justify-end'
       }"
       :exportable="false"
       class="w-0 py-0"
       frozen
       align-frozen="right"
     >
-      <template #header>
+      <template
+        v-if="exportOptions"
+        #header
+      >
         <Button
           type="button"
           icon="pi pi-ellipsis-v"
           severity="secondary"
           variant="text"
           size="small"
-          @click="toggleActionsMenu"
+          @click="toggleHeaderActionsMenu"
         />
         <Menu
-          ref="actionsMenu"
-          :model="actions"
+          ref="headerActionsMenu"
+          :model="headerActions"
           :popup="true"
         />
+      </template>
+      <template
+        v-if="actions"
+        #body="{ data: row, index }"
+      >
+        <AwaitLoading :skeleton="{ class:'min-h-5' }">
+          <ProvideParentContext
+            v-if="data"
+            :data="row.$getRow()"
+            data-key="row"
+          >
+            <div class="flex">
+              <Bake
+                :name="`rows/${index}/actions`"
+                :descriptor="actions.component"
+              />
+            </div>
+          </ProvideParentContext>
+        </AwaitLoading>
       </template>
     </Column>
     <ColumnGroup
@@ -96,30 +116,22 @@
         />
         <Column
           v-for="column in footerTemplate.columns"
-          :key="column.prop"
+          :key="column.key"
           :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
-            <Skeleton
-              v-if="loading"
-              class="min-h-5"
-            />
-            <Bake
-              v-else-if="data"
-              :name="`rows/footer/${column.prop}`"
-              :descriptor="{
-                ...conditional.find(column.component, data),
-                data: {
-                  type: 'Inline',
-                  value: data[column.prop]
-                }
-              }"
-            />
-            <span v-else>-</span>
+            <AwaitLoading :skeleton="{ class:'min-h-5' }">
+              <Bake
+                v-if="data"
+                :name="`rows/footer/${column.key}`"
+                :descriptor="column.component"
+              />
+              <span v-else>-</span>
+            </AwaitLoading>
           </template>
         </Column>
         <Column
-          v-if="exportOptions"
+          v-if="exportOptions || actions"
           :exportable="false"
           class="w-0"
           frozen
@@ -132,12 +144,11 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
-import { Button, ColumnGroup, DataTable, Menu, Row, Skeleton } from "primevue";
+import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake } from "#components";
-import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
+import { AwaitLoading, Bake, ProvideParentContext } from "#components";
+import { useComposableResolver, useContext, useDataFetcher, useLocalization } from "#imports";
 
-const conditional = useConditional();
 const context = useContext();
 const composableResolver = useComposableResolver();
 const dataFetcher = useDataFetcher();
@@ -150,15 +161,14 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
+const contextData = context.injectContextData();
 const dataDescriptor = context.injectDataDescriptor();
-const injectedData = context.injectData();
-const loading = context.injectLoading();
 
 const dataTable = ref();
-const actionsMenu = ref();
-const actions = ref([ ]);
+const headerActionsMenu = ref();
+const headerActions = ref([ ]);
 const value = computed(() => {
   const items = data
     ? itemsProp
@@ -184,7 +194,7 @@ const exportFilename = ref(exportOptions?.fileName ? l(exportOptions.fileName) :
 let formatter = null;
 
 if(exportOptions) {
-  actions.value.push({
+  headerActions.value.push({
     label: l(exportOptions.buttonLabel),
     icon: exportOptions.buttonIcon,
     command: () => dataTable.value.exportCSV()
@@ -210,7 +220,7 @@ onMounted(async() => {
     }
 
     if(appendParameters && dataDescriptor) {
-      let parameters = await dataFetcher.fetchParameters({ data: dataDescriptor, injectedData });
+      let parameters = await dataFetcher.fetchParameters({ data: dataDescriptor, contextData });
       if(parameterFormatter) {
         parameters = parameters.map((p, i) => parameterFormatter.format(p, i));
       }
@@ -220,8 +230,8 @@ onMounted(async() => {
   }
 });
 
-function toggleActionsMenu(event) {
-  actionsMenu.value.toggle(event);
+function toggleHeaderActionsMenu(event) {
+  headerActionsMenu.value.toggle(event);
 }
 
 function exportFunction({ data, field }) {
@@ -230,3 +240,12 @@ function exportFunction({ data, field }) {
   return formatter.format(data.value, { prop: field, row: data.$getRow() });
 }
 </script>
+<style>
+.b-component--DataTable a {
+  @apply text-sm;
+}
+
+.b-component--DataTable .p-button {
+  @apply -my-2;
+}
+</style>

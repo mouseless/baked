@@ -1,29 +1,24 @@
 <template>
-  <Skeleton
-    v-if="loading"
-    height="1.5rem"
-  />
-  <span
-    v-else-if="data"
-    v-tooltip.bottom="tooltip"
-    class="max-sm:select-none"
-  >{{ display }}</span>
-  <span v-else>-</span>
+  <AwaitLoading :skeleton="{ height: '1.5rem' }">
+    <span
+      v-if="data"
+      v-tooltip.bottom="tooltip"
+      class="max-sm:select-none"
+    >{{ display }}</span>
+    <span v-else>-</span>
+  </AwaitLoading>
 </template>
 <script setup>
 import { computed } from "vue";
-import { Skeleton } from "primevue";
-import { useContext, useFormat } from "#imports";
+import { useFormat } from "#imports";
+import { AwaitLoading } from "#components";
 
-const context = useContext();
 const { asNumber } = useFormat();
 
 const { data } = defineProps({
-  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
-const loading = context.injectLoading();
 const display = computed(() => asNumber(data));
 const tooltip = computed(() => display.value.shortened ? `${asNumber(data, { shorten: false })}` : null);
 </script>

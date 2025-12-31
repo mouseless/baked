@@ -1,0 +1,74 @@
+{
+  "type": "FormPage",
+  "schema": {
+    "title": {
+      "title": "New Parent",
+      "description": "Fill out the form and hit save to create new parent",
+      "actions": [
+        {
+          "type": "Button",
+          "schema": {
+            "label": "Back",
+            "variant": "text"
+          },
+          "action": {
+            "type": "Local",
+            "composable": "useRedirect",
+            "options": {
+              "type": "Inline",
+              "value": {
+                "back": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "submit": {
+      "label": "Save",
+      "severity": "primary"
+    },
+    "inputs": [
+      {
+        "name": "name",
+        "required": true,
+        "component": {
+          "type": "InputText",
+          "schema": {
+            "label": "Name"
+          }
+        }
+      },
+      {
+        "name": "surname",
+        "required": true,
+        "component": {
+          "type": "InputText",
+          "schema": {
+            "label": "Surname"
+          }
+        }
+      }
+    ],
+    "path": "form-sample/parents/new"
+  },
+  "action": {
+    "type": "Remote",
+    "path": "form-sample/parents",
+    "method": "POST",
+    "body": {
+      "type": "Context",
+      "key": "model"
+    },
+    "postAction": {
+      "type": "Local",
+      "composable": "useRedirect",
+      "options": {
+        "type": "Inline",
+        "value": {
+          "route": "/form-sample"
+        }
+      }
+    }
+  }
+}

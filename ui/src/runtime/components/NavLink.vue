@@ -1,35 +1,49 @@
 <template>
-  <Skeleton
-    v-if="loading"
-    height="1.5rem"
-  />
-  <Button
-    v-else-if="data"
-    as="router-link"
-    link
-    :label="l(text)"
-    :to
-  />
+  <AwaitLoading :skeleton="{ height: '1.5rem' }">
+    <Button
+      :icon
+      :label="data"
+      :to
+      as="router-link"
+      link
+      class="m-0 p-0"
+    />
+  </AwaitLoading>
 </template>
 <script setup>
-import { computed } from "vue";
-import { Button, Skeleton } from "primevue";
-import { useContext, useFormat, useLocalization } from "#imports";
+import { computed, onMounted, ref } from "vue";
+import { Button } from "primevue";
+import { useContext, useDataFetcher, usePathBuilder } from "#imports";
+import { AwaitLoading } from "#components";
 
 const context = useContext();
-const { format } = useFormat();
-const { localize: l } = useLocalization();
+const dataFetcher = useDataFetcher();
+const pathBuilder = usePathBuilder();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
-const { path, idProp, textProp } = schema;
+const { icon, path, query: queryData, params: paramsData } = schema;
 
-const loading = context.injectLoading();
-// TODO: this format call is temporary, final design should handle path
-// variables using name, not index, e.g., /test/{0} -> /test/{id}
-const to = computed(() => format(path, [data[idProp]]));
-const text = computed(() => data[textProp]);
+const contextData = context.injectContextData();
+const query = ref(queryData ? dataFetcher.get({ data: queryData, contextData }) : null);
+const shouldLoadQuery = queryData ? dataFetcher.shouldLoad(queryData.type) : false;
+const params = ref(paramsData ? dataFetcher.get({ data: paramsData, contextData }) : null);
+const shouldLoadParams = paramsData ? dataFetcher.shouldLoad(paramsData.type) : false;
+const to = computed(() => ({
+  path: params.value ? pathBuilder.build(path, params.value, { forRoute: true }) : path,
+  query: query.value
+}));
+
+onMounted(async() => {
+  if(shouldLoadQuery) {
+    query.value = await dataFetcher.fetch({ data: queryData, contextData });
+  }
+
+  if(shouldLoadParams) {
+    params.value = await dataFetcher.fetch({ data: paramsData, contextData });
+  }
+});
 </script>

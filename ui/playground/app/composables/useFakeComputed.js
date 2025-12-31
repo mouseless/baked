@@ -1,9 +1,9 @@
 export default function() {
-  function compute(data) {
+  function computeSync({ data } = {}) {
     return data;
   }
 
   return {
-    compute
+    computeSync
   };
 }

@@ -9,6 +9,7 @@ public record RemoteData(string Path)
     public string Path { get; set; } = Path;
     public IData? Headers { get; set; }
     public IData? Query { get; set; }
+    public IData? Params { get; set; }
     public Dictionary<string, string>? Attributes { get; private set; }
 
     [JsonIgnore]

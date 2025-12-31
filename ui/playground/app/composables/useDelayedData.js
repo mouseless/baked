@@ -3,13 +3,13 @@ export default function() {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async function computeAsync(ms, data) {
+  async function compute({ ms, data } = {}) {
     await delay(ms);
 
     return data;
   }
 
   return {
-    computeAsync
+    compute
   };
 }

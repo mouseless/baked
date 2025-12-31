@@ -14,23 +14,44 @@ app.Features.AddUx([...]);
 > features. Since `AddUxes()` doesn't read well, while being still available, we
 > kept the singular `AddUx` naming as the default.
 
-## Actions are Grouped as Tabs
+## Actions as Buttons
 
-Groups controller actions into tabs on a `ReportPage`.
+Renders non-`GET` actions as buttons under paths ending with `actions/*`.
 
 ```csharp
-c => c.ActionsAreGroupedAsTabs()
+c => c.ActionsAsButtons()
 ```
 
-- Methods with `TabAttribute` are collected
-- Each unique tab name creates a new `ReportPage.Tab`
-- Actions inside that tab are added as `ReportPage.Tab.Content`
-- Tab titles are automatically localized and formatted (e.g., `SampleTab` →
-  `Sample Tab`) when there are more than one tabs
+- Parameterized actions are rendered as forms in dialogs
+  - When an action has `RoutePath`, it is rendered as a `FormPage`
+- Parameters are rendered as `Input` lists
+- Submit buttons are rendered using `primary` severity
+- Cancel and back buttons are rendered using `text` variant
+- Default icons of buttons are added based on their HTTP method
+  - `PUT` and `PATCH` use `pi pi-pencil`
+  - `DELETE` use `pi pi-trash` with `danger` severity
+  - `POST` that starts with add, create or new use `pi pi-plus`
+
+## Actions are Contents
+
+Adds `GET` actions as contents for `SimplePage` and `TabbedPage`. It also groups
+contents under configured tabs for `TabbedPage`.
+
+```csharp
+c => c.ActionsAreContents()
+```
+
+- All `GET` actions of a type, except initializers, are added as contents
+  - Without a `Content` configuration for a method at expected path, method will
+    be skipped
+- For `TabbedPage`, actions are grouped under tabs using their tab name in
+  `TabNameAttribute`
+  - Tab titles are automatically localized and formatted (e.g., `SampleTab` →
+    `Sample Tab`) when there are more than one tabs
 
 ## Actions as Data Panels
 
-Renders controller actions as `DataPanel` components inside a `ReportPage`.
+Renders controller actions as `DataPanel` components inside a `TabbedPage`.
 
 ```csharp
 c => c.ActionsAsDataPanels()
@@ -40,6 +61,30 @@ c => c.ActionsAsDataPanels()
 - Each action is shown inside the tab content where it belongs
 - The panel title is taken from the method name
 - Action parameters are added to the panel schema automatically
+
+## Data Table defaults
+
+Configures `DataTable` components with a bunch of default settings.
+
+```csharp
+c => c.DataTableDefaults()
+```
+
+- Sets row count to 5 and adds paginator
+- Adds data properties as columns
+- Adds export action to header
+- Prepares action column to include item actions along with a reload reaction
+- Action and dialog buttons use `text` variant using rounded style
+
+## Description Property
+
+Marks properties that ends with `*Description` using `DescriptionAttribute` and
+treats properties with `DescriptionAttribute` special attention to allow more
+UI space when under a `DataTable` or a `Fieldset`.
+
+- Set `Field.Wide` to `true` to have a full width under a fieldset
+- Sets up a dialog button to show the content of description properties in a
+  dialog under data tables
 
 ## Designated String Properties are Label
 
@@ -79,7 +124,7 @@ c => c.EnumParameterIsSelect(maxMemberCountForSelectButton: ...)
 ## Initializer Parameters are in Page Title
 
 Adds initializer parameters of a report class to the page title area of a
-`ReportPage`.
+`TabbedPage`.
 
 ```csharp
 c => c.InitializerParametersAreInPageTitle()
@@ -152,14 +197,29 @@ c => c.PanelParametersAreStateful()
 > occurs, client app is reloaded and all panel states are reset to their
 > default.
 
-## Type with Only `GET` is Report Page
+## Properties as Fieldset
 
-Creates a `ReportPage` for controller types that only have `GET` actions.
+Allows to add properties as a `Fieldset` component under `SimplePage`.
 
 ```csharp
-c => c.TypeWithOnlyGetIsReportPage()
+c => c.PropertiesAsFieldset()
 ```
 
-- Applies to types marked with `ControllerModelAttribute`
-- If all actions are `GET` methods, the type is rendered as a `ReportPage`
-- Each `GET` action is added as a tab content in the page
+- A content is created under `.../simple-page/contents/fields` path
+- Each data property is configured as one field under a `Fieldset` instance
+- Field components get their data from parent context
+
+## Routed Types as Nav Links
+
+Configures `NavLink` component for types that have `RouteAttribute` under data
+table columns.
+
+```csharp
+c => c.RoutedTypesAsNavLinks()
+```
+
+- Converts label properties to a `NavLink` using `RouteAttribute` route params
+
+> [!NOTE]
+>
+> This will support other paths than data table column in the upcoming releases.

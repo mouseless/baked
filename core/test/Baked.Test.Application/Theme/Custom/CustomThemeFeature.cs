@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Test.Caching;
+using Baked.Test.Orm;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -53,11 +54,15 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
 
-            // None localized enums
+            // Non-localized enums
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
             );
+
+            // Custom routes
+            builder.Conventions.SetTypeRoute<Parent>("/parents/[id]");
+            builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
         });
 
         configurator.ConfigureComponentExports(c =>
@@ -69,6 +74,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         {
             pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
             pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
+            pages.Add(C.RoutedPage("first/[id]", lp => lp.Layout = "default"));
+            pages.Add(C.RoutedPage("first/[firstId]/second/[secondId]", lp => lp.Layout = "default"));
         });
     }
 }

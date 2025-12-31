@@ -13,7 +13,8 @@ public static class OverrideExtensions
         features.Add(new Test.Override.RestApi.ExternalSecurityRestApiOverrideFeature());
         features.Add(new Test.Override.Runtime.ServicesRuntimeOverrideFeature());
         features.Add(new Test.Override.Ui.CacheSamplesUiOverrideFeature());
-        features.Add(new Test.Override.Ui.DataTableSampleUiOverrideFeature());
+        features.Add(new Test.Override.Ui.FormSampleUiOverrideFeature());
+        features.Add(new Test.Override.Ui.ParentUiOverrideFeature());
         features.Add(new Test.Override.Ui.PluginSampleUiOverrideFeature());
         features.Add(new Test.Override.Ui.ReportPageSampleUiOverrideFeature());
         features.Add(new Test.Override.Ui.TestPageUiOverrideFeature());

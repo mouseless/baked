@@ -12,12 +12,8 @@ public static class Components
         Action<Expected>? options = default
     ) => new(options.Apply(new(testId)));
 
-    public static ComponentDescriptor<InputText> InputText(string testId,
-        Action<InputText>? options = default
-    ) => new(options.Apply(new(testId)));
-
-    public static ComponentDescriptor<InputNumber> InputNumber(string testId,
-        Action<InputNumber>? options = default
+    public static ComponentDescriptor<ExpectedInput> ExpectedInput(string testId,
+        Action<ExpectedInput>? options = default
     ) => new(options.Apply(new(testId)));
 
     public static ComponentDescriptor<LoginPage> LoginPage(string path,

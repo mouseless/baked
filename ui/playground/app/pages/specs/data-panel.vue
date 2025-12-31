@@ -1,8 +1,8 @@
 <template>
   <UiSpec
     title="Data Panel"
-    :variants="variants"
-    :no-loading-variant="true"
+    :variants
+    no-loading-variant
   />
 </template>
 <script setup>
@@ -12,7 +12,7 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aDataPanel({
-      title: { type: "Inline", value: "Spec: Title" },
+      title: giveMe.anInlineData("Spec: Title"),
       collapsed: false,
       content: giveMe.anExpected({ testId: "content", value: "TEST DATA" })
     })
@@ -20,7 +20,7 @@ const variants = [
   {
     name: "Base with computed title",
     descriptor: giveMe.aDataPanel({
-      title: { type: "Computed", composable: "useDelayedData", args: [1, "Title"] },
+      title: giveMe.aComputedData({ composable: "useDelayedData", options: giveMe.anInlineData({ ms: 1, data: "Title" }) }),
       collapsed: false
     })
   },
@@ -32,27 +32,27 @@ const variants = [
     })
   },
   {
-    name: "Parameters",
+    name: "Inputs",
     descriptor: giveMe.aDataPanel({
-      parameters: [
-        giveMe.aParameter({
+      inputs: [
+        giveMe.anInput({
           name: "required",
           required: true,
-          component: giveMe.anInputText({
+          component: giveMe.anExpectedInput({
             testId: "required"
           })
         }),
-        giveMe.aParameter({
+        giveMe.anInput({
           name: "optional",
           required: false,
-          component: giveMe.anInputText({
+          component: giveMe.anExpectedInput({
             testId: "optional"
           })
         })
       ],
       content: giveMe.anExpected({
         testId: "content",
-        data: giveMe.theInjectedData()
+        data: giveMe.theParentContext()
       })
     })
   }

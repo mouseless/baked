@@ -6,7 +6,10 @@ using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Testing;
 using Baked.Theme;
+using Baked.Theme.Default;
 using Baked.Ui;
+
+using static Baked.Ui.Datas;
 
 namespace Baked;
 
@@ -30,8 +33,28 @@ public static class ThemeExtensions
     public static Route Root(this Router router, string path, string title, string icon) =>
         router.Create(path, title) with { Icon = icon, SideMenu = true, ErrorSafeLink = true };
 
+    public static Route RootDynamic(this Router router, string path, string title) =>
+        router.Create(path, title) with { ErrorSafeLink = false, SideMenu = false };
+
     public static Route Child(this Router router, string path, string title, string parentPath) =>
         router.Create(path, title) with { ParentPath = parentPath };
+
+    public static Route ChildDynamic(this Router router, string path, string title, string parentPath) =>
+        router.Create(path, title) with { ParentPath = parentPath, ErrorSafeLink = false, SideMenu = false };
+
+    public static void AddEntityRemoteData<TEntity>(this IDomainModelConventionCollection conventions)
+    {
+        conventions.AddTypeSchema(
+            when: c => c.Type.Is<TEntity>(),
+            schema: (c, cc) =>
+            {
+                if (!c.Type.TryGetQueryType(c.Domain, out var queryType)) { throw new($"`{c.Type.Name}` should have a query type"); }
+                if (!queryType.GetControllerModel().Action.TryGetValue("SingleById", out var singleById)) { throw new($"`{queryType.Name}` should have `SingleById` action added"); }
+
+                return Remote(singleById.GetRoute(), o => o.Params = Computed.UseRoute("params"));
+            }
+        );
+    }
 
     public static MethodModel GetMethod(this TypeModel type, string name) =>
         type.GetMembers().Methods[name];
@@ -74,14 +97,35 @@ public static class ThemeExtensions
     public static bool ReturnsList(this MethodOverloadModel methodOverload) =>
         methodOverload.ReturnType.SkipTask().IsAssignableTo<IList>();
 
-    public static PageBuilder From<T>(this Page.Generator _) =>
+    public static bool ReturnsVoid(this MethodOverloadModel methodOverload) =>
+        methodOverload.ReturnType.Is(typeof(void)) || methodOverload.ReturnType.Is<Task>();
+
+    public static PageBuilder Method<TDomainType, TPageSchema>(this Page.Generator _, string methodName) where TPageSchema : IPageSchema =>
         context =>
         {
             var (domain, l) = context;
 
-            if (!domain.Types[typeof(T)].TryGetMetadata(out var metadata)) { throw new($"{typeof(T).Name} cannot be used as a page source, because its metadata is not included in domain model"); }
+            if (!domain.Types[typeof(TDomainType)].TryGetMembers(out var members))
+            {
+                throw new($"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model");
+            }
 
-            return metadata.GetRequiredComponent(context.Drill(nameof(Page), typeof(T).Name));
+            if (!members.Methods.TryGetValue(methodName, out var method))
+            {
+                throw new($"{typeof(TDomainType).Name} does not have a method named '{methodName}'");
+            }
+
+            return method.GetRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name, method.Name));
+        };
+
+    public static PageBuilder Type<TDomainType, TPageSchema>(this Page.Generator _) where TPageSchema : IPageSchema =>
+        context =>
+        {
+            var (domain, l) = context;
+
+            if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata)) { throw new($"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"); }
+
+            return metadata.GetRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name));
         };
 
     public static TComponentSchema As<TComponentSchema>(this IComponentSchema schema) where TComponentSchema : IComponentSchema =>
@@ -182,7 +226,7 @@ public static class ThemeExtensions
         return builder.Build(context);
     }
 
-    #region Add Metadata
+    #region Add / Remove Metadata
 
     public static void AddTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<TypeModelMetadataContext, bool>? when = default,
@@ -214,7 +258,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddTypeAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -223,6 +267,19 @@ public static class ThemeExtensions
                 Filter = where
             },
             when: when,
+            requiresIndex: false,
+            order: order
+        );
+    }
+
+    public static void RemoveTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    )
+    {
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+
+        conventions.RemoveTypeAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
+            requiresIndex: false,
             order: order
         );
     }
@@ -257,7 +314,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddPropertyAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -266,6 +323,19 @@ public static class ThemeExtensions
                 Filter = where
             },
             when: when,
+            requiresIndex: false,
+            order: order
+        );
+    }
+
+    public static void RemovePropertySchema<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, bool> when,
+        int order = default
+    )
+    {
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+
+        conventions.RemovePropertyAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
+            requiresIndex: false,
             order: order
         );
     }
@@ -300,7 +370,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddMethodAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -309,6 +379,19 @@ public static class ThemeExtensions
                 Filter = where
             },
             when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
+            requiresIndex: false,
+            order: order
+        );
+    }
+
+    public static void RemoveMethodSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, bool> when,
+        int order = default
+    )
+    {
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+
+        conventions.RemoveMethodAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
+            requiresIndex: false,
             order: order
         );
     }
@@ -343,7 +426,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddParameterAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -352,6 +435,19 @@ public static class ThemeExtensions
                 Filter = where
             },
             when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
+            requiresIndex: false,
+            order: order
+        );
+    }
+
+    public static void RemoveParameterSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, bool> when,
+        int order = default
+    )
+    {
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+
+        conventions.RemoveParameterAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
+            requiresIndex: false,
             order: order
         );
     }
@@ -388,6 +484,7 @@ public static class ThemeExtensions
     {
         when ??= _ => true;
         where ??= _ => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
         conventions.AddTypeAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
@@ -427,6 +524,7 @@ public static class ThemeExtensions
     {
         when ??= _ => true;
         where ??= _ => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
         conventions.AddPropertyAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
@@ -466,6 +564,7 @@ public static class ThemeExtensions
     {
         when ??= _ => true;
         where ??= _ => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
         conventions.AddMethodAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
@@ -505,6 +604,7 @@ public static class ThemeExtensions
     {
         when ??= _ => true;
         where ??= _ => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
         conventions.AddParameterAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
@@ -522,15 +622,35 @@ public static class ThemeExtensions
 
     #region Component Descriptor Builder & Component
 
-    public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context) =>
-        metadata.GetComponent(context) ??
-        throw new($"{metadata.CustomAttributes.Name} doesn't have any component descriptor at path `{context.Path}`");
+    static bool WarnForMissingComponent => Environment.GetCommandLineArgs().Contains("--warn-for-missing-component");
 
-    public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
+    public static ComponentDescriptor<T> GetRequiredComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
+        metadata.GetRequiredComponent(context, componentType: typeof(T)) as ComponentDescriptor<T> ??
+        throw new($"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`");
+
+    public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context,
+        Type? componentType = default
+    )
+    {
+        var result = metadata.GetComponent(context, componentType: componentType);
+        if (result is not null) { return result; }
+
+        var level = WarnForMissingComponent ? "warning" : "error";
+        Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`");
+
+        return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);
+    }
+
+    public static ComponentDescriptor<T>? GetComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
+        metadata.GetComponent(context, componentType: typeof(T)) as ComponentDescriptor<T>;
+
+    public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context,
+        Type? componentType = default
+    )
     {
         if (!metadata.TryGetAll<ContextBasedComponentAttribute>(out var contextBasedComponents)) { return default; }
 
-        foreach (var contextBasedComponent in contextBasedComponents.WhereAppliesTo(context).Reverse())
+        foreach (var contextBasedComponent in contextBasedComponents.WhereAppliesTo(context).Where(cbc => componentType is null || cbc.SchemaType == componentType).Reverse())
         {
             var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedComponent.SchemaType);
             if (!metadata.TryGetAll(builderType, out var builders)) { continue; }
@@ -547,7 +667,7 @@ public static class ThemeExtensions
         return default;
     }
 
-    #region Add Metadata
+    #region Add / Remove Metadata
 
     public static void AddTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? when = default,
@@ -581,7 +701,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddTypeAttribute(
             apply: (c, add) =>
@@ -597,6 +717,19 @@ public static class ThemeExtensions
                 });
             },
             when: c => when(c),
+            requiresIndex: false,
+            order: order
+        );
+    }
+
+    public static void RemoveTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) where TSchema : IComponentSchema
+    {
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+
+        conventions.RemoveTypeAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
+            requiresIndex: false,
             order: order
         );
     }
@@ -633,7 +766,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddPropertyAttribute(
             apply: (c, add) =>
@@ -649,6 +782,19 @@ public static class ThemeExtensions
                 });
             },
             when: c => when(c),
+            requiresIndex: false,
+            order: order
+        );
+    }
+
+    public static void RemovePropertyComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) where TSchema : IComponentSchema
+    {
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+
+        conventions.RemovePropertyAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
+            requiresIndex: false,
             order: order
         );
     }
@@ -684,8 +830,8 @@ public static class ThemeExtensions
     ) where TSchema : IComponentSchema
     {
         when ??= c => true;
-        where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        where ??= cc => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddMethodAttribute(
             apply: (c, add) =>
@@ -700,7 +846,20 @@ public static class ThemeExtensions
                     Filter = where
                 });
             },
-            when: c => when(c),
+            when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
+            requiresIndex: false,
+            order: order
+        );
+    }
+
+    public static void RemoveMethodComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, bool> when,
+        int order = default
+    ) where TSchema : IComponentSchema
+    {
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+
+        conventions.RemoveMethodAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
+            requiresIndex: false,
             order: order
         );
     }
@@ -737,7 +896,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddParameterAttribute(
             apply: (c, add) =>
@@ -752,7 +911,20 @@ public static class ThemeExtensions
                     Filter = where
                 });
             },
-            when: c => when(c),
+            when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
+            requiresIndex: false,
+            order: order
+        );
+    }
+
+    public static void RemoveParameterComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) where TSchema : IComponentSchema
+    {
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+
+        conventions.RemoveParameterAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
+            requiresIndex: false,
             order: order
         );
     }
@@ -791,6 +963,7 @@ public static class ThemeExtensions
     {
         when ??= _ => true;
         where ??= _ => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
         conventions.AddTypeAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
@@ -832,6 +1005,7 @@ public static class ThemeExtensions
     {
         when ??= _ => true;
         where ??= _ => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
         conventions.AddPropertyAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
@@ -873,6 +1047,7 @@ public static class ThemeExtensions
     {
         when ??= _ => true;
         where ??= _ => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
         conventions.AddMethodAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
@@ -914,6 +1089,7 @@ public static class ThemeExtensions
     {
         when ??= _ => true;
         where ??= _ => true;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
         conventions.AddParameterAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(

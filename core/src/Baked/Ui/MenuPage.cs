@@ -3,7 +3,7 @@
 public record MenuPage(string Path)
     : PageSchemaBase(Path)
 {
-    public string? FilterPageContextKey { get; set; }
+    public string? FilterEvent { get; set; }
     public IComponentDescriptor? Header { get; set; }
     public List<Section> Sections { get; init; } = [];
 

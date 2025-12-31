@@ -1,8 +1,11 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.Domain;
+using Baked.Domain.Model;
 using Baked.Runtime;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+
+using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
 
@@ -32,7 +35,7 @@ public static class DefaultThemeExtensions
             {
                 return B.MenuPage(context.Route.Name,
                     links: context.Sitemap
-                        .Where(smp => !smp.Index && smp.SideMenu)
+                        .Where(smp => smp.SideMenu && !smp.Index)
                         .Select(smp => smp.AsCardLink(l))
                 );
             }
@@ -60,9 +63,12 @@ public static class DefaultThemeExtensions
                     mp.Header = B.PageTitle(context.Route.Title, options: pt =>
                     {
                         pt.Description = l(context.Route.Description);
-                        pt.Actions.Add(B.Filter("menu-page", options: f => f.Placeholder = l("Filter")));
+                        pt.Actions.Add(B.Filter(
+                            options: f => f.Placeholder = l("Filter"),
+                            action: Publish.Event("filter-changed")
+                        ));
                     });
-                    mp.FilterPageContextKey = "menu-page";
+                    mp.FilterEvent = "filter-changed";
                     mp.Sections.AddRange(
                         sections.Select(g => B.MenuPageSection(
                             options: mps =>
@@ -110,4 +116,20 @@ public static class DefaultThemeExtensions
             .Where(pd => pd.data.Visible)
             .OrderBy(pd => pd.data.Order)
             .Select(pd => pd.property);
+
+    public static void SetTypeRoute<T>(this IDomainModelConventionCollection conventions, string routePath)
+    {
+        conventions.SetTypeAttribute(
+            when: c => c.Type.Is<T>(),
+            attribute: c => new RouteAttribute(routePath)
+        );
+    }
+
+    public static void SetMethodRoute<T>(this IDomainModelConventionCollection conventions, string methodName, string routePath)
+    {
+        conventions.SetMethodAttribute(
+            when: c => c.Type.Is<T>() && c.Method.Name == methodName,
+            attribute: c => new RouteAttribute(routePath)
+        );
+    }
 }

@@ -21,9 +21,11 @@ public static class DomainDatas
     ) => Remote(method.GetAction().GetRoute(),
         options: rd =>
         {
-            rd.Query = method.DefaultOverload.Parameters.Any()
-                ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseQuery), Injected()]))
-                : Computed(Composables.UseQuery);
+            rd.Query = Computed.UseRoute("query");
+            if (method.DefaultOverload.Parameters.Any())
+            {
+                rd.Query += Context.Parent(options: cd => cd.Prop = "parameters");
+            }
 
             options.Apply(rd);
         }

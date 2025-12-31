@@ -2,17 +2,30 @@
 
 public static class Components
 {
+    public static ComponentDescriptor<Button> Button(string label,
+        Action<Button>? options = default,
+        IAction? action = default
+    ) => new(options.Apply(new(label))) { Action = action };
+
     public static ComponentDescriptor<CardLink> CardLink(string route, string title,
         Action<CardLink>? options = default
     ) => new(options.Apply(new(route, title)));
 
-    public static Conditional Conditional(
+    public static ComponentDescriptor<Composite> Composite(
+        Action<Composite>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<Conditional> Conditional(
         Action<Conditional>? options = default
-    ) => options.Apply(new());
+    ) => new(options.Apply(new()));
 
     public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component,
         Action<Conditional.Condition>? options = default
     ) => options.Apply(new(prop, value, component));
+
+    public static Content Content(IComponentDescriptor component, string key,
+        Action<Content>? options = default
+    ) => options.Apply(new(component, key));
 
     public static ComponentDescriptor<DataPanel> DataPanel(string title, IComponentDescriptor content,
         Action<DataPanel>? options = default
@@ -27,17 +40,17 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
+    public static DataTable.Column DataTableColumn(string key, IComponentDescriptor component,
         Action<DataTable.Column>? options = default
-    ) => DataTableColumn(prop, options: s =>
+    ) => DataTableColumn(key, options: s =>
     {
         s.Component = Conditional(options: s => s.Fallback = component);
         options.Apply(s);
     });
 
-    public static DataTable.Column DataTableColumn(string prop,
+    public static DataTable.Column DataTableColumn(string key,
         Action<DataTable.Column>? options = default
-    ) => options.Apply(new(prop));
+    ) => options.Apply(new(key));
 
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
         Action<DataTable.Export>? options = default
@@ -59,6 +72,10 @@ public static class Components
         Action<DefaultLayout.ScrollTop>? options = default
     ) => options.Apply(new());
 
+    public static ComponentDescriptor<Dialog> Dialog(Button open, string header, IComponentDescriptor content,
+       Action<Dialog>? options = default
+    ) => new(options.Apply(new(open, header, content)));
+
     public static ComponentDescriptor<ErrorPage> ErrorPage(
         Action<ErrorPage>? options = default,
         IData? data = default
@@ -68,18 +85,33 @@ public static class Components
         Action<ErrorPage.Info>? options = default
     ) => options.Apply(new(title, message));
 
-    public static ComponentDescriptor<Filter> Filter(string pageContextKey,
-        Action<Filter>? options = default
-    ) => new(options.Apply(new(pageContextKey)));
+    public static Field Field(string key, string label,
+        Action<Field>? options = default
+    ) => options.Apply(new(key, label));
+
+    public static ComponentDescriptor<Fieldset> Fieldset(string titleProp,
+        Action<Fieldset>? options = default,
+        IData? data = default
+    ) => new(options.Apply(new(titleProp))) { Data = data };
+
+    public static ComponentDescriptor<Filter> Filter(
+        Action<Filter>? options = default,
+        IAction? action = default
+    ) => new(options.Apply(new())) { Action = action };
 
     public static Filterable Filterable(IComponentDescriptor component,
         Action<Filterable>? options = default
     ) => options.Apply(new(component));
 
+    public static ComponentDescriptor<FormPage> FormPage(string path, PageTitle title, Button submit,
+        Action<FormPage>? options = default,
+        IAction? action = default
+    ) => new(options.Apply(new(path, title, submit))) { Action = action };
+
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,
         IData? data = default
-    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
+    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed.UseRoute() };
 
     public static Header.Item HeaderItem(string route,
         Action<Header.Item>? options = default
@@ -88,6 +120,14 @@ public static class Components
     public static ComponentDescriptor<Icon> Icon(string iconClass,
         Action<Icon>? options = default
     ) => new(options.Apply(new(iconClass)));
+
+    public static ComponentDescriptor<InputText> InputText(string label,
+        Action<InputText>? options = default
+    ) => new(options.Apply(new(label)));
+
+    public static ComponentDescriptor<InputNumber> InputNumber(string label,
+        Action<InputNumber>? options = default
+    ) => new(options.Apply(new(label)));
 
     public static ComponentDescriptor<LanguageSwitcher> LanguageSwitcher(
         Action<LanguageSwitcher>? options = default
@@ -128,18 +168,22 @@ public static class Components
         Action<ModalLayout>? options = default
     ) => new(options.Apply(new(name)));
 
+    public static ComponentDescriptor<MissingComponent> MissingComponent(
+        Action<MissingComponent>? options = default
+    ) => new(options.Apply(new()));
+
+    public static MissingComponent.DomainSource MissingComponentDomainSource(string type,
+        Action<MissingComponent.DomainSource>? options = default
+    ) => options.Apply(new(type));
+
     public static ComponentDescriptor<Money> Money(
         Action<Money>? options = default,
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static ComponentDescriptor<NavLink> NavLink(string path, string idProp, string textProp,
+    public static ComponentDescriptor<NavLink> NavLink(string path,
         Action<NavLink>? options = default
-    ) => new(options.Apply(new(path, idProp, textProp)));
-
-    public static ComponentDescriptor<None> None(
-        Action<None>? options = default
-    ) => new(options.Apply(new()));
+    ) => new(options.Apply(new(path)));
 
     public static ComponentDescriptor<Number> Number(
         Action<Number>? options = default,
@@ -150,26 +194,14 @@ public static class Components
         Action<PageTitle>? options = default
     ) => new(options.Apply(new(title)));
 
-    public static Parameter Parameter(string name, IComponentDescriptor component,
-        Action<Parameter>? options = default
+    public static Input Input(string name, IComponentDescriptor component,
+        Action<Input>? options = default
     ) => options.Apply(new(name, component));
 
     public static ComponentDescriptor<Rate> Rate(
         Action<Rate>? options = default,
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
-
-    public static ComponentDescriptor<ReportPage> ReportPage(string path, ComponentDescriptor<PageTitle> title,
-        Action<ReportPage>? options = default
-    ) => new(options.Apply(new(path, title.Schema)));
-
-    public static ReportPage.Tab ReportPageTab(string id,
-        Action<ReportPage.Tab>? options = default
-    ) => options.Apply(new(id));
-
-    public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component, string key,
-        Action<ReportPage.Tab.Content>? options = default
-    ) => options.Apply(new(component, key));
 
     public static ComponentDescriptor<Select> Select(string label, IData data,
         Action<Select>? options = default
@@ -182,11 +214,32 @@ public static class Components
     public static ComponentDescriptor<SideMenu> SideMenu(
         Action<SideMenu>? options = default,
         IData? data = default
-    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
+    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed.UseRoute() };
 
     public static SideMenu.Item SideMenuItem(string route, string icon,
         Action<SideMenu.Item>? options = default
     ) => options.Apply(new(route, icon));
+
+    public static ComponentDescriptor<SimpleForm> SimpleForm(string title, Button submit,
+        Action<SimpleForm>? options = default,
+        IAction? action = default
+    ) => new(options.Apply(new(title, submit))) { Action = action };
+
+    public static SimpleForm.Dialog SimpleFormDialog(Button open, Button cancel,
+        Action<SimpleForm.Dialog>? options = default
+    ) => options.Apply(new(open, cancel));
+
+    public static ComponentDescriptor<SimplePage> SimplePage(string path, IComponentDescriptor title,
+        Action<SimplePage>? options = default
+    ) => new(options.Apply(new(path, title)));
+
+    public static Tab Tab(string id,
+        Action<Tab>? options = default
+    ) => options.Apply(new(id));
+
+    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, PageTitle title,
+        Action<TabbedPage>? options = default
+    ) => new(options.Apply(new(path, title)));
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

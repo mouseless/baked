@@ -52,14 +52,8 @@ import { useRuntimeConfig } from "#app";
 import { Logo } from "#components";
 import { useToken, useLocalization } from "#imports";
 
-defineProps({
-  schema: { type: null, default: null },
-  data: { type: null, default: null }
-});
-defineModel({ type: null, default: null });
-
 const { localize: lc } = useLocalization({ group: "Login" });
-const { public: { composables } } = useRuntimeConfig();
+const { public: { apiBaseURL } } = useRuntimeConfig();
 const token = useToken();
 
 const username = ref();
@@ -72,7 +66,7 @@ async function submit() {
 
   const result = await $fetch("/authentication-samples/login",
     {
-      baseURL: composables.useDataFetcher.baseURL,
+      baseURL: apiBaseURL,
       method: "POST",
       body: { username: username.value }
     });

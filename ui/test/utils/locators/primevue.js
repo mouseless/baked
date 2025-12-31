@@ -18,6 +18,22 @@ export default {
   datepicker: {
     weekday: ".p-datepicker-weekday"
   },
+  dialog: {
+    base: ".p-dialog",
+    content: ".p-dialog-content",
+    footer: ".p-dialog-footer",
+    header: ".p-dialog-header",
+    close: ".p-dialog-close-button"
+  },
+  floatLabel: {
+    base: ".p-floatlabel"
+  },
+  inputNumber: {
+    base: ".p-inputnumber"
+  },
+  inputText: {
+    base: ".p-inputtext"
+  },
   message: {
     base: ".p-message",
     icon: ".pi",
@@ -28,10 +44,12 @@ export default {
     page: ".p-paginator-page"
   },
   panel: {
+    base: ".p-panel",
     title: ".p-panel-title",
     header: ".p-panel-header"
   },
   select: {
+    base: ".p-select",
     option: ".p-select-option",
     clearIcon: ".p-select-clear-icon",
     label: ".p-select-label"
@@ -60,8 +78,5 @@ export default {
   popover: {
     base: ".p-popover:not([style*='display: none'])",
     content: ".p-popover:not([style*='display: none']) .p-popover-content"
-  },
-  inputNumber: {
-    base: ".p-inputnumber-input"
   }
 };

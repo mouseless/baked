@@ -1,0 +1,218 @@
+<template>
+  <AwaitLoading :skeleton="{ height:'2rem', class:'inline-block bg-red-500/20' }">
+    <Button
+      v-if="inlinesData"
+      v-bind="$attrs"
+      :label
+      size="small"
+      severity="danger"
+      class="px-1 py-0 hover:underline"
+      @click="visible = true"
+    />
+    <Button
+      v-else
+      v-bind="$attrs"
+      :label
+      size="small"
+      severity="danger"
+      icon="pi pi-plus"
+      @click="visible = true"
+    />
+  </AwaitLoading>
+  <Dialog
+    v-model:visible="visible"
+    header="Missing Component"
+    modal
+    dismissable-mask
+    class="min-w-[500px] max-w-[750px] mx-4"
+  >
+    <div class="flex flex-col gap-4 w-full">
+      <code v-if="path">{{ path.join('/') }}</code>
+      <span>A component descriptor is required but missing here.</span>
+      <span v-if="code">
+        You can use below convention in your theme feature
+        (<code>...ThemeFeature.cs</code>) or in one of your UI override
+        features (<code>...UiOverrideFeature.cs</code>).
+      </span>
+      <code
+        v-if="code"
+        class="flex flex-col"
+      >
+        <Button
+          :icon="copied ? 'pi pi-check' : 'pi pi-copy'"
+          variant="text"
+          severity="secondary"
+          size="small"
+          class="self-end p-1 hover:bg-transparent hover:text-white"
+          @click="copyToClipboard"
+        />
+        <!-- eslint-disable vue/no-v-html -->
+        <pre
+          class="-mt-[2.5em]"
+          v-html="highlightedCode"
+        />
+        <!-- eslint-enable vue/no-v-html -->
+      </code>
+      <template v-if="!inlinesData && data">
+        <Divider class="m-0" />
+        <Panel
+          header="Expand to see the data"
+          collapsed
+          toggleable
+          class="border-none"
+          :pt="{ header: 'p-0', content: 'px-0' }"
+        >
+          <code>
+            <!-- eslint-disable vue/no-v-html -->
+            <pre v-html="highlightedData" />
+            <!-- eslint-enable vue/no-v-html -->
+          </code>
+        </Panel>
+      </template>
+    </div>
+  </Dialog>
+</template>
+<script setup>
+import { computed, ref } from "vue";
+import { Button, Dialog, Panel, Divider } from "primevue";
+import { AwaitLoading } from "#components";
+
+const { schema, data } = defineProps({
+  schema: { type: null, required: true },
+  data: { type: null, required: true }
+});
+
+const { component, path, source } = schema;
+
+const inlinesData = data !== undefined && typeof data !== "object";
+const label = inlinesData ? data : "Configure";
+const visible = ref(false);
+const copied = ref(false);
+
+const code = computed(() => {
+  if(!source) { return null; }
+  if(!source.type) { return null; }
+
+  return source.type.startsWith("Type") ? renderTypeSample(source.path) :
+    source.type.startsWith("Property") ? renderPropertySample(source.path) :
+      source.type.startsWith("Method") ? renderMethodSample(source.path) :
+        source.type.startsWith("Parameter") ? renderParameterSample(source.path) :
+          null;
+});
+
+const highlightedCode = computed(() => {
+  if(!code.value) { return null; }
+
+  return highlightCSharp(code.value);
+});
+
+const highlightedData = computed(() => {
+  if(inlinesData) { return null; }
+
+  return highlightJson(JSON.stringify(data, null, 2));
+});
+
+function renderTypeSample([ type ]) {
+  return String.raw`builder.Conventions.AddTypeComponent${component ? `<${component}>` : ""}(
+    when: c => c.Type.Is<${type}>(),
+    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
+    component: () => ${component ? "..." : "B.Text()"}
+);`;
+}
+
+function renderPropertySample([ type, property ]) {
+  return String.raw`builder.Conventions.AddPropertyComponent${component ? `<${component}>` : ""}(
+    when: c => c.Type.Is<${type}>() && c.Property.Name == nameof(${type}.${property}),
+    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
+    component: () => ${component ? "..." : "B.Text()"}
+);`;
+}
+
+function renderMethodSample([ type, method ]) {
+  return String.raw`builder.Conventions.AddMethodComponent${component ? `<${component}>` : ""}(
+    when: c => c.Type.Is<${type}>() && c.Method.Name == nameof(${type}.${method}),
+    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
+    component: () => ${component ? "..." : "B.DataTable()"}
+);`;
+}
+
+function renderParameterSample([ type, method, parameter ]) {
+  return String.raw`builder.Conventions.AddParameterComponent${component ? `<${component}>` : ""}(
+    when: c => c.Type.Is<${type}>() && c.Method.Name == nameof(${type}.${method}) && c.Parameter.Name == "${parameter}",
+    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
+    component: () => ${component ? "..." : "B.InputText()"}
+);`;
+}
+
+async function copyToClipboard() {
+  try {
+    await navigator.clipboard.writeText(code.value);
+    copied.value = true;
+    setTimeout(() => copied.value = false, 1000);
+  } catch {
+    console.log("clipboard copy failed");
+  }
+}
+
+// AI-GEN provide above code samples and ask for the simplest csharp syntax
+// higlighter in js.
+function highlightCSharp(src) {
+  if(!src) return "";
+
+  let s = src
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/=/g, "&equals;");
+
+  const kw = ["nameof"];
+  const kwRe = new RegExp(`\\b(${kw.join("|")})\\b`, "g");
+  s = s.replace(kwRe, "<span class='c--code-keyword'>$1</span>");
+
+  s = s.replace(/\/\/.*$/gm, m => `<span class='c--code-comment'>${m}</span>`);
+  s = s.replace(/"([^"]*)"/g, "<span class='c--code-string'>\"$1\"</span>");
+  s = s.replace(
+    /(\w+)\s*(&lt;[^&]+&gt;)?\s*\(/g,
+    (_, name, generic) =>
+      `<span class='c--code-method'>${name}</span>` +
+      (generic ? `<span class='c--code-type'>${generic}</span>` : "") +
+      "("
+  );
+  s = s.replace(/((\w|&lt;|&gt;)+)\s*\(/g, "<span class='c--code-method'>$1</span>(");
+  s = s.replace(/(\.|\(|\)|&amp;|&lt;|&gt;|&equals;)/g, "<span class='c--code-symbol'>$1</span>");
+
+  return s;
+}
+
+// AI-GEN ask for the simplest json syntax higlighter in js.
+function highlightJson(src) {
+  if(!src) return "";
+
+  let s = src
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/=/g, "&equals;");
+
+  s = s.replace(/"([^"]*)"/g, "<span class='c--code-string'>\"$1\"</span>");
+  s = s.replace(/(\{|\}|\[|\]|&equals;)/g, "<span class='c--code-symbol'>$1</span>");
+
+  return s;
+}
+</script>
+<style>
+code:not(:has(pre)) {
+  @apply rounded p-1 text-xs bg-zinc-50 text-orange-700 dark:bg-zinc-950 dark:text-orange-400;
+}
+
+pre {
+  @apply block rounded-lg overflow-auto max-h-[20em] bg-zinc-950 p-4 text-xs text-sky-300;
+
+  .c--code-comment { @apply text-green-800; }
+  .c--code-string { @apply text-orange-400; }
+  .c--code-keyword { @apply text-purple-400; }
+  .c--code-symbol { @apply text-gray-100; }
+  .c--code-type { @apply text-blue-400; }
+  .c--code-method { @apply text-yellow-100; }
+}
+</style>

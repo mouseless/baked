@@ -1,20 +1,17 @@
 <template>
-  <Skeleton
-    v-if="loading"
-    height="1.5rem"
-  />
-  <span
-    v-else-if="data"
-    v-tooltip.bottom="tooltip"
-  >{{ text }}</span>
-  <span v-else>-</span>
+  <AwaitLoading :skeleton="{ height: '1.5rem' }">
+    <span
+      v-if="data"
+      v-tooltip.bottom="tooltip"
+    >{{ text }}</span>
+    <span v-else>-</span>
+  </AwaitLoading>
 </template>
 <script setup>
 import { computed } from "vue";
-import { Skeleton } from "primevue";
-import { useContext, useFormat } from "#imports";
+import { useFormat } from "#imports";
+import { AwaitLoading } from "#components";
 
-const context = useContext();
 const { truncate } = useFormat();
 
 const { schema, data } = defineProps({
@@ -24,7 +21,6 @@ const { schema, data } = defineProps({
 
 const { maxLength } = schema;
 
-const loading = context.injectLoading();
 const lengthIsExceeded = computed(() => maxLength && data.length > maxLength);
 const text = computed(() => lengthIsExceeded.value ? truncate(data, maxLength) : data);
 const tooltip = computed(() => ({

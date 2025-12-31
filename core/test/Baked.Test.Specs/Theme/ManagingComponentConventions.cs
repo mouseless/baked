@@ -1,7 +1,6 @@
-﻿using Baked.Test.Theme;
-using Baked.Ui;
+﻿using Baked.Ui;
 
-namespace Baked.Test.Test;
+namespace Baked.Test.Theme;
 
 public class ManagingComponentConventions : TestSpec
 {
@@ -13,9 +12,9 @@ public class ManagingComponentConventions : TestSpec
 
         var component = type.GetRequiredComponent(componentContext);
 
-        var reportPage = component.ShouldBeOfType<ComponentDescriptor<ReportPage>>();
-        reportPage.Schema.Path.ShouldBe("test-page");
-        reportPage.Schema.Title.Title.ShouldBe("Test Page");
+        var page = component.ShouldBeOfType<ComponentDescriptor<TabbedPage>>();
+        page.Schema.Path.ShouldBe("test-page");
+        page.Schema.Title.Title.ShouldBe("Test Page");
     }
 
     [Test]
@@ -24,7 +23,7 @@ public class ManagingComponentConventions : TestSpec
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs"]);
 
-        var tabs = type.GetSchemas<ReportPage.Tab>(componentContext);
+        var tabs = type.GetSchemas<Tab>(componentContext);
 
         tabs.Count.ShouldBe(1);
         tabs[0].Id.ShouldBe("default");
@@ -37,7 +36,7 @@ public class ManagingComponentConventions : TestSpec
         var method = type.Methods[nameof(TestPage.GetData)];
         var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs", "default", "contents", "0"]);
 
-        var content = method.GetSchema<ReportPage.Tab.Content>(componentContext);
+        var content = method.GetSchema<Content>(componentContext);
 
         content.ShouldNotBeNull();
         content.Narrow.GetValueOrDefault().ShouldBeTrue();

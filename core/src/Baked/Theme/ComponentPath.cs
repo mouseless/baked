@@ -51,6 +51,9 @@ public readonly record struct ComponentPath(string Value)
     public bool EndsWith(params object[] paths) =>
         IsMatch(new($"/{Join(paths, regexify: true)}$"));
 
+    public IEnumerable<string> GetParts() =>
+        Value.Trim('/').Split('/');
+
     public override string ToString() =>
         Value;
 }

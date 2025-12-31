@@ -32,7 +32,7 @@ export default defineNuxtPlugin({
 });
 
 function Interceptors() {
-  const { public: { composables } } = useRuntimeConfig();
+  const { public: { apiBaseURL } } = useRuntimeConfig();
   const interceptorMap = new Map();
 
   let interceptors = null;
@@ -58,7 +58,7 @@ function Interceptors() {
     ensureSorted();
 
     // doesn't intercept `/_nuxt` calls and any other non api calls
-    if(context.options.baseURL !== composables.useDataFetcher.baseURL) {
+    if(context.options.baseURL !== apiBaseURL) {
       // directly executes last interceptor which is the actual fetch
       return await executeInner(context, interceptors.length - 1);
     }

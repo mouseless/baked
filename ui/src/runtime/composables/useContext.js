@@ -1,13 +1,19 @@
 import { inject, provide, ref } from "vue";
 
 export default function() {
-  function providePath(name) {
-    const path = inject("__bake_path", null);
-    provide("__bake_path", path ? `${path}/${name}` : name);
+  function providePath(value) {
+    provide("__bake_path", value);
   }
 
   function injectPath() {
     return inject("__bake_path", "");
+  }
+
+  function injectContextData() {
+    return {
+      page: injectPageContext(),
+      parent: injectParentContext()
+    };
   }
 
   function injectDataDescriptor() {
@@ -18,15 +24,20 @@ export default function() {
     return provide("__bake_data_descriptor", value);
   }
 
-  function injectData() {
-    return {
-      ParentData: inject("__bake_injected_data:ParentData", null),
-      Custom: inject("__bake_injected_data:Custom", null)
-    };
+  function injectEvents() {
+    return inject("__bake_events");
   }
 
-  function provideData(value, key) {
-    provide(`__bake_injected_data:${key}`, value);
+  function provideEvents(value) {
+    provide("__bake_events", value);
+  }
+
+  function injectExecuting() {
+    return inject("__bake_executing", ref(false));
+  }
+
+  function provideExecuting(value) {
+    return provide("__bake_executing", value);
   }
 
   function injectLoading() {
@@ -37,24 +48,37 @@ export default function() {
     provide("__bake_loading", value);
   }
 
-  function injectPage() {
-    return inject("__bake_page");
+  function injectPageContext() {
+    return inject("__bake_page_context");
   }
 
-  function providePage(value) {
-    provide("__bake_page", value);
+  function providePageContext(value) {
+    provide("__bake_page_context", value);
+  }
+
+  function injectParentContext() {
+    return inject("__bake_parent_context", null);
+  }
+
+  function provideParentContext(value) {
+    provide("__bake_parent_context", value);
   }
 
   return {
     injectPath,
     providePath,
+    injectContextData,
     injectDataDescriptor,
     provideDataDescriptor,
-    injectData,
-    provideData,
+    injectEvents,
+    provideEvents,
+    injectExecuting,
+    provideExecuting,
     injectLoading,
     provideLoading,
-    injectPage,
-    providePage
+    injectPageContext,
+    providePageContext,
+    injectParentContext,
+    provideParentContext
   };
 }

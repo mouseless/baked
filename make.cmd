@@ -51,7 +51,7 @@ goto end
 :build
 echo Building projects...
 cd core
-dotnet build
+dotnet build -v d /p:GenerateArgs="--warn-for-missing-component"
 cd ..
 cd ui
 npm run build
@@ -93,7 +93,7 @@ if "%choice%"=="4" goto docs
 
 :api
 echo Running API (Development)...
-dotnet run --project core\test\Baked.Test.Application
+dotnet run --project core\test\Baked.Test.Application /p:GenerateArgs="--warn-for-missing-component"
 goto end
 
 :ui

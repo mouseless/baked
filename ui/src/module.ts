@@ -4,6 +4,7 @@ import { pathToFileURL } from "url";
 import { join } from "path";
 
 export interface ModuleOptions {
+  apiBaseURL: String,
   components?: Components,
   composables: Composables,
   primevue: PrimeVueOptions,
@@ -30,7 +31,6 @@ export interface Composables {
 }
 
 export interface UseDataFetcherOptions {
-  baseURL: String,
   retry?: RetryOptions | Boolean
 }
 
@@ -122,6 +122,7 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
     _nuxt.options.runtimeConfig.public.composables = _options.composables;
+    _nuxt.options.runtimeConfig.public.apiBaseURL = _options.apiBaseURL;
 
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");

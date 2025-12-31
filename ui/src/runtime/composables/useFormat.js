@@ -83,18 +83,6 @@ export default function() {
     return value.toLocaleString(locale, { style: "percent", maximumFractionDigits: 2 });
   }
 
-  function format(formatString, args) {
-    // TODO: this format call is temporary, final design should handle path
-    // variables using name, not index, e.g., /test/{0} -> /test/{id}
-    return formatString.replace(/(\{\{\d\}\}|\{\d\})/g, part => {
-      if(part.substring(0, 2) === "{{") { return part; } // escape
-
-      const index = parseInt(part.match(/\d/)[0]);
-
-      return args[index];
-    });
-  }
-
   function truncate(value, length) {
     if(!value || !length || value.length <= length - 3) {
       return value;
@@ -110,7 +98,6 @@ export default function() {
     asMonth,
     asNumber,
     asPercentage,
-    format,
     truncate
   };
 };

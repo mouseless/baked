@@ -13,9 +13,9 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // Use `SelectButton` when enun member count is <= _maxMemberCountForSelectButton
+            // Use `SelectButton` when enum member count is <= _maxMemberCountForSelectButton
             builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelectButton(c.Parameter, cc),
+                component: (c, cc) => ParameterSelectButton(c.Parameter, cc),
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton
@@ -34,9 +34,9 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 }
             );
 
-            // Use `Select` when enun member count is > _maxMemberCountForSelectButton
+            // Use `Select` when enum member count is > _maxMemberCountForSelectButton
             builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelect(c.Parameter, cc),
+                component: (c, cc) => ParameterSelect(c.Parameter, cc),
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton
@@ -56,7 +56,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
             );
 
             // Default value of a required enum parameter is set to the first enum member
-            builder.Conventions.AddParameterSchemaConfiguration<Parameter>(
+            builder.Conventions.AddParameterSchemaConfiguration<Input>(
                 schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&

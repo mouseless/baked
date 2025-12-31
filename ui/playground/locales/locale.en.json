@@ -12,8 +12,8 @@
   "MenuPage": {
     "No item available!": "No item available!"
   },
-  "ReportPage": {
-    "Select required values to view this report": "Select required values to view this report"
+  "TabbedPage": {
+    "Select required values to view this page": "Select required values to view this page"
   },
   "useFormat": {
     "suffix": {
@@ -101,9 +101,12 @@
   },
 
   "// test case specific keys": "//",
-  "Spec: A link": "A Link",
+  "Spec: A link": "A link",
   "Spec: Access denied": "Access Denied",
-  "Spec: B link": "B Link",
+  "Spec: Action": "Action",
+  "Spec: B link": "B link",
+  "Spec: Button": "Button",
+  "Spec: Cancel": "Cancel",
   "Spec: Custom Exception Message": "Custom Exception Message",
   "Spec: Data": "Data",
   "Spec: Data 1": "Data 1",
@@ -117,9 +120,13 @@
   "Spec: Data 9": "Data 9",
   "Spec: Data 10": "Data 10",
   "Spec: Description": "Description",
+  "Spec: Dialog Action": "Dialog Action",
+  "Spec: Dialog Button": "Dialog Button",
+  "Spec: Dialog Header": "Dialog Header",
   "Spec: Disabled": "Disabled",
   "Spec: Entity": "Entity",
   "Spec: Footer info": "Footer info",
+  "Spec: Message": "Message",
   "Spec: Mid Page": "Mid Page",
   "Spec: NavLink": "Nav Link",
   "Spec: Name": "Name",
@@ -129,9 +136,13 @@
   "Spec: Label 2": "Label 2",
   "Spec: Leaf Page": "Leaf Page",
   "Spec: Lorem ipsum...": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "Spec: Open": "Open",
   "Spec: Option 1": "Option 1",
   "Spec: Option 2": "Option 2",
   "Spec: Page Title": "PAGE TITLE",
+  "Spec: Page with Default Layout": "Page with Default Layout",
+  "Spec: Page with Modal Layout": "Page with Modal Layout",
+  "Spec: Reload": "Reload",
   "Spec: Row label": "Row Label",
   "Spec: Root Page": "Root Page",
   "Spec: Safe links message": "Safe links message",
@@ -139,6 +150,9 @@
   "Spec: Section 2": "Section 2",
   "Spec: Selected": "Selected",
   "Spec: Not Selected": "Not Selected",
+  "Spec: Simple Form": "Simple Form",
+  "Spec: Show": "Show",
+  "Spec: Submit": "Submit",
   "Spec: Summary": "Summary",
   "Spec: Soon": "Soon",
   "Spec: Tab 1": "Tab 1",
@@ -147,9 +161,11 @@
   "Spec: Test description is given for testing purposes": "Test description is given for testing purposes",
   "Spec: Title": "Title",
   "Spec: This is a long label": "This is a long label",
+  "Spec: This is a very very very very long label": "This is a very very very very long label",
   "Spec: This is a message": "This is a message",
   "Spec: This is a test detail for a success toast message": "This is a test detail for a success toast message.",
   "Spec: Total": "Total",
+  "Spec: Toggle Dialog": "Toggle Dialog",
   "Spec: Test": "Test",
   "Spec: Test Text": "Test Text",
   "Spec: Service Unavailable": "Service Unavailable",

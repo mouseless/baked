@@ -1,27 +1,30 @@
 <template>
-  <div
-    v-if="loading"
-    class="min-w-60"
-  >
-    <Skeleton class="min-h-10" />
-  </div>
-  <SelectButton
-    v-else-if="data"
-    v-model="selected"
-    :options="data"
-    :allow-empty
-    :data-key="optionValue"
-    :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
-  >
-    <template #option="slotProps">
-      <span>{{ getOptionLabel(slotProps) }}</span>
+  <AwaitLoading>
+    <template #loading>
+      <div class="min-w-60">
+        <Skeleton class="min-h-10" />
+      </div>
     </template>
-  </SelectButton>
+    <SelectButton
+      v-if="data"
+      v-model="selected"
+      :options="data"
+      :allow-empty
+      :data-key="optionValue"
+      :option-label
+      :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
+    >
+      <template #option="slotProps">
+        <span>{{ getOptionLabel(slotProps) }}</span>
+      </template>
+    </SelectButton>
+  </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { SelectButton, Skeleton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
+import { AwaitLoading } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -33,11 +36,9 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey } = schema;
+const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful } = schema;
 
-const loading = context.injectLoading();
 const path = context.injectPath();
-const page = context.injectPage();
 const selected = ref();
 
 watch(
@@ -66,10 +67,6 @@ function setModel(selected) {
   }
 }
 
-function getValueOf(option) {
-  return optionValue ? option?.[optionValue] : option;
-}
-
 function setSelected(value) {
   // data can be null when data is async
   if(!data) { return; }
@@ -78,28 +75,12 @@ function setSelected(value) {
     ? data.filter(o => o[optionValue] === value)[0]
     : value;
 
-  if(selectionPageContextKey) {
-    for(const currentValue of data.map(getValueOf)) {
-      setPageContext(currentValue, false);
-    }
-
-    const selectedValue = getValueOf(selected.value);
-    if(selectedValue !== undefined) {
-      setPageContext(selectedValue, true);
-    }
-  }
-
   if(stateful) {
     const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
     if(model.value !== selectedValue) {
       setModel(selected.value);
     }
   }
-}
-
-function setPageContext(key, value) {
-  page[`${selectionPageContextKey}:${key}`] = value;
-  page[`!${selectionPageContextKey}:${key}`] = !value;
 }
 </script>
 <style>

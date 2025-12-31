@@ -1,9 +1,11 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Runtime;
 using Baked.Ui;
 using Humanizer;
+using System.Collections.Immutable;
 
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
@@ -24,94 +26,172 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // Property Defaults
+            // Pages
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeTabbedPage(c.Type, cc)
+            );
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeSimplePage(c.Type, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
+                component: (c, cc) => MethodFormPage(c.Method, cc)
+            );
+
+            // `PageTitle` defaults
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
+                component: (c, cc) => TypePageTitle(c.Type, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
+                component: (c, cc) => MethodPageTitle(c.Method, cc)
+            );
+            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method == HttpMethod.Get) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
+
+                        var actionComponent = method.GetComponent(cc.Drill(nameof(PageTitle.Actions), method.Name));
+                        if (actionComponent is null) { continue; }
+
+                        pt.Schema.Actions.Add(actionComponent);
+                    }
+                }
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                where: cc => cc.Path.EndsWith("Title", "Actions", "**", nameof(IComponentDescriptor.Action)),
+                schema: ra => ra.Params = Computed.UseRoute("params")
+            );
+
+            // Type defaults
+            builder.Index.Type.Add<RouteAttribute>();
+            builder.Conventions.AddTypeAttributeConfiguration<RouteAttribute>(
+                when: (c, r) =>
+                  r.Path.Contains("[id]") &&
+                  c.Type.TryGetMembers(out var members) &&
+                  members.Properties.Having<IdAttribute>().Any(),
+                attribute: (r, c) => r.Params["id"] = c.Type.GetMembers().Properties.Having<IdAttribute>().First().Get<DataAttribute>().Prop
+            );
+
+            // Property defaults
             builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<DataAttribute>();
             builder.Conventions.SetPropertyAttribute(
-                attribute: () => new IdAttribute(),
-                when: c => c.Property.Name == "Id"
+                when: c => c.Property.Name == "Id",
+                attribute: () => new IdAttribute()
             );
             builder.Conventions.SetPropertyAttribute(
-                attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 when: c => c.Property.IsPublic,
+                attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 order: -10
             );
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
-                attribute: data => data.Visible = false,
-                when: c => c.Property.Has<IdAttribute>()
+                when: c => c.Property.Has<IdAttribute>(),
+                attribute: data => data.Visible = false
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => B.None(),
+                when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>(),
+                component: () => B.Text(),
                 order: -10
             );
-            builder.Conventions.AddPropertyComponent(
-                component: () => B.Text(),
-                when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
-            );
 
-            // Method Defaults
+            // Method defaults
+            builder.Index.Method.Add<ActionAttribute>();
             builder.Index.Method.Add<TabNameAttribute>();
+            builder.Index.Method.Add<RouteAttribute>();
             builder.Conventions.SetMethodAttribute(
-                attribute: () => new TabNameAttribute(),
                 when: c => c.Method.Has<ActionModelAttribute>(),
+                attribute: () => new ActionAttribute(),
+                order: RestApiLayer.MaxConventionOrder + 10
+            );
+            builder.Conventions.SetMethodAttribute(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                attribute: () => new TabNameAttribute(),
                 order: RestApiLayer.MaxConventionOrder + 10
             );
             builder.Conventions.AddMethodSchema(
-                schema: c => MethodRemote(c.Method),
-                when: c => c.Method.Has<ActionModelAttribute>()
+                schema: c => MethodRemote(c.Method)
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                schema: rd => rd.Params = Computed.UseRoute("params")
+            );
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodContent(c.Method, cc)
+            );
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Method.Has<ActionAttribute>(),
+                schema: (c, cc) => DomainActions.MethodRemote(c.Method)
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.DefaultOverload.Parameters.Any(),
+                schema: ra => ra.Body = Context.Model()
             );
 
-            // Parameter Defaults
-            builder.Conventions.AddParameterSchema(
-                schema: (c, cc) => ParameterParameter(c.Parameter, cc),
-                when: c => c.Parameter.Has<ParameterModelAttribute>()
+            // Parameter defaults
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(SimpleForm.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Parameter>(
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(FormPage.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
+            builder.Conventions.AddParameterSchema(
+                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                schema: (c, cc) => ParameterInput(c.Parameter, cc)
+            );
+            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+                when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (p, c) =>
                 {
                     var api = c.Parameter.Get<ParameterModelAttribute>();
 
                     p.Required = !api.IsOptional ? true : null;
                     p.DefaultValue = api.DefaultValue;
-                },
-                when: c => c.Parameter.Has<ParameterModelAttribute>()
+                }
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.Is<string>(),
+                component: (c, cc) => ParameterInputText(c.Parameter, cc),
+                order: UiLayer.MinConventionOrder + 10
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<int>(),
+                component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
+                order: UiLayer.MinConventionOrder + 10
             );
 
             // Enum Data
             builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => EnumInline(c.Type, cc),
-                when: c => c.Type.SkipNullable().IsEnum
-            );
-
-            // `DataTable` defaults
-            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
-                component: dt =>
-                {
-                    dt.Schema.Rows = 5;
-                    dt.Schema.Paginator = true;
-                }
-            );
-            builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodDataTableExport(c.Method, cc),
-                when: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>()
-            );
-            builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
-                when: c => c.Property.Has<DataAttribute>()
-            );
-            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                schema: (dtc, c, cc) =>
-                {
-                    var (_, l) = cc;
-                    var data = c.Property.Get<DataAttribute>();
-
-                    dtc.Title = data.Label is not null ? l(data.Label) : null;
-                    dtc.Exportable = true;
-                }
-            );
-            builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyConditional(c.Property, cc),
-                when: c => c.Property.Has<DataAttribute>()
+                when: c => c.Type.SkipNullable().IsEnum,
+                schema: (c, cc) => EnumInline(c.Type, cc)
             );
         });
 
@@ -143,7 +223,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                         _errorPageOptions.Apply(ep);
                     },
-                    data: Computed(Composables.UseError)
+                    data: Computed.UseError()
                 );
             });
         });
@@ -185,12 +265,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             {
                 configurator.UsingLocalization(l =>
                 {
+                    var sitemap = _routes.ToImmutableList();
                     foreach (var route in _routes)
                     {
                         var page = route.BuildPage(new()
                         {
                             Route = route,
-                            Sitemap = [.. _routes],
+                            Sitemap = sitemap,
                             Domain = domain,
                             NewLocaleKey = l
                         });

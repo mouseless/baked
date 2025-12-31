@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-4">
+  <div class="flex gap-2">
     <Bake
       v-for="(content, i) in contents"
       :key="`contents/${i}`"
@@ -15,7 +15,6 @@ const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
-defineModel({ type: null, required: false });
 
 const { contents } = schema;
 </script>

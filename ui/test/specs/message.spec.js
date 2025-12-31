@@ -12,7 +12,7 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.message.content)).toHaveText("Message");
-    await expect(component.locator(primevue.message.icon)).toHaveClass("pi pi-info-circle");
+    await expect(component.locator(primevue.message.icon)).toHaveClass(/pi pi-info-circle/);
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -25,7 +25,7 @@ test.describe("Base", () => {
 test.describe("No icon", () => {
   const id = "No icon";
 
-  test("Does not attach icon element", async({ page }) => {
+  test("does not attach icon element", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.message.icon)).not.toBeAttached();
@@ -35,7 +35,7 @@ test.describe("No icon", () => {
 test.describe("No data", () => {
   const id = "No data";
 
-  test("Display single dash(-) when data is null", async({ page }) => {
+  test("display single dash(-) when data is null", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.message.content)).toHaveText("-");

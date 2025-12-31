@@ -1,12 +1,12 @@
 {
-  "type": "ReportPage",
+  "type": "TabbedPage",
   "schema": {
     "title": {
       "title": "Report",
       "description": "Showcases a report layout with tabs and data panels",
       "actions": []
     },
-    "queryParameters": [
+    "inputs": [
       {
         "name": "requiredWithDefault",
         "required": true,
@@ -14,6 +14,7 @@
           "type": "Inline",
           "value": "RequiredWithDefault1"
         },
+        "queryBound": true,
         "component": {
           "type": "Select",
           "schema": {
@@ -40,6 +41,7 @@
       {
         "name": "required",
         "required": true,
+        "queryBound": true,
         "component": {
           "type": "Select",
           "schema": {
@@ -65,6 +67,7 @@
       },
       {
         "name": "optional",
+        "queryBound": true,
         "component": {
           "type": "SelectButton",
           "schema": {
@@ -103,7 +106,7 @@
                   "value": "GetWide"
                 },
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "Text",
                   "schema": {},
@@ -118,8 +121,13 @@
                     },
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     }
                   }
                 }
@@ -137,7 +145,7 @@
                 },
                 "collapsed": true,
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "Text",
                   "schema": {},
@@ -152,8 +160,13 @@
                     },
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     }
                   }
                 }
@@ -172,7 +185,7 @@
                 },
                 "collapsed": true,
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "Text",
                   "schema": {},
@@ -187,8 +200,13 @@
                     },
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     }
                   }
                 }
@@ -218,7 +236,7 @@
                   "value": "GetFirst"
                 },
                 "localizeTitle": true,
-                "parameters": [
+                "inputs": [
                   {
                     "name": "count",
                     "default": {
@@ -259,13 +277,15 @@
                   "schema": {
                     "columns": [
                       {
-                        "prop": "label",
+                        "key": "label",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.label"
+                          }
                         },
                         "title": "Label",
                         "minWidth": true,
@@ -273,37 +293,43 @@
                         "frozen": true
                       },
                       {
-                        "prop": "column1",
+                        "key": "column1",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column1"
+                          }
                         },
                         "title": "Column 1",
                         "exportable": true
                       },
                       {
-                        "prop": "column2",
+                        "key": "column2",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column2"
+                          }
                         },
                         "title": "Column 2",
                         "exportable": true
                       },
                       {
-                        "prop": "column3",
+                        "key": "column3",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column3"
+                          }
                         },
                         "title": "Column 3",
                         "exportable": true
@@ -337,12 +363,18 @@
                       "parts": [
                         {
                           "type": "Computed",
-                          "composable": "useQuery",
-                          "args": []
+                          "composable": "useNuxtRoute",
+                          "options": {
+                            "type": "Inline",
+                            "value": {
+                              "property": "query"
+                            }
+                          }
                         },
                         {
-                          "type": "Injected",
-                          "key": "Custom"
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "parameters"
                         }
                       ]
                     }
@@ -362,7 +394,7 @@
                 },
                 "collapsed": true,
                 "localizeTitle": true,
-                "parameters": [
+                "inputs": [
                   {
                     "name": "count",
                     "default": {
@@ -402,13 +434,15 @@
                   "schema": {
                     "columns": [
                       {
-                        "prop": "label",
+                        "key": "label",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.label"
+                          }
                         },
                         "title": "Label",
                         "minWidth": true,
@@ -416,37 +450,43 @@
                         "frozen": true
                       },
                       {
-                        "prop": "column1",
+                        "key": "column1",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column1"
+                          }
                         },
                         "title": "Column 1",
                         "exportable": true
                       },
                       {
-                        "prop": "column2",
+                        "key": "column2",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column2"
+                          }
                         },
                         "title": "Column 2",
                         "exportable": true
                       },
                       {
-                        "prop": "column3",
+                        "key": "column3",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column3"
+                          }
                         },
                         "title": "Column 3",
                         "exportable": true
@@ -480,12 +520,18 @@
                       "parts": [
                         {
                           "type": "Computed",
-                          "composable": "useQuery",
-                          "args": []
+                          "composable": "useNuxtRoute",
+                          "options": {
+                            "type": "Inline",
+                            "value": {
+                              "property": "query"
+                            }
+                          }
                         },
                         {
-                          "type": "Injected",
-                          "key": "Custom"
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "parameters"
                         }
                       ]
                     }

@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.RestApi.Model;
 using Baked.Ui;
 
 using static Baked.Theme.Default.DomainComponents;
@@ -14,22 +13,21 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodComponent(
-                component: (c, cc) => MethodDataPanel(c.Method, cc),
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(ReportPage.Tabs), "*", nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
+                where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
+                component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
             builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodNameInline(c.Method, cc),
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title)),
+                schema: (c, cc) => MethodNameInline(c.Method, cc)
             );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
+                when: c => c.Method.GetAction().Method == HttpMethod.Get,
                 component: (dp, c, cc) =>
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        dp.Schema.Parameters.Add(
-                            parameter.GetRequiredSchema<Parameter>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Parameters)))
+                        dp.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Inputs)))
                         );
                     }
                 }

@@ -1,7 +1,8 @@
 <template>
-  <div :class="{ hidden: !show }">
-    <slot v-if="loaded || show" />
-  </div>
+  <slot
+    v-if="loaded || show"
+    :hidden="!show"
+  />
 </template>
 <script setup>
 import { computed, ref, watch } from "vue";
