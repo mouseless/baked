@@ -27,6 +27,10 @@ const {sections: order} = await queryCollection("sectionOrder").first();
 const menus = await queryCollection("sections").where("path", "<>", "/").all();
 
 applyOrder(menus, i => withLeadingSlash(order[i]));
+// get title from markdown h1 (first item (?.[0])'s value (?.[2]))
+menus.forEach(menu => {
+  menu.title = menu?.meta?.body?.value?.[0]?.[2] ?? menu.title;
+});
 
 useSectionStore().setSections(menus);
 </script>

@@ -24,15 +24,14 @@ import { usePageStore } from "~/store/pageStore";
 const store = usePageStore();
 
 const shown = ref(false);
-
 const menus = ref(store.pages);
-
-function close() { shown.value = false; }
-function toggle() { shown.value = !shown.value; }
 
 watch(usePageStore(), () => {
   menus.value = store.pages;
 });
+
+function close() { shown.value = false; }
+function toggle() { shown.value = !shown.value; }
 </script>
 <style lang="scss" scoped>
 nav {

@@ -31,7 +31,7 @@ export default defineContentConfig({
     sections: defineCollection({
       type: "data",
       source: {
-        include: "**/**/index.md"
+        include: "**/index.md"
       },
       schema: z.object({
         path: z.string(),

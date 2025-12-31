@@ -24,24 +24,30 @@ const notFound = await queryCollection("notFound").first();
 const index = await queryCollection("pageData")
   .path(withLeadingSlash(root.value))
   .first();
-const unOrderedMenus = await queryCollection("pageData")
+const unorderedMenu = await queryCollection("pageData")
   .andWhere(query => query
     .where("id", "LIKE", `pageData${root.value}/%`)
     .where("path", "<>", root.value))
   .order("title", "ASC")
   .all();
 
+// get title from markdown h1 (first item (?.[0])'s value (?.[2]))
+index.title = index?.meta?.body?.value?.[0]?.[2] ?? index.title;
+unorderedMenu.forEach(menu => {
+  menu.title = menu?.meta?.body?.value?.[0]?.[2] ?? menu.title;
+});
+
 if(index?.pages)
 {
   applyOrder(
-    unOrderedMenus,
+    unorderedMenu,
     i => withoutTrailingSlash(`${root.value}/${index.pages[i]}`)
   );
 } else {
-  unOrderedMenus.sort((a, b) => comparePages(a, b, index.sort ?? undefined));
+  unorderedMenu.sort((a, b) => comparePages(a, b, index.sort ?? undefined));
 }
 
-usePageStore().setPages([index, ...unOrderedMenus]);
+usePageStore().setPages([index, ...unorderedMenu]);
 </script>
 <style lang="scss">
 .container {

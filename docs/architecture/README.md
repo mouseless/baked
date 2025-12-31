@@ -111,8 +111,7 @@ opinionated configurations using the configuration API of the corresponding
 layer(s).
 
 Features may have multiple implementations, each named after its corresponding
-design or technology, e.g. `Authentication.FixedBearerToken` and
-`Database.MySql`.
+design or technology, e.g. `Authentication.Jwt` and `Database.MySql`.
 
 > [!TIP]
 >
@@ -142,7 +141,7 @@ flowchart TB
     end
 
     subgraph Implementation
-      AF(Authentication.FixedBearerToken)
+      AF(Authentication.Jwt)
       DbM(Database.MySql)
     end
   end
