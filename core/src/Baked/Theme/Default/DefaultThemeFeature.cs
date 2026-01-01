@@ -26,7 +26,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // Pages
+            // Type defaults
+            builder.Index.Type.Add<RouteAttribute>();
             builder.Conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*"),
                 component: (c, cc) => TypeTabbedPage(c.Type, cc)
@@ -35,44 +36,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is(nameof(Page), "*"),
                 component: (c, cc) => TypeSimplePage(c.Type, cc)
             );
-            builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
-                component: (c, cc) => MethodFormPage(c.Method, cc)
-            );
-
-            // `PageTitle` defaults
-            builder.Conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
-                component: (c, cc) => TypePageTitle(c.Type, cc)
-            );
-            builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
-                component: (c, cc) => MethodPageTitle(c.Method, cc)
-            );
-            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
-                component: (pt, c, cc) =>
-                {
-                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
-                    {
-                        var action = method.GetAction();
-                        if (action.Method == HttpMethod.Get) { continue; }
-                        if (method.Has<InitializerAttribute>()) { continue; }
-
-                        var actionComponent = method.GetComponent(cc.Drill(nameof(PageTitle.Actions), method.Name));
-                        if (actionComponent is null) { continue; }
-
-                        pt.Schema.Actions.Add(actionComponent);
-                    }
-                }
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Has<LocatableAttribute>(),
-                where: cc => cc.Path.EndsWith("Title", "Actions", "**", nameof(IComponentDescriptor.Action)),
-                schema: ra => ra.Params = Computed.UseRoute("params")
-            );
-
-            // Type defaults
-            builder.Index.Type.Add<RouteAttribute>();
             builder.Conventions.AddTypeAttributeConfiguration<RouteAttribute>(
                 when: (c, r) =>
                   r.Path.Contains("[id]") &&
@@ -82,16 +45,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // Property defaults
-            builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<DataAttribute>();
-            builder.Conventions.SetPropertyAttribute(
-                when: c => c.Property.Name == "Id",
-                attribute: () => new IdAttribute()
-            );
+            builder.Index.Property.Add<IdAttribute>();
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 order: -10
+            );
+            builder.Conventions.SetPropertyAttribute(
+                when: c => c.Property.Name == "Id",
+                attribute: () => new IdAttribute()
             );
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
@@ -117,15 +80,19 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 attribute: () => new TabNameAttribute(),
                 order: RestApiLayer.MaxConventionOrder + 10
             );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
+                component: (c, cc) => MethodFormPage(c.Method, cc)
+            );
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodContent(c.Method, cc)
+            );
             builder.Conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 when: c => c.Type.Has<LocatableAttribute>(),
                 schema: rd => rd.Params = Computed.UseRoute("params")
-            );
-            builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodContent(c.Method, cc)
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionAttribute>(),
@@ -186,6 +153,37 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<int>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
+            );
+
+            // `PageTitle` defaults
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
+                component: (c, cc) => TypePageTitle(c.Type, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
+                component: (c, cc) => MethodPageTitle(c.Method, cc)
+            );
+            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method == HttpMethod.Get) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
+
+                        var actionComponent = method.GetComponent(cc.Drill(nameof(PageTitle.Actions), method.Name));
+                        if (actionComponent is null) { continue; }
+
+                        pt.Schema.Actions.Add(actionComponent);
+                    }
+                }
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                where: cc => cc.Path.EndsWith("Title", "Actions", "**", nameof(IComponentDescriptor.Action)),
+                schema: ra => ra.Params = Computed.UseRoute("params")
             );
 
             // Enum Data

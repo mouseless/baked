@@ -66,18 +66,28 @@ experiences, see [UX Feature](ux.md)
 
 | Group      | Rules                                                                                    |
 | ---        | ---                                                                                      |
+| Type       | `TabbedPage` and `SimplePage` is added for any type at component path `/page/*`          |
+|            | `[id]` route parameter is mapped to first data property with `IdAttribute`               |
 | Property   | All public properties get a `DataAttribute` with a camelized name and titleized label    |
-|            | `string` and `Guid` properties render with `String`                                      |
-| Method     | All actions with `ActionModelAttribute` get a `TabAttribute`                             |
-|            | Each action is wired as a remote method with `MethodRemote`                              |
-| Parameter  | Parameters with `ParameterModelAttribute` use `Parameter` schema                         |
+|            | `IdAttribute` is added to properties named as `Id`                                       |
+|            | Id properties are set to be hidden                                                       |
+|            | `string` and `Guid` properties render using `String`                                     |
+| Method     | All actions with `ActionModelAttribute` get `ActionAttribute` and `TabNameAttribute`     |
+|            | `FormPage` is added for any method at component path `/page/*/*`                         |
+|            | `Content` schema is added to any method                                                  |
+|            | Each method is wired as a remote data and remote action                                  |
+|            | Remote data of locatable types include `route.params` in their route                     |
+|            | For method with parameters `Context.Model` is set as remote action body by default       |
+| Parameter  | Parameters are rendered as `Input` list under `SimpleForm` and `FormPage` inputs         |
+|            | Parameters with `ParameterModelAttribute` use `Input` schema                             |
 |            | Required and default values are taken from the attribute                                 |
+|            | `string` parameters render using `InputText`                                             |
+|            | `int` parameters render using `InputNumber`                                              |
 | Enum       | Enum types render inline with `EnumInline`                                               |
-| Data Table | Default rows set to 5                                                                    |
-|            | Paginator enabled                                                                        |
-|            | Export option added for methods with `DataTable`                                         |
-|            | Properties with `DataAttribute` render as `DataTable.Column`                             |
-|            | Column titles use the label of the property and are exportable                           |
+| Page Title | `PageTitle` is added for any type at component path `/page/*/*page/title`                |
+|            | `PageTitle` is added for any method at component path `/page/*/*/*page/title`            |
+|            | Actions of type is added to actions section of page title component                      |
+|            | Page title actions of locatable types include `route.params` in their route              |
 | Error Page | Error page includes safe links for routes with `ErrorSafeLink`                           |
 |            | Predefined error messages:                                                               |
 |            | &nbsp; ↳ `403` Access Denied                                                             |
