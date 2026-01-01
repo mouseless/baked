@@ -28,7 +28,7 @@ test("refresh is executed for requests sent with an expired token", async({ goto
   await page.clock.setFixedTime(datetime + 6000);
 
   await page.getByTestId("request").click();
-  await page.waitForTimeout(100);
+  await page.waitForLoadState("networkidle");
 
   expect(requests.length).toBe(2);
   expect(requests[0].headers()["authorization"]).toBeDefined();

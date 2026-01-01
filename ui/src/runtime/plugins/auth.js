@@ -45,7 +45,7 @@ export default defineNuxtPlugin({
       // runs before other interceptors, even early ones like cache
       // this is to prevent any unintended result when user is not authorized while it should be
       //
-      // -10 is to leave a room just in case it is needed
+      // +10 is to leave a room just in case it is needed
       Number.MIN_SAFE_INTEGER + 10
     );
 

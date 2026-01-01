@@ -115,7 +115,7 @@ builder attributes for this purpose;
 
 The page generator starts with a `Page` component path to render a domain model
 into a `ComponentDescriptor<TComponentSchema>` instance. To add a component to a
-domain model, usually to a type, use the `AddTypeComponent` extension of
+domain model, for instance to a type, use the `AddTypeComponent` extension of
 `IDomainModelConventionCollection`;
 
 ```csharp
@@ -129,15 +129,15 @@ configurator.ConfigureDomainModelBuilder(builder =>
 });
 ```
 
+- `when:` is a predicate function that takes `TypeModelMetadataContext c` as a
+  parameter and serves as a query to filter types
+- `where:` is a predicate funtion that takes `ComponentContext cc` as a
+  parameter and is a selector that determines at which component path this
+  convention should be applied
 - `component:` is a builder function that takes `TypeModelMetadataContext c` and
   `ComponentContext cc` as parameters, and is expected to return a
   `ComponentDescriptor<TComponentSchema>` instance, such as
   `ComponentDescriptor<TabbedPage>`
-- `when:` is a predicate function that takes `TypeModelMetadataContext c` as a
-  parameter and is a query for the types this convention applies to
-- `where:` is a predicate funtion that takes `ComponentContext cc` as a
-  parameter and is a selector that determines at which component path this
-  convention should be applied
 
 `AddPropertyComponent`, `AddMethodComponent` and `AddParameterComponent`
 extensions works the same way.
@@ -170,8 +170,8 @@ For non-component schemas, similar extensions are provided for domain models;
 - `AddParameterSchema`
 
 Use these extensions to associate domain models with non-component schemas such
-as `Tab` or `Parameter`. Once you add a schema for a domain model, you can
-access it using `GetSchema<TSchema>` or `GetSchemas<TSchema>` extension methods.
+as `Tab` or `Input`. Once you add a schema for a domain model, you can access it
+using `GetSchema<TSchema>` or `GetSchemas<TSchema>` extension methods.
 
 > [!TIP]
 >
@@ -183,7 +183,25 @@ access it using `GetSchema<TSchema>` or `GetSchemas<TSchema>` extension methods.
 
 To add a convention that configures an existing schema, there are
 `Add...ComponentConfiguration<TComponentSchema>` and
-`Add...SchemaConfiguration<TSchema>` helpers.
+`Add...SchemaConfiguration<TSchema>` helpers. Configuration conventions works
+exactly the same way add conventions. In addition, to make sure there is a
+schema to configure, configuration conventions automatically filter out the
+domain models that don't have the given `TComponentSchema` or `TSchema` at the
+expected component path.
+
+```csharp
+configurator.ConfigureDomainModelBuilder(builder =>
+{
+    // This convention will automatically apply only to the types that have a
+    // `SimplePage` component
+    builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+        component: sp =>
+        {
+            sp.Title = ...;
+        }
+    );
+});
+```
 
 ## `Bake.vue`
 
@@ -229,7 +247,7 @@ Publish.Event("my-button-clicked");
 Publish.PageContextValue("my-value");
 // redirects app to given route
 Local.UseRedirect("/return-page");
-// sends configrued request to remote endpoint
+// sends configured request to a remote endpoint
 Remote("some/endpoint",
   // goes to a page after remote action
   postAction: Local.UseRedirect("/return-page"),

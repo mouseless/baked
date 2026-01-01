@@ -241,11 +241,21 @@ function exportFunction({ data, field }) {
 }
 </script>
 <style>
-.b-component--DataTable a {
-  @apply text-sm;
-}
+.b-component--DataTable {
+  .p-datatable-table-container {
+    /*
+     * TODO remove when primevue fixes scroll overflow issue. observed after
+     * upgrading from v4.4.1 to v4.5.4
+     */
+    max-width: calc(100vw - 2 * (1.125rem + 1rem));
+  }
 
-.b-component--DataTable .p-button {
-  @apply -my-2;
+  a {
+    @apply text-sm;
+  }
+
+  .p-button {
+    @apply -my-2;
+  }
 }
 </style>
