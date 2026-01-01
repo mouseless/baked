@@ -13,7 +13,7 @@
         :options="data"
         :placeholder="l(label)"
         :show-clear
-        class="hide-placeholder"
+        class="hide-placeholder w-full"
       >
         <template #value="slotProps">
           <span>

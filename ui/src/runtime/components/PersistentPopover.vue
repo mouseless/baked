@@ -6,7 +6,7 @@
 <template>
   <Portal :append-to="appendTo">
     <transition
-      name="p-popover"
+      name="p-anchored-overlay"
       v-bind="ptm('transition')"
       @enter="onEnter"
       @leave="onLeave"
