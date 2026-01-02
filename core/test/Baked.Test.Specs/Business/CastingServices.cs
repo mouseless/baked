@@ -1,4 +1,4 @@
-using Baked.Test.Business.Casting;
+using Baked.Playground.Business.Casting;
 
 namespace Baked.Test.Business;
 

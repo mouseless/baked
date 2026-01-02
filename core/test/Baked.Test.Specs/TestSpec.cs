@@ -1,5 +1,5 @@
-using Baked.Test.Communication;
-using Baked.Test.Orm;
+using Baked.Playground.Communication;
+using Baked.Playground.Orm;
 
 namespace Baked.Test;
 
@@ -7,7 +7,7 @@ public abstract class TestSpec : MonolithSpec
 {
     static TestSpec() =>
         Init(
-            business: c => c.DomainAssemblies(typeof(Entity).Assembly, baseNamespace: "Baked.Test"),
+            business: c => c.DomainAssemblies(typeof(Entity).Assembly, baseNamespace: "Baked.Playground"),
             communication: c => c.Mock(defaultResponses: response =>
             {
                 response.ForClient<ExternalSamples>(response: "test result");

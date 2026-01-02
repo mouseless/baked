@@ -1,5 +1,5 @@
-﻿using Baked.Test.Business;
-using Baked.Test.Lifetime;
+﻿using Baked.Playground.Business;
+using Baked.Playground.Lifetime;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Test.CodingStyle;

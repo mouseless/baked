@@ -1,4 +1,5 @@
-﻿using Baked.Test.Lifetime;
+﻿using Baked.Playground.Lifetime;
+using Baked.Playground.Orm;
 
 using NHConfiguration = NHibernate.Cfg.Configuration;
 

@@ -1,5 +1,5 @@
-﻿using Baked.Test.CodingStyle.EntitySubclassViaComposition;
-using Baked.Test.Orm;
+﻿using Baked.Playground.CodingStyle.EntitySubclassViaComposition;
+using Baked.Playground.Orm;
 using Baked.Testing;
 using Humanizer;
 using Newtonsoft.Json;

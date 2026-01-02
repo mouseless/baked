@@ -1,4 +1,4 @@
-using Baked.Test.Business;
+using Baked.Playground.Business;
 
 namespace Baked.Test.Testing;
 

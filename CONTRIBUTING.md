@@ -6,8 +6,9 @@ Collective. It is, and will always be, free and open source.
 ## Project Structure
 
 - `/core`: Core project in .NET that contains both backend runtime and buildtime
+  - `/playground`: Test app that demonstrates backend and build-time features
   - `/src`: All source code that we ship as nuget packages
-  - `/test`: Contains test projects (test domain, test app, specs, load test)
+  - `/test`: Contains test projects (specs & load)
 - `/docs`: Documentation site. It is a static website that uses nuxt
 - `/samples`: Sample projects are here. each project should be in its own folder
 - `/ui`: UI project in Nuxt that contains all UI components as a nuxt module

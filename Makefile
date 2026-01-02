@@ -11,7 +11,7 @@ fix:
 	fi
 install:
 	@(cd core && dotnet restore)
-	@(cd core/test/Baked.Test.LoadTest && npm i && npm ci)
+	@(cd core/test/Baked.Test.Load && npm i && npm ci)
 	@(cd docs/.theme && npm i && npm ci)
 	@(cd ui && npm i && npm ci)
 build:
@@ -35,7 +35,7 @@ run:
 	@echo "(4) Docs"
 	@read -p "Please select 1-4: " app ; \
 	case $$app in \
-		1) dotnet run --project core/test/Baked.Test.Application /p:GenerateArgs="--warn-for-missing-component" ;; \
+		1) dotnet run --project core/playground/Baked.Playground.Application /p:GenerateArgs="--warn-for-missing-component" ;; \
 		2) (cd ui && npm run dev) ;; \
 		3) docker compose up --build ;; \
 		4) (cd docs && make run) ;; \

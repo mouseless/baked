@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Baked.Test
+      MYSQL_DATABASE: Baked.Playground
       MYSQL_TCP_PORT: 3366
     ports:
       - 3366:3366
@@ -21,11 +21,11 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: Baked.Test
+      POSTGRES_DB: Baked.Playground
     ports:
       - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U root -d Baked.Test'"]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U root -d Baked.Playground'"]
       start_period: 10s
       interval: 10s
       timeout: 5s
@@ -33,13 +33,13 @@ services:
 
   api.load-test:
     build:
-      dockerfile: core/test/Baked.Test.LoadTest/Dockerfile
+      dockerfile: core/test/Baked.Test.Load/Dockerfile
     ports:
       - 5467:80
 
   api:
     build:
-      dockerfile: core/test/Baked.Test.Application/Dockerfile
+      dockerfile: core/playground/Baked.Playground.Application/Dockerfile
       args:
         ENVIRONMENT: Production
     ports:

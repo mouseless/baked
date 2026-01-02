@@ -1,4 +1,5 @@
-﻿using NHibernate.Proxy;
+﻿using Baked.Playground.Orm;
+using NHibernate.Proxy;
 
 namespace Baked.Test.Orm;
 
