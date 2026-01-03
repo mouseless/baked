@@ -43,7 +43,7 @@ cd ..\..
 cd ui
 call npm i
 cd ..
-cd core\test\Baked.Test.LoadTest
+cd core\playground\Baked.Playground.Load
 call npm i
 cd ..\..\..
 goto end
@@ -93,7 +93,7 @@ if "%choice%"=="4" goto docs
 
 :api
 echo Running API (Development)...
-dotnet run --project core\test\Baked.Test.Application /p:GenerateArgs="--warn-for-missing-component"
+dotnet run --project core\playground\Baked.Playground.Application /p:GenerateArgs="--warn-for-missing-component"
 goto end
 
 :ui

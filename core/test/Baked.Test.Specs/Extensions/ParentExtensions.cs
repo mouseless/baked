@@ -1,4 +1,4 @@
-using Baked.Test.Orm;
+using Baked.Playground.Orm;
 using Baked.Testing;
 
 namespace Baked.Test;

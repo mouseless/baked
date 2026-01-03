@@ -1,4 +1,6 @@
-﻿namespace Baked.Test.Core;
+﻿using Baked.Playground.Core;
+
+namespace Baked.Test.Core;
 
 public class ProvidingSystemTime : TestSpec
 {

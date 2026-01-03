@@ -1,0 +1,81 @@
+﻿using Baked.Architecture;
+using Baked.Playground.Caching;
+using Baked.Playground.Orm;
+using Baked.Theme;
+using Baked.Theme.Default;
+using Baked.Ui;
+
+using static Baked.Playground.Theme.Custom.DomainComponents;
+using static Baked.Theme.Default.DomainDatas;
+
+using B = Baked.Ui.Components;
+using C = Baked.Playground.Ui.Components;
+using Route = Baked.Theme.Route;
+
+namespace Baked.Playground.Theme.Custom;
+
+public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
+    : DefaultThemeFeature(routes.Select(r => r(new())),
+        _sideMenuOptions: sm => sm.Footer = B.LanguageSwitcher(),
+        _errorPageOptions: ep =>
+        {
+            ep.ErrorInfos[503] = B.ErrorPageInfo(
+                title: "Service Unavailable",
+                message: "The service is currently unavailable. Please try again later.",
+                options: epi => epi.CustomMessage = true
+            );
+        }
+    )
+{
+    public override void Configure(LayerConfigurator configurator)
+    {
+        base.Configure(configurator);
+
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            // Custom theme CSV formatter settings
+            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Export>(
+                schema: (dte, _, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    dte.ButtonLabel = l("Export as CSV");
+                    dte.Formatter = "useCsvFormatter";
+                    dte.AppendParameters = true;
+                    dte.ParameterSeparator = "_";
+                    dte.ParameterFormatter = "useLocaleParameterFormatter";
+                }
+            );
+
+            // String api rendering
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => MethodText(c.Method, cc),
+                when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+            );
+
+            // Non-localized enums
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
+                when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
+            );
+
+            // Custom routes
+            builder.Conventions.SetTypeRoute<Parent>("/parents/[id]");
+            builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
+        });
+
+        configurator.ConfigureComponentExports(c =>
+        {
+            c.AddFromExtensions(typeof(C));
+        });
+
+        configurator.ConfigurePageDescriptors(pages =>
+        {
+            pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
+            pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
+            pages.Add(C.RoutedPage("first/[id]", lp => lp.Layout = "default"));
+            pages.Add(C.RoutedPage("first/[firstId]/second/[secondId]", lp => lp.Layout = "default"));
+        });
+    }
+}

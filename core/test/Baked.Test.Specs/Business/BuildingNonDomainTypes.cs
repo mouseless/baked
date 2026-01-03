@@ -1,7 +1,7 @@
 ﻿using Baked.Domain.Model;
 using Baked.Orm;
-using Baked.Test.Lifetime;
-using Baked.Test.Orm;
+using Baked.Playground.Lifetime;
+using Baked.Playground.Orm;
 
 namespace Baked.Test.Business;
 

@@ -1,4 +1,4 @@
-using Baked.Test.Orm;
+using Baked.Playground.Orm;
 using Newtonsoft.Json.Linq;
 
 namespace Baked.Test.Testing;
