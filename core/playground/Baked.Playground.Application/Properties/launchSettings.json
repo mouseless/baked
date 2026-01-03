@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Baked.Test": {
+    "Baked.Playground": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
