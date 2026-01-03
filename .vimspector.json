@@ -4,8 +4,8 @@
        "adapter": "netcoredbg",
        "configuration": {
          "request": "launch",
-         "program": "${workspaceRoot}/core/test/Baked.Test.Application/bin/Debug/net9.0/Baked.Test.Application.dll",
-         "cwd": "${workspaceRoot}/core/test/Baked.Test.Application/bin/Debug/net9.0",
+         "program": "${workspaceRoot}/core/playground/Baked.Playground.Application/bin/Debug/net9.0/Baked.Playground.Application.dll",
+         "cwd": "${workspaceRoot}/core/playground/Baked.Playground.Application/bin/Debug/net9.0",
          "args": [],
          "stopAtEntry": false,
          "env": {
