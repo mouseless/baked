@@ -4,15 +4,12 @@ namespace Baked.Playground.Orm;
 
 public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities)
 {
-    protected Parent()
-        : this(default!, default!, default!) { }
+    public Guid Id { get; private set; } = default!;
+    public string Name { get; private set; } = default!;
+    public string Surname { get; private set; } = default!;
+    public string? Description { get; private set; } = default!;
 
-    public virtual Guid Id { get; protected set; } = default!;
-    public virtual string Name { get; protected set; } = default!;
-    public virtual string Surname { get; protected set; } = default!;
-    public virtual string? Description { get; protected set; } = default!;
-
-    public virtual Parent With(string name, string surname)
+    public Parent With(string name, string surname)
     {
         Name = name;
         Surname = surname;
@@ -20,17 +17,17 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
         return _context.Insert(this);
     }
 
-    public virtual List<Child> GetChildren()
+    public List<Child> GetChildren()
     {
         return _childEntities.ByParent(this);
     }
 
-    public virtual void AddChild(string name)
+    public void AddChild(string name)
     {
         _newChild().With(this, name);
     }
 
-    public virtual void Update(
+    public void Update(
         string? name = default,
         string? surname = default,
         string? description = default
@@ -41,14 +38,14 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
         Description = description ?? Description;
     }
 
-    public virtual void RemoveChild(Child child)
+    public void RemoveChild(Child child)
     {
         if (child.Parent != this) { throw new NotMyChildException(child); }
 
         child.Delete();
     }
 
-    public virtual void Delete()
+    public void Delete()
     {
         foreach (var child in GetChildren())
         {

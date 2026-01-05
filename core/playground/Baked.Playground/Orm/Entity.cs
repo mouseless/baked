@@ -12,28 +12,26 @@ namespace Baked.Playground.Orm;
 /// </remarks>
 public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
 {
-    protected Entity() : this(default!, default!, default!) { }
-
-    public virtual Guid Id { get; protected set; } = default!;
-    public virtual Guid? Guid { get; protected set; } = default!;
-    public virtual string? String { get; protected set; } = default!;
+    public Guid Id { get; private set; } = default!;
+    public Guid? Guid { get; private set; } = default!;
+    public string? String { get; private set; } = default!;
     /// <summary>
     /// Data suffix should cause this property to map to a TEXT column in MySql
     /// etc.
     /// </summary>
-    public virtual string? StringData { get; protected set; } = default!;
-    public virtual int? Int32 { get; protected set; } = default!;
-    public virtual string? Unique { get; protected set; } = default!;
-    public virtual Uri? Uri { get; protected set; } = default!;
+    public string? StringData { get; private set; } = default!;
+    public int? Int32 { get; private set; } = default!;
+    public string? Unique { get; private set; } = default!;
+    public Uri? Uri { get; private set; } = default!;
     /// <summary>
     /// Object type properties are converted to json strings in db, dynamic
     /// json objects in rest api layer.
     /// </summary>
-    public virtual object? Dynamic { get; protected set; } = default!;
-    public virtual Enumeration? Enum { get; protected set; } = default!;
-    public virtual DateTime? DateTime { get; protected set; } = default!;
+    public object? Dynamic { get; private set; } = default!;
+    public Enumeration? Enum { get; private set; } = default!;
+    public DateTime? DateTime { get; private set; } = default!;
 
-    public virtual Entity With(
+    public Entity With(
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
@@ -60,7 +58,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         return _context.Insert(this);
     }
 
-    public virtual async Task Update(
+    public async Task Update(
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
@@ -111,11 +109,11 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         }
     }
 
-    public virtual void UpdateString(
+    public void UpdateString(
         string? @string = default
     ) => Set(@string: @string);
 
-    public virtual async Task<int> LockAndIncrementInt32(
+    public async Task<int> LockAndIncrementInt32(
         int offset = 1,
         int delayInSeconds = 5
     )
@@ -129,7 +127,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         return Int32 ?? 0;
     }
 
-    protected virtual void Set(
+    void Set(
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
@@ -162,7 +160,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         DateTime = dateTime ?? DateTime;
     }
 
-    public virtual void Delete()
+    public void Delete()
     {
         _context.Delete(this);
     }
