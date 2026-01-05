@@ -2,14 +2,9 @@
 
 ## Features
 
-- All domain assembly classes are now modified to support proxying without
-  needing to `virtual` and `protected` modifiers
-
-## Library Upgrades
-
-| NuGet Package         | Old Version | New Version |
-| ---                   | ---         | ---         |
-| EmptyConstructor.Fody | new         | 3.0.3       |
-| Fody                  | new         | 6.9.3       |
-| Publicize.Fody        | new         | 1.8.0       |
-| Virtuosity.Fody       | new         | 3.1.2       |
+- To support `Publicize.Fody` weaving, domain model now treats members with
+  `EditorBrowsable(State=Advanced)` as private
+  - `IsOriginallyPublic()` extension is introduced to check if attribute is
+    present on a member info
+- [Layers / Domain](../layers/domain.md#proxifying-entities) is updated to contain
+  a guid to enable proxifying in domain assemblies
