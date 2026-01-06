@@ -3,6 +3,7 @@
 namespace Baked.Playground.Orm;
 
 public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities)
+    : IParentInterface
 {
     public Guid Id { get; private set; } = default!;
     public string Name { get; private set; } = default!;
@@ -54,6 +55,11 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
 
         _context.Delete(this);
     }
+
+    bool IsContextNull() =>
+        _context is null;
+
+    bool IParentInterface.IsContextNull() => IsContextNull();
 }
 
 public class Parents(IQueryContext<Parent> _context)

@@ -28,4 +28,7 @@ public class Children(IQueryContext<Child> _context)
 
     public List<Child> By() =>
         _context.By(c => true);
+
+    public Child? FirstBy(bool fetchParents = true) =>
+        _context.Query(fetchParents: fetchParents).FirstOrDefault();
 }
