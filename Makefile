@@ -19,7 +19,7 @@ build:
 	@(cd ui && npm run build)
 test:
 	@(cd core && dotnet test --logger quackers)
-	@(cd ui && BUILD_SILENT=1 npm run test)
+	@(cd ui && BUILD_SILENT=1 npm run test -- $(NPMARGS))
 coverage:
 	@( \
 		cd core && \

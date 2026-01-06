@@ -4,19 +4,17 @@ namespace Mouseless.EventScheduler;
 
 public class Contact(IEntityContext<Contact> _context)
 {
-    protected Contact() : this(default!) { }
+    public Guid Id { get; private set; } = default!;
+    public string Name { get; private set; } = default!;
 
-    public virtual Guid Id { get; protected set; } = default!;
-    public virtual string Name { get; protected set; } = default!;
-
-    public virtual Contact With(string name)
+    public Contact With(string name)
     {
         Name = name;
 
         return _context.Insert(this);
     }
 
-    public virtual void Update(string name)
+    public void Update(string name)
     {
         Name = name;
     }

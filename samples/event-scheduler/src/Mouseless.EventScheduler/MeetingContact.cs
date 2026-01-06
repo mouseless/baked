@@ -4,13 +4,11 @@ namespace Mouseless.EventScheduler;
 
 public class MeetingContact(IEntityContext<MeetingContact> _context)
 {
-    protected MeetingContact() : this(default!) { }
+    public Guid Id { get; protected set; } = default!;
+    public Meeting Meeting { get; protected set; } = default!;
+    public Contact Contact { get; protected set; } = default!;
 
-    public virtual Guid Id { get; protected set; } = default!;
-    public virtual Meeting Meeting { get; protected set; } = default!;
-    public virtual Contact Contact { get; protected set; } = default!;
-
-    protected internal virtual MeetingContact With(Meeting meeting, Contact contact)
+    internal MeetingContact With(Meeting meeting, Contact contact)
     {
         Meeting = meeting;
         Contact = contact;
@@ -18,7 +16,7 @@ public class MeetingContact(IEntityContext<MeetingContact> _context)
         return _context.Insert(this);
     }
 
-    protected internal virtual void Delete()
+    internal void Delete()
     {
         _context.Delete(this);
     }
