@@ -23,7 +23,8 @@ c => c.ActionsAsButtons()
 ```
 
 - Parameterized actions are rendered as forms in dialogs
-  - When an action has `RoutePath`, it is rendered as a `FormPage`
+  - When an action has `RouteAttribute`, it is rendered as a `Button` that
+    routes to the indicated path
 - Submit buttons are rendered using `primary` severity
 - Cancel and back buttons are rendered using `text` variant
 - Default icons of buttons are added based on their HTTP method

@@ -114,7 +114,7 @@ public class TypeModel : IModel, IEquatable<TypeModel>
             result.Name = type.Name;
             result.FullName = type.FullName;
             result.Namespace = type.Namespace;
-            result.IsPublic = type.IsPublic;
+            result.IsPublic = type.IsPublic && type.IsOriginallyPublic();
             result.IsAbstract = type.IsAbstract;
             result.IsValueType = type.IsValueType;
             result.IsSealed = type.IsSealed;

@@ -2,15 +2,17 @@
 
 namespace Mouseless.EventScheduler;
 
-public class Meeting(IEntityContext<Meeting> _context, Func<MeetingContact> _newMeetingContact, MeetingContacts _meetingContacts)
+public class Meeting(
+    IEntityContext<Meeting> _context,
+    Func<MeetingContact> _newMeetingContact,
+    MeetingContacts _meetingContacts
+)
 {
-    protected Meeting() : this(default!, default!, default!) { }
+    public Guid Id { get; private set; } = default!;
+    public string Name { get; private set; } = default!;
+    public DateTime Date { get; private set; } = default!;
 
-    public virtual Guid Id { get; protected set; } = default!;
-    public virtual string Name { get; protected set; } = default!;
-    public virtual DateTime Date { get; protected set; } = default!;
-
-    public virtual Meeting With(string name, DateTime date)
+    public Meeting With(string name, DateTime date)
     {
         Name = name;
         Date = date;
@@ -18,15 +20,15 @@ public class Meeting(IEntityContext<Meeting> _context, Func<MeetingContact> _new
         return _context.Insert(this);
     }
 
-    public virtual List<Contact> GetContacts() =>
+    public List<Contact> GetContacts() =>
         _meetingContacts.ByMeeting(this).Select(mc => mc.Contact).ToList();
 
-    public virtual void AddContact(Contact contact)
+    public void AddContact(Contact contact)
     {
         _newMeetingContact().With(this, contact);
     }
 
-    public virtual void Delete()
+    public void Delete()
     {
         var meetingContacts = _meetingContacts.ByMeeting(this);
         foreach (var item in meetingContacts)

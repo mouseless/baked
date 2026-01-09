@@ -1,7 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\..\core\src\Baked.Abstractions\Baked.Abstractions.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\core\src\Baked.Abstractions\Baked.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EmptyConstructor.Fody" PrivateAssets="All" />
+    <PackageReference Include="Fody" PrivateAssets="All" />
+    <PackageReference Include="Publicize.Fody" PrivateAssets="All" />
+    <PackageReference Include="Virtuosity.Fody" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>

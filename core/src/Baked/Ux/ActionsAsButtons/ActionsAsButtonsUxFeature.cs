@@ -48,7 +48,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 }
             );
 
-            // `FormPage` button and routing back
+            // Routed button and routing back
             builder.Conventions.AddMethodComponent(
                 when: c => c.Method.Has<ActionAttribute>() && c.Method.Has<RouteAttribute>(),
                 where: cc => cc.Path.EndsWith("Actions", "*"),

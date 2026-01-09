@@ -6,7 +6,9 @@ using Baked.Domain.Model;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Xml;
 
 namespace Baked;
@@ -124,6 +126,16 @@ public static class DomainExtensions
             .Cast<AttributeUsageAttribute>()
             .FirstOrDefault()
             ?.AllowMultiple == true;
+
+    /// <summary>
+    /// Checks if `EditorBrowsableAttribute` was added with `Advanced` state,
+    /// and returns false if any.
+    ///
+    /// `Publicize.Fody` weaver adds this to all originally non-public members.
+    /// </summary>
+    public static bool IsOriginallyPublic(this MemberInfo? memberInfo) =>
+        memberInfo is not null &&
+        !memberInfo.GetCustomAttributes().OfType<EditorBrowsableAttribute>().Any(eba => eba.State == EditorBrowsableState.Advanced);
 
     public static DomainModel TheDomainModel(this Stubber giveMe) =>
         giveMe.Spec.GenerateContext.GetDomainModel();

@@ -76,7 +76,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
             ConstructorModel BuildConstructor(ConstructorInfo constructorInfo)
             {
                 return new(
-                    constructorInfo.IsPublic,
+                    constructorInfo.IsPublic && constructorInfo.IsOriginallyPublic(),
                     constructorInfo.IsFamily,
                     BuildParameters(constructorInfo, null)
                 );
@@ -87,7 +87,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                 return new(
                     property.Name,
                     builder.GetReference(property.PropertyType),
-                    property.GetMethod?.IsPublic == true,
+                    property.GetMethod?.IsPublic == true && property.GetMethod?.IsOriginallyPublic() == true,
                     property.GetMethod?.IsVirtual == true,
                     new($"{type.Name}.{property.Name}", property.GetCustomAttributes())
                 )
@@ -125,7 +125,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                 var documentation = XmlComments.Get(methodInfo);
 
                 return new(
-                    methodInfo.IsPublic,
+                    methodInfo.IsPublic && methodInfo.IsOriginallyPublic(),
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
                     methodInfo.IsStatic,

@@ -74,3 +74,48 @@ This layer introduces following `Generate` phases to the application it is added
 >     ...
 > });
 > ```
+
+## Proxifying Entities
+
+It is possible to avoid adding `protected virtual` and default constructors to
+classes (such as entity classes) to enable lazy loading and dynamic proxy.
+
+Please add below references to your projects that contain your domain objects
+(projects that depend only to `Baked.Abstractions`).
+
+```xml
+<ItemGroup>
+  <PackageReference Include="EmptyConstructor.Fody" PrivateAssets="All" />
+  <PackageReference Include="Fody" PrivateAssets="All" />
+  <PackageReference Include="Publicize.Fody" PrivateAssets="All" />
+  <PackageReference Include="Virtuosity.Fody" PrivateAssets="All" />
+</ItemGroup>
+```
+
+Add versions to `Directory.Packages.props`;
+
+```xml
+<PackageVersion Include="EmptyConstructor.Fody" Version="..." />
+<PackageVersion Include="Fody" Version="..." />
+<PackageVersion Include="Publicize.Fody" Version="..." />
+<PackageVersion Include="Virtuosity.Fody" Version="..." />
+```
+
+> [!WARNING]
+>
+> Build your project now. Expect a build fail on your first build after you add
+> fody. This fail adds `FodyWeavers.xml` to your project. Following builds will
+> success.
+
+> [!TIP]
+> You can use `GenerateXsd="false"` property in your `FodyWeavers.xml` to remove
+> the extra `.xsd` file
+>
+> ```xml
+> <?xml version="1.0" encoding="utf-8"?>
+> <Weavers GenerateXsd="false">
+>   <EmptyConstructor />
+>   <Publicize />
+>   <Virtuosity />
+> </Weavers>
+> ```

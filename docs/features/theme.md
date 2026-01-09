@@ -143,5 +143,5 @@ r => r.Root("/my-parent", "MyParent", "pi pi-user") with { Page = p => p.Describ
 generate a page descriptor out of a domain model.
 
 ```csharp
-r => r.Root("/my-parent", "MyParent", "pi pi-user") with { Page = p => p.Generated(g => g.From<MyParent>()) }
+r => r.Root("/my-parent", "MyParent", "pi pi-user") with { Page = p => p.Generated(g => g.Type<MyParent, SimplePage>()) }
 ```
