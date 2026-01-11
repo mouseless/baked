@@ -115,4 +115,10 @@ public class MappingProperties : TestSpec
         var actual = GiveMe.The<Entities>().By(dateTime: GiveMe.ADateTime(year: 2023, month: 11, day: 30)).FirstOrDefault();
         actual.ShouldBe(entity);
     }
+
+    [Test]
+    public async Task DateTime_in_npsql()
+    {
+
+    }
 }
