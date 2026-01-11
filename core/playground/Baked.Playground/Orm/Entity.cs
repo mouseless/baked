@@ -215,4 +215,13 @@ public class Entities(IQueryContext<Entity> _context)
     ) => asc ? _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith), orderBy: e => e.String) :
          desc ? _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith), orderByDescending: e => e.String) :
          _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith));
+
+    public List<DateTime> GroupByDatetime() =>
+        [
+            .. _context
+                .Query()
+                .Where(e => e.DateTime.HasValue)
+                .GroupBy(e => e.DateTime!.Value.Date)
+                .Select(g => g.Key)
+        ];
 }
