@@ -64,6 +64,7 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<CasterAttribute>();
             builder.Index.Method.Add<InitializerAttribute>();
+            builder.Index.Property.Add<IdAttribute>();
 
             builder.Conventions.SetTypeAttribute(
                 attribute: context =>

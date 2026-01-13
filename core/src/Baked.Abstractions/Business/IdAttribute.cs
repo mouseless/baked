@@ -1,4 +1,4 @@
-namespace Baked.Theme.Default;
+namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class IdAttribute : Attribute;

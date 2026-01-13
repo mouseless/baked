@@ -46,15 +46,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // Property defaults
             builder.Index.Property.Add<DataAttribute>();
-            builder.Index.Property.Add<IdAttribute>();
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 order: -10
-            );
-            builder.Conventions.SetPropertyAttribute(
-                when: c => c.Property.Name == "Id",
-                attribute: () => new IdAttribute()
             );
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
