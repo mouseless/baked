@@ -75,6 +75,7 @@ public static class BakeExtensions
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
                 c => c.EntitySubclassViaComposition(),
+                c => c.GuidIdAsIdentity(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
                 c => c.RecordsAreDtos(),

@@ -104,9 +104,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             });
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));
-            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()));
-            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
-            model.Conventions.Add(ForeignKey.EndsWith("Id"));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
@@ -116,7 +113,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             automapping.ShouldMapType.Add(_ => true);
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

@@ -45,6 +45,7 @@ Bake.New
 |                    | Command Pattern                          |                                    |
 |                    | Entity Extension via Composition         |                                    |
 |                    | Entity Subclass via Composition          |                                    |
+|                    | Guid Id As Identity                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
 |                    | Records are DTOs                         |                                    |
