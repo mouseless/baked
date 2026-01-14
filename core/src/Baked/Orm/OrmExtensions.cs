@@ -162,6 +162,17 @@ public static class OrmExtensions
             metadata.TryGet(out entityAttribute);
     }
 
+    public static Orm.Id AnId(this Stubber _,
+        string? starts = default
+    )
+    {
+        starts ??= string.Empty;
+
+        const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
+
+        return new($"{starts}{template[starts.Length..]}");
+    }
+
     public static void ShouldBeDeleted(this object @object) =>
         Spec
           .StartContextStatic

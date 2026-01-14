@@ -14,7 +14,7 @@ public class GuidIdFeature : IFeature<IdConfigurator>
                 when: c => c.Property.Name == "Id",
                 attribute: c => new IdAttribute()
                 {
-                    Type = c.Domain.Types[typeof(System.Guid)].CSharpFriendlyFullName,
+                    Type = c.Domain.Types[typeof(Orm.Id)].CSharpFriendlyFullName,
                     Key = "Id"
                 }
             );
@@ -22,12 +22,16 @@ public class GuidIdFeature : IFeature<IdConfigurator>
 
         configurator.ConfigureAutomapping(automapping =>
         {
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(System.Guid) && m.Name == "Id");
+            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Orm.Id) && m.Name == "Id");
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()));
+            model.Conventions.Add(ConventionBuilder.Property.When(
+                x => x.Expect(p => p.Property.PropertyType == typeof(Orm.Id)),
+                x => x.CustomType<GuidIdUserType>()
+            ));
+            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Custom<GuidIdGenerator>()));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
             model.Conventions.Add(ForeignKey.EndsWith("Id"));
         });

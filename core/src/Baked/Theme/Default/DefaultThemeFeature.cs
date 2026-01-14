@@ -41,7 +41,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                   r.Path.Contains("[id]") &&
                   c.Type.TryGetMembers(out var members) &&
                   members.Properties.Having<IdAttribute>().Any(),
-                attribute: (r, c) => r.Params["id"] = c.Type.GetMembers().Properties.Having<IdAttribute>().First().Get<DataAttribute>().Prop
+                attribute: (r, c) =>
+                {
+                    var idAttribute = c.Type.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
+
+                    r.Params[idAttribute.Key.Kebaberize()] = idAttribute.Key.Kebaberize();
+                }
             );
 
             // Property defaults

@@ -4,7 +4,7 @@ namespace Baked.Playground.Orm;
 
 public class Child(IEntityContext<Child> _context)
 {
-    public Guid Id { get; private set; } = default!;
+    public Id Id { get; private set; } = default!;
     public Parent Parent { get; private set; } = default!;
     public string Name { get; private set; } = default!;
     internal Parent? InternalParent { get; private set; } = default!;

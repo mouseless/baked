@@ -12,7 +12,7 @@ namespace Baked.Playground.Orm;
 /// </remarks>
 public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
 {
-    public Guid Id { get; private set; } = default!;
+    public Id Id { get; private set; } = default!;
     public Guid? Guid { get; private set; } = default!;
     public string? String { get; private set; } = default!;
     /// <summary>

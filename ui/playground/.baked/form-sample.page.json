@@ -214,7 +214,7 @@
                           },
                           "action": {
                             "type": "Remote",
-                            "path": "parents/{id:guid}/",
+                            "path": "parents/{id}/",
                             "method": "PUT",
                             "params": {
                               "type": "Context",
@@ -256,7 +256,7 @@
                           },
                           "action": {
                             "type": "Remote",
-                            "path": "parents/{id:guid}/",
+                            "path": "parents/{id}/",
                             "method": "DELETE",
                             "params": {
                               "type": "Context",
