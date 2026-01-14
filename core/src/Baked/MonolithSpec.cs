@@ -5,6 +5,7 @@ using Baked.Communication;
 using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;
+using Baked.Id;
 using Baked.Localization;
 using Baked.MockOverrider;
 using Baked.Orm;
@@ -28,6 +29,7 @@ public abstract class MonolithSpec : Spec
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
+        Func<IdConfigurator, IFeature<IdConfigurator>>? id = default,
         Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
@@ -40,6 +42,7 @@ public abstract class MonolithSpec : Spec
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.ProblemDetails();
+        id ??= c => c.Guid();
         localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
@@ -62,7 +65,6 @@ public abstract class MonolithSpec : Spec
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
                 c => c.EntitySubclassViaComposition(),
-                c => c.GuidIdAsIdentity(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
                 c => c.RecordsAreDtos(),
@@ -80,6 +82,7 @@ public abstract class MonolithSpec : Spec
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
+            app.Features.AddId(id);
             app.Features.AddLifetimes(
             [
                 c => c.Scoped(),

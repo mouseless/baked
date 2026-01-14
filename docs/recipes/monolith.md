@@ -45,7 +45,6 @@ Bake.New
 |                    | Command Pattern                          |                                    |
 |                    | Entity Extension via Composition         |                                    |
 |                    | Entity Subclass via Composition          |                                    |
-|                    | Guid Id As Identity                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
 |                    | Records are DTOs                         |                                    |
@@ -64,6 +63,7 @@ Bake.New
 | Database           | :white_check_mark: Sqlite                | :white_check_mark: In Memory       |
 | Exception Handling | :white_check_mark: Problem Details       | :white_check_mark:                 |
 | Greeting           | :white_check_mark: Swagger               | :no_entry:                         |
+| Id                 | :white_check_mark: Guid                  | :white_check_mark:                 |
 | Lifetime(s)        | :white_check_mark:                       | :white_check_mark:                 |
 |                    | Singleton                                |                                    |
 |                    | Scoped                                   |                                    |

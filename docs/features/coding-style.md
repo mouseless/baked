@@ -50,15 +50,6 @@ uses the first unique property to discriminate entity records.
 c => c.EntitySubclassViaComposition()
 ```
 
-## Guid Id As Identity
-
-Configures mapping configuration to use the property named `Id` with `Guid` 
-type as identity for a persistant transient
-
-```csharp
-c => c.GuidIdAsIdentity()
-```
-
 ## Namespace as Route
 
 Reflects namespace of a domain class as base route for its endpoints.

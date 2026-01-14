@@ -2,9 +2,9 @@
 using Baked.Business;
 using FluentNHibernate.Conventions.Helpers;
 
-namespace Baked.CodingStyle.GuidIdAsIdentity;
+namespace Baked.Id.Guid;
 
-public class GuidIdAsIdentityCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class GuidIdFeature : IFeature<IdConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -18,7 +18,7 @@ public class GuidIdAsIdentityCodingStyleFeature : IFeature<CodingStyleConfigurat
 
         configurator.ConfigureAutomapping(automapping =>
         {
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");
+            automapping.MemberIsId.Add(m => m.PropertyType == typeof(System.Guid) && m.Name == "Id");
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
