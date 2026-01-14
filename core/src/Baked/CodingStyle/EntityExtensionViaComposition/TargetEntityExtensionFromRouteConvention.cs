@@ -19,7 +19,9 @@ public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<M
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        parameter.ConvertToId(name: "id", dontAddRequired: true);
+        var idAttribute = entityType.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
+        parameter.ConvertToId(idAttribute.Type, idAttribute.Key, name: "id", dontAddRequired: true);
+
         parameter.From = ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];

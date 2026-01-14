@@ -1,4 +1,5 @@
-﻿using Baked.Domain.Configuration;
+﻿using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using System.Diagnostics.CodeAnalysis;
 
@@ -18,10 +19,12 @@ public class LookupEntityExtensionByIdConvention : IDomainModelConvention<Parame
         var notNull = context.Parameter.Has<NotNullAttribute>();
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        parameter.ConvertToId(nullable: !notNull);
+        var idAttribute = entityType.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
+        parameter.ConvertToId(idAttribute.Type, idAttribute.Key, nullable: !notNull);
+
         parameter.LookupRenderer =
             p => queryContextParameter.BuildSingleBy(p,
-                    notNullValueExpression: $"(Guid){p}",
+                    notNullValueExpression: $"({idAttribute.Type}){p}",
                     castTo: entityExtensionType,
                     nullable: !notNull
                 );

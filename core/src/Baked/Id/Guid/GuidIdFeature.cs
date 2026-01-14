@@ -12,7 +12,11 @@ public class GuidIdFeature : IFeature<IdConfigurator>
         {
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Property.Name == "Id",
-                attribute: () => new IdAttribute()
+                attribute: c => new IdAttribute()
+                {
+                    Type = "Guid",
+                    Key = "Id"
+                }
             );
         });
 
