@@ -23,7 +23,7 @@ public class LookupEntityExtensionByIdConvention : IDomainModelConvention<Parame
         parameter.ConvertToId(idAttribute.Type, idAttribute.Key, nullable: !notNull);
 
         parameter.LookupRenderer =
-            p => queryContextParameter.BuildSingleBy(p,
+            p => queryContextParameter.BuildSingleBy(p, idAttribute.Key,
                     notNullValueExpression: $"({idAttribute.Type}){p}",
                     castTo: entityExtensionType,
                     nullable: !notNull

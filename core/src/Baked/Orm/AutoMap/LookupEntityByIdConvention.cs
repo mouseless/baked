@@ -34,7 +34,7 @@ public class LookupEntityByIdConvention : IDomainModelConvention<ParameterModelC
         var idAttribute = context.Parameter.ParameterType.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
         parameter.ConvertToId(idAttribute.Type, idAttribute.Key, nullable: !notNull);
 
-        parameter.LookupRenderer = p => queryContextParameter.BuildSingleBy(p,
+        parameter.LookupRenderer = p => queryContextParameter.BuildSingleBy(p, idAttribute.Key,
             notNullValueExpression: $"({idAttribute.Type}){p}",
             nullable: !notNull
         );

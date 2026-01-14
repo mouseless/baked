@@ -30,10 +30,12 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
         var singleByUniques = queryMembers.Methods.Having<SingleByUniqueAttribute>();
         if (!singleByUniques.Any()) { return; }
 
+        var idAttribute = entityType.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
+
         var uniques = singleByUniques.Select(sbu => sbu.Get<SingleByUniqueAttribute>());
         parameter.Type = "string";
-        parameter.Name = $"idOr{uniques.Select(u => u.PropertyName).Join("Or")}";
-        action.RouteParts = action.RouteParts.Replace("{id:guid}", $"{{{parameter.Name}}}");
+        parameter.Name = $"{idAttribute.Key.Kebaberize()}Or{uniques.Select(u => u.PropertyName).Join("Or")}";
+        action.RouteParts = action.RouteParts.Replace($"{idAttribute.Key.Kebaberize()}:{idAttribute.Type.Kebaberize()}", $"{{{parameter.Name}}}");
 
         var findTargetStatements = new StringBuilder();
         findTargetStatements.Append($$"""
@@ -55,7 +57,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
                 findTargetStatements.Append($$"""
                     else if(Enum.TryParse<{{uniqueParameter.ParameterType.CSharpFriendlyFullName}}>({{parameter.Name}}, true, out var @{{uniqueParameter.Name}}))
                     {
-                        __foundTarget = {{queryParameter.BuildSingleBy($"@{uniqueParameter.Name}", property: unique.PropertyName, fromRoute: true, castTo: castTo)}};
+                        __foundTarget = {{queryParameter.BuildSingleBy($"@{uniqueParameter.Name}", unique.PropertyName, fromRoute: true, castTo: castTo)}};
                     }
                 """);
             }
@@ -70,7 +72,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
             findTargetStatements.Append($$"""
                 else
                 {
-                    __foundTarget = {{queryParameter.BuildSingleBy(parameter.Name, property: fallback.PropertyName, fromRoute: true, castTo: castTo)}};
+                    __foundTarget = {{queryParameter.BuildSingleBy(parameter.Name, fallback.PropertyName, fromRoute: true, castTo: castTo)}};
                 }
             """);
         }

@@ -14,7 +14,7 @@ public class GuidIdFeature : IFeature<IdConfigurator>
                 when: c => c.Property.Name == "Id",
                 attribute: c => new IdAttribute()
                 {
-                    Type = "Guid",
+                    Type = c.Domain.Types[typeof(System.Guid)].CSharpFriendlyFullName,
                     Key = "Id"
                 }
             );
