@@ -158,6 +158,9 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
+            // Use 'MapType' instead of 'ISchemaFilter' for 
+            // not render 'Id' as a reference and display only
+            // $ref in schemas properties
             swaggerGenOptions.MapType<Id>(() => new OpenApiSchema { Type = "string" });
         });
     }
