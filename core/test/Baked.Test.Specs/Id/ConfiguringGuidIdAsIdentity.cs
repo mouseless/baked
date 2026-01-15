@@ -1,17 +1,17 @@
-﻿using Baked.Playground.Orm;
-
+﻿using Baked.Id.Guid;
+using Baked.Playground.Orm;
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
-namespace Baked.Test.CodingStyle;
+namespace Baked.Test.Id;
 
 public class ConfiguringGuidIdAsIdentity : TestSpec
 {
     [Test]
-    public void Id_is_always_guid()
+    public void Id_is_always_guid_id_user_type()
     {
         var configuration = GiveMe.The<NHConfiguration>();
 
-        configuration.GetClassMapping(typeof(Entity)).Identifier.Type.Name.ShouldBe("Guid");
+        configuration.GetClassMapping(typeof(Entity)).Identifier.Type.Name.ShouldBe(nameof(GuidIdUserType));
     }
 
     [Test]

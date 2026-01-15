@@ -148,9 +148,16 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
+            options.SerializerSettings.Converters.Add(new IdJsonConverter());
+
             if (options.SerializerSettings.ContractResolver is null) { return; }
 
             options.SerializerSettings.ContractResolver = new ProxyAwareContractResolver<INHibernateProxy>(options.SerializerSettings.ContractResolver);
+        });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            swaggerGenOptions.SchemaFilter<IdSchemaFilter>();
         });
     }
 }

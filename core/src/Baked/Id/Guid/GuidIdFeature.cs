@@ -27,10 +27,7 @@ public class GuidIdFeature : IFeature<IdConfigurator>
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            model.Conventions.Add(ConventionBuilder.Property.When(
-                x => x.Expect(p => p.Property.PropertyType == typeof(Orm.Id)),
-                x => x.CustomType<GuidIdUserType>()
-            ));
+            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.CustomType<GuidIdUserType>()));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Custom<GuidIdGenerator>()));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
             model.Conventions.Add(ForeignKey.EndsWith("Id"));
