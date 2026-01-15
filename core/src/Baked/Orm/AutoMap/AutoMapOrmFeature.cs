@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using NHibernate;
 using NHibernate.Exceptions;
 using NHibernate.Proxy;
@@ -157,7 +158,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            swaggerGenOptions.SchemaFilter<IdSchemaFilter>();
+            swaggerGenOptions.MapType<Id>(() => new OpenApiSchema { Type = "string" });
         });
     }
 }

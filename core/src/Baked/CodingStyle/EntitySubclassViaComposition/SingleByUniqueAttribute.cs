@@ -1,5 +1,7 @@
-﻿namespace Baked.CodingStyle.SingleByUnique;
+﻿namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
+// TODO temporarily moved to here for build to succeed
+// will be addressed later
 [AttributeUsage(AttributeTargets.Method)]
 public class SingleByUniqueAttribute(string propertyName, Type propertyType)
     : Attribute
