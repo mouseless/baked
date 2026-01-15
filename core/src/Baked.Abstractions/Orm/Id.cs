@@ -3,7 +3,7 @@
 namespace Baked.Orm;
 
 // Implement `IParsable<Id>` for model binding
-public readonly struct Id(string _value) : IParsable<Id>
+public readonly struct Id(string _value) : IParsable<Id>, IEquatable<Id>
 {
     public static Id Parse(object value) =>
         new($"{value}");
@@ -30,5 +30,18 @@ public readonly struct Id(string _value) : IParsable<Id>
         result = new($"{s}");
 
         return true;
+    }
+
+    bool IEquatable<Id>.Equals(Id other) =>
+        Equals(other);
+
+    public static bool operator ==(Id left, Id right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Id left, Id right)
+    {
+        return !(left == right);
     }
 }

@@ -54,7 +54,6 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
             builder.Conventions.Add(new LookupEntityExtensionByIdConvention());
             builder.Conventions.Add(new LookupEntityExtensionsByIdsConvention());
             builder.Conventions.Add(new TargetEntityExtensionFromRouteConvention(), order: 20);
-            builder.Conventions.Add(new TargetEntityExtensionFromRouteByUniquePropertiesConvention(), order: 20);
         });
     }
 }

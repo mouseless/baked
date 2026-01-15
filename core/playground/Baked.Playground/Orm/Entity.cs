@@ -201,14 +201,6 @@ public class Entities(IQueryContext<Entity> _context)
     internal bool AnyByEnum(Enumeration @enum) =>
         _context.AnyBy(e => e.Enum == @enum);
 
-    public Entity SingleByUnique(string unique,
-        bool throwNotFound = false
-    ) => _context.SingleBy(e => e.Unique == unique) ?? throw RecordNotFoundException.For<Entity>(nameof(unique), unique, notFound: throwNotFound);
-
-    public Entity SingleByEnum(Enumeration @enum,
-        bool throwNotFound = false
-    ) => _context.SingleBy(e => e.Enum == @enum) ?? throw RecordNotFoundException.For<Entity>(nameof(@enum), @enum, notFound: throwNotFound);
-
     public Entity? FirstByString(string startsWith,
         bool asc = false,
         bool desc = false
