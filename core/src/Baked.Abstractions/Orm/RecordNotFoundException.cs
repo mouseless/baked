@@ -14,7 +14,7 @@ public class RecordNotFoundException(Type entityType, string field, object value
         }
     )
 {
-    public static RecordNotFoundException For<T>(Guid id,
+    public static RecordNotFoundException For<T>(Id id,
         bool notFound = false
     ) => new(typeof(T), id, notFound);
 
@@ -24,6 +24,6 @@ public class RecordNotFoundException(Type entityType, string field, object value
 
     public override HttpStatusCode StatusCode => notFound ? HttpStatusCode.NotFound : base.StatusCode;
 
-    public RecordNotFoundException(Type entityType, Guid id, bool notFound)
+    public RecordNotFoundException(Type entityType, Id id, bool notFound)
         : this(entityType, "Id", $"{id}", notFound) { }
 }

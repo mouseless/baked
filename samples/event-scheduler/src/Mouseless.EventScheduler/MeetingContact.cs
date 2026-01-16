@@ -4,7 +4,7 @@ namespace Mouseless.EventScheduler;
 
 public class MeetingContact(IEntityContext<MeetingContact> _context)
 {
-    public Guid Id { get; protected set; } = default!;
+    public Id Id { get; protected set; } = default!;
     public Meeting Meeting { get; protected set; } = default!;
     public Contact Contact { get; protected set; } = default!;
 

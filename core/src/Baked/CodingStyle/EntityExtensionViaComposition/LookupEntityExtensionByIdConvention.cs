@@ -18,10 +18,13 @@ public class LookupEntityExtensionByIdConvention : IDomainModelConvention<Parame
         var notNull = context.Parameter.Has<NotNullAttribute>();
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        parameter.ConvertToId(nullable: !notNull);
+        if (!entityType.TryGetIdentifier(out var identifier)) { return; }
+
+        parameter.ConvertToId(identifier.Type, identifier.Name, nullable: !notNull);
+
         parameter.LookupRenderer =
-            p => queryContextParameter.BuildSingleBy(p,
-                    notNullValueExpression: $"(Guid){p}",
+            p => queryContextParameter.BuildSingleBy(p, identifier.Name,
+                    notNullValueExpression: $"({identifier.Type}){p}",
                     castTo: entityExtensionType,
                     nullable: !notNull
                 );

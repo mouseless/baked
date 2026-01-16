@@ -36,9 +36,9 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dt.Schema.Columns.Add(column);
                     }
 
-                    if (dt.Schema.DataKey is null && members.Properties.Having<IdAttribute>().Any())
+                    if (dt.Schema.DataKey is null && members.TryGetIdentifier(out var identifier))
                     {
-                        dt.Schema.DataKey = members.Properties.Having<IdAttribute>().Single().Get<DataAttribute>().Prop;
+                        dt.Schema.DataKey = identifier.RouteName;
                     }
                 },
                 order: -10

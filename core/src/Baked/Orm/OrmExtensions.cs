@@ -40,8 +40,7 @@ public static class OrmExtensions
         return action.AddAsService(queryContextType, name: $"{entityType.Name.Camelize()}Query");
     }
 
-    public static string BuildSingleBy(this ParameterModelAttribute queryParameter, string valueExpression,
-        string property = "Id",
+    public static string BuildSingleBy(this ParameterModelAttribute queryParameter, string valueExpression, string property,
         string? notNullValueExpression = default,
         bool fromRoute = false,
         TypeModel? castTo = default,
@@ -80,27 +79,27 @@ public static class OrmExtensions
             : $"{byIds}.ToList()";
     }
 
-    public static void ConvertToId(this ParameterModelAttribute parameter,
+    public static void ConvertToId(this ParameterModelAttribute parameter, string type, string idSuffix,
         string? name = default,
         bool nullable = false,
         bool dontAddRequired = false
     )
     {
-        name ??= $"{parameter.Name}Id";
+        name ??= $"{parameter.Name}{idSuffix}";
 
         if (!nullable && dontAddRequired)
         {
             parameter.AddRequiredAttributes(isValueType: true);
         }
 
-        parameter.Type = nullable ? "Guid?" : "Guid";
+        parameter.Type = nullable ? $"{type}?" : type;
         parameter.Name = name;
     }
 
-    public static void ConvertToIds(this ParameterModelAttribute parameter)
+    public static void ConvertToIds(this ParameterModelAttribute parameter, string type, string idSuffix)
     {
-        parameter.Type = "IEnumerable<Guid>";
-        parameter.Name = $"{parameter.Name.Singularize()}Ids";
+        parameter.Type = $"IEnumerable<{type}>";
+        parameter.Name = $"{parameter.Name.Singularize()}{idSuffix.Pluralize()}";
     }
 
     public static bool TryGetQueryType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
@@ -161,6 +160,17 @@ public static class OrmExtensions
         return
             type.TryGetMetadata(out var metadata) &&
             metadata.TryGet(out entityAttribute);
+    }
+
+    public static Id AnId(this Stubber _,
+        string? starts = default
+    )
+    {
+        starts ??= string.Empty;
+
+        const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
+
+        return Id.Parse($"{starts}{template[starts.Length..]}");
     }
 
     public static void ShouldBeDeleted(this object @object) =>

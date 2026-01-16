@@ -50,7 +50,7 @@ public class HandlingExceptions : TestSpec
     public void Query_throws_RecordNotFoundException_when_entity_with_given_id_is_not_found()
     {
         var entityQueryContext = GiveMe.The<IQueryContext<Entity>>();
-        var task = () => entityQueryContext.SingleById(GiveMe.AGuid());
+        var task = () => entityQueryContext.SingleById(GiveMe.AnId());
 
         task.ShouldThrow<RecordNotFoundException>();
     }
@@ -59,7 +59,7 @@ public class HandlingExceptions : TestSpec
     public void RecordNotFoundException_status_code_is_bad_request()
     {
         var entityQueryContext = GiveMe.The<IQueryContext<Entity>>();
-        var task = () => entityQueryContext.SingleById(GiveMe.AGuid());
+        var task = () => entityQueryContext.SingleById(GiveMe.AnId());
 
         var actual = task.ShouldThrow<RecordNotFoundException>();
 
@@ -70,7 +70,7 @@ public class HandlingExceptions : TestSpec
     public void RecordNotFoundException_status_code_can_be_overridden()
     {
         var entityQueryContext = GiveMe.The<IQueryContext<Entity>>();
-        var task = () => entityQueryContext.SingleById(GiveMe.AGuid(), throwNotFound: true);
+        var task = () => entityQueryContext.SingleById(GiveMe.AnId(), throwNotFound: true);
 
         var actual = task.ShouldThrow<RecordNotFoundException>();
 

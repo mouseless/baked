@@ -1,4 +1,5 @@
 ﻿using Baked.Business;
+using Baked.Orm;
 using Microsoft.Extensions.Logging;
 
 namespace Baked.Playground.CodingStyle.EntitySubclassViaComposition;
@@ -7,7 +8,7 @@ public class ATypedEntity(ILogger<ATypedEntity> _logger, Func<TypedEntity> _newT
 {
     TypedEntity _entity = default!;
 
-    public Guid Id => _entity.Id;
+    public Id Id => _entity.Id;
 
     public ATypedEntity With() =>
         With(_newTypedEntity().With(TypedEntityType.A));

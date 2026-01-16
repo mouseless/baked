@@ -5,6 +5,7 @@ using Baked.Communication;
 using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;
+using Baked.IdentifierMapping;
 using Baked.Localization;
 using Baked.MockOverrider;
 using Baked.Orm;
@@ -28,6 +29,7 @@ public abstract class MonolithSpec : Spec
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
+        Func<IdentifierMappingConfigurator, IFeature<IdentifierMappingConfigurator>>? identifierMapping = default,
         Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
@@ -40,6 +42,7 @@ public abstract class MonolithSpec : Spec
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.ProblemDetails();
+        identifierMapping ??= c => c.Guid();
         localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
@@ -69,7 +72,6 @@ public abstract class MonolithSpec : Spec
                 c => c.RichEntity(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
-                c => c.SingleByUnique(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes(),
@@ -79,6 +81,7 @@ public abstract class MonolithSpec : Spec
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
+            app.Features.AddIdentifierMapping(identifierMapping);
             app.Features.AddLifetimes(
             [
                 c => c.Scoped(),

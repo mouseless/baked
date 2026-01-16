@@ -5,7 +5,7 @@ namespace Baked.Playground.Orm;
 public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities)
     : IParentInterface
 {
-    public Guid Id { get; private set; } = default!;
+    public Id Id { get; private set; } = default!;
     public string Name { get; private set; } = default!;
     public string Surname { get; private set; } = default!;
     public string? Description { get; private set; } = default!;

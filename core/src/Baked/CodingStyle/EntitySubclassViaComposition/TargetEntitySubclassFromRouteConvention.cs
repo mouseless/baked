@@ -1,5 +1,4 @@
 ﻿using Baked.Business;
-using Baked.CodingStyle.SingleByUnique;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;

@@ -9,6 +9,7 @@ using Baked.Cors;
 using Baked.Database;
 using Baked.ExceptionHandling;
 using Baked.Greeting;
+using Baked.IdentifierMapping;
 using Baked.Localization;
 using Baked.Logging;
 using Baked.Orm;
@@ -31,6 +32,7 @@ public static class BakeExtensions
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
+        Func<IdentifierMappingConfigurator, IFeature<IdentifierMappingConfigurator>>? identifierMapping = default,
         Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
@@ -48,6 +50,7 @@ public static class BakeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
+        identifierMapping ??= c => c.Guid();
         localization ??= c => c.Dotnet();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
@@ -82,7 +85,6 @@ public static class BakeExtensions
                 c => c.RichEntity(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
-                c => c.SingleByUnique(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes(),
@@ -94,6 +96,7 @@ public static class BakeExtensions
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
+            app.Features.AddIdentifierMapping(identifierMapping);
             app.Features.AddLifetimes(
             [
                 c => c.Scoped(),

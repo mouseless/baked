@@ -4,7 +4,7 @@ namespace Mouseless.EventScheduler;
 
 public class Contact(IEntityContext<Contact> _context)
 {
-    public Guid Id { get; private set; } = default!;
+    public Id Id { get; private set; } = default!;
     public string Name { get; private set; } = default!;
 
     public Contact With(string name)

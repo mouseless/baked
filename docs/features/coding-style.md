@@ -49,6 +49,7 @@ uses the first unique property to discriminate entity records.
 ```csharp
 c => c.EntitySubclassViaComposition()
 ```
+
 ## Namespace as Route
 
 Reflects namespace of a domain class as base route for its endpoints.

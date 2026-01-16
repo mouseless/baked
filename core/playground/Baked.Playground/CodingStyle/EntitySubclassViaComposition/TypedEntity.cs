@@ -4,7 +4,7 @@ namespace Baked.Playground.CodingStyle.EntitySubclassViaComposition;
 
 public class TypedEntity(IEntityContext<TypedEntity> _context)
 {
-    public Guid Id { get; private set; } = default!;
+    public Id Id { get; private set; } = default!;
     public TypedEntityType Type { get; private set; } = default!;
 
     internal TypedEntity With(TypedEntityType type)

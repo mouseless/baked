@@ -1,0 +1,27 @@
+﻿using Baked.IdentifierMapping.Guid;
+using Baked.Playground.Orm;
+
+using NHConfiguration = NHibernate.Cfg.Configuration;
+
+namespace Baked.Test.Id;
+
+public class ConfiguringGuidIdAsIdentity : TestSpec
+{
+    [Test]
+    public void Id_is_always_guid_id_user_type()
+    {
+        var configuration = GiveMe.The<NHConfiguration>();
+
+        configuration.GetClassMapping(typeof(Entity)).Identifier.Type.Name.ShouldBe(nameof(GuidIdentifierUserType));
+    }
+
+    [Test]
+    public void Id_is__property_named_Id()
+    {
+        var configuration = GiveMe.The<NHConfiguration>();
+
+        var actual = configuration.GetClassMapping(typeof(Entity)).Identifier.ColumnIterator.FirstOrDefault();
+        actual.ShouldNotBeNull();
+        actual.Text.ShouldBe("Id");
+    }
+}
