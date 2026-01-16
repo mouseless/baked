@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using FluentNHibernate;
@@ -37,6 +38,15 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
+
+            builder.Conventions.SetPropertyAttribute(
+                when: c => c.Property.Name == "Id" && c.Property.PropertyType.Is<Id>(),
+                attribute: c => new IdAttribute()
+                {
+                    Type = c.Domain.Types[typeof(Id)].CSharpFriendlyFullName,
+                    Key = "Id"
+                }
+            );
 
             builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
             builder.Conventions.Add(new LookupEntityByIdConvention());
@@ -104,6 +114,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                 model.AddTypeSource(typeSourceInstance);
             });
 
+            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
+            model.Conventions.Add(ForeignKey.EndsWith("Id"));
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
@@ -112,6 +124,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutomapping(automapping =>
         {
+            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Id) && m.Name == "Id");
             automapping.ShouldMapType.Add(_ => true);
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
         });
