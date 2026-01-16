@@ -1,6 +1,6 @@
 namespace Baked.Business;
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
 public class IdentifierAttribute(string Type, string Name, string RouteName) : Attribute
 {
     public string Type { get; set; } = Type;
