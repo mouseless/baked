@@ -12,7 +12,7 @@ app.Features.AddOrm(...);
 ## Auto Map
 
 Auto maps domain types with `Entity` attribute using default opinions of
-`FluentNHibernate` along with `Guid Id` properties as primary key and configure
+`FluentNHibernate` along with `Id` properties as primary key and configure
 foreign key references between entities.
 
 Also adds api model conventions that enables;

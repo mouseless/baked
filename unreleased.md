@@ -8,8 +8,21 @@
     present on a member info
 - [Layers / Domain](../layers/domain.md#proxifying-entities) is updated to
   contain a guide to enable proxifying in domain assemblies
+- `Id` feature is now intruduced with `Guid` implementation
+  - `Guid` implementation configures `Id` to be mapped as `Guid`
+  
 
-## Improvements
+## Breaking Changes
 
-- Identity configuration for entities is now extracted from `AutoMapOrmFeature`
-  to a seperate feature
+- `AutoMapOrmFeature` now requires `Id` user type for primary key mapping
+  instead of `System.Guid`
+  - `Id` type is provided from `Baked.Abstractions.Orm`
+```csharp
+// not supported
+public Guid Id { get; set; }
+
+// use 'Baked.Orm.Id'
+public Id Id { get; set; }
+```
+
+  
