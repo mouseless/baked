@@ -114,9 +114,9 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                 model.AddTypeSource(typeSourceInstance);
             });
 
+            model.Conventions.Add(Table.Is(x => x.EntityType.Name));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
             model.Conventions.Add(ForeignKey.EndsWith("Id"));
-            model.Conventions.Add(Table.Is(x => x.EntityType.Name));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
@@ -124,9 +124,9 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutomapping(automapping =>
         {
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Id) && m.Name == "Id");
             automapping.ShouldMapType.Add(_ => true);
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
+            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Id) && m.Name == "Id");
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
