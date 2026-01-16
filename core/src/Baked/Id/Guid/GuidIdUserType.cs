@@ -1,24 +1,24 @@
-﻿using NHibernate;
+﻿using Baked.DataAccess;
+using NHibernate;
 using NHibernate.Engine;
 using NHibernate.SqlTypes;
-using NHibernate.UserTypes;
 using System.Data.Common;
 
 namespace Baked.Id.Guid;
 
-public class GuidIdUserType : IUserType
+public class GuidIdUserType : UserTypeBase
 {
-    public SqlType[] SqlTypes => [SqlTypeFactory.Guid];
-    public Type ReturnedType => typeof(Orm.Id);
+    public override SqlType[] SqlTypes => [SqlTypeFactory.Guid];
+    public override Type ReturnedType => typeof(Orm.Id);
 
-    public object? NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object _)
+    public override object? NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object _)
     {
         var obj = (System.Guid?)NHibernateUtil.Guid.NullSafeGet(rs, names[0], session);
 
         return obj == null ? null : Orm.Id.Parse(obj);
     }
 
-    public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
+    public override void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
     {
         if (value == null)
         {
@@ -40,12 +40,4 @@ public class GuidIdUserType : IUserType
 
         NHibernateUtil.Guid.NullSafeSet(cmd, guid, index, session);
     }
-
-    public bool IsMutable => false;
-    public object DeepCopy(object value) => value;
-    public new bool Equals(object x, object y) => object.Equals(x, y);
-    public int GetHashCode(object x) => x?.GetHashCode() ?? 0;
-    public object Replace(object original, object target, object owner) => original;
-    public object Assemble(object cached, object owner) => cached;
-    public object Disassemble(object value) => value;
 }
