@@ -24,5 +24,3 @@ public Guid Id { get; set; }
 // use 'Baked.Orm.Id'
 public Id Id { get; set; }
 ```
-
-  
