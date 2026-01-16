@@ -85,13 +85,13 @@ public static class DomainAssembliesBusinessExtensions
             .FirstOrDefault();
 
     // TODO requires review
-    public static bool TryGetIdentifier(this TypeModel type, [NotNullWhen(true)] out IdentifierInfo? info)
+    public static bool TryGetIdentifier(this TypeModel type, [NotNullWhen(true)] out IdentifierInfo? identifier)
     {
-        info = null;
+        identifier = null;
 
         if (type.TryGetMetadata(out var metadata) && metadata.TryGet<IdentifierAttribute>(out var attr))
         {
-            info = new(attr.Type, attr.Name, attr.Name.Kebaberize());
+            identifier = new(attr.Type, attr.Name, attr.Name.Kebaberize());
 
             return true;
         }
@@ -100,7 +100,7 @@ public static class DomainAssembliesBusinessExtensions
         if (!members.Properties.Having<IdentifierAttribute>().Any()) { return false; }
 
         var idProperty = members.FirstProperty<IdentifierAttribute>();
-        info = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Name.Kebaberize());
+        identifier = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Name.Kebaberize());
 
         return true;
     }

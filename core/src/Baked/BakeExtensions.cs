@@ -9,7 +9,7 @@ using Baked.Cors;
 using Baked.Database;
 using Baked.ExceptionHandling;
 using Baked.Greeting;
-using Baked.Id;
+using Baked.IdentifierMapping;
 using Baked.Localization;
 using Baked.Logging;
 using Baked.Orm;
@@ -32,7 +32,7 @@ public static class BakeExtensions
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
-        Func<IdConfigurator, IFeature<IdConfigurator>>? id = default,
+        Func<IdentifierMappingConfigurator, IFeature<IdentifierMappingConfigurator>>? id = default,
         Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,

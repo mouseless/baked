@@ -4,9 +4,9 @@ using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using System.Data.Common;
 
-namespace Baked.Id.Guid;
+namespace Baked.IdentifierMapping.Guid;
 
-public class GuidIdUserType : UserTypeBase
+public class GuidIdentifierUserType : UserTypeBase
 {
     public override SqlType[] SqlTypes => [SqlTypeFactory.Guid];
     public override Type ReturnedType => typeof(Orm.Id);

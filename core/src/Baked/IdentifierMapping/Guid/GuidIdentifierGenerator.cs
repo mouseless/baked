@@ -1,9 +1,9 @@
 ﻿using NHibernate.Engine;
 using NHibernate.Id;
 
-namespace Baked.Id.Guid;
+namespace Baked.IdentifierMapping.Guid;
 
-public class GuidIdGenerator : IIdentifierGenerator
+public class GuidIdentifierGenerator : IIdentifierGenerator
 {
     GuidGenerator _generator = new GuidGenerator();
 

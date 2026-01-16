@@ -15,9 +15,9 @@ public class LookupEntitiesByIdsConvention : IDomainModelConvention<ParameterMod
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        if (!entityType.TryGetIdentifier(out var info)) { return; }
+        if (!entityType.TryGetIdentifier(out var identifier)) { return; }
 
-        parameter.ConvertToIds(info.Type, info.Name);
+        parameter.ConvertToIds(identifier.Type, identifier.Name);
 
         parameter.LookupRenderer = p => queryContextParameter.BuildByIds(p,
             isArray: context.Parameter.ParameterType.IsArray

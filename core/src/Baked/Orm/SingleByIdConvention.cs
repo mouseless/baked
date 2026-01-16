@@ -14,9 +14,9 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
 
         var queryContextTypeId = context.Domain.Types[typeof(IQueryContext<>)].MakeGenericTypeId(entityType);
 
-        if (!entityType.TryGetIdentifier(out var info)) { return; }
+        if (!entityType.TryGetIdentifier(out var identifier)) { return; }
 
-        var singleByActionName = $"SingleBy{info.Name}";
+        var singleByActionName = $"SingleBy{identifier.Name}";
         controller.Action[singleByActionName] = new(singleByActionName,
             routeParts: [context.Type.Name],
             returnType: entityType.CSharpFriendlyFullName,
@@ -25,7 +25,7 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
             parameters:
             [
                 new(ParameterModelAttribute.TargetParameterName, context.Domain.Types[queryContextTypeId].CSharpFriendlyFullName, ParameterModelFrom.Services),
-                new(info.RouteName, info.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
+                new(identifier.RouteName, identifier.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
                 new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }
             ]
         )

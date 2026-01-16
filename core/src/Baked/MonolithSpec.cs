@@ -5,7 +5,7 @@ using Baked.Communication;
 using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;
-using Baked.Id;
+using Baked.IdentifierMapping;
 using Baked.Localization;
 using Baked.MockOverrider;
 using Baked.Orm;
@@ -29,7 +29,7 @@ public abstract class MonolithSpec : Spec
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
-        Func<IdConfigurator, IFeature<IdConfigurator>>? id = default,
+        Func<IdentifierMappingConfigurator, IFeature<IdentifierMappingConfigurator>>? id = default,
         Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,

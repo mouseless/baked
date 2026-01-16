@@ -18,17 +18,17 @@ public class FindTargetUsingQueryContextConvention : IDomainModelConvention<Meth
         var entityType = context.Type;
         if (!entityType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
 
-        if (!entityType.TryGetIdentifier(out var info)) { return; }
+        if (!entityType.TryGetIdentifier(out var identifier)) { return; }
 
         var target = action.Parameter[ParameterModelAttribute.TargetParameterName];
-        target.Name = info.RouteName;
+        target.Name = identifier.RouteName;
         target.From = ParameterModelFrom.Route;
         target.RoutePosition = 1;
         target.AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
-        target.Type = info.Type;
+        target.Type = identifier.Type;
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];
-        action.FindTargetStatement = queryContextParameter.BuildSingleBy(info.RouteName.Kebaberize(), info.Name, fromRoute: true);
+        action.FindTargetStatement = queryContextParameter.BuildSingleBy(identifier.RouteName.Kebaberize(), identifier.Name, fromRoute: true);
     }
 }
