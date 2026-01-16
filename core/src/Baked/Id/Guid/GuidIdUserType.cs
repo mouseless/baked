@@ -8,8 +8,6 @@ namespace Baked.Id.Guid;
 
 public class GuidIdUserType : IUserType
 {
-    // TODO check if `SqlTypeFactory.Guid` works for all
-    // database types
     public SqlType[] SqlTypes => [SqlTypeFactory.Guid];
     public Type ReturnedType => typeof(Orm.Id);
 
