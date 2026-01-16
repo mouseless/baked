@@ -5,6 +5,7 @@ using Baked.RestApi.Conventions;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
+using Humanizer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,11 +42,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Property.Name == "Id" && c.Property.PropertyType.Is<Id>(),
-                attribute: c => new IdAttribute()
-                {
-                    Type = c.Domain.Types[typeof(Id)].CSharpFriendlyFullName,
-                    Key = "Id"
-                }
+                attribute: c => new IdentifierAttribute(c.Domain.Types[typeof(Id)].CSharpFriendlyFullName, c.Property.Name, c.Property.Name.Kebaberize())
             );
 
             builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);

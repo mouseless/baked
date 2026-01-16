@@ -1,5 +1,4 @@
-﻿using Baked.Business;
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
 namespace Baked.Orm.AutoMap;
@@ -16,8 +15,9 @@ public class LookupEntitiesByIdsConvention : IDomainModelConvention<ParameterMod
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        var idAttribute = entityType.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
-        parameter.ConvertToIds(idAttribute.Type, idAttribute.Key);
+        if (!entityType.TryGetIdentifier(out var info)) { return; }
+
+        parameter.ConvertToIds(info.Type, info.Name);
 
         parameter.LookupRenderer = p => queryContextParameter.BuildByIds(p,
             isArray: context.Parameter.ParameterType.IsArray

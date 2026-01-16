@@ -2,6 +2,7 @@
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
+using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
@@ -16,6 +17,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 {
                     set(c.Type, new ApiInputAttribute());
                     set(c.Type, new LocatableAttribute());
+                    set(c.Type, new IdentifierAttribute(c.Domain.Types[typeof(string)].CSharpFriendlyFullName, "Id", "Id".Kebaberize()));
                 },
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
@@ -49,11 +51,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Property.Name == "Id",
-                attribute: c => new IdAttribute()
-                {
-                    Type = c.Property.PropertyType.CSharpFriendlyFullName,
-                    Key = "Id"
-                }
+                attribute: c => new IdentifierAttribute(c.Property.PropertyType.CSharpFriendlyFullName, "Id", "Id".Kebaberize())
             );
 
             builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());

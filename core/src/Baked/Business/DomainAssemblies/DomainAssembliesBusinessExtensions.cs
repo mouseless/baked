@@ -1,6 +1,8 @@
 ﻿using Baked.Business;
 using Baked.Business.DomainAssemblies;
 using Baked.Domain.Model;
+using Humanizer;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Baked;
@@ -81,4 +83,25 @@ public static class DomainAssembliesBusinessExtensions
         overloads
             .OrderByDescending(o => o.Parameters.Count)
             .FirstOrDefault();
+
+    // TODO requires review
+    public static bool TryGetIdentifier(this TypeModel type, [NotNullWhen(true)] out IdentifierInfo? info)
+    {
+        info = null;
+
+        if (type.TryGetMetadata(out var metadata) && metadata.TryGet<IdentifierAttribute>(out var attr))
+        {
+            info = new(attr.Type, attr.Name, attr.Name.Kebaberize());
+
+            return true;
+        }
+
+        if (!type.TryGetMembers(out var members)) { return false; }
+        if (!members.Properties.Having<IdentifierAttribute>().Any()) { return false; }
+
+        var idProperty = members.FirstProperty<IdentifierAttribute>();
+        info = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Name.Kebaberize());
+
+        return true;
+    }
 }

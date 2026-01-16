@@ -1,7 +1,5 @@
-﻿using Baked.Business;
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
-using Humanizer;
 
 namespace Baked.Orm;
 
@@ -16,9 +14,9 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
 
         var queryContextTypeId = context.Domain.Types[typeof(IQueryContext<>)].MakeGenericTypeId(entityType);
 
-        var idAttribute = entityType.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
+        if (!entityType.TryGetIdentifier(out var info)) { return; }
 
-        var singleByActionName = $"SingleBy{idAttribute.Key}";
+        var singleByActionName = $"SingleBy{info.Name}";
         controller.Action[singleByActionName] = new(singleByActionName,
             routeParts: [context.Type.Name],
             returnType: entityType.CSharpFriendlyFullName,
@@ -27,7 +25,7 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
             parameters:
             [
                 new(ParameterModelAttribute.TargetParameterName, context.Domain.Types[queryContextTypeId].CSharpFriendlyFullName, ParameterModelFrom.Services),
-                new(idAttribute.Key.Kebaberize(), idAttribute.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
+                new(info.RouteName, info.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
                 new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }
             ]
         )
