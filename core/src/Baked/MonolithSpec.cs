@@ -29,7 +29,7 @@ public abstract class MonolithSpec : Spec
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
-        Func<IdentifierMappingConfigurator, IFeature<IdentifierMappingConfigurator>>? id = default,
+        Func<IdentifierMappingConfigurator, IFeature<IdentifierMappingConfigurator>>? identifierMapping = default,
         Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
@@ -42,7 +42,7 @@ public abstract class MonolithSpec : Spec
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.ProblemDetails();
-        id ??= c => c.Guid();
+        identifierMapping ??= c => c.Guid();
         localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
@@ -81,7 +81,7 @@ public abstract class MonolithSpec : Spec
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
-            app.Features.AddId(id);
+            app.Features.AddIdentifierMapping(identifierMapping);
             app.Features.AddLifetimes(
             [
                 c => c.Scoped(),

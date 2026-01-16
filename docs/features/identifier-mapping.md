@@ -2,10 +2,10 @@
 
 This feature provides id configuration for persistent entities
 
-Add this feature using `AddId()` extension;
+Add this feature using `AddIdentifierMapping()` extension;
 
 ```csharp
-app.Features.AddId(...);
+app.Features.AddIdentifierMapping(...);
 ```
 
 ## Guid

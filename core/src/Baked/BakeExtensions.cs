@@ -32,7 +32,7 @@ public static class BakeExtensions
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
-        Func<IdentifierMappingConfigurator, IFeature<IdentifierMappingConfigurator>>? id = default,
+        Func<IdentifierMappingConfigurator, IFeature<IdentifierMappingConfigurator>>? identifierMapping = default,
         Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
@@ -50,7 +50,7 @@ public static class BakeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
-        id ??= c => c.Guid();
+        identifierMapping ??= c => c.Guid();
         localization ??= c => c.Dotnet();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
@@ -96,7 +96,7 @@ public static class BakeExtensions
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
-            app.Features.AddId(id);
+            app.Features.AddIdentifierMapping(identifierMapping);
             app.Features.AddLifetimes(
             [
                 c => c.Scoped(),
