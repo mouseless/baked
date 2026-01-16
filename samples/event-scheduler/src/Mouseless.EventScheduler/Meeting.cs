@@ -8,7 +8,7 @@ public class Meeting(
     MeetingContacts _meetingContacts
 )
 {
-    public Guid Id { get; private set; } = default!;
+    public Id Id { get; private set; } = default!;
     public string Name { get; private set; } = default!;
     public DateTime Date { get; private set; } = default!;
 
@@ -21,7 +21,7 @@ public class Meeting(
     }
 
     public List<Contact> GetContacts() =>
-        _meetingContacts.ByMeeting(this).Select(mc => mc.Contact).ToList();
+        [.. _meetingContacts.ByMeeting(this).Select(mc => mc.Contact)];
 
     public void AddContact(Contact contact)
     {
