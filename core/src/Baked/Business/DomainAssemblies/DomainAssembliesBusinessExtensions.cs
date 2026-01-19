@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.Business.DomainAssemblies;
 using Baked.Domain.Model;
-using Humanizer;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -84,23 +83,25 @@ public static class DomainAssembliesBusinessExtensions
             .OrderByDescending(o => o.Parameters.Count)
             .FirstOrDefault();
 
-    // TODO requires review
+    public static IdentifierInfo GetIdentifier(this TypeModel type)
+    {
+        if (!type.TryGetIdentifier(out var result))
+        {
+            throw new InvalidOperationException($"`{type.Name}` does not have `IdentifierInfo`");
+        }
+
+        return result;
+    }
+
     public static bool TryGetIdentifier(this TypeModel type, [NotNullWhen(true)] out IdentifierInfo? identifier)
     {
         identifier = null;
-
-        if (type.TryGetMetadata(out var metadata) && metadata.TryGet<IdAttribute>(out var attr))
-        {
-            identifier = new(attr.Type.Name, attr.Name, attr.Name.Kebaberize());
-
-            return true;
-        }
 
         if (!type.TryGetMembers(out var members)) { return false; }
         if (!members.Properties.Having<IdAttribute>().Any()) { return false; }
 
         var idProperty = members.FirstProperty<IdAttribute>();
-        identifier = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Name.Kebaberize());
+        identifier = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
 
         return true;
     }

@@ -1,3 +1,4 @@
+using Baked.Business;
 using Baked.Orm;
 
 namespace Baked.Playground.CodingStyle.EntitySubclassViaComposition;

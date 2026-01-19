@@ -1,4 +1,5 @@
-﻿using NHibernate;
+﻿using Baked.Business;
+using NHibernate;
 
 namespace Baked.Orm;
 

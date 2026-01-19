@@ -50,6 +50,16 @@ uses the first unique property to discriminate entity records.
 c => c.EntitySubclassViaComposition()
 ```
 
+## Id
+
+This feature provides id configuration for persistent entities,
+Setups `AutoPersistenceModel.Id` configuration with `GuidIdUserType` 
+and `GuidIdGenerator` to map `Id` column as `Guid`
+
+```csharp
+c => c.Id()
+```
+
 ## Namespace as Route
 
 Reflects namespace of a domain class as base route for its endpoints.

@@ -45,7 +45,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 {
                     var idAttribute = c.Type.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
 
-                    r.Params[idAttribute.Name.Kebaberize()] = idAttribute.Name.Kebaberize();
+                    r.Params[idAttribute.RouteName] = idAttribute.RouteName;
                 }
             );
 

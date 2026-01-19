@@ -1,5 +1,4 @@
 ﻿using Baked.Business;
-using Baked.Orm;
 using Microsoft.Extensions.Logging;
 
 namespace Baked.Playground.CodingStyle.EntitySubclassViaComposition;

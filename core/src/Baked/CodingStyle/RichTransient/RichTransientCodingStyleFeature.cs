@@ -2,7 +2,6 @@
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
-using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
@@ -13,12 +12,6 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
-                apply: (c, set) =>
-                {
-                    set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
-                    set(c.Type, new IdAttribute(typeof(string), "Id", "Id".Kebaberize()));
-                },
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
@@ -33,10 +26,14 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                             (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
                         )
                     ),
+                apply: (c, set) =>
+                {
+                    set(c.Type, new ApiInputAttribute());
+                    set(c.Type, new LocatableAttribute());
+                },
                 order: 10
             );
             builder.Conventions.SetMethodAttribute(
-                attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
@@ -47,17 +44,12 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Method.DefaultOverload.Parameters.All(p =>
                         p.Name == "id" && (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
                     ),
+                attribute: c => new ActionModelAttribute(),
                 order: 20
             );
             builder.Conventions.SetPropertyAttribute(
-                apply: (c, set) =>
-                {
-                    c.Property.PropertyType.Apply(t =>
-                    {
-                        set(c.Property, new IdAttribute(t, "Id", "Id".Kebaberize()));
-                    });
-                },
-                when: c => c.Property.Name == "Id"
+                when: c => c.Property.Name == "Id",
+                attribute: () => new IdAttribute("id")
             );
 
             builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());

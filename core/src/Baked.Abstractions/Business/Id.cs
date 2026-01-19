@@ -1,4 +1,4 @@
-﻿namespace Baked.Orm;
+﻿namespace Baked.Business;
 
 public record struct Id : IParsable<Id>, IEquatable<Id>
 {
