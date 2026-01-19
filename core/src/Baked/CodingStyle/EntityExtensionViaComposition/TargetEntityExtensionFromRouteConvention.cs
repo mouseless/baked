@@ -19,7 +19,7 @@ public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<M
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        if (!entityType.TryGetIdentifier(out var identifier)) { return; }
+        if (!entityType.TryGetIdInfo(out var identifier)) { return; }
 
         parameter.ConvertToId(identifier.Type, identifier.Name, name: identifier.RouteName, dontAddRequired: true);
 

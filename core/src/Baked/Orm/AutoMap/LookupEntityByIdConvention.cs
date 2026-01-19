@@ -31,7 +31,7 @@ public class LookupEntityByIdConvention : IDomainModelConvention<ParameterModelC
 
         if (queryContextParameter is null) { return; }
 
-        if (!context.Parameter.ParameterType.TryGetIdentifier(out var identifier)) { return; }
+        if (!context.Parameter.ParameterType.TryGetIdInfo(out var identifier)) { return; }
 
         parameter.ConvertToId(identifier.Type, identifier.Name, nullable: !notNull);
 

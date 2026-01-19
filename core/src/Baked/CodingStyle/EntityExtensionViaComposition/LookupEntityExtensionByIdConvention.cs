@@ -18,7 +18,7 @@ public class LookupEntityExtensionByIdConvention : IDomainModelConvention<Parame
         var notNull = context.Parameter.Has<NotNullAttribute>();
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        if (!entityType.TryGetIdentifier(out var identifier)) { return; }
+        if (!entityType.TryGetIdInfo(out var identifier)) { return; }
 
         parameter.ConvertToId(identifier.Type, identifier.Name, nullable: !notNull);
 

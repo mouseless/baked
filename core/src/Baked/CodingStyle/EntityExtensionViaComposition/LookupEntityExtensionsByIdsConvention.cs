@@ -16,7 +16,7 @@ public class LookupEntityExtensionsByIdsConvention : IDomainModelConvention<Para
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        if (!entityType.TryGetIdentifier(out var identifier)) { return; }
+        if (!entityType.TryGetIdInfo(out var identifier)) { return; }
 
         parameter.ConvertToIds(identifier.Type, identifier.Name);
 

@@ -118,4 +118,27 @@ public static class BusinessExtensions
         Func<ParameterModel, bool>? filter = default
     ) where TAttribute : Attribute =>
         method.DefaultOverload.Parameters.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
+
+    public static IdInfo GetIdInfo(this TypeModel type)
+    {
+        if (!type.TryGetIdInfo(out var result))
+        {
+            throw new InvalidOperationException($"`{type.Name}` does not have `IdentifierInfo`");
+        }
+
+        return result;
+    }
+
+    public static bool TryGetIdInfo(this TypeModel type, [NotNullWhen(true)] out IdInfo? idInfo)
+    {
+        idInfo = null;
+
+        if (!type.TryGetMembers(out var members)) { return false; }
+        if (!members.Properties.Having<IdAttribute>().Any()) { return false; }
+
+        var idProperty = members.FirstProperty<IdAttribute>();
+        idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
+
+        return true;
+    }
 }
