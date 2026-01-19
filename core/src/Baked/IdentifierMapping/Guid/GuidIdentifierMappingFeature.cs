@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using FluentNHibernate.Conventions.Helpers;
+using Baked.Orm;
 
 namespace Baked.IdentifierMapping.Guid;
 
@@ -7,10 +7,52 @@ public class GuidIdentifierMappingFeature : IFeature<IdentifierMappingConfigurat
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            configurator.UsingDomainModel(domain =>
+            {
+                generatedAssemblies.Add(nameof(GuidIdentifierMappingFeature),
+                    assembly =>
+                    {
+                        assembly.AddReferenceFrom<GuidIdentifierMappingFeature>();
+
+                        foreach (var entity in domain.Types.Having<EntityAttribute>())
+                        {
+                            assembly.AddCodes(new GuidIdMapperTemplate(entity));
+
+                            entity.Apply(t => assembly.AddReferenceFrom(t));
+                        }
+                    },
+                    usings:
+                    [
+                        "Baked.IdentifierMapping",
+                        "Baked.IdentifierMapping.Guid",
+                        "Baked.Orm",
+                        "Baked.Runtime",
+                        "FluentNHibernate",
+                        "FluentNHibernate.Automapping",
+                        "FluentNHibernate.Diagnostics",
+                        "FluentNHibernate.Conventions.Helpers",
+                        "FluentNHibernate.Mapping",
+                        "Microsoft.Extensions.DependencyInjection",
+                        "NHibernate.Linq",
+                    ]
+                );
+            });
+        });
+
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.CustomType<GuidIdentifierUserType>()));
-            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Custom<GuidIdentifierGenerator>()));
+            configurator.UsingGeneratedContext(context =>
+            {
+                var idMapperTypes = context.Assemblies[nameof(GuidIdentifierMappingFeature)].GetExportedTypes().Where(t => t.IsAssignableTo(typeof(IIdMapper)));
+                foreach (var idMapperType in idMapperTypes)
+                {
+                    var idMapper = (IIdMapper?)Activator.CreateInstance(idMapperType) ?? throw new($"Cannot create instance of {idMapperType}");
+
+                    idMapper.Configure(model);
+                }
+            });
         });
     }
 }
