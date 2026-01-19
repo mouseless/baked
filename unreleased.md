@@ -10,7 +10,6 @@
   contain a guide to enable proxifying in domain assemblies
 - `IdentifierMapping` feature is now intruduced with `Guid` implementation
   - `Guid` implementation configures `Id` to be mapped as `Guid`
-  
 
 ## Breaking Changes
 

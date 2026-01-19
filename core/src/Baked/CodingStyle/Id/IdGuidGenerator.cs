@@ -3,7 +3,7 @@ using NHibernate.Id;
 
 namespace Baked.CodingStyle.Id;
 
-public class GuidIdGenerator : GuidGenerator, IIdentifierGenerator
+public class IdGuidGenerator : GuidGenerator, IIdentifierGenerator
 {
     public new object Generate(ISessionImplementor session, object obj) =>
         Business.Id.Parse(base.Generate(session, obj));

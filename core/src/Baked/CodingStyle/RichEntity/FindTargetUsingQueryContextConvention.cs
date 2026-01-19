@@ -29,6 +29,6 @@ public class FindTargetUsingQueryContextConvention : IDomainModelConvention<Meth
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];
-        action.FindTargetStatement = queryContextParameter.BuildSingleBy(idInfo.RouteName.Kebaberize(), idInfo.Name, fromRoute: true);
+        action.FindTargetStatement = queryContextParameter.BuildSingleBy(idInfo.RouteName, idInfo.Name, fromRoute: true);
     }
 }

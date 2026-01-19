@@ -19,7 +19,6 @@ public class LookupEntityExtensionsByIdsConvention : IDomainModelConvention<Para
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         parameter.ConvertToIds(idInfo);
-
         parameter.LookupRenderer = p => queryContextParameter.BuildByIds(p, castTo: entityExtensionType, isArray: context.Parameter.ParameterType.IsArray);
     }
 }

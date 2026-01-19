@@ -22,7 +22,6 @@ public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<M
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         parameter.ConvertToId(idInfo, name: idInfo.RouteName, dontAddRequired: true);
-
         parameter.From = ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];

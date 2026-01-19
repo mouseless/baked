@@ -37,7 +37,7 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
                             if (!idProperty.PropertyType.Is<Business.Id>()) { continue; }
 
                             var idAttribute = idProperty.Get<IdAttribute>();
-                            var orm = idAttribute.Orm ?? new(typeof(GuidIdUserType)) { IdentifierGenerator = typeof(GuidIdGenerator) };
+                            var orm = idAttribute.Orm ?? new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
 
                             assembly.AddCodes(new IdMapperTemplate(entity, orm));
 

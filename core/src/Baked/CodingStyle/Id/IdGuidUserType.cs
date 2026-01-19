@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace Baked.CodingStyle.Id;
 
-public class GuidIdUserType : UserTypeBase
+public class IdGuidUserType : UserTypeBase
 {
     public override SqlType[] SqlTypes => [SqlTypeFactory.Guid];
     public override Type ReturnedType => typeof(Business.Id);
@@ -23,14 +23,10 @@ public class GuidIdUserType : UserTypeBase
         if (value == null)
         {
             NHibernateUtil.Guid.NullSafeSet(cmd, null, index, session);
+
             return;
         }
 
-        if (!Guid.TryParse(value.ToString(), out var guid))
-        {
-            throw new FormatException($"'{value}' was not recognized as a valid Guid format");
-        }
-
-        NHibernateUtil.Guid.NullSafeSet(cmd, guid, index, session);
+        NHibernateUtil.Guid.NullSafeSet(cmd, Guid.Parse($"{value}"), index, session);
     }
 }
