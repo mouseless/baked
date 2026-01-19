@@ -1,3 +1,0 @@
-﻿namespace Baked.IdentifierMapping;
-
-public class IdentifierMappingConfigurator;

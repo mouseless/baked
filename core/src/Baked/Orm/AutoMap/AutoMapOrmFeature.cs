@@ -1,16 +1,13 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
-using Humanizer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using NHibernate;
 using NHibernate.Exceptions;
 using NHibernate.Proxy;
@@ -39,11 +36,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
-
-            builder.Conventions.SetPropertyAttribute(
-                when: c => c.Property.Name == "Id" && c.Property.PropertyType.Is<Id>(),
-                attribute: c => new IdentifierAttribute(c.Domain.Types[typeof(Id)].CSharpFriendlyFullName, c.Property.Name, c.Property.Name.Kebaberize())
-            );
 
             builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
             builder.Conventions.Add(new LookupEntityByIdConvention());
@@ -113,7 +105,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
-            model.Conventions.Add(ForeignKey.EndsWith("Id"));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
@@ -123,7 +114,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             automapping.ShouldMapType.Add(_ => true);
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Id) && m.Name == "Id");
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
@@ -164,14 +154,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             if (options.SerializerSettings.ContractResolver is null) { return; }
 
             options.SerializerSettings.ContractResolver = new ProxyAwareContractResolver<INHibernateProxy>(options.SerializerSettings.ContractResolver);
-        });
-
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
-        {
-            // Use 'MapType' instead of 'ISchemaFilter' for 
-            // not render 'Id' as a reference and display properties
-            // instead of only '$ref' in schemas
-            swaggerGenOptions.MapType<Id>(() => new OpenApiSchema { Type = "string" });
         });
     }
 }
