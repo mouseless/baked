@@ -94,9 +94,9 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dt.Schema.Columns.Add(column);
                     }
 
-                    if (dt.Schema.DataKey is null && elementMembers.TryGetIdInfo(out var identifier))
+                    if (dt.Schema.DataKey is null && elementMembers.TryGetIdInfo(out var idInfo))
                     {
-                        dt.Schema.DataKey = identifier.RouteName;
+                        dt.Schema.DataKey = idInfo.RouteName;
                     }
                 },
                 order: -10

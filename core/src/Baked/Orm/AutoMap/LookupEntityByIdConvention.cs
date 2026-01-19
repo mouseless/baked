@@ -31,12 +31,12 @@ public class LookupEntityByIdConvention : IDomainModelConvention<ParameterModelC
 
         if (queryContextParameter is null) { return; }
 
-        if (!context.Parameter.ParameterType.TryGetIdInfo(out var identifier)) { return; }
+        if (!context.Parameter.ParameterType.TryGetIdInfo(out var idInfo)) { return; }
 
-        parameter.ConvertToId(identifier.Type, identifier.Name, nullable: !notNull);
+        parameter.ConvertToId(idInfo.Type, idInfo.Name, nullable: !notNull);
 
-        parameter.LookupRenderer = p => queryContextParameter.BuildSingleBy(p, identifier.Name,
-            notNullValueExpression: $"({identifier.Type}){p}",
+        parameter.LookupRenderer = p => queryContextParameter.BuildSingleBy(p, idInfo.Name,
+            notNullValueExpression: $"({idInfo.Type}){p}",
             nullable: !notNull
         );
     }
