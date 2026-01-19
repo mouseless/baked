@@ -20,7 +20,7 @@ public class LookupEntityExtensionByIdConvention : IDomainModelConvention<Parame
 
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
-        parameter.ConvertToId(idInfo.Type, idInfo.Name, nullable: !notNull);
+        parameter.ConvertToId(idInfo, nullable: !notNull);
 
         parameter.LookupRenderer =
             p => queryContextParameter.BuildSingleBy(p, idInfo.Name,

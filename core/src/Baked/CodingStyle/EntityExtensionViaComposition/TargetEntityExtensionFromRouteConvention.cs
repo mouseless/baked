@@ -19,14 +19,14 @@ public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<M
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        if (!entityType.TryGetIdInfo(out var identifier)) { return; }
+        if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
-        parameter.ConvertToId(identifier.Type, identifier.Name, name: identifier.RouteName, dontAddRequired: true);
+        parameter.ConvertToId(idInfo, name: idInfo.RouteName, dontAddRequired: true);
 
         parameter.From = ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];
-        action.FindTargetStatement = queryContextParameter.BuildSingleBy(parameter.Name, identifier.Name,
+        action.FindTargetStatement = queryContextParameter.BuildSingleBy(parameter.Name, idInfo.Name,
             fromRoute: true,
             castTo: entityExtensionType
         );

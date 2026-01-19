@@ -80,27 +80,27 @@ public static class OrmExtensions
             : $"{byIds}.ToList()";
     }
 
-    public static void ConvertToId(this ParameterModelAttribute parameter, string type, string idSuffix,
+    public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,
         string? name = default,
         bool nullable = false,
         bool dontAddRequired = false
     )
     {
-        name ??= $"{parameter.Name}{idSuffix}";
+        name ??= $"{parameter.Name}{idInfo.Name}";
 
         if (!nullable && dontAddRequired)
         {
             parameter.AddRequiredAttributes(isValueType: true);
         }
 
-        parameter.Type = nullable ? $"{type}?" : type;
+        parameter.Type = nullable ? $"{idInfo.Type}?" : idInfo.Type;
         parameter.Name = name;
     }
 
-    public static void ConvertToIds(this ParameterModelAttribute parameter, string type, string idSuffix)
+    public static void ConvertToIds(this ParameterModelAttribute parameter, IdInfo idInfo)
     {
-        parameter.Type = $"IEnumerable<{type}>";
-        parameter.Name = $"{parameter.Name.Singularize()}{idSuffix.Pluralize()}";
+        parameter.Type = $"IEnumerable<{idInfo.Type}>";
+        parameter.Name = $"{parameter.Name.Singularize()}{idInfo.Name.Pluralize()}";
     }
 
     public static bool TryGetQueryType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
