@@ -3,17 +3,11 @@ using NHibernate.Id;
 
 namespace Baked.CodingStyle.Id;
 
-public class GuidIdGenerator : IIdentifierGenerator
+public class GuidIdGenerator : GuidGenerator, IIdentifierGenerator
 {
-    GuidGenerator _generator = new GuidGenerator();
+    public new object Generate(ISessionImplementor session, object obj) =>
+        Business.Id.Parse(base.Generate(session, obj));
 
-    public object Generate(ISessionImplementor session, object obj)
-    {
-        return Business.Id.Parse(_generator.Generate(session, obj));
-    }
-
-    public Task<object> GenerateAsync(ISessionImplementor session, object obj, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(Generate(session, obj));
-    }
+    public new async Task<object> GenerateAsync(ISessionImplementor session, object obj, CancellationToken cancellationToken) =>
+        Business.Id.Parse(await base.GenerateAsync(session, obj, cancellationToken));
 }

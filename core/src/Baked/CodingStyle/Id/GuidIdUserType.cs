@@ -26,16 +26,9 @@ public class GuidIdUserType : UserTypeBase
             return;
         }
 
-        // Ensure value type is always 'Orm.Id'
-        if (value is not Business.Id id)
+        if (!Guid.TryParse(value.ToString(), out var guid))
         {
-            throw new TypeMismatchException($"Expected type 'Orm.Id' but got {value.GetType().Name}");
-        }
-
-        // Ensure value is always guid
-        if (!Guid.TryParse(id.ToString(), out var guid))
-        {
-            throw new FormatException($"'{id}' was not recognized as a valid Guid format");
+            throw new FormatException($"'{value}' was not recognized as a valid Guid format");
         }
 
         NHibernateUtil.Guid.NullSafeSet(cmd, guid, index, session);
