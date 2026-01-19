@@ -30,7 +30,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     {
                         var idProperty = entity.GetMembers().Properties.First(p => p.CustomAttributes.TryGet<IdAttribute>(out var _));
                         var idAttribute = idProperty.Get<IdAttribute>();
-                        set(entity.GetMetadata(), new EntityAttribute(idAttribute, t));
+                        set(entity.GetMetadata(), new EntityAttribute(idAttribute.Type, t));
                     });
                 },
                 when: c =>
