@@ -27,11 +27,8 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                         set(query, new QueryAttribute(t))
                     );
                     query.Apply(t =>
-                    {
-                        var idProperty = entity.GetMembers().Properties.First(p => p.CustomAttributes.TryGet<IdAttribute>(out var _));
-                        var idAttribute = idProperty.Get<IdAttribute>();
-                        set(entity.GetMetadata(), new EntityAttribute(idAttribute.Type, t));
-                    });
+                        set(entity.GetMetadata(), new EntityAttribute(t))
+                    );
                 },
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
