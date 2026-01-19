@@ -89,17 +89,17 @@ public static class DomainAssembliesBusinessExtensions
     {
         identifier = null;
 
-        if (type.TryGetMetadata(out var metadata) && metadata.TryGet<IdentifierAttribute>(out var attr))
+        if (type.TryGetMetadata(out var metadata) && metadata.TryGet<IdAttribute>(out var attr))
         {
-            identifier = new(attr.Type, attr.Name, attr.Name.Kebaberize());
+            identifier = new(attr.Type.Name, attr.Name, attr.Name.Kebaberize());
 
             return true;
         }
 
         if (!type.TryGetMembers(out var members)) { return false; }
-        if (!members.Properties.Having<IdentifierAttribute>().Any()) { return false; }
+        if (!members.Properties.Having<IdAttribute>().Any()) { return false; }
 
-        var idProperty = members.FirstProperty<IdentifierAttribute>();
+        var idProperty = members.FirstProperty<IdAttribute>();
         identifier = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Name.Kebaberize());
 
         return true;

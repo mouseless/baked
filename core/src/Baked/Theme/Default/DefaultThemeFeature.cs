@@ -40,10 +40,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: (c, r) =>
                   r.Path.Contains("[id]") &&
                   c.Type.TryGetMembers(out var members) &&
-                  members.Properties.Having<IdentifierAttribute>().Any(),
+                  members.Properties.Having<IdAttribute>().Any(),
                 attribute: (r, c) =>
                 {
-                    var idAttribute = c.Type.GetMembers().FirstProperty<IdentifierAttribute>().Get<IdentifierAttribute>();
+                    var idAttribute = c.Type.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
 
                     r.Params[idAttribute.Name.Kebaberize()] = idAttribute.Name.Kebaberize();
                 }
@@ -57,7 +57,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: -10
             );
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
-                when: c => c.Property.Has<IdentifierAttribute>(),
+                when: c => c.Property.Has<IdAttribute>(),
                 attribute: data => data.Visible = false
             );
             builder.Conventions.AddPropertyComponent(
