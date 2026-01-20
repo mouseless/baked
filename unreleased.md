@@ -17,7 +17,7 @@
 ## Breaking Changes
 
 - `AutoMapOrmFeature` no longer configures `Id` properties and foreign keys
-- `Id` property type is now changed from `System.Guid` to `Baked.Business Id`
+- `Id` property type is now changed from `System.Guid` to `Baked.Business.Id`
   ```csharp
   // not supported
   public Guid Id { get; set; }
