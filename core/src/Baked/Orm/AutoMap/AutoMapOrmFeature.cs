@@ -50,28 +50,24 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(AutoMapOrmFeature),
-                assembly =>
-                {
-                    assembly
-                        .AddReferenceFrom<AutoMapOrmFeature>()
-                        .AddCodes(new ManyToOneFetcherTemplate(domain))
-                        .AddCodes(new TypeModelTypeSourceTemplate(domain));
-
-                    foreach (var entity in domain.Types.Having<EntityAttribute>())
+                    assembly =>
                     {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings:
-                [
-                    "Baked.Orm",
-                    "Baked.Runtime",
-                    "FluentNHibernate",
-                    "FluentNHibernate.Diagnostics",
-                    "Microsoft.Extensions.DependencyInjection",
-                    "NHibernate.Linq"
-                ]
-            );
+                        assembly
+                            .AddReferenceFrom<AutoMapOrmFeature>()
+                            .AddCodes(new ManyToOneFetcherTemplate(domain))
+                            .AddCodes(new TypeModelTypeSourceTemplate(domain));
+
+                        foreach (var entity in domain.Types.Having<EntityAttribute>())
+                        {
+                            entity.Apply(t => assembly.AddReferenceFrom(t));
+                        }
+                    },
+                    usings:
+                    [
+                        .. ManyToOneFetcherTemplate.GlobalUsings,
+                        .. TypeModelTypeSourceTemplate.GlobalUsings
+                    ]
+                );
             });
         });
 
@@ -104,9 +100,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             });
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));
-            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
-            model.Conventions.Add(ForeignKey.EndsWith("Id"));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
@@ -116,7 +110,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             automapping.ShouldMapType.Add(_ => true);
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

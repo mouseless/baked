@@ -1,8 +1,10 @@
+using Baked.Business;
+
 namespace Baked.Playground.CodingStyle.RichTransient;
 
 public class RichTransientAsync
 {
-    public async Task<RichTransientAsync> With(string id)
+    public async Task<RichTransientAsync> With(Id id)
     {
         await Task.Delay(0);
 
@@ -11,5 +13,5 @@ public class RichTransientAsync
         return this;
     }
 
-    public string Id { get; private set; } = default!;
+    public Id Id { get; private set; } = default!;
 }

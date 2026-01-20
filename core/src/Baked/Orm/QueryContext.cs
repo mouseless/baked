@@ -1,11 +1,12 @@
-﻿using NHibernate;
+﻿using Baked.Business;
+using NHibernate;
 
 namespace Baked.Orm;
 
 public class QueryContext<TEntity>(Func<ISession> _getSession, IManyToOneFetcher<TEntity> _fetcher)
     : IQueryContext<TEntity>
 {
-    public TEntity SingleById(Guid id,
+    public TEntity SingleById(Id id,
         bool throwNotFound = false
     ) => _getSession().Get<TEntity>(id) ?? throw RecordNotFoundException.For<TEntity>(id, throwNotFound);
 

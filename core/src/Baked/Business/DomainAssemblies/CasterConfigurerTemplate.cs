@@ -5,6 +5,14 @@ namespace Baked.Business.DomainAssemblies;
 
 public class CasterConfigurerTemplate(DomainModel _domain) : CodeTemplateBase
 {
+    public static string[] GlobalUsings =
+        [
+            "Baked.Business",
+            "Baked.Business.DomainAssemblies",
+            "Baked.Runtime",
+            "Microsoft.Extensions.DependencyInjection"
+        ];
+
     protected override IEnumerable<string> Render() =>
         [Caster()];
 

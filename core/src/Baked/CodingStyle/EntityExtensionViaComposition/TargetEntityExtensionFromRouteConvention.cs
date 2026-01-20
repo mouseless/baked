@@ -16,13 +16,17 @@ public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<M
         var entityExtensionType = context.Type;
         if (!entityExtensionType.TryGetEntityTypeFromExtension(context.Domain, out var entityType)) { return; }
         if (!entityType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
+        if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        parameter.ConvertToId(name: "id", dontAddRequired: true);
+        parameter.ConvertToId(idInfo, name: idInfo.RouteName, dontAddRequired: true);
         parameter.From = ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];
-        action.FindTargetStatement = queryContextParameter.BuildSingleBy(parameter.Name, fromRoute: true, castTo: entityExtensionType);
+        action.FindTargetStatement = queryContextParameter.BuildSingleBy(parameter.Name, idInfo.PropertyName,
+            fromRoute: true,
+            castTo: entityExtensionType
+        );
     }
 }

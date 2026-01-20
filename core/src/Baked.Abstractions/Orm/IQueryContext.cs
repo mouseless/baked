@@ -1,13 +1,14 @@
+using Baked.Business;
 using System.Linq.Expressions;
 
 namespace Baked.Orm;
 
 public interface IQueryContext<TEntity>
 {
-    TEntity SingleById(Guid id, bool throwNotFound = false);
+    TEntity SingleById(Id id, bool throwNotFound = false);
     IQueryable<TEntity> Query(bool fetchParents = true);
 
-    public List<TEntity> ByIds(IEnumerable<Guid> ids) =>
+    public List<TEntity> ByIds(IEnumerable<Id> ids) =>
         [.. ids.Select(id => SingleById(id))];
 
     public bool AnyBy(

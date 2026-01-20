@@ -49,6 +49,27 @@ uses the first unique property to discriminate entity records.
 ```csharp
 c => c.EntitySubclassViaComposition()
 ```
+
+## Id
+
+This feature provides `Id` configuration for transient and entity classes.
+
+```csharp
+c => c.Id()
+```
+
+Single property of type `Baked.Business.Id` with name `Id` is marked with 
+`IdAttribute`. For entities `Id` properties are mapped with `IdGuidUserType`
+and auto generated with `IdGuidGenerator` as `DbType.Guid`.
+
+```csharp
+public class Entity(IEntityContext<Parent> _context)
+{
+    public Id Id { get; private set; } = default!;
+    ...
+}
+```
+
 ## Namespace as Route
 
 Reflects namespace of a domain class as base route for its endpoints.

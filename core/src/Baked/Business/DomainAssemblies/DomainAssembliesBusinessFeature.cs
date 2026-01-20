@@ -64,6 +64,7 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<CasterAttribute>();
             builder.Index.Method.Add<InitializerAttribute>();
+            builder.Index.Property.Add<IdAttribute>();
 
             builder.Conventions.SetTypeAttribute(
                 attribute: context =>
@@ -148,13 +149,7 @@ public class DomainAssembliesBusinessFeature(
                             entity.Apply(t => assembly.AddReferenceFrom(t));
                         }
                     },
-                    usings:
-                    [
-                        "Baked.Business",
-                        "Baked.Business.DomainAssemblies",
-                        "Baked.Runtime",
-                        "Microsoft.Extensions.DependencyInjection"
-                    ]
+                    usings: [.. CasterConfigurerTemplate.GlobalUsings]
                 );
             });
         });

@@ -7,7 +7,7 @@ public class BTypedEntity(ILogger<BTypedEntity> _logger, Func<TypedEntity> _newT
 {
     TypedEntity _entity = default!;
 
-    public Guid Id => _entity.Id;
+    public Id Id => _entity.Id;
 
     public BTypedEntity With() =>
         With(_newTypedEntity().With(TypedEntityType.B));

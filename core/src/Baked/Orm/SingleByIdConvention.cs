@@ -11,10 +11,12 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
         if (!metadata.TryGetEntityType(context.Domain, out var entityType)) { return; }
+        if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         var queryContextTypeId = context.Domain.Types[typeof(IQueryContext<>)].MakeGenericTypeId(entityType);
 
-        controller.Action["SingleById"] = new("SingleById",
+        var singleByActionName = $"SingleBy{idInfo.PropertyName}";
+        controller.Action[singleByActionName] = new(singleByActionName,
             routeParts: [context.Type.Name],
             returnType: entityType.CSharpFriendlyFullName,
             returnIsAsync: false,
@@ -22,7 +24,7 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
             parameters:
             [
                 new(ParameterModelAttribute.TargetParameterName, context.Domain.Types[queryContextTypeId].CSharpFriendlyFullName, ParameterModelFrom.Services),
-                new("id", context.Domain.Types[typeof(Guid)].CSharpFriendlyFullName, ParameterModelFrom.Route) { RoutePosition = 1 },
+                new(idInfo.RouteName, idInfo.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
                 new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }
             ]
         )

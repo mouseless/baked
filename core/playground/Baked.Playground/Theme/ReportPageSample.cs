@@ -1,3 +1,5 @@
+using Baked.Business;
+
 namespace Baked.Playground.Theme;
 
 public class ReportPageSample
@@ -36,7 +38,7 @@ public class ReportPageSample
         [
             .. Enumerable
                 .Range(0, (int)count)
-                .Select(row => new ReportRow($"id-{row}", $"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
+                .Select(row => new ReportRow(Id.Parse($"id-{row}"), $"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
         ];
     }
 
@@ -48,7 +50,7 @@ public class ReportPageSample
         [
             .. Enumerable
                 .Range(0, (int)count)
-                .Select(row => new ReportRow($"id-{row}", $"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
+                .Select(row => new ReportRow(Id.Parse($"id-{row}"), $"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
         ];
     }
 }

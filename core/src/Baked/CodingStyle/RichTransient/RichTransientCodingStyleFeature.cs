@@ -12,11 +12,6 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
-                apply: (c, set) =>
-                {
-                    set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
-                },
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
@@ -31,10 +26,14 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                             (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
                         )
                     ),
+                apply: (c, set) =>
+                {
+                    set(c.Type, new ApiInputAttribute());
+                    set(c.Type, new LocatableAttribute());
+                },
                 order: 10
             );
             builder.Conventions.SetMethodAttribute(
-                attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
@@ -45,6 +44,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Method.DefaultOverload.Parameters.All(p =>
                         p.Name == "id" && (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
                     ),
+                attribute: c => new ActionModelAttribute(),
                 order: 20
             );
 

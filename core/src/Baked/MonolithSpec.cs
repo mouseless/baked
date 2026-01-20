@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Caching;
+using Baked.CodingStyle.Id;
 using Baked.Communication;
 using Baked.Core;
 using Baked.Database;
@@ -62,6 +63,7 @@ public abstract class MonolithSpec : Spec
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
                 c => c.EntitySubclassViaComposition(),
+                c => c.Id(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
                 c => c.RecordsAreDtos(),
@@ -69,7 +71,6 @@ public abstract class MonolithSpec : Spec
                 c => c.RichEntity(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
-                c => c.SingleByUnique(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes(),
