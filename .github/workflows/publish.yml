@@ -1,4 +1,5 @@
 name: Publish
+
 on:
   pull_request:
     types:
@@ -6,6 +7,11 @@ on:
     branches:
       - main
       - 'epic/**'
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   remove-label:
     # Remove when not in release branch
