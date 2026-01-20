@@ -8,7 +8,7 @@ public class TypeModelTypeSourceTemplate(DomainModel _domain)
 {
     public static string[] GlobalUsings =
        [
-           "Baked.Orm",
+            "Baked.Orm",
             "Baked.Runtime",
             "FluentNHibernate",
             "FluentNHibernate.Diagnostics",
