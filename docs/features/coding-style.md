@@ -52,15 +52,15 @@ c => c.EntitySubclassViaComposition()
 
 ## Id
 
-This feature provides id configuration for persistent entities. 
+This feature provides `Id` configuration for transient and entity classes.
 
 ```csharp
 c => c.Id()
 ```
 
-Feature setups single property of an `Entity` class named `Id` and 
-`Baked.Business.Id` type as `Id`. `Id` properties are mapped with 
-`IdGuidUserType` and auto generated with `IdGuidGenerator` as `DbType.Guid`.
+Single property named `Id` and `Baked.Business.Id` type is marked with 
+`IdAttribute`. For entities `Id` properties are mapped with `IdGuidUserType`
+and auto generated with `IdGuidGenerator` as `DbType.Guid`.
 
 ```csharp
 public class Entity(IEntityContext<Parent> _context, Func<Child> _newChild)
