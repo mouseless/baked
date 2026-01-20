@@ -86,7 +86,7 @@ public static class OrmExtensions
         bool dontAddRequired = false
     )
     {
-        name ??= $"{parameter.Name}{idInfo.Name}";
+        name ??= $"{parameter.Name}{idInfo.PropertyName}";
 
         if (!nullable && dontAddRequired)
         {
@@ -100,7 +100,7 @@ public static class OrmExtensions
     public static void ConvertToIds(this ParameterModelAttribute parameter, IdInfo idInfo)
     {
         parameter.Type = $"IEnumerable<{idInfo.Type}>";
-        parameter.Name = $"{parameter.Name.Singularize()}{idInfo.Name.Pluralize()}";
+        parameter.Name = $"{parameter.Name.Singularize()}{idInfo.PropertyName.Pluralize()}";
     }
 
     public static bool TryGetQueryType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)

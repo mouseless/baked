@@ -21,7 +21,7 @@ public class FindTargetUsingQueryContextConvention : IDomainModelConvention<Meth
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         var target = action.Parameter[ParameterModelAttribute.TargetParameterName];
-        target.Name = idInfo.RouteName;
+        target.Name = idInfo.PropertyName.Camelize();
         target.From = ParameterModelFrom.Route;
         target.RoutePosition = 1;
         target.AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
@@ -29,6 +29,6 @@ public class FindTargetUsingQueryContextConvention : IDomainModelConvention<Meth
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];
-        action.FindTargetStatement = queryContextParameter.BuildSingleBy(idInfo.RouteName, idInfo.Name, fromRoute: true);
+        action.FindTargetStatement = queryContextParameter.BuildSingleBy(idInfo.RouteName, idInfo.PropertyName, fromRoute: true);
     }
 }

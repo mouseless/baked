@@ -16,7 +16,7 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
 
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
-        var singleByActionName = $"SingleBy{idInfo.Name}";
+        var singleByActionName = $"SingleBy{idInfo.PropertyName}";
         controller.Action[singleByActionName] = new(singleByActionName,
             routeParts: [context.Type.Name],
             returnType: entityType.CSharpFriendlyFullName,

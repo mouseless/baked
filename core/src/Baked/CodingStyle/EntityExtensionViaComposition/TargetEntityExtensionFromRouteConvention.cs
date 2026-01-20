@@ -25,7 +25,7 @@ public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<M
         parameter.From = ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];
-        action.FindTargetStatement = queryContextParameter.BuildSingleBy(parameter.Name, idInfo.Name,
+        action.FindTargetStatement = queryContextParameter.BuildSingleBy(parameter.Name, idInfo.PropertyName,
             fromRoute: true,
             castTo: entityExtensionType
         );
