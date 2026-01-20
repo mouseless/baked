@@ -58,26 +58,15 @@ This feature provides `Id` configuration for transient and entity classes.
 c => c.Id()
 ```
 
-Single property named `Id` and `Baked.Business.Id` type is marked with 
+Single property of type `Baked.Business.Id` with name `Id` is marked with 
 `IdAttribute`. For entities `Id` properties are mapped with `IdGuidUserType`
 and auto generated with `IdGuidGenerator` as `DbType.Guid`.
 
 ```csharp
-public class Entity(IEntityContext<Parent> _context, Func<Child> _newChild)
+public class Entity(IEntityContext<Parent> _context)
 {
     public Id Id { get; private set; } = default!;
     ...
-
-    public Parent With(string name)
-    {
-        ...
-    }
-}
-
-public class Entities(IQueryContext<Parent> _context)
-{
-    public Entities SingeById(Id id) =>
-      _context.SingleById(id);
 }
 ```
 
