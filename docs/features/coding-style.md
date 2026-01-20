@@ -52,12 +52,33 @@ c => c.EntitySubclassViaComposition()
 
 ## Id
 
-This feature provides id configuration for persistent entities,
-Setups `AutoPersistenceModel.Id` configuration with `GuidIdUserType` 
-and `GuidIdGenerator` to map `Id` column as `Guid`
+This feature provides id configuration for persistent entities. 
 
 ```csharp
 c => c.Id()
+```
+
+Feature setups single property of an `Entity` class named `Id` and 
+`Baked.Business.Id` type as `Id`. `Id` properties are mapped with 
+`IdGuidUserType` and auto generated with `IdGuidGenerator` as `DbType.Guid`.
+
+```csharp
+public class Entity(IEntityContext<Parent> _context, Func<Child> _newChild)
+{
+    public Id Id { get; private set; } = default!;
+    ...
+
+    public Parent With(string name)
+    {
+        ...
+    }
+}
+
+public class Entities(IQueryContext<Parent> _context)
+{
+    public Entities SingeById(Id id) =>
+      _context.SingleById(id);
+}
 ```
 
 ## Namespace as Route
