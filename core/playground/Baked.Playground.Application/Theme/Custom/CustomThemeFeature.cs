@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 using Baked.Playground.Caching;
 using Baked.Playground.Orm;
 using Baked.Theme;
@@ -34,14 +33,6 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // TODO review in Locatability
-            // temporary id overrides to keep page descriptors unchanged
-            // can string id of records have id attribute
-            builder.Conventions.SetPropertyAttribute(
-                when: c => (c.Type.Is<ReportRow>() || c.Type.Is<Item>()) && c.Property.Name == "Id",
-                attribute: c => new IdAttribute("id")
-            );
-
             // Custom theme CSV formatter settings
             builder.Conventions.AddMethodSchemaConfiguration<DataTable.Export>(
                 schema: (dte, _, cc) =>

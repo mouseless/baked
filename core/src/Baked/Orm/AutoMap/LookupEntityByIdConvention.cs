@@ -11,6 +11,7 @@ public class LookupEntityByIdConvention : IDomainModelConvention<ParameterModelC
     {
         if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
         if (!context.Parameter.ParameterType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
+        if (!context.Parameter.ParameterType.TryGetIdInfo(out var idInfo)) { return; }
 
         var notNull = context.Parameter.Has<NotNullAttribute>();
 
@@ -30,8 +31,6 @@ public class LookupEntityByIdConvention : IDomainModelConvention<ParameterModelC
         }
 
         if (queryContextParameter is null) { return; }
-
-        if (!context.Parameter.ParameterType.TryGetIdInfo(out var idInfo)) { return; }
 
         parameter.ConvertToId(idInfo, nullable: !notNull);
         parameter.LookupRenderer = p => queryContextParameter.BuildSingleBy(p, idInfo.PropertyName,

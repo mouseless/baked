@@ -1,7 +1,9 @@
+using Baked.Business;
+
 namespace Baked.Playground.Theme;
 
 public record ReportRow(
-    string Id,
+    Id Id,
     string Label,
     string Column1,
     string Column2,

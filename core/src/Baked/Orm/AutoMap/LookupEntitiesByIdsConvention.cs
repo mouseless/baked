@@ -12,10 +12,9 @@ public class LookupEntitiesByIdsConvention : IDomainModelConvention<ParameterMod
         if (!parameter.IsInvokeMethodParameter) { return; }
         if (!context.Parameter.ParameterType.TryGetElementType(out var entityType)) { return; }
         if (!entityType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
+        if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         var queryContextParameter = action.AddQueryContextAsService(queryContextType);
-
-        if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         parameter.ConvertToIds(idInfo);
         parameter.LookupRenderer = p => queryContextParameter.BuildByIds(p,
