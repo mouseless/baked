@@ -1,5 +1,5 @@
 <template>
-  <AwaitLoading :skeleton="{ height:'2rem', class:'inline-block bg-red-500/20' }">
+  <AwaitLoading :skeleton="{ height: '2rem', class: 'inline-block bg-red-500/20' }">
     <Button
       v-if="inlinesData"
       v-bind="$attrs"
