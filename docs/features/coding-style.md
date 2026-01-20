@@ -8,8 +8,8 @@ app.Features.AddCodingStyles([...]);
 
 ## Add/Remove Child
 
-Configures routes for methods in `AddChild` and `RemoveChild(Child)` signature
-to have a resource route `POST /../children` and `DELETE /../children/{childId}`
+Configures method routes in `AddChild` and `RemoveChild(Child)` signature to 
+have a resource route `POST /../children` and `DELETE /../children/{childId}`
 respectively.
 
 ```csharp
@@ -27,8 +27,8 @@ c => c.CommandPattern()
 ## Entity Extension via Composition
 
 Allows classes to extend entities via composition. This marks a transient class
-as an entity extension when it implements implicit casting to an entity. Methods
-of these extension classes are rendered under entity group.
+as an entity extension when it implements implicit casting to an entity. 
+Methods of these extension classes are rendered under entity group.
 
 ```csharp
 c => c.EntityExtensionViaComposition()
@@ -43,8 +43,8 @@ uses the first unique property to discriminate entity records.
 
 > [!WARNING]
 >
-> First unique property is expected to be `enum` or `string`. Otherwise subclass
-> routing won't work.
+> First unique property is expected to be `enum` or `string`. Otherwise 
+> subclass routing won't work.
 
 ```csharp
 c => c.EntitySubclassViaComposition()
@@ -80,8 +80,8 @@ c => c.NamespaceAsRoute()
 
 ## Object as JSON
 
-Configures all `object` parameters, return types and properties to be treated as
-`JSON` content.
+Configures all `object` parameters, return types and properties to be treated 
+as `JSON` content.
 
 ```csharp
 c => c.ObjectAsJson()
@@ -111,8 +111,8 @@ Adds `QueryAttribute` to classes that inject `IQueryContext<TEntity>`. Using
 generic argument of `IQueryContext<TEntity>` finds corresponding entity class
 and add `EntityAttribute` to it.
 
-Configures `NHibernate` to initialize entities using dependency injection, making
-them rich entities.
+Configures `NHibernate` to initialize entities using dependency injection, 
+making them rich entities.
 
 Configures routes and swagger docs to use entity methods as resource actions.
 
@@ -150,9 +150,9 @@ c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
 
 ## Single by Unique
 
-Scans query classes to have methods that conforms to `SingleBy[Property]` naming
-convetion. Treats such methods as single by unique methods and adds that
-property to entity id route parameter so that entites can be found through
+Scans query classes to have methods that conforms to `SingleBy[Property]` 
+naming convention. Treats such methods as single by unique methods and adds 
+that property to entity id route parameter so that entites can be found through
 unique properties as well as their ids. For instance, if entity has
 `SingleByName` then its id route parameter is updated from `{id}` to
 `{idOrName}`.
@@ -166,8 +166,8 @@ c => c.SingleByUnique()
 Adds redirect support to your api endpoints. It configures an endpoint to use
 redirect result when its corresponding method returns `Uri`. Combined with
 `CommandPattern`, it allows you to create callback `GET` endpoints when method
-doesn't have any parameters. For actions that have parameters, it configures its
-corresponding endpoint to accept form instead of a `json` body.
+doesn't have any parameters. For actions that have parameters, it configures 
+its corresponding endpoint to accept form instead of a `json` body.
 
 ```csharp
 c => c.UriReturnIsRedirect()
