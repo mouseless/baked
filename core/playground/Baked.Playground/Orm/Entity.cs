@@ -215,4 +215,12 @@ public class Entities(IQueryContext<Entity> _context)
     ) => asc ? _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith), orderBy: e => e.String) :
          desc ? _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith), orderByDescending: e => e.String) :
          _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith));
+
+    public Dictionary<DateTime, int> CountByDate() =>
+        _context
+            .Query()
+            .Where(e => e.DateTime != null)
+            .GroupBy(e => e.DateTime!.Value.Date)
+            .Select(g => new { Date = g.Key, Count = g.Count() })
+            .ToDictionary(x => x.Date, x => x.Count);
 }

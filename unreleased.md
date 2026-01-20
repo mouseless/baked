@@ -8,3 +8,8 @@
     present on a member info
 - [Layers / Domain](../layers/domain.md#proxifying-entities) is updated to
   contain a guide to enable proxifying in domain assemblies
+
+## Bugfixes
+
+- `npgsql` has changed to use `DateOnly` and `TimeOnly` for `Date` and `Time`
+  which causes NHibernate to fail, fixed
