@@ -141,8 +141,6 @@ jobs:
           for file in *.tgz; do
             npm publish "$file" --access public
           done
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
   generate-docs:
     needs: check-version
