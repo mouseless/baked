@@ -149,13 +149,7 @@ public class DomainAssembliesBusinessFeature(
                             entity.Apply(t => assembly.AddReferenceFrom(t));
                         }
                     },
-                    usings:
-                    [
-                        "Baked.Business",
-                        "Baked.Business.DomainAssemblies",
-                        "Baked.Runtime",
-                        "Microsoft.Extensions.DependencyInjection"
-                    ]
+                    usings: [.. CasterConfigurerTemplate.GlobalUsings]
                 );
             });
         });

@@ -6,6 +6,16 @@ namespace Baked.Orm.AutoMap;
 public class TypeModelTypeSourceTemplate(DomainModel _domain)
     : CodeTemplateBase
 {
+    public static string[] GlobalUsings =
+       [
+           "Baked.Orm",
+            "Baked.Runtime",
+            "FluentNHibernate",
+            "FluentNHibernate.Diagnostics",
+            "Microsoft.Extensions.DependencyInjection",
+            "NHibernate.Linq"
+       ];
+
     Lazy<IEnumerable<TypeModel>> _entities = new(() => _domain.Types.Having<EntityAttribute>().Where(CheckType));
 
     protected override IEnumerable<string> Render() =>

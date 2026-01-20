@@ -6,6 +6,18 @@ namespace Baked.CodingStyle.Id;
 
 public class IdMapperTemplate(TypeModel typeModel, IdAttribute.OrmConfig orm) : CodeTemplateBase
 {
+    public static string[] GlobalUsings =
+        [
+            "Baked.Business",
+            "Baked.CodingStyle.Id",
+            "FluentNHibernate",
+            "FluentNHibernate.Automapping",
+            "FluentNHibernate.Diagnostics",
+            "FluentNHibernate.Conventions.Helpers",
+            "FluentNHibernate.Mapping",
+            "NHibernate.Linq",
+        ];
+
     protected override IEnumerable<string> Render() =>
         [IdMapper()];
 

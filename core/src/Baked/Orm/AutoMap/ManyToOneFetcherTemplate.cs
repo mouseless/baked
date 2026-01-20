@@ -6,6 +6,16 @@ namespace Baked.Orm.AutoMap;
 public class ManyToOneFetcherTemplate(DomainModel _domain)
     : CodeTemplateBase
 {
+    public static string[] GlobalUsings =
+        [
+            "Baked.Orm",
+            "Baked.Runtime",
+            "FluentNHibernate",
+            "FluentNHibernate.Diagnostics",
+            "Microsoft.Extensions.DependencyInjection",
+            "NHibernate.Linq"
+        ];
+
     protected override IEnumerable<string> Render() => [
         ServiceAdder(),
         .. _domain

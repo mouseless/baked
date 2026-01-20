@@ -44,17 +44,7 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
                             entity.Apply(t => assembly.AddReferenceFrom(t));
                         }
                     },
-                    usings:
-                    [
-                        "Baked.Business",
-                        "Baked.CodingStyle.Id",
-                        "FluentNHibernate",
-                        "FluentNHibernate.Automapping",
-                        "FluentNHibernate.Diagnostics",
-                        "FluentNHibernate.Conventions.Helpers",
-                        "FluentNHibernate.Mapping",
-                        "NHibernate.Linq",
-                    ]
+                    usings: [.. IdMapperTemplate.GlobalUsings]
                 );
             });
         });
