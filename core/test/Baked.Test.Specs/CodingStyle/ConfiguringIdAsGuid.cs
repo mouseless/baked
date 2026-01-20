@@ -15,7 +15,7 @@ public class ConfiguringIdAsGuid : TestSpec
         var classMapping = configuration.GetClassMapping(typeof(Entity));
 
         classMapping.Identifier.Type.Name.ShouldBe(nameof(IdGuidUserType));
-        ((SimpleValue)classMapping.Identifier).IdentifierGeneratorStrategy.ShouldContain(nameof(IdGuidGenerator));
+        classMapping.Identifier.ShouldBeOfType<SimpleValue>().IdentifierGeneratorStrategy.ShouldContain(nameof(IdGuidGenerator));
     }
 
     [Test]

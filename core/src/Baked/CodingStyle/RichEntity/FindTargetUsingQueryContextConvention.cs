@@ -17,7 +17,6 @@ public class FindTargetUsingQueryContextConvention : IDomainModelConvention<Meth
 
         var entityType = context.Type;
         if (!entityType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
-
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         var target = action.Parameter[ParameterModelAttribute.TargetParameterName];
