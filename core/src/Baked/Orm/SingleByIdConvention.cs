@@ -11,10 +11,9 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
         if (!metadata.TryGetEntityType(context.Domain, out var entityType)) { return; }
+        if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         var queryContextTypeId = context.Domain.Types[typeof(IQueryContext<>)].MakeGenericTypeId(entityType);
-
-        if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         var singleByActionName = $"SingleBy{idInfo.PropertyName}";
         controller.Action[singleByActionName] = new(singleByActionName,
