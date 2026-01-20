@@ -47,10 +47,6 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 attribute: c => new ActionModelAttribute(),
                 order: 20
             );
-            builder.Conventions.SetPropertyAttribute(
-                when: c => c.Property.Name == "Id",
-                attribute: () => new IdAttribute("id")
-            );
 
             builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());
             builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
