@@ -8,7 +8,7 @@ namespace Baked.Test.CodingStyle;
 public class ConfiguringIdAsGuid : TestSpec
 {
     [Test]
-    public void Id_is_always_guid_id_user_type()
+    public void Id_is_always_id_guid_user_type_with_id_guid_generator()
     {
         var configuration = GiveMe.The<NHConfiguration>();
 
