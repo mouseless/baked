@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Orm;
 using FluentNHibernate.Conventions.Helpers;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,22 +26,10 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
                 generatedAssemblies.Add(nameof(IdCodingStyeFeature),
                     assembly =>
                     {
+                        var codeTemplate = new IdMapperTemplate(domain);
+                        assembly.AddCodes(codeTemplate);
+                        assembly.AddReferences(codeTemplate.References);
                         assembly.AddReferenceFrom<IdCodingStyeFeature>();
-
-                        foreach (var entity in domain.Types.Having<EntityAttribute>())
-                        {
-                            var idProperty = entity.GetMembers().FirstPropertyOrDefault<IdAttribute>();
-                            if (idProperty is null) { continue; }
-                            if (idProperty.Name != "Id") { continue; }
-                            if (!idProperty.PropertyType.Is<Business.Id>()) { continue; }
-
-                            var idAttribute = idProperty.Get<IdAttribute>();
-                            var orm = idAttribute.Orm ?? new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
-
-                            assembly.AddCodes(new IdMapperTemplate(entity, orm));
-
-                            entity.Apply(t => assembly.AddReferenceFrom(t));
-                        }
                     },
                     usings: [.. IdMapperTemplate.GlobalUsings]
                 );
@@ -55,8 +42,8 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
 
             configurator.UsingGeneratedContext(context =>
             {
-                var idMapperTypes = context.Assemblies[nameof(IdCodingStyeFeature)].GetExportedTypes().Where(t => t.IsAssignableTo(typeof(IIdMapper)));
-                foreach (var idMapperType in idMapperTypes)
+                var idMapperType = context.Assemblies[nameof(IdCodingStyeFeature)].GetExportedTypes().FirstOrDefault(t => t.IsAssignableTo(typeof(IIdMapper)));
+                if (idMapperType is not null)
                 {
                     var idMapper = (IIdMapper?)Activator.CreateInstance(idMapperType) ?? throw new($"Cannot create instance of {idMapperType}");
 

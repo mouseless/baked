@@ -1,12 +1,14 @@
 ﻿using Baked.Business;
 using Baked.CodeGeneration;
 using Baked.Domain.Model;
+using Baked.Orm;
+using System.Reflection;
 
 namespace Baked.CodingStyle.Id;
 
-public class IdMapperTemplate(TypeModel typeModel, IdAttribute.OrmConfig orm) : CodeTemplateBase
+public class IdMapperTemplate : CodeTemplateBase
 {
-    public static string[] GlobalUsings =
+    public static readonly string[] GlobalUsings =
         [
             "Baked.Business",
             "Baked.CodingStyle.Id",
@@ -18,24 +20,51 @@ public class IdMapperTemplate(TypeModel typeModel, IdAttribute.OrmConfig orm) : 
             "NHibernate.Linq",
         ];
 
+    readonly List<(TypeModel Type, IdAttribute.OrmConfig Orm)> _entities = [];
+
+    public IdMapperTemplate(DomainModel _domain)
+    {
+        foreach (var entity in _domain.Types.Having<EntityAttribute>())
+        {
+            var idProperty = entity.GetMembers().FirstPropertyOrDefault<IdAttribute>();
+            if (idProperty is null) { continue; }
+            if (idProperty.Name != "Id") { continue; }
+            if (!idProperty.PropertyType.Is<Business.Id>()) { continue; }
+
+            var idAttribute = idProperty.Get<IdAttribute>();
+            var orm = idAttribute.Orm ?? new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
+
+            _entities.Add((entity, orm));
+            entity.Apply(t => References.Add(t.Assembly));
+        }
+    }
+
+    public List<Assembly> References { get; private set; } = [];
+
     protected override IEnumerable<string> Render() =>
         [IdMapper()];
 
     string IdMapper() => $$"""
         namespace IdCodingStyle;
 
-        public class {{typeModel.Name}}IdMapper : IIdMapper
+        public class IdMapper : IIdMapper
         {
             public void Configure(AutoPersistenceModel model)
             {
-                model.Override<{{typeModel.CSharpFriendlyFullName}}>(x =>
-                {{If(orm.IdentifierGenerator is null, () => $$"""
-                    x.Id(e => e.Id).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Assigned()
-                """, @else: () => $$"""
-                    x.Id(e => e.Id).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Custom<{{orm.IdentifierGenerator?.GetCSharpFriendlyFullName()}}>()
-                """)}}
-                );
+            {{ForEach(_entities, e => $$"""
+                {{ModelOverride(e.Type, e.Orm)}}
+            """)}}
             }
         }
+    """;
+
+    string ModelOverride(TypeModel typeModel, IdAttribute.OrmConfig orm) => $$"""
+        model.Override<{{typeModel.CSharpFriendlyFullName}}>(x =>
+        {{If(orm.IdentifierGenerator is null, () => $$"""
+            x.Id(e => e.Id).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Assigned()
+        """, @else: () => $$"""
+            x.Id(e => e.Id).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Custom<{{orm.IdentifierGenerator?.GetCSharpFriendlyFullName()}}>()
+        """)}}
+        );
     """;
 }
