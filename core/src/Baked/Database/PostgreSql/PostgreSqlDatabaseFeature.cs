@@ -28,7 +28,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             persistence.Configurer =
                 PostgreSQLConfiguration.PostgreSQL83
                     .ConnectionString(_connectionString)
-                    .Dialect<CustomPostgreSQL83Dialect>();
+                    .Dialect<CustomPostgreSQL83Dialect>()
             ;
         });
 
