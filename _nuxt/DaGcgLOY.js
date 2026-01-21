@@ -1,1 +1,0 @@
-import{_ as n}from"./DlAUqK2U.js";import{c as s,o,q as r}from"./Bua0a4Z2.js";const t={},a={class:"f f--xl"};function c(e,_){return o(),s("div",a,[r(e.$slots,"default")])}const d=Object.assign(n(t,[["render",c]]),{__name:"Banner"});export{d as default};

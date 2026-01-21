@@ -1,1 +1,0 @@
-import{_ as a}from"./DlAUqK2U.js";import{c as s,o as t,a as o,q as r}from"./Bua0a4Z2.js";const n={},c={class:"table-container"};function l(e,_){return t(),s("div",c,[o("table",null,[r(e.$slots,"default",{},void 0,!0)])])}const i=Object.assign(a(n,[["render",l],["__scopeId","data-v-24fe1f69"]]),{__name:"ProseTable"});export{i as default};
