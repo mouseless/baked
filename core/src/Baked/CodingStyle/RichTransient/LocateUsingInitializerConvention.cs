@@ -22,7 +22,7 @@ public class LocateUsingInitializerConvention : IDomainModelConvention<TypeModel
             notNullValueExpression: $"({idParameter.ParameterType.CSharpFriendlyFullName}){p}",
             nullable: !notnull
         );
-        locatable.LookupListParameterTemplate = (locatorServiceParameter, p, isArray) => context.Type.BuildInitializerByIds(p,
+        locatable.LookupEnumerableParameterTemplate = (locatorServiceParameter, p, isArray) => context.Type.BuildInitializerByIds(p,
            isArray: isArray
        );
     }

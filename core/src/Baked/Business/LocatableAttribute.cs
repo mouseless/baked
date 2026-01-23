@@ -9,5 +9,5 @@ public class LocatableAttribute : Attribute
     public Func<ActionModelAttribute, ParameterModelAttribute> AddLocatorService { get; set; } = default!;
     public Func<ParameterModelAttribute, ParameterModelAttribute, string> FindTargetTemplate { get; set; } = default!;
     public Func<ParameterModelAttribute, string, bool, string> LookupParameterTemplate { get; set; } = default!;
-    public Func<ParameterModelAttribute, string, bool, string> LookupListParameterTemplate { get; set; } = default!;
+    public Func<ParameterModelAttribute, string, bool, string> LookupEnumerableParameterTemplate { get; set; } = default!;
 }

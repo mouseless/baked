@@ -17,12 +17,12 @@ public class LocateUsingQueryContextConvention : IDomainModelConvention<TypeMode
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         locatable.AddLocatorService = (action) => action.AddQueryContextAsService(queryContextType);
-        locatable.FindTargetTemplate = (locatorServiceParameter, parameter) => locatorServiceParameter.BuildSingleBy(parameter.Name, "Id", fromRoute: true);
-        locatable.LookupParameterTemplate = (locatorServiceParameter, p, notNull) => locatorServiceParameter.BuildSingleBy(p, idInfo.PropertyName,
+        locatable.FindTargetTemplate = (locatorServiceParameter, parameter) => locatorServiceParameter.BuildSingleById(parameter.Name, fromRoute: true);
+        locatable.LookupParameterTemplate = (locatorServiceParameter, p, notNull) => locatorServiceParameter.BuildSingleById(p,
             notNullValueExpression: $"({idInfo.Type}){p}",
             nullable: !notNull
         );
-        locatable.LookupListParameterTemplate = (locatorServiceParameter, p, isArray) => locatorServiceParameter.BuildByIds(p,
+        locatable.LookupEnumerableParameterTemplate = (locatorServiceParameter, p, isArray) => locatorServiceParameter.BuildByIds(p,
            isArray: isArray
         );
     }

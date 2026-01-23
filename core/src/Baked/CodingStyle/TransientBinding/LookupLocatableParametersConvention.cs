@@ -11,11 +11,12 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
     public void Apply(ParameterModelContext context)
     {
         if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
-        if (!context.Parameter.ParameterType.Is<IEnumerable>()) { return; }
-        if (!context.Parameter.ParameterType.TryGetMembers(out var parameterMembers)) { return; }
-        if (!parameterMembers.Has<TransientAttribute>()) { return; }
-        if (!parameterMembers.TryGetIdInfo(out var idInfo)) { return; }
-        if (!parameterMembers.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (!context.Parameter.ParameterType.IsAssignableTo<IEnumerable>()) { return; }
+        if (!context.Parameter.ParameterType.TryGetElementType(out var elementType)) { return; }
+        if (!elementType.TryGetMembers(out var elementMembers)) { return; }
+        if (!elementMembers.Has<TransientAttribute>()) { return; }
+        if (!elementMembers.TryGetIdInfo(out var idInfo)) { return; }
+        if (!elementMembers.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
 
         var notNull = context.Parameter.Has<NotNullAttribute>();
 
@@ -45,6 +46,6 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (locatorServiceParameter is null) { return; }
 
         parameter.ConvertToIds(idInfo);
-        parameter.LookupRenderer = p => locatable.LookupListParameterTemplate(locatorServiceParameter, p, context.Parameter.ParameterType.IsArray);
+        parameter.LookupRenderer = p => locatable.LookupEnumerableParameterTemplate(locatorServiceParameter, p, context.Parameter.ParameterType.IsArray);
     }
 }

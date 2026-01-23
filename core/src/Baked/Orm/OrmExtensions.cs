@@ -41,6 +41,18 @@ public static class OrmExtensions
         return action.AddAsService(queryContextType, name: $"{entityType.Name.Camelize()}Query");
     }
 
+    public static string BuildSingleById(this ParameterModelAttribute queryParameter, string valueExpression,
+        string? notNullValueExpression = default,
+        bool fromRoute = false,
+        TypeModel? castTo = default,
+        bool nullable = false
+    ) => queryParameter.BuildSingleBy(valueExpression, "Id",
+        notNullValueExpression: notNullValueExpression,
+        fromRoute: fromRoute,
+        castTo: castTo,
+        nullable: nullable
+    );
+
     public static string BuildSingleBy(this ParameterModelAttribute queryParameter, string valueExpression, string property,
         string? notNullValueExpression = default,
         bool fromRoute = false,

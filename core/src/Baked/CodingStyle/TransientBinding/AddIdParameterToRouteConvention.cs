@@ -14,16 +14,12 @@ public class AddIdParameterToRouteConvention : IDomainModelConvention<MethodMode
         if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }
+        if (!members.TryGetIdInfo(out var idInfo)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
 
-        var initializer = members.Methods.Having<InitializerAttribute>().Single();
-        if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var parameter)) { return; }
-
         action.Parameter[ParameterModelAttribute.TargetParameterName] =
-            new("id", parameter.ParameterType.CSharpFriendlyFullName, ParameterModelFrom.Route)
+            new(idInfo.PropertyName.Camelize(), idInfo.Type, ParameterModelFrom.Route)
             {
-                IsOptional = parameter.IsOptional,
-                DefaultValue = parameter.DefaultValue,
                 IsInvokeMethodParameter = false,
                 RoutePosition = 1
             };

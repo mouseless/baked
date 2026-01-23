@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
-using Humanizer;
 
 namespace Baked.CodingStyle.TransientBinding;
 
@@ -18,6 +17,5 @@ public class TargetUsingInitializerConvention : IDomainModelConvention<MethodMod
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         var initializerParameters = action.Parameters.Where(p => initializer.DefaultOverload.Parameters.Contains(p.Id));
         action.FindTargetStatement = $"target.{initializer.Name}({initializerParameters.Select(p => $"{p.InternalName}: {p.RenderLookup($"@{p.Name}")}").Join(", ")})";
-        action.RouteParts = [context.Type.Name.Pluralize(), action.Name];
     }
 }
