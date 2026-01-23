@@ -8,11 +8,16 @@
     present on a member info
 - [Layers / Domain](../layers/domain.md#proxifying-entities) is updated to
   contain a guide to enable proxifying in domain assemblies
-- `IdCodingStyle` feature is now added which configures primary key and foreign 
+- `IdCodingStyle` feature is now added which configures primary key and foreign
   key references for entities
-  - A property named `Id` with `Baked.Business.Id` user type is required for a 
+  - A property named `Id` with `Baked.Business.Id` user type is required for a
     property to be configured as `Id`
   - `Id` user type is mapped to `Guid` db type with autogenerate support
+
+## Improvements
+
+- Locatable domain objects were only supported in API parameters, now they are
+  rendered as `Ref<TLocatable>` (`{ id: "..." }`) in API record inputs as well
 
 ## Breaking Changes
 
