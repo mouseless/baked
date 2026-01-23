@@ -49,11 +49,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
 
             builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());
-            builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
-            builder.Conventions.Add(new LookupRichTransientByIdConvention());
-            builder.Conventions.Add(new LookupRichTransientsByIdsConvention());
-            builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention());
-            builder.Conventions.Add(new FindTargetUsingInitializerConvention(), order: 10);
+            builder.Conventions.Add(new LocateUsingInitializerConvention(), order: 10);
+            builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
         });
     }
 }

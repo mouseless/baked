@@ -1,17 +1,21 @@
 ﻿using Baked.Business;
 using Baked.Domain.Configuration;
+using Baked.Lifetime;
 using Baked.RestApi.Model;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Baked.CodingStyle.LocatableTransient;
+namespace Baked.CodingStyle.TransientBinding;
 
-public class LookupLocatableConvention : IDomainModelConvention<ParameterModelContext>
+public class LookupLocatableParametersConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
         if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
-        if (!context.Parameter.ParameterType.TryGetIdInfo(out var idInfo)) { return; }
-        if (!context.Parameter.ParameterType.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (!context.Parameter.ParameterType.Is<IEnumerable>()) { return; }
+        if (!context.Parameter.ParameterType.TryGetMembers(out var parameterMembers)) { return; }
+        if (!parameterMembers.Has<TransientAttribute>()) { return; }
+        if (!parameterMembers.TryGetIdInfo(out var idInfo)) { return; }
+        if (!parameterMembers.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
 
         var notNull = context.Parameter.Has<NotNullAttribute>();
 
@@ -32,7 +36,7 @@ public class LookupLocatableConvention : IDomainModelConvention<ParameterModelCo
 
         if (locatorServiceParameter is null) { return; }
 
-        parameter.ConvertToId(idInfo, nullable: !notNull);
-        parameter.LookupRenderer = p => locatable.LookupParameterTemplate(locatorServiceParameter, p);
+        parameter.ConvertToIds(idInfo);
+        parameter.LookupRenderer = p => locatable.LookupListParameterTemplate(locatorServiceParameter, p, context.Parameter.ParameterType.IsArray);
     }
 }

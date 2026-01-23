@@ -1,21 +1,17 @@
 ﻿using Baked.Business;
 using Baked.Domain.Configuration;
-using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
-public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<MethodModelContext>
+public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<TypeModelContext>
 {
-    public void Apply(MethodModelContext context)
+    public void Apply(TypeModelContext context)
     {
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
-        if (context.Method.Has<InitializerAttribute>()) { return; }
-        if (!action.Parameter.TryGetValue(ParameterModelAttribute.TargetParameterName, out var parameter)) { return; }
-
         var entitySubclassType = context.Type;
         if (!entitySubclassType.TryGetSubclassName(out var subclassName)) { return; }
         if (!entitySubclassType.TryGetEntityTypeFromSubclass(context.Domain, out var entityType)) { return; }
+        if (!entitySubclassType.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
         if (!entityType.TryGetQueryType(context.Domain, out var queryType)) { return; }
         if (!queryType.TryGetMembers(out var queryMembers)) { return; }
 
@@ -30,10 +26,7 @@ public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<Me
             ? $"{uniqueParameter.ParameterType.CSharpFriendlyFullName}.{subclassName}"
             : $"\"{subclassName}\"";
 
-        var queryParameter = action.AddAsService(queryType);
-
-        parameter.IsHardCoded = true;
-        action.RouteParts = [entityType.Name.Pluralize(), subclassName, action.Name];
-        action.FindTargetStatement = queryParameter.BuildSingleBy(valueExpression, property: unique.PropertyName, fromRoute: true, castTo: entitySubclassType);
+        locatable.AddLocatorService = (action) => action.AddAsService(queryType);
+        locatable.FindTargetTemplate = (locatableServiceParameter, p) => locatableServiceParameter.BuildSingleBy(valueExpression, property: unique.PropertyName, fromRoute: true, castTo: entitySubclassType);
     }
 }

@@ -64,7 +64,7 @@ public abstract class MonolithSpec : Spec
                 c => c.EntityExtensionViaComposition(),
                 c => c.EntitySubclassViaComposition(),
                 c => c.Id(),
-                c => c.LocatableTransient(),
+                c => c.TransientBinding(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
                 c => c.RecordsAreDtos(),

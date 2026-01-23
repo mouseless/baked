@@ -112,7 +112,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "report-page-sample/wide",
+                    "path": "report-page-samples/wide",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -151,7 +151,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "report-page-sample/left",
+                    "path": "report-page-samples/left",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -191,7 +191,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "report-page-sample/right",
+                    "path": "report-page-samples/right",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -351,7 +351,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "report-page-sample/first",
+                    "path": "report-page-samples/first",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -508,7 +508,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "report-page-sample/second",
+                    "path": "report-page-samples/second",
                     "headers": {
                       "type": "Inline",
                       "value": {

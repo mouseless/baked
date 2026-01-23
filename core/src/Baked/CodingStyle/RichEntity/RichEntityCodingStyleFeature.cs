@@ -52,7 +52,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             builder.Conventions.Add(new EntityUnderPluralGroupConvention());
             builder.Conventions.Add(new EntityInitializerIsPostResourceConvention());
-            builder.Conventions.Add(new FindTargetUsingQueryContextConvention(), order: 20);
+            builder.Conventions.Add(new LocateUsingQueryContextConvention(), order: 30);
         });
 
         configurator.ConfigureNHibernateInterceptor(interceptor =>
