@@ -50,7 +50,6 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());
             builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
-            builder.Conventions.Add(new AddIdParameterToRouteConvention());
             builder.Conventions.Add(new LookupRichTransientByIdConvention());
             builder.Conventions.Add(new LookupRichTransientsByIdsConvention());
             builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention());

@@ -40,7 +40,7 @@
             },
             "action": {
               "type": "Remote",
-              "path": "parents/{id}/children",
+              "path": "parent/{id}/children",
               "method": "POST",
               "params": {
                 "type": "Computed",
@@ -112,7 +112,7 @@
             },
             "action": {
               "type": "Remote",
-              "path": "parents/{id}/",
+              "path": "parent/{id}",
               "method": "PUT",
               "params": {
                 "type": "Computed",
@@ -157,7 +157,7 @@
             },
             "action": {
               "type": "Remote",
-              "path": "parents/{id}/",
+              "path": "parent/{id}",
               "method": "DELETE",
               "params": {
                 "type": "Computed",
@@ -297,7 +297,7 @@
               },
               "data": {
                 "type": "Remote",
-                "path": "parents/{id}/children",
+                "path": "parent/{id}/children",
                 "query": {
                   "type": "Computed",
                   "composable": "useNuxtRoute",
