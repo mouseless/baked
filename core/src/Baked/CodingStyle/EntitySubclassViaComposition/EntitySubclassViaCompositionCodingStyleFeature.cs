@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
@@ -45,8 +46,9 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 order: 30
             );
 
-            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention());
-            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention());
+            builder.Conventions.Add(new SubclassesAreServedUnderEntityRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder);
             builder.Conventions.Add(new TargetEntitySubclassFromRouteConvention(), order: 20);
         });
     }

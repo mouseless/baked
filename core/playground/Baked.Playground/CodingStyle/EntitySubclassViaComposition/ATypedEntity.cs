@@ -1,32 +1,35 @@
-﻿namespace Baked.Playground.CodingStyle.EntitySubclassViaComposition;
+﻿using Baked.Business;
+using Microsoft.Extensions.Logging;
 
-//public class ATypedEntity(ILogger<ATypedEntity> _logger, Func<TypedEntity> _newTypedEntity)
-//{
-//    TypedEntity _entity = default!;
+namespace Baked.Playground.CodingStyle.EntitySubclassViaComposition;
 
-//    public Id Id => _entity.Id;
+public class ATypedEntity(ILogger<ATypedEntity> _logger, Func<TypedEntity> _newTypedEntity)
+{
+    TypedEntity _entity = default!;
 
-//    public ATypedEntity With() =>
-//        With(_newTypedEntity().With(TypedEntityType.A));
+    public Id Id => _entity.Id;
 
-//    internal ATypedEntity With(TypedEntity entity)
-//    {
-//        if (entity.Type != TypedEntityType.A) { throw new InvalidOperationException("entity is not A"); }
+    public ATypedEntity With() =>
+        With(_newTypedEntity().With(TypedEntityType.A));
 
-//        _entity = entity;
+    internal ATypedEntity With(TypedEntity entity)
+    {
+        if (entity.Type != TypedEntityType.A) { throw new InvalidOperationException("entity is not A"); }
 
-//        return this;
-//    }
+        _entity = entity;
 
-//    public void OperateOnA() =>
-//        _logger.LogInformation($"Operating on A for entity#{_entity.Id}");
+        return this;
+    }
 
-//    public static explicit operator ATypedEntity(TypedEntity entity) => entity.Cast().To<ATypedEntity>();
-//}
+    public void OperateOnA() =>
+        _logger.LogInformation($"Operating on A for entity#{_entity.Id}");
 
-//public class ATypedEntities(Func<ATypedEntity> _newATypedEntity)
-//    : ICasts<TypedEntity, ATypedEntity>
-//{
-//    ATypedEntity ICasts<TypedEntity, ATypedEntity>.To(TypedEntity from) =>
-//        _newATypedEntity().With(from);
-//}
+    public static explicit operator ATypedEntity(TypedEntity entity) => entity.Cast().To<ATypedEntity>();
+}
+
+public class ATypedEntities(Func<ATypedEntity> _newATypedEntity)
+    : ICasts<TypedEntity, ATypedEntity>
+{
+    ATypedEntity ICasts<TypedEntity, ATypedEntity>.To(TypedEntity from) =>
+        _newATypedEntity().With(from);
+}

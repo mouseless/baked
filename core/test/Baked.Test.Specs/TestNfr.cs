@@ -1,4 +1,5 @@
-﻿using Baked.Playground.Orm;
+﻿using Baked.Playground.CodingStyle.EntitySubclassViaComposition;
+using Baked.Playground.Orm;
 using Baked.Testing;
 using Humanizer;
 using Newtonsoft.Json;
@@ -11,8 +12,7 @@ public abstract class TestNfr : MonolithNfr
     static TestNfr() =>
         Init<Program>();
 
-    readonly IEnumerable<string> _entityNamesToClear = [nameof(Entity), nameof(Parent)];
-    //readonly IEnumerable<string> _entityNamesToClear = [nameof(Entity), nameof(Parent), nameof(TypedEntity)];
+    readonly IEnumerable<string> _entityNamesToClear = [nameof(Entity), nameof(Parent), nameof(TypedEntity)];
 
     public override async Task OneTimeTearDown()
     {

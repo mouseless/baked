@@ -15,11 +15,11 @@ public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<Ty
         if (!entityType.TryGetQueryType(context.Domain, out var queryType)) { return; }
         if (!queryType.TryGetMembers(out var queryMembers)) { return; }
 
-        var singleByUniqueMethod = queryMembers.FirstMethodOrDefault<SingleByUniqueAttribute>();
+        // TODO requires review
+        var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name.StartsWith("SingleBy"));
         if (singleByUniqueMethod is null) { return; }
-        if (!singleByUniqueMethod.TryGet<SingleByUniqueAttribute>(out var unique)) { return; }
 
-        var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters[unique.PropertyName.Camelize()];
+        var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
         if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
 
         var valueExpression = uniqueParameter.ParameterType.IsEnum
@@ -27,6 +27,6 @@ public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<Ty
             : $"\"{subclassName}\"";
 
         locatable.AddLocatorService = (action) => action.AddAsService(queryType);
-        locatable.FindTargetTemplate = (locatableServiceParameter, p) => locatableServiceParameter.BuildSingleBy(valueExpression, property: unique.PropertyName, fromRoute: true, castTo: entitySubclassType);
+        locatable.FindTargetTemplate = (locatableServiceParameter, p) => locatableServiceParameter.BuildSingleBy(valueExpression, property: uniqueParameter.Name.Titleize(), fromRoute: true, castTo: entitySubclassType);
     }
 }
