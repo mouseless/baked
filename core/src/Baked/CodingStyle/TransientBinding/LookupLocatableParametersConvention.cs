@@ -24,6 +24,10 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         {
             // parameter belongs to an action, add service to the parent action
             locatorServiceParameter = locatable.AddLocatorService(action);
+            if (locatable.IsAsync)
+            {
+                action.MakeAsync();
+            }
         }
         else if (context.Method.Has<InitializerAttribute>())
         {
@@ -31,6 +35,10 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
             foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.Get<ActionModelAttribute>()))
             {
                 locatorServiceParameter = locatable.AddLocatorService(otherAction);
+                if (locatable.IsAsync)
+                {
+                    otherAction.MakeAsync();
+                }
             }
         }
 

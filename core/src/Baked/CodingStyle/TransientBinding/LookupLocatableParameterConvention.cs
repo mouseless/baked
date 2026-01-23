@@ -39,7 +39,6 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
 
         if (locatorServiceParameter is null) { return; }
 
-        Console.WriteLine(context.Parameter.ParameterType.Name);
         var notNull = context.Parameter.Has<NotNullAttribute>();
         parameter.ConvertToId(idInfo, nullable: !notNull);
         parameter.LookupRenderer = p =>
