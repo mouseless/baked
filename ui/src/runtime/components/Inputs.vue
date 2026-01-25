@@ -2,14 +2,14 @@
   <Input
     v-for="input in inputs"
     :key="input.name"
-    v-model="values[input.name]"
+    v-model="models[input.name]"
     :schema="input"
     :class="inputClass"
   />
 </template>
 <script setup>
-import { onMounted, watch, reactive } from "vue";
-import { useContext } from "#imports";
+import { computed, reactive, watch } from "vue";
+import { useContext, useRoute } from "#imports";
 import { Input } from "#components";
 
 const context = useContext();
@@ -22,54 +22,54 @@ const { inputs } = defineProps({
 const emit = defineEmits(["ready", "changed"]);
 
 const parentPath = context.injectPath();
-const values = reactive({});
+const models = reactive({});
+const values = computed(() =>
+  inputs.reduce((result, input) => {
+    result[input.name] = getValue(input);
+
+    return result;
+  }, {})
+);
 
 context.providePath(`${parentPath}/inputs`);
 
-watch(values, async() => {
+watch(values, () => {
   emitChanged();
   emitReady();
-}, { deep: true });
-
-if(inputs.some(i => i.queryBound)) {
-  watch(route, async() => {
-    emitChanged();
-    emitReady();
-  });
-}
-
-onMounted(async() => {
-  emitChanged();
-  emitReady();
-});
+}, { immediate: true });
 
 function emitReady() {
   emit("ready",
     inputs
       .filter(i => i.required)
-      .reduce((result, i) => result && checkValue(values[i.name], i), true)
+      .map(getValue)
+      .reduce((result, value) => result && checkValue(value), true)
   );
 }
 
 function emitChanged() {
   emit("changed", {
     uniqueKey: inputs
-      .filter(i => checkValue(values[i.name], i))
-      .map(i => values[i.name])
+      .map(getValue)
+      .filter(checkValue)
       .join("-"),
-    values
+    values: values.value
   });
 }
 
-function checkValue(value, input) {
-  if(input.queryBound && route.query[input.name] !== `${value}`) {
-    return false;
-  }
-
+function checkValue(value) {
   if(typeof value === "string") {
-    return value !== "";
+    return (value !== "");
+  } else {
+    return (value !== undefined && value !== null);
   }
+}
 
-  return value !== undefined && value !== null;
+function getValue(input) {
+  if(input.queryBound) {
+    return route.query[input.name];
+  } else {
+    return models[input.name];
+  }
 }
 </script>
