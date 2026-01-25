@@ -2,6 +2,7 @@
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
+using Baked.Runtime;
 
 namespace Baked.CodingStyle.RichTransient;
 
@@ -50,7 +51,54 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());
             builder.Conventions.Add(new LocateUsingInitializerConvention(), order: 10);
+            builder.Conventions.Add(new LocateUsingLocatorConvention(), order: 10);
             builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            configurator.UsingDomainModel(domain =>
+            {
+                generatedAssemblies.Add(nameof(RichTransientCodingStyleFeature),
+                    assembly =>
+                    {
+                        foreach (var item in domain.Types.Having<TransientAttribute>())
+                        {
+                            if (item.GetMembers().Methods.Any(m =>
+                                    m.Has<InitializerAttribute>() &&
+                                    m.DefaultOverload.IsPublic &&
+                                    m.DefaultOverload.Parameters.Count == 1 &&
+                                    m.DefaultOverload.Parameters.All(p => p.Name == "id" && (p.ParameterType.IsValueType || p.ParameterType.Is<string>()))
+                                ) &&
+                                item.GetMetadata().TryGet<LocatableAttribute>(out var locatable)
+                            )
+                            {
+                                Console.WriteLine(item.Name);
+                                var codeTemplate = new LocatorTemplate(item, locatable.IsAsync);
+                                assembly.AddCodes(codeTemplate);
+                                item.Apply(t => assembly.AddReferenceFrom(t));
+                            }
+                        }
+
+                        assembly.AddReferenceFrom<RichTransientCodingStyleFeature>();
+                    },
+                    usings: [.. LocatorTemplate.GlobalUsings]
+                );
+            });
+        });
+
+        configurator.ConfigureServiceCollection(services =>
+        {
+            configurator.UsingGeneratedContext(context =>
+            {
+                var locatorAdderType = context.Assemblies[nameof(RichTransientCodingStyleFeature)].GetExportedTypes().First(t => t.IsAssignableTo(typeof(IServiceAdder)));
+                if (locatorAdderType is not null)
+                {
+                    var locatorAdder = (IServiceAdder?)Activator.CreateInstance(locatorAdderType) ?? throw new($"Cannot create instance of {locatorAdderType}");
+
+                    locatorAdder.AddServices(services);
+                }
+            });
         });
     }
 }

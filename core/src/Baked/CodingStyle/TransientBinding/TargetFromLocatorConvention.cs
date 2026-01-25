@@ -22,9 +22,16 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
                 RoutePosition = 1
             };
         id.AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
+        var throwNotFound = action.Parameter["throwNotFound"] =
+            new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query)
+            {
+                IsHardCoded = true,
+                LookupRenderer = _ => "true",
+                IsInvokeMethodParameter = false
+            };
 
         var locatorServiceParameter = locatable.AddAsService(action, context.Type.Name.Camelize() + "Locator");
-        action.FindTargetStatement = locatable.TargetTemplate(locatorServiceParameter, [id]);
+        action.FindTargetStatement = locatable.TargetTemplate(locatorServiceParameter, [id, throwNotFound]);
         action.RouteParts = [context.Type.Name.Pluralize(), action.Name];
         if (locatable.IsAsync)
         {

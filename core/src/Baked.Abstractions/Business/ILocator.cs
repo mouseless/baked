@@ -2,7 +2,7 @@
 
 public interface ILocator<T>
 {
-    T SingleById(object id, bool throwNotFound);
+    T Single(Id id, bool throwNotFound = false);
 
-    IEnumerable<T> ByIds(object id);
+    IEnumerable<T> Multiple(IEnumerable<Id> ids);
 }

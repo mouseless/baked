@@ -3,7 +3,7 @@ using Baked.Domain.Configuration;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class LocateUsingInitializerConvention : IDomainModelConvention<TypeModelContext>
+public class LocateUsingLocatorConvention : IDomainModelConvention<TypeModelContext>
 {
     public void Apply(TypeModelContext context)
     {
@@ -16,8 +16,9 @@ public class LocateUsingInitializerConvention : IDomainModelConvention<TypeModel
         var actionShouldBeAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
 
         locatable.IsAsync = actionShouldBeAsync;
-        context.Type.Apply(t => locatable.ServiceType = t);
-        locatable.LocateSingleMethodName = initializer.Name;
-        locatable.FromFactory = true;
+        context.Type.Apply(t => locatable.ServiceType = typeof(ILocator<>).MakeGenericType(actionShouldBeAsync ? typeof(Task<>).MakeGenericType(t) : t));
+        locatable.LocateSingleMethodName = "Single";
+        locatable.LocateMultipleMethodName = "Multiple";
+        locatable.FromFactory = false;
     }
 }
