@@ -23,8 +23,8 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
             };
         id.AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
 
-        var locatorServiceParameter = locatable.AddLocatorService(action);
-        action.FindTargetStatement = locatable.FindTargetTemplate(locatorServiceParameter, id);
+        var locatorServiceParameter = locatable.AddAsService(action, context.Type.Name.Camelize() + "Locator");
+        action.FindTargetStatement = locatable.TargetTemplate(locatorServiceParameter, [id]);
         action.RouteParts = [context.Type.Name.Pluralize(), action.Name];
         if (locatable.IsAsync)
         {

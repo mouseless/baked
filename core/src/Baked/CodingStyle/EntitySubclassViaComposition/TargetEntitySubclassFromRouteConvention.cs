@@ -1,6 +1,5 @@
 ﻿using Baked.Business;
 using Baked.Domain.Configuration;
-using Humanizer;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
@@ -26,7 +25,8 @@ public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<Ty
             ? $"{uniqueParameter.ParameterType.CSharpFriendlyFullName}.{subclassName}"
             : $"\"{subclassName}\"";
 
-        locatable.AddLocatorService = (action) => action.AddAsService(queryType);
-        locatable.FindTargetTemplate = (locatableServiceParameter, p) => locatableServiceParameter.BuildSingleBy(valueExpression, property: uniqueParameter.Name.Titleize(), fromRoute: true, castTo: entitySubclassType);
+        queryType.Apply(t => locatable.ServiceType = t);
+        locatable.LocateSingleMethodName = singleByUniqueMethod.Name;
+        locatable.CastTo = entitySubclassType;
     }
 }

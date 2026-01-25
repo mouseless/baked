@@ -16,14 +16,8 @@ public class LocateUsingInitializerConvention : IDomainModelConvention<TypeModel
         var actionShouldBeAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
 
         locatable.IsAsync = actionShouldBeAsync;
-        locatable.AddLocatorService = (action) => action.AddFactoryAsService(context.Type);
-        locatable.FindTargetTemplate = (locatorServiceParameter, p) => context.Type.BuildInitializerById(p.Name);
-        locatable.LookupParameterTemplate = (locatorServiceParameter, p, notnull) => context.Type.BuildInitializerById(p,
-            notNullValueExpression: $"({idParameter.ParameterType.CSharpFriendlyFullName}){p}",
-            nullable: !notnull
-        );
-        locatable.LookupEnumerableParameterTemplate = (locatorServiceParameter, p, isArray) => context.Type.BuildInitializerByIds(p,
-           isArray: isArray
-       );
+        context.Type.Apply(t => locatable.ServiceType = t);
+        locatable.LocateSingleMethodName = initializer.Name;
+        locatable.IsFactoryService = true;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Orm;
+using Humanizer;
 
 namespace Baked.CodingStyle.RichEntity;
 
@@ -16,14 +17,8 @@ public class LocateUsingQueryContextConvention : IDomainModelConvention<TypeMode
         if (!entityType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
-        locatable.AddLocatorService = (action) => action.AddQueryContextAsService(queryContextType);
-        locatable.FindTargetTemplate = (locatorServiceParameter, parameter) => locatorServiceParameter.BuildSingleById(parameter.Name, fromRoute: true);
-        locatable.LookupParameterTemplate = (locatorServiceParameter, p, notNull) => locatorServiceParameter.BuildSingleById(p,
-            notNullValueExpression: $"({idInfo.Type}){p}",
-            nullable: !notNull
-        );
-        locatable.LookupEnumerableParameterTemplate = (locatorServiceParameter, p, isArray) => locatorServiceParameter.BuildByIds(p,
-           isArray: isArray
-        );
+        queryContextType.Apply(t => locatable.ServiceType = t);
+        locatable.LocateSingleMethodName = $"SingleBy{idInfo.PropertyName}";
+        locatable.LocateMultipleMethodName = $"By{idInfo.PropertyName.Pluralize()}";
     }
 }

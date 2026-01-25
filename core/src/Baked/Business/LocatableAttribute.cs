@@ -1,4 +1,4 @@
-﻿using Baked.RestApi.Model;
+﻿using Baked.Domain.Model;
 
 namespace Baked.Business;
 
@@ -6,8 +6,9 @@ namespace Baked.Business;
 public class LocatableAttribute : Attribute
 {
     public bool IsAsync { get; set; } = default!;
-    public Func<ActionModelAttribute, ParameterModelAttribute> AddLocatorService { get; set; } = default!;
-    public Func<ParameterModelAttribute, ParameterModelAttribute, string> FindTargetTemplate { get; set; } = default!;
-    public Func<ParameterModelAttribute, string, bool, string> LookupParameterTemplate { get; set; } = default!;
-    public Func<ParameterModelAttribute, string, bool, string> LookupEnumerableParameterTemplate { get; set; } = default!;
+    public Type ServiceType { get; set; } = default!;
+    public bool IsFactoryService { get; set; } = false;
+    public string LocateSingleMethodName { get; set; } = default!;
+    public string? LocateMultipleMethodName { get; set; }
+    public TypeModel? CastTo { get; set; }
 }

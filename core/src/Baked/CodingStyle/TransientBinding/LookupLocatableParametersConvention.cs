@@ -2,6 +2,7 @@
 using Baked.Domain.Configuration;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
+using Humanizer;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.TransientBinding;
@@ -24,7 +25,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (context.Method.TryGet<ActionModelAttribute>(out var action))
         {
             // parameter belongs to an action, add service to the parent action
-            locatorServiceParameter = locatable.AddLocatorService(action);
+            locatorServiceParameter = locatable.AddAsService(action, elementType.Name.Camelize() + "Locator");
             if (locatable.IsAsync)
             {
                 action.MakeAsync();
@@ -35,7 +36,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
             // parameter belongs to an initializer, add service to all actions
             foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.Get<ActionModelAttribute>()))
             {
-                locatorServiceParameter = locatable.AddLocatorService(otherAction);
+                locatorServiceParameter = locatable.AddAsService(otherAction, elementType.Name.Camelize() + "Locator");
                 if (locatable.IsAsync)
                 {
                     otherAction.MakeAsync();
@@ -46,6 +47,8 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (locatorServiceParameter is null) { return; }
 
         parameter.ConvertToIds(idInfo);
-        parameter.LookupRenderer = p => locatable.LookupEnumerableParameterTemplate(locatorServiceParameter, p, context.Parameter.ParameterType.IsArray);
+        parameter.LookupRenderer = p => locatable.LookupMultipleTemplate(locatorServiceParameter, p,
+            isArray: context.Parameter.ParameterType.IsArray
+        );
     }
 }
