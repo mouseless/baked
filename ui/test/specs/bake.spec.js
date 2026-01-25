@@ -106,8 +106,8 @@ test.describe("Action", () =>{
 
     await button.click();
 
-    await expect(page.locator(primevue.toast.base)).toBeVisible();
-    await expect(page.locator(primevue.toast.summary)).toHaveText("Execute Action");
+    await expect(page.locator(primevue.toast.base).first()).toBeVisible();
+    await expect(page.locator(primevue.toast.summary).first()).toHaveText("Execute Action");
 
     const request = await page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
     expect(request.method()).toBe("POST");

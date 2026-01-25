@@ -18,7 +18,7 @@
   />
 </template>
 <script setup>
-import { nextTick, watch } from "vue";
+import { watch } from "vue";
 import { InputNumber, InputText } from "primevue";
 
 const { schema } = defineProps({
@@ -32,7 +32,7 @@ watch(model, newValue => {
   if(newValue !== undefined && newValue !== null) { return; }
   if(newValue === defaultValue) { return; }
 
-  nextTick(() => model.value = defaultValue);
+  model.value = defaultValue;
 }, { immediate: true });
 
 function onInput(event) {
