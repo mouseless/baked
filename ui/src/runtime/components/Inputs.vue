@@ -66,9 +66,9 @@ function emitChanged() {
 
 function checkValue(value) {
   if(typeof value === "string") {
-    return (value !== "");
+    return value !== "";
   } else {
-    return (value !== undefined && value !== null);
+    return value !== undefined && value !== null;
   }
 }
 
