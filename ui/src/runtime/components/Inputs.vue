@@ -13,6 +13,7 @@ import { useContext } from "#imports";
 import { Input } from "#components";
 
 const context = useContext();
+const route = useRoute();
 
 const { inputs } = defineProps({
   inputs: { type: Array, required: true },
@@ -30,6 +31,13 @@ watch(values, async() => {
   emitReady();
 }, { deep: true });
 
+if(inputs.some(i => i.queryBound)) {
+  watch(route, async() => {
+    emitChanged();
+    emitReady();
+  });
+}
+
 onMounted(async() => {
   emitChanged();
   emitReady();
@@ -39,21 +47,25 @@ function emitReady() {
   emit("ready",
     inputs
       .filter(i => i.required)
-      .reduce((result, i) => result && checkValue(values[i.name]), true)
+      .reduce((result, i) => result && checkValue(values[i.name], i), true)
   );
 }
 
 function emitChanged() {
   emit("changed", {
     uniqueKey: inputs
+      .filter(i => checkValue(values[i.name], i))
       .map(i => values[i.name])
-      .filter(checkValue)
       .join("-"),
     values
   });
 }
 
-function checkValue(value) {
+function checkValue(value, input) {
+  if(input.queryBound && route.query[input.name] !== `${value}`) {
+    return false;
+  }
+
   if(typeof value === "string") {
     return value !== "";
   }
