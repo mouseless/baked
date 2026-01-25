@@ -33,26 +33,33 @@ const values = computed(() =>
 
 context.providePath(`${parentPath}/inputs`);
 
-watch(values, () => {
+watch(values, newValues => {
+  if(inputs
+    .filter(i => i.default || i.defaultSelfManaged)
+    .some(i => !checkValue(newValues[i.name]))
+  ) { return; }
+
   emitChanged();
   emitReady();
 }, { immediate: true });
 
 function emitReady() {
-  emit("ready",
-    inputs
-      .filter(i => i.required)
-      .map(getValue)
-      .reduce((result, value) => result && checkValue(value), true)
-  );
+  const ready = inputs
+    .filter(i => i.required)
+    .map(getValue)
+    .reduce((result, value) => result && checkValue(value), true);
+
+  emit("ready", ready);
 }
 
 function emitChanged() {
+  const uniqueKey = inputs
+    .map(getValue)
+    .filter(checkValue)
+    .join("-");
+
   emit("changed", {
-    uniqueKey: inputs
-      .map(getValue)
-      .filter(checkValue)
-      .join("-"),
+    uniqueKey,
     values: values.value
   });
 }

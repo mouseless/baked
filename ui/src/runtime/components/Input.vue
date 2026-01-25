@@ -30,12 +30,14 @@ onMounted(async() => {
     defaultValue = await dataFetcher.fetch({ data: schema.default, contextData });
   }
 
-  // parent component sets model to null during setup, because of that on
-  // mounted is used to set model value
-  if(schema.queryBound && checkValue(query.value)) {
-    model.value = query.value;
-  } else {
-    await set(defaultValue);
+  // parent component might set model to null during setup, because of that on
+  // mounted is used to set model value if it doesn't check
+  if(!checkValue(model.value)) {
+    if(schema.queryBound && checkValue(query.value)) {
+      model.value = query.value;
+    } else {
+      await set(defaultValue);
+    }
   }
 
   // to prevent watch callbacks run before setting query values to model, watch
