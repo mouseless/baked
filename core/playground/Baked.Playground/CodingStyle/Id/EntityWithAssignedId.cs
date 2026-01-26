@@ -7,9 +7,9 @@ public class EntityWithAssignedId(IEntityContext<EntityWithAssignedId> _context)
 {
     public Id Id { get; private set; } = default!;
 
-    public EntityWithAssignedId With(Id id)
+    public EntityWithAssignedId With(string id)
     {
-        Id = id;
+        Id = Id.Parse(id);
 
         return _context.Insert(this);
     }

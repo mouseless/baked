@@ -86,6 +86,13 @@ public static class BusinessExtensions
             metadata.TryGet(out namespaceAttribute);
     }
 
+    public static bool TryGetFirstProperty<TAttribute>(this TypeModelMembers members, [NotNullWhen(true)] out PropertyModel? property) where TAttribute : Attribute
+    {
+        property = members.Properties.FirstOrDefault(p => p.CustomAttributes.Contains<TAttribute>());
+
+        return property is not null;
+    }
+
     public static PropertyModel FirstProperty<TAttribute>(this TypeModelMembers members,
         Func<PropertyModel, bool>? filter = default
     ) where TAttribute : Attribute =>
