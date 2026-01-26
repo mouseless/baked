@@ -15,13 +15,7 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
         if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
         if (!metadata.TryGetIdInfo(out var idInfo)) { return; }
 
-        var id = action.Parameter[ParameterModelAttribute.TargetParameterName] =
-            new(idInfo.PropertyName.Camelize(), idInfo.Type, ParameterModelFrom.Route)
-            {
-                IsInvokeMethodParameter = false,
-                RoutePosition = 1
-            };
-        id.AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
+        var id = action.Parameter[ParameterModelAttribute.TargetParameterName];
         var throwNotFound = action.Parameter["throwNotFound"] =
             new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query)
             {
@@ -31,7 +25,7 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
             };
 
         var locatorServiceParameter = locatable.AddAsService(action, context.Type.Name.Camelize() + "Locator");
-        action.FindTargetStatement = locatable.TargetTemplate(locatorServiceParameter, [id, throwNotFound]);
+        action.FindTargetStatement = locatable.TargetTemplate(locatorServiceParameter, [id, throwNotFound], castTo: locatable.CastTo);
         action.RouteParts = [context.Type.Name.Pluralize(), action.Name];
         if (locatable.IsAsync)
         {

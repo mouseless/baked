@@ -9,21 +9,15 @@ public class LocatorTemplate(TypeModel typeModel, bool isAsync) : CodeTemplateBa
        [
             "Baked.Business",
             "Baked.CodingStyle.Id",
-            "FluentNHibernate",
-            "FluentNHibernate.Automapping",
-            "FluentNHibernate.Diagnostics",
-            "FluentNHibernate.Conventions.Helpers",
-            "FluentNHibernate.Mapping",
-            "NHibernate.Linq",
         ];
 
     protected override IEnumerable<string> Render() =>
         [Locator()];
 
     string Locator() => $$"""
-    using Baked.Business;
+    namespace RichTransient;
 
-    public class {{typeModel.Name}}Locator({{Factory}}) : {{ILocator}}
+    public class {{Implementaton}}({{Factory}}) : {{ILocator}}
     {
         public IEnumerable<{{ReturnType}}> Multiple(IEnumerable<Id> ids)
         {
@@ -39,5 +33,6 @@ public class LocatorTemplate(TypeModel typeModel, bool isAsync) : CodeTemplateBa
 
     string ReturnType => isAsync ? $$"""Task<{{typeModel.CSharpFriendlyFullName}}>""" : $$"""{{typeModel.CSharpFriendlyFullName}}""";
     string Factory => $$"""Func<{{typeModel.CSharpFriendlyFullName}}> _new{{typeModel.Name}}""";
-    string ILocator => $$"""ILocator<{{ReturnType}}>""";
+    public string ILocator => $$"""ILocator<{{ReturnType}}>""";
+    public string Implementaton => $$"""{{typeModel.Name}}Locator""";
 }

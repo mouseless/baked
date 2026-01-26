@@ -62,6 +62,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 generatedAssemblies.Add(nameof(RichTransientCodingStyleFeature),
                     assembly =>
                     {
+                        List<(string, string)> locators = [];
                         foreach (var item in domain.Types.Having<TransientAttribute>())
                         {
                             if (item.GetMembers().Methods.Any(m =>
@@ -73,13 +74,14 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                                 item.GetMetadata().TryGet<LocatableAttribute>(out var locatable)
                             )
                             {
-                                Console.WriteLine(item.Name);
                                 var codeTemplate = new LocatorTemplate(item, locatable.IsAsync);
                                 assembly.AddCodes(codeTemplate);
                                 item.Apply(t => assembly.AddReferenceFrom(t));
+                                locators.Add((codeTemplate.ILocator, codeTemplate.Implementaton));
                             }
                         }
 
+                        assembly.AddCodes(new LocatorAdderTemplate(locators));
                         assembly.AddReferenceFrom<RichTransientCodingStyleFeature>();
                     },
                     usings: [.. LocatorTemplate.GlobalUsings]

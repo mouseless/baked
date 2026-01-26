@@ -1,0 +1,28 @@
+﻿using Baked.Business;
+using Baked.Domain.Configuration;
+
+namespace Baked.CodingStyle.EntitySubclassViaComposition;
+
+public class LocateUsingEntityTypeConvention : IDomainModelConvention<TypeModelContext>
+{
+    public void Apply(TypeModelContext context)
+    {
+        var entitySubclassType = context.Type;
+        if (!entitySubclassType.TryGetSubclassName(out var subclassName)) { return; }
+        if (!entitySubclassType.TryGetEntityTypeFromSubclass(context.Domain, out var entityType)) { return; }
+        if (!entitySubclassType.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (!entityType.TryGetQueryType(context.Domain, out var queryType)) { return; }
+        if (!queryType.TryGetMembers(out var queryMembers)) { return; }
+
+        // TODO requires review
+        var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name.StartsWith("SingleBy"));
+        if (singleByUniqueMethod is null) { return; }
+
+        var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
+        if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
+
+        queryType.Apply(t => locatable.ServiceType = t);
+        locatable.LocateSingleMethodName = singleByUniqueMethod.Name;
+        locatable.CastTo = entitySubclassType;
+    }
+}
