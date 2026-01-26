@@ -21,10 +21,5 @@ public class MapingIdsOverrideFeature : IFeature
                 attribute: id => id.Orm = new(typeof(IdAssignedUserType)) { IdentifierGenerator = typeof(IdAssignedGenerator) }
             );
         });
-
-        //configurator.ConfigureAutoPersistenceModel(model =>
-        //{
-        //    model.Override<EntityWithIntId>(x => x.Id(e => e.Id).GeneratedBy.Identity());
-        //});
     }
 }
