@@ -15,6 +15,7 @@ public class TransientBindingCodingStyleFeature : IFeature<CodingStyleConfigurat
             builder.Conventions.Add(new LookupLocatableParametersConvention(), order: RestApiLayer.MaxConventionOrder - 30);
             builder.Conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 20);
             builder.Conventions.Add(new TargetUsingInitializerConvention(), order: RestApiLayer.MaxConventionOrder - 20);
+            builder.Conventions.Add(new RemoveInitializerNameRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
     }
 }
