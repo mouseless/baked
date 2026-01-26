@@ -17,7 +17,7 @@ public class LocateUsingEntityLocatorConvention : IDomainModelConvention<TypeMod
         if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
 
         entityType.Apply(t => locatable.ServiceType = typeof(ILocator<>).MakeGenericType(t));
-        locatable.LocateSingleMethodName = $"Single";
-        locatable.LocateMultipleMethodName = $"Multiple";
+        locatable.LocateSingleMethodName = "Single";
+        locatable.LocateMultipleMethodName = "Multiple";
     }
 }

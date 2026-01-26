@@ -46,11 +46,11 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 order: 30
             );
 
+            builder.Conventions.Add(new LocateUsingEntityTypeConvention(), order: 20);
+            builder.Conventions.Add(new UniqueIdParameterConvention(), order: RestApiLayer.MaxConventionOrder - 50);
             builder.Conventions.Add(new SubclassesAreServedUnderEntityRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
             builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
             builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new LocateUsingEntityTypeConvention(), order: 20);
-            builder.Conventions.Add(new UniqueIdParameterConvention(), order: RestApiLayer.MaxConventionOrder - 50);
             builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
     }

@@ -13,9 +13,6 @@ public class EntityWithAssignedId(IEntityContext<EntityWithAssignedId> _context)
 
         return _context.Insert(this);
     }
-
-    internal void Delete() =>
-        _context.Delete(this);
 }
 
 public class EntityWithAssignedIds(IQueryContext<EntityWithAssignedId> _context)
