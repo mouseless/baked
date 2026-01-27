@@ -86,6 +86,13 @@ public static class BusinessExtensions
             metadata.TryGet(out namespaceAttribute);
     }
 
+    public static bool TryGetFirstProperty<TAttribute>(this TypeModelMembers members, [NotNullWhen(true)] out PropertyModel? property) where TAttribute : Attribute
+    {
+        property = members.Properties.FirstOrDefault(p => p.CustomAttributes.Contains<TAttribute>());
+
+        return property is not null;
+    }
+
     public static PropertyModel FirstProperty<TAttribute>(this TypeModelMembers members,
         Func<PropertyModel, bool>? filter = default
     ) where TAttribute : Attribute =>
@@ -137,7 +144,9 @@ public static class BusinessExtensions
         if (!members.Properties.Having<IdAttribute>().Any()) { return false; }
 
         var idProperty = members.FirstProperty<IdAttribute>();
-        idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
+        idInfo = idProperty.PropertyType.TryGetIdInfo(out var id)
+            ? id
+            : new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
 
         return true;
     }

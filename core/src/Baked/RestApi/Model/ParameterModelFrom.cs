@@ -5,5 +5,6 @@ public enum ParameterModelFrom
     Services,
     Route,
     Query,
-    BodyOrForm
+    BodyOrForm,
+    Inline
 }
