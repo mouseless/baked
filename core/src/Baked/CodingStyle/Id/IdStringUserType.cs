@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace Baked.CodingStyle.Id;
 
-public class IdAssignedUserType : UserTypeBase
+public class IdStringUserType : UserTypeBase
 {
     public override SqlType[] SqlTypes => [SqlTypeFactory.GetAnsiString(1024)];
     public override Type ReturnedType => typeof(Business.Id);

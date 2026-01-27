@@ -27,6 +27,6 @@ public class IdIntUserType : UserTypeBase
             return;
         }
 
-        NHibernateUtil.UInt32.NullSafeSet(cmd, uint.Parse($"{value}"), index, session);
+        NHibernateUtil.UInt32.NullSafeSet(cmd, value, index, session);
     }
 }

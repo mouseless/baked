@@ -12,13 +12,13 @@ public class MapingIdsOverrideFeature : IFeature
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
-                when: c => c.Type.Is<EntityWithIntId>(),
-                attribute: id => id.Orm = new(typeof(IdIntUserType)) { IdentifierGenerator = typeof(IdIntGenerator) }
+                when: c => c.Type.Is<EntityWithAutoIncrementId>(),
+                attribute: id => id.Orm = new(typeof(IdIntUserType)) { IdentifierGenerator = typeof(NHibernate.Id.IdentityGenerator) }
             );
 
             builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
                 when: c => c.Type.Is<EntityWithAssignedId>(),
-                attribute: id => id.Orm = new(typeof(IdAssignedUserType)) { IdentifierGenerator = typeof(IdAssignedGenerator) }
+                attribute: id => id.Orm = new(typeof(IdStringUserType)) { IdentifierGenerator = typeof(NHibernate.Id.Assigned) }
             );
         });
     }

@@ -2,6 +2,7 @@
 using Baked.Playground.CodingStyle;
 using Baked.Playground.Orm;
 using NHibernate.Mapping;
+
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.Test.CodingStyle;
@@ -24,10 +25,10 @@ public class ConfiguringEntityIds : TestSpec
     {
         var configuration = GiveMe.The<NHConfiguration>();
 
-        var classMapping = configuration.GetClassMapping(typeof(EntityWithIntId));
+        var classMapping = configuration.GetClassMapping(typeof(EntityWithAutoIncrementId));
 
         classMapping.Identifier.Type.Name.ShouldBe(nameof(IdIntUserType));
-        classMapping.Identifier.ShouldBeOfType<SimpleValue>().IdentifierGeneratorStrategy.ShouldContain(nameof(IdIntGenerator));
+        classMapping.Identifier.ShouldBeOfType<SimpleValue>().IdentifierGeneratorStrategy.ShouldContain(nameof(NHibernate.Id.IdentityGenerator));
     }
 
     [Test]
@@ -53,7 +54,7 @@ public class ConfiguringEntityIds : TestSpec
     [Test]
     public void Int_id_maps_to_uint_with_auto_increment()
     {
-        var newEntityWithIntId = GiveMe.The<Func<EntityWithIntId>>();
+        var newEntityWithIntId = GiveMe.The<Func<EntityWithAutoIncrementId>>();
 
         var result1 = newEntityWithIntId().With();
         var result2 = newEntityWithIntId().With();
