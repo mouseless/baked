@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;
@@ -28,6 +29,16 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     parameterTypeMetadata.Has<EntityAttribute>(),
                 order: 10
             );
+            builder.Conventions.SetPropertyAttribute(
+                when: c => c.Type.Has<EntityExtensionAttribute>(),
+                attribute: c =>
+                {
+                    var entityExtensionsAttribute = c.Type.GetMetadata().Get<EntityExtensionAttribute>();
+
+                    return c.Domain.Types[entityExtensionsAttribute.EntityType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
+                },
+                order: 10
+            );
             builder.Conventions.SetTypeAttribute(
                 apply: (c, add) =>
                 {
@@ -44,16 +55,25 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
+
+                    var entityExtensionType = c.Type;
+                    if (!entityExtensionType.TryGetEntityTypeFromExtension(c.Domain, out var entityType)) { return; }
+                    if (!entityType.GetMetadata().CustomAttributes.TryGet<LocatableAttribute>(out var entityLocatable)) { return; }
+
+                    set(c.Type, new LocatableAttribute(entityLocatable.ServiceType, entityLocatable.LocateSingleMethodName)
+                    {
+                        LocateMultipleMethodName = entityLocatable.LocateMultipleMethodName,
+                        IsAsync = entityLocatable.IsAsync,
+                        IsFactory = entityLocatable.IsFactory,
+                        CastTo = c.Type
+                    });
                 },
                 when: c => c.Type.Has<EntityExtensionAttribute>(),
                 order: 10
             );
 
             builder.Conventions.Add(new EntityExtensionsUnderEntitiesConvention());
-            builder.Conventions.Add(new LookupEntityExtensionByIdConvention());
-            builder.Conventions.Add(new LookupEntityExtensionsByIdsConvention());
-            builder.Conventions.Add(new TargetEntityExtensionFromRouteConvention(), order: 20);
+            builder.Conventions.Add(new ExtensionsAreServedUnderEntityRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
         });
     }
 }

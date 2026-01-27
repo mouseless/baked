@@ -22,7 +22,7 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
         if (context.Method.TryGet<ActionModelAttribute>(out var action))
         {
             // parameter belongs to an action, add service to the parent action
-            locatorServiceParameter = locatable.AddAsService(action, context.Parameter.ParameterType.Name.Camelize() + "Loctor");
+            locatorServiceParameter = locatable.AddAsService(action, context.Parameter.ParameterType.Name.Camelize() + "Locator");
             if (locatable.IsAsync)
             {
                 action.MakeAsync();
@@ -47,7 +47,8 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
         parameter.ConvertToId(idInfo, nullable: !notNull);
         parameter.LookupRenderer = p => locatable.LookupSingleTemplate(locatorServiceParameter, p,
             notNullValueExpression: $"({idInfo.Type}){p}",
-            nullable: !notNull
+            nullable: !notNull,
+            castTo: locatable.CastTo
         );
     }
 }

@@ -3,12 +3,12 @@
 namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class LocatableAttribute : Attribute
+public class LocatableAttribute(Type ServiceType, string LocateSingleMethodName) : Attribute
 {
-    public bool IsAsync { get; set; } = default!;
-    public Type ServiceType { get; set; } = default!;
-    public bool FromFactory { get; set; } = false;
-    public string LocateSingleMethodName { get; set; } = default!;
+    public Type ServiceType { get; set; } = ServiceType;
+    public string LocateSingleMethodName { get; set; } = LocateSingleMethodName;
+    public bool IsFactory { get; set; } = false;
+    public bool IsAsync { get; set; } = false;
     public string? LocateMultipleMethodName { get; set; }
     public TypeModel? CastTo { get; set; }
 }

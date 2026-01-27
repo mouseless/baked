@@ -13,7 +13,7 @@ public static class TransientBindingCodingStyleExtensions
 
     public static ParameterModelAttribute AddAsService(this LocatableAttribute locatable, ActionModelAttribute action, string parameterName)
     {
-        if (locatable.FromFactory)
+        if (locatable.IsFactory)
         {
             return action.Parameter[parameterName] =
                 new(parameterName, typeof(Func<>).MakeGenericType(locatable.ServiceType).GetCSharpFriendlyFullName(), ParameterModelFrom.Services)
@@ -33,7 +33,7 @@ public static class TransientBindingCodingStyleExtensions
         TypeModel? castTo = default
     )
     {
-        var locatorTemplate = $"{locatorServiceParameter.Name}{(locatable.FromFactory ? "()" : string.Empty)}";
+        var locatorTemplate = $"{locatorServiceParameter.Name}{(locatable.IsFactory ? "()" : string.Empty)}";
         locatorTemplate += $".{locatable.LocateSingleMethodName}({parameters.Select(p => $"{p.InternalName}: {p.RenderLookup($"@{p.Name}")}").Join(", ")})";
 
         return castTo is null
@@ -51,7 +51,7 @@ public static class TransientBindingCodingStyleExtensions
         notNullValueExpression ??= parameter;
         await ??= locatable.IsAsync;
 
-        var template = $"{(await.Value ? "await " : string.Empty)}{locatorServiceParameter.Name}{(locatable.FromFactory ? "()" : string.Empty)}";
+        var template = $"{(await.Value ? "await " : string.Empty)}{locatorServiceParameter.Name}{(locatable.IsFactory ? "()" : string.Empty)}";
         template += $".{locatable.LocateSingleMethodName}({notNullValueExpression})";
 
         if (nullable)
@@ -83,6 +83,7 @@ public static class TransientBindingCodingStyleExtensions
             template = $"(await Task.WhenAll({template}))";
         }
 
+        template = castTo is null ? template : $"{template}.Cast<{castTo.CSharpFriendlyFullName}>()";
         template = isArray ? $"{template}.ToArray()" : $"{template}.ToList()";
 
         return template;

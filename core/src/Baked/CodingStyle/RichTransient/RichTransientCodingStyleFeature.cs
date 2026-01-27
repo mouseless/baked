@@ -34,9 +34,23 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     ),
                 apply: (c, set) =>
                 {
-                    set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
                     set(c.Type, new RichTransientAttribute());
+                    set(c.Type, new ApiInputAttribute());
+                    c.Type.Apply(t =>
+                    {
+                        var initializer = c.Type.GetMembers().Methods.First(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic);
+                        var isAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
+                        var attribute = new LocatableAttribute(
+                            typeof(ILocator<>).MakeGenericType(isAsync ? typeof(Task<>).MakeGenericType(t) : t),
+                            "Single"
+                        )
+                        {
+                            IsAsync = isAsync,
+                            IsFactory = false,
+                            LocateMultipleMethodName = "Multiple"
+                        };
+                        set(c.Type, attribute);
+                    });
                 },
                 order: 10
             );
@@ -52,8 +66,6 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
 
             builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());
-            builder.Conventions.Add(new LocateUsingInitializerConvention(), order: 10);
-            builder.Conventions.Add(new LocateUsingLocatorConvention(), order: 10);
             builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
         });
 

@@ -48,7 +48,8 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
 
         parameter.ConvertToIds(idInfo);
         parameter.LookupRenderer = p => locatable.LookupMultipleTemplate(locatorServiceParameter, p,
-            isArray: context.Parameter.ParameterType.IsArray
+            isArray: context.Parameter.ParameterType.IsArray,
+            castTo: locatable.CastTo
         );
     }
 }

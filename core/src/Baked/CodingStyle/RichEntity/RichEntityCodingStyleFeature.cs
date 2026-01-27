@@ -38,7 +38,17 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
+                    c.Type.Apply(t =>
+                    {
+                        var attribute = new LocatableAttribute(
+                            ServiceType: typeof(ILocator<>).MakeGenericType(t),
+                            LocateSingleMethodName: "Single"
+                        )
+                        {
+                            LocateMultipleMethodName = "Multiple"
+                        };
+                        set(c.Type, attribute);
+                    });
                 },
                 when: c => c.Type.Has<EntityAttribute>()
             );
@@ -52,7 +62,6 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             builder.Conventions.Add(new EntityUnderPluralGroupConvention());
             builder.Conventions.Add(new EntityInitializerIsPostResourceConvention());
-            builder.Conventions.Add(new LocateUsingQueryContextConvention(), order: 30);
             builder.Conventions.Add(new LocateUsingEntityLocatorConvention(), order: 30);
         });
 

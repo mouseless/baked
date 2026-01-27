@@ -144,7 +144,9 @@ public static class BusinessExtensions
         if (!members.Properties.Having<IdAttribute>().Any()) { return false; }
 
         var idProperty = members.FirstProperty<IdAttribute>();
-        idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
+        idInfo = idProperty.PropertyType.TryGetIdInfo(out var id)
+            ? id
+            : new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
 
         return true;
     }

@@ -5,7 +5,7 @@ using Humanizer;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
-public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<MethodModelContext>
+public class ExtensionsAreServedUnderEntityRoutesConvention : IDomainModelConvention<MethodModelContext>
 {
     public void Apply(MethodModelContext context)
     {
