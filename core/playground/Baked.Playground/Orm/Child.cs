@@ -9,6 +9,7 @@ public class Child(IEntityContext<Child> _context)
     public Parent Parent { get; private set; } = default!;
     public string Name { get; private set; } = default!;
     internal Parent? InternalParent { get; private set; } = default!;
+    public ParentWrapper ParentWrapper => new(Parent);
 
     internal Child With(Parent parent, string name)
     {

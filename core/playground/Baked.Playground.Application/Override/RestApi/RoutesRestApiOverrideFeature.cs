@@ -4,7 +4,6 @@ using Baked.Playground.Business;
 using Baked.Playground.ExceptionHandling;
 using Baked.Playground.Orm;
 using Baked.RestApi.Model;
-using Newtonsoft.Json.Serialization;
 
 namespace Baked.Playground.Override.RestApi;
 
@@ -40,14 +39,6 @@ public class RoutesRestApiOverrideFeature : IFeature
             builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
                 useRequestClassForBody: false
             );
-        });
-
-        configurator.ConfigureMvcNewtonsoftJsonOptions(jsonOptions =>
-        {
-            jsonOptions.SerializerSettings.ContractResolver = new CustomContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy()
-            };
         });
     }
 }

@@ -145,9 +145,9 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
-            if (options.SerializerSettings.ContractResolver is null) { return; }
+            if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver resolver) { return; }
 
-            options.SerializerSettings.ContractResolver = new ProxyAwareContractResolver<INHibernateProxy>(options.SerializerSettings.ContractResolver);
+            resolver.ProxyType = typeof(INHibernateProxy);
         });
     }
 }

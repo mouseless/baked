@@ -25,6 +25,11 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
     readonly SwaggerOptions _swaggerOptions = new();
     readonly SwaggerUIOptions _swaggerUIOptions = new();
 
+    public RestApiLayer()
+    {
+        _mvcNewtonsoftJsonOptions.SerializerSettings.ContractResolver = new ExtendedContractResolver();
+    }
+
     protected override PhaseContext GetContext(GenerateCode phase)
     {
         var generatedAssemblies = Context.GetGeneratedAssemblyCollection();

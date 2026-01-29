@@ -52,9 +52,9 @@ public static class RestApiExtensions
         mvcBuilder.Services.AddOptions();
         mvcBuilder.Services.AddSingleton<IOptions<MvcNewtonsoftJsonOptions>>(sp =>
         {
-            if (options.SerializerSettings.ContractResolver is IServiceProvideredContractResolver spcr)
+            if (options.SerializerSettings.ContractResolver is IContractResolverWithServiceProvider contractResolver)
             {
-                spcr.ServiceProvider = sp;
+                contractResolver.ServiceProvider = sp;
             }
 
             return new OptionsWrapper<MvcNewtonsoftJsonOptions>(options);
