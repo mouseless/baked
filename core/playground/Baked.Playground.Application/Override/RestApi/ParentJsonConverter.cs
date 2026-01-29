@@ -1,64 +1,21 @@
-using Baked.Business;
 using Baked.Orm;
 using Baked.Playground.Orm;
-using Humanizer;
-using Newtonsoft.Json;
 
 namespace Baked.Playground.Override.RestApi;
 
-public class ParentJsonConverter(IServiceProvider _sp)
-    : JsonConverter<Parent>
+public class ParentJsonConverter(IQueryContext<Parent> _queryContext)
+    : EntityJsonConverter<Parent, string>(_queryContext)
 {
-    public override Parent ReadJson(JsonReader reader, Type objectType, Parent? existingValue, bool hasExistingValue, JsonSerializer serializer)
-    {
-        if (reader.TokenType == JsonToken.Null) { return null!; }
-        if (reader.TokenType != JsonToken.StartObject) { throw new JsonSerializationException($"Expected object, got {reader.TokenType}"); }
+    protected override string IdProp => "id";
+    protected override IEnumerable<string> LabelProps => ["name"];
 
-        Id? id = default;
-        while (reader.Read())
+    protected override string GetId(Parent entity) =>
+        entity.Id.ToString();
+
+    protected override string GetLabel(Parent entity, string labelProp) =>
+        labelProp switch
         {
-            if (reader.TokenType == JsonToken.PropertyName)
-            {
-                var name = (string)reader.Value!;
-                reader.Read();
-
-                if (string.Equals(name, "id", StringComparison.OrdinalIgnoreCase))
-                {
-                    id = Id.Parse(reader.Value ?? "Whatt!!");
-                }
-                else
-                {
-                    reader.Skip();
-                }
-            }
-            else if (reader.TokenType == JsonToken.EndObject)
-            {
-                break;
-            }
-        }
-
-        if (!id.HasValue) { throw new("id is required"); }
-
-        return _sp
-            .UsingCurrentScope()
-            .GetRequiredService<IQueryContext<Parent>>()
-            .SingleById(id.Value);
-    }
-
-    public override void WriteJson(JsonWriter writer, Parent? value, JsonSerializer serializer)
-    {
-        if (value == null)
-        {
-            writer.WriteNull();
-
-            return;
-        }
-
-        writer.WriteStartObject();
-        writer.WritePropertyName(nameof(Parent.Id).Camelize());
-        writer.WriteValue($"{value.Id}");
-        writer.WritePropertyName(nameof(Parent.Name).Camelize());
-        writer.WriteValue($"{value.Name}");
-        writer.WriteEndObject();
-    }
+            "name" => entity.Name,
+            _ => throw new InvalidOperationException($"`{labelProp}` is not a label property for `{typeof(Parent).Name}`")
+        };
 }

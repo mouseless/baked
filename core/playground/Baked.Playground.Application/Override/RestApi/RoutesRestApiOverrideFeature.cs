@@ -3,6 +3,7 @@ using Baked.Playground.Authentication;
 using Baked.Playground.Business;
 using Baked.Playground.ExceptionHandling;
 using Baked.Playground.Orm;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 
 namespace Baked.Playground.Override.RestApi;
@@ -39,6 +40,18 @@ public class RoutesRestApiOverrideFeature : IFeature
             builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
                 useRequestClassForBody: false
             );
+        });
+
+        configurator.ConfigureServiceCollection(services =>
+        {
+            services.AddSingleton<ParentJsonConverter>();
+        });
+
+        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        {
+            if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
+
+            contractResolver.SetPropertyConverterType(typeof(Child), nameof(Child.Parent), typeof(ParentJsonConverter));
         });
     }
 }

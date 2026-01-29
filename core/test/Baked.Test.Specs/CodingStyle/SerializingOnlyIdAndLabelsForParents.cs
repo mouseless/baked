@@ -9,7 +9,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
         await Client.PostParentsChildren(id: (object)parent.id);
 
         var children = await Client.GetParentsChildren((object)parent.id);
-        object? actual = children?[0].parent;
+        object? actual = children[0].parent;
 
         actual?.ShouldDeeplyBe(new { parent?.id, name = "parent" });
     }
