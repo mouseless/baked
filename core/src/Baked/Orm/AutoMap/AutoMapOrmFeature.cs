@@ -68,6 +68,20 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                         .. TypeModelTypeSourceTemplate.GlobalUsings
                     ]
                 );
+                generatedAssemblies.Add($"{nameof(AutoMapOrmFeature)}.Locatability",
+                    assembly =>
+                    {
+                        assembly
+                            .AddReferenceFrom<AutoMapOrmFeature>()
+                            .AddCodes(new JsonConverterTemplate(domain));
+
+                        foreach (var entity in domain.Types.Having<EntityAttribute>())
+                        {
+                            entity.Apply(t => assembly.AddReferenceFrom(t));
+                        }
+                    },
+                    usings: [.. JsonConverterTemplate.GlobalUsings]
+                );
             });
         });
 
@@ -76,6 +90,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             configurator.UsingGeneratedContext(generatedContext =>
             {
                 services.AddFromAssembly(generatedContext.Assemblies[nameof(AutoMapOrmFeature)]);
+                services.AddFromAssembly(generatedContext.Assemblies[$"{nameof(AutoMapOrmFeature)}.Locatability"]);
             });
 
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
@@ -145,9 +160,22 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
-            if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver resolver) { return; }
+            if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 
-            resolver.ProxyType = typeof(INHibernateProxy);
+            contractResolver.ProxyType = typeof(INHibernateProxy);
+
+            configurator.UsingGeneratedContext(generatedContext =>
+            {
+                var assembly = generatedContext.Assemblies[$"{nameof(AutoMapOrmFeature)}.Locatability"];
+                var contractResolverConfigurerType =
+                    assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IContractResolverConfigurer))) ??
+                    throw new($"`{nameof(IContractResolverConfigurer)}` implementation not found");
+                var contractResolverConfigurer =
+                    (IContractResolverConfigurer?)Activator.CreateInstance(contractResolverConfigurerType) ??
+                    throw new($"Cannot create instance of {contractResolverConfigurerType.Name}");
+
+                contractResolverConfigurer.Configure(contractResolver);
+            });
         });
     }
 }

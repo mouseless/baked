@@ -17,7 +17,14 @@
 ## Improvements
 
 - Locatable domain objects were only supported in API parameters, now they are
-  rendered as `Ref<TLocatable>` (`{ id: "..." }`) in API record inputs as well
+  rendered as `{ id: "..." }` in API record inputs as well
+- Relations of a locatable is rendered as a ref object `{ id: "...", label:
+  "..." }`
+  - It includes id and all label properties
+  - It works only for locatable relations, e.g., `Child.Parent` property will
+    render only id and label properties of the parent
+  - Any locatable under a record will include all of their properties, e.g.,
+    `Child.ParentWrapper.Parent` will render all properties of the parent
 
 ## Breaking Changes
 
@@ -30,3 +37,4 @@
   // use 'Baked.Business.Id'
   public Id Id { get; set; }
   ```
+- `LabelAttribute` is moved to `Baked.Business` namespace
