@@ -15,7 +15,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
     }
 
     [Test]
-    public async Task Does_not_trim_props_when_parent_child_relation_is_broken()
+    public async Task Does_not_skip_properties_when_parent_child_relation_is_broken()
     {
         var parent = await Client.PostParents(name: "parent", surname: "wrapper");
         await Client.PostParentsChildren(id: (object)parent.id);
@@ -31,4 +31,9 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
             description = (string?)null
         });
     }
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Open_api_documentation_ignores_skipped_properties() =>
+        Assert.Fail();
 }

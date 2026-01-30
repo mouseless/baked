@@ -13,7 +13,8 @@ public class JsonConverterTemplate(DomainModel _domain)
             "Baked.Orm",
             "Baked.RestApi",
             "Baked.Runtime",
-            "Microsoft.Extensions.DependencyInjection"
+            "Microsoft.Extensions.DependencyInjection",
+            "Newtonsoft.Json"
         ];
 
     protected override IEnumerable<string> Render() => [
@@ -82,15 +83,25 @@ public class JsonConverterTemplate(DomainModel _domain)
         {
             public void Configure(ExtendedContractResolver contractResolver)
             {
-            {{ForEach(entities.SelectMany(e => e.Properties
-                .Where(p => p.IsPublic)
-                .Where(p => p.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>())
-                .Select(p => new { Property = p, Entity = e })
-            ), relation => $$"""
-                contractResolver.SetPropertyConverterType(
-                    typeof({{relation.Entity.CSharpFriendlyFullName}}),
-                    nameof({{relation.Entity.CSharpFriendlyFullName}}.{{relation.Property.Name}}),
-                    typeof({{relation.Property.PropertyType.Name}}JsonConverter)
+            {{ForEach(entities.SelectMany(e => e.Properties.Select(p => new { Property = p, Type = e })), context => $$"""
+                contractResolver.SetProperty(
+                    typeof({{context.Type.CSharpFriendlyFullName}}),
+                    "{{context.Property.Name}}",
+                    options: (property, sp) =>
+                    {
+                {{If(!context.Property.IsPublic, () => $$"""
+                        property.Ignored = true;
+                """, @else: () => $$"""
+                    {{If(!context.Property.Has<IdAttribute>(), () => $$"""
+                        property.Required = Required.Default;
+                    """, @else: () => $$"""
+                        property.Required = Required.Always;
+                    """)}}
+                    {{If(context.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>(), () => $$"""
+                        property.Converter = sp.GetRequiredService<{{context.Property.PropertyType.Name}}JsonConverter>();
+                    """)}}
+                """)}}
+                    }
                 );
             """)}}
             }

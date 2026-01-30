@@ -101,6 +101,9 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public IEnumerable<Entity> EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
         [.. entities, .. otherEntities];
 
+    public IEnumerable<Entity> RecordWithEntity(RecordWithEntity record) =>
+        [.. record.Entities, .. record.OtherEntities];
+
     /// <param name="transient">
     /// Transient description
     /// </param>

@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -6,7 +5,7 @@ namespace Baked.RestApi;
 
 public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, IContractResolverWithServiceProvider
 {
-    readonly Dictionary<string, Type> _propertyConverterMap = [];
+    readonly Dictionary<string, Action<JsonProperty, IServiceProvider>> _propertyConfigureMap = [];
 
     public Type? ProxyType { get; set; }
 
@@ -14,12 +13,27 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
     IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException("ServiceProvider is required but not set");
     IServiceProvider IContractResolverWithServiceProvider.ServiceProvider { set => _serviceProvider = value; }
 
-    string GetConverterKey(Type? type, string? propertyName) =>
+    string GetPropertyKey(Type? type, string? propertyName) =>
         $"{type?.AssemblyQualifiedName}-{propertyName?.ToLowerInvariant()}";
 
-    public void SetPropertyConverterType(Type type, string propertyName, Type converterType)
+    public void SetProperty(Type type, string propertyName, Action<JsonProperty, IServiceProvider> options,
+        bool @override = false
+    )
     {
-        _propertyConverterMap[GetConverterKey(type, propertyName)] = converterType;
+        var key = GetPropertyKey(type, propertyName);
+
+        if (@override || !_propertyConfigureMap.TryGetValue(key, out var old))
+        {
+            _propertyConfigureMap[key] = options;
+
+            return;
+        }
+
+        _propertyConfigureMap[key] = (property, sp) =>
+        {
+            old(property, sp);
+            options(property, sp);
+        };
     }
 
     public override JsonContract ResolveContract(Type type)
@@ -35,15 +49,12 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
     protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
     {
         var properties = base.CreateProperties(type, memberSerialization);
-
         foreach (var property in properties)
         {
-            if (!_propertyConverterMap.TryGetValue(GetConverterKey(type, property.PropertyName), out var converterType)) { continue; }
-
-            var converter = ServiceProvider.GetRequiredService(converterType);
-            if (converter is not JsonConverter jsonConverter) { throw new InvalidOperationException($"`{converterType.Name}` is expected to be assignable to `JsonConverter`"); }
-
-            property.Converter = jsonConverter;
+            if (_propertyConfigureMap.TryGetValue(GetPropertyKey(type, property.PropertyName), out var configure))
+            {
+                configure(property, ServiceProvider);
+            }
         }
 
         return properties;
