@@ -12,6 +12,8 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            builder.Index.Type.Add<EntitySubclassAttribute>();
+
             builder.Conventions.SetTypeAttribute(
                 attribute: c =>
                 {

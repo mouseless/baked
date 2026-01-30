@@ -75,7 +75,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 order: 20
             );
 
-            builder.Conventions.Add(new EntityExtensionsUnderEntitiesConvention());
+            builder.Conventions.Add(new EntityExtensionsUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
             builder.Conventions.Add(new ExtensionsAreServedUnderEntityRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
         });
 
@@ -89,7 +89,6 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                         List<(string, string)> locators = [];
                         foreach (var item in domain.Types.Having<EntityExtensionAttribute>())
                         {
-                            Console.WriteLine(item.Name);
                             if (!item.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { continue; }
 
                             var codeTemplate = new LocatorTemplate(item);

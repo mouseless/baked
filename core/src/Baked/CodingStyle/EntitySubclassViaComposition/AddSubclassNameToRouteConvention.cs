@@ -8,9 +8,8 @@ public class AddSubclassNameToRouteConvention : IDomainModelConvention<MethodMod
 {
     public void Apply(MethodModelContext context)
     {
-        var entitySubclassType = context.Type;
-        if (!entitySubclassType.TryGetSubclassName(out var subclassName)) { return; }
-        if (!entitySubclassType.TryGetEntityTypeFromSubclass(context.Domain, out var entityType)) { return; }
+        if (!context.Type.TryGetSubclassName(out var subclassName)) { return; }
+        if (!context.Type.TryGetEntityTypeFromSubclass(context.Domain, out var entityType)) { return; }
         if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
 
         action.RouteParts = [entityType.Name.Pluralize(), subclassName, action.Name];

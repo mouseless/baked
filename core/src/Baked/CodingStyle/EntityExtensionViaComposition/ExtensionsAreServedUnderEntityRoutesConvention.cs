@@ -11,9 +11,7 @@ public class ExtensionsAreServedUnderEntityRoutesConvention : IDomainModelConven
     {
         if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
-
-        var entityExtensionType = context.Type;
-        if (!entityExtensionType.TryGetEntityTypeFromExtension(context.Domain, out var entityType)) { return; }
+        if (!context.Type.TryGetEntityTypeFromExtension(context.Domain, out var entityType)) { return; }
 
         action.RouteParts = [entityType.Name.Pluralize(), action.Name];
     }
