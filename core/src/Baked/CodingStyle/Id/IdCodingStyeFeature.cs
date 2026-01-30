@@ -14,7 +14,7 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetPropertyAttribute(
-                when: c => c.Property.Name == "Id" && c.Property.PropertyType.Is<Business.Id>(),
+                when: c => c.Property.PropertyType.Is<Business.Id>(),
                 attribute: c => new IdAttribute(c.Property.Name.Camelize()),
                 order: int.MinValue + 10
             );

@@ -42,6 +42,16 @@ public class ConfiguringEntityIds : TestSpec
     }
 
     [Test]
+    public void Foreign_key_suffix_is_set_from_property_type_id_info()
+    {
+        var configuration = GiveMe.The<NHConfiguration>();
+
+        var actual = configuration.GetClassMapping(typeof(EntityWithAssignedId)).PropertyIterator.FirstOrDefault();
+        actual.ShouldNotBeNull();
+        actual.ColumnIterator.First().Text.ShouldBe("EntityIdd");
+    }
+
+    [Test]
     public void Guid_id_maps_guid_with_auto_generate()
     {
         var newParent = GiveMe.The<Func<Parent>>();
@@ -59,8 +69,8 @@ public class ConfiguringEntityIds : TestSpec
         var result1 = newEntityWithIntId().With();
         var result2 = newEntityWithIntId().With();
 
-        result1.Id.ToString().ShouldBe("1");
-        result2.Id.ToString().ShouldBe("2");
+        result1.Idd.ToString().ShouldBe("1");
+        result2.Idd.ToString().ShouldBe("2");
     }
 
     [Test]

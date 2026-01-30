@@ -5,7 +5,7 @@ namespace Baked.Playground.CodingStyle;
 
 public class EntityWithAutoIncrementId(IEntityContext<EntityWithAutoIncrementId> _context)
 {
-    public Id Id { get; private set; } = default!;
+    public Id Idd { get; private set; } = default!;
 
     public EntityWithAutoIncrementId With()
     {
