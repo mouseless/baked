@@ -148,19 +148,6 @@ c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
 >
 > Default suffix is `Context`.
 
-## Single by Unique
-
-Scans query classes to have methods that conforms to `SingleBy[Property]` 
-naming convention. Treats such methods as single by unique methods and adds 
-that property to entity id route parameter so that entites can be found through
-unique properties as well as their ids. For instance, if entity has
-`SingleByName` then its id route parameter is updated from `{id}` to
-`{idOrName}`.
-
-```csharp
-c => c.SingleByUnique()
-```
-
 ## Transient Binding
 
 Manages binding of `Transient` api inputs. For `Locatable` type adds id 
