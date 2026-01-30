@@ -15,6 +15,8 @@
   - `Id` user type can be mapped as `Guid`, `AutoIncrement` or `Assigned`
 - `TransientBindingCodingStyle` feature is now added which manages binding of
   transient and locatable transients, adding id or initializer parameters
+- `Business.ILocator<>` generic interface is now introduced for configuring locators
+  for `RichTransient` and `Entity` types
 
 ## Breaking Changes
 
@@ -27,3 +29,46 @@
   // use 'Baked.Business.Id'
   public Id Id { get; set; }
   ```
+- `RichTransient` feature now requires initializer to be with single parameter
+  of `Business.Id` type and contain property with `Business.Id` type 
+  ```csharp
+  // not supported
+  public RichTransient With(string id){
+    ...
+  }
+
+  // add 'Baked.Business.Id' property
+  public Business.Id Id { get; set; }
+
+  public RichTransient With(Id id) {
+    Id = id;
+    ...
+  }
+  ```
+- `EntityExtensionViaComposition` feature now requires a property with 
+  `Business.Id` type 
+  ```csharp
+  // not supported
+  Entity _entity = default!;
+
+  internal EntityExtension With(Entity entity){
+    ...
+  }
+
+  // add 'Baked.Business.Id' property
+  Entity _entity = default!;
+
+  internal EntityExtension With(Entity entity){
+    ...
+  }
+
+  internal Business.Id Id => _entity.Id
+  ```  
+  
+## Improvements
+
+- `RichTransient` coding style feature now generates `ILocator<>` 
+  implementations 
+- `RichEntity` coding style feature now generates `ILocator<>` implementations 
+- `EntityExtensionsViaComposition` coding style feature now generates 
+  `ILocator<>` implementations 
