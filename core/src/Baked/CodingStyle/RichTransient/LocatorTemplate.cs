@@ -6,7 +6,7 @@ namespace Baked.CodingStyle.RichTransient;
 public class LocatorTemplate(TypeModel typeModel, bool isAsync) : CodeTemplateBase
 {
     public static readonly string[] GlobalUsings =
-       [
+        [
             "Baked.Business",
             "Baked.CodingStyle.Id",
         ];

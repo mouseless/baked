@@ -5,30 +5,32 @@ namespace Baked.Playground.CodingStyle.EntityExtensionViaComposition;
 
 public class EntityExtension
 {
-    Entity Entity { get; set; } = default!;
+    Entity _entity = default!;
 
     internal EntityExtension With(Entity entity)
     {
-        Entity = entity;
+        _entity = entity;
 
         return this;
     }
 
+    internal Id Id => _entity.Id;
+
     public async Task IncrementInt32() =>
-        await Entity.Update(int32: Entity.Int32 + 1);
+        await _entity.Update(int32: _entity.Int32 + 1);
 
     public async Task IncrementBy(EntityExtension other) =>
-        await Entity.Update(int32: Entity.Int32 + other.Entity.Int32);
+        await _entity.Update(int32: _entity.Int32 + other._entity.Int32);
 
     public async Task IncrementByAll(
         IEnumerable<EntityExtension> extensions,
         EntityExtension[] moreExtensions,
         List<EntityExtension> evenMoreExtensions
-    ) => await Entity.Update(int32:
-            Entity.Int32 +
-            extensions.Sum(e => e.Entity.Int32) +
-            moreExtensions.Sum(e => e.Entity.Int32) +
-            evenMoreExtensions.Sum(e => e.Entity.Int32)
+    ) => await _entity.Update(int32:
+            _entity.Int32 +
+            extensions.Sum(e => e._entity.Int32) +
+            moreExtensions.Sum(e => e._entity.Int32) +
+            evenMoreExtensions.Sum(e => e._entity.Int32)
         );
 
     public static implicit operator EntityExtension(Entity entity) =>
