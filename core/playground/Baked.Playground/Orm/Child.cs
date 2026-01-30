@@ -21,6 +21,16 @@ public class Child(IEntityContext<Child> _context)
 
     internal void Delete() =>
         _context.Delete(this);
+
+    public void Update(
+        string? name = default,
+        Parent? parent = default,
+        ParentWrapper? parentWrapper = default
+      )
+    {
+        Name = name ?? Name;
+        Parent = parent ?? parentWrapper?.Parent ?? Parent;
+    }
 }
 
 public class Children(IQueryContext<Child> _context)

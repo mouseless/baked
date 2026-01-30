@@ -13,9 +13,9 @@ public static class OverrideExtensions
         features.Add(new Playground.Override.RestApi.ExternalSecurityRestApiOverrideFeature());
         features.Add(new Playground.Override.Runtime.ServicesRuntimeOverrideFeature());
         features.Add(new Playground.Override.Ui.CacheSamplesUiOverrideFeature());
+        features.Add(new Playground.Override.Ui.ChildUiOverrideFeature());
         features.Add(new Playground.Override.Ui.FormSampleUiOverrideFeature());
         features.Add(new Playground.Override.Ui.ParentUiOverrideFeature());
-        features.Add(new Playground.Override.Ui.ParentWrapperUiOverrideFeature());
         features.Add(new Playground.Override.Ui.PluginSampleUiOverrideFeature());
         features.Add(new Playground.Override.Ui.ReportPageSampleUiOverrideFeature());
         features.Add(new Playground.Override.Ui.TestPageUiOverrideFeature());

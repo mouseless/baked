@@ -165,11 +165,6 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
     {
         _context.Delete(this);
     }
-
-    public Parent? TestNestedEntity(ParentWrapper parentWrapper)
-    {
-        return parentWrapper.Parent;
-    }
 }
 
 public class Entities(IQueryContext<Entity> _context)
