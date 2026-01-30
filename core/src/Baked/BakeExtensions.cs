@@ -178,6 +178,7 @@ public static class BakeExtensions
             [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
+                c => c.Id(),
                 c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),

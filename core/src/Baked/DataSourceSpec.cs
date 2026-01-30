@@ -1,6 +1,7 @@
 using Baked.Architecture;
 using Baked.Business;
 using Baked.Caching;
+using Baked.CodingStyle.Id;
 using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;
@@ -48,6 +49,7 @@ public abstract class DataSourceSpec : Spec
             app.Features.AddCodingStyles([
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
+                c => c.Id(),
                 c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),

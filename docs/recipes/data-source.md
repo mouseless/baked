@@ -39,11 +39,13 @@ Bake.New
 | Coding Style(s)    | :white_check_mark:                 | :white_check_mark:                 |
 |                    | Add/Remove Child                   |                                    |
 |                    | Command Pattern                    |                                    |
+|                    | Id                                 |                                    |
 |                    | Namespace as Route                 |                                    |
 |                    | Records are DTOs                   |                                    |
 |                    | Remaining Services are Singleton   |                                    |
 |                    | Rich Transient                     |                                    |
 |                    | Scoped by Suffix                   |                                    |
+|                    | Transient Binding                  |                                    |
 |                    | Use Built-in Types                 |                                    |
 |                    | Use Nullable Types                 |                                    |
 |                    | With Method                        |                                    |

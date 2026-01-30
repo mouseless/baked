@@ -52,6 +52,7 @@ Bake.New
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Rich Entity                              |                                    |
 |                    | Rich Transient                           |                                    |
+|                    | Transient Binding                        |                                    |
 |                    | Scoped by Suffix                         |                                    |
 |                    | Single by Unique                         |                                    |
 |                    | `Uri` Return is Redirect                 |                                    |

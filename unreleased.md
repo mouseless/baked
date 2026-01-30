@@ -12,7 +12,9 @@
   key references for entities
   - A property named `Id` with `Baked.Business.Id` user type is required for a 
     property to be configured as `Id`
-  - `Id` user type is mapped to `Guid` db type with autogenerate support
+  - `Id` user type can be mapped as `Guid`, `AutoIncrement` or `Assigned`
+- `TransientBindingCodingStyle` feature is now added which manages binding of
+  transient and locatable transients, adding id or initializer parameters
 
 ## Breaking Changes
 

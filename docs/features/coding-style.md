@@ -127,7 +127,7 @@ have a public initializer (`With`) with parameters which will render as query
 parameters or single `id` parameter which will render from route.
 
 Rich transients with `id` types can be method parameters and located using
-their initializers.
+their locators.
 
 Configures routes and swagger docs to use entity methods as resource actions.
 
@@ -159,6 +159,21 @@ unique properties as well as their ids. For instance, if entity has
 
 ```csharp
 c => c.SingleByUnique()
+```
+
+## Transient Binding
+
+Manages binding of `Transient` api inputs. For `Locatable` type adds id 
+parameter to route, configures finding target and parameter lookup expressions
+by using `Locatable` attribute, for remaining `Transient` types, initializers
+parameters are added to query and invoked when constructing target
+
+> [!NOTE]
+>
+> Parameter lookup is only supported for `Locatable` transient types
+
+```csharp
+c => c.TransientBinding()
 ```
 
 ## `Uri` Return is Redirect
