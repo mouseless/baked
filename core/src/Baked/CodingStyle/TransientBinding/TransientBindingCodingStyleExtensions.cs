@@ -83,7 +83,6 @@ public static class TransientBindingCodingStyleExtensions
             template = $"(await Task.WhenAll({template}))";
         }
 
-        template = castTo is null ? template : $"{template}.Cast<{castTo.CSharpFriendlyFullName}>()";
         template = isArray ? $"{template}.ToArray()" : $"{template}.ToList()";
 
         return template;

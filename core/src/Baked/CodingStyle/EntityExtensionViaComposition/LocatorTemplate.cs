@@ -21,7 +21,7 @@ public class LocatorTemplate(TypeModel _entityExtension) : CodeTemplateBase
     public class {{_entityExtension.Name}}Locator(IQueryContext<{{EntityName}}> _entityQueryContext) : ILocator<{{_entityExtension.CSharpFriendlyFullName}}>
     {
         public IEnumerable<{{_entityExtension.CSharpFriendlyFullName}}> Multiple(IEnumerable<Baked.Business.Id> ids) =>
-            _entityQueryContext.ByIds(ids).Cast<{{_entityExtension.CSharpFriendlyFullName}}>();
+            _entityQueryContext.ByIds(ids).Select(i => ({{_entityExtension.CSharpFriendlyFullName}})i);
 
         public {{_entityExtension.CSharpFriendlyFullName}} Single(Baked.Business.Id id, bool throwNotFound) =>
             ({{_entityExtension.CSharpFriendlyFullName}})_entityQueryContext.SingleById(id, throwNotFound: throwNotFound);
