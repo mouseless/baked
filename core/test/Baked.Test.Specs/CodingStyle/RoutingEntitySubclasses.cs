@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-[Ignore("wil be implemented when refactoring locatable conventions")]
 public class RoutingEntitySubclasses : TestNfr
 {
     [TestCase("a", "A")]

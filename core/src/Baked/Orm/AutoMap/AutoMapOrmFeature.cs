@@ -38,8 +38,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             builder.Index.Type.Add(typeof(EntityAttribute));
 
             builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
-            builder.Conventions.Add(new LookupEntityByIdConvention());
-            builder.Conventions.Add(new LookupEntitiesByIdsConvention());
             builder.Conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
                 _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
             ));

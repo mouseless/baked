@@ -84,6 +84,7 @@ public static class BakeExtensions
                 c => c.RichEntity(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
+                c => c.TransientBinding(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes(),
@@ -177,11 +178,13 @@ public static class BakeExtensions
             [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
+                c => c.Id(),
                 c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
+                c => c.TransientBinding(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes(),
                 c => c.WithMethod()

@@ -1,7 +1,9 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Baked.RestApi;
 using Baked.RestApi.Model;
+using Baked.Runtime;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
@@ -11,6 +13,8 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            builder.Index.Type.Add<EntityExtensionAttribute>();
+
             builder.Conventions.SetTypeAttribute(
                 attribute: context =>
                 {
@@ -26,6 +30,16 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     implicits.Count() == 1 &&
                     implicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
                     parameterTypeMetadata.Has<EntityAttribute>(),
+                order: 10
+            );
+            builder.Conventions.SetPropertyAttribute(
+                when: c => c.Type.Has<EntityExtensionAttribute>(),
+                attribute: c =>
+                {
+                    var entityExtensionsAttribute = c.Type.GetMetadata().Get<EntityExtensionAttribute>();
+
+                    return c.Domain.Types[entityExtensionsAttribute.EntityType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
+                },
                 order: 10
             );
             builder.Conventions.SetTypeAttribute(
@@ -44,16 +58,65 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
+
+                    var entityExtensionType = c.Type;
+                    if (!entityExtensionType.TryGetEntityTypeFromExtension(c.Domain, out var entityType)) { return; }
+                    if (!entityType.GetMetadata().CustomAttributes.TryGet<LocatableAttribute>(out var entityLocatable)) { return; }
+
+                    entityExtensionType.Apply(t =>
+                    {
+                        set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t), "Single")
+                        {
+                            LocateMultipleMethodName = "Multiple"
+                        });
+                    });
                 },
                 when: c => c.Type.Has<EntityExtensionAttribute>(),
-                order: 10
+                order: 20
             );
 
-            builder.Conventions.Add(new EntityExtensionsUnderEntitiesConvention());
-            builder.Conventions.Add(new LookupEntityExtensionByIdConvention());
-            builder.Conventions.Add(new LookupEntityExtensionsByIdsConvention());
-            builder.Conventions.Add(new TargetEntityExtensionFromRouteConvention(), order: 20);
+            builder.Conventions.Add(new EntityExtensionsUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new ExtensionsAreServedUnderEntityRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            configurator.UsingDomainModel(domain =>
+            {
+                generatedAssemblies.Add(nameof(EntityExtensionViaCompositionCodingStyleFeature),
+                    assembly =>
+                    {
+                        List<(string, string)> locators = [];
+                        foreach (var item in domain.Types.Having<EntityExtensionAttribute>())
+                        {
+                            if (!item.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { continue; }
+
+                            var codeTemplate = new LocatorTemplate(item);
+                            assembly.AddCodes(codeTemplate);
+                            item.Apply(t => assembly.AddReferenceFrom(t));
+                            locators.Add((codeTemplate.ILocator, codeTemplate.Implementaton));
+                        }
+
+                        assembly.AddCodes(new LocatorAdderTemplate(locators));
+                        assembly.AddReferenceFrom<EntityExtensionViaCompositionCodingStyleFeature>();
+                    },
+                    usings: [.. LocatorTemplate.GlobalUsings]
+                );
+            });
+        });
+
+        configurator.ConfigureServiceCollection(services =>
+        {
+            configurator.UsingGeneratedContext(context =>
+            {
+                var locatorAdderType = context.Assemblies[nameof(EntityExtensionViaCompositionCodingStyleFeature)].GetExportedTypes().First(t => t.IsAssignableTo(typeof(IServiceAdder)));
+                if (locatorAdderType is not null)
+                {
+                    var locatorAdder = (IServiceAdder?)Activator.CreateInstance(locatorAdderType) ?? throw new($"Cannot create instance of {locatorAdderType}");
+
+                    locatorAdder.AddServices(services);
+                }
+            });
         });
     }
 }

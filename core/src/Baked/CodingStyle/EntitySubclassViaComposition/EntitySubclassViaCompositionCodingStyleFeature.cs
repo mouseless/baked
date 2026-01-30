@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
@@ -11,6 +12,8 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            builder.Index.Type.Add<EntitySubclassAttribute>();
+
             builder.Conventions.SetTypeAttribute(
                 attribute: c =>
                 {
@@ -32,7 +35,26 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
+                    var entitySubclassType = c.Type;
+                    if (!entitySubclassType.TryGetSubclassName(out var subclassName)) { return; }
+                    if (!entitySubclassType.TryGetEntityTypeFromSubclass(c.Domain, out var entityType)) { return; }
+                    if (!entityType.TryGetQueryType(c.Domain, out var queryType)) { return; }
+                    if (!queryType.TryGetMembers(out var queryMembers)) { return; }
+
+                    // TODO requires review
+                    var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name.StartsWith("SingleBy"));
+                    if (singleByUniqueMethod is null) { return; }
+
+                    var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
+                    if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
+
+                    queryType.Apply(t =>
+                    {
+                        set(c.Type, new LocatableAttribute(t, singleByUniqueMethod.Name)
+                        {
+                            CastTo = entitySubclassType,
+                        });
+                    });
                 },
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
                 order: 10
@@ -45,9 +67,11 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 order: 30
             );
 
-            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention());
-            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention());
-            builder.Conventions.Add(new TargetEntitySubclassFromRouteConvention(), order: 20);
+            builder.Conventions.Add(new UniqueIdParameterConvention(), order: RestApiLayer.MaxConventionOrder - 50);
+            builder.Conventions.Add(new SubclassesAreServedUnderEntityRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
     }
 }
