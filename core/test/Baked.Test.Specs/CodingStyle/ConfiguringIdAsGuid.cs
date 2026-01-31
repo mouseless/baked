@@ -1,6 +1,7 @@
 ﻿using Baked.CodingStyle.Id;
 using Baked.Playground.Orm;
 using NHibernate.Mapping;
+
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.Test.CodingStyle;

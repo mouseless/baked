@@ -27,6 +27,9 @@ public static class RuntimeExtensions
     public static void ConfigureServiceCollection(this LayerConfigurator configurator, Action<IServiceCollection> configuration) =>
         configurator.Configure(configuration);
 
+    public static void ConfigureServiceCollectionConfiguration(this LayerConfigurator configurator, Action<ServiceCollectionConfiguration> configuration) =>
+        configurator.Configure(configuration);
+
     public static void ConfigureServiceProvider(this LayerConfigurator configurator, Action<IServiceProvider> configuration) =>
         configurator.Configure(configuration);
 

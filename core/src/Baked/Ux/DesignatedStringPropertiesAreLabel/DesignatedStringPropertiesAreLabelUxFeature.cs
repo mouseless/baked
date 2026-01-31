@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Theme.Default;
+using Baked.Business;
 using Baked.Ui;
 
 namespace Baked.Ux.DesignatedStringPropertiesAreLabel;
@@ -13,11 +13,13 @@ public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> pro
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Index.Property.Add<LabelAttribute>();
+            // TODO move this to a coding style
             builder.Conventions.SetPropertyAttribute(
                 attribute: () => new LabelAttribute(),
                 when: c => c.Property.PropertyType.Is<string>() && _propertyNames.Contains(c.Property.Name)
             );
+            // end of TODO
+
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc =>
                 {

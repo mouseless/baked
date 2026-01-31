@@ -64,7 +64,7 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            // Use 'MapType' instead of 'ISchemaFilter' for 
+            // Use 'MapType' instead of 'ISchemaFilter' for
             // not render 'Id' as a reference and display properties
             // instead of only '$ref' in schemas
             swaggerGenOptions.MapType<Business.Id>(() => new OpenApiSchema { Type = "string" });
