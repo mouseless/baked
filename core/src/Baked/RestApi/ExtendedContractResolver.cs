@@ -62,7 +62,9 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
     }
 
     protected override List<MemberInfo> GetSerializableMembers(Type objectType) =>
-        base.GetSerializableMembers(objectType)
+    [
+        .. base
+            .GetSerializableMembers(objectType)
             .Where(m => m.IsOriginallyPublic() && (m is not PropertyInfo p || p.GetMethod?.IsOriginallyPublic() == true))
-            .ToList();
+    ];
 }
