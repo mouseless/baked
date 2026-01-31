@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Reflection;
 
 namespace Baked.RestApi;
 
@@ -59,4 +60,9 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
 
         return properties;
     }
+
+    protected override List<MemberInfo> GetSerializableMembers(Type objectType) =>
+        base.GetSerializableMembers(objectType)
+            .Where(m => m.IsOriginallyPublic() && (m is not PropertyInfo p || p.GetMethod?.IsOriginallyPublic() == true))
+            .ToList();
 }

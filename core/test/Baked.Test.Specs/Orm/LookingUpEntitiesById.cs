@@ -79,11 +79,11 @@ public class LookingUpEntitiesById : TestNfr
     public async Task Ignore_required_properties_for_input()
     {
         var parent = await Client.PostParents(name: "parent");
-        await Client.PostParentsChildren(id: (object)parent.id);
-        var children = await Client.GetParentsChildren((object)parent.id);
+        await Client.PostParentsChildren(id: (string)parent.id);
+        var children = await Client.GetParentsChildren((string)parent.id);
 
         var response = await Client.PutAsync($"/children/{children[0].id}", JsonContent.Create(
-            new { parentWrapper = new { parent = new { parent.id } } }
+            new { parentWrapper = new { parent = new { id = (string)parent.id } } }
         ));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);

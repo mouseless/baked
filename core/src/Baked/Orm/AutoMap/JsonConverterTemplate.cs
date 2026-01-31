@@ -81,6 +81,15 @@ public class JsonConverterTemplate(DomainModel _domain)
 
         public class ContractResolverConfigurer : IContractResolverConfigurer
         {
+            public Dictionary<Type, string> IdPropertyNames => new()
+            {
+            {{ForEach(entities
+                .Where(e => e.Properties.Having<IdAttribute>().Any())
+                .Select(e => new { Type = e, IdProperty = e.Properties.Having<IdAttribute>().Single() }), context => $$"""
+               { typeof({{context.Type.CSharpFriendlyFullName}}), "{{context.IdProperty.Name}}" },
+            """)}}
+            };
+
             public void Configure(ExtendedContractResolver contractResolver)
             {
             {{ForEach(entities.SelectMany(e => e.Properties.Select(p => new { Property = p, Type = e })), context => $$"""
@@ -89,17 +98,8 @@ public class JsonConverterTemplate(DomainModel _domain)
                     "{{context.Property.Name}}",
                     options: (property, sp) =>
                     {
-                {{If(!context.Property.IsPublic, () => $$"""
-                        property.Ignored = true;
-                """, @else: () => $$"""
-                    {{If(!context.Property.Has<IdAttribute>(), () => $$"""
-                        property.Required = Required.Default;
-                    """, @else: () => $$"""
-                        property.Required = Required.Always;
-                    """)}}
-                    {{If(context.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>(), () => $$"""
+                {{If(context.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>(), () => $$"""
                         property.Converter = sp.GetRequiredService<{{context.Property.PropertyType.Name}}JsonConverter>();
-                    """)}}
                 """)}}
                     }
                 );

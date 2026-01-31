@@ -1,10 +1,12 @@
 ﻿using Baked.Architecture;
+using Baked.CodeGeneration;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -97,6 +99,19 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
+        configurator.ConfigureServiceCollectionConfiguration(configuration =>
+        {
+            configurator.UsingGeneratedContext(generatedContext =>
+            {
+                configuration.Services.Configure<MvcOptions>(options =>
+                {
+                    var idPropertyNames = CreateContractResolverConfigurer(generatedContext).IdPropertyNames;
+
+                    options.ModelMetadataDetailsProviders.Add(new EntityMetadataDetailsProvider(idPropertyNames));
+                });
+            });
+        });
+
         configurator.ConfigureFluentConfiguration(builder =>
         {
             builder.MaxFetchDepth(1);
@@ -166,16 +181,19 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                var assembly = generatedContext.Assemblies[$"{nameof(AutoMapOrmFeature)}.Locatability"];
-                var contractResolverConfigurerType =
-                    assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IContractResolverConfigurer))) ??
-                    throw new($"`{nameof(IContractResolverConfigurer)}` implementation not found");
-                var contractResolverConfigurer =
-                    (IContractResolverConfigurer?)Activator.CreateInstance(contractResolverConfigurerType) ??
-                    throw new($"Cannot create instance of {contractResolverConfigurerType.Name}");
-
-                contractResolverConfigurer.Configure(contractResolver);
+                CreateContractResolverConfigurer(generatedContext).Configure(contractResolver);
             });
         });
+    }
+
+    IContractResolverConfigurer CreateContractResolverConfigurer(GeneratedContext generatedContext)
+    {
+        var assembly = generatedContext.Assemblies[$"{nameof(AutoMapOrmFeature)}.Locatability"];
+        var contractResolverConfigurerType =
+            assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IContractResolverConfigurer))) ??
+            throw new($"`{nameof(IContractResolverConfigurer)}` implementation not found");
+
+        return (IContractResolverConfigurer?)Activator.CreateInstance(contractResolverConfigurerType) ??
+            throw new($"Cannot create instance of {contractResolverConfigurerType.Name}");
     }
 }
