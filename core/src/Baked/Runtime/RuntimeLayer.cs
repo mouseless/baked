@@ -25,7 +25,7 @@ public class RuntimeLayer : LayerBase
         {
             BuildConfiguration buildConfiguration => GetContext(buildConfiguration),
             AddServices addServices => GetContext(addServices),
-            ConfigureServices preBuild => GetContext(preBuild),
+            ConfigureServices configureServices => GetContext(configureServices),
             PostBuild postBuild => GetContext(postBuild),
             _ => base.GetContext(phase)
         };
