@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.CodingStyle.TransientBinding;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
 using Baked.Runtime;
@@ -76,7 +77,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 generatedAssemblies.Add(nameof(RichTransientCodingStyleFeature),
                     assembly =>
                     {
-                        List<(string, string)> locators = [];
+                        List<LocatorDescriptor> locators = [];
                         foreach (var item in domain.Types.Having<RichTransientAttribute>())
                         {
                             if (!item.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { continue; }
@@ -84,7 +85,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                             var codeTemplate = new LocatorTemplate(item, locatable.IsAsync);
                             assembly.AddCodes(codeTemplate);
                             item.Apply(t => assembly.AddReferenceFrom(t));
-                            locators.Add((codeTemplate.ILocator, codeTemplate.Implementaton));
+                            locators.Add(new(codeTemplate.LocatorTypeName, codeTemplate.ImplementatonTypeName));
                         }
 
                         assembly.AddCodes(new LocatorAdderTemplate(locators));

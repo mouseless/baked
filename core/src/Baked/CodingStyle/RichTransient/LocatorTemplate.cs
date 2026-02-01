@@ -17,22 +17,18 @@ public class LocatorTemplate(TypeModel typeModel, bool isAsync) : CodeTemplateBa
     string Locator() => $$"""
     namespace RichTransient;
 
-    public class {{Implementaton}}({{Factory}}) : {{ILocator}}
+    public class {{typeModel.Name}}Locator({{Factory}}) : {{LocatorTypeName}}
     {
-        public IEnumerable<{{ReturnType}}> Multiple(IEnumerable<Id> ids)
-        {
-            return ids.Select(id => _new{{typeModel.Name}}().With(id));
-        }
+        public IEnumerable<{{ReturnType}}> Multiple(IEnumerable<Id> ids) =>
+            ids.Select(id => _new{{typeModel.Name}}().With(id));
 
-        public {{ReturnType}} Single(Id id, bool _)
-        {
-            return _new{{typeModel.Name}}().With(id);
-        }
+        public {{ReturnType}} Single(Id id, bool _) =>
+            _new{{typeModel.Name}}().With(id);
     }
     """;
 
     string ReturnType => isAsync ? $$"""Task<{{typeModel.CSharpFriendlyFullName}}>""" : $$"""{{typeModel.CSharpFriendlyFullName}}""";
     string Factory => $$"""Func<{{typeModel.CSharpFriendlyFullName}}> _new{{typeModel.Name}}""";
-    public string ILocator => $$"""ILocator<{{ReturnType}}>""";
-    public string Implementaton => $$"""{{typeModel.Name}}Locator""";
+    public string LocatorTypeName => $$"""ILocator<{{ReturnType}}>""";
+    public string ImplementatonTypeName => $$"""RichTransient.{{typeModel.Name}}Locator""";
 }

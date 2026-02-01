@@ -29,6 +29,6 @@ public class LocatorTemplate(TypeModel _entityExtension) : CodeTemplateBase
     """;
 
     string EntityName => _entityExtension.GetMetadata().Get<EntityExtensionAttribute>().EntityType.GetCSharpFriendlyFullName();
-    public string ILocator => $$"""ILocator<{{_entityExtension.CSharpFriendlyFullName}}>""";
-    public string Implementaton => $$"""{{_entityExtension.Name}}Locator""";
+    public string LocatorTypeName => $$"""ILocator<{{_entityExtension.CSharpFriendlyFullName}}>""";
+    public string ImplementatonTypeName => $$"""EntityExtensionViaComposition.{{_entityExtension.Name}}Locator""";
 }

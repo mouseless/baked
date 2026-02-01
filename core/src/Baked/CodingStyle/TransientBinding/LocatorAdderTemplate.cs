@@ -1,8 +1,9 @@
 ﻿using Baked.CodeGeneration;
 
-namespace Baked.CodingStyle.EntityExtensionViaComposition;
+namespace Baked.CodingStyle.TransientBinding;
 
-public class LocatorAdderTemplate(List<(string Service, string Implementation)> locators) : CodeTemplateBase
+// TODO remove after refactoring `ServiceAdderTemplate` to support generated types
+public class LocatorAdderTemplate(List<LocatorDescriptor> locators) : CodeTemplateBase
 {
     protected override IEnumerable<string> Render() =>
         [Locators()];
@@ -13,7 +14,7 @@ public class LocatorAdderTemplate(List<(string Service, string Implementation)> 
     using Baked.Runtime;
     using Microsoft.Extensions.DependencyInjection;
 
-    namespace EntityExtensionViaComposition;
+    namespace TransientBinding;
 
     public class LocatorAdder : IServiceAdder
     {

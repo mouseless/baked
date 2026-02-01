@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.CodingStyle.TransientBinding;
 using Baked.Orm;
 using Baked.RestApi;
 using Baked.RestApi.Model;
@@ -26,6 +27,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
+                    members.TryGetFirstProperty<IdAttribute>(out var _) &&
                     members.TryGetMethods("op_Implicit", out var implicits) &&
                     implicits.Count() == 1 &&
                     implicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
@@ -86,7 +88,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 generatedAssemblies.Add(nameof(EntityExtensionViaCompositionCodingStyleFeature),
                     assembly =>
                     {
-                        List<(string, string)> locators = [];
+                        List<LocatorDescriptor> locators = [];
                         foreach (var item in domain.Types.Having<EntityExtensionAttribute>())
                         {
                             if (!item.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { continue; }
@@ -94,7 +96,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                             var codeTemplate = new LocatorTemplate(item);
                             assembly.AddCodes(codeTemplate);
                             item.Apply(t => assembly.AddReferenceFrom(t));
-                            locators.Add((codeTemplate.ILocator, codeTemplate.Implementaton));
+                            locators.Add(new(codeTemplate.LocatorTypeName, codeTemplate.ImplementatonTypeName));
                         }
 
                         assembly.AddCodes(new LocatorAdderTemplate(locators));

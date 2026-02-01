@@ -78,8 +78,8 @@ public class ConfiguringEntityIds : TestSpec
     {
         var newEntityWithAssignedId = GiveMe.The<Func<EntityWithAssignedId>>();
 
-        var actual1 = newEntityWithAssignedId().With("1");
-        var actual2 = newEntityWithAssignedId().With("string");
+        var actual1 = newEntityWithAssignedId().With(Baked.Business.Id.Parse("1"), GiveMe.AString());
+        var actual2 = newEntityWithAssignedId().With(Baked.Business.Id.Parse("string"), GiveMe.AString());
 
         actual1.Id.ToString().ShouldBe("1");
         actual2.Id.ToString().ShouldBe("string");
