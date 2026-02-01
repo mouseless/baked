@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.CodingStyle.TransientBinding;
+using Baked.Domain;
 using Baked.Orm;
 using Baked.RestApi;
 using Baked.RestApi.Model;
@@ -88,7 +88,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 generatedAssemblies.Add(nameof(EntityExtensionViaCompositionCodingStyleFeature),
                     assembly =>
                     {
-                        List<LocatorDescriptor> locators = [];
+                        List<GeneratedServiceDescriptor> locators = [];
                         foreach (var item in domain.Types.Having<EntityExtensionAttribute>())
                         {
                             if (!item.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { continue; }
@@ -99,7 +99,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                             locators.Add(new(codeTemplate.LocatorTypeName, codeTemplate.ImplementatonTypeName));
                         }
 
-                        assembly.AddCodes(new LocatorAdderTemplate(locators));
+                        assembly.AddCodes(new GeneratedServiceAdderTemplate(locators));
                         assembly.AddReferenceFrom<EntityExtensionViaCompositionCodingStyleFeature>();
                     },
                     usings: [.. LocatorTemplate.GlobalUsings]

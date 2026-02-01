@@ -1,26 +1,26 @@
 ﻿using Baked.CodeGeneration;
 
-namespace Baked.CodingStyle.TransientBinding;
+namespace Baked.Domain;
 
-// TODO remove after refactoring `ServiceAdderTemplate` to support generated types
-public class LocatorAdderTemplate(List<LocatorDescriptor> locators) : CodeTemplateBase
+//TODO requires review, temporarily placed here for access from features
+public class GeneratedServiceAdderTemplate(List<GeneratedServiceDescriptor> generatedServices) : CodeTemplateBase
 {
     protected override IEnumerable<string> Render() =>
-        [Locators()];
+        [Generated()];
 
-    string Locators() => $$"""
+    string Generated() => $$"""
     using Baked;
     using Baked.Domain;
     using Baked.Runtime;
     using Microsoft.Extensions.DependencyInjection;
 
-    namespace TransientBinding;
+    namespace Domain;
 
-    public class LocatorAdder : IServiceAdder
+    public class GeneratedServiceAdder : IServiceAdder
     {
         public void AddServices(IServiceCollection services)
         {
-            {{ForEach(locators, (item) => $$"""
+            {{ForEach(generatedServices, (item) => $$"""
             services.AddSingleton<{{item.Implementation}}>();
             services.AddSingleton<{{item.Service}}, {{item.Implementation}}>(forward: true);
             """)}}

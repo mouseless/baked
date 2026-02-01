@@ -5,7 +5,7 @@ using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.TransientBinding;
 
-public class RemoveInitializerNameRouteConvention : IDomainModelConvention<MethodModelContext>
+public class RemoveInitializerNameFromRouteConvention : IDomainModelConvention<MethodModelContext>
 {
     public void Apply(MethodModelContext context)
     {

@@ -3,7 +3,6 @@ using Baked.CodeGeneration;
 using Baked.Domain.Model;
 using Baked.Orm;
 using System.Reflection;
-using System.Text;
 
 namespace Baked.CodingStyle.Id;
 
@@ -69,21 +68,9 @@ public class IdMapperTemplate : CodeTemplateBase
         );
     """;
 
-    string ForeignKeyOverride(TypeModel typeModel)
-    {
-        var result = new StringBuilder();
-        var properties = typeModel.GetMembers().Properties.Where(p => p.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>());
-
-        foreach (var property in properties)
-        {
-            var idInfo = property.PropertyType.GetIdInfo();
-            result.AppendLine($$"""
-                model.Override<{{typeModel.CSharpFriendlyFullName}}> (x =>
-                  x.References(r => r.{{property.Name}}).Column("{{property.Name}}{{idInfo.PropertyName}}")
-                );
-            """);
-        }
-
-        return result.ToString();
-    }
+    string ForeignKeyOverride(TypeModel typeModel) => $$"""
+        {{ForEach(typeModel.GetMembers().Properties.Where(p => p.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>()), p => $$"""
+            model.Override<{{typeModel.CSharpFriendlyFullName}}> (x => x.References(r => r.{{p.Name}}).Column("{{p.Name}}{{p.PropertyType.GetIdInfo().PropertyName}}"));
+        """)}}
+    """;
 }
