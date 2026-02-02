@@ -1,9 +1,11 @@
-﻿using Baked.CodeGeneration;
+﻿using Baked.Business;
+using Baked.CodeGeneration;
 using Baked.Domain.Model;
+using System.Reflection;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
-public class LocatorTemplate(TypeModel _entityExtension)
+public class LocatorTemplate
     : CodeTemplateBase
 {
     public static readonly string[] GlobalUsings =
@@ -13,24 +15,73 @@ public class LocatorTemplate(TypeModel _entityExtension)
             "Baked.Orm"
         ];
 
+    List<TypeModel> _entityExtensionTypes = [];
+    List<(string Service, string Implementation)> _generatedServices = [];
+
+    public LocatorTemplate(DomainModel domain)
+    {
+        foreach (var item in domain.Types.Having<EntityExtensionAttribute>())
+        {
+            if (!item.GetMembers().TryGet<LocatableAttribute>(out var _)) { continue; }
+
+            _entityExtensionTypes.Add(item);
+            _generatedServices.Add((LocatorTypeName(item), ImplementatonTypeName(item)));
+            item.Apply(t => Referencs.Add(t.Assembly));
+        }
+    }
+
+    public List<Assembly> Referencs { get; } = [];
+
     protected override IEnumerable<string> Render() =>
-        [Locator()];
+        [
+            Locator(),
+            ServiceAdder()
+        ];
 
     string Locator() => $$"""
+    using Baked;
+    using Baked.Domain;
+    using Baked.Runtime;
+    using Microsoft.Extensions.DependencyInjection;
+
     namespace EntityExtensionViaComposition;
 
-    public class {{_entityExtension.Name}}Locator(ILocator<{{EntityName}}> _entityLocator)
-        : ILocator<{{_entityExtension.CSharpFriendlyFullName}}>
+    {{ForEach(_entityExtensionTypes, e =>
+    $$"""
+    public class {{e.Name}}Locator(ILocator<{{EntityName(e)}}> _entityLocator)
+        : ILocator<{{e.CSharpFriendlyFullName}}>
     {
-        public {{_entityExtension.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
-            ({{_entityExtension.CSharpFriendlyFullName}})_entityLocator.Locate(id, throwNotFound: throwNotFound);
+        public {{e.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
+            ({{e.CSharpFriendlyFullName}})_entityLocator.Locate(id, throwNotFound: throwNotFound);
 
-        public IEnumerable<{{_entityExtension.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
-            _entityLocator.LocateMany(ids).Select(e => ({{_entityExtension.CSharpFriendlyFullName}})e);
+        public IEnumerable<{{e.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
+            _entityLocator.LocateMany(ids).Select(e => ({{e.CSharpFriendlyFullName}})e);
+    }
+    """
+    )}}
+    """;
+
+    string ServiceAdder() => $$"""
+    using Baked;
+    using Baked.Domain;
+    using Baked.Runtime;
+    using Microsoft.Extensions.DependencyInjection;
+
+    namespace EntityExtensionViaComposition;
+
+    public class ServiceServiceAdder : IServiceAdder
+    {
+        public void AddServices(IServiceCollection services)
+        {
+            {{ForEach(_generatedServices, (item) => $$"""
+            services.AddSingleton<{{item.Implementation}}>();
+            services.AddSingleton<{{item.Service}}, {{item.Implementation}}>(forward: true);
+            """)}}
+        }
     }
     """;
 
-    string EntityName => _entityExtension.GetMetadata().Get<EntityExtensionAttribute>().EntityType.GetCSharpFriendlyFullName();
-    public string LocatorTypeName => $$"""ILocator<{{_entityExtension.CSharpFriendlyFullName}}>""";
-    public string ImplementatonTypeName => $$"""EntityExtensionViaComposition.{{_entityExtension.Name}}Locator""";
+    string EntityName(TypeModel extension) => extension.GetMetadata().Get<EntityExtensionAttribute>().EntityType.GetCSharpFriendlyFullName();
+    string LocatorTypeName(TypeModel extension) => $$"""ILocator<{{extension.CSharpFriendlyFullName}}>""";
+    string ImplementatonTypeName(TypeModel extension) => $$"""EntityExtensionViaComposition.{{extension.Name}}Locator""";
 }
