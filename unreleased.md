@@ -59,12 +59,4 @@
   internal EntityExtension With(Entity entity) { ... }
 
   internal Business.Id Id => _entity.Id
-  ```  
-  
-## Improvements
-
-- `RichTransient` coding style feature now generates `ILocator<>` 
-  implementations 
-- `RichEntity` coding style feature now generates `ILocator<>` implementations 
-- `EntityExtensionsViaComposition` coding style feature now generates 
-  `ILocator<>` implementations 
+  ```
