@@ -67,9 +67,9 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
 
                     entityExtensionType.Apply(t =>
                     {
-                        set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t), "Single")
+                        set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t), "Locate")
                         {
-                            LocateMultipleMethodName = "Multiple"
+                            LocateManyMethodName = "LocateMany"
                         });
                     });
                 },

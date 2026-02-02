@@ -48,7 +48,7 @@ public class ConfiguringEntityIds : TestSpec
 
         var actual = configuration.GetClassMapping(typeof(EntityWithAssignedId)).PropertyIterator.FirstOrDefault();
         actual.ShouldNotBeNull();
-        actual.ColumnIterator.First().Text.ShouldBe("EntityPrimaryKey");
+        actual.ColumnIterator.First().Text.ShouldBe("ForeignPrimaryKey");
     }
 
     [Test]

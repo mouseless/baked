@@ -45,7 +45,7 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
 
         var notNull = context.Parameter.Has<NotNullAttribute>();
         parameter.ConvertToId(idInfo, nullable: !notNull);
-        parameter.LookupRenderer = p => locatable.LookupSingleTemplate(locatorServiceParameter, p,
+        parameter.LookupRenderer = p => locatable.LookupTemplate(locatorServiceParameter, p,
             notNullValueExpression: $"({idInfo.Type}){p}",
             nullable: !notNull,
             castTo: locatable.CastTo

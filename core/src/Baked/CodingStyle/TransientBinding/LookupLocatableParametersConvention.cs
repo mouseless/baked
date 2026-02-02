@@ -47,7 +47,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (locatorServiceParameter is null) { return; }
 
         parameter.ConvertToIds(idInfo);
-        parameter.LookupRenderer = p => locatable.LookupMultipleTemplate(locatorServiceParameter, p,
+        parameter.LookupRenderer = p => locatable.LookupManyTemplate(locatorServiceParameter, p,
             isArray: context.Parameter.ParameterType.IsArray,
             castTo: locatable.CastTo
         );

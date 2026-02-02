@@ -43,12 +43,12 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                         var isAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
                         var attribute = new LocatableAttribute(
                             typeof(ILocator<>).MakeGenericType(isAsync ? typeof(Task<>).MakeGenericType(t) : t),
-                            "Single"
+                            "Locate"
                         )
                         {
                             IsAsync = isAsync,
                             IsFactory = false,
-                            LocateMultipleMethodName = "Multiple"
+                            LocateManyMethodName = "LocateMany"
                         };
                         set(c.Type, attribute);
                     });

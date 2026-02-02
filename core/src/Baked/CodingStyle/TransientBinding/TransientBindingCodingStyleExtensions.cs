@@ -34,14 +34,14 @@ public static class TransientBindingCodingStyleExtensions
     )
     {
         var locatorTemplate = $"{locatorServiceParameter.Name}{(locatable.IsFactory ? "()" : string.Empty)}";
-        locatorTemplate += $".{locatable.LocateSingleMethodName}({parameters.Select(p => $"{p.InternalName}: {p.RenderLookup($"@{p.Name}")}").Join(", ")})";
+        locatorTemplate += $".{locatable.LocateMethodName}({parameters.Select(p => $"{p.InternalName}: {p.RenderLookup($"@{p.Name}")}").Join(", ")})";
 
         return castTo is null
            ? locatorTemplate
            : $"({castTo.CSharpFriendlyFullName}){locatorTemplate}";
     }
 
-    public static string LookupSingleTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
+    public static string LookupTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         string? notNullValueExpression = default,
         bool nullable = false,
         TypeModel? castTo = default,
@@ -52,7 +52,7 @@ public static class TransientBindingCodingStyleExtensions
         await ??= locatable.IsAsync;
 
         var template = $"{(await.Value ? "await " : string.Empty)}{locatorServiceParameter.Name}{(locatable.IsFactory ? "()" : string.Empty)}";
-        template += $".{locatable.LocateSingleMethodName}({notNullValueExpression})";
+        template += $".{locatable.LocateMethodName}({notNullValueExpression})";
 
         if (nullable)
         {
@@ -64,14 +64,14 @@ public static class TransientBindingCodingStyleExtensions
            : $"({castTo.CSharpFriendlyFullName}){template}";
     }
 
-    public static string LookupMultipleTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
+    public static string LookupManyTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         TypeModel? castTo = default,
         bool isArray = false
     )
     {
-        var template = locatable.LocateMultipleMethodName is not null
-            ? $"{locatorServiceParameter.Name}.{locatable.LocateMultipleMethodName}({parameter})"
-            : $"{parameter}.Select(p => {locatable.LookupSingleTemplate(locatorServiceParameter, "p", await: false)})";
+        var template = locatable.LocateManyMethodName is not null
+            ? $"{locatorServiceParameter.Name}.{locatable.LocateManyMethodName}({parameter})"
+            : $"{parameter}.Select(p => {locatable.LookupTemplate(locatorServiceParameter, "p", await: false)})";
 
         if (castTo is not null)
         {

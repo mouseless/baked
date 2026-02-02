@@ -18,13 +18,14 @@ public class LocatorTemplate(TypeModel _entityExtension) : CodeTemplateBase
     string Locator() => $$"""
     namespace EntityExtensionViaComposition;
 
-    public class {{_entityExtension.Name}}Locator(IQueryContext<{{EntityName}}> _entityQueryContext) : ILocator<{{_entityExtension.CSharpFriendlyFullName}}>
+    public class {{_entityExtension.Name}}Locator(IQueryContext<{{EntityName}}> _entityQueryContext)
+        : ILocator<{{_entityExtension.CSharpFriendlyFullName}}>
     {
-        public IEnumerable<{{_entityExtension.CSharpFriendlyFullName}}> Multiple(IEnumerable<Baked.Business.Id> ids) =>
-            _entityQueryContext.ByIds(ids).Select(i => ({{_entityExtension.CSharpFriendlyFullName}})i);
-
-        public {{_entityExtension.CSharpFriendlyFullName}} Single(Baked.Business.Id id, bool throwNotFound) =>
+        public {{_entityExtension.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
             ({{_entityExtension.CSharpFriendlyFullName}})_entityQueryContext.SingleById(id, throwNotFound: throwNotFound);
+
+        public IEnumerable<{{_entityExtension.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
+            _entityQueryContext.ByIds(ids).Select(i => ({{_entityExtension.CSharpFriendlyFullName}})i);
     }
     """;
 

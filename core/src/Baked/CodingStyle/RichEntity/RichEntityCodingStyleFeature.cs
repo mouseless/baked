@@ -49,10 +49,10 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     {
                         set(c.Type, new LocatableAttribute(
                             ServiceType: typeof(ILocator<>).MakeGenericType(t),
-                            LocateSingleMethodName: "Single"
+                            LocateMethodName: "Locate"
                         )
                         {
-                            LocateMultipleMethodName = "Multiple"
+                            LocateManyMethodName = "LocateMany"
                         });
                     });
                 }

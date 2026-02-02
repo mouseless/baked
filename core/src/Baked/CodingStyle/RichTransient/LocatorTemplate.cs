@@ -17,13 +17,14 @@ public class LocatorTemplate(TypeModel typeModel, bool isAsync) : CodeTemplateBa
     string Locator() => $$"""
     namespace RichTransient;
 
-    public class {{typeModel.Name}}Locator({{Factory}}) : {{LocatorTypeName}}
+    public class {{typeModel.Name}}Locator({{Factory}})
+        : {{LocatorTypeName}}
     {
-        public IEnumerable<{{ReturnType}}> Multiple(IEnumerable<Id> ids) =>
-            ids.Select(id => _new{{typeModel.Name}}().With(id));
-
-        public {{ReturnType}} Single(Id id, bool _) =>
+        public {{ReturnType}} Locate(Id id, bool _) =>
             _new{{typeModel.Name}}().With(id);
+
+        public IEnumerable<{{ReturnType}}> LocateMany(IEnumerable<Id> ids) =>
+            ids.Select(id => _new{{typeModel.Name}}().With(id));
     }
     """;
 
