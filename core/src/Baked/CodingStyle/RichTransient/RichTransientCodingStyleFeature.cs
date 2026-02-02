@@ -56,9 +56,10 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Type.Apply(t =>
                     {
                         var initializer = c.Type.GetMembers().Methods.First(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic);
-                        set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t))
+                        var isAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
+                        set(c.Type, new LocatableAttribute(isAsync ? typeof(IAsyncLocator<>).MakeGenericType(t) : typeof(ILocator<>).MakeGenericType(t))
                         {
-                            IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>()
+                            IsAsync = isAsync
                         });
                     });
                 },
@@ -69,8 +70,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 attribute: locatable =>
                 {
                     locatable.LocateRenderer = (serviceExpression, idExpression) => locatable.IsAsync
-                        ? $"await {serviceExpression}.LocateAsync({idExpression}, throwNotFound = true)"
-                        : $"{serviceExpression}.Locate({idExpression}, throwNotFound = true)";
+                        ? $"await {serviceExpression}.LocateAsync({idExpression}, throwNotFound: true)"
+                        : $"{serviceExpression}.Locate({idExpression}, throwNotFound: true)";
                     locatable.LocateManyRenderer = (serviceExpression, idsExpression) => locatable.IsAsync
                         ? $"await {serviceExpression}.LocateManyAsync({idsExpression})"
                         : $"{serviceExpression}.LocateMany({idsExpression})";

@@ -16,7 +16,7 @@ public static class TransientBindingCodingStyleExtensions
             IsInvokeMethodParameter = false
         };
 
-    public static string LookupTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
+    public static string BuildLookupRenderer(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         string? notNullValueExpression = default
     )
     {
@@ -25,7 +25,7 @@ public static class TransientBindingCodingStyleExtensions
         return locatable.LocateRenderer(locatorServiceParameter.Name, notNullValueExpression);
     }
 
-    public static string LookupManyTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
+    public static string BuildLookupManyTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         bool isArray = false
     )
     {
@@ -35,6 +35,6 @@ public static class TransientBindingCodingStyleExtensions
                 ? $"await {parameter}.Select(async p => await {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})"
                 : $"{parameter}.Select(p => {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})";
 
-        return isArray ? $"{template}.ToArray()" : $"{template}.ToList()";
+        return isArray ? $"({template}).ToArray()" : $"({template}).ToList()";
     }
 }

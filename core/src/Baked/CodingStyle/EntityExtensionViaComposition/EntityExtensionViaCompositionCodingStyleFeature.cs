@@ -73,7 +73,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 when: c => c.Type.Has<EntityExtensionAttribute>() && c.Type.Has<LocatableAttribute>(),
                 attribute: locatable =>
                 {
-                    locatable.LocateRenderer = (serviceExpression, idExpression) => $"{serviceExpression}.Locate({idExpression}, throwNotFound = true)";
+                    locatable.LocateRenderer = (serviceExpression, idExpression) => $"{serviceExpression}.Locate({idExpression}, throwNotFound: true)";
                     locatable.LocateManyRenderer = (serviceExpression, idsExpression) => $"{serviceExpression}.LocateMany({idsExpression})";
                 },
                 order: 20

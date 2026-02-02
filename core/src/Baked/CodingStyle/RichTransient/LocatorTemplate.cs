@@ -44,13 +44,30 @@ public class LocatorTemplate : CodeTemplateBase
 
     {{ForEach(_richTransients, richTransient => $$"""
     public class {{richTransient.Name}}Locator(Func<{{richTransient.CSharpFriendlyFullName}}> _new{{richTransient.Name}})
-        : ILocator<{{ReturnType(richTransient)}}>
+        {{If(richTransient.GetMetadata().TryGet<LocatableAttribute>(out var locatable) && locatable.IsAsync,
+            () => $": IAsyncLocator<{richTransient.CSharpFriendlyFullName}>",
+        @else:
+            () => $": ILocator<{richTransient.CSharpFriendlyFullName}>"
+        )}}
     {
-        public {{ReturnType(richTransient)}} Locate(Id id, bool _) =>
-            _new{{richTransient.Name}}().With(id);
+        {{If(richTransient.GetMetadata().TryGet<LocatableAttribute>(out var l) && l.IsAsync,
+            () => $$"""
+            public async Task<{{richTransient.CSharpFriendlyFullName}}> LocateAsync(Id id, bool _) =>
+                await _new{{richTransient.Name}}().With(id);
 
-        public IEnumerable<{{ReturnType(richTransient)}}> LocateMany(IEnumerable<Id> ids) =>
-            ids.Select(id => _new{{richTransient.Name}}().With(id));
+            public async Task<IEnumerable<{{richTransient.CSharpFriendlyFullName}}>> LocateManyAsync(IEnumerable<Id> ids) =>
+                await Task.WhenAll(ids.Select(id => _new{{richTransient.Name}}().With(id)));
+            """,
+        @else:
+            () => $$"""
+            public {{richTransient.CSharpFriendlyFullName}} Locate(Id id, bool _) =>
+                _new{{richTransient.Name}}().With(id);
+
+            public IEnumerable<{{richTransient.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
+                ids.Select(id => _new{{richTransient.Name}}().With(id));
+            """
+        )}}
+       
     }
     """)}}
     """;
@@ -68,14 +85,13 @@ public class LocatorTemplate : CodeTemplateBase
         public void AddServices(IServiceCollection services)
         {
             {{ForEach(_richTransients, (richTransient) => $$"""
-            services.AddSingleton<ILocator<{{ReturnType(richTransient)}}>, {{richTransient.Name}}Locator>();
+                {{If(richTransient.GetMetadata().TryGet<LocatableAttribute>(out var locatable) && locatable.IsAsync,
+                    () => $"services.AddSingleton<IAsyncLocator<{richTransient.CSharpFriendlyFullName}>, {richTransient.Name}Locator>();",
+                @else:
+                    () => $"services.AddSingleton<ILocator<{richTransient.CSharpFriendlyFullName}>, {richTransient.Name}Locator>();"
+                )}}
             """)}}
         }
     }
     """;
-
-    string ReturnType(TypeModel typeModel) =>
-        typeModel.GetMetadata().TryGet<LocatableAttribute>(out var locatable) && locatable.IsAsync
-            ? $$"""Task<{{typeModel.CSharpFriendlyFullName}}>"""
-            : $$"""{{typeModel.CSharpFriendlyFullName}}""";
 }
