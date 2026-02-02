@@ -48,7 +48,7 @@ public class ConfiguringEntityIds : TestSpec
 
         var actual = configuration.GetClassMapping(typeof(EntityWithAssignedId)).PropertyIterator.FirstOrDefault();
         actual.ShouldNotBeNull();
-        actual.ColumnIterator.First().Text.ShouldBe("EntityIdd");
+        actual.ColumnIterator.First().Text.ShouldBe("EntityPrimaryKey");
     }
 
     [Test]
@@ -69,8 +69,8 @@ public class ConfiguringEntityIds : TestSpec
         var result1 = newEntityWithIntId().With();
         var result2 = newEntityWithIntId().With();
 
-        result1.Idd.ToString().ShouldBe("1");
-        result2.Idd.ToString().ShouldBe("2");
+        result1.PrimaryKey.ToString().ShouldBe("1");
+        result2.PrimaryKey.ToString().ShouldBe("2");
     }
 
     [Test]
@@ -78,8 +78,8 @@ public class ConfiguringEntityIds : TestSpec
     {
         var newEntityWithAssignedId = GiveMe.The<Func<EntityWithAssignedId>>();
 
-        var actual1 = newEntityWithAssignedId().With(Baked.Business.Id.Parse("1"), GiveMe.AString());
-        var actual2 = newEntityWithAssignedId().With(Baked.Business.Id.Parse("string"), GiveMe.AString());
+        var actual1 = newEntityWithAssignedId().With(Baked.Business.Id.Parse("1"));
+        var actual2 = newEntityWithAssignedId().With(Baked.Business.Id.Parse("string"));
 
         actual1.Id.ToString().ShouldBe("1");
         actual2.Id.ToString().ShouldBe("string");

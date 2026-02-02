@@ -1,21 +1,22 @@
 ﻿using Baked.DataAccess;
-using NHibernate;
 using NHibernate.Engine;
 using NHibernate.SqlTypes;
+using NHibernate.Type;
 using System.Data.Common;
 
 namespace Baked.CodingStyle.Id;
 
-public abstract class IdUserTypeBase<T> : UserTypeBase
+public abstract class IdUserTypeBase : UserTypeBase
 {
     public abstract override SqlType[] SqlTypes { get; }
-    public abstract T Parse(string value);
+    public abstract NullableType NHibernateType { get; }
+    public abstract object Convert(object value);
 
     public override Type ReturnedType => typeof(Business.Id);
 
     public override object? NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object _)
     {
-        var obj = (T?)NHibernateUtil.Guid.NullSafeGet(rs, names[0], session);
+        var obj = NHibernateType.NullSafeGet(rs, names, session);
 
         return obj == null ? null : Baked.Business.Id.Parse(obj);
     }
@@ -24,11 +25,11 @@ public abstract class IdUserTypeBase<T> : UserTypeBase
     {
         if (value == null)
         {
-            NHibernateUtil.Guid.NullSafeSet(cmd, null, index, session);
+            NHibernateType.NullSafeSet(cmd, null, index, session);
 
             return;
         }
 
-        NHibernateUtil.Guid.NullSafeSet(cmd, Parse($"{value}"), index, session);
+        NHibernateType.NullSafeSet(cmd, Convert(value), index, session);
     }
 }

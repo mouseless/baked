@@ -5,7 +5,8 @@ namespace Baked.Playground.CodingStyle;
 
 public class EntityWithAutoIncrementId(IEntityContext<EntityWithAutoIncrementId> _context)
 {
-    public Id Idd { get; private set; } = default!;
+    // `Id` is named differently to test `Id` and `ForeignKey` mapping
+    public Id PrimaryKey { get; private set; } = default!;
 
     public EntityWithAutoIncrementId With()
     {
