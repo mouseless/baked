@@ -51,16 +51,12 @@
   // not supported
   Entity _entity = default!;
 
-  internal EntityExtension With(Entity entity){
-    ...
-  }
+  internal EntityExtension With(Entity entity) { ... }
 
   // add 'Baked.Business.Id' property
   Entity _entity = default!;
 
-  internal EntityExtension With(Entity entity){
-    ...
-  }
+  internal EntityExtension With(Entity entity) { ... }
 
   internal Business.Id Id => _entity.Id
   ```  
