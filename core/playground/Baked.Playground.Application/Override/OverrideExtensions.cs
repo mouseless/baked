@@ -7,7 +7,6 @@ public static class OverrideExtensions
     public static void AddOverrides(this List<IFeature> features)
     {
         features.Add(new Playground.Override.DataAccess.MappingsDataAccessOverrideFeature());
-        features.Add(new Playground.Override.DataAccess.MapingIdsOverrideFeature());
         features.Add(new Playground.Override.Domain.CustomAttributeDomainOverrideFeature());
         features.Add(new Playground.Override.RestApi.MultiDocumentRestApiOverrideFeature());
         features.Add(new Playground.Override.RestApi.RoutesRestApiOverrideFeature());

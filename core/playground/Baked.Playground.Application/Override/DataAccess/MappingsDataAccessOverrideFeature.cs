@@ -1,4 +1,7 @@
 using Baked.Architecture;
+using Baked.Business;
+using Baked.CodingStyle.Id;
+using Baked.Playground.CodingStyle;
 using Baked.Playground.Orm;
 
 namespace Baked.Playground.Override.DataAccess;
@@ -7,6 +10,19 @@ public class MappingsDataAccessOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+                when: c => c.Type.Is<EntityWithAutoIncrementId>(),
+                attribute: id => id.AutoIncrement()
+            );
+
+            builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+                when: c => c.Type.Is<EntityWithAssignedId>(),
+                attribute: id => id.Assigned()
+            );
+        });
+
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
