@@ -78,7 +78,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     {
                         var codeTemplate = new LocatorTemplate(domain);
                         assembly.AddCodes(codeTemplate);
-                        assembly.AddReferences(codeTemplate.Referencs);
+                        assembly.AddReferences(codeTemplate.References);
                         assembly.AddReferenceFrom<RichTransientCodingStyleFeature>();
                     },
                     usings: [.. LocatorTemplate.GlobalUsings]

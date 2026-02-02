@@ -5,8 +5,7 @@ using System.Reflection;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class LocatorTemplate
-    : CodeTemplateBase
+public class LocatorTemplate : CodeTemplateBase
 {
     public static readonly string[] GlobalUsings =
         [
@@ -14,8 +13,7 @@ public class LocatorTemplate
             "Baked.CodingStyle.Id",
         ];
 
-    List<TypeModel> _richTransientTypes = [];
-    List<(string Service, string Implementation)> _generatedServices = [];
+    List<TypeModel> _richTransients = [];
 
     public LocatorTemplate(DomainModel domain)
     {
@@ -23,13 +21,12 @@ public class LocatorTemplate
         {
             if (!item.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { continue; }
 
-            _richTransientTypes.Add(item);
-            _generatedServices.Add((LocatorTypeName(item), ImplementatonTypeName(item)));
-            item.Apply(t => Referencs.Add(t.Assembly));
+            _richTransients.Add(item);
+            item.Apply(t => References.Add(t.Assembly));
         }
     }
 
-    public List<Assembly> Referencs { get; } = [];
+    public List<Assembly> References { get; } = [];
 
     protected override IEnumerable<string> Render() =>
         [
@@ -44,19 +41,18 @@ public class LocatorTemplate
     using Microsoft.Extensions.DependencyInjection;
 
     namespace RichTransient;
-    {{ForEach(_richTransientTypes, r => $$"""
 
-    public class {{r.Name}}Locator({{Factory(r)}})
-        : {{LocatorTypeName(r)}}
+    {{ForEach(_richTransients, richTransient => $$"""
+    public class {{richTransient.Name}}Locator(Func<{{richTransient.CSharpFriendlyFullName}}> _new{{richTransient.Name}})
+        : ILocator<{{ReturnType(richTransient)}}>
     {
-        public {{ReturnType(r)}} Locate(Id id, bool _) =>
-            _new{{r.Name}}().With(id);
+        public {{ReturnType(richTransient)}} Locate(Id id, bool _) =>
+            _new{{richTransient.Name}}().With(id);
 
-        public IEnumerable<{{ReturnType(r)}}> LocateMany(IEnumerable<Id> ids) =>
-            ids.Select(id => _new{{r.Name}}().With(id));
+        public IEnumerable<{{ReturnType(richTransient)}}> LocateMany(IEnumerable<Id> ids) =>
+            ids.Select(id => _new{{richTransient.Name}}().With(id));
     }
-    """
-    )}}
+    """)}}
     """;
 
     string ServiceAdder() => $$"""    
@@ -71,9 +67,8 @@ public class LocatorTemplate
     {
         public void AddServices(IServiceCollection services)
         {
-            {{ForEach(_generatedServices, (item) => $$"""
-            services.AddSingleton<{{item.Implementation}}>();
-            services.AddSingleton<{{item.Service}}, {{item.Implementation}}>(forward: true);
+            {{ForEach(_richTransients, (richTransient) => $$"""
+            services.AddSingleton<ILocator<{{ReturnType(richTransient)}}>, {{richTransient.Name}}Locator>();
             """)}}
         }
     }
@@ -83,10 +78,4 @@ public class LocatorTemplate
         typeModel.GetMetadata().TryGet<LocatableAttribute>(out var locatable) && locatable.IsAsync
             ? $$"""Task<{{typeModel.CSharpFriendlyFullName}}>"""
             : $$"""{{typeModel.CSharpFriendlyFullName}}""";
-    string Factory(TypeModel typeModel) =>
-        $$"""Func<{{typeModel.CSharpFriendlyFullName}}> _new{{typeModel.Name}}""";
-    string LocatorTypeName(TypeModel richTransient) =>
-        $$"""ILocator<{{ReturnType(richTransient)}}>""";
-    string ImplementatonTypeName(TypeModel richTransient) =>
-        $$"""RichTransient.{{richTransient.Name}}Locator""";
 }

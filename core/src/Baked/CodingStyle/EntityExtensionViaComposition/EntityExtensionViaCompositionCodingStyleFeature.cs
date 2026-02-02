@@ -89,7 +89,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     {
                         var codeTemplate = new LocatorTemplate(domain);
                         assembly.AddCodes(codeTemplate);
-                        assembly.AddReferences(codeTemplate.Referencs);
+                        assembly.AddReferences(codeTemplate.References);
                         assembly.AddReferenceFrom<EntityExtensionViaCompositionCodingStyleFeature>();
                     },
                     usings: [.. LocatorTemplate.GlobalUsings]
@@ -101,7 +101,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
         {
             configurator.UsingGeneratedContext(context =>
             {
-                var locatorAdderType = context.Assemblies[nameof(EntityExtensionViaCompositionCodingStyleFeature)].GetExportedTypes().First(t => t.IsAssignableTo(typeof(IServiceAdder)));
+                var locatorAdderType = context.Assemblies[nameof(EntityExtensionViaCompositionCodingStyleFeature)].GetExportedTypes().FirstOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder)));
                 if (locatorAdderType is not null)
                 {
                     var locatorAdder = (IServiceAdder?)Activator.CreateInstance(locatorAdderType) ?? throw new($"Cannot create instance of {locatorAdderType}");
