@@ -19,14 +19,14 @@ public class LocatorTemplate(TypeModel _entityExtension)
     string Locator() => $$"""
     namespace EntityExtensionViaComposition;
 
-    public class {{_entityExtension.Name}}Locator(IQueryContext<{{EntityName}}> _entityQueryContext)
+    public class {{_entityExtension.Name}}Locator(ILocator<{{EntityName}}> _entityLocator)
         : ILocator<{{_entityExtension.CSharpFriendlyFullName}}>
     {
         public {{_entityExtension.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
-            ({{_entityExtension.CSharpFriendlyFullName}})_entityQueryContext.SingleById(id, throwNotFound: throwNotFound);
+            ({{_entityExtension.CSharpFriendlyFullName}})_entityLocator.Locate(id, throwNotFound: throwNotFound);
 
         public IEnumerable<{{_entityExtension.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
-            _entityQueryContext.ByIds(ids).Select(i => ({{_entityExtension.CSharpFriendlyFullName}})i);
+            _entityLocator.LocateMany(ids).Select(e => ({{_entityExtension.CSharpFriendlyFullName}})e);
     }
     """;
 

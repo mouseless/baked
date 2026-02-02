@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using FluentNHibernate;
@@ -78,6 +79,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
+            services.AddSingleton(typeof(ILocator<>), typeof(EntityLocator<>));
         });
 
         configurator.ConfigureFluentConfiguration(builder =>

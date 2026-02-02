@@ -65,11 +65,6 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.Add(new EntityInitializerIsPostResourceConvention());
         });
 
-        configurator.ConfigureServiceCollection(services =>
-        {
-            services.AddSingleton(typeof(ILocator<>), typeof(EntityLocator<>));
-        });
-
         configurator.ConfigureNHibernateInterceptor(interceptor =>
         {
             interceptor.Instantiator = (ctx, id) =>

@@ -1,4 +1,4 @@
 ﻿namespace Baked.CodingStyle.RichTransient;
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class)]
 public class RichTransientAttribute : Attribute;
