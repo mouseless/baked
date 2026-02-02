@@ -3,7 +3,8 @@ using Baked.Domain.Model;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
-public class LocatorTemplate(TypeModel _entityExtension) : CodeTemplateBase
+public class LocatorTemplate(TypeModel _entityExtension)
+    : CodeTemplateBase
 {
     public static readonly string[] GlobalUsings =
         [

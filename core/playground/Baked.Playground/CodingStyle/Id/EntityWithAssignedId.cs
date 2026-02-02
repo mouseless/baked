@@ -7,7 +7,7 @@ public class EntityWithAssignedId(IEntityContext<EntityWithAssignedId> _context)
 {
     public Id Id { get; private set; } = default!;
     // This property is to test foreign key column mapping
-    public EntityWithAutoIncrementId? Foreign { get; set; } = default!;
+    public EntityWithAutoIncrementId? Foreign { get; private set; } = default!;
 
     public EntityWithAssignedId With(Id id)
     {

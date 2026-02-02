@@ -3,7 +3,8 @@ using Baked.Domain.Model;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class LocatorTemplate(TypeModel typeModel, bool isAsync) : CodeTemplateBase
+public class LocatorTemplate(TypeModel typeModel, bool isAsync)
+    : CodeTemplateBase
 {
     public static readonly string[] GlobalUsings =
         [

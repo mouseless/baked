@@ -17,11 +17,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
-                    members.Constructors.Any(o => o.Parameters.Any(p =>
-                        p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)) &&
-                        p.ParameterType.GetGenerics().GetGenerics().GenericTypeArguments.First().Model.TryGetMembers(out var members) &&
-                        members.TryGetFirstProperty<IdAttribute>(out var _)
-                    )),
+                    members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)))),
                 apply: (context, set) =>
                 {
                     var query = context.Type;
