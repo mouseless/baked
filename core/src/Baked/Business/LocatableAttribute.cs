@@ -3,7 +3,8 @@
 namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class LocatableAttribute(Type ServiceType, string LocateMethodName) : Attribute
+public class LocatableAttribute(Type ServiceType, string LocateMethodName)
+    : Attribute
 {
     public Type ServiceType { get; set; } = ServiceType;
     public string LocateMethodName { get; set; } = LocateMethodName;
