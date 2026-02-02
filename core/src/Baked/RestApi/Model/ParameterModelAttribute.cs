@@ -11,7 +11,7 @@ public class ParameterModelAttribute(
     public ParameterModelAttribute(string id, string type, ParameterModelFrom @from)
       : this(@from)
     {
-        Init(id, type, false, null);
+        Init(id, type, false, null, false);
 
         Orphan = true;
     }
@@ -30,6 +30,7 @@ public class ParameterModelAttribute(
     /// Use conventions to set a custom value.
     /// </summary>
     public bool IsOptional { get; set; } = false;
+    public bool Nullable { get; set; } = false;
 
     public object? DefaultValue { get; set; }
     public bool IsInvokeMethodParameter { get; set; } = @from != ParameterModelFrom.Services;
@@ -47,7 +48,7 @@ public class ParameterModelAttribute(
     public bool FromQuery => From == ParameterModelFrom.Query;
     public bool FromBodyOrForm => From == ParameterModelFrom.BodyOrForm;
 
-    internal ParameterModelAttribute Init(string id, string type, bool isOptional, object? defaultValue)
+    internal ParameterModelAttribute Init(string id, string type, bool isOptional, object? defaultValue, bool nullable)
     {
         if (Initialized) { throw new($"Cannot initialize, already initialized: {Id}"); }
 
@@ -58,6 +59,7 @@ public class ParameterModelAttribute(
         IsOptional = isOptional;
         DefaultValue ??= defaultValue;
         Initialized = true;
+        Nullable = nullable;
 
         return this;
     }

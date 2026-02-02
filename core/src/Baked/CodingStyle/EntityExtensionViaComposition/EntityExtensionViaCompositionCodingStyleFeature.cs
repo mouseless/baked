@@ -56,6 +56,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 order: 10
             );
             builder.Conventions.SetTypeAttribute(
+                when: c => c.Type.Has<EntityExtensionAttribute>(),
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
@@ -64,15 +65,17 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     if (!entityExtensionType.TryGetEntityTypeFromExtension(c.Domain, out var entityType)) { return; }
                     if (!entityType.GetMetadata().CustomAttributes.TryGet<LocatableAttribute>(out var entityLocatable)) { return; }
 
-                    entityExtensionType.Apply(t =>
-                    {
-                        set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t), "Locate")
-                        {
-                            LocateManyMethodName = "LocateMany"
-                        });
-                    });
+                    entityExtensionType.Apply(t => set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t))));
                 },
-                when: c => c.Type.Has<EntityExtensionAttribute>(),
+                order: 20
+            );
+            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
+                when: c => c.Type.Has<EntityExtensionAttribute>() && c.Type.Has<LocatableAttribute>(),
+                attribute: locatable =>
+                {
+                    locatable.LocateRenderer = (serviceExpression, idExpression) => $"{serviceExpression}.Locate({idExpression}, throwNotFound = true)";
+                    locatable.LocateManyRenderer = (serviceExpression, idsExpression) => $"{serviceExpression}.LocateMany({idsExpression})";
+                },
                 order: 20
             );
 

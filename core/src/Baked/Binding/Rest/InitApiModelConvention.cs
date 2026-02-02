@@ -1,5 +1,6 @@
 ﻿using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.Binding.Rest;
 
@@ -34,7 +35,8 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
                                     id: param.Name,
                                     type: param.ParameterType.CSharpFriendlyFullName,
                                     isOptional: param.IsOptional,
-                                    defaultValue: param.DefaultValue
+                                    defaultValue: param.DefaultValue,
+                                    nullable: !param.Has<NotNullAttribute>()
                                 )
                             )
                     )
@@ -61,7 +63,8 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
                         id: param.Name,
                         type: param.ParameterType.CSharpFriendlyFullName,
                         isOptional: param.IsOptional,
-                        defaultValue: param.DefaultValue
+                        defaultValue: param.DefaultValue,
+                        nullable: !param.Has<NotNullAttribute>()
                     )
                 )
         );
@@ -76,7 +79,8 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
             id: context.Parameter.Name,
             type: context.Parameter.ParameterType.CSharpFriendlyFullName,
             isOptional: context.Parameter.IsOptional,
-            defaultValue: context.Parameter.DefaultValue
+            defaultValue: context.Parameter.DefaultValue,
+            nullable: !context.Parameter.Has<NotNullAttribute>()
         );
     }
 }

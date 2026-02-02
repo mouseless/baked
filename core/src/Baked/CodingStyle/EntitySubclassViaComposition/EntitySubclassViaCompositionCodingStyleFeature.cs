@@ -48,13 +48,11 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                     var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
                     if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
 
-                    queryType.Apply(t =>
+                    queryType.Apply(t => set(c.Type, new LocatableAttribute(t)
                     {
-                        set(c.Type, new LocatableAttribute(t, singleByUniqueMethod.Name)
-                        {
-                            CastTo = entitySubclassType,
-                        });
-                    });
+                        LocateRenderer = (serviceExpression, idExpression) =>
+                            $"({entitySubclassType.CSharpFriendlyFullName}){serviceExpression}.{singleByUniqueMethod.Name}({idExpression})"
+                    }));
                 },
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
                 order: 10

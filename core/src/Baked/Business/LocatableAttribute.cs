@@ -1,15 +1,14 @@
-﻿using Baked.Domain.Model;
-
-namespace Baked.Business;
+﻿namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class LocatableAttribute(Type ServiceType, string LocateMethodName)
+public class LocatableAttribute(Type ServiceType)
     : Attribute
 {
     public Type ServiceType { get; set; } = ServiceType;
-    public string LocateMethodName { get; set; } = LocateMethodName;
-    public bool IsFactory { get; set; } = false;
     public bool IsAsync { get; set; } = false;
-    public string? LocateManyMethodName { get; set; }
-    public TypeModel? CastTo { get; set; }
+    public Locate LocateRenderer { get; set; } = default!;
+    public Locate? LocateManyRenderer { get; set; }
+
+    public delegate string Locate(string serviceExpression, string idExpression);
+    public delegate string LocateMany(string serviceExpression, string idsExpression);
 }

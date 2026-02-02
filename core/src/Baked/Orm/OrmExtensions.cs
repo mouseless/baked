@@ -23,18 +23,17 @@ public static class OrmExtensions
 
     public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,
         string? name = default,
-        bool nullable = false,
         bool dontAddRequired = false
     )
     {
         name ??= $"{parameter.Name}{idInfo.PropertyName}";
 
-        if (!nullable && dontAddRequired)
+        if (!parameter.Nullable && dontAddRequired)
         {
             parameter.AddRequiredAttributes(isValueType: true);
         }
 
-        parameter.Type = nullable ? $"{idInfo.Type}?" : idInfo.Type;
+        parameter.Type = parameter.Nullable ? $"{idInfo.Type}?" : idInfo.Type;
         parameter.Name = name;
     }
 

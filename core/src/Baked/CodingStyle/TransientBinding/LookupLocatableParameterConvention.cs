@@ -2,7 +2,6 @@
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.TransientBinding;
 
@@ -43,12 +42,9 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
 
         if (locatorServiceParameter is null) { return; }
 
-        var notNull = context.Parameter.Has<NotNullAttribute>();
-        parameter.ConvertToId(idInfo, nullable: !notNull);
+        parameter.ConvertToId(idInfo);
         parameter.LookupRenderer = p => locatable.LookupTemplate(locatorServiceParameter, p,
-            notNullValueExpression: $"({idInfo.Type}){p}",
-            nullable: !notNull,
-            castTo: locatable.CastTo
+            notNullValueExpression: $"({idInfo.Type}){p}"
         );
     }
 }

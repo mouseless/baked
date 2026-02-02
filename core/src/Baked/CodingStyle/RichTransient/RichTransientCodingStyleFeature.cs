@@ -40,17 +40,40 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     {
                         var initializer = c.Type.GetMembers().Methods.First(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic);
                         var isAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
-                        var attribute = new LocatableAttribute(
-                            typeof(ILocator<>).MakeGenericType(isAsync ? typeof(Task<>).MakeGenericType(t) : t),
-                            "Locate"
-                        )
+                        var attribute = new LocatableAttribute(typeof(ILocator<>).MakeGenericType(isAsync ? typeof(Task<>).MakeGenericType(t) : t))
                         {
                             IsAsync = isAsync,
-                            IsFactory = false,
-                            LocateManyMethodName = "LocateMany"
                         };
                         set(c.Type, attribute);
                     });
+                },
+                order: 10
+            );
+            builder.Conventions.SetTypeAttribute(
+                when: c => c.Type.Has<RichTransientAttribute>(),
+                apply: (c, set) =>
+                {
+                    c.Type.Apply(t =>
+                    {
+                        var initializer = c.Type.GetMembers().Methods.First(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic);
+                        set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t))
+                        {
+                            IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>()
+                        });
+                    });
+                },
+                order: 10
+            );
+            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
+                when: c => c.Type.Has<RichTransientAttribute>() && c.Type.Has<LocatableAttribute>(),
+                attribute: locatable =>
+                {
+                    locatable.LocateRenderer = (serviceExpression, idExpression) => locatable.IsAsync
+                        ? $"await {serviceExpression}.LocateAsync({idExpression}, throwNotFound = true)"
+                        : $"{serviceExpression}.Locate({idExpression}, throwNotFound = true)";
+                    locatable.LocateManyRenderer = (serviceExpression, idsExpression) => locatable.IsAsync
+                        ? $"await {serviceExpression}.LocateManyAsync({idsExpression})"
+                        : $"{serviceExpression}.LocateMany({idsExpression})";
                 },
                 order: 10
             );

@@ -41,16 +41,15 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
-                    c.Type.Apply(t =>
-                    {
-                        set(c.Type, new LocatableAttribute(
-                            ServiceType: typeof(ILocator<>).MakeGenericType(t),
-                            LocateMethodName: "Locate"
-                        )
-                        {
-                            LocateManyMethodName = "LocateMany"
-                        });
-                    });
+                    c.Type.Apply(t => set(c.Type, new LocatableAttribute(ServiceType: typeof(ILocator<>).MakeGenericType(t))));
+                }
+            );
+            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
+                when: c => c.Type.Has<EntityAttribute>() && c.Type.Has<LocatableAttribute>(),
+                attribute: locatable =>
+                {
+                    locatable.LocateRenderer = (serviceExpression, idExpression) => $"{serviceExpression}.Locate({idExpression}, throwNotFound = true)";
+                    locatable.LocateManyRenderer = (serviceExpression, idsExpression) => $"{serviceExpression}.LocateMany({idsExpression})";
                 }
             );
             builder.Conventions.SetMethodAttribute(
