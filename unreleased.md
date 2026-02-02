@@ -33,16 +33,13 @@
   of `Business.Id` type and contain property with `Business.Id` type 
   ```csharp
   // not supported
-  public RichTransient With(string id){
-    ...
-  }
+  public RichTransient With(string id) { ... }
 
   // add 'Baked.Business.Id' property
   public Business.Id Id { get; set; }
 
   public RichTransient With(Id id) {
     Id = id;
-    ...
   }
   ```
 - `EntityExtensionViaComposition` feature now requires a property with 
