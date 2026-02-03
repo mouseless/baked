@@ -44,7 +44,7 @@ public class IdMapperTemplate : CodeTemplateBase
         [IdMapper()];
 
     string IdMapper() => $$"""
-        namespace IdCodingStyle;
+        namespace IdCodingStyleFeature;
 
         public class IdMapper : IIdMapper
         {

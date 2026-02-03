@@ -40,7 +40,7 @@ public class LocatorTemplate : CodeTemplateBase
     using Baked.Runtime;
     using Microsoft.Extensions.DependencyInjection;
 
-    namespace RichTransientCodingStyle;
+    namespace RichTransientCodingStyleFeature;
 
     {{ForEach(_richTransients, richTransient => $$"""
     public class {{richTransient.Name}}Locator(Func<{{richTransient.CSharpFriendlyFullName}}> _new{{richTransient.Name}})
@@ -78,7 +78,7 @@ public class LocatorTemplate : CodeTemplateBase
     using Baked.Runtime;
     using Microsoft.Extensions.DependencyInjection;
 
-    namespace RichTransientCodingStyle;
+    namespace RichTransientCodingStyleFeature;
 
     public class ServiceServiceAdder : IServiceAdder
     {

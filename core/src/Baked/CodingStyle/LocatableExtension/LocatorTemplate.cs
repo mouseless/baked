@@ -41,7 +41,7 @@ public class LocatorTemplate : CodeTemplateBase
         using Baked.Runtime;
         using Microsoft.Extensions.DependencyInjection;
 
-        namespace LocatableExtensionCodingStyle;
+        namespace LocatableExtensionCodingStyleFeature;
 
         {{ForEach(_entityExtensionTypes, extension => $$"""
         public class {{extension.Name}}Locator(ILocator<{{EntityName(extension)}}> _entityLocator)
@@ -62,7 +62,7 @@ public class LocatorTemplate : CodeTemplateBase
         using Baked.Runtime;
         using Microsoft.Extensions.DependencyInjection;
 
-        namespace LocatableExtensionCodingStyle;
+        namespace LocatableExtensionCodingStyleFeature;
 
         public class ServiceServiceAdder : IServiceAdder
         {
