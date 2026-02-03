@@ -91,12 +91,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                var assembly = generatedContext.Assemblies[nameof(AutoMapOrmFeature)];
-
-                var typeSource = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(ITypeSource))) ?? throw new("`ITypeSource` implementation not found");
-                var typeSourceInstance = (ITypeSource?)Activator.CreateInstance(typeSource) ?? throw new($"Cannot create instance of {typeSource}");
-
-                model.AddTypeSource(typeSourceInstance);
+                model.AddTypeSource(generatedContext.Assemblies[nameof(AutoMapOrmFeature)].CreateRequiredInstance<ITypeSource>());
             });
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));

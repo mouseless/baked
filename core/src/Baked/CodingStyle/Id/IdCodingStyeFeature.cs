@@ -43,13 +43,9 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
 
             configurator.UsingGeneratedContext(context =>
             {
-                var idMapperType = context.Assemblies[nameof(IdCodingStyeFeature)].GetExportedTypes().FirstOrDefault(t => t.IsAssignableTo(typeof(IIdMapper)));
-                if (idMapperType is not null)
-                {
-                    var idMapper = (IIdMapper?)Activator.CreateInstance(idMapperType) ?? throw new($"Cannot create instance of {idMapperType}");
+                var idMapper = context.Assemblies[nameof(IdCodingStyeFeature)].CreateInstance<IIdMapper>();
 
-                    idMapper.Configure(model);
-                }
+                idMapper?.Configure(model);
             });
         });
 

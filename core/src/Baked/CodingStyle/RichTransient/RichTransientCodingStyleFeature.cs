@@ -2,7 +2,6 @@
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
-using Baked.Runtime;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
@@ -113,13 +112,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             configurator.UsingGeneratedContext(context =>
             {
-                var locatorAdderType = context.Assemblies[nameof(RichTransientCodingStyleFeature)].GetExportedTypes().First(t => t.IsAssignableTo(typeof(IServiceAdder)));
-                if (locatorAdderType is not null)
-                {
-                    var locatorAdder = (IServiceAdder?)Activator.CreateInstance(locatorAdderType) ?? throw new($"Cannot create instance of {locatorAdderType}");
-
-                    locatorAdder.AddServices(services);
-                }
+                services.AddFromAssembly(context.Assemblies[nameof(RichTransientCodingStyleFeature)]);
             });
         });
     }

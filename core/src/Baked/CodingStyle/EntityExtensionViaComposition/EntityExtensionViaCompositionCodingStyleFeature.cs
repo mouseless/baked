@@ -3,7 +3,6 @@ using Baked.Business;
 using Baked.Orm;
 using Baked.RestApi;
 using Baked.RestApi.Model;
-using Baked.Runtime;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
@@ -104,13 +103,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
         {
             configurator.UsingGeneratedContext(context =>
             {
-                var locatorAdderType = context.Assemblies[nameof(EntityExtensionViaCompositionCodingStyleFeature)].GetExportedTypes().FirstOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder)));
-                if (locatorAdderType is not null)
-                {
-                    var locatorAdder = (IServiceAdder?)Activator.CreateInstance(locatorAdderType) ?? throw new($"Cannot create instance of {locatorAdderType}");
-
-                    locatorAdder.AddServices(services);
-                }
+                services.AddFromAssembly(context.Assemblies[nameof(EntityExtensionViaCompositionCodingStyleFeature)]);
             });
         });
     }
