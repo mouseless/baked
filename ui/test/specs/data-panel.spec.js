@@ -77,6 +77,19 @@ test.describe("Collapsed", () => {
   });
 });
 
+test.describe("Toggle off", () => {
+  const id = "Toggle off";
+
+  test("panel's collapse feature is disabled", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    const toggleButton = component.locator(primevue.panel.toggleButton);
+    await expect(toggleButton).toHaveCount(0);
+
+    await expect(component.getByTestId("content")).toHaveText("ALWAYS DISPLAY");
+  });
+});
+
 test.describe("Inputs", () => {
   const id = "Inputs";
 

@@ -32,6 +32,13 @@ const variants = [
     })
   },
   {
+    name: "Toggle off",
+    descriptor: giveMe.aDataPanel({
+      toggleable: false,
+      content: giveMe.anExpected({ testId: "content", value: "ALWAYS DISPLAY" })
+    })
+  },
+  {
     name: "Inputs",
     descriptor: giveMe.aDataPanel({
       inputs: [
