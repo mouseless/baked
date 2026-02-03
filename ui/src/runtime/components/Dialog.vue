@@ -7,7 +7,7 @@
   <Dialog
     v-model:visible="visible"
     :header="l(header)"
-    :style="{ width: 'min(450px, 90vw)' }"
+    class="w-max max-w-[90vw]"
     closable
     modal
     dismissable-mask

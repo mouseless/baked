@@ -176,16 +176,17 @@ export default {
     };
   },
 
-  aDataPanel({ title, collapsed, localizeTitle, inputs, content } = {}) {
+  aDataPanel({ title, collapsed, localizeTitle, inputs, content, toggleable } = {}) {
     title = $(title, this.anInlineData("Spec: Test Title"));
     collapsed = $(collapsed, false);
     inputs = $(inputs, []);
     content = $(content, this.anExpected());
+    toggleable = $(toggleable, true);
     localizeTitle = $(localizeTitle, title.type === "Inline");
 
     return {
       type: "DataPanel",
-      schema: { title, collapsed, localizeTitle, inputs, content }
+      schema: { title, collapsed, localizeTitle, inputs, content, toggleable }
     };
   },
 

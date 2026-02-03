@@ -8,4 +8,5 @@ public record DataPanel(IData Title, IComponentDescriptor Content)
     public bool? LocalizeTitle { get; set; } = Title.RequireLocalization;
     public List<Input> Inputs { get; init; } = [];
     public IComponentDescriptor Content { get; set; } = Content;
+    public bool? Toggleable { get; set; }
 }

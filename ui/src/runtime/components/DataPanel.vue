@@ -3,7 +3,7 @@
     ref="panel"
     :header="localizeTitle ? l(title) : title"
     :collapsed="collapsedState"
-    toggleable
+    :toggleable="toggleable ?? true"
     :pt="
       {
         headerActions: 'flex gap-2 items-center',
@@ -97,7 +97,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { collapsed, content, inputs, localizeTitle, title: titleData } = schema;
+const { collapsed, content, inputs, localizeTitle, title: titleData, toggleable } = schema;
 
 const contextData = context.injectContextData();
 const path = context.injectPath();

@@ -46,7 +46,9 @@ export default {
   panel: {
     base: ".p-panel",
     title: ".p-panel-title",
-    header: ".p-panel-header"
+    header: ".p-panel-header",
+    headerActions: ".p-panel-header-actions",
+    toggleButton: ".p-panel-toggle-button"
   },
   select: {
     base: ".p-select",
