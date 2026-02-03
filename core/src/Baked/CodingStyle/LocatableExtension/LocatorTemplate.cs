@@ -3,7 +3,7 @@ using Baked.CodeGeneration;
 using Baked.Domain.Model;
 using System.Reflection;
 
-namespace Baked.CodingStyle.EntityExtensionViaComposition;
+namespace Baked.CodingStyle.LocatableExtension;
 
 public class LocatorTemplate : CodeTemplateBase
 {
@@ -18,7 +18,7 @@ public class LocatorTemplate : CodeTemplateBase
 
     public LocatorTemplate(DomainModel domain)
     {
-        foreach (var item in domain.Types.Having<EntityExtensionAttribute>())
+        foreach (var item in domain.Types.Having<LocatableExtensionAttribute>())
         {
             if (!item.GetMembers().TryGet<LocatableAttribute>(out var _)) { continue; }
 
@@ -76,5 +76,5 @@ public class LocatorTemplate : CodeTemplateBase
     """;
 
     string EntityName(TypeModel extension) =>
-        extension.GetMetadata().Get<EntityExtensionAttribute>().EntityType.GetCSharpFriendlyFullName();
+        extension.GetMetadata().Get<LocatableExtensionAttribute>().LocatableType.GetCSharpFriendlyFullName();
 }

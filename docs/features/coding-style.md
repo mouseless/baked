@@ -24,16 +24,6 @@ Uses class names as route and removes `Execute` and `Process` names from route.
 c => c.CommandPattern()
 ```
 
-## Entity Extension via Composition
-
-Allows classes to extend entities via composition. This marks a transient class
-as an entity extension when it implements implicit casting to an entity. 
-Methods of these extension classes are rendered under entity group.
-
-```csharp
-c => c.EntityExtensionViaComposition()
-```
-
 ## Entity Subclass via Composition
 
 Allows classes to be subclasses of entities via composition. This marks a
@@ -68,6 +58,16 @@ public class Entity(IEntityContext<Parent> _context)
     public Id Id { get; private set; } = default!;
     ...
 }
+```
+
+## Locatable Extension
+
+Allows classes to extend locatables via composition. This marks a transient class
+as an entity extension when it implements implicit casting to an entity. 
+Methods of these extension classes are rendered under locatable group.
+
+```csharp
+c => c.LocatableExtension()
 ```
 
 ## Namespace as Route

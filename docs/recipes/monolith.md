@@ -43,9 +43,9 @@ Bake.New
 | Coding Style(s)    | :white_check_mark:                       | :white_check_mark:                 |
 |                    | Add/Remove Child                         |                                    |
 |                    | Command Pattern                          |                                    |
-|                    | Entity Extension via Composition         |                                    |
 |                    | Entity Subclass via Composition          |                                    |
 |                    | Id                                       |                                    |
+|                    | Locatable Extension                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
 |                    | Records are DTOs                         |                                    |

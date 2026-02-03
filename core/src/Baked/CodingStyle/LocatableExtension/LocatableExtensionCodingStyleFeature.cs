@@ -1,25 +1,24 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Orm;
 using Baked.RestApi;
 using Baked.RestApi.Model;
 
-namespace Baked.CodingStyle.EntityExtensionViaComposition;
+namespace Baked.CodingStyle.LocatableExtension;
 
-public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Index.Type.Add<EntityExtensionAttribute>();
+            builder.Index.Type.Add<LocatableExtensionAttribute>();
 
             builder.Conventions.SetTypeAttribute(
                 attribute: context =>
                 {
-                    var entityType = context.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
+                    var locatableType = context.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
 
-                    return entityType.Apply(t => new EntityExtensionAttribute(t));
+                    return locatableType.Apply(t => new LocatableExtensionAttribute(t));
                 },
                 when: c =>
                     c.Type.IsClass &&
@@ -29,47 +28,47 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     members.TryGetMethods("op_Implicit", out var implicits) &&
                     implicits.Count() == 1 &&
                     implicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
-                    parameterTypeMetadata.Has<EntityAttribute>(),
+                    parameterTypeMetadata.Has<LocatableAttribute>(),
                 order: 10
             );
             builder.Conventions.SetPropertyAttribute(
-                when: c => c.Type.Has<EntityExtensionAttribute>(),
+                when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 attribute: c =>
                 {
-                    var entityExtensionsAttribute = c.Type.GetMetadata().Get<EntityExtensionAttribute>();
+                    var entityExtensionsAttribute = c.Type.GetMetadata().Get<LocatableExtensionAttribute>();
 
-                    return c.Domain.Types[entityExtensionsAttribute.EntityType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
+                    return c.Domain.Types[entityExtensionsAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
                 },
                 order: 10
             );
             builder.Conventions.SetTypeAttribute(
                 apply: (c, add) =>
                 {
-                    var entityType = c.Type.Get<EntityExtensionAttribute>().EntityType;
+                    var entityType = c.Type.Get<LocatableExtensionAttribute>().LocatableType;
                     var entityTypeModel = c.Domain.Types[entityType];
                     if (!entityTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
 
                     add(c.Type, namespaceAttribute);
                 },
-                when: c => c.Type.Has<EntityExtensionAttribute>(),
+                when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 order: 10
             );
             builder.Conventions.SetTypeAttribute(
-                when: c => c.Type.Has<EntityExtensionAttribute>(),
+                when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
 
-                    var entityExtensionType = c.Type;
-                    if (!entityExtensionType.TryGetEntityTypeFromExtension(c.Domain, out var entityType)) { return; }
-                    if (!entityType.GetMetadata().CustomAttributes.TryGet<LocatableAttribute>(out var entityLocatable)) { return; }
+                    var locatableExtensionType = c.Type;
+                    if (!locatableExtensionType.TryGetLocatableTypeFromExtension(c.Domain, out var locatableType)) { return; }
+                    if (!locatableType.GetMetadata().CustomAttributes.TryGet<LocatableAttribute>(out var locatable)) { return; }
 
-                    entityExtensionType.Apply(t => set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t))));
+                    locatableExtensionType.Apply(t => set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t))));
                 },
                 order: 20
             );
             builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
-                when: c => c.Type.Has<EntityExtensionAttribute>() && c.Type.Has<LocatableAttribute>(),
+                when: c => c.Type.Has<LocatableExtensionAttribute>() && c.Type.Has<LocatableAttribute>(),
                 attribute: locatable =>
                 {
                     locatable.LocateRenderer = (serviceExpression, idExpression) => $"{serviceExpression}.Locate({idExpression}, throwNotFound: true)";
@@ -78,21 +77,21 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 order: 20
             );
 
-            builder.Conventions.Add(new EntityExtensionsUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new ExtensionsAreServedUnderEntityRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new ExtensionsUnderLocatablesConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.UsingDomainModel(domain =>
             {
-                generatedAssemblies.Add(nameof(EntityExtensionViaCompositionCodingStyleFeature),
+                generatedAssemblies.Add(nameof(LocatableExtensionCodingStyleFeature),
                     assembly =>
                     {
                         var codeTemplate = new LocatorTemplate(domain);
                         assembly.AddCodes(codeTemplate);
                         assembly.AddReferences(codeTemplate.References);
-                        assembly.AddReferenceFrom<EntityExtensionViaCompositionCodingStyleFeature>();
+                        assembly.AddReferenceFrom<LocatableExtensionCodingStyleFeature>();
                     },
                     usings: [.. LocatorTemplate.GlobalUsings]
                 );
@@ -103,7 +102,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
         {
             configurator.UsingGeneratedContext(context =>
             {
-                services.AddFromAssembly(context.Assemblies[nameof(EntityExtensionViaCompositionCodingStyleFeature)]);
+                services.AddFromAssembly(context.Assemblies[nameof(LocatableExtensionCodingStyleFeature)]);
             });
         });
     }
