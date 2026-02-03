@@ -43,8 +43,6 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
         if (locatorServiceParameter is null) { return; }
 
         parameter.ConvertToId(idInfo);
-        parameter.LookupRenderer = p => locatable.BuildLookupRenderer(locatorServiceParameter, p,
-            notNullValueExpression: $"({idInfo.Type}){p}"
-        );
+        parameter.LookupRenderer = p => locatable.LocateRenderer(locatorServiceParameter.Name, p);
     }
 }

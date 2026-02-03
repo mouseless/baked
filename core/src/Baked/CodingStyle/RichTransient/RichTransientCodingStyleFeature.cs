@@ -28,8 +28,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                         m.DefaultOverload.Parameters.Count == 1 &&
                         m.DefaultOverload.Parameters.All(p =>
                             p.Name == idProperty.Name.Camelize() &&
-                            p.ParameterType == idProperty.PropertyType &&
-                            (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
+                            p.ParameterType == idProperty.PropertyType
                         )
                     ),
                 apply: (c, set) =>

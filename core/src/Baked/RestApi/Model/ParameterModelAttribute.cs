@@ -31,6 +31,7 @@ public class ParameterModelAttribute(
     /// </summary>
     public bool IsOptional { get; set; } = false;
     public bool Nullable { get; set; } = false;
+    public string NotNullType => Nullable ? Type.Replace("?", string.Empty) : Type;
 
     public object? DefaultValue { get; set; }
     public bool IsInvokeMethodParameter { get; set; } = @from != ParameterModelFrom.Services;

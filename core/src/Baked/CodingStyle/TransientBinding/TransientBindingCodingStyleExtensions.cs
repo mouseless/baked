@@ -16,15 +16,6 @@ public static class TransientBindingCodingStyleExtensions
             IsInvokeMethodParameter = false
         };
 
-    public static string BuildLookupRenderer(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
-        string? notNullValueExpression = default
-    )
-    {
-        notNullValueExpression ??= parameter;
-
-        return locatable.LocateRenderer(locatorServiceParameter.Name, notNullValueExpression);
-    }
-
     public static string BuildLookupManyTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         bool isArray = false
     )

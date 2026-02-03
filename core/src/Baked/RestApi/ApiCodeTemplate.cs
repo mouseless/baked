@@ -94,16 +94,23 @@ public class ApiCodeTemplate(ApiModel _apiModel)
 
     string Invoke(string target, ActionModelAttribute action) => $$"""
         {{(action.InvocationIsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
-            {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm, action.UseRequestClassForBody)}", separator: ", ")}}
+            {{ForEach(action.InvokedMethodParameters, p =>
+                If(p.Nullable,
+                    () => $"@{p.InternalName}: ({ParameterExpression(p, action.UseForm, action.UseRequestClassForBody)} != null ? {p.RenderLookup(NotNullParameterExpression(p, action.UseForm, action.UseRequestClassForBody))} : null)",
+                @else:
+                    () => $"@{p.InternalName}: {p.RenderLookup(ParameterExpression(p, action.UseForm, action.UseRequestClassForBody))}"
+                ),
+            separator: ", ")}}
         )
     """;
 
-    string ParameterLookup(ParameterModelAttribute parameter, bool useForm, bool useRequestClassForBody) =>
-        $"({parameter.RenderLookup(
-            If(useForm || useRequestClassForBody && parameter.FromBodyOrForm,
+    string NotNullParameterExpression(ParameterModelAttribute parameter, bool useForm, bool useRequestClassForBody) =>
+       $"({parameter.NotNullType}){ParameterExpression(parameter, useForm, useRequestClassForBody)}";
+
+    string ParameterExpression(ParameterModelAttribute parameter, bool useForm, bool useRequestClassForBody) =>
+        $"{If(useForm || useRequestClassForBody && parameter.FromBodyOrForm,
                 () => $"request.@{parameter.Name}",
             @else:
                 () => $"@{parameter.Name}"
-            )
-        )})";
+            )}";
 }

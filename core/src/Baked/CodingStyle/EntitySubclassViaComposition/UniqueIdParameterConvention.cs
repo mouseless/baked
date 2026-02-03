@@ -30,7 +30,6 @@ public class UniqueIdParameterConvention : IDomainModelConvention<MethodModelCon
             : $"\"{subclassName}\"";
 
         var id = action.Parameter[ParameterModelAttribute.TargetParameterName];
-        id.From = ParameterModelFrom.Inline;
         id.IsHardCoded = true;
         id.InternalName = uniqueParameter.Name.Camelize();
         id.Name = uniqueParameter.Name.Camelize();
