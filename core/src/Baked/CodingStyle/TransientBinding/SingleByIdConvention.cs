@@ -1,8 +1,9 @@
 ﻿using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
+using Humanizer;
 
-namespace Baked.Orm;
+namespace Baked.CodingStyle.TransientBinding;
 
 public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
 {
@@ -11,16 +12,16 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
         if (!context.Type.Is<T>()) { return; }
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
-        if (!metadata.TryGetEntityType(context.Domain, out var entityType)) { return; }
-        if (!entityType.TryGetIdInfo(out var idInfo)) { return; }
+        if (!metadata.Has<LocatableAttribute>()) { return; }
+        if (!context.Type.TryGetIdInfo(out var idInfo)) { return; }
 
-        entityType.Apply(t =>
+        context.Type.Apply(t =>
         {
             var locatorType = typeof(ILocator<>).MakeGenericType(t);
 
             controller.Action["Locate"] = new("Locate",
-                routeParts: [context.Type.Name],
-                returnType: entityType.CSharpFriendlyFullName,
+                routeParts: [context.Type.Name.Pluralize()],
+                returnType: context.Type.CSharpFriendlyFullName,
                 returnIsAsync: false,
                 returnIsVoid: false,
                 parameters:

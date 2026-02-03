@@ -48,8 +48,7 @@ public static class ThemeExtensions
             when: c => c.Type.Is<TEntity>(),
             schema: (c, cc) =>
             {
-                if (!c.Type.TryGetQueryType(c.Domain, out var queryType)) { throw new($"`{c.Type.Name}` should have a query type"); }
-                if (!queryType.GetControllerModel().Action.TryGetValue("Locate", out var locate)) { throw new($"`{queryType.Name}` should have `Locate` action added"); }
+                if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate)) { throw new($"`{c.Type.Name}` should have `Locate` action added"); }
 
                 return Remote(locate.GetRoute(), o => o.Params = Computed.UseRoute("params"));
             }

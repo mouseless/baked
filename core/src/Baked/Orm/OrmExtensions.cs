@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Domain;
 using Baked.Domain.Model;
 using Baked.Orm;
 using Baked.RestApi.Model;
@@ -17,9 +16,6 @@ public static class OrmExtensions
 {
     public static void AddOrm(this List<IFeature> features, Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
         features.Add(configure(new()));
-
-    public static void AddSingleById<TQuery>(this IDomainModelConventionCollection conventions) =>
-        conventions.Add(new SingleByIdConvention<TQuery>(), order: -10);
 
     public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,
         string? name = default,

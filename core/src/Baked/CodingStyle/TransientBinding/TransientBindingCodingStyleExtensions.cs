@@ -1,6 +1,8 @@
 ﻿using Baked.Business;
 using Baked.CodingStyle;
 using Baked.CodingStyle.TransientBinding;
+using Baked.Domain;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 
 namespace Baked;
@@ -15,6 +17,9 @@ public static class TransientBindingCodingStyleExtensions
         {
             IsInvokeMethodParameter = false
         };
+
+    public static void AddSingleById<TQuery>(this IDomainModelConventionCollection conventions) =>
+        conventions.Add(new SingleByIdConvention<TQuery>(), order: RestApiLayer.MaxConventionOrder);
 
     public static string BuildLookupManyTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         bool isArray = false
