@@ -23,6 +23,22 @@ public static class LocatableCodingStyleExtensions
     public static void AddLocateAction<TLocatable>(this IDomainModelConventionCollection conventions) =>
         conventions.Add(new AddLocateActionConvention<TLocatable>(), order: RestApiLayer.MaxConventionOrder);
 
+    public static string BuildLocate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
+        string? notNullParameterExpression = default,
+        bool nullable = false
+    )
+    {
+        notNullParameterExpression ??= parameter;
+
+        var locate = locatable.RenderLocate(locatorServiceParameter.Name, notNullParameterExpression);
+        if (nullable)
+        {
+            locate = $"({parameter} != null ? {locate} : null)";
+        }
+
+        return locate;
+    }
+
     public static string BuildLocateMany(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         bool isArray = false
     )
@@ -34,17 +50,18 @@ public static class LocatableCodingStyleExtensions
 
     public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,
         string? name = default,
-        bool dontAddRequired = false
+        bool dontAddRequired = false,
+        bool nullable = false
     )
     {
         name ??= $"{parameter.Name}{idInfo.PropertyName}";
 
-        if (!parameter.Nullable && dontAddRequired)
+        if (!nullable && dontAddRequired)
         {
             parameter.AddRequiredAttributes(isValueType: true);
         }
 
-        parameter.Type = parameter.Nullable ? $"{idInfo.Type}?" : idInfo.Type;
+        parameter.Type = nullable ? $"{idInfo.Type}?" : idInfo.Type;
         parameter.Name = name;
     }
 

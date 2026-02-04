@@ -1,6 +1,7 @@
 ﻿using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.Locatable;
 
@@ -42,7 +43,10 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
 
         if (locatorServiceParameter is null) { return; }
 
-        parameter.ConvertToId(idInfo);
-        parameter.LookupRenderer = p => locatable.RenderLocate(locatorServiceParameter.Name, p);
+        parameter.ConvertToId(idInfo, nullable: !context.Parameter.Has<NotNullAttribute>());
+        parameter.LookupRenderer = p => locatable.BuildLocate(locatorServiceParameter, p,
+            notNullParameterExpression: $"({idInfo.Type}){p}",
+            nullable: !context.Parameter.Has<NotNullAttribute>()
+        );
     }
 }
