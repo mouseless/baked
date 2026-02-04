@@ -20,9 +20,9 @@ public class UniqueIdParameterConvention : IDomainModelConvention<MethodModelCon
 
         var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name != "SingleBy" && m.Name.StartsWith("SingleBy"));
         if (singleByUniqueMethod is null) { return; }
-        if (singleByUniqueMethod.DefaultOverload.Parameters.Count != 1) { return; }
+        if (!singleByUniqueMethod.DefaultOverload.Parameters.Any()) { return; }
 
-        var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.Single();
+        var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
         if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
 
         var valueExpression = uniqueParameter.ParameterType.IsEnum
