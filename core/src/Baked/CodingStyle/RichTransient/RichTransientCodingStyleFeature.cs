@@ -34,16 +34,6 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 {
                     set(c.Type, new RichTransientAttribute());
                     set(c.Type, new ApiInputAttribute());
-                    c.Type.Apply(t =>
-                    {
-                        var initializer = c.Type.GetMembers().Methods.First(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic);
-                        var isAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
-                        var attribute = new LocatableAttribute(typeof(ILocator<>).MakeGenericType(isAsync ? typeof(Task<>).MakeGenericType(t) : t))
-                        {
-                            IsAsync = isAsync,
-                        };
-                        set(c.Type, attribute);
-                    });
                 },
                 order: 10
             );
@@ -79,6 +69,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<RichTransientAttribute>() &&
+                    c.Type.Has<LocatableAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.Any(p => p.IsPublic) &&
                     c.Method.Has<InitializerAttribute>() &&
