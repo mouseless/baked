@@ -43,13 +43,13 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
             );
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
-                apply: (c, add) =>
+                apply: (c, set) =>
                 {
                     var locatableType = c.Type.Get<LocatableExtensionAttribute>().LocatableType;
                     var locatableTypeModel = c.Domain.Types[locatableType];
                     if (!locatableTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
 
-                    add(c.Type, namespaceAttribute);
+                    set(c.Type, namespaceAttribute);
                 },
                 order: 20
             );

@@ -87,13 +87,8 @@ public class LocatorTemplate : CodeTemplateBase
         }
     """;
 
-    string Parameter(ParameterModel parameter)
-    {
-        if (parameter.ParameterType.IsEnum)
-        {
-            return $$"""({{parameter.ParameterType.CSharpFriendlyFullName}})Enum.Parse<{{parameter.ParameterType.CSharpFriendlyFullName}}>($"{id}")""";
-        }
-
-        return """${id}""";
-    }
+    string Parameter(ParameterModel parameter) =>
+        parameter.ParameterType.IsEnum
+            ? $$"""({{parameter.ParameterType.CSharpFriendlyFullName}})Enum.Parse<{{parameter.ParameterType.CSharpFriendlyFullName}}>($"{id}")"""
+            : """${id}""";
 }
