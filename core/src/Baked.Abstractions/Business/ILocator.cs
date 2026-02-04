@@ -6,7 +6,7 @@ public interface ILocator<T>
     IEnumerable<T> LocateMany(IEnumerable<Id> ids);
 }
 
-public interface IAsyncLocator<T>
+public interface IAsyncLocator<T> : ILocator<T>
 {
     Task<T> LocateAsync(Id id, bool throwNotFound = false);
     Task<IEnumerable<T>> LocateManyAsync(IEnumerable<Id> ids);
