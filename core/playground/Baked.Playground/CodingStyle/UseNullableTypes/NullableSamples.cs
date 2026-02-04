@@ -1,5 +1,5 @@
 using Baked.Playground.Business;
-using Baked.Playground.CodingStyle.LocatableExtension;
+using Baked.Playground.CodingStyle.LocatableExtensions;
 using Baked.Playground.CodingStyle.RichTransient;
 using Baked.Playground.Orm;
 using Microsoft.Extensions.Logging;
