@@ -59,3 +59,14 @@
 
   internal Business.Id Id => _entity.Id
   ```
+- `SingleByIdConvention` is now moved to `TransientBindingCodingStyle` feature
+- `SingleById` and `ByIds` is now removed from `IQuerContext`, inject 
+  `ILocator<>` getting entityes by id/ids
+  ```csharp
+  // not supported
+  IQueryContext<Entity>.SingleById(id);
+
+  // add 'Baked.Business.Id' property
+  ILocator<Entity>.Locate(id);
+
+  ```
