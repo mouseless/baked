@@ -2,11 +2,15 @@
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi;
+using NHibernate.Util;
 
 namespace Baked.CodingStyle.Initializable;
 
-public class InitializableCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames)
+    : IFeature<CodingStyleConfigurator>
 {
+    readonly HashSet<string> _initializerNames = [.. initalizerNames];
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
@@ -17,11 +21,11 @@ public class InitializableCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
-                    members.Methods.Contains("With")
+                    _initializerNames.Any(i => members.Methods.Contains(i))
             );
             builder.Conventions.SetMethodAttribute(
                 attribute: () => new InitializerAttribute(),
-                when: c => c.Method.Name == "With"
+                when: c => _initializerNames.Contains(c.Method.Name)
             );
 
             builder.Conventions.Add(new AddInitializerParametersToQueryConvention());

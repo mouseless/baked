@@ -1,7 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
 using Baked.Caching;
-using Baked.CodingStyle.Id;
 using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;

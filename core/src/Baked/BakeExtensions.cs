@@ -3,8 +3,6 @@ using Baked.Authentication;
 using Baked.Authorization;
 using Baked.Business;
 using Baked.Caching;
-using Baked.CodingStyle.Id;
-using Baked.CodingStyle.LocatableExtension;
 using Baked.Communication;
 using Baked.Core;
 using Baked.Cors;

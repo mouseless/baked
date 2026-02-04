@@ -1,6 +1,8 @@
 ﻿using Baked.Business;
+using Baked.CodingStyle;
+using Baked.CodingStyle.Id;
 
-namespace Baked.CodingStyle.Id;
+namespace Baked;
 
 public static class IdCodingStyleExtensions
 {

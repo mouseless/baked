@@ -1,7 +1,9 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.LocatableExtension;
+using Baked.Domain.Model;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Baked.CodingStyle.LocatableExtension;
+namespace Baked;
 
 public static class LocatableExtensionsCodingStyleExtensions
 {
