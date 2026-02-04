@@ -47,7 +47,7 @@ Bake.New
 |                    | Id                                       |                                    |
 |                    | Initializable                            |                                    |
 |                    | Locatable                                |                                    |
-|                    | Locatable Extensions                     |                                    |
+|                    | Locatable Extension                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
 |                    | Records are DTOs                         |                                    |

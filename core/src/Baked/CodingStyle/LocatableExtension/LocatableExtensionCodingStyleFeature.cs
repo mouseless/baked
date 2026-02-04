@@ -3,9 +3,9 @@ using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Model;
 
-namespace Baked.CodingStyle.LocatableExtensions;
+namespace Baked.CodingStyle.LocatableExtension;
 
-public class LocatableExtensionsCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -85,13 +85,13 @@ public class LocatableExtensionsCodingStyleFeature : IFeature<CodingStyleConfigu
         {
             configurator.UsingDomainModel(domain =>
             {
-                generatedAssemblies.Add(nameof(LocatableExtensionsCodingStyleFeature),
+                generatedAssemblies.Add(nameof(LocatableExtensionCodingStyleFeature),
                     assembly =>
                     {
                         var codeTemplate = new LocatorTemplate(domain);
                         assembly.AddCodes(codeTemplate);
                         assembly.AddReferences(codeTemplate.References);
-                        assembly.AddReferenceFrom<LocatableExtensionsCodingStyleFeature>();
+                        assembly.AddReferenceFrom<LocatableExtensionCodingStyleFeature>();
                     },
                     usings: [.. LocatorTemplate.GlobalUsings]
                 );
@@ -102,7 +102,7 @@ public class LocatableExtensionsCodingStyleFeature : IFeature<CodingStyleConfigu
         {
             configurator.UsingGeneratedContext(context =>
             {
-                services.AddFromAssembly(context.Assemblies[nameof(LocatableExtensionsCodingStyleFeature)]);
+                services.AddFromAssembly(context.Assemblies[nameof(LocatableExtensionCodingStyleFeature)]);
             });
         });
     }

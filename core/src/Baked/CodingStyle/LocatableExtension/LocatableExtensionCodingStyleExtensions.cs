@@ -1,13 +1,13 @@
 ﻿using Baked.CodingStyle;
-using Baked.CodingStyle.LocatableExtensions;
+using Baked.CodingStyle.LocatableExtension;
 using Baked.Domain.Model;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked;
 
-public static class LocatableExtensionsCodingStyleExtensions
+public static class LocatableExtensionCodingStyleExtensions
 {
-    public static LocatableExtensionsCodingStyleFeature LocatableExtension(this CodingStyleConfigurator _) =>
+    public static LocatableExtensionCodingStyleFeature LocatableExtension(this CodingStyleConfigurator _) =>
         new();
 
     public static bool TryGetLocatableTypeFromExtension(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)

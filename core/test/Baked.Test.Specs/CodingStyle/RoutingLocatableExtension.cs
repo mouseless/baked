@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class RoutingLocatableExtensions : TestNfr
+public class RoutingLocatableExtension : TestNfr
 {
     [Test]
     public async Task Entity_extensions_are_served_under_same_routes()

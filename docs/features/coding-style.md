@@ -89,7 +89,7 @@ lookup expressions by using `Locatable` attribute.
 c => c.Locatable()
 ```
 
-## Locatable Extensions
+## Locatable Extension
 
 Allows classes to extend locatables via composition. This marks a transient 
 class as an locatable extension when it implements implicit casting to a 

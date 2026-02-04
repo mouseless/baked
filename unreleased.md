@@ -43,8 +43,8 @@
   }
   ```
 - `EntityExtensionViaComposition` coding style feature is renamed to 
-  `LocatableExtensions` coding style feature
-- `LocatableExtensions` (former: `EntityExtensionViaComposition`) feature now 
+  `LocatableExtension` coding style feature
+- `LocatableExtension` (former: `EntityExtensionViaComposition`) feature now 
   requires a property with `Business.Id` type 
   ```csharp
   // not supported

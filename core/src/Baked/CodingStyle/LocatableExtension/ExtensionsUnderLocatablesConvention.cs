@@ -2,7 +2,7 @@
 using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Baked.CodingStyle.LocatableExtensions;
+namespace Baked.CodingStyle.LocatableExtension;
 
 public class ExtensionsUnderLocatablesConvention : IDomainModelConvention<TypeModelContext>
 {
