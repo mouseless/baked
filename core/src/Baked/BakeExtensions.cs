@@ -78,6 +78,7 @@ public static class BakeExtensions
                 c => c.EntitySubclassViaComposition(),
                 c => c.Id(),
                 c => c.Initializable(),
+                c => c.Locatable(),
                 c => c.LocatableExtension(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
@@ -86,7 +87,6 @@ public static class BakeExtensions
                 c => c.RichEntity(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
-                c => c.TransientBinding(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes()
@@ -181,12 +181,12 @@ public static class BakeExtensions
                 c => c.CommandPattern(),
                 c => c.Id(),
                 c => c.Initializable(),
+                c => c.Locatable(),
                 c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
-                c => c.TransientBinding(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes()
             ]);

@@ -10,7 +10,7 @@ namespace Baked;
 
 public static class LocatableCodingStyleExtensions
 {
-    public static LocatableCodingStyleFeature TransientBinding(this CodingStyleConfigurator _) =>
+    public static LocatableCodingStyleFeature Locatable(this CodingStyleConfigurator _) =>
         new();
 
     public static ParameterModelAttribute AddAsService(this LocatableAttribute locatable, ActionModelAttribute action, string parameterName) =>

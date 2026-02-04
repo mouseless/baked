@@ -59,7 +59,7 @@
 
   internal Business.Id Id => _entity.Id
   ```
-- `SingleByIdConvention` is now moved to `TransientBindingCodingStyle` feature
+- `SingleByIdConvention` is now moved to `LocatableCodingStyle` feature
 - `SingleById` and `ByIds` is now removed from `IQuerContext`, inject 
   `ILocator<>` getting entityes by id/ids
   ```csharp

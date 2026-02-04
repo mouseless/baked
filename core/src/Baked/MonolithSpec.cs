@@ -65,6 +65,7 @@ public abstract class MonolithSpec : Spec
                 c => c.EntitySubclassViaComposition(),
                 c => c.Id(),
                 c => c.Initializable(),
+                c => c.Locatable(),
                 c => c.LocatableExtension(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
@@ -73,7 +74,6 @@ public abstract class MonolithSpec : Spec
                 c => c.RichEntity(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
-                c => c.TransientBinding(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes()
