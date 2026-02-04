@@ -67,15 +67,6 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 },
                 order: 20
             );
-            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
-                when: c => c.Type.Has<LocatableExtensionAttribute>() && c.Type.Has<LocatableAttribute>(),
-                attribute: locatable =>
-                {
-                    locatable.LocateRenderer = (serviceExpression, idExpression, throwNotFoundExpression) => $"{serviceExpression}.Locate({idExpression}, {throwNotFoundExpression})";
-                    locatable.LocateManyRenderer = (serviceExpression, idsExpression) => $"{serviceExpression}.LocateMany({idsExpression})";
-                },
-                order: 20
-            );
 
             builder.Conventions.Add(new ExtensionsUnderLocatablesConvention(), order: RestApiLayer.MaxConventionOrder);
             builder.Conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: RestApiLayer.MaxConventionOrder);

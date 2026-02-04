@@ -17,7 +17,6 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (!elementMembers.Has<TransientAttribute>()) { return; }
         if (!elementMembers.TryGetIdInfo(out var idInfo)) { return; }
         if (!elementMembers.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
-        if (locatable.LocateManyRenderer is null) { return; }
 
         var notNull = context.Parameter.Has<NotNullAttribute>();
 
@@ -47,7 +46,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (locatorServiceParameter is null) { return; }
 
         parameter.ConvertToIds(idInfo);
-        parameter.LookupRenderer = p => locatable.BuildLookupManyRenderer(locatorServiceParameter, p,
+        parameter.LookupRenderer = p => locatable.BuildLocateMany(locatorServiceParameter, p,
             isArray: context.Parameter.ParameterType.IsArray
         );
     }

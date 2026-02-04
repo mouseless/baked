@@ -36,40 +36,24 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 {
                     set(c.Type, new RichTransientAttribute());
                     set(c.Type, new ApiInputAttribute());
-                },
-                order: 10
-            );
-            builder.Conventions.SetTypeAttribute(
-                when: c => c.Type.Has<RichTransientAttribute>(),
-                apply: (c, set) =>
-                {
                     set(c.Type, new LocatableAttribute());
                 },
                 order: 10
             );
             builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
-                when: c => c.Type.Has<RichTransientAttribute>() && c.Type.Has<LocatableAttribute>(),
+                when: c => c.Type.Has<RichTransientAttribute>(),
                 attribute: (locatable, c) =>
                 {
                     if (!c.Type.TryGetMembers(out var members)) { return; }
 
                     var initializer = members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic) ?? throw new($"`{c.Type.Name}` should have had public initializer");
                     locatable.IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
-
-                    locatable.LocateRenderer = (serviceExpression, idExpression, throwNotFoundExpression) => locatable.IsAsync
-                        ? $"await {serviceExpression}.LocateAsync({idExpression}, {throwNotFoundExpression})"
-                        : $"{serviceExpression}.Locate({idExpression}, {throwNotFoundExpression})";
-
-                    locatable.LocateManyRenderer = (serviceExpression, idsExpression) => locatable.IsAsync
-                        ? $"await {serviceExpression}.LocateManyAsync({idsExpression})"
-                        : $"{serviceExpression}.LocateMany({idsExpression})";
                 },
                 order: 10
             );
             builder.Conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<RichTransientAttribute>() &&
-                    c.Type.Has<LocatableAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.Any(p => p.IsPublic) &&
                     c.Method.Has<InitializerAttribute>() &&

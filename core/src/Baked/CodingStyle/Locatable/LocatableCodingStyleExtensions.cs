@@ -23,19 +23,13 @@ public static class LocatableCodingStyleExtensions
     public static void AddLocateAction<TLocatable>(this IDomainModelConventionCollection conventions) =>
         conventions.Add(new AddLocateActionConvention<TLocatable>(), order: RestApiLayer.MaxConventionOrder);
 
-    public static string BuildLookupManyRenderer(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
+    public static string BuildLocateMany(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         bool isArray = false
     )
     {
-        var renderer = locatable.LocateManyRenderer is not null
-            ? locatable.LocateManyRenderer(locatorServiceParameter.Name, parameter)
-            : locatable.LocateRenderer is not null
-                ? locatable.IsAsync
-                    ? $"await {parameter}.Select(async p => await {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})"
-                    : $"{parameter}.Select(p => {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})"
-                : throw new($"Unable to build `LookupManyRenderer` for {parameter}");
+        var locateMany = locatable.LocateManyRenderer(locatorServiceParameter.Name, parameter);
 
-        return isArray ? $"({renderer}).ToArray()" : $"({renderer}).ToList()";
+        return isArray ? $"({locateMany}).ToArray()" : $"({locateMany}).ToList()";
     }
 
     public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,

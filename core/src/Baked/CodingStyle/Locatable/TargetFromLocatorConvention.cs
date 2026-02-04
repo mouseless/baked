@@ -13,7 +13,6 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
         if (context.Method.Has<InitializerAttribute>()) { return; }
         if (!context.Type.TryGetMembers(out var metadata)) { return; }
         if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
-        if (locatable.LocateRenderer is null) { return; }
         if (!metadata.TryGetIdInfo(out var idInfo)) { return; }
 
         var id = action.Parameter[ParameterModelAttribute.TargetParameterName];

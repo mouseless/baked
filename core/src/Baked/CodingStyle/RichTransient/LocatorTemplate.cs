@@ -59,10 +59,10 @@ public class LocatorTemplate : CodeTemplateBase
                 await Task.WhenAll(ids.Select(id => _new{{richTransient.Name}}().With(id)));
 
             public {{richTransient.CSharpFriendlyFullName}} Locate(Id id, bool _) =>
-                LocateAsync(id, _).Result;
+                LocateAsync(id, _).GetAwaiter().GetResult();
 
             public IEnumerable<{{richTransient.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
-                LocateManyAsync(ids).Result;
+                LocateManyAsync(ids).GetAwaiter().GetResult();
             """,
         @else:
             () => $$"""

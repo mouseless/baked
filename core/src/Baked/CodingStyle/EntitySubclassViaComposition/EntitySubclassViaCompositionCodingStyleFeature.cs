@@ -53,15 +53,6 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 },
                 order: 10
             );
-            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
-                when: c => c.Type.Has<EntitySubclassAttribute>(),
-                attribute: locatable =>
-                {
-                    locatable.LocateRenderer = (serviceExpression, idExpression, throwNotFoundExpression) => $"{serviceExpression}.Locate({idExpression}, {throwNotFoundExpression})";
-                    locatable.LocateManyRenderer = (serviceExpression, idsExpression) => $"{serviceExpression}.LocateMany({idsExpression})";
-                },
-                order: 20
-            );
             builder.Conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>

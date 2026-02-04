@@ -42,14 +42,6 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     set(c.Type, new LocatableAttribute());
                 }
             );
-            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
-                when: c => c.Type.Has<EntityAttribute>() && c.Type.Has<LocatableAttribute>(),
-                attribute: locatable =>
-                {
-                    locatable.LocateRenderer = (serviceExpression, idExpression, throwNotFoundExpression) => $"{serviceExpression}.Locate({idExpression}, {throwNotFoundExpression})";
-                    locatable.LocateManyRenderer = (serviceExpression, idsExpression) => $"{serviceExpression}.LocateMany({idsExpression})";
-                }
-            );
             builder.Conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
