@@ -3,7 +3,7 @@ using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Baked.CodingStyle.TransientBinding;
+namespace Baked.CodingStyle.Locatable;
 
 public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
 {

@@ -50,6 +50,7 @@ public abstract class DataSourceSpec : Spec
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
                 c => c.Id(),
+                c => c.Initializable(),
                 c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
@@ -57,8 +58,7 @@ public abstract class DataSourceSpec : Spec
                 c => c.ScopedBySuffix(),
                 c => c.TransientBinding(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes(),
-                c => c.WithMethod()
+                c => c.UseNullableTypes()
             ]);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);

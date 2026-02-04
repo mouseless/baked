@@ -4,7 +4,7 @@ using Baked.Lifetime;
 using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Baked.CodingStyle.TransientBinding;
+namespace Baked.CodingStyle.Locatable;
 
 public class AddIdParameterToRouteConvention : IDomainModelConvention<MethodModelContext>
 {

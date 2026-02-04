@@ -13,10 +13,10 @@
   - A property named `Id` with `Baked.Business.Id` user type is required for a 
     property to be configured as `Id`
   - `Id` user type can be mapped as `Guid`, `AutoIncrement` or `Assigned`
-- `TransientBindingCodingStyle` feature is now added which manages binding of
+- `LocatableCodingStyle` feature is now added which manages binding of
   transient and locatable transients, adding id or initializer parameters
 - `Business.ILocator<>` generic interface is now introduced for configuring locators
-  for `RichTransient` and `Entity` types
+  for `RichTransient` and `Entity` types and their extensions
 
 ## Breaking Changes
 
@@ -68,5 +68,15 @@
 
   // add 'Baked.Business.Id' property
   ILocator<Entity>.Locate(id);
-
   ```
+  - `SingleById` convention now requires `Locatable` type instead of `Query` 
+    type
+  ```csharp
+  // previous usage
+  builder.Conventions.AddSingleById<Entities>();
+
+  // use locatable type instead
+  builder.Conventions.AddSingleById<Entity>();
+  ```
+- `WithMethodCodingStyleFeature` is now renamed to 
+  `InitializableCodingStyleFeature`

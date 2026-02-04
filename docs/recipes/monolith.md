@@ -45,6 +45,8 @@ Bake.New
 |                    | Command Pattern                          |                                    |
 |                    | Entity Subclass via Composition          |                                    |
 |                    | Id                                       |                                    |
+|                    | Initializable                            |                                    |
+|                    | Locatable                                |                                    |
 |                    | Locatable Extension                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
@@ -52,13 +54,11 @@ Bake.New
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Rich Entity                              |                                    |
 |                    | Rich Transient                           |                                    |
-|                    | Transient Binding                        |                                    |
 |                    | Scoped by Suffix                         |                                    |
 |                    | Single by Unique                         |                                    |
 |                    | `Uri` Return is Redirect                 |                                    |
 |                    | Use Built-in Types                       |                                    |
 |                    | Use Nullable Types                       |                                    |
-|                    | With Method                              |                                    |
 | Communication      | :white_check_mark: HTTP                  | :white_check_mark: Mock            |
 | Core               | :white_check_mark: Dotnet                | :white_check_mark: Mock            |
 | Cors               | :white_check_mark: Disabled              | :no_entry:                         |

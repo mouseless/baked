@@ -5,7 +5,7 @@ using Baked.RestApi.Model;
 using Humanizer;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Baked.CodingStyle.TransientBinding;
+namespace Baked.CodingStyle.Locatable;
 
 public class LookupLocatableParametersConvention : IDomainModelConvention<ParameterModelContext>
 {

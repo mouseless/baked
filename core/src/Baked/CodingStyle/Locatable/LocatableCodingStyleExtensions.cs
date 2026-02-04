@@ -1,6 +1,6 @@
 ﻿using Baked.Business;
 using Baked.CodingStyle;
-using Baked.CodingStyle.TransientBinding;
+using Baked.CodingStyle.Locatable;
 using Baked.Domain;
 using Baked.RestApi;
 using Baked.RestApi.Model;
@@ -8,9 +8,9 @@ using Humanizer;
 
 namespace Baked;
 
-public static class TransientBindingCodingStyleExtensions
+public static class LocatableCodingStyleExtensions
 {
-    public static TransientBindingCodingStyleFeature TransientBinding(this CodingStyleConfigurator _) =>
+    public static LocatableCodingStyleFeature TransientBinding(this CodingStyleConfigurator _) =>
         new();
 
     public static ParameterModelAttribute AddAsService(this LocatableAttribute locatable, ActionModelAttribute action, string parameterName) =>

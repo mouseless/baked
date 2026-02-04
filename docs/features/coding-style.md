@@ -60,6 +60,30 @@ public class Entity(IEntityContext<Parent> _context)
 }
 ```
 
+## Initializable
+
+Adds `TransientAttribute` to the services that has a `With` method. This coding
+style makes usages like `newEntity().With(name)` possible. `Transient` type's 
+initializer parameters are added to query and invoked when constructing target
+
+```csharp
+c => c.Initializable()
+```
+
+## Locatable
+
+Manages binding of `Transient` api inputs. For `Locatable` type adds id 
+parameter to route, configures finding target and parameter lookup expressions
+by using `Locatable` attribute.
+
+> [!NOTE]
+>
+> Parameter lookup is only supported for `Locatable` transient types
+
+```csharp
+c => c.Locatable()
+```
+
 ## Locatable Extension
 
 Allows classes to extend locatables via composition. This marks a transient class
@@ -148,21 +172,6 @@ c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
 >
 > Default suffix is `Context`.
 
-## Transient Binding
-
-Manages binding of `Transient` api inputs. For `Locatable` type adds id 
-parameter to route, configures finding target and parameter lookup expressions
-by using `Locatable` attribute, for remaining `Transient` types, initializers
-parameters are added to query and invoked when constructing target
-
-> [!NOTE]
->
-> Parameter lookup is only supported for `Locatable` transient types
-
-```csharp
-c => c.TransientBinding()
-```
-
 ## `Uri` Return is Redirect
 
 Adds redirect support to your api endpoints. It configures an endpoint to use
@@ -199,13 +208,4 @@ forbid sending null or empty values to not-null parameters.
 
 ```csharp
 c => c.UseNullableTypes()
-```
-
-## With Method
-
-Adds `TransientAttribute` to the services that has a `With` method. This coding
-style makes usages like `newEntity().With(name)` possible.
-
-```csharp
-c => c.WithMethod()
 ```

@@ -3,7 +3,7 @@ using Baked.Domain.Configuration;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
 
-namespace Baked.CodingStyle.TransientBinding;
+namespace Baked.CodingStyle.Initializable;
 
 public class RemoveInitializerNameFromRouteConvention : IDomainModelConvention<MethodModelContext>
 {

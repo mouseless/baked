@@ -64,6 +64,7 @@ public abstract class MonolithSpec : Spec
                 c => c.CommandPattern(),
                 c => c.EntitySubclassViaComposition(),
                 c => c.Id(),
+                c => c.Initializable(),
                 c => c.LocatableExtension(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
@@ -75,8 +76,7 @@ public abstract class MonolithSpec : Spec
                 c => c.TransientBinding(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes(),
-                c => c.WithMethod()
+                c => c.UseNullableTypes()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);

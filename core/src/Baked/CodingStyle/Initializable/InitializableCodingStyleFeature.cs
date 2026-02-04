@@ -1,10 +1,11 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Lifetime;
+using Baked.RestApi;
 
-namespace Baked.CodingStyle.WithMethod;
+namespace Baked.CodingStyle.Initializable;
 
-public class WithMethodCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class InitializableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -22,6 +23,10 @@ public class WithMethodCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 attribute: () => new InitializerAttribute(),
                 when: c => c.Method.Name == "With"
             );
+
+            builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
+            builder.Conventions.Add(new TargetUsingInitializerConvention(), order: RestApiLayer.MaxConventionOrder - 20);
+            builder.Conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
     }
 }

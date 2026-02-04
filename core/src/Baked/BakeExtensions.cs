@@ -77,6 +77,7 @@ public static class BakeExtensions
                 c => c.CommandPattern(),
                 c => c.EntitySubclassViaComposition(),
                 c => c.Id(),
+                c => c.Initializable(),
                 c => c.LocatableExtension(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
@@ -88,8 +89,7 @@ public static class BakeExtensions
                 c => c.TransientBinding(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes(),
-                c => c.WithMethod()
+                c => c.UseNullableTypes()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
@@ -180,6 +180,7 @@ public static class BakeExtensions
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
                 c => c.Id(),
+                c => c.Initializable(),
                 c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
@@ -187,8 +188,7 @@ public static class BakeExtensions
                 c => c.ScopedBySuffix(),
                 c => c.TransientBinding(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes(),
-                c => c.WithMethod()
+                c => c.UseNullableTypes()
             ]);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
