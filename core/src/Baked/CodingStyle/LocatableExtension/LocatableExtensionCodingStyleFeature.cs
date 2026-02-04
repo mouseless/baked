@@ -36,9 +36,9 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 attribute: c =>
                 {
-                    var entityExtensionsAttribute = c.Type.GetMetadata().Get<LocatableExtensionAttribute>();
+                    var locatableExtensionAttribute = c.Type.GetMetadata().Get<LocatableExtensionAttribute>();
 
-                    return c.Domain.Types[entityExtensionsAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
+                    return c.Domain.Types[locatableExtensionAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
                 },
                 order: 20
             );
@@ -46,9 +46,9 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 apply: (c, add) =>
                 {
-                    var entityType = c.Type.Get<LocatableExtensionAttribute>().LocatableType;
-                    var entityTypeModel = c.Domain.Types[entityType];
-                    if (!entityTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
+                    var locatableType = c.Type.Get<LocatableExtensionAttribute>().LocatableType;
+                    var locatableTypeModel = c.Domain.Types[locatableType];
+                    if (!locatableTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
 
                     add(c.Type, namespaceAttribute);
                 },
