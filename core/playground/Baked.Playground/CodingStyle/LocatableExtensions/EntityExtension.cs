@@ -1,7 +1,7 @@
 ﻿using Baked.Business;
 using Baked.Playground.Orm;
 
-namespace Baked.Playground.CodingStyle.LocatableExtension;
+namespace Baked.Playground.CodingStyle.LocatableExtensions;
 
 public class EntityExtension
 {
