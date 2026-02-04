@@ -59,10 +59,10 @@ public class LocatorTemplate : CodeTemplateBase
                 await Task.WhenAll(ids.Select(id => _new{{richTransient.Name}}().With(id)));
 
             public {{richTransient.CSharpFriendlyFullName}} Locate(Id id, bool _) =>
-                throw new NotSupportedException("Locate not supported for {{richTransient.CSharpFriendlyFullName}}");
+                LocateAsync(id, _).Result;
 
             public IEnumerable<{{richTransient.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
-                throw new NotSupportedException("LocateMany not supported for {{richTransient.CSharpFriendlyFullName}}");
+                LocateManyAsync(ids).Result;
             """,
         @else:
             () => $$"""

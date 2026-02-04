@@ -66,11 +66,8 @@ public static class RuntimeExtensions
         return (T?)Activator.CreateInstance(instanceType) ?? throw new($"Cannot create instance of {instanceType}");
     }
 
-    public static T CreateRequiredInstance<T>(this Assembly assembly)
-    {
-        var instanceType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(T))) ?? throw new($"`{typeof(T)}` implementation not found");
-        return (T?)Activator.CreateInstance(instanceType) ?? throw new($"Cannot create instance of {instanceType}");
-    }
+    public static T CreateRequiredInstance<T>(this Assembly assembly) =>
+        assembly.CreateInstance<T>() ?? throw new($"`{typeof(T)}` implementation not found");
 
     public static IFeature<TConfigurator> ForNfr<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnNfr) =>
         @default.For(nameof(Nfr), featureOnNfr);
