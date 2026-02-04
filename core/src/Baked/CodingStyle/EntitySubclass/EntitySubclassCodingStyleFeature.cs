@@ -42,9 +42,9 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
                     if (!entityType.TryGetQueryType(c.Domain, out var queryType)) { return; }
                     if (!queryType.TryGetMembers(out var queryMembers)) { return; }
 
-                    // TODO requires review
-                    var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name.StartsWith("SingleBy"));
+                    var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name != "SingleBy" && m.Name.StartsWith("SingleBy"));
                     if (singleByUniqueMethod is null) { return; }
+                    if (!singleByUniqueMethod.DefaultOverload.Parameters.Any()) { return; }
 
                     var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
                     if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
