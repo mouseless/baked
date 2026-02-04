@@ -12,21 +12,19 @@ public class AddLocateActionConvention<T> : IDomainModelConvention<TypeModelCont
         if (!context.Type.Is<T>()) { return; }
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
-        if (!metadata.Has<LocatableAttribute>()) { return; }
+        if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
         if (!context.Type.TryGetIdInfo(out var idInfo)) { return; }
 
         context.Type.Apply(t =>
         {
-            var locatorType = typeof(ILocator<>).MakeGenericType(t);
-
             controller.Action["Locate"] = new("Locate",
                 routeParts: [context.Type.Name.Pluralize()],
                 returnType: context.Type.CSharpFriendlyFullName,
-                returnIsAsync: false,
+                returnIsAsync: locatable.IsAsync,
                 returnIsVoid: false,
                 parameters:
                 [
-                    new(ParameterModelAttribute.TargetParameterName, locatorType.GetCSharpFriendlyFullName(), ParameterModelFrom.Services),
+                    new(ParameterModelAttribute.TargetParameterName, locatable.ServiceType.GetCSharpFriendlyFullName(), ParameterModelFrom.Services),
                     new(idInfo.RouteName, idInfo.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
                     new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }
                 ]
