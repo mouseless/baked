@@ -66,7 +66,7 @@ public class ActionModelAttribute(
     public bool HasBody => !UseForm && BodyParameters.Any();
     public IEnumerable<ParameterModelAttribute> Parameters => Parameter.Values;
     IEnumerable<ParameterModelAttribute> ActionParameters => Parameters.Where(p => !p.IsHardCoded).OrderBy(p => p.Order).ThenBy(p => p.IsOptional ? 1 : -1);
-    IEnumerable<ParameterModelAttribute> RouteParameters => Parameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
+    IEnumerable<ParameterModelAttribute> RouteParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
     IEnumerable<ParameterModelAttribute> NonServiceParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.Services);
     public IEnumerable<ParameterModelAttribute> BodyParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModelAttribute> ServiceParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Services);

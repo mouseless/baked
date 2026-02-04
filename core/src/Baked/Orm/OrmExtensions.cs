@@ -1,11 +1,8 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Domain;
 using Baked.Domain.Model;
 using Baked.Orm;
-using Baked.RestApi.Model;
 using Baked.Testing;
-using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using Shouldly;
@@ -17,91 +14,6 @@ public static class OrmExtensions
 {
     public static void AddOrm(this List<IFeature> features, Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
         features.Add(configure(new()));
-
-    public static void AddSingleById<TQuery>(this IDomainModelConventionCollection conventions) =>
-        conventions.Add(new SingleByIdConvention<TQuery>(), order: -10);
-
-    public static ParameterModelAttribute AddAsService(this ActionModelAttribute action, TypeModel type,
-        string? name = default
-    )
-    {
-        name ??= type.Name.Camelize();
-
-        return action.Parameter[name] =
-            new(name, type.CSharpFriendlyFullName, ParameterModelFrom.Services)
-            {
-                IsInvokeMethodParameter = false
-            };
-    }
-
-    public static ParameterModelAttribute AddQueryContextAsService(this ActionModelAttribute action, TypeModel queryContextType)
-    {
-        var entityType = queryContextType.GetGenerics().GenericTypeArguments[0].Model;
-
-        return action.AddAsService(queryContextType, name: $"{entityType.Name.Camelize()}Query");
-    }
-
-    public static string BuildSingleBy(this ParameterModelAttribute queryParameter, string valueExpression, string property,
-        string? notNullValueExpression = default,
-        bool fromRoute = false,
-        TypeModel? castTo = default,
-        bool nullable = false
-    )
-    {
-        notNullValueExpression ??= valueExpression;
-
-        var singleBy = fromRoute
-            ? $"{queryParameter.Name}.SingleBy{property}({notNullValueExpression}, throwNotFound: true)"
-            : $"{queryParameter.Name}.SingleBy{property}({notNullValueExpression})";
-
-        if (nullable)
-        {
-            singleBy = $"({valueExpression} != null ? {singleBy} : null)";
-        }
-
-        return castTo is null
-            ? singleBy
-            : $"({castTo.CSharpFriendlyFullName}){singleBy}";
-    }
-
-    public static string BuildByIds(this ParameterModelAttribute queryContextParameter, string valueExpression,
-        TypeModel? castTo = default,
-        bool isArray = false
-    )
-    {
-        var byIds = $"{queryContextParameter.Name}.ByIds({valueExpression})";
-        if (castTo is not null)
-        {
-            byIds += $".Select(i => ({castTo.CSharpFriendlyFullName})i)";
-        }
-
-        return isArray
-            ? $"{byIds}.ToArray()"
-            : $"{byIds}.ToList()";
-    }
-
-    public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,
-        string? name = default,
-        bool nullable = false,
-        bool dontAddRequired = false
-    )
-    {
-        name ??= $"{parameter.Name}{idInfo.PropertyName}";
-
-        if (!nullable && dontAddRequired)
-        {
-            parameter.AddRequiredAttributes(isValueType: true);
-        }
-
-        parameter.Type = nullable ? $"{idInfo.Type}?" : idInfo.Type;
-        parameter.Name = name;
-    }
-
-    public static void ConvertToIds(this ParameterModelAttribute parameter, IdInfo idInfo)
-    {
-        parameter.Type = $"IEnumerable<{idInfo.Type}>";
-        parameter.Name = $"{parameter.Name.Singularize()}{idInfo.PropertyName.Pluralize()}";
-    }
 
     public static bool TryGetQueryType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
     {
@@ -126,7 +38,7 @@ public static class OrmExtensions
             return false;
         }
 
-        entityType = domain.Types[queryAttribute.EntityType];
+        entityType = domain.Types[queryAttribute.LocatableType];
 
         return true;
     }

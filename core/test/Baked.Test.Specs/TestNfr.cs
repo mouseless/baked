@@ -1,4 +1,4 @@
-﻿using Baked.Playground.CodingStyle.EntitySubclassViaComposition;
+﻿using Baked.Playground.CodingStyle.EntitySubclass;
 using Baked.Playground.Orm;
 using Baked.Testing;
 using Humanizer;

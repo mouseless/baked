@@ -1,17 +1,15 @@
-﻿using Baked.Business;
-
-namespace Baked.Playground.CodingStyle.RichTransient;
+﻿namespace Baked.Playground.CodingStyle.RichTransient;
 
 public class RichTransientNoData
 {
-    public RichTransientNoData With(Id id)
+    public RichTransientNoData With(Baked.Business.Id id)
     {
         Id = id;
 
         return this;
     }
 
-    internal Id Id { get; private set; } = default!;
+    internal Baked.Business.Id Id { get; private set; } = default!;
 
     public string Method(string text) =>
         text;

@@ -1,7 +1,8 @@
 namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class IdAttribute(string RouteName) : Attribute
+public class IdAttribute(string RouteName)
+    : Attribute
 {
     public string RouteName { get; set; } = RouteName;
     public OrmConfig? Orm { get; set; }
