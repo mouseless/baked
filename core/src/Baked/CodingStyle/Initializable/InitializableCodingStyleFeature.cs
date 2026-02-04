@@ -16,16 +16,16 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
-                attribute: () => new TransientAttribute(),
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
-                    _initializerNames.Any(i => members.Methods.Contains(i))
+                    _initializerNames.Any(i => members.Methods.Contains(i)),
+                attribute: () => new TransientAttribute()
             );
             builder.Conventions.SetMethodAttribute(
-                attribute: () => new InitializerAttribute(),
-                when: c => _initializerNames.Contains(c.Method.Name)
+                when: c => _initializerNames.Contains(c.Method.Name),
+                attribute: () => new InitializerAttribute()
             );
 
             builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
