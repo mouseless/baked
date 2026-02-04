@@ -29,7 +29,7 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
             );
 
             builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
-            builder.Conventions.Add(new TargetUsingInitializerConvention(), order: RestApiLayer.MaxConventionOrder - 20);
+            builder.Conventions.Add(new TargetUsingInitializerConvention(), order: RestApiLayer.MaxConventionOrder - 10);
             builder.Conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
     }

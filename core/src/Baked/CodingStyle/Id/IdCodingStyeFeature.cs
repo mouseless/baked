@@ -43,7 +43,7 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
 
             configurator.UsingGeneratedContext(context =>
             {
-                var idMapper = context.Assemblies[nameof(IdCodingStyeFeature)].CreateInstance<IIdMapper>();
+                var idMapper = context.Assemblies[nameof(IdCodingStyeFeature)].CreateImplementationInstance<IIdMapper>();
 
                 idMapper?.Configure(model);
             });

@@ -27,7 +27,7 @@ public static class LocatableCodingStyleExtensions
         bool isArray = false
     )
     {
-        var locateMany = locatable.LocateManyRenderer(locatorServiceParameter.Name, parameter);
+        var locateMany = locatable.RenderLocateMany(locatorServiceParameter.Name, parameter);
 
         return isArray ? $"({locateMany}).ToArray()" : $"({locateMany}).ToList()";
     }

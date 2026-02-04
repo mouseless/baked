@@ -84,7 +84,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                model.AddTypeSource(generatedContext.Assemblies[nameof(AutoMapOrmFeature)].CreateRequiredInstance<ITypeSource>());
+                model.AddTypeSource(generatedContext.Assemblies[nameof(AutoMapOrmFeature)].CreateRequiredImplementationInstance<ITypeSource>());
             });
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));
