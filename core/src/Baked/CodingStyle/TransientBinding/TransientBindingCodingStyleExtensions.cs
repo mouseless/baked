@@ -4,6 +4,7 @@ using Baked.CodingStyle.TransientBinding;
 using Baked.Domain;
 using Baked.RestApi;
 using Baked.RestApi.Model;
+using Humanizer;
 
 namespace Baked;
 
@@ -32,5 +33,27 @@ public static class TransientBindingCodingStyleExtensions
                 : $"{parameter}.Select(p => {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})";
 
         return isArray ? $"({template}).ToArray()" : $"({template}).ToList()";
+    }
+
+    public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,
+        string? name = default,
+        bool dontAddRequired = false
+    )
+    {
+        name ??= $"{parameter.Name}{idInfo.PropertyName}";
+
+        if (!parameter.Nullable && dontAddRequired)
+        {
+            parameter.AddRequiredAttributes(isValueType: true);
+        }
+
+        parameter.Type = parameter.Nullable ? $"{idInfo.Type}?" : idInfo.Type;
+        parameter.Name = name;
+    }
+
+    public static void ConvertToIds(this ParameterModelAttribute parameter, IdInfo idInfo)
+    {
+        parameter.Type = $"IEnumerable<{idInfo.Type}>";
+        parameter.Name = $"{parameter.Name.Singularize()}{idInfo.PropertyName.Pluralize()}";
     }
 }

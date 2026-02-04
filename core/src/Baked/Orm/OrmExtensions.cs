@@ -2,9 +2,7 @@
 using Baked.Business;
 using Baked.Domain.Model;
 using Baked.Orm;
-using Baked.RestApi.Model;
 using Baked.Testing;
-using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using Shouldly;
@@ -16,28 +14,6 @@ public static class OrmExtensions
 {
     public static void AddOrm(this List<IFeature> features, Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
         features.Add(configure(new()));
-
-    public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,
-        string? name = default,
-        bool dontAddRequired = false
-    )
-    {
-        name ??= $"{parameter.Name}{idInfo.PropertyName}";
-
-        if (!parameter.Nullable && dontAddRequired)
-        {
-            parameter.AddRequiredAttributes(isValueType: true);
-        }
-
-        parameter.Type = parameter.Nullable ? $"{idInfo.Type}?" : idInfo.Type;
-        parameter.Name = name;
-    }
-
-    public static void ConvertToIds(this ParameterModelAttribute parameter, IdInfo idInfo)
-    {
-        parameter.Type = $"IEnumerable<{idInfo.Type}>";
-        parameter.Name = $"{parameter.Name.Singularize()}{idInfo.PropertyName.Pluralize()}";
-    }
 
     public static bool TryGetQueryType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
     {
