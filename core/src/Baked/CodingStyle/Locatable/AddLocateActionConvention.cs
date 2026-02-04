@@ -5,7 +5,7 @@ using Humanizer;
 
 namespace Baked.CodingStyle.Locatable;
 
-public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
+public class AddLocateActionConvention<T> : IDomainModelConvention<TypeModelContext>
 {
     public void Apply(TypeModelContext context)
     {

@@ -19,8 +19,8 @@ public static class LocatableCodingStyleExtensions
             IsInvokeMethodParameter = false
         };
 
-    public static void AddSingleById<TLocatable>(this IDomainModelConventionCollection conventions) =>
-        conventions.Add(new SingleByIdConvention<TLocatable>(), order: RestApiLayer.MaxConventionOrder);
+    public static void AddLocateAction<TLocatable>(this IDomainModelConventionCollection conventions) =>
+        conventions.Add(new AddLocateActionConvention<TLocatable>(), order: RestApiLayer.MaxConventionOrder);
 
     public static string BuildLookupManyTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         bool isArray = false

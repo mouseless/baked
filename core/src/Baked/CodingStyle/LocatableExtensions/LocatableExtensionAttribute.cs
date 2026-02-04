@@ -1,4 +1,4 @@
-﻿namespace Baked.CodingStyle.LocatableExtension;
+﻿namespace Baked.CodingStyle.LocatableExtensions;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class LocatableExtensionAttribute(Type locatableType)

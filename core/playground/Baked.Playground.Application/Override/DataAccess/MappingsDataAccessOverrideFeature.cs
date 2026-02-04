@@ -1,6 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
-using Baked.Playground.CodingStyle;
+using Baked.Playground.CodingStyle.Id;
 using Baked.Playground.Orm;
 
 namespace Baked.Playground.Override.DataAccess;

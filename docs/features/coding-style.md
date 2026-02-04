@@ -89,10 +89,10 @@ by using `Locatable` attribute.
 c => c.Locatable()
 ```
 
-## Locatable Extension
+## Locatable Extensions
 
-Allows classes to extend locatables via composition. This marks a transient class
-as an entity extension when it implements implicit casting to an entity. 
+Allows classes to extend locatables via composition. This marks a transient 
+class as an entity extension when it implements implicit casting to an entity. 
 Methods of these extension classes are rendered under locatable group.
 
 ```csharp

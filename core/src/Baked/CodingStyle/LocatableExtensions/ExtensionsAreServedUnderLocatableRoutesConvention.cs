@@ -3,7 +3,7 @@ using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Baked.CodingStyle.LocatableExtension;
+namespace Baked.CodingStyle.LocatableExtensions;
 
 public class ExtensionsAreServedUnderLocatableRoutesConvention : IDomainModelConvention<MethodModelContext>
 {

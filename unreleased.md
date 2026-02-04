@@ -15,8 +15,8 @@
   - `Id` user type can be mapped as `Guid`, `AutoIncrement` or `Assigned`
 - `LocatableCodingStyle` feature is now added which manages binding of
   transient and locatable transients, adding id or initializer parameters
-- `Business.ILocator<>` generic interface is now introduced for configuring locators
-  for `RichTransient` and `Entity` types and their extensions
+- `Business.ILocator<>` generic interface is now introduced for configuring 
+  locators for `RichTransient` and `Entity` types and their extensions
 
 ## Breaking Changes
 
@@ -43,8 +43,8 @@
   }
   ```
 - `EntityExtensionViaComposition` coding style feature is renamed to 
-  `LocatableExtension` coding style feature
-- `LocatableExtension` (former: `EntityExtensionViaComposition`) feature now 
+  `LocatableExtensions` coding style feature
+- `LocatableExtensions` (former: `EntityExtensionViaComposition`) feature now 
   requires a property with `Business.Id` type 
   ```csharp
   // not supported
@@ -69,14 +69,15 @@
   // add 'Baked.Business.Id' property
   ILocator<Entity>.Locate(id);
   ```
-  - `SingleById` convention now requires `Locatable` type instead of `Query` 
-    type
+  - `SingleById` convention is renamed to `AddLocateAction`
+  - `AddLocateAction` (former: `SingleById`) convention now requires 
+    `Locatable` type instead of `Query` type
   ```csharp
   // previous usage
   builder.Conventions.AddSingleById<Entities>();
 
   // use locatable type instead
-  builder.Conventions.AddSingleById<Entity>();
+  builder.Conventions.AddLocateAction<Entity>();
   ```
 - `WithMethodCodingStyleFeature` is now renamed to 
   `InitializableCodingStyleFeature`

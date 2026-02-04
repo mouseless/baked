@@ -1,5 +1,5 @@
 ﻿using Baked.CodingStyle.Id;
-using Baked.Playground.CodingStyle;
+using Baked.Playground.CodingStyle.Id;
 using Baked.Playground.Orm;
 using NHibernate.Mapping;
 

@@ -14,7 +14,7 @@ public class RichTransientExtension
         return this;
     }
 
-    internal Id Id => _richTransient.Id;
+    internal Baked.Business.Id Id => _richTransient.Id;
 
     public string FromExtension() =>
         $"This method is from extension for {nameof(RichTransientWithData)}:{_richTransient.Id}";
