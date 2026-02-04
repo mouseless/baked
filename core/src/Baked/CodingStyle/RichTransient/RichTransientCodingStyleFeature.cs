@@ -45,7 +45,9 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 {
                     c.Type.Apply(t =>
                     {
-                        var initializer = c.Type.GetMembers().Methods.First(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic);
+                        if (!c.Type.TryGetMembers(out var members)) { throw new($"`{c.Type.Name}` should have had members"); }
+
+                        var initializer = members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic) ?? throw new($"`{c.Type.Name}` should have had public initializer");
                         var isAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
                         set(c.Type, new LocatableAttribute(isAsync ? typeof(IAsyncLocator<>).MakeGenericType(t) : typeof(ILocator<>).MakeGenericType(t))
                         {

@@ -12,8 +12,6 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Index.Type.Add<EntityAttribute>();
-
             builder.Conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
