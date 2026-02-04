@@ -50,7 +50,7 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
 
                     queryType.Apply(t => set(c.Type, new LocatableAttribute(t)
                     {
-                        LocateRenderer = (serviceExpression, idExpression) =>
+                        LocateRenderer = (serviceExpression, idExpression, _) =>
                             $"({entitySubclassType.CSharpFriendlyFullName}){serviceExpression}.{singleByUniqueMethod.Name}({idExpression})"
                     }));
                 },

@@ -25,7 +25,7 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
             };
 
         var locatorServiceParameter = locatable.AddAsService(action, context.Type.Name.Camelize() + "Locator");
-        action.FindTargetStatement = locatable.LocateRenderer(locatorServiceParameter.Name, id.RenderLookup(id.Name));
+        action.FindTargetStatement = locatable.LocateRenderer(locatorServiceParameter.Name, id.RenderLookup(id.Name), throwNotFound.RenderLookup(throwNotFound.Name));
         action.RouteParts = [context.Type.Name.Pluralize(), action.Name];
         if (locatable.IsAsync)
         {

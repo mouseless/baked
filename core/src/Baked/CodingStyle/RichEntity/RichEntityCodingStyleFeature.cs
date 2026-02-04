@@ -48,7 +48,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c => c.Type.Has<EntityAttribute>() && c.Type.Has<LocatableAttribute>(),
                 attribute: locatable =>
                 {
-                    locatable.LocateRenderer = (serviceExpression, idExpression) => $"{serviceExpression}.Locate({idExpression}, throwNotFound: true)";
+                    locatable.LocateRenderer = (serviceExpression, idExpression, throwNotFoundExpression) => $"{serviceExpression}.Locate({idExpression}, {throwNotFoundExpression})";
                     locatable.LocateManyRenderer = (serviceExpression, idsExpression) => $"{serviceExpression}.LocateMany({idsExpression})";
                 }
             );

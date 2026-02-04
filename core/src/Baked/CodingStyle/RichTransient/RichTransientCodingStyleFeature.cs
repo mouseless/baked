@@ -57,9 +57,10 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c => c.Type.Has<RichTransientAttribute>() && c.Type.Has<LocatableAttribute>(),
                 attribute: locatable =>
                 {
-                    locatable.LocateRenderer = (serviceExpression, idExpression) => locatable.IsAsync
-                        ? $"await {serviceExpression}.LocateAsync({idExpression}, throwNotFound: true)"
-                        : $"{serviceExpression}.Locate({idExpression}, throwNotFound: true)";
+                    locatable.LocateRenderer = (serviceExpression, idExpression, throwNotFoundExpression) => locatable.IsAsync
+                        ? $"await {serviceExpression}.LocateAsync({idExpression}, {throwNotFoundExpression})"
+                        : $"{serviceExpression}.Locate({idExpression}, {throwNotFoundExpression})";
+
                     locatable.LocateManyRenderer = (serviceExpression, idsExpression) => locatable.IsAsync
                         ? $"await {serviceExpression}.LocateManyAsync({idsExpression})"
                         : $"{serviceExpression}.LocateMany({idsExpression})";
