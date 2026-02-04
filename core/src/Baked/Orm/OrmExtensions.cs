@@ -38,7 +38,7 @@ public static class OrmExtensions
             return false;
         }
 
-        entityType = domain.Types[queryAttribute.EntityType];
+        entityType = domain.Types[queryAttribute.LocatableType];
 
         return true;
     }
