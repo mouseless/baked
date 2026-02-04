@@ -4,10 +4,10 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class RoutingEntityExtensions : TestNfr
+public class RoutingLocatableExtensions : TestNfr
 {
     [Test]
-    public async Task Extensions_are_served_under_entity_routes()
+    public async Task Entity_extensions_are_served_under_same_routes()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { }));
         dynamic? entity = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
@@ -18,7 +18,15 @@ public class RoutingEntityExtensions : TestNfr
     }
 
     [Test]
-    public async Task Extensions_can_be_used_as_parameters_just_like_entities()
+    public async Task Rich_transient_extensions_are_served_under_same_routes()
+    {
+        var response = await Client.PostAsync($"/rich-transient-with-datas/{12}/from-extension", new StringContent(string.Empty));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
+
+    [Test]
+    public async Task Extensions_can_be_used_as_parameters_just_like_locatables()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { int32 = 1 }));
         dynamic? entity = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());

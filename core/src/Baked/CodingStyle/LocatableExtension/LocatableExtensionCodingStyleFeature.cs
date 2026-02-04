@@ -14,12 +14,6 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
             builder.Index.Type.Add<LocatableExtensionAttribute>();
 
             builder.Conventions.SetTypeAttribute(
-                attribute: context =>
-                {
-                    var locatableType = context.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
-
-                    return locatableType.Apply(t => new LocatableExtensionAttribute(t));
-                },
                 when: c =>
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
@@ -29,7 +23,14 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                     implicits.Count() == 1 &&
                     implicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
                     parameterTypeMetadata.Has<LocatableAttribute>(),
-                order: 10
+                attribute: context =>
+                {
+                    Console.WriteLine(context.Type.Name);
+                    var locatableType = context.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
+
+                    return locatableType.Apply(t => new LocatableExtensionAttribute(t));
+                },
+                order: 20
             );
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
@@ -39,9 +40,10 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     return c.Domain.Types[entityExtensionsAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
                 },
-                order: 10
+                order: 20
             );
             builder.Conventions.SetTypeAttribute(
+                when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 apply: (c, add) =>
                 {
                     var entityType = c.Type.Get<LocatableExtensionAttribute>().LocatableType;
@@ -50,8 +52,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     add(c.Type, namespaceAttribute);
                 },
-                when: c => c.Type.Has<LocatableExtensionAttribute>(),
-                order: 10
+                order: 20
             );
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
