@@ -62,9 +62,14 @@ public class Entity(IEntityContext<Parent> _context)
 
 ## Initializable
 
-Adds `TransientAttribute` to the services that has a `With` method. This coding
-style makes usages like `newEntity().With(name)` possible. `Transient` type's 
-initializer parameters are added to query and invoked when constructing target
+Adds `TransientAttribute` to the services that has an `Initializer` method. 
+This coding style makes usages like `newEntity().With(name)` possible. 
+`Transient` type's initializer parameters are added to query and invoked when 
+constructing target
+
+> [!NOTE]
+>
+> Default initializer method name is set to `With` if not specified
 
 ```csharp
 c => c.Initializable()
