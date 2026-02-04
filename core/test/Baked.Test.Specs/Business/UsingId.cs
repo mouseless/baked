@@ -1,4 +1,4 @@
-﻿namespace Baked.Test.Orm;
+﻿namespace Baked.Test.Business;
 
 [TestFixture]
 public class UsingId
