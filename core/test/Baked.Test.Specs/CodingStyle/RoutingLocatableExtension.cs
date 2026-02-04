@@ -20,7 +20,7 @@ public class RoutingLocatableExtension : TestNfr
     [Test]
     public async Task Rich_transient_extensions_are_served_under_same_routes()
     {
-        var response = await Client.PostAsync($"/rich-transient-with-datas/{12}/from-extension", new StringContent(string.Empty));
+        var response = await Client.PostAsync("/rich-transient-with-datas/12/from-extension", new StringContent(string.Empty));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }

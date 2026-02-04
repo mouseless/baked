@@ -15,12 +15,6 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
             builder.Index.Type.Add<EntitySubclassAttribute>();
 
             builder.Conventions.SetTypeAttribute(
-                attribute: c =>
-                {
-                    var entityType = c.Type.GetMembers().GetMethod("op_Explicit").Parameters.Single().ParameterType;
-
-                    return entityType.Apply(t => new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
-                },
                 when: c =>
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
@@ -29,9 +23,16 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                     explicits.Count() == 1 &&
                     explicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
                     parameterTypeMetadata.Has<EntityAttribute>(),
+                attribute: c =>
+                {
+                    var entityType = c.Type.GetMembers().GetMethod("op_Explicit").Parameters.Single().ParameterType;
+
+                    return entityType.Apply(t => new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
+                },
                 order: 10
             );
             builder.Conventions.SetTypeAttribute(
+                when: c => c.Type.Has<EntitySubclassAttribute>(),
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
@@ -48,14 +49,18 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                     var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
                     if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
 
-                    queryType.Apply(t => set(c.Type, new LocatableAttribute()
-                    {
-                        LocateRenderer = (serviceExpression, idExpression, _) =>
-                            $"({entitySubclassType.CSharpFriendlyFullName}){serviceExpression}.{singleByUniqueMethod.Name}({idExpression})"
-                    }));
+                    set(c.Type, new LocatableAttribute());
                 },
-                when: c => c.Type.Has<EntitySubclassAttribute>(),
                 order: 10
+            );
+            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
+                when: c => c.Type.Has<EntitySubclassAttribute>(),
+                attribute: locatable =>
+                {
+                    locatable.LocateRenderer = (serviceExpression, idExpression, throwNotFoundExpression) => $"{serviceExpression}.Locate({idExpression}, {throwNotFoundExpression})";
+                    locatable.LocateManyRenderer = (serviceExpression, idsExpression) => $"{serviceExpression}.LocateMany({idsExpression})";
+                },
+                order: 20
             );
             builder.Conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
@@ -70,6 +75,31 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
             builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
             builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder);
             builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            configurator.UsingDomainModel(domain =>
+            {
+                generatedAssemblies.Add(nameof(EntitySubclassViaCompositionCodingStyleFeature),
+                    assembly =>
+                    {
+                        var codeTemplate = new LocatorTemplate(domain);
+                        assembly.AddCodes(codeTemplate);
+                        assembly.AddReferences(codeTemplate.References);
+                        assembly.AddReferenceFrom<EntitySubclassViaCompositionCodingStyleFeature>();
+                    },
+                    usings: [.. LocatorTemplate.GlobalUsings]
+                );
+            });
+        });
+
+        configurator.ConfigureServiceCollection(services =>
+        {
+            configurator.UsingGeneratedContext(context =>
+            {
+                services.AddFromAssembly(context.Assemblies[nameof(EntitySubclassViaCompositionCodingStyleFeature)]);
+            });
         });
     }
 }
