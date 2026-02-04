@@ -1,8 +1,10 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Model;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
 using Humanizer;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.RichTransient;
 
@@ -20,7 +22,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
                     members.Has<TransientAttribute>() &&
-                    members.TryGetFirstProperty<IdAttribute>(out var idProperty) &&
+                    TryFindIdProperty(members, out var idProperty) &&
                     members.Methods.Any(m =>
                         m.Has<InitializerAttribute>() &&
                         m.DefaultOverload.IsPublic &&
@@ -107,5 +109,12 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 services.AddFromAssembly(context.Assemblies[nameof(RichTransientCodingStyleFeature)]);
             });
         });
+    }
+
+    static bool TryFindIdProperty(TypeModelMembers members, [NotNullWhen(true)] out PropertyModel? property)
+    {
+        property = members.Properties.FirstOrDefault(p => p.CustomAttributes.Contains<IdAttribute>());
+
+        return property is not null;
     }
 }

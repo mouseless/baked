@@ -18,7 +18,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
-                    members.TryGetFirstProperty<IdAttribute>(out var _) &&
+                    members.Properties.Any(p => p.CustomAttributes.Contains<IdAttribute>()) &&
                     members.TryGetMethods("op_Implicit", out var implicits) &&
                     implicits.Count() == 1 &&
                     implicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
