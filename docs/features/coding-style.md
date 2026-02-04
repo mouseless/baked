@@ -64,12 +64,12 @@ public class Entity(IEntityContext<Parent> _context)
 
 Adds `TransientAttribute` to the services that has an `Initializer` method. 
 This coding style makes usages like `newEntity().With(name)` possible. 
-`Transient` type's initializer parameters are added to query and invoked when 
-constructing target
+`Transient` type's initializer parameters are added to query and initalizer
+is invoked with given parameters when constructing target.
 
 > [!NOTE]
 >
-> Default initializer method name is set to `With` if not specified
+> Default initializer method name is set to `With`
 
 ```csharp
 c => c.Initializable()
@@ -77,13 +77,13 @@ c => c.Initializable()
 
 ## Locatable
 
-Manages binding of `Transient` api inputs. For `Locatable` type adds id 
-parameter to route, configures finding target and parameter lookup expressions
-by using `Locatable` attribute.
+Manages binding of `Locatable` targets and api inputs. For `Locatable` types, 
+this feature adds id parameter to route, configures finding target and parameter 
+lookup expressions by using `Locatable` attribute.
 
 > [!NOTE]
 >
-> Parameter lookup is only supported for `Locatable` transient types
+> Parameter lookup is only supported for `Locatable` types
 
 ```csharp
 c => c.Locatable()
@@ -92,8 +92,9 @@ c => c.Locatable()
 ## Locatable Extensions
 
 Allows classes to extend locatables via composition. This marks a transient 
-class as an entity extension when it implements implicit casting to an entity. 
-Methods of these extension classes are rendered under locatable group.
+class as an locatable extension when it implements implicit casting to a 
+locatable. Methods of these extension classes are rendered under locatable 
+group.
 
 ```csharp
 c => c.LocatableExtension()
@@ -151,12 +152,12 @@ c => c.RichEntity()
 
 ## Rich Transient
 
-Configures transient services as api services. This coding style allows you to
-have a public initializer (`With`) with parameters which will render as query
-parameters or single `id` parameter which will render from route.
+Configures transient services as api services. This coding style marks a type
+having a public initializer with a single `Business.Id` parameter which will 
+render from route, as `RichTransient`, configures `Locatable` attribure and 
+generates locators.
 
-Rich transients with `id` types can be method parameters and located using
-their locators.
+Rich transients can be method parameters and located using their locators.
 
 Configures routes and swagger docs to use entity methods as resource actions.
 
