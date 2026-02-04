@@ -1,7 +1,7 @@
 ﻿using Baked.Business;
 using Microsoft.Extensions.Logging;
 
-namespace Baked.Playground.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.Playground.CodingStyle.EntitySubclass;
 
 public class BTypedEntity(ILogger<BTypedEntity> _logger, Func<TypedEntity> _newTypedEntity)
 {

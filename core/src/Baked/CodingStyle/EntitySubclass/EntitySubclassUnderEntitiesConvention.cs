@@ -2,7 +2,7 @@
 using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Baked.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.CodingStyle.EntitySubclass;
 
 public class EntitySubclassUnderEntitiesConvention
     : IDomainModelConvention<TypeModelContext>

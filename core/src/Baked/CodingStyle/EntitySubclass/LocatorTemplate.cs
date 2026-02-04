@@ -3,7 +3,7 @@ using Baked.CodeGeneration;
 using Baked.Domain.Model;
 using System.Reflection;
 
-namespace Baked.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.CodingStyle.EntitySubclass;
 
 public class LocatorTemplate : CodeTemplateBase
 {

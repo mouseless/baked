@@ -4,9 +4,9 @@ using Baked.Orm;
 using Baked.RestApi;
 using Baked.RestApi.Model;
 
-namespace Baked.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.CodingStyle.EntitySubclass;
 
-public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -72,13 +72,13 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
         {
             configurator.UsingDomainModel(domain =>
             {
-                generatedAssemblies.Add(nameof(EntitySubclassViaCompositionCodingStyleFeature),
+                generatedAssemblies.Add(nameof(EntitySubclassCodingStyleFeature),
                     assembly =>
                     {
                         var codeTemplate = new LocatorTemplate(domain);
                         assembly.AddCodes(codeTemplate);
                         assembly.AddReferences(codeTemplate.References);
-                        assembly.AddReferenceFrom<EntitySubclassViaCompositionCodingStyleFeature>();
+                        assembly.AddReferenceFrom<EntitySubclassCodingStyleFeature>();
                     },
                     usings: [.. LocatorTemplate.GlobalUsings]
                 );
@@ -89,7 +89,7 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
         {
             configurator.UsingGeneratedContext(context =>
             {
-                services.AddFromAssembly(context.Assemblies[nameof(EntitySubclassViaCompositionCodingStyleFeature)]);
+                services.AddFromAssembly(context.Assemblies[nameof(EntitySubclassCodingStyleFeature)]);
             });
         });
     }

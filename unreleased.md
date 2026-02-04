@@ -81,3 +81,5 @@
   ```
 - `WithMethodCodingStyleFeature` is now renamed to 
   `InitializableCodingStyleFeature`
+- `EntitySubclassViaCompositionCodingStyleFeature` is renamed to
+  `EntitySubclassCodingStyleFeature`  

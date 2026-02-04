@@ -24,7 +24,7 @@ Uses class names as route and removes `Execute` and `Process` names from route.
 c => c.CommandPattern()
 ```
 
-## Entity Subclass via Composition
+## Entity Subclass
 
 Allows classes to be subclasses of entities via composition. This marks a
 transient class as an entity subclass when it implements explicit casting to an
@@ -37,7 +37,7 @@ uses the first unique property to discriminate entity records.
 > subclass routing won't work.
 
 ```csharp
-c => c.EntitySubclassViaComposition()
+c => c.EntitySubclass()
 ```
 
 ## Id

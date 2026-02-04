@@ -3,7 +3,7 @@ using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Baked.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.CodingStyle.EntitySubclass;
 
 public class UniqueIdParameterConvention : IDomainModelConvention<MethodModelContext>
 {

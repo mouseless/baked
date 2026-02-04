@@ -73,7 +73,7 @@ public static class BakeExtensions
             [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
-                c => c.EntitySubclassViaComposition(),
+                c => c.EntitySubclass(),
                 c => c.Id(),
                 c => c.Initializable(),
                 c => c.Locatable(),

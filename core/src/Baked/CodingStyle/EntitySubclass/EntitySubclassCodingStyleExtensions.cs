@@ -1,13 +1,13 @@
 ﻿using Baked.CodingStyle;
-using Baked.CodingStyle.EntitySubclassViaComposition;
+using Baked.CodingStyle.EntitySubclass;
 using Baked.Domain.Model;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked;
 
-public static class EntitySubclassViaCompositionCodingStyleExtensions
+public static class EntitySubclassCodingStyleExtensions
 {
-    public static EntitySubclassViaCompositionCodingStyleFeature EntitySubclassViaComposition(this CodingStyleConfigurator _) =>
+    public static EntitySubclassCodingStyleFeature EntitySubclass(this CodingStyleConfigurator _) =>
         new();
 
     public static bool TryGetSubclassName(this TypeModel type, [NotNullWhen(true)] out string? subclassName)

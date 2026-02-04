@@ -1,6 +1,6 @@
 using Baked.Orm;
 
-namespace Baked.Playground.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.Playground.CodingStyle.EntitySubclass;
 
 public class TypedEntity(IEntityContext<TypedEntity> _context)
 {
