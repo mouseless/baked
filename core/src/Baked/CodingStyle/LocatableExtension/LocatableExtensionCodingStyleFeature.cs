@@ -25,7 +25,6 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                     parameterTypeMetadata.Has<LocatableAttribute>(),
                 attribute: context =>
                 {
-                    Console.WriteLine(context.Type.Name);
                     var locatableType = context.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
 
                     return locatableType.Apply(t => new LocatableExtensionAttribute(t));
