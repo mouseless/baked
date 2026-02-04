@@ -18,11 +18,11 @@ public class UniqueIdParameterConvention : IDomainModelConvention<MethodModelCon
         if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
 
-        // TODO requires review
-        var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name.StartsWith("SingleBy"));
+        var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name != "SingleBy" && m.Name.StartsWith("SingleBy"));
         if (singleByUniqueMethod is null) { return; }
+        if (singleByUniqueMethod.DefaultOverload.Parameters.Count != 1) { return; }
 
-        var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
+        var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.Single();
         if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
 
         var valueExpression = uniqueParameter.ParameterType.IsEnum

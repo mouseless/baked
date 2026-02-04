@@ -62,10 +62,9 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
             );
 
             builder.Conventions.Add(new UniqueIdParameterConvention(), order: RestApiLayer.MaxConventionOrder - 20);
-            builder.Conventions.Add(new SubclassesAreServedUnderEntityRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+            builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder - 10);
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
