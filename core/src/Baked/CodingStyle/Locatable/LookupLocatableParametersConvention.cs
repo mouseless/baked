@@ -2,7 +2,6 @@
 using Baked.Domain.Configuration;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
-using Humanizer;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.Locatable;
@@ -18,6 +17,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (!elementMembers.Has<TransientAttribute>()) { return; }
         if (!elementMembers.TryGetIdInfo(out var idInfo)) { return; }
         if (!elementMembers.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (locatable.LocateManyRenderer is null) { return; }
 
         var notNull = context.Parameter.Has<NotNullAttribute>();
 
@@ -25,7 +25,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (context.Method.TryGet<ActionModelAttribute>(out var action))
         {
             // parameter belongs to an action, add service to the parent action
-            locatorServiceParameter = locatable.AddAsService(action, elementType.Name.Camelize() + "Locator");
+            locatorServiceParameter = locatable.AddLocatorAsService(action, elementType);
             if (locatable.IsAsync)
             {
                 action.MakeAsync();
@@ -36,7 +36,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
             // parameter belongs to an initializer, add service to all actions
             foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.Get<ActionModelAttribute>()))
             {
-                locatorServiceParameter = locatable.AddAsService(otherAction, elementType.Name.Camelize() + "Locator");
+                locatorServiceParameter = locatable.AddLocatorAsService(otherAction, elementType);
                 if (locatable.IsAsync)
                 {
                     otherAction.MakeAsync();
@@ -47,7 +47,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (locatorServiceParameter is null) { return; }
 
         parameter.ConvertToIds(idInfo);
-        parameter.LookupRenderer = p => locatable.BuildLookupManyTemplate(locatorServiceParameter, p,
+        parameter.LookupRenderer = p => locatable.BuildLookupManyRenderer(locatorServiceParameter, p,
             isArray: context.Parameter.ParameterType.IsArray
         );
     }

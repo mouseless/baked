@@ -15,24 +15,21 @@ public class AddLocateActionConvention<T> : IDomainModelConvention<TypeModelCont
         if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
         if (!context.Type.TryGetIdInfo(out var idInfo)) { return; }
 
-        context.Type.Apply(t =>
+        controller.Action["Locate"] = new("Locate",
+            routeParts: [context.Type.Name.Pluralize()],
+            returnType: context.Type.CSharpFriendlyFullName,
+            returnIsAsync: locatable.IsAsync,
+            returnIsVoid: false,
+            parameters:
+            [
+                new(ParameterModelAttribute.TargetParameterName, locatable.BuildLocatorType(context.Type.CSharpFriendlyFullName) , ParameterModelFrom.Services),
+                new(idInfo.RouteName, idInfo.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
+                new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }
+            ]
+        )
         {
-            controller.Action["Locate"] = new("Locate",
-                routeParts: [context.Type.Name.Pluralize()],
-                returnType: context.Type.CSharpFriendlyFullName,
-                returnIsAsync: locatable.IsAsync,
-                returnIsVoid: false,
-                parameters:
-                [
-                    new(ParameterModelAttribute.TargetParameterName, locatable.ServiceType.GetCSharpFriendlyFullName(), ParameterModelFrom.Services),
-                    new(idInfo.RouteName, idInfo.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
-                    new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }
-                ]
-            )
-            {
-                Method = HttpMethod.Get,
-                FindTargetStatement = ParameterModelAttribute.TargetParameterName
-            };
-        });
+            Method = HttpMethod.Get,
+            FindTargetStatement = ParameterModelAttribute.TargetParameterName
+        };
     }
 }

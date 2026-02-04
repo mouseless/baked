@@ -39,7 +39,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
-                    c.Type.Apply(t => set(c.Type, new LocatableAttribute(ServiceType: typeof(ILocator<>).MakeGenericType(t))));
+                    set(c.Type, new LocatableAttribute());
                 }
             );
             builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(

@@ -48,7 +48,7 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                     var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
                     if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
 
-                    queryType.Apply(t => set(c.Type, new LocatableAttribute(t)
+                    queryType.Apply(t => set(c.Type, new LocatableAttribute()
                     {
                         LocateRenderer = (serviceExpression, idExpression, _) =>
                             $"({entitySubclassType.CSharpFriendlyFullName}){serviceExpression}.{singleByUniqueMethod.Name}({idExpression})"

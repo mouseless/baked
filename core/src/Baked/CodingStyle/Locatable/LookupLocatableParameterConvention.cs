@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
-using Humanizer;
 
 namespace Baked.CodingStyle.Locatable;
 
@@ -13,15 +12,17 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
         if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
         if (!parameterTypeMembers.TryGetIdInfo(out var idInfo)) { return; }
         if (!parameterTypeMembers.TryGet<LocatableAttribute>(out var locatable)) { return; }
-        // TODO action seems to have parameters set from somewhere even though the
+        if (locatable.LocateRenderer is null) { return; }
+
+        // NOTE action seems to have parameters set from somewhere even though the
         // default overload has zero parameters
-        if (context.Method.DefaultOverload.Parameters.Count == 0) { return; }
+        if (!context.Method.DefaultOverload.Parameters.Any()) { return; }
 
         ParameterModelAttribute? locatorServiceParameter = null;
         if (context.Method.TryGet<ActionModelAttribute>(out var action))
         {
             // parameter belongs to an action, add service to the parent action
-            locatorServiceParameter = locatable.AddAsService(action, context.Parameter.ParameterType.Name.Camelize() + "Locator");
+            locatorServiceParameter = locatable.AddLocatorAsService(action, context.Parameter.ParameterType);
             if (locatable.IsAsync)
             {
                 action.MakeAsync();
@@ -32,7 +33,7 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
             // parameter belongs to an initializer, add service to all actions
             foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.Get<ActionModelAttribute>()))
             {
-                locatorServiceParameter = locatable.AddAsService(otherAction, context.Parameter.ParameterType.Name.Camelize() + "Locator");
+                locatorServiceParameter = locatable.AddLocatorAsService(otherAction, context.Parameter.ParameterType);
                 if (locatable.IsAsync)
                 {
                     otherAction.MakeAsync();

@@ -2,6 +2,7 @@
 using Baked.CodingStyle;
 using Baked.CodingStyle.Locatable;
 using Baked.Domain;
+using Baked.Domain.Model;
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Humanizer;
@@ -13,8 +14,8 @@ public static class LocatableCodingStyleExtensions
     public static LocatableCodingStyleFeature Locatable(this CodingStyleConfigurator _) =>
         new();
 
-    public static ParameterModelAttribute AddAsService(this LocatableAttribute locatable, ActionModelAttribute action, string parameterName) =>
-        action.Parameter[parameterName] = new(parameterName, locatable.ServiceType.GetCSharpFriendlyFullName(), ParameterModelFrom.Services)
+    public static ParameterModelAttribute AddLocatorAsService(this LocatableAttribute locatable, ActionModelAttribute action, TypeModel locatableType) =>
+        action.Parameter[$"{locatableType.Name.Camelize()}Locator"] = new($"{locatableType.Name.Camelize()}Locator", locatable.BuildLocatorType(locatableType.CSharpFriendlyFullName), ParameterModelFrom.Services)
         {
             IsInvokeMethodParameter = false
         };
@@ -22,17 +23,19 @@ public static class LocatableCodingStyleExtensions
     public static void AddLocateAction<TLocatable>(this IDomainModelConventionCollection conventions) =>
         conventions.Add(new AddLocateActionConvention<TLocatable>(), order: RestApiLayer.MaxConventionOrder);
 
-    public static string BuildLookupManyTemplate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
+    public static string BuildLookupManyRenderer(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
         bool isArray = false
     )
     {
-        var template = locatable.LocateManyRenderer is not null
+        var renderer = locatable.LocateManyRenderer is not null
             ? locatable.LocateManyRenderer(locatorServiceParameter.Name, parameter)
-            : locatable.IsAsync
-                ? $"await {parameter}.Select(async p => await {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})"
-                : $"{parameter}.Select(p => {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})";
+            : locatable.LocateRenderer is not null
+                ? locatable.IsAsync
+                    ? $"await {parameter}.Select(async p => await {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})"
+                    : $"{parameter}.Select(p => {locatable.LocateRenderer(locatorServiceParameter.Name, "p")})"
+                : throw new($"Unable to build `LookupManyRenderer` for {parameter}");
 
-        return isArray ? $"({template}).ToArray()" : $"({template}).ToList()";
+        return isArray ? $"({renderer}).ToArray()" : $"({renderer}).ToList()";
     }
 
     public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,

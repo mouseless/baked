@@ -43,24 +43,19 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c => c.Type.Has<RichTransientAttribute>(),
                 apply: (c, set) =>
                 {
-                    c.Type.Apply(t =>
-                    {
-                        if (!c.Type.TryGetMembers(out var members)) { throw new($"`{c.Type.Name}` should have had members"); }
-
-                        var initializer = members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic) ?? throw new($"`{c.Type.Name}` should have had public initializer");
-                        var isAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
-                        set(c.Type, new LocatableAttribute(isAsync ? typeof(IAsyncLocator<>).MakeGenericType(t) : typeof(ILocator<>).MakeGenericType(t))
-                        {
-                            IsAsync = isAsync
-                        });
-                    });
+                    set(c.Type, new LocatableAttribute());
                 },
                 order: 10
             );
             builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
                 when: c => c.Type.Has<RichTransientAttribute>() && c.Type.Has<LocatableAttribute>(),
-                attribute: locatable =>
+                attribute: (locatable, c) =>
                 {
+                    if (!c.Type.TryGetMembers(out var members)) { return; }
+
+                    var initializer = members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic) ?? throw new($"`{c.Type.Name}` should have had public initializer");
+                    locatable.IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
+
                     locatable.LocateRenderer = (serviceExpression, idExpression, throwNotFoundExpression) => locatable.IsAsync
                         ? $"await {serviceExpression}.LocateAsync({idExpression}, {throwNotFoundExpression})"
                         : $"{serviceExpression}.Locate({idExpression}, {throwNotFoundExpression})";

@@ -63,7 +63,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                     if (!locatableExtensionType.TryGetLocatableTypeFromExtension(c.Domain, out var locatableType)) { return; }
                     if (!locatableType.GetMetadata().CustomAttributes.TryGet<LocatableAttribute>(out var locatable)) { return; }
 
-                    locatableExtensionType.Apply(t => set(c.Type, new LocatableAttribute(typeof(ILocator<>).MakeGenericType(t))));
+                    set(c.Type, new LocatableAttribute());
                 },
                 order: 20
             );

@@ -13,6 +13,7 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
         if (context.Method.Has<InitializerAttribute>()) { return; }
         if (!context.Type.TryGetMembers(out var metadata)) { return; }
         if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (locatable.LocateRenderer is null) { return; }
         if (!metadata.TryGetIdInfo(out var idInfo)) { return; }
 
         var id = action.Parameter[ParameterModelAttribute.TargetParameterName];
@@ -24,7 +25,7 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
                 IsInvokeMethodParameter = false
             };
 
-        var locatorServiceParameter = locatable.AddAsService(action, context.Type.Name.Camelize() + "Locator");
+        var locatorServiceParameter = locatable.AddLocatorAsService(action, context.Type);
         action.FindTargetStatement = locatable.LocateRenderer(locatorServiceParameter.Name, id.RenderLookup(id.Name), throwNotFound.RenderLookup(throwNotFound.Name));
         action.RouteParts = [context.Type.Name.Pluralize(), action.Name];
         if (locatable.IsAsync)
