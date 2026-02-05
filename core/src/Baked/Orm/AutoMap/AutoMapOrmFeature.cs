@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.CodeGeneration;
 using Baked.RestApi;
-using Baked.RestApi.Conventions;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -36,15 +36,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
-
-            builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
-            builder.Conventions.Add(new LookupEntityByIdConvention());
-            builder.Conventions.Add(new LookupEntitiesByIdsConvention());
-            builder.Conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
-                _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
-            ));
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
@@ -97,6 +89,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
+            services.AddSingleton(typeof(ILocator<>), typeof(EntityLocator<>));
         });
 
         configurator.ConfigureServiceCollectionConfiguration(configuration =>
@@ -121,12 +114,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                var assembly = generatedContext.Assemblies[nameof(AutoMapOrmFeature)];
-
-                var typeSource = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(ITypeSource))) ?? throw new("`ITypeSource` implementation not found");
-                var typeSourceInstance = (ITypeSource?)Activator.CreateInstance(typeSource) ?? throw new($"Cannot create instance of {typeSource}");
-
-                model.AddTypeSource(typeSourceInstance);
+                model.AddTypeSource(generatedContext.Assemblies[nameof(AutoMapOrmFeature)].CreateRequiredImplementationInstance<ITypeSource>());
             });
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));

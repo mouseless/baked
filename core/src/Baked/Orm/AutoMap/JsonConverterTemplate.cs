@@ -10,6 +10,7 @@ public class JsonConverterTemplate(DomainModel _domain)
 {
     public static string[] GlobalUsings =
         [
+            "Baked.Business",
             "Baked.Orm",
             "Baked.RestApi",
             "Baked.Runtime",
@@ -47,17 +48,17 @@ public class JsonConverterTemplate(DomainModel _domain)
         }
     """;
 
-    string JsonConverter(TypeModelMembers entity) => $$"""
+    string JsonConverter(TypeModelMembers entity) => If(entity.TryGetIdInfo(out var id), () => $$"""
         namespace AutoMapFeature.Locatability;
 
-        public class {{entity.Name}}JsonConverter(IQueryContext<{{entity.CSharpFriendlyFullName}}> _queryContext)
-            : {{typeof(EntityJsonConverter<,>).Namespace}}.EntityJsonConverter<{{entity.CSharpFriendlyFullName}}, string>(_queryContext)
+        public class {{entity.Name}}JsonConverter(ILocator<{{entity.CSharpFriendlyFullName}}> _locator)
+            : {{typeof(EntityJsonConverter<,>).Namespace}}.EntityJsonConverter<{{entity.CSharpFriendlyFullName}}, string>(_locator)
         {
-            protected override string IdProp => "{{entity.GetIdInfo().PropertyName.Camelize()}}";
+            protected override string IdProp => "{{id!.PropertyName.Camelize()}}";
             protected override IEnumerable<string> LabelProps => [{{Labels(entity)}}];
 
             protected override string GetId({{entity.CSharpFriendlyFullName}} entity) =>
-                entity.Id.ToString();
+                entity.{{id!.PropertyName}}.ToString();
 
             protected override string GetLabel({{entity.CSharpFriendlyFullName}} entity, string labelProp) =>
                 labelProp switch
@@ -68,7 +69,7 @@ public class JsonConverterTemplate(DomainModel _domain)
                     _ => throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{entity.Name}}`")
                 };
         }
-    """;
+    """);
 
     string Labels(TypeModelMembers entity) =>
         ForEach(entity.Properties.Having<LabelAttribute>(),

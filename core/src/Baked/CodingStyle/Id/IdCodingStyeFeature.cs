@@ -14,8 +14,9 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetPropertyAttribute(
-                when: c => c.Property.Name == "Id" && c.Property.PropertyType.Is<Business.Id>(),
-                attribute: c => new IdAttribute(c.Property.Name.Camelize())
+                when: c => c.Property.PropertyType.Is<Business.Id>(),
+                attribute: c => new IdAttribute(c.Property.Name.Camelize()),
+                order: int.MinValue + 10
             );
         });
 
@@ -42,13 +43,9 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
 
             configurator.UsingGeneratedContext(context =>
             {
-                var idMapperType = context.Assemblies[nameof(IdCodingStyeFeature)].GetExportedTypes().FirstOrDefault(t => t.IsAssignableTo(typeof(IIdMapper)));
-                if (idMapperType is not null)
-                {
-                    var idMapper = (IIdMapper?)Activator.CreateInstance(idMapperType) ?? throw new($"Cannot create instance of {idMapperType}");
+                var idMapper = context.Assemblies[nameof(IdCodingStyeFeature)].CreateImplementationInstance<IIdMapper>();
 
-                    idMapper.Configure(model);
-                }
+                idMapper?.Configure(model);
             });
         });
 

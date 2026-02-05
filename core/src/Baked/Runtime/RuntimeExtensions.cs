@@ -41,8 +41,7 @@ public static class RuntimeExtensions
 
     public static void AddFromAssembly(this IServiceCollection services, Assembly assembly)
     {
-        var serviceAdderType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder))) ?? throw new("`IServiceAdder` implementation not found");
-        var serviceAdder = (IServiceAdder?)Activator.CreateInstance(serviceAdderType) ?? throw new($"Cannot create instance of {serviceAdderType}");
+        var serviceAdder = assembly.CreateRequiredImplementationInstance<IServiceAdder>();
 
         serviceAdder.AddServices(services);
     }
@@ -61,6 +60,17 @@ public static class RuntimeExtensions
             Math.Max(builder.Sources.Count - 4, 0), // try to insert before appsetttings.json + appsettings.[Environment].json + 2 more default configurations
             new JsonConfigurationSource(json)
         );
+
+    public static T? CreateImplementationInstance<T>(this Assembly assembly)
+    {
+        var instanceType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(T)));
+        if (instanceType == null) { return default; }
+
+        return (T?)Activator.CreateInstance(instanceType) ?? throw new($"Cannot create instance of {instanceType}");
+    }
+
+    public static T CreateRequiredImplementationInstance<T>(this Assembly assembly) =>
+        assembly.CreateImplementationInstance<T>() ?? throw new($"`{typeof(T)}` implementation not found");
 
     public static IFeature<TConfigurator> ForNfr<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnNfr) =>
         @default.For(nameof(Nfr), featureOnNfr);

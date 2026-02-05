@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Baked.Business;
+using Newtonsoft.Json;
 
 namespace Baked.Orm;
 
-public abstract class EntityJsonConverter<TEntity, TId>(IQueryContext<TEntity> _queryContext)
+public abstract class EntityJsonConverter<TEntity, TId>(ILocator<TEntity> _locator)
     : JsonConverter<TEntity> where TEntity : class
 {
     protected abstract string IdProp { get; }
@@ -15,7 +16,7 @@ public abstract class EntityJsonConverter<TEntity, TId>(IQueryContext<TEntity> _
         if (reader.TokenType == JsonToken.Null) { return null; }
         if (reader.TokenType != JsonToken.StartObject) { throw new JsonSerializationException($"Expected object, got {reader.TokenType}"); }
 
-        Business.Id? id = null;
+        Id? id = null;
         while (reader.Read())
         {
             if (reader.TokenType == JsonToken.EndObject) { break; }
@@ -27,12 +28,12 @@ public abstract class EntityJsonConverter<TEntity, TId>(IQueryContext<TEntity> _
             if (!reader.Read()) { break; }
             if (reader.Value is null) { continue; }
 
-            id = Business.Id.Parse(reader.Value);
+            id = Id.Parse(reader.Value);
         }
 
         if (!id.HasValue) { return null; }
 
-        return _queryContext.SingleById(id.Value);
+        return _locator.Locate(id.Value);
     }
 
     public override void WriteJson(JsonWriter writer, TEntity? value, JsonSerializer serializer)

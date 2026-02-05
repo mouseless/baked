@@ -43,9 +43,11 @@ Bake.New
 | Coding Style(s)    | :white_check_mark:                       | :white_check_mark:                 |
 |                    | Add/Remove Child                         |                                    |
 |                    | Command Pattern                          |                                    |
-|                    | Entity Extension via Composition         |                                    |
-|                    | Entity Subclass via Composition          |                                    |
+|                    | Entity Subclass                          |                                    |
 |                    | Id                                       |                                    |
+|                    | Initializable                            |                                    |
+|                    | Locatable                                |                                    |
+|                    | Locatable Extension                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
 |                    | Records are DTOs                         |                                    |
@@ -57,7 +59,6 @@ Bake.New
 |                    | `Uri` Return is Redirect                 |                                    |
 |                    | Use Built-in Types                       |                                    |
 |                    | Use Nullable Types                       |                                    |
-|                    | With Method                              |                                    |
 | Communication      | :white_check_mark: HTTP                  | :white_check_mark: Mock            |
 | Core               | :white_check_mark: Dotnet                | :white_check_mark: Mock            |
 | Cors               | :white_check_mark: Disabled              | :no_entry:                         |

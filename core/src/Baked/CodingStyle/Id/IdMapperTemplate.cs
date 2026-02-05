@@ -28,7 +28,6 @@ public class IdMapperTemplate : CodeTemplateBase
         {
             var idProperty = entity.GetMembers().FirstPropertyOrDefault<IdAttribute>();
             if (idProperty is null) { continue; }
-            if (idProperty.Name != "Id") { continue; }
             if (!idProperty.PropertyType.Is<Business.Id>()) { continue; }
 
             var idAttribute = idProperty.Get<IdAttribute>();
@@ -45,7 +44,7 @@ public class IdMapperTemplate : CodeTemplateBase
         [IdMapper()];
 
     string IdMapper() => $$"""
-        namespace IdCodingStyle;
+        namespace IdCodingStyleFeature;
 
         public class IdMapper : IIdMapper
         {
@@ -53,6 +52,7 @@ public class IdMapperTemplate : CodeTemplateBase
             {
             {{ForEach(_entities, e => $$"""
                 {{ModelOverride(e.Type, e.Orm)}}
+                {{ForeignKeyOverride(e.Type)}}
             """)}}
             }
         }
@@ -61,10 +61,16 @@ public class IdMapperTemplate : CodeTemplateBase
     string ModelOverride(TypeModel typeModel, IdAttribute.OrmConfig orm) => $$"""
         model.Override<{{typeModel.CSharpFriendlyFullName}}>(x =>
         {{If(orm.IdentifierGenerator is null, () => $$"""
-            x.Id(e => e.Id).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Assigned()
+            x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Assigned()
         """, @else: () => $$"""
-            x.Id(e => e.Id).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Custom<{{orm.IdentifierGenerator?.GetCSharpFriendlyFullName()}}>()
+            x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Custom<{{orm.IdentifierGenerator?.GetCSharpFriendlyFullName()}}>()
         """)}}
         );
+    """;
+
+    string ForeignKeyOverride(TypeModel typeModel) => $$"""
+        {{ForEach(typeModel.GetMembers().Properties.Where(p => p.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>()), p => $$"""
+            model.Override<{{typeModel.CSharpFriendlyFullName}}> (x => x.References(r => r.{{p.Name}}).Column("{{p.Name}}{{p.PropertyType.GetIdInfo().PropertyName}}"));
+        """)}}
     """;
 }
