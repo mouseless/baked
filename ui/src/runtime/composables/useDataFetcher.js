@@ -11,7 +11,11 @@ export default function() {
   };
 
   function shouldLoad(data) {
-    return data.isAsync === true;
+    if(!data) { return false; }
+
+    return data?.isAsync
+      ? data.isAsync
+      : datas[data.type]?.isAsync;
   }
 
   function get({ data, contextData }) {
@@ -19,6 +23,7 @@ export default function() {
     if(!type) { return null; }
     if(!datas[type]) { return null; }
     if(!datas[type].get) { return null; }
+    if(shouldLoad(data)) { return null; }
 
     return datas[type].get({ data, contextData });
   }
@@ -90,6 +95,7 @@ function Composite({ parentGet, parentFetch, parentFetchParameters }) {
   }
 
   return {
+    isAsync: false,
     get,
     fetch,
     fetchParameters
@@ -108,6 +114,8 @@ function Computed({ parentGet, parentFetch }) {
   }
 
   async function fetch({ data, contextData }) {
+    console.log("dataaa", data);
+
     const composable = composableResolver.resolve(data.composable).default();
     const options = data.options ? unref.deepUnref(await parentFetch({ data: data.options, contextData })) : { };
 
@@ -119,6 +127,7 @@ function Computed({ parentGet, parentFetch }) {
   }
 
   return {
+    isAsync: false,
     get,
     fetch,
     fetchParameters
@@ -150,6 +159,7 @@ function Context() {
   }
 
   return {
+    isAsync: false,
     get
   };
 }
@@ -160,6 +170,7 @@ function Inline() {
   }
 
   return {
+    isAsync: false,
     get
   };
 }
@@ -237,6 +248,7 @@ function Remote({ parentFetch }) {
   }
 
   return {
+    isAsync: true,
     fetch,
     fetchParameters
   };
