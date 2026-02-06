@@ -80,14 +80,16 @@ export default {
     };
   },
 
-  aComputedData({ composable, options } = {}) {
+  aComputedData({ composable, options, isAsync } = {}) {
     composable = $(composable, "useFakeComputed");
     options = $(options, this.anInlineData({ data: "fake" }));
+    isAsync = $(isAsync, false);
 
     return {
       type: "Computed",
       composable,
-      options
+      options,
+      isAsync
     };
   },
 
@@ -706,7 +708,8 @@ export default {
       ? this.anInlineData(data)
       : this.aComputedData({
         composable: "useDelayedData",
-        options: this.anInlineData({ ms: 1, data })
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
       });
 
     return {
@@ -727,7 +730,8 @@ export default {
       ? this.anInlineData(data)
       : this.aComputedData({
         composable: "useDelayedData",
-        options: this.anInlineData({ ms: 1, data })
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
       });
 
     return {
