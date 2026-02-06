@@ -3,15 +3,15 @@ import { useComposableResolver, usePathBuilder, useUnref } from "#imports";
 
 export default function() {
   const datas = {
-    "Composite": Composite({ parentFetch: fetch, parentFetchParameters: fetchParameters }),
-    "Computed": Computed({ parentFetch: fetch }),
+    "Composite": Composite({ parentGet: get, parentFetch: fetch, parentFetchParameters: fetchParameters }),
+    "Computed": Computed({ parentGet: get, parentFetch: fetch }),
     "Context": Context(),
     "Inline": Inline(),
     "Remote": Remote({ parentFetch: fetch })
   };
 
-  function shouldLoad(dataType) {
-    return datas[dataType]?.fetch !== undefined;
+  function shouldLoad(data) {
+    return data.isAsync === true;
   }
 
   function get({ data, contextData }) {
@@ -48,8 +48,21 @@ export default function() {
   };
 }
 
-function Composite({ parentFetch, parentFetchParameters }) {
+function Composite({ parentGet, parentFetch, parentFetchParameters }) {
   const unref = useUnref();
+
+  function get({ data, contextData }) {
+    const result = {};
+
+    for(const part of data.parts) {
+      Object.assign(
+        result,
+        unref.deepUnref(parentGet({ data: part, contextData }))
+      );
+    }
+
+    return result;
+  }
 
   async function fetch({ data, contextData }) {
     const result = {};
@@ -77,28 +90,28 @@ function Composite({ parentFetch, parentFetchParameters }) {
   }
 
   return {
+    get,
     fetch,
     fetchParameters
   };
 }
 
-function Computed({ parentFetch }) {
+function Computed({ parentGet, parentFetch }) {
   const composableResolver = useComposableResolver();
   const unref = useUnref();
 
+  function get({ data, contextData }) {
+    const composable = composableResolver.resolve(data.composable).default();
+    const options = data.options ? unref.deepUnref(parentGet({ data: data.options, contextData })) : { };
+
+    return composable.compute(options);
+  }
+
   async function fetch({ data, contextData }) {
-    const composable = (await composableResolver.resolve(data.composable)).default();
+    const composable = composableResolver.resolve(data.composable).default();
     const options = data.options ? unref.deepUnref(await parentFetch({ data: data.options, contextData })) : { };
 
-    if(composable.computeSync) {
-      return composable.computeSync(options);
-    }
-
-    if(composable.compute) {
-      return await composable.compute(options);
-    }
-
-    throw new Error("Data composable should have either `computeSync` or `compute`");
+    return await composable.compute(options);
   }
 
   async function fetchParameters({ data }) {
@@ -106,6 +119,7 @@ function Computed({ parentFetch }) {
   }
 
   return {
+    get,
     fetch,
     fetchParameters
   };
