@@ -9,5 +9,8 @@ public record InlineData(object Value)
     public object Value { get; set; } = Value;
 
     [JsonIgnore]
+    public bool IsAsync => false;
+
+    [JsonIgnore]
     public bool? RequireLocalization { get; set; } = true;
 }

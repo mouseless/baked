@@ -20,7 +20,11 @@ const variants = [
   {
     name: "Base with computed title",
     descriptor: giveMe.aDataPanel({
-      title: giveMe.aComputedData({ composable: "useDelayedData", options: giveMe.anInlineData({ ms: 1, data: "Title" }) }),
+      title: giveMe.aComputedData({
+        composable: "useDelayedData",
+        options: giveMe.anInlineData({ ms: 1, data: "Title" }),
+        isAsync: true
+      }),
       collapsed: false
     })
   },

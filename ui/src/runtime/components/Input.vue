@@ -26,7 +26,7 @@ let defaultValue = schema.default ? dataFetcher.get({ data: schema.default, cont
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
 
 onMounted(async() => {
-  if(schema.default && dataFetcher.shouldLoad(schema.default.type)) {
+  if(schema.default && dataFetcher.shouldLoad(schema.default)) {
     defaultValue = await dataFetcher.fetch({ data: schema.default, contextData });
   }
 

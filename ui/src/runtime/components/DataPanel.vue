@@ -113,7 +113,7 @@ if(inputs.length > 0) {
 }
 
 const title = ref(dataFetcher.get({ data: titleData, contextData }));
-const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
+const shouldLoadTitle = dataFetcher.shouldLoad(titleData);
 
 onMounted(async() => {
   if(shouldLoadTitle) {

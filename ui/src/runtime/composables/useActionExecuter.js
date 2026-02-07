@@ -37,7 +37,7 @@ function Local() {
   const dataFetcher = useDataFetcher();
 
   async function execute({ action, contextData }) {
-    const composable = (await composableResolver.resolve(action.composable)).default();
+    const composable = composableResolver.resolve(action.composable).default();
 
     if(composable.run) {
       const options = action.options ? await dataFetcher.fetch({ data: action.options, contextData }) : { };

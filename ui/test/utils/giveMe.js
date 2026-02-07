@@ -71,23 +71,26 @@ export default {
     };
   },
 
-  aCompositeData(parts) {
+  aCompositeData({ parts, isAsync }) {
     parts = $(parts, [this.anInlineData()]);
-
+    isAsync = $(isAsync, parts.some(p => p?.isAsync === true));
     return {
       type: "Composite",
-      parts
+      parts,
+      isAsync
     };
   },
 
-  aComputedData({ composable, options } = {}) {
+  aComputedData({ composable, options, isAsync } = {}) {
     composable = $(composable, "useFakeComputed");
     options = $(options, this.anInlineData({ data: "fake" }));
+    isAsync = $(isAsync, false);
 
     return {
       type: "Computed",
       composable,
-      options
+      options,
+      isAsync
     };
   },
 
@@ -652,7 +655,8 @@ export default {
       query,
       params,
       headers,
-      attributes
+      attributes,
+      isAsync: true
     };
   },
 
@@ -707,7 +711,8 @@ export default {
       ? this.anInlineData(data)
       : this.aComputedData({
         composable: "useDelayedData",
-        options: this.anInlineData({ ms: 1, data })
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
       });
 
     return {
@@ -728,7 +733,8 @@ export default {
       ? this.anInlineData(data)
       : this.aComputedData({
         composable: "useDelayedData",
-        options: this.anInlineData({ ms: 1, data })
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
       });
 
     return {

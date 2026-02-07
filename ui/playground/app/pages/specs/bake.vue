@@ -35,23 +35,29 @@ const variants = [
     descriptor: giveMe.anExpected({
       testId: "test",
       showDataParams: true,
-      data: giveMe.aCompositeData([
-        giveMe.aComputedData({ composable: "useFakeComputed", options: giveMe.anInlineData({ data: "computed" }) }),
-        giveMe.aContextData({ key: "parent" }),
-        giveMe.anInlineData({ inline: "inline" }),
-        giveMe.aRemoteData({
-          path: "/route-parameters-samples/{id}",
-          query: giveMe.aCompositeData([
-            giveMe.anInlineData({ requiredWithDefault: "RequiredWithDefault1" }),
-            giveMe.anInlineData({ required: "Required1" })
-          ]),
-          params: giveMe.aCompositeData([
-            giveMe.anInlineData({ id: 15 }),
-            giveMe.anInlineData({ id: "7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9" })
-          ]),
-          headers: giveMe.anInlineData({ Authorization: `Bearer ${giveMe.aToken({ admin: true }).access}` })
-        })
-      ])
+      data: giveMe.aCompositeData({
+        parts: [
+          giveMe.aComputedData({ composable: "useFakeComputed", options: giveMe.anInlineData({ data: "computed" }) }),
+          giveMe.aContextData({ key: "parent" }),
+          giveMe.anInlineData({ inline: "inline" }),
+          giveMe.aRemoteData({
+            path: "/route-parameters-samples/{id}",
+            query: giveMe.aCompositeData({
+              parts: [
+                giveMe.anInlineData({ requiredWithDefault: "RequiredWithDefault1" }),
+                giveMe.anInlineData({ required: "Required1" })
+              ]
+            }),
+            params: giveMe.aCompositeData({
+              parts: [
+                giveMe.anInlineData({ id: 15 }),
+                giveMe.anInlineData({ id: "7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9" })
+              ]
+            }),
+            headers: giveMe.anInlineData({ Authorization: `Bearer ${giveMe.aToken({ admin: true }).access}` })
+          })
+        ]
+      })
     })
   },
   {

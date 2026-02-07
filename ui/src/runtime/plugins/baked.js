@@ -3,8 +3,8 @@ import { defineNuxtPlugin } from "#app";
 export default defineNuxtPlugin({
   name: "baked",
   setup() {
-    const bakedComposables = import.meta.glob("../composables/*");
-    const projectComposables = import.meta.glob("@/composables/*");
+    const bakedComposables = import.meta.glob("../composables/*", { eager: true });
+    const projectComposables = import.meta.glob("@/composables/*", { eager: true });
 
     const pages = import.meta.glob("@@/.baked/**/*.page.json");
     const layouts = import.meta.glob("@@/.baked/**/*.layout.json");

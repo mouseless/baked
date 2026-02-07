@@ -42,15 +42,20 @@ public static class Datas
             Action<ComputedData>? options = default
         ) => Use("NuxtError", options: options);
 
+        public ComputedData UseLoginRedirect(
+            Action<ComputedData>? options = default
+        ) => Use("LoginRedirect", options: options);
+
         public ComputedData UseRoute(string property) =>
             UseRoute(options: cd => cd.Options = Inline(new { property }));
 
         public ComputedData UseRoute(
             Action<ComputedData>? options = default
-        ) => Use("NuxtRoute", options);
+        ) => Use("NuxtRoute", options: options);
 
         public ComputedData Use(string composable,
+            bool isAsync = false,
             Action<ComputedData>? options = default
-        ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}"));
+        ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}", isAsync));
     }
 }

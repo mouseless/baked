@@ -26,7 +26,7 @@ function Composable() {
 
   async function evaluate({ constraint, value, contextData }) {
     const options = constraint.options ? await dataFetcher.fetch({ data: constraint.options, contextData }) : { };
-    const composable = (await composableResolver.resolve(constraint.composable)).default(options);
+    const composable = composableResolver.resolve(constraint.composable).default(options);
     if(!composable.validate) { throw new Error("Constraint composable should have `validate`"); }
 
     return composable.validate(value);

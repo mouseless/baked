@@ -211,12 +211,12 @@ onMounted(async() => {
     } = exportOptions;
 
     if(formatterName) {
-      formatter = (await composableResolver.resolve(formatterName)).default();
+      formatter = composableResolver.resolve(formatterName).default();
     }
 
     let parameterFormatter = null;
     if(parameterFormatterName) {
-      parameterFormatter = (await composableResolver.resolve(parameterFormatterName)).default();
+      parameterFormatter = composableResolver.resolve(parameterFormatterName).default();
     }
 
     if(appendParameters && dataDescriptor) {
