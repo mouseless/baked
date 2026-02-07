@@ -114,8 +114,6 @@ function Computed({ parentGet, parentFetch }) {
   }
 
   async function fetch({ data, contextData }) {
-    console.log("dataaa", data);
-
     const composable = composableResolver.resolve(data.composable).default();
     const options = data.options ? unref.deepUnref(await parentFetch({ data: data.options, contextData })) : { };
 
