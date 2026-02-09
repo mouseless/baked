@@ -71,14 +71,13 @@ export default {
     };
   },
 
-  aCompositeData({ parts, isAsync }) {
+  aCompositeData(parts) {
     parts = $(parts, [this.anInlineData()]);
-    isAsync = $(isAsync, parts.some(p => p?.isAsync === true));
 
     return {
       type: "Composite",
       parts,
-      isAsync
+      isAsync: parts.some(p => p?.isAsync === true)
     };
   },
 
