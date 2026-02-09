@@ -8,11 +8,10 @@
 <script setup>
 import { computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "#app";
-import { useContext, useDataFetcher } from "#imports";
+import { useDataMounter } from "#imports";
 import { Bake } from "#components";
 
-const context = useContext();
-const dataFetcher = useDataFetcher();
+const { mount: mountData } = useDataMounter();
 const route = useRoute();
 const router = useRouter();
 
@@ -21,22 +20,17 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const contextData = context.injectContextData();
-let defaultValue = schema.default ? dataFetcher.get({ data: schema.default, contextData }) : undefined;
+const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
 
 onMounted(async() => {
-  if(schema.default && dataFetcher.shouldLoad(schema.default)) {
-    defaultValue = await dataFetcher.fetch({ data: schema.default, contextData });
-  }
-
   // parent component might set model to null during setup, because of that on
   // mounted is used to set model value if it doesn't check
   if(!checkValue(model.value)) {
     if(schema.queryBound && checkValue(query.value)) {
       model.value = query.value;
     } else {
-      await set(defaultValue);
+      await set(defaultValue.value);
     }
   }
 
@@ -47,8 +41,8 @@ onMounted(async() => {
     // because of that it needs to watch for any query change
     watch(() => route.query, async newQuery => {
       const newValue = newQuery[schema.name];
-      if(!checkValue(newValue) && schema.required && defaultValue) {
-        await set(defaultValue);
+      if(!checkValue(newValue) && schema.required && defaultValue.value) {
+        await set(defaultValue.value);
 
         return;
       }
@@ -59,7 +53,7 @@ onMounted(async() => {
 
   watch(model, async newValue => {
     if(!checkValue(newValue)) {
-      newValue = schema.required ? defaultValue : undefined;
+      newValue = schema.required ? defaultValue.value : undefined;
     }
 
     await set(newValue);

@@ -11,6 +11,8 @@
   - In `ComputedData`, it is set to `false` value unless it is provided
   externally or `Options` is async
 - `Datas.Composables` now provide `UseLoginRedirect` extension
+- `useDataMounter` composable added for `dataFetcher`'s recurring get and fetch
+  ritual
 
 ## Breaking Changes
 
