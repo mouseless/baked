@@ -5,6 +5,23 @@ export default function() {
   const context = useContext();
   const dataFetcher = useDataFetcher();
   const contextData = context.injectContextData();
+  const mounts = [];
+  let afterMountCallback = null;
+  let beforeMountCallback = null;
+
+  onMounted(async() => {
+    if(beforeMountCallback) {
+      await beforeMountCallback();
+    }
+
+    for(const { value, schema } of mounts) {
+      value.value = await dataFetcher.fetch({ data: schema, contextData });
+    }
+
+    if(afterMountCallback) {
+      await afterMountCallback();
+    }
+  });
 
   function mount(schema) {
     const value = ref(null);
@@ -16,18 +33,24 @@ export default function() {
     value.value = dataFetcher.get({ data: schema, contextData });
 
     const shouldLoad = dataFetcher.shouldLoad(schema);
-    if(!shouldLoad) {
-      return value;
+    if(shouldLoad) {
+      mounts.push({ value, schema });
     }
-
-    onMounted(async() => {
-      value.value = await dataFetcher.fetch({ data: schema, contextData });
-    });
 
     return value;
   }
 
+  function afterMount(callback) {
+    afterMountCallback = callback;
+  }
+
+  function beforeMount(callback) {
+    beforeMountCallback = callback;
+  }
+
   return {
-    mount
+    mount,
+    afterMount,
+    beforeMount
   };
 }

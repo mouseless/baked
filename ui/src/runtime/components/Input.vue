@@ -6,12 +6,12 @@
   />
 </template>
 <script setup>
-import { computed, onMounted, watch } from "vue";
+import { computed, watch } from "vue";
 import { useRoute, useRouter } from "#app";
 import { useDataMounter } from "#imports";
 import { Bake } from "#components";
 
-const { mount: mountData } = useDataMounter();
+const { mount: mountData, afterMount } = useDataMounter();
 const route = useRoute();
 const router = useRouter();
 
@@ -23,7 +23,7 @@ const model = defineModel({ type: null, required: true });
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
 
-onMounted(async() => {
+afterMount(async() => {
   // parent component might set model to null during setup, because of that on
   // mounted is used to set model value if it doesn't check
   if(!checkValue(model.value)) {
