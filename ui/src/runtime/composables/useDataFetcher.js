@@ -32,7 +32,7 @@ export default function() {
     const fetcher = datas[data?.type];
     if(!fetcher) { throw new Error(`${data?.type} is not a valid data type`); }
 
-    return fetcher.get
+    return fetcher.get && !shouldLoad(data)
       ? fetcher.get({ data, contextData })
       : await fetcher.fetch({ data, contextData });
   }

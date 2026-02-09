@@ -74,6 +74,7 @@ export default {
   aCompositeData({ parts, isAsync }) {
     parts = $(parts, [this.anInlineData()]);
     isAsync = $(isAsync, parts.some(p => p?.isAsync === true));
+
     return {
       type: "Composite",
       parts,
