@@ -13,9 +13,9 @@ export default function() {
   function shouldLoad(data) {
     if(!data) { return false; }
 
-    return data?.isAsync
-      ? data.isAsync
-      : datas[data.type]?.isAsync;
+    return data.isAsync === undefined
+      ? datas[data.type].isAsync
+      : data.isAsync;
   }
 
   function get({ data, contextData }) {
