@@ -15,6 +15,6 @@ const context = useContext();
 const events = useEvents();
 const { public: { error } } = useRuntimeConfig();
 
-context.provideEvents(events.create());
+context.provideEvents(events);
 context.providePageContext(reactive({}));
 </script>

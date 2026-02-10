@@ -130,7 +130,7 @@ const allVariants = computed(() => {
   return result;
 });
 
-context.provideEvents(events.create());
+context.provideEvents(events);
 context.providePageContext(pageContext);
 
 onMounted(async() => {

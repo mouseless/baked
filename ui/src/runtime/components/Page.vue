@@ -20,7 +20,7 @@ const { public: { components } } = useRuntimeConfig();
 
 useHead({ title: components?.Page?.title });
 
-context.provideEvents(events.create());
+context.provideEvents(events);
 context.providePageContext(reactive({}));
 
 const name = route.matched[0].name;

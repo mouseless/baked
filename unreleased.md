@@ -18,3 +18,5 @@
 
 - All `computeSync` renamed to `compute`, in composables
 - `IData` now has a `IsAsync` property
+- `create` factory method of `useEvents` is now removed, you may use `useEvents`
+  composable directly

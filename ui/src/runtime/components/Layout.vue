@@ -24,7 +24,7 @@ const layouts = useLayouts();
 const pages = usePages();
 const route = useRoute();
 
-context.provideEvents(events.create());
+context.provideEvents(events);
 context.providePageContext(reactive({}));
 
 const descriptor = ref(await findLayout(route.matched[0].name));
