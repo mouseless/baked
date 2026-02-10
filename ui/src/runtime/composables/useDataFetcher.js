@@ -14,7 +14,7 @@ export default function() {
     if(!data) { return false; }
 
     return data.isAsync === undefined
-      ? datas[data.type].isAsync
+      ? !!datas[data.type]?.isAsync
       : data.isAsync;
   }
 

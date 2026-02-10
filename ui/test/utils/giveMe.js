@@ -74,11 +74,16 @@ export default {
   aCompositeData(parts) {
     parts = $(parts, [this.anInlineData()]);
 
-    return {
+    const result = {
       type: "Composite",
-      parts,
-      isAsync: parts.some(p => p?.isAsync === true)
+      parts
     };
+
+    if(parts.some(p => p?.isAsync === true || p.type === "Remote")) {
+      result["isAsync"] = true;
+    }
+
+    return result;
   },
 
   aComputedData({ composable, options, isAsync } = {}) {
@@ -86,12 +91,15 @@ export default {
     options = $(options, this.anInlineData({ data: "fake" }));
     isAsync = $(isAsync, false);
 
-    return {
+    const result = {
       type: "Computed",
       composable,
-      options,
-      isAsync
+      options
     };
+
+    if(isAsync) { result["isAsync"] = isAsync; }
+
+    return result;
   },
 
   aConditional({ testId, fallback, conditions, data } = {}) {
@@ -654,8 +662,7 @@ export default {
       query,
       params,
       headers,
-      attributes,
-      isAsync: true
+      attributes
     };
   },
 
