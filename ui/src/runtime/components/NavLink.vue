@@ -11,13 +11,12 @@
   </AwaitLoading>
 </template>
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed } from "vue";
 import { Button } from "primevue";
-import { useContext, useDataFetcher, usePathBuilder } from "#imports";
+import { useDataMounter, usePathBuilder } from "#imports";
 import { AwaitLoading } from "#components";
 
-const context = useContext();
-const dataFetcher = useDataFetcher();
+const { mount: mountData } = useDataMounter();
 const pathBuilder = usePathBuilder();
 
 const { schema, data } = defineProps({
@@ -27,23 +26,11 @@ const { schema, data } = defineProps({
 
 const { icon, path, query: queryData, params: paramsData } = schema;
 
-const contextData = context.injectContextData();
-const query = ref(queryData ? dataFetcher.get({ data: queryData, contextData }) : null);
-const shouldLoadQuery = queryData ? dataFetcher.shouldLoad(queryData.type) : false;
-const params = ref(paramsData ? dataFetcher.get({ data: paramsData, contextData }) : null);
-const shouldLoadParams = paramsData ? dataFetcher.shouldLoad(paramsData.type) : false;
+const query = mountData(queryData);
+const params = mountData(paramsData);
+
 const to = computed(() => ({
   path: params.value ? pathBuilder.build(path, params.value, { forRoute: true }) : path,
   query: query.value
 }));
-
-onMounted(async() => {
-  if(shouldLoadQuery) {
-    query.value = await dataFetcher.fetch({ data: queryData, contextData });
-  }
-
-  if(shouldLoadParams) {
-    params.value = await dataFetcher.fetch({ data: paramsData, contextData });
-  }
-});
 </script>

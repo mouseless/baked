@@ -11,5 +11,8 @@ public record ContextData(string Key)
     public string? TargetProp { get; set; }
 
     [JsonIgnore]
+    public bool IsAsync => false;
+
+    [JsonIgnore]
     public bool? RequireLocalization { get; set; }
 }

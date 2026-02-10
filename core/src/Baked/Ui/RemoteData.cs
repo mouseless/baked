@@ -13,6 +13,9 @@ public record RemoteData(string Path)
     public Dictionary<string, string>? Attributes { get; private set; }
 
     [JsonIgnore]
+    public bool IsAsync => true;
+
+    [JsonIgnore]
     public bool? RequireLocalization { get; set; }
 
     public void SetAttribute(string key, string value)

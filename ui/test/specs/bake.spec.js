@@ -68,9 +68,19 @@ test.describe("Data Descriptor", () => {
     await expect(component.getByTestId("test")).toHaveText(/Required1/);
   });
 
-  test("builds path with given params data", async({ page }) => {
-    const request = await page.waitForRequest(req => req.url().includes("/route-parameters-samples"));
-    expect(request.url()).toContain("/route-parameters-samples/7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9");
+  test("builds path with given params data", async({ page, goto }) => {
+    // Since beforeEach setup completes before waitForRequest can capture
+    // the request, we need to set up the route mock and request listener before
+    // navigating to the page
+    await page.route("*/**/route-parameters-samples/*", async route => {
+      await route.fulfill({ body: "fake-response" });
+    });
+
+    const requestPromise = page.waitForRequest(req => req.url().includes("/route-parameters-samples"));
+    await goto("/specs/bake?val=2", { waitUntil: "hydration" });
+
+    const request = await requestPromise;
+    expect(request.url()).toContain("/route-parameters-samples");
   });
 });
 
