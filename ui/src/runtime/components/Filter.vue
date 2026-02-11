@@ -20,9 +20,9 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { placeholder, ignoreWhiteSpace } = schema;
+const { placeholder, whiteSpaceSensitive } = schema;
 
 const inputModel = ref(model.value);
 
-watch(inputModel, value => model.value = ignoreWhiteSpace ? value.trim() : value);
+watch(inputModel, value => model.value = whiteSpaceSensitive ? value : value.trim());
 </script>

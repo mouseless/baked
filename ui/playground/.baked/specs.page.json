@@ -11,8 +11,7 @@
           {
             "type": "Filter",
             "schema": {
-              "placeholder": "Filter",
-              "ignoreWhiteSpace": true
+              "placeholder": "Filter"
             },
             "action": {
               "type": "Publish",

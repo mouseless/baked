@@ -64,11 +64,7 @@ public static class DefaultThemeExtensions
                     {
                         pt.Description = l(context.Route.Description);
                         pt.Actions.Add(B.Filter(
-                            options: f =>
-                            {
-                                f.Placeholder = l("Filter");
-                                f.IgnoreWhiteSpace = true;
-                            },
+                            options: f => f.Placeholder = l("Filter"),
                             action: Publish.Event("filter-changed")
                         ));
                     });
