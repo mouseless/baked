@@ -79,8 +79,8 @@ test.describe("Filter Links", () => {
   });
 });
 
-test.describe("White Space Open Filter", () => {
-  const id = "White Space Open Filter";
+test.describe("Ignore White Spaces", () => {
+  const id = "Ignore White Spaces";
 
   test("filter", async({ page }) => {
     const component = page.getByTestId(id);
@@ -93,8 +93,8 @@ test.describe("White Space Open Filter", () => {
   });
 });
 
-test.describe("White Space Close Filter", () => {
-  const id = "White Space Close Filter";
+test.describe("Allow White Spaces", () => {
+  const id = "Allow White Spaces";
 
   test("filter", async({ page }) => {
     const component = page.getByTestId(id);

@@ -56,11 +56,11 @@ const variants = [
     })
   },
   {
-    name: "White Space Open Filter",
+    name: "Ignore White Spaces",
     descriptor: giveMe.aMenuPage({
-      filterEvent: "filter-white-space-open",
+      filterEvent: "filter-ignore-white-spaces",
       header: giveMe.aFilter({
-        action: giveMe.aPublishAction({ event: "filter-white-space-open" }),
+        action: giveMe.aPublishAction({ event: "filter-ignore-white-spaces" }),
         ignoreWhiteSpace: true
       }),
       sections: [
@@ -74,11 +74,11 @@ const variants = [
     })
   },
   {
-    name: "White Space Close Filter",
+    name: "Allow White Spaces",
     descriptor: giveMe.aMenuPage({
-      filterEvent: "filter-white-space-close",
+      filterEvent: "filter-allow-white-spaces",
       header: giveMe.aFilter({
-        action: giveMe.aPublishAction({ event: "filter-white-space-close" }),
+        action: giveMe.aPublishAction({ event: "filter-allow-white-spaces" }),
         ignoreWhiteSpace: false
       }),
       sections: [
