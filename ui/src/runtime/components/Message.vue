@@ -1,6 +1,6 @@
 <template>
   <Message
-    :severity="severity ?? 'info'"
+    :severity="severity"
     :pt="{ text: { class: 'min-w-[10rem] min-h-[1.5rem]' } }"
   >
     <template
@@ -27,5 +27,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { icon, severity, localizeMessage } = schema;
+const { icon, severity: rawSeverity, localizeMessage } = schema;
+
+const severity = rawSeverity ?? "info";
 </script>

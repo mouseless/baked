@@ -30,11 +30,11 @@
       "
     >
       <Logo
-        :src="logo ?? 'logo.svg'"
+        :src="logo"
         class="2xl:hidden"
       />
       <Logo
-        :src="largeLogo ?? 'logo-full.svg'"
+        :src="largeLogo"
         class="hidden 2xl:block"
       />
     </RouterLink>
@@ -114,8 +114,10 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { logo, largeLogo, menu, footer } = schema;
+const { logo: rawLogo, largeLogo: rawLargeLogo, menu, footer } = schema;
 
+const logo = rawLogo ?? "logo.svg";
+const largeLogo = rawLargeLogo ?? "logo-full.svg";
 const loading = context.injectLoading();
 const popover = ref();
 

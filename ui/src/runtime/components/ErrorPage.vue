@@ -18,7 +18,7 @@
       </div>
       <AuthorizedContent v-if="errorInfo.showSafeLinks">
         <div class="text-2xl">
-          {{ l(safeLinksMessage ?? "Try the links from the menu below to view the page you want to access:") }}
+          {{ l(safeLinksMessageText) }}
         </div>
       </AuthorizedContent>
     </div>
@@ -42,7 +42,7 @@
     />
     <Message severity="warn">
       <i class="pi pi-exclamation-circle mr-2" />
-      {{ l(footerInfo ?? "If you cannot reach the page you want please contact the system administrator") }}
+      {{ l(footerInfoText) }}
     </Message>
   </div>
 </template>
@@ -60,6 +60,8 @@ const { schema, data } = defineProps({
 
 const { errorInfos, footerInfo, safeLinks, safeLinksMessage } = schema;
 
+const footerInfoText = footerInfo ?? "If you cannot reach the page you want please contact the system administrator";
+const safeLinksMessageText = safeLinksMessage ?? "Try the links from the menu below to view the page you want to access:";
 const statusCode = computed(() => {
   const code = data.value?.data?.status ?? data.value?.statusCode ?? 999;
 

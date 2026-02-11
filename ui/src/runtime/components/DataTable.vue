@@ -161,8 +161,12 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { actions, columns, dataKey, exportOptions: rawExportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
+const exportOptions = rawExportOptions ? {
+  ...rawExportOptions,
+  buttonIcon: rawExportOptions.buttonIcon === undefined ? "pi pi-download" : rawExportOptions.buttonIcon
+} : null;
 const contextData = context.injectContextData();
 const dataDescriptor = context.injectDataDescriptor();
 
@@ -196,7 +200,7 @@ let formatter = null;
 if(exportOptions) {
   headerActions.value.push({
     label: l(exportOptions.buttonLabel),
-    icon: exportOptions.buttonIcon === undefined ? "pi pi-download" : exportOptions.buttonIcon,
+    icon: exportOptions.buttonIcon,
     command: () => dataTable.value.exportCSV()
   });
 }
