@@ -376,13 +376,15 @@ export default {
     };
   },
 
-  aFilter({ placeholder, action } = {}) {
+  aFilter({ placeholder, action, ignoreWhiteSpace } = {}) {
     placeholder = $(placeholder, "Filter");
+    ignoreWhiteSpace = $(ignoreWhiteSpace, false);
 
     return {
       type: "Filter",
       schema: {
-        placeholder
+        placeholder,
+        ignoreWhiteSpace
       },
       action
     };

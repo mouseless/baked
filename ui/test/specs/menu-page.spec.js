@@ -79,6 +79,34 @@ test.describe("Filter Links", () => {
   });
 });
 
+test.describe("White Space Open Filter", () => {
+  const id = "White Space Open Filter";
+
+  test("filter", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill(" A");
+
+    await expect(component.getByTestId("LINK_1")).toBeVisible();
+  });
+});
+
+test.describe("White Space Close Filter", () => {
+  const id = "White Space Close Filter";
+
+  test("filter", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill(" A");
+
+    await expect(component.getByTestId("LINK_1")).not.toBeVisible();
+  });
+});
+
 test.describe("No Header", () => {
   const id = "No Header";
 

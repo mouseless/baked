@@ -114,10 +114,13 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { logo: rawLogo, largeLogo: rawLargeLogo, menu, footer } = schema;
+const {
+  logo = "logo.svg",
+  largeLogo = "logo-full.svg",
+  menu,
+  footer
+} = schema;
 
-const logo = rawLogo ?? "logo.svg";
-const largeLogo = rawLargeLogo ?? "logo-full.svg";
 const loading = context.injectLoading();
 const popover = ref();
 

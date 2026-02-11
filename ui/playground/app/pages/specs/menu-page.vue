@@ -56,6 +56,42 @@ const variants = [
     })
   },
   {
+    name: "White Space Open Filter",
+    descriptor: giveMe.aMenuPage({
+      filterEvent: "filter-white-space-open",
+      header: giveMe.aFilter({
+        action: giveMe.aPublishAction({ event: "filter-white-space-open" }),
+        ignoreWhiteSpace: true
+      }),
+      sections: [
+        giveMe.aMenuPageSection({
+          title: "Spec: Section 1",
+          links: [
+            giveMe.aFilterable({ title: "Spec: A link", component: giveMe.anExpected({ testId: "LINK_1", value: "A_VALUE" }) })
+          ]
+        })
+      ]
+    })
+  },
+  {
+    name: "White Space Close Filter",
+    descriptor: giveMe.aMenuPage({
+      filterEvent: "filter-white-space-close",
+      header: giveMe.aFilter({
+        action: giveMe.aPublishAction({ event: "filter-white-space-close" }),
+        ignoreWhiteSpace: false
+      }),
+      sections: [
+        giveMe.aMenuPageSection({
+          title: "Spec: Section 1",
+          links: [
+            giveMe.aFilterable({ title: "Spec: A link", component: giveMe.anExpected({ testId: "LINK_1", value: "A_VALUE" }) })
+          ]
+        })
+      ]
+    })
+  },
+  {
     name: "No Header",
     descriptor: giveMe.aMenuPage({
       header: null,
