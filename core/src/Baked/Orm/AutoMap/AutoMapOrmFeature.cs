@@ -1,12 +1,10 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.CodeGeneration;
 using Baked.RestApi;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -62,20 +60,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                         .. TypeModelTypeSourceTemplate.GlobalUsings
                     ]
                 );
-                generatedAssemblies.Add($"{nameof(AutoMapOrmFeature)}.Locatability",
-                    assembly =>
-                    {
-                        assembly
-                            .AddReferenceFrom<AutoMapOrmFeature>()
-                            .AddCodes(new JsonConverterTemplate(domain));
-
-                        foreach (var entity in domain.Types.Having<EntityAttribute>())
-                        {
-                            entity.Apply(t => assembly.AddReferenceFrom(t));
-                        }
-                    },
-                    usings: [.. JsonConverterTemplate.GlobalUsings]
-                );
             });
         });
 
@@ -84,25 +68,11 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             configurator.UsingGeneratedContext(generatedContext =>
             {
                 services.AddFromAssembly(generatedContext.Assemblies[nameof(AutoMapOrmFeature)]);
-                services.AddFromAssembly(generatedContext.Assemblies[$"{nameof(AutoMapOrmFeature)}.Locatability"]);
             });
 
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
             services.AddSingleton(typeof(ILocator<>), typeof(EntityLocator<>));
-        });
-
-        configurator.ConfigureServiceCollectionConfiguration(configuration =>
-        {
-            configurator.UsingGeneratedContext(generatedContext =>
-            {
-                configuration.Services.Configure<MvcOptions>(options =>
-                {
-                    var idPropertyNames = CreateContractResolverConfigurer(generatedContext).IdPropertyNames;
-
-                    options.ModelMetadataDetailsProviders.Add(new EntityMetadataDetailsProvider(idPropertyNames));
-                });
-            });
         });
 
         configurator.ConfigureFluentConfiguration(builder =>
@@ -166,22 +136,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 
             contractResolver.ProxyType = typeof(INHibernateProxy);
-
-            configurator.UsingGeneratedContext(generatedContext =>
-            {
-                CreateContractResolverConfigurer(generatedContext).Configure(contractResolver);
-            });
         });
-    }
-
-    IContractResolverConfigurer CreateContractResolverConfigurer(GeneratedContext generatedContext)
-    {
-        var assembly = generatedContext.Assemblies[$"{nameof(AutoMapOrmFeature)}.Locatability"];
-        var contractResolverConfigurerType =
-            assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IContractResolverConfigurer))) ??
-            throw new($"`{nameof(IContractResolverConfigurer)}` implementation not found");
-
-        return (IContractResolverConfigurer?)Activator.CreateInstance(contractResolverConfigurerType) ??
-            throw new($"Cannot create instance of {contractResolverConfigurerType.Name}");
     }
 }

@@ -178,12 +178,9 @@ public class DomainAssembliesBusinessFeature(
 
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                var assembly = generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)];
-
-                var type = assembly.GetExportedTypes().SingleOrDefault(t => t.Name.Contains("CasterConfigurer")) ?? throw new("`ICasterConfigurer` implementation not found");
-                var typeInstance = (ICasterConfigurer?)Activator.CreateInstance(type) ?? throw new($"Cannot create instance of {type}");
-
-                typeInstance.Configure();
+                generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)]
+                    .CreateRequiredImplementationInstance<ICasterConfigurer>()
+                    .Configure();
             });
         });
 

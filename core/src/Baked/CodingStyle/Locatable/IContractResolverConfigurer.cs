@@ -1,6 +1,6 @@
 ﻿using Baked.RestApi;
 
-namespace Baked.Orm;
+namespace Baked.CodingStyle.Locatable;
 
 public interface IContractResolverConfigurer
 {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
-namespace Baked.Orm.AutoMap;
+namespace Baked.CodingStyle.Locatable;
 
-public class EntityMetadataDetailsProvider(Dictionary<Type, string> _idPropertyNames)
+public class LocatableMetadataDetailsProvider(Dictionary<Type, string> _idPropertyNames)
     : IValidationMetadataProvider
 {
     public void CreateValidationMetadata(ValidationMetadataProviderContext context)

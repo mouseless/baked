@@ -1,22 +1,22 @@
 ﻿using Baked.Business;
 using Newtonsoft.Json;
 
-namespace Baked.Orm;
+namespace Baked.CodingStyle.Locatable;
 
-public abstract class EntityJsonConverter<TEntity, TId>(ILocator<TEntity> _locator)
-    : JsonConverter<TEntity> where TEntity : class
+public abstract class LocatableJsonConverter<TLocatable, TId>(ILocator<TLocatable> _locator)
+    : JsonConverter<TLocatable> where TLocatable : class
 {
     protected abstract string IdProp { get; }
-    protected abstract TId GetId(TEntity entity);
+    protected abstract TId GetId(TLocatable entity);
     protected abstract IEnumerable<string> LabelProps { get; }
-    protected abstract TId GetLabel(TEntity entity, string labelProp);
+    protected abstract TId GetLabel(TLocatable entity, string labelProp);
 
-    public override TEntity? ReadJson(JsonReader reader, Type objectType, TEntity? existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override TLocatable? ReadJson(JsonReader reader, Type objectType, TLocatable? existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
         if (reader.TokenType == JsonToken.Null) { return null; }
         if (reader.TokenType != JsonToken.StartObject) { throw new JsonSerializationException($"Expected object, got {reader.TokenType}"); }
 
-        Id? id = null;
+        Business.Id? id = null;
         while (reader.Read())
         {
             if (reader.TokenType == JsonToken.EndObject) { break; }
@@ -28,7 +28,7 @@ public abstract class EntityJsonConverter<TEntity, TId>(ILocator<TEntity> _locat
             if (!reader.Read()) { break; }
             if (reader.Value is null) { continue; }
 
-            id = Id.Parse(reader.Value);
+            id = Business.Id.Parse(reader.Value);
         }
 
         if (!id.HasValue) { return null; }
@@ -36,7 +36,7 @@ public abstract class EntityJsonConverter<TEntity, TId>(ILocator<TEntity> _locat
         return _locator.Locate(id.Value);
     }
 
-    public override void WriteJson(JsonWriter writer, TEntity? value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, TLocatable? value, JsonSerializer serializer)
     {
         if (value == null)
         {
