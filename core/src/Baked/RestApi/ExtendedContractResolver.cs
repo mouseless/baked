@@ -6,6 +6,7 @@ namespace Baked.RestApi;
 
 public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, IContractResolverWithServiceProvider
 {
+    readonly Dictionary<string, Action<JsonContract, IServiceProvider>> _typeConfigureMap = [];
     readonly Dictionary<string, Action<JsonProperty, IServiceProvider>> _propertyConfigureMap = [];
 
     public Type? ProxyType { get; set; }
@@ -13,6 +14,29 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
     IServiceProvider? _serviceProvider;
     IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException("ServiceProvider is required but not set");
     IServiceProvider IContractResolverWithServiceProvider.ServiceProvider { set => _serviceProvider = value; }
+
+    string GetTypeKey(Type? type) =>
+        $"{type?.AssemblyQualifiedName}";
+
+    public void SetType(Type type, Action<JsonContract, IServiceProvider> options,
+        bool @override = false
+    )
+    {
+        var key = GetTypeKey(type);
+
+        if (@override || !_typeConfigureMap.TryGetValue(key, out var old))
+        {
+            _typeConfigureMap[key] = options;
+
+            return;
+        }
+
+        _typeConfigureMap[key] = (contract, sp) =>
+        {
+            old(contract, sp);
+            options(contract, sp);
+        };
+    }
 
     string GetPropertyKey(Type? type, string? propertyName) =>
         $"{type?.AssemblyQualifiedName}-{propertyName?.ToLowerInvariant()}";
@@ -41,16 +65,22 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
     {
         if (type.IsAssignableTo(ProxyType))
         {
-            type = type.BaseType ?? throw new($"Proxy type `{type.FullName}` should have a base type!!");
+            type = type.BaseType ?? throw new($"Proxy type `{type.FullName}` should have a base type");
         }
 
-        return base.ResolveContract(type);
+        var result = base.ResolveContract(type);
+        if (_typeConfigureMap.TryGetValue(GetTypeKey(type), out var configure))
+        {
+            configure(result, ServiceProvider);
+        }
+
+        return result;
     }
 
     protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
     {
-        var properties = base.CreateProperties(type, memberSerialization);
-        foreach (var property in properties)
+        var result = base.CreateProperties(type, memberSerialization);
+        foreach (var property in result)
         {
             if (_propertyConfigureMap.TryGetValue(GetPropertyKey(type, property.PropertyName), out var configure))
             {
@@ -58,7 +88,7 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
             }
         }
 
-        return properties;
+        return result;
     }
 
     protected override List<MemberInfo> GetSerializableMembers(Type objectType) =>

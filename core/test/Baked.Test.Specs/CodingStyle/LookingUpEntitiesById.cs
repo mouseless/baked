@@ -56,7 +56,7 @@ public class LookingUpEntitiesById : TestNfr
     [Test]
     public async Task RecordWithEntity()
     {
-        var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { }));
+        var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { @string = "test entity" }));
         dynamic? expected = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
 
         var response = await Client.PostAsync("/method-samples/record-with-entity", JsonContent.Create(
@@ -72,7 +72,10 @@ public class LookingUpEntitiesById : TestNfr
         dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
 
         ((int?)actual?.Count).ShouldBe(4);
-        $"{actual?[0].id}".ShouldBe($"{expected?.id}");
+        $"{actual?[0].@string}".ShouldBe("test entity");
+        $"{actual?[1].@string}".ShouldBe("test entity");
+        $"{actual?[2].@string}".ShouldBe("test entity");
+        $"{actual?[3].@string}".ShouldBe("test entity");
     }
 
     [Test]

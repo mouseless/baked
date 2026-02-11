@@ -45,7 +45,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddScopedWithFactory<LocatableInitializations>();
-            services.AddScoped<InitializeLocatablesFilter>();
+            services.AddSingleton<InitializeLocatablesFilter>();
 
             configurator.UsingGeneratedContext(generatedContext =>
             {

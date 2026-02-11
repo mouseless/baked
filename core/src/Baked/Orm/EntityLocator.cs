@@ -9,21 +9,24 @@ public class EntityLocator<TEntity>(Func<ISession> _getSession)
     public TEntity Locate(Id id, bool throwNotFound) =>
         _getSession().Get<TEntity>(id) ?? throw RecordNotFoundException.For<TEntity>(id, throwNotFound);
 
-    public (TEntity, Task) LocateLazily(Id id)
+    public LazyLocatable<TEntity> LocateLazily(Id id)
     {
         var result = _getSession().Load<TEntity>(id);
 
-        return (result, new Task(async () =>
-        {
-            try
+        return new(
+            result,
+            async () =>
             {
-                await NHibernateUtil.InitializeAsync(result);
+                try
+                {
+                    await NHibernateUtil.InitializeAsync(result);
+                }
+                catch (ObjectNotFoundException)
+                {
+                    throw RecordNotFoundException.For<TEntity>(id);
+                }
             }
-            catch (ObjectNotFoundException)
-            {
-                throw RecordNotFoundException.For<TEntity>(id);
-            }
-        }));
+        );
     }
 
     public IEnumerable<TEntity> LocateMany(IEnumerable<Id> ids) =>

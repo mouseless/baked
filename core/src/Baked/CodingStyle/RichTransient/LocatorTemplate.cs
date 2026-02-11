@@ -56,11 +56,11 @@ public class LocatorTemplate : CodeTemplateBase
             public {{richTransient.CSharpFriendlyFullName}} Locate(Id id, bool _) =>
                 LocateAsync(id, _).GetAwaiter().GetResult();
 
-            public ({{richTransient.CSharpFriendlyFullName}}, Task) LocateLazily(Id id)
+            public LazyLocatable<{{richTransient.CSharpFriendlyFullName}}> LocateLazily(Id id)
             {
                 var result = _new{{richTransient.Name}}();
 
-                return (result, new Task(async () => await result.With(id)));
+                return new(result, async () => await result.With(id));
             }
 
             public IEnumerable<{{richTransient.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
@@ -70,11 +70,11 @@ public class LocatorTemplate : CodeTemplateBase
             public {{richTransient.CSharpFriendlyFullName}} Locate(Id id, bool _) =>
                 _new{{richTransient.Name}}().With(id);
 
-            public ({{richTransient.CSharpFriendlyFullName}}, Task) LocateLazily(Id id)
+            public LazyLocatable<{{richTransient.CSharpFriendlyFullName}}> LocateLazily(Id id)
             {
                 var result = _new{{richTransient.Name}}();
 
-                return (result, new Task(() => result.With(id)));
+                return new(result, () => Task.FromResult(result.With(id)));
             }
 
             public IEnumerable<{{richTransient.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
