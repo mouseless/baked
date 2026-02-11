@@ -5,8 +5,6 @@
     "sideMenu": {
       "type": "SideMenu",
       "schema": {
-        "logo": "logo.svg",
-        "largeLogo": "logo-full.svg",
         "menu": [
           {
             "route": "/",

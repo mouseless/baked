@@ -46,7 +46,6 @@
                   "csvSeparator": ";",
                   "fileName": "GetItems.ExportFileName",
                   "formatter": "useCsvFormatter",
-                  "buttonIcon": "pi pi-download",
                   "buttonLabel": "Export as CSV",
                   "appendParameters": true,
                   "parameterSeparator": "_",

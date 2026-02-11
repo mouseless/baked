@@ -196,7 +196,7 @@ let formatter = null;
 if(exportOptions) {
   headerActions.value.push({
     label: l(exportOptions.buttonLabel),
-    icon: exportOptions.buttonIcon,
+    icon: exportOptions.buttonIcon === undefined ? "pi pi-download" : exportOptions.buttonIcon,
     command: () => dataTable.value.exportCSV()
   });
 }

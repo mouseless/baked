@@ -1,6 +1,6 @@
 <template>
   <Message
-    :severity="severity"
+    :severity="severity ?? 'info'"
     :pt="{ text: { class: 'min-w-[10rem] min-h-[1.5rem]' } }"
   >
     <template

@@ -30,11 +30,11 @@
       "
     >
       <Logo
-        :src="logo"
+        :src="logo ?? 'logo.svg'"
         class="2xl:hidden"
       />
       <Logo
-        :src="largeLogo"
+        :src="largeLogo ?? 'logo-full.svg'"
         class="hidden 2xl:block"
       />
     </RouterLink>
