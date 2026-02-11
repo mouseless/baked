@@ -35,23 +35,18 @@ public class LocatorTemplate : CodeTemplateBase
         ];
 
     string Locator() => $$"""
-    using Baked;
-    using Baked.Domain;
-    using Baked.Runtime;
-    using Microsoft.Extensions.DependencyInjection;
+        using Baked;
+        using Baked.Domain;
+        using Baked.Runtime;
+        using Microsoft.Extensions.DependencyInjection;
 
-    namespace RichTransientCodingStyleFeature;
+        namespace RichTransientCodingStyleFeature;
 
-    {{ForEach(_richTransients, richTransient => $$"""
-    public class {{richTransient.Name}}Locator(Func<{{richTransient.CSharpFriendlyFullName}}> _new{{richTransient.Name}})
-        {{If(richTransient.GetMetadata().TryGet<LocatableAttribute>(out var locatable) && locatable.IsAsync,
-            () => $": IAsyncLocator<{richTransient.CSharpFriendlyFullName}>",
-        @else:
-            () => $": ILocator<{richTransient.CSharpFriendlyFullName}>"
-        )}}
-    {
-        {{If(richTransient.GetMetadata().TryGet<LocatableAttribute>(out var l) && l.IsAsync,
-            () => $$"""
+        {{ForEach(_richTransients, richTransient => $$"""
+        public class {{richTransient.Name}}Locator(Func<{{richTransient.CSharpFriendlyFullName}}> _new{{richTransient.Name}})
+            : I{{If(IsAsync(richTransient), () => "Async")}}Locator<{{richTransient.CSharpFriendlyFullName}}>
+        {
+            {{If(IsAsync(richTransient), () => $$"""
             public async Task<{{richTransient.CSharpFriendlyFullName}}> LocateAsync(Id id, bool _) =>
                 await _new{{richTransient.Name}}().With(id);
 
@@ -61,43 +56,61 @@ public class LocatorTemplate : CodeTemplateBase
             public {{richTransient.CSharpFriendlyFullName}} Locate(Id id, bool _) =>
                 LocateAsync(id, _).GetAwaiter().GetResult();
 
+            public ({{richTransient.CSharpFriendlyFullName}}, Task) LocateLazily(Id id)
+            {
+                var result = _new{{richTransient.Name}}();
+
+                return (result, new Task(async () => await result.With(id)));
+            }
+
             public IEnumerable<{{richTransient.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
                 LocateManyAsync(ids).GetAwaiter().GetResult();
             """,
-        @else:
-            () => $$"""
+            @else: () => $$"""
             public {{richTransient.CSharpFriendlyFullName}} Locate(Id id, bool _) =>
                 _new{{richTransient.Name}}().With(id);
 
+            public ({{richTransient.CSharpFriendlyFullName}}, Task) LocateLazily(Id id)
+            {
+                var result = _new{{richTransient.Name}}();
+
+                return (result, new Task(() => result.With(id)));
+            }
+
             public IEnumerable<{{richTransient.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
                 ids.Select(id => _new{{richTransient.Name}}().With(id));
-            """
-        )}}
-       
-    }
-    """)}}
-    """;
-
-    string ServiceAdder() => $$"""    
-    using Baked;
-    using Baked.Domain;
-    using Baked.Runtime;
-    using Microsoft.Extensions.DependencyInjection;
-
-    namespace RichTransientCodingStyleFeature;
-
-    public class ServiceServiceAdder : IServiceAdder
-    {
-        public void AddServices(IServiceCollection services)
-        {
-            {{ForEach(_richTransients, (richTransient) => $$"""
-                {{If(richTransient.GetMetadata().TryGet<LocatableAttribute>(out var locatable) && locatable.IsAsync,
-                    () => $"services.AddSingleton<IAsyncLocator<{richTransient.CSharpFriendlyFullName}>, {richTransient.Name}Locator>();",
-                @else:
-                    () => $"services.AddSingleton<ILocator<{richTransient.CSharpFriendlyFullName}>, {richTransient.Name}Locator>();"
-                )}}
-            """)}}
+            """, indentation: 1)}}
         }
-    }
+
+        """, indentation: 1)}}
     """;
+
+    string ServiceAdder() => $$"""
+        using Baked;
+        using Baked.Domain;
+        using Baked.Runtime;
+        using Microsoft.Extensions.DependencyInjection;
+
+        namespace RichTransientCodingStyleFeature;
+
+        public class ServiceServiceAdder : IServiceAdder
+        {
+            public void AddServices(IServiceCollection services)
+            {
+            {{ForEach(_richTransients, richTransient => $$"""
+                {{If(IsAsync(richTransient), () => $$"""
+                services.AddSingleton<ILocator<{{richTransient.CSharpFriendlyFullName}}>, {{richTransient.Name}}Locator>();
+                services.AddSingleton<IAsyncLocator<{{richTransient.CSharpFriendlyFullName}}>, {{richTransient.Name}}Locator>();
+                """, @else: () => $$"""
+                services.AddSingleton<ILocator<{{richTransient.CSharpFriendlyFullName}}>, {{richTransient.Name}}Locator>();
+                """, indentation: 1)}}
+            """, indentation: 2)}}
+            }
+        }
+    """;
+
+    bool IsAsync(TypeModel type) =>
+        type.TryGetMetadata(out var metadata) &&
+        metadata.TryGet<LocatableAttribute>(out var locatable) &&
+        locatable.IsAsync;
 }

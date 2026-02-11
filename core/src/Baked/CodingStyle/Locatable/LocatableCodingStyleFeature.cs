@@ -15,6 +15,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Index.Type.Add<LocatableAttribute>();
 
             builder.Conventions.Add(new AddIdParameterToRouteConvention());
+            builder.Conventions.Add(new InitializeLocatablesConvention());
             builder.Conventions.Add(new LookupLocatableParameterConvention(), order: RestApiLayer.MaxConventionOrder - 20);
             builder.Conventions.Add(new LookupLocatableParametersConvention(), order: RestApiLayer.MaxConventionOrder - 20);
             builder.Conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 10);
@@ -43,6 +44,9 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureServiceCollection(services =>
         {
+            services.AddScopedWithFactory<LocatableInitializations>();
+            services.AddScoped<InitializeLocatablesFilter>();
+
             configurator.UsingGeneratedContext(generatedContext =>
             {
                 services.AddFromAssembly(generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]);

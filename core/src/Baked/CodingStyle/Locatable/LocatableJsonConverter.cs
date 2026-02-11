@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Baked.CodingStyle.Locatable;
 
-public abstract class LocatableJsonConverter<TLocatable, TId>(ILocator<TLocatable> _locator)
+public abstract class LocatableJsonConverter<TLocatable, TId>(ILocator<TLocatable> _locator, Func<LocatableInitializations> _getLocatableInitializations)
     : JsonConverter<TLocatable> where TLocatable : class
 {
     protected abstract string IdProp { get; }
@@ -33,7 +33,11 @@ public abstract class LocatableJsonConverter<TLocatable, TId>(ILocator<TLocatabl
 
         if (!id.HasValue) { return null; }
 
-        return _locator.Locate(id.Value);
+        var (result, initialize) = _locator.LocateLazily(id.Value);
+
+        _getLocatableInitializations().Add(initialize);
+
+        return result;
     }
 
     public override void WriteJson(JsonWriter writer, TLocatable? value, JsonSerializer serializer)

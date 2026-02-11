@@ -18,21 +18,22 @@ public class JsonConverterTemplate(DomainModel _domain)
             "Newtonsoft.Json"
         ];
 
-    protected override IEnumerable<string> Render() => [
-        ServiceAdder(),
-        .. _domain
-            .Types
-            .Having<LocatableAttribute>()
-            .Select(type => type.GetMembers())
-            .Select(JsonConverter),
-        ContractResolverConfigurer(
+    protected override IEnumerable<string> Render() =>
         [
+            ServiceAdder(),
             .. _domain
-            .Types
-            .Having<LocatableAttribute>()
-            .Select(type => type.GetMembers())
-        ])
-    ];
+                .Types
+                .Having<LocatableAttribute>()
+                .Select(type => type.GetMembers())
+                .Select(JsonConverter),
+            ContractResolverConfigurer(
+            [
+                .. _domain
+                .Types
+                .Having<LocatableAttribute>()
+                .Select(type => type.GetMembers())
+            ])
+        ];
 
     string ServiceAdder() => $$"""
         namespace LocatableCodingStyleFeature;
@@ -43,7 +44,7 @@ public class JsonConverterTemplate(DomainModel _domain)
             {
             {{ForEach(_domain.Types.Having<LocatableAttribute>(), locatable => $$"""
                 services.AddSingleton<{{locatable.Name}}JsonConverter>();
-            """, indentCorrection: 2)}}
+            """, indentation: 2)}}
             }
         }
     """;
@@ -51,8 +52,8 @@ public class JsonConverterTemplate(DomainModel _domain)
     string JsonConverter(TypeModelMembers locatable) => If(locatable.TryGetIdInfo(out var id), () => $$"""
         namespace LocatableCodingStyleFeature;
 
-        public class {{locatable.Name}}JsonConverter(ILocator<{{locatable.CSharpFriendlyFullName}}> _locator)
-            : {{typeof(LocatableJsonConverter<,>).Namespace}}.LocatableJsonConverter<{{locatable.CSharpFriendlyFullName}}, string>(_locator)
+        public class {{locatable.Name}}JsonConverter(ILocator<{{locatable.CSharpFriendlyFullName}}> _locator, Func<LocatableInitializations> _getLocatableInitializations)
+            : {{typeof(LocatableJsonConverter<,>).Namespace}}.LocatableJsonConverter<{{locatable.CSharpFriendlyFullName}}, string>(_locator, _getLocatableInitializations)
         {
             protected override string IdProp => "{{id!.PropertyName.Camelize()}}";
             protected override IEnumerable<string> LabelProps => [{{Labels(locatable)}}];
@@ -65,7 +66,7 @@ public class JsonConverterTemplate(DomainModel _domain)
                 {
                 {{ForEach(locatable.Properties.Having<LabelAttribute>(), label => $$"""
                     "{{label.Name.Camelize()}}" => locatable.{{label.Name}},
-                """, separator: $",{Environment.NewLine}", indentCorrection: 2)}}
+                """, separator: $",{Environment.NewLine}", indentation: 2)}}
                     _ => throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{locatable.Name}}`")
                 };
         }
@@ -88,7 +89,7 @@ public class JsonConverterTemplate(DomainModel _domain)
                 .Where(e => e.Properties.Having<IdAttribute>().Any())
                 .Select(e => new { Type = e, IdProperty = e.Properties.Having<IdAttribute>().Single() }), context => $$"""
                { typeof({{context.Type.CSharpFriendlyFullName}}), "{{context.IdProperty.Name}}" },
-            """, indentCorrection: 2)}}
+            """, indentation: 2)}}
             };
 
             public void Configure(ExtendedContractResolver contractResolver)
@@ -101,7 +102,7 @@ public class JsonConverterTemplate(DomainModel _domain)
                     "{{context.Property.Name}}",
                     options: (property, sp) => property.Converter = sp.GetRequiredService<{{context.Property.PropertyType.Name}}JsonConverter>()
                 );
-            """, indentCorrection: 2)}}
+            """, indentation: 2)}}
             }
         }
     """;

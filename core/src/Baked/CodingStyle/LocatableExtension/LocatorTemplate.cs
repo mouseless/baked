@@ -50,6 +50,13 @@ public class LocatorTemplate : CodeTemplateBase
             public {{extension.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
                 ({{extension.CSharpFriendlyFullName}})_locator.Locate(id, throwNotFound: throwNotFound);
 
+            public ({{extension.CSharpFriendlyFullName}}, Task) LocateLazily(Id id)
+            {
+                var (result, initialize) = _locator.LocateLazily(id);
+
+                return (({{extension.CSharpFriendlyFullName}})result, initialize);
+            }
+
             public IEnumerable<{{extension.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
                 _locator.LocateMany(ids).Select(e => ({{extension.CSharpFriendlyFullName}})e);
         }
