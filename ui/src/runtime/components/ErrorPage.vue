@@ -18,7 +18,7 @@
       </div>
       <AuthorizedContent v-if="errorInfo.showSafeLinks">
         <div class="text-2xl">
-          {{ l(safeLinksMessage) }}
+          {{ l(safeLinksMessage ?? "Try the links from the menu below to view the page you want to access:") }}
         </div>
       </AuthorizedContent>
     </div>
@@ -42,7 +42,7 @@
     />
     <Message severity="warn">
       <i class="pi pi-exclamation-circle mr-2" />
-      {{ l(footerInfo) }}
+      {{ l(footerInfo ?? "If you cannot reach the page you want please contact the system administrator") }}
     </Message>
   </div>
 </template>
