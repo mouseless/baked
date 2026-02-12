@@ -32,7 +32,7 @@ public class RoutingLocatableExtension : TestNfr
         dynamic? entity = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
 
         var response = await Client.PostAsync($"/entities/{entity?.id}/increment-by", JsonContent.Create(
-            new { otherId = $"{entity?.id}" }
+            new { other = new { id = $"{entity?.id}" } }
         ));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -47,9 +47,9 @@ public class RoutingLocatableExtension : TestNfr
         var response = await Client.PostAsync($"/entities/{entity?.id}/increment-by-all", JsonContent.Create(
             new
             {
-                extensionIds = new[] { $"{entity?.id}" },
-                moreExtensionIds = new[] { $"{entity?.id}" },
-                evenMoreExtensionIds = new[] { $"{entity?.id}" }
+                extensions = new[] { new { id = $"{entity?.id}" } },
+                moreExtensions = new[] { new { id = $"{entity?.id}" } },
+                evenMoreExtensions = new[] { new { id = $"{entity?.id}" } }
             }
         ));
 

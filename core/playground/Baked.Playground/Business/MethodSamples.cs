@@ -86,9 +86,6 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public void RecordListParameters(List<Record> records) =>
         _logger.LogInformation($"{nameof(RecordParameters)} was called with {records.Join(", ")}");
 
-    public IEnumerable<Entity> GetEntityParameters(Entity single, IEnumerable<Entity> enumerable, Entity[] array) =>
-        [single, .. enumerable, .. array];
-
     /// <param name="single">
     /// Single description
     /// </param>
@@ -98,14 +95,32 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     /// <param name="array">
     /// Array description
     /// </param>
+    public IEnumerable<Entity> GetEntityParameters(Entity single, IEnumerable<Entity> enumerable, Entity[] array) =>
+        [single, .. enumerable, .. array];
+
     public IEnumerable<Entity> EntityParameters(Entity single, IEnumerable<Entity> enumerable, Entity[] array) =>
         [single, .. enumerable, .. array];
 
     public IEnumerable<Entity> RecordWithEntity(RecordWithEntity record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 
+    /// <param name="single">
+    /// Single description
+    /// </param>
+    /// <param name="enumerable">
+    /// Enumerable description
+    /// </param>
+    /// <param name="array">
+    /// Array description
+    /// </param>
     public IEnumerable<RichTransientWithData> GetTransientParameters(RichTransientWithData single, IEnumerable<RichTransientWithData> enumerable, RichTransientWithData[] array) =>
         [single, .. enumerable, .. array];
+
+    public IEnumerable<RichTransientWithData> TransientParameters(RichTransientWithData single, IEnumerable<RichTransientWithData> enumerable, RichTransientWithData[] array) =>
+        [single, .. enumerable, .. array];
+
+    public IEnumerable<RichTransientWithData> RecordWithRichTransient(RecordWithRichTransient record) =>
+        [record.Single, .. record.Enumerable, .. record.Array];
 
     /// <param name="single">
     /// Single description
@@ -116,12 +131,6 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     /// <param name="array">
     /// Array description
     /// </param>
-    public IEnumerable<RichTransientWithData> TransientParameters(RichTransientWithData single, IEnumerable<RichTransientWithData> enumerable, RichTransientWithData[] array) =>
-        [single, .. enumerable, .. array];
-
-    public IEnumerable<RichTransientWithData> RecordWithRichTransient(RecordWithRichTransient record) =>
-        [record.Single, .. record.Enumerable, .. record.Array];
-
     public IEnumerable<RichTransientAsync> GetTransientAsyncParameters(RichTransientAsync single, IEnumerable<RichTransientAsync> enumerable, RichTransientAsync[] array) =>
         [single, .. enumerable, .. array];
 
