@@ -2,14 +2,14 @@
   <IconField>
     <InputIcon class="pi pi-search" />
     <InputText
-      v-model="inputModel"
+      v-model="model"
       autofocus
       :placeholder="placeholder ? l(placeholder) : undefined"
     />
   </IconField>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { IconField, InputIcon, InputText } from "primevue";
 import { useLocalization } from "#imports";
 
@@ -22,7 +22,10 @@ const model = defineModel({ type: null, required: true });
 
 const { placeholder, whiteSpaceSensitive } = schema;
 
-const inputModel = ref(model.value);
+watch(model, (newValue, oldValue) => {
+  if(newValue === oldValue) { return; }
+  if(whiteSpaceSensitive) { return; }
 
-watch(inputModel, value => model.value = whiteSpaceSensitive ? value : value.trim());
+  model.value = newValue.trim();
+});
 </script>

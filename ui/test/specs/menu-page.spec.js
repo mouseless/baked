@@ -55,15 +55,26 @@ test.describe("Filter Links", () => {
 
     const filter = component.locator("input");
 
-    await filter.fill(" A");
+    await filter.fill("A");
 
     await expect(component.getByTestId("LINK_1")).toBeVisible();
     await expect(component.getByTestId("LINK_2")).not.toBeVisible();
 
-    await filter.fill(" B");
+    await filter.fill("B");
 
     await expect(component.getByTestId("LINK_2")).toBeVisible();
     await expect(component.getByTestId("LINK_1")).not.toBeVisible();
+  });
+
+  test("ignore white space", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill(" A");
+
+    await expect(component.getByTestId("LINK_1")).toBeVisible();
+    await expect(component.getByTestId("LINK_2")).not.toBeVisible();
   });
 
   test("not found", async({ page }) => {
