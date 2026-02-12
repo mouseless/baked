@@ -4,7 +4,6 @@ public class RichTransientWithData(TimeProvider _timeProvider)
 {
     public Baked.Business.Id Id { get; private set; } = default!;
     public string Name { get; private set; } = default!;
-
     public string Time => _timeProvider.GetNow().ToString();
     internal string InternalProperty => $"{Guid.NewGuid()}";
 

@@ -1,9 +1,11 @@
-﻿namespace Baked.Test.CodingStyle;
+﻿using Newtonsoft.Json;
+
+namespace Baked.Test.CodingStyle;
 
 public class SerializingOnlyIdAndLabelsForParents : TestNfr
 {
     [Test]
-    public async Task Serializes_only_id_and_label_for_direct_parent()
+    public async Task Serializes_only_id_and_label_for_direct_parent_of_an_entity()
     {
         var parent = await Client.PostParents(name: "parent");
         await Client.PostParentsChildren(id: (object)parent.id);
@@ -15,7 +17,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
     }
 
     [Test]
-    public async Task Does_not_skip_properties_when_parent_child_relation_is_broken()
+    public async Task Does_not_skip_properties_when_parent_child_relation_is_broken_for_an_entity()
     {
         var parent = await Client.PostParents(name: "parent", surname: "wrapper");
         await Client.PostParentsChildren(id: (object)parent.id);
@@ -29,6 +31,31 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
             name = "parent",
             surname = "wrapper",
             description = (string?)null
+        });
+    }
+
+    [Test]
+    public async Task Serializes_only_id_and_label_for_direct_parent_of_a_rich_transient()
+    {
+        var response = await Client.GetAsync("/rich-transient-with-children/1");
+        dynamic? child = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        object? actual = child?.parent;
+
+        actual?.ShouldDeeplyBe(new { id = "1", name = "1 parent" });
+    }
+
+    [Test]
+    public async Task Does_not_skip_properties_when_parent_child_relation_is_broken_for_a_rich_transient()
+    {
+        var response = await Client.GetAsync("/rich-transient-with-children/1");
+        dynamic? child = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        object? actual = child?.parentWrapper;
+
+        actual?.ShouldDeeplyBe(new
+        {
+            id = "1",
+            name = "1 parent",
+            description = "1 parent description"
         });
     }
 
