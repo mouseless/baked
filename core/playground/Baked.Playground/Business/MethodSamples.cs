@@ -86,44 +86,50 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public void RecordListParameters(List<Record> records) =>
         _logger.LogInformation($"{nameof(RecordParameters)} was called with {records.Join(", ")}");
 
-    /// <param name="entity">
-    /// Entity description
-    /// </param>
-    public Entity EntityParameters(Entity entity) =>
-        entity;
+    public IEnumerable<Entity> GetEntityParameters(Entity single, IEnumerable<Entity> enumerable, Entity[] array) =>
+        [single, .. enumerable, .. array];
 
-    /// <param name="entities">
-    /// Entities description
+    /// <param name="single">
+    /// Single description
     /// </param>
-    /// <param name="otherEntities">
-    /// Other entities description
+    /// <param name="enumerable">
+    /// Enumerable description
     /// </param>
-    public IEnumerable<Entity> EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
-        [.. entities, .. otherEntities];
+    /// <param name="array">
+    /// Array description
+    /// </param>
+    public IEnumerable<Entity> EntityParameters(Entity single, IEnumerable<Entity> enumerable, Entity[] array) =>
+        [single, .. enumerable, .. array];
 
     public IEnumerable<Entity> RecordWithEntity(RecordWithEntity record) =>
-        [.. record.Entities, .. record.OtherEntities];
+        [record.Single, .. record.Enumerable, .. record.Array];
 
-    /// <param name="transient">
-    /// Transient description
+    public IEnumerable<RichTransientWithData> GetTransientParameters(RichTransientWithData single, IEnumerable<RichTransientWithData> enumerable, RichTransientWithData[] array) =>
+        [single, .. enumerable, .. array];
+
+    /// <param name="single">
+    /// Single description
     /// </param>
-    public RichTransientWithData TransientParameters(RichTransientWithData transient) =>
-        transient;
-
-    public RichTransientAsync TransientAsyncParameters(RichTransientAsync transientAsync) =>
-        transientAsync;
-
-    /// <param name="transients">
-    /// Transients description
+    /// <param name="enumerable">
+    /// Enumerable description
     /// </param>
-    /// <param name="otherTransients">
-    /// Other transients description
+    /// <param name="array">
+    /// Array description
     /// </param>
-    public IEnumerable<RichTransientWithData> TransientListParameters(IEnumerable<RichTransientWithData> transients, RichTransientWithData[] otherTransients) =>
-        [.. transients, .. otherTransients];
+    public IEnumerable<RichTransientWithData> TransientParameters(RichTransientWithData single, IEnumerable<RichTransientWithData> enumerable, RichTransientWithData[] array) =>
+        [single, .. enumerable, .. array];
 
-    public IEnumerable<RichTransientAsync> TransientAsyncListParameters(IEnumerable<RichTransientAsync> transientAsyncs, RichTransientAsync[] otherTransientAsyncs) =>
-        [.. transientAsyncs, .. otherTransientAsyncs];
+    public IEnumerable<RichTransientWithData> RecordWithRichTransient(RecordWithRichTransient record) =>
+        [record.Single, .. record.Enumerable, .. record.Array];
+
+    public IEnumerable<RichTransientAsync> GetTransientAsyncParameters(RichTransientAsync single, IEnumerable<RichTransientAsync> enumerable, RichTransientAsync[] array) =>
+        [single, .. enumerable, .. array];
+
+    public IEnumerable<RichTransientAsync> TransientAsyncParameters(RichTransientAsync single, IEnumerable<RichTransientAsync> enumerable, RichTransientAsync[] array) =>
+        [single, .. enumerable, .. array];
+
+    public IEnumerable<RichTransientAsync> RecordWithRichTransientAsync(RecordWithRichTransientAsync record) =>
+        [record.Single, .. record.Enumerable, .. record.Array];
 
     internal Internal Internal() =>
         new();

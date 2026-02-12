@@ -23,6 +23,8 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         ParameterModelAttribute? locatorServiceParameter = null;
         if (context.Method.TryGet<ActionModelAttribute>(out var action))
         {
+            if (parameter.FromBodyOrForm && !action.UseForm) { return; }
+
             // parameter belongs to an action, add service to the parent action
             locatorServiceParameter = locatable.AddLocatorAsService(action, elementType);
             if (locatable.IsAsync)

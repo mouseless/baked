@@ -13,9 +13,9 @@ public class RoutesRestApiOverrideFeature : IFeature
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            builder.Conventions.AddLocateAction<Child>();
             builder.Conventions.AddLocateAction<Entity>();
             builder.Conventions.AddLocateAction<Parent>();
-            builder.Conventions.AddLocateAction<Child>();
             builder.Conventions.AddConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
             builder.Conventions.AddConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
             {
