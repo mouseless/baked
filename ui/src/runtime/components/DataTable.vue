@@ -161,7 +161,11 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { actions, columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const exportOptions = schema.exportOptions && {
+  buttonIcon: "pi pi-download",
+  ...schema.exportOptions
+};
 
 const contextData = context.injectContextData();
 const dataDescriptor = context.injectDataDescriptor();

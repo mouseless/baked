@@ -58,7 +58,12 @@ const { schema, data } = defineProps({
   data: { type: null, default: null }
 });
 
-const { errorInfos, footerInfo, safeLinks, safeLinksMessage } = schema;
+const {
+  errorInfos,
+  footerInfo = "If you cannot reach the page you want please contact the system administrator",
+  safeLinks,
+  safeLinksMessage = "Try the links from the menu below to view the page you want to access:"
+} = schema;
 
 const statusCode = computed(() => {
   const code = data.value?.data?.status ?? data.value?.statusCode ?? 999;

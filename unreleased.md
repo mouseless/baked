@@ -13,6 +13,8 @@
     externally or `Options` is async
 - `Datas.Composables` now provide `UseLoginRedirect` extension
 - `useDataMounter` composable is now added for a more convenient data fetching
+- Default assignments in `ui/*.cs` components are removed, defaults are provided
+  in `components/*.vue` components
 
 ## Breaking Changes
 

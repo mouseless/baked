@@ -3,4 +3,5 @@
 public record Filter : IComponentSchema
 {
     public string? Placeholder { get; set; }
+    public bool? WhiteSpaceSensitive { get; set; }
 }

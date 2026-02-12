@@ -137,7 +137,6 @@
           "customMessage": true
         }
       },
-      "footerInfo": "If you cannot reach the page you want please contact the system administrator",
       "safeLinks": [
         {
           "type": "CardLink",
@@ -183,8 +182,7 @@
             "description": "All UI Specs are listed here"
           }
         }
-      ],
-      "safeLinksMessage": "Try the links from the menu below to view the page you want to access:"
+      ]
     },
     "data": {
       "type": "Computed",

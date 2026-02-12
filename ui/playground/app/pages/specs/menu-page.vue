@@ -56,6 +56,24 @@ const variants = [
     })
   },
   {
+    name: "White Space Sensitive",
+    descriptor: giveMe.aMenuPage({
+      filterEvent: "filter-white-spaces-sensitive",
+      header: giveMe.aFilter({
+        action: giveMe.aPublishAction({ event: "filter-white-spaces-sensitive" }),
+        whiteSpaceSensitive: true
+      }),
+      sections: [
+        giveMe.aMenuPageSection({
+          title: "Spec: Section 1",
+          links: [
+            giveMe.aFilterable({ title: "Spec: A link", component: giveMe.anExpected({ testId: "LINK_1", value: "A_VALUE" }) })
+          ]
+        })
+      ]
+    })
+  },
+  {
     name: "No Header",
     descriptor: giveMe.aMenuPage({
       header: null,
