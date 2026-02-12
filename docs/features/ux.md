@@ -86,23 +86,6 @@ UI space when under a `DataTable` or a `Fieldset`.
 - Sets up a dialog button to show the content of description properties in a
   dialog under data tables
 
-## Designated String Properties are Label
-
-Marks selected string properties as labels to have a better display in
-`DataTable` columns.
-
-```csharp
-c => c.DesignatedStringPropertiesAreLabel(propertyNames: [...])
-```
-
-- Properties with matching names are given `LabelAttribute`
-- Label columns in a `DataTable` are frozen and have minimum width
-- The first label column is used as the table’s data key if no key is set
-
-> [!NOTE]
->
-> Default value of `propertyNames` is `["Display", "Label", "Name", "Title"]`.
-
 ## Enum Parameter is Select
 
 Renders enum parameters as `Select` by default.
@@ -132,6 +115,18 @@ c => c.InitializerParametersAreInPageTitle()
 
 - Adds initializer parameters as query parameters of the page
 - Works for types marked with `TransientAttribute`
+
+## Labels are Frozen
+
+Configure label properties (properties with `LabelAttribute`) to have a better
+display in `DataTable` columns.
+
+```csharp
+c => c.LabelsAreFrozen()
+```
+
+- Label columns in a `DataTable` are frozen and have minimum width
+- The first label column is used as the table’s data key if no key is set
 
 ## List is Data Table
 

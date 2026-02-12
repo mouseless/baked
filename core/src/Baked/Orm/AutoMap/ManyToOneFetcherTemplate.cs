@@ -27,7 +27,7 @@ public class ManyToOneFetcherTemplate(DomainModel _domain)
     ];
 
     string ServiceAdder() => $$"""
-        namespace AutoMapFeature;
+        namespace AutoMapOrmFeature;
 
         public class ServiceAdder : IServiceAdder
         {
@@ -41,7 +41,7 @@ public class ManyToOneFetcherTemplate(DomainModel _domain)
     """;
 
     string ManyToOneFetcher(TypeModelMembers entity) => $$"""
-        namespace AutoMapFeature;
+        namespace AutoMapOrmFeature;
 
         public class {{entity.Name}}ManyToOneFetcher : IManyToOneFetcher<{{entity.CSharpFriendlyFullName}}>
         {

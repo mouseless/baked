@@ -50,6 +50,7 @@ public abstract class DataSourceSpec : Spec
                 c => c.CommandPattern(),
                 c => c.Id(),
                 c => c.Initializable(),
+                c => c.Label(),
                 c => c.Locatable(),
                 c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),

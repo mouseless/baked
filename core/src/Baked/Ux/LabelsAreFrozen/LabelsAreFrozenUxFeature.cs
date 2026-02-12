@@ -2,24 +2,15 @@
 using Baked.Business;
 using Baked.Ui;
 
-namespace Baked.Ux.DesignatedStringPropertiesAreLabel;
+namespace Baked.Ux.LabelsAreFrozen;
 
-public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> propertyNames)
+public class LabelsAreFrozenUxFeature()
     : IFeature<UxConfigurator>
 {
-    readonly HashSet<string> _propertyNames = [.. propertyNames];
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // TODO move this to a coding style
-            builder.Conventions.SetPropertyAttribute(
-                attribute: () => new LabelAttribute(),
-                when: c => c.Property.PropertyType.Is<string>() && _propertyNames.Contains(c.Property.Name)
-            );
-            // end of TODO
-
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc =>
                 {

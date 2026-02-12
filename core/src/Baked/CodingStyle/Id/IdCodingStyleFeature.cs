@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Baked.CodingStyle.Id;
 
-public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
+public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -24,13 +24,13 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
         {
             configurator.UsingDomainModel(domain =>
             {
-                generatedAssemblies.Add(nameof(IdCodingStyeFeature),
+                generatedAssemblies.Add(nameof(IdCodingStyleFeature),
                     assembly =>
                     {
                         var codeTemplate = new IdMapperTemplate(domain);
                         assembly.AddCodes(codeTemplate);
                         assembly.AddReferences(codeTemplate.References);
-                        assembly.AddReferenceFrom<IdCodingStyeFeature>();
+                        assembly.AddReferenceFrom<IdCodingStyleFeature>();
                     },
                     usings: [.. IdMapperTemplate.GlobalUsings]
                 );
@@ -43,7 +43,7 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
 
             configurator.UsingGeneratedContext(context =>
             {
-                var idMapper = context.Assemblies[nameof(IdCodingStyeFeature)].CreateImplementationInstance<IIdMapper>();
+                var idMapper = context.Assemblies[nameof(IdCodingStyleFeature)].CreateImplementationInstance<IIdMapper>();
 
                 idMapper?.Configure(model);
             });

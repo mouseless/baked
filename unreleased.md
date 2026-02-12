@@ -95,4 +95,6 @@
   `InitializableCodingStyleFeature`
 - `EntitySubclassViaCompositionCodingStyleFeature` is renamed to
   `EntitySubclassCodingStyleFeature`
+- `DesignatedStringPropertiesAreLabelUxFeature` is now split into two,
+  `LabelCodingStyleFeature` and `LabelsAreFrozenUxFeature`
 - `LabelAttribute` is moved to `Baked.Business` namespace

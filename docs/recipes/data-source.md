@@ -41,6 +41,7 @@ Bake.New
 |                    | Command Pattern                    |                                    |
 |                    | Id                                 |                                    |
 |                    | Initializable                      |                                    |
+|                    | Label                              |                                    |
 |                    | Locatable                          |                                    |
 |                    | Namespace as Route                 |                                    |
 |                    | Records are DTOs                   |                                    |

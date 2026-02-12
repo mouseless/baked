@@ -7,7 +7,10 @@ public class InitializeLocatablesFilter(Func<LocatableInitializations> _getLocat
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        await Task.WhenAll(_getLocatableInitializations().Select(initialize => initialize()));
+        var initializations = _getLocatableInitializations();
+        await Task.WhenAll(initializations.Select(initialize => initialize()));
+        initializations.Clear();
+
         await next();
     }
 }

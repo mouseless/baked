@@ -22,7 +22,7 @@ public class TypeModelTypeSourceTemplate(DomainModel _domain)
         [TypeModelSource()];
 
     string TypeModelSource() => $$"""
-    namespace AutoMapFeature;
+    namespace AutoMapOrmFeature;
 
     public class TypeModelTypeSource
         : ITypeSource
