@@ -26,7 +26,7 @@ public class LocatableTemplate(DomainModel _domain)
                 .Having<LocatableAttribute>()
                 .Select(type => type.GetMembers())
                 .Select(JsonConverter),
-            ContractResolverConfigurer(
+            LocatableContext(
                 [
                     .. _domain
                     .Types
@@ -86,7 +86,7 @@ public class LocatableTemplate(DomainModel _domain)
             separator: ", "
         );
 
-    string ContractResolverConfigurer(IEnumerable<TypeModelMembers> locatables) => $$"""
+    string LocatableContext(IEnumerable<TypeModelMembers> locatables) => $$"""
         namespace LocatableCodingStyleFeature;
 
         public class LocatableContext : ILocatableContext
