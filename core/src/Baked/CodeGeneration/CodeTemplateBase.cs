@@ -8,10 +8,9 @@ public abstract class CodeTemplateBase : ICodeTemplate
     readonly List<Assembly> _references = [];
 
     protected virtual int GlobalIndentation => 4;
+    IEnumerable<Assembly> ICodeTemplate.References => _references;
 
     protected abstract IEnumerable<string> Render();
-
-    IEnumerable<Assembly> ICodeTemplate.References => _references;
 
     IEnumerable<string> ICodeTemplate.Render() =>
         Render().Select(code =>
