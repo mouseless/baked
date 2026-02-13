@@ -1,10 +1,17 @@
-﻿namespace Baked.CodeGeneration;
+﻿using Baked.Domain.Model;
+using System.Reflection;
+
+namespace Baked.CodeGeneration;
 
 public abstract class CodeTemplateBase : ICodeTemplate
 {
+    readonly List<Assembly> _references = [];
+
     protected virtual int GlobalIndentation => 4;
 
     protected abstract IEnumerable<string> Render();
+
+    IEnumerable<Assembly> ICodeTemplate.References => _references;
 
     IEnumerable<string> ICodeTemplate.Render() =>
         Render().Select(code =>
@@ -17,6 +24,20 @@ public abstract class CodeTemplateBase : ICodeTemplate
                 )
                 .Join(Environment.NewLine)
         );
+
+    protected void AddReferences(IEnumerable<TypeModel> types)
+    {
+        foreach (var type in types)
+        {
+            AddReference(type);
+        }
+    }
+
+    protected void AddReference(TypeModel type) =>
+        type.Apply(t => _references.Add(t.Assembly));
+
+    protected void AddReferences(IEnumerable<Assembly> references) =>
+        _references.AddRange(references);
 
     protected string Join(string separator, params IEnumerable<string> statements) =>
         statements

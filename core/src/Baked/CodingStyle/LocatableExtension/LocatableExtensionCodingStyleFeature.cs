@@ -77,13 +77,9 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(LocatableExtensionCodingStyleFeature),
-                    assembly =>
-                    {
-                        var codeTemplate = new LocatorTemplate(domain);
-                        assembly.AddCodes(codeTemplate);
-                        assembly.AddReferences(codeTemplate.References);
-                        assembly.AddReferenceFrom<LocatableExtensionCodingStyleFeature>();
-                    },
+                    assembly => assembly
+                        .AddReferenceFrom<LocatableExtensionCodingStyleFeature>()
+                        .AddCodes(new LocatorTemplate(domain)),
                     usings: [.. LocatorTemplate.GlobalUsings]
                 );
             });

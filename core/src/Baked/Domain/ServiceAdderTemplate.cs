@@ -4,8 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Domain;
 
-internal class ServiceAdderTemplate(IEnumerable<DomainServiceDescriptor> _descriptors) : CodeTemplateBase
+internal class ServiceAdderTemplate : CodeTemplateBase
 {
+    readonly DomainServiceCollection _descriptors;
+
+    public ServiceAdderTemplate(DomainServiceCollection descriptors)
+    {
+        _descriptors = descriptors;
+
+        AddReferences(_descriptors.References);
+    }
+
     protected override IEnumerable<string> Render() =>
         [ServiceAdder()];
 

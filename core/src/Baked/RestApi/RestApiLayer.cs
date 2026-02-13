@@ -50,9 +50,7 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(RestApiLayer),
-                    assembly => assembly
-                        .AddReferences(_apiModel.References)
-                        .AddCodes(new ApiCodeTemplate(_apiModel)),
+                    assembly => assembly.AddCodes(new ApiCodeTemplate(_apiModel)),
                     compilerOptions => compilerOptions.WithUsings(_apiModel.Usings)
                 );
             })

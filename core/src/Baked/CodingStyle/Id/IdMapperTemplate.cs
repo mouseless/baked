@@ -2,7 +2,6 @@
 using Baked.CodeGeneration;
 using Baked.Domain.Model;
 using Baked.Orm;
-using System.Reflection;
 
 namespace Baked.CodingStyle.Id;
 
@@ -34,11 +33,10 @@ public class IdMapperTemplate : CodeTemplateBase
             var orm = idAttribute.Orm ?? new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
 
             _entities.Add((entity, orm));
-            entity.Apply(t => References.Add(t.Assembly));
         }
-    }
 
-    public List<Assembly> References { get; private set; } = [];
+        AddReferences(_entities.Select(e => e.Type));
+    }
 
     protected override IEnumerable<string> Render() =>
         [IdMapper()];

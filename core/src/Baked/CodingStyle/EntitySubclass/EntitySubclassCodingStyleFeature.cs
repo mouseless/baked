@@ -72,13 +72,9 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(EntitySubclassCodingStyleFeature),
-                    assembly =>
-                    {
-                        var codeTemplate = new LocatorTemplate(domain);
-                        assembly.AddCodes(codeTemplate);
-                        assembly.AddReferences(codeTemplate.References);
-                        assembly.AddReferenceFrom<EntitySubclassCodingStyleFeature>();
-                    },
+                    assembly => assembly
+                        .AddReferenceFrom<EntitySubclassCodingStyleFeature>()
+                        .AddCodes(new LocatorTemplate(domain)),
                     usings: [.. LocatorTemplate.GlobalUsings]
                 );
             });

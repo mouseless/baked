@@ -5,8 +5,7 @@ using Humanizer;
 
 namespace Baked.CodingStyle.Locatable;
 
-public class LocatableTemplate(DomainModel _domain)
-    : CodeTemplateBase()
+public class LocatableTemplate : CodeTemplateBase
 {
     public static string[] GlobalUsings =
         [
@@ -18,22 +17,24 @@ public class LocatableTemplate(DomainModel _domain)
             "Newtonsoft.Json"
         ];
 
+    readonly IEnumerable<TypeModelMembers> _locatables;
+
+    public LocatableTemplate(DomainModel domain)
+    {
+        _locatables = domain
+            .Types
+            .Having<LocatableAttribute>()
+            .Where(t => t.HasMembers())
+            .Select(t => t.GetMembers());
+
+        AddReferences(_locatables);
+    }
+
     protected override IEnumerable<string> Render() =>
         [
             ServiceAdder(),
-            .. _domain
-                .Types
-                .Having<LocatableAttribute>()
-                .Select(type => type.GetMembers())
-                .Select(JsonConverter),
-            LocatableContext(
-                [
-                    .. _domain
-                    .Types
-                    .Having<LocatableAttribute>()
-                    .Select(type => type.GetMembers())
-                ]
-            )
+            .. _locatables.Select(JsonConverter),
+            LocatableContext()
         ];
 
     string ServiceAdder() => $$"""
@@ -43,7 +44,7 @@ public class LocatableTemplate(DomainModel _domain)
         {
             public void AddServices(IServiceCollection services)
             {
-            {{ForEach(_domain.Types.Having<LocatableAttribute>(), locatable => $$"""
+            {{ForEach(_locatables, locatable => $$"""
                 services.AddSingleton<{{locatable.Name}}ReadOnlyJsonConverter>();
                 services.AddSingleton<{{locatable.Name}}ReadWriteJsonConverter>();
             """, indentation: 2)}}
@@ -86,14 +87,14 @@ public class LocatableTemplate(DomainModel _domain)
             separator: ", "
         );
 
-    string LocatableContext(IEnumerable<TypeModelMembers> locatables) => $$"""
+    string LocatableContext() => $$"""
         namespace LocatableCodingStyleFeature;
 
         public class LocatableContext : ILocatableContext
         {
             public Dictionary<Type, string> IdPropertyNames => new()
             {
-            {{ForEach(locatables
+            {{ForEach(_locatables
                 .Where(l => l.Properties.Having<IdAttribute>().Any())
                 .Select(l => new { Type = l, IdProperty = l.Properties.Having<IdAttribute>().Single() }), context => $$"""
                { typeof({{context.Type.CSharpFriendlyFullName}}), "{{context.IdProperty.Name}}" },
@@ -102,13 +103,13 @@ public class LocatableTemplate(DomainModel _domain)
 
             public void Configure(ExtendedContractResolver contractResolver)
             {
-            {{ForEach(locatables, locatable => $$"""
+            {{ForEach(_locatables, locatable => $$"""
                 contractResolver.SetType(
                     typeof({{locatable.CSharpFriendlyFullName}}),
                     options: (contract, sp) => contract.Converter = sp.GetRequiredService<{{locatable.Name}}ReadOnlyJsonConverter>()
                 );
             """, indentation: 2)}}
-            {{ForEach(locatables
+            {{ForEach(_locatables
                 .SelectMany(l => l.Properties.Select(p => new { Property = p, Type = l }))
                 .Where(c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>()), context => $$"""
                 contractResolver.SetProperty(

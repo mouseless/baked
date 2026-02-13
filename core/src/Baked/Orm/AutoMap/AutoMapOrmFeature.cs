@@ -42,18 +42,10 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(AutoMapOrmFeature),
-                    assembly =>
-                    {
-                        assembly
-                            .AddReferenceFrom<AutoMapOrmFeature>()
-                            .AddCodes(new ManyToOneFetcherTemplate(domain))
-                            .AddCodes(new TypeModelTypeSourceTemplate(domain));
-
-                        foreach (var entity in domain.Types.Having<EntityAttribute>())
-                        {
-                            entity.Apply(t => assembly.AddReferenceFrom(t));
-                        }
-                    },
+                    assembly => assembly
+                        .AddReferenceFrom<AutoMapOrmFeature>()
+                        .AddCodes(new ManyToOneFetcherTemplate(domain))
+                        .AddCodes(new TypeModelTypeSourceTemplate(domain)),
                     usings:
                     [
                         .. ManyToOneFetcherTemplate.GlobalUsings,

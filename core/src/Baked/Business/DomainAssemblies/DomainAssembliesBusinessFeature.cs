@@ -146,17 +146,9 @@ public class DomainAssembliesBusinessFeature(
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
-                    assembly =>
-                    {
-                        assembly
-                            .AddReferenceFrom<DomainAssembliesBusinessFeature>()
-                            .AddCodes(new CasterConfigurerTemplate(domain));
-
-                        foreach (var entity in domain.Types.Having<CasterAttribute>())
-                        {
-                            entity.Apply(t => assembly.AddReferenceFrom(t));
-                        }
-                    },
+                    assembly => assembly
+                        .AddReferenceFrom<DomainAssembliesBusinessFeature>()
+                        .AddCodes(new CasterConfigurerTemplate(domain)),
                     usings: [.. CasterConfigurerTemplate.GlobalUsings]
                 );
             });

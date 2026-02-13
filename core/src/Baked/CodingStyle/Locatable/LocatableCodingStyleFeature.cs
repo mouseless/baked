@@ -26,17 +26,9 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(LocatableCodingStyleFeature),
-                    assembly =>
-                    {
-                        assembly
-                            .AddReferenceFrom<LocatableCodingStyleFeature>()
-                            .AddCodes(new LocatableTemplate(domain));
-
-                        foreach (var entity in domain.Types.Having<LocatableAttribute>())
-                        {
-                            entity.Apply(t => assembly.AddReferenceFrom(t));
-                        }
-                    },
+                    assembly => assembly
+                        .AddReferenceFrom<LocatableCodingStyleFeature>()
+                        .AddCodes(new LocatableTemplate(domain)),
                     usings: [.. LocatableTemplate.GlobalUsings]
                 );
             });

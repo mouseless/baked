@@ -25,13 +25,9 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(IdCodingStyleFeature),
-                    assembly =>
-                    {
-                        var codeTemplate = new IdMapperTemplate(domain);
-                        assembly.AddCodes(codeTemplate);
-                        assembly.AddReferences(codeTemplate.References);
-                        assembly.AddReferenceFrom<IdCodingStyleFeature>();
-                    },
+                    assembly => assembly
+                        .AddReferenceFrom<IdCodingStyleFeature>()
+                        .AddCodes(new IdMapperTemplate(domain)),
                     usings: [.. IdMapperTemplate.GlobalUsings]
                 );
             });

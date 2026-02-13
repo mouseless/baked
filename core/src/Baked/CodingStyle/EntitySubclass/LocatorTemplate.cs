@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.CodeGeneration;
 using Baked.Domain.Model;
-using System.Reflection;
 
 namespace Baked.CodingStyle.EntitySubclass;
 
@@ -34,12 +33,11 @@ public class LocatorTemplate : CodeTemplateBase
             var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
             if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { continue; }
 
-            _entitySubclassTypes.Add((item, queryType, singleByUniqueMethod, uniqueParameter));
-            item.Apply(t => References.Add(t.Assembly));
+            _entitySubclassTypes.Add((entitySubclassType, queryType, singleByUniqueMethod, uniqueParameter));
         }
-    }
 
-    public List<Assembly> References { get; } = [];
+        AddReferences(_entitySubclassTypes.Select(est => est.SubclassType));
+    }
 
     protected override IEnumerable<string> Render() =>
         [

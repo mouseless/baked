@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.CodeGeneration;
 using Baked.Domain.Model;
-using System.Reflection;
 
 namespace Baked.CodingStyle.RichTransient;
 
@@ -13,20 +12,19 @@ public class LocatorTemplate : CodeTemplateBase
             "Baked.CodingStyle.Id",
         ];
 
-    List<TypeModel> _richTransients = [];
+    readonly List<TypeModel> _richTransients = [];
 
     public LocatorTemplate(DomainModel domain)
     {
         foreach (var item in domain.Types.Having<RichTransientAttribute>())
         {
-            if (!item.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { continue; }
+            if (!item.GetMembers().TryGet<LocatableAttribute>(out _)) { continue; }
 
             _richTransients.Add(item);
-            item.Apply(t => References.Add(t.Assembly));
         }
-    }
 
-    public List<Assembly> References { get; } = [];
+        AddReferences(_richTransients);
+    }
 
     protected override IEnumerable<string> Render() =>
         [
