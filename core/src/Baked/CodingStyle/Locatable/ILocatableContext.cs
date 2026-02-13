@@ -2,7 +2,7 @@
 
 namespace Baked.CodingStyle.Locatable;
 
-public interface IContractResolverConfigurer
+public interface ILocatableContext
 {
     Dictionary<Type, string> IdPropertyNames { get; }
 

@@ -95,6 +95,6 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
     [
         .. base
             .GetSerializableMembers(objectType)
-            .Where(m => m.IsOriginallyPublic() && (m is not PropertyInfo p || p.GetMethod?.IsOriginallyPublic() == true))
+            .Where(m => m.IsOriginallyPublic())
     ];
 }

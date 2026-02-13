@@ -30,14 +30,14 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     {
                         assembly
                             .AddReferenceFrom<LocatableCodingStyleFeature>()
-                            .AddCodes(new JsonConverterTemplate(domain));
+                            .AddCodes(new LocatableTemplate(domain));
 
                         foreach (var entity in domain.Types.Having<LocatableAttribute>())
                         {
                             entity.Apply(t => assembly.AddReferenceFrom(t));
                         }
                     },
-                    usings: [.. JsonConverterTemplate.GlobalUsings]
+                    usings: [.. LocatableTemplate.GlobalUsings]
                 );
             });
         });
@@ -57,12 +57,12 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
+                var idPropertyNames = generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
+                    .CreateRequiredImplementationInstance<ILocatableContext>()
+                    .IdPropertyNames;
+
                 configuration.Services.Configure<MvcOptions>(options =>
                 {
-                    var idPropertyNames = generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
-                        .CreateRequiredImplementationInstance<IContractResolverConfigurer>()
-                        .IdPropertyNames;
-
                     options.ModelMetadataDetailsProviders.Add(new LocatableMetadataDetailsProvider(idPropertyNames));
                 });
             });
@@ -75,8 +75,20 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             configurator.UsingGeneratedContext(generatedContext =>
             {
                 generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
-                    .CreateRequiredImplementationInstance<IContractResolverConfigurer>()
+                    .CreateRequiredImplementationInstance<ILocatableContext>()
                     .Configure(contractResolver);
+            });
+        });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            configurator.UsingGeneratedContext(generatedContext =>
+            {
+                var idPropertyNames = generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
+                    .CreateRequiredImplementationInstance<ILocatableContext>()
+                    .IdPropertyNames;
+
+                swaggerGenOptions.SchemaFilter<ReadOnlyPropertiesSchemaFilter>(idPropertyNames);
             });
         });
     }

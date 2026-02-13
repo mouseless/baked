@@ -5,7 +5,7 @@ using Humanizer;
 
 namespace Baked.CodingStyle.Locatable;
 
-public class JsonConverterTemplate(DomainModel _domain)
+public class LocatableTemplate(DomainModel _domain)
     : CodeTemplateBase()
 {
     public static string[] GlobalUsings =
@@ -89,7 +89,7 @@ public class JsonConverterTemplate(DomainModel _domain)
     string ContractResolverConfigurer(IEnumerable<TypeModelMembers> locatables) => $$"""
         namespace LocatableCodingStyleFeature;
 
-        public class ContractResolverConfigurer : IContractResolverConfigurer
+        public class LocatableContext : ILocatableContext
         {
             public Dictionary<Type, string> IdPropertyNames => new()
             {

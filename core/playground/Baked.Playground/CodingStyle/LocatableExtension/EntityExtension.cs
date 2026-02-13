@@ -7,14 +7,14 @@ public class EntityExtension
 {
     Entity _entity = default!;
 
+    public Baked.Business.Id Id => _entity.Id;
+
     internal EntityExtension With(Entity entity)
     {
         _entity = entity;
 
         return this;
     }
-
-    internal Baked.Business.Id Id => _entity.Id;
 
     public async Task IncrementInt32() =>
         await _entity.Update(int32: _entity.Int32 + 1);

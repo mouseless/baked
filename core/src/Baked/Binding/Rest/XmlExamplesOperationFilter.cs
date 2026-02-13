@@ -3,7 +3,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Binding.Rest;
 
-public class XmlExamplesOperationFilter(RequestResponseExamples _examples) : IOperationFilter
+public class XmlExamplesOperationFilter(RequestResponseExamples _examples)
+    : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {

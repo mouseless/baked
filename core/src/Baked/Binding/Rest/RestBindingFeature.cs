@@ -127,6 +127,8 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
                 return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
             });
+            swaggerGenOptions.SchemaFilter<RemoveNonPublicPropertiesSchemaFilter>();
+            swaggerGenOptions.DocumentFilter<RemoveUnusedSchemasDocumentFilter>();
 
             configurator.UsingGeneratedContext(generatedContext =>
             {
