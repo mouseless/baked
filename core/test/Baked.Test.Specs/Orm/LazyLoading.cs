@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -10,7 +9,7 @@ public class LazyLoading : TestNfr
     public async Task Proxy_classes_serialized_correctly()
     {
         var parentResponse = await Client.PostAsync("/parents", JsonContent.Create(new { name = "test" }));
-        dynamic? parent = JsonConvert.DeserializeObject(await parentResponse.Content.ReadAsStringAsync());
+        dynamic? parent = await parentResponse.Content.Deserialize();
 
         await Client.PostAsync($"/parents/{parent?.id}/children", JsonContent.Create(new { }));
 

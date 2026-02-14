@@ -1,6 +1,5 @@
 using Baked.Playground.Orm;
 using Baked.Testing;
-using Newtonsoft.Json;
 using System.Net.Http.Json;
 
 namespace Baked.Test;
@@ -34,7 +33,7 @@ public static class ParentExtensions
         surname ??= "test";
 
         var response = await client.PostAsync("/parents", JsonContent.Create(new { name, surname }));
-        dynamic? result = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? result = await response.Content.Deserialize();
 
         return result ?? throw new("Response should've been not-null");
     }
@@ -42,13 +41,13 @@ public static class ParentExtensions
     public static async Task PostParentsChildren(this System.Net.Http.HttpClient client, object id)
     {
         var response = await client.PostAsync($"/parents/{id}/children", JsonContent.Create(new { name = "child" }));
-        JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        await response.Content.Deserialize();
     }
 
     public static async Task<dynamic> GetParentsChildren(this System.Net.Http.HttpClient client, object id)
     {
         var response = await client.GetAsync($"/parents/{id}/children");
-        dynamic? result = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? result = await response.Content.Deserialize();
 
         return result ?? throw new("Response should've been not-null");
     }

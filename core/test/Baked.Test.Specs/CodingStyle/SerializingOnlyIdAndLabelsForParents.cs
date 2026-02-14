@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Baked.Test.CodingStyle;
+﻿namespace Baked.Test.CodingStyle;
 
 public class SerializingOnlyIdAndLabelsForParents : TestNfr
 {
@@ -38,7 +36,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
     public async Task Serializes_only_id_and_label_for_direct_parent_of_a_rich_transient()
     {
         var response = await Client.GetAsync("/rich-transient-with-children/1");
-        dynamic? child = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? child = await response.Content.Deserialize();
         object? actual = child?.parent;
 
         actual?.ShouldDeeplyBe(new { id = "1", name = "1 parent" });
@@ -48,7 +46,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
     public async Task Does_not_skip_properties_when_parent_child_relation_is_broken_for_a_rich_transient()
     {
         var response = await Client.GetAsync("/rich-transient-with-children/1");
-        dynamic? child = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? child = await response.Content.Deserialize();
         object? actual = child?.parentWrapper;
 
         actual?.ShouldDeeplyBe(new
@@ -58,9 +56,4 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
             description = "1 parent description"
         });
     }
-
-    [Test]
-    [Ignore("not implemented")]
-    public void Open_api_documentation_ignores_skipped_properties() =>
-        Assert.Fail();
 }

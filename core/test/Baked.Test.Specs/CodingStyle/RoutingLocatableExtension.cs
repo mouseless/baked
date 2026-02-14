@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -10,7 +9,7 @@ public class RoutingLocatableExtension : TestNfr
     public async Task Entity_extensions_are_served_under_same_routes()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { }));
-        dynamic? entity = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+        dynamic? entity = await entityResponse.Content.Deserialize();
 
         var response = await Client.PostAsync($"/entities/{entity?.id}/increment-int32", new StringContent(string.Empty));
 
@@ -29,7 +28,7 @@ public class RoutingLocatableExtension : TestNfr
     public async Task Extensions_can_be_used_as_parameters_just_like_locatables()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { int32 = 1 }));
-        dynamic? entity = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+        dynamic? entity = await entityResponse.Content.Deserialize();
 
         var response = await Client.PostAsync($"/entities/{entity?.id}/increment-by", JsonContent.Create(
             new { other = new { id = $"{entity?.id}" } }
@@ -42,7 +41,7 @@ public class RoutingLocatableExtension : TestNfr
     public async Task Extensions_as_enumerable_parameters()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { int32 = 1 }));
-        dynamic? entity = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+        dynamic? entity = await entityResponse.Content.Deserialize();
 
         var response = await Client.PostAsync($"/entities/{entity?.id}/increment-by-all", JsonContent.Create(
             new

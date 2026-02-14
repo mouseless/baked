@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -10,7 +9,7 @@ public class LookingUpEntitiesById : TestNfr
     public async Task ExposedLocate()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { }));
-        dynamic? entity = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+        dynamic? entity = await entityResponse.Content.Deserialize();
 
         var response = await Client.GetAsync($"/entities/{entity?.id}");
 
@@ -21,7 +20,7 @@ public class LookingUpEntitiesById : TestNfr
     public async Task EntityParameters()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { @string = "test entity" }));
-        dynamic? expected = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+        dynamic? expected = await entityResponse.Content.Deserialize();
 
         var response = await Client.PostAsync("/method-samples/entity-parameters", JsonContent.Create(
             new
@@ -31,7 +30,7 @@ public class LookingUpEntitiesById : TestNfr
                 array = new[] { new { id = $"{expected?.id}" }, new { id = $"{expected?.id}" } },
             }
         ));
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].@string}".ShouldBe("test entity");
@@ -45,14 +44,14 @@ public class LookingUpEntitiesById : TestNfr
     public async Task EntityParametersInQuery()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { @string = "test entity" }));
-        dynamic? expected = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+        dynamic? expected = await entityResponse.Content.Deserialize();
 
         var response = await Client.GetAsync("/method-samples/entity-parameters" +
             $"?singleId={expected?.id}" +
             $"&enumerableIds={expected?.id}&enumerableIds={expected?.id}" +
             $"&arrayIds={expected?.id}&arrayIds={expected?.id}"
         );
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].@string}".ShouldBe("test entity");
@@ -66,7 +65,7 @@ public class LookingUpEntitiesById : TestNfr
     public async Task RecordWithEntity()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { @string = "test entity" }));
-        dynamic? expected = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+        dynamic? expected = await entityResponse.Content.Deserialize();
 
         var response = await Client.PostAsync("/method-samples/record-with-entity", JsonContent.Create(
             new
@@ -79,7 +78,7 @@ public class LookingUpEntitiesById : TestNfr
                 }
             }
         ));
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].@string}".ShouldBe("test entity");

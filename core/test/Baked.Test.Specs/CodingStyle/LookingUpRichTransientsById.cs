@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
@@ -25,7 +24,7 @@ public class LookingUpRichTransientsById : TestNfr
                 array = new[] { new { id = "test 4" }, new { id = "test 5" } }
             }
         ));
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].name}".ShouldBe("test 1 name");
@@ -43,7 +42,7 @@ public class LookingUpRichTransientsById : TestNfr
             "&enumerableIds=test+2&enumerableIds=test+3" +
             "&arrayIds=test+4&arrayIds=test+5"
         );
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].name}".ShouldBe("test 1 name");
@@ -67,7 +66,7 @@ public class LookingUpRichTransientsById : TestNfr
                 }
             }
         ));
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].name}".ShouldBe("test 1 name");
@@ -96,7 +95,7 @@ public class LookingUpRichTransientsById : TestNfr
                 array = new[] { new { id = "test 4" }, new { id = "test 5" } }
             }
         ));
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].name}".ShouldBe("test 1 name");
@@ -114,7 +113,7 @@ public class LookingUpRichTransientsById : TestNfr
             "&enumerableIds=test+2&enumerableIds=test+3" +
             "&arrayIds=test+4&arrayIds=test+5"
         );
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].name}".ShouldBe("test 1 name");
@@ -138,7 +137,7 @@ public class LookingUpRichTransientsById : TestNfr
                 }
             }
         ));
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
 
         ((int?)actual?.Count).ShouldBe(5);
         $"{actual?[0].name}".ShouldBe("test 1 name");

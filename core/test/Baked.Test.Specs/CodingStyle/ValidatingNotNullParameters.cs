@@ -16,7 +16,7 @@ public class ValidatingNotNullParameters : TestNfr
     {
         var response = await Client.GetAsync($"/nullable-samples/{route}");
 
-        dynamic? result = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? result = await response.Content.Deserialize();
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         ((object?)result?.errors?[propertyName]).ShouldNotBeNull();
@@ -35,7 +35,7 @@ public class ValidatingNotNullParameters : TestNfr
             new { }
         ));
 
-        dynamic? result = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? result = await response.Content.Deserialize();
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         ((object?)result?.errors?[propertyName]).ShouldNotBeNull();
@@ -54,7 +54,7 @@ public class ValidatingNotNullParameters : TestNfr
             { "{{propertyName}}": null }
         """)));
 
-        dynamic? result = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? result = await response.Content.Deserialize();
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         ((object?)result?.errors?[propertyName]).ShouldNotBeNull();

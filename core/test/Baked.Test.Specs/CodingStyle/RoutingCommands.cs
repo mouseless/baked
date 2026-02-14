@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -83,13 +82,11 @@ public class RoutingCommands : TestNfr
     public async Task Initialization_parameters_can_be_entity()
     {
         var entityResponse = await Client.PostAsync("/entities", null);
-
-        dynamic? content = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+        dynamic? content = await entityResponse.Content.Deserialize();
 
         var response = await Client.PostAsync($"/command-with-entity?entityId={content?.id}&text=text", null);
 
         var actual = await response.Content.ReadAsStringAsync();
-
         actual.ShouldContain($"{content?.id}");
     }
 }

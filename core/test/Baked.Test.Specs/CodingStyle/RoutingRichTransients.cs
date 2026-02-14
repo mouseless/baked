@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
@@ -12,7 +11,7 @@ public class RoutingRichTransients : TestNfr
         var response = await Client.GetAsync($"rich-transient-with-datas/{id}");
 
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
-        dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
         ((string?)actual?.id).ShouldBe(id);
     }
 
@@ -23,7 +22,7 @@ public class RoutingRichTransients : TestNfr
         var response = await Client.PostAsync(path, JsonContent.Create(new { text = "text" }));
 
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
-        dynamic? actual = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
+        dynamic? actual = await response.Content.Deserialize();
         ((string?)actual).ShouldBe("text");
     }
 
