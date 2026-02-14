@@ -45,7 +45,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureServiceCollectionConfiguration(configuration =>
+        configurator.ConfigureServiceCollection(services =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
@@ -53,12 +53,12 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     .CreateRequiredImplementationInstance<ILocatableContext>()
                     .IdPropertyNames;
 
-                configuration.Services.Configure<MvcOptions>(options =>
+                services.Configure<MvcOptions>(options =>
                 {
                     options.ModelMetadataDetailsProviders.Add(new LocatableMetadataDetailsProvider(idPropertyNames));
                 });
             });
-        });
+        }, afterAddServices: true);
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {

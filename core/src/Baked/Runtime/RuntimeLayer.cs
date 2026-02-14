@@ -64,9 +64,9 @@ public class RuntimeLayer : LayerBase
 
     PhaseContext GetContext(ConfigureServices phase)
     {
-        var configuration = new ServiceCollectionConfiguration(_services);
+        var wrapper = new ServiceCollectionWrapper(_services);
 
-        return phase.CreateContext(configuration);
+        return phase.CreateContext(wrapper);
     }
 
     PhaseContext GetContext(PostBuild phase) =>

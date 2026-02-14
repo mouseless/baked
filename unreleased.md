@@ -15,8 +15,8 @@
   - `Id` user type can be mapped as `Guid`, `AutoIncrement` or `Assigned`
 - `LocatableCodingStyle` feature is now added which manages binding of
   locatable transients
-- `Business.ILocator<>` generic interface is now introduced for configuring
-  locators for `RichTransient` and `Entity` types and their extensions
+- `ILocator<>` generic interface is now introduced for configuring locators for
+  `RichTransient` and `Entity` types and their extensions
 
 ## Improvements
 
@@ -34,6 +34,11 @@
 
 ## Breaking Changes
 
+- Entity and rich transient domain objects are now rendered ID objects instead
+  of ID strings in API endpoints
+  - E.g., for a method like `public void Sample(Entity entity)`;
+    - Request object was `{ "entityId": "..." }`,
+    - Now it has become `{ "entity": { "id": "..." } }`
 - `AutoMapOrmFeature` no longer configures `Id` properties and foreign keys
 - `Id` property type is now changed from `System.Guid` to `Baked.Business.Id`
   ```csharp

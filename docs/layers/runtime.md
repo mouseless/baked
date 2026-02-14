@@ -49,16 +49,16 @@ configurator.ConfigureServiceCollection(services =>
 });
 ```
 
-### `ServiceCollectionConfiguration`
+### `ServiceCollectionWrapper`
 
 This target is provided in `ConfigureServices` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.ConfigureServiceCollectionConfiguration(configuration =>
+configurator.ConfigureServiceCollection(configuration =>
 {
     ...
-});
+}, afterAddServices: true);
 ```
 
 > [!NOTE]
