@@ -12,7 +12,7 @@ app.Layers.AddRuntime();
 ## Configuration Targets
 
 `Runtime` layer provides `IConfigurationBuilder`, `ILoggingBuilder`,
-`IServiceCollection`, `ServiceCollectionConfiguration`, `IServiceProvider` and
+`IServiceCollection`, `ServiceCollectionWrapper`, `IServiceProvider` and
 `ThreadOptions` as configuration targets.
 
 ### `IConfigurationBuilder`
