@@ -29,6 +29,8 @@
     render only id and label properties of the parent
   - Any locatable under a record will include all of their properties, e.g.,
     `Child.ParentWrapper.Parent` will render all properties of the parent
+- `ExtendedContractResolver` is added as a default contract resolver to allow
+  customization of json serialization through `RestApiLayer`
 
 ## Breaking Changes
 
