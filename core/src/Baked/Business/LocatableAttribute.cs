@@ -16,6 +16,6 @@ public class LocatableAttribute : Attribute
             ? $"await {serviceExpression}.LocateManyAsync({idsExpression})"
             : $"{serviceExpression}.LocateMany({idsExpression})";
 
-    public string BuildLocatorType(string locatableType) =>
+    public string RenderLocatorType(string locatableType) =>
         IsAsync ? $"Baked.Business.IAsyncLocator<{locatableType}>" : $"Baked.Business.ILocator<{locatableType}>";
 }

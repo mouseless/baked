@@ -15,7 +15,7 @@ public static class LocatableCodingStyleExtensions
         new();
 
     public static ParameterModelAttribute AddLocatorAsService(this LocatableAttribute locatable, ActionModelAttribute action, TypeModel locatableType) =>
-        action.Parameter[$"{locatableType.Name.Camelize()}Locator"] = new($"{locatableType.Name.Camelize()}Locator", locatable.BuildLocatorType(locatableType.CSharpFriendlyFullName), ParameterModelFrom.Services)
+        action.Parameter[$"{locatableType.Name.Camelize()}Locator"] = new($"{locatableType.Name.Camelize()}Locator", locatable.RenderLocatorType(locatableType.CSharpFriendlyFullName), ParameterModelFrom.Services)
         {
             IsInvokeMethodParameter = false
         };

@@ -22,7 +22,7 @@ public class AddLocateActionConvention<T> : IDomainModelConvention<TypeModelCont
             returnIsVoid: false,
             parameters:
             [
-                new(ParameterModelAttribute.TargetParameterName, locatable.BuildLocatorType(context.Type.CSharpFriendlyFullName) , ParameterModelFrom.Services),
+                new(ParameterModelAttribute.TargetParameterName, locatable.RenderLocatorType(context.Type.CSharpFriendlyFullName) , ParameterModelFrom.Services),
                 new(idInfo.RouteName, idInfo.Type, ParameterModelFrom.Route) { RoutePosition = 1 },
                 new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }
             ]
