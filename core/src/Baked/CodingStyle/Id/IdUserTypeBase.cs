@@ -18,7 +18,7 @@ public abstract class IdUserTypeBase : UserTypeBase
     {
         var obj = NHibernateType.NullSafeGet(rs, names, session);
 
-        return obj == null ? null : Baked.Business.Id.Parse(obj);
+        return obj == null ? null : Baked.Business.Id.Create(obj);
     }
 
     public override void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)

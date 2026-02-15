@@ -19,7 +19,7 @@ public class IdMapperTemplate : CodeTemplateBase
             "NHibernate.Linq",
         ];
 
-    readonly List<(TypeModel Type, IdAttribute.OrmConfig Orm)> _entities = [];
+    readonly List<(TypeModel Type, IdAttribute.MappingOptions IdMapping)> _entities = [];
 
     public IdMapperTemplate(DomainModel _domain)
     {
@@ -30,9 +30,9 @@ public class IdMapperTemplate : CodeTemplateBase
             if (!idProperty.PropertyType.Is<Business.Id>()) { continue; }
 
             var idAttribute = idProperty.Get<IdAttribute>();
-            var orm = idAttribute.Orm ?? new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
+            var mapping = idAttribute.Mapping ?? new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
 
-            _entities.Add((entity, orm));
+            _entities.Add((entity, mapping));
         }
 
         AddReferences(_entities.Select(e => e.Type));
@@ -49,19 +49,19 @@ public class IdMapperTemplate : CodeTemplateBase
             public void Configure(AutoPersistenceModel model)
             {
             {{ForEach(_entities, e => $$"""
-                {{ModelOverride(e.Type, e.Orm)}}
+                {{ModelOverride(e.Type, e.IdMapping)}}
                 {{ForeignKeyOverride(e.Type)}}
             """)}}
             }
         }
     """;
 
-    string ModelOverride(TypeModel typeModel, IdAttribute.OrmConfig orm) => $$"""
+    string ModelOverride(TypeModel typeModel, IdAttribute.MappingOptions idMapping) => $$"""
         model.Override<{{typeModel.CSharpFriendlyFullName}}>(x =>
-        {{If(orm.IdentifierGenerator is null, () => $$"""
-            x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Assigned()
+        {{If(idMapping.IdentifierGenerator is null, () => $$"""
+            x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{idMapping.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Assigned()
         """, @else: () => $$"""
-            x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{orm.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Custom<{{orm.IdentifierGenerator?.GetCSharpFriendlyFullName()}}>()
+            x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{idMapping.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Custom<{{idMapping.IdentifierGenerator?.GetCSharpFriendlyFullName()}}>()
         """)}}
         );
     """;
