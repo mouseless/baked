@@ -57,13 +57,13 @@ public class LocatorTemplate : CodeTemplateBase
         public class {{context.SubclassType.Name}}Locator({{context.QueryType.CSharpFriendlyFullName}} _query)
             : ILocator<{{context.SubclassType.CSharpFriendlyFullName}}>
         {
-            public {{context.SubclassType.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
+            public {{context.SubclassType.CSharpFriendlyFullName}} Locate(Id id, bool throwNotFound) =>
                 ({{context.SubclassType.CSharpFriendlyFullName}})_query.{{context.UniqueMethod.Name}}({{Parameter(context.UniqueParameter)}}, throwNotFound: throwNotFound);
 
-            public LazyLocatable<{{context.SubclassType.CSharpFriendlyFullName}}> LocateLazily(Baked.Business.Id _) =>
+            public LazyLocatable<{{context.SubclassType.CSharpFriendlyFullName}}> LocateLazily(Id _) =>
                 throw new InvalidOperationException("`{{context.SubclassType.Name}}` cannot be located lazily, use the actual entity and cast later");
 
-            public IEnumerable<{{context.SubclassType.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
+            public IEnumerable<{{context.SubclassType.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
                 ids.Select(id => Locate(id, false));
         }
         """)}}
