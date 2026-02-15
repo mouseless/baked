@@ -53,6 +53,7 @@ public abstract class DataSourceSpec : Spec
                 c => c.Label(),
                 c => c.Locatable(),
                 c => c.NamespaceAsRoute(),
+                c => c.Query(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichTransient(),

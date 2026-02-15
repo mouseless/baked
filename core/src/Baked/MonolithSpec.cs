@@ -68,6 +68,7 @@ public abstract class MonolithSpec : Spec
                 c => c.LocatableExtension(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
+                c => c.Query(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),

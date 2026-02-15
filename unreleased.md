@@ -15,6 +15,8 @@
   - `Id` can be mapped as `Generated`, `AutoIncrement` or `Assigned`
 - `LocatableCodingStyle` feature is now added which manages binding of
   locatable transients
+- `QueryCodingStyle` feature is now added to find and mark query classes of
+  locatables
 - `ILocator<>` generic interface is now introduced for configuring locators for
   `RichTransient` and `Entity` types and their extensions
 
@@ -113,4 +115,9 @@
   `EntitySubclassCodingStyleFeature`
 - `DesignatedStringPropertiesAreLabelUxFeature` is now split into two,
   `LabelCodingStyleFeature` and `LabelsAreFrozenUxFeature`
-- `LabelAttribute` is moved to `Baked.Business` namespace
+- `LabelAttribute` and `QueryAttribute` are moved to `Baked.Business` namespace
+- `EntityAttribute.QueryType` property is now removed, use
+  `LocatableAttribute.QueryType`
+- `TryGetEntityAttribute` is removed, use `TryGetLocatableAttribute`
+- `TryGetQueryContextType` is now redundant and removed
+- `Business.DomainAssemblies.Regexes` is moved to `CodingStyle.Query.Regexes`

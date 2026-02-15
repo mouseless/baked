@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Baked.Business.DomainAssemblies;
+namespace Baked.CodingStyle.Query;
 
 internal static partial class Regexes
 {

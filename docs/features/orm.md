@@ -12,13 +12,8 @@ app.Features.AddOrm(...);
 ## Auto Map
 
 Auto maps domain types with `Entity` attribute using default opinions of
-`FluentNHibernate`.
-
-Also adds api model conventions that enables;
-
-- Getting entity types directly from api inputs
-- Hiding method name from route for `By` methods, exposing them under `GET
-  /entities` route
+`FluentNHibernate` and registers `IEntityContext<>`, `IQueryContext<>` and
+`ILocator<>` services for entities.
 
 ```csharp
 c => c.AutoMap()

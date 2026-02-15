@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Class)]
 public class LocatableAttribute : Attribute
 {
+    public Type? QueryType { get; set; }
     public bool IsAsync { get; set; } = false;
 
     public string RenderLocate(string serviceExpression, string idExpression,

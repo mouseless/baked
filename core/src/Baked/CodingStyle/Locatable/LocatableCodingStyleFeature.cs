@@ -1,8 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Domain.Model;
 using Baked.RestApi;
-using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,20 +13,6 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<LocatableAttribute>();
-
-            builder.Conventions.SetTypeAttribute(
-                when: c =>
-                    c.Type.Has<LocatableAttribute>() &&
-                    c.Domain.Types.TryGetValue(((IModel)c.Type).Id.Pluralize(), out var query) &&
-                    query.TryGetMetadata(out var queryMetadata) &&
-                    !queryMetadata.Has<QueryAttribute>(),
-                apply: (c, set) =>
-                {
-                    var queryType = c.Domain.Types[((IModel)c.Type).Id.Pluralize()];
-
-                    set(queryType.GetMetadata(), c.Type.Apply(t => new QueryAttribute(t)));
-                }
-            );
 
             builder.Conventions.Add(new AddIdParameterToRouteConvention());
             builder.Conventions.Add(new InitializeLocatablesConvention());

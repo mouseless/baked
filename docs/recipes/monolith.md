@@ -51,6 +51,7 @@ Bake.New
 |                    | Locatable Extension                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
+|                    | Query                                    |                                    |
 |                    | Records are DTOs                         |                                    |
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Rich Entity                              |                                    |

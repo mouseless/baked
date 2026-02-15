@@ -6,6 +6,7 @@ using Baked.Domain.Model;
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Humanizer;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Baked;
 
@@ -69,5 +70,28 @@ public static class LocatableCodingStyleExtensions
     {
         parameter.Type = $"IEnumerable<{idInfo.Type}>";
         parameter.Name = $"{parameter.Name.Singularize()}{idInfo.PropertyName.Pluralize()}";
+    }
+
+    public static bool TryGetLocatableAttribute(this TypeModel type, [NotNullWhen(true)] out LocatableAttribute? locatableAttribute)
+    {
+        locatableAttribute = default;
+
+        return
+            type.TryGetMetadata(out var metadata) &&
+            metadata.TryGet(out locatableAttribute);
+    }
+
+    public static bool TryGetQueryType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
+    {
+        if (!type.TryGetLocatableAttribute(out var locatableAttribute) || locatableAttribute.QueryType is null)
+        {
+            queryType = default;
+
+            return false;
+        }
+
+        queryType = domain.Types[locatableAttribute.QueryType];
+
+        return true;
     }
 }

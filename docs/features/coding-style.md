@@ -75,7 +75,7 @@ public class Entity(IEntityContext<Parent> _context)
 ## Initializable
 
 Adds `TransientAttribute` to the services that has an `Initializer` method.
-This coding style makes usages like `newEntity().With(name)` possible.
+This coding style makes usages like `_newEntity().With(name)` possible.
 `Transient` type's initializer parameters are added to query and initalizer
 is invoked with given parameters when constructing target.
 
@@ -142,6 +142,19 @@ as `JSON` content.
 c => c.ObjectAsJson()
 ```
 
+## Query
+
+Adds `QueryAttribute` to the classes that has plural name of a locatable class,
+e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a query.
+
+Removes `FirstBy`, `SingleBy` and `By` names from API routes and configure them
+as `GET` endpoints.
+
+> [!WARNING]
+>
+> A class `IQueryContext` is not considered as a query class unless it satisfies
+> the plural naming convention.
+
 ## Records are DTOs
 
 Configures domain type records as valid input parameters. Methods containing
@@ -162,9 +175,7 @@ c => c.RemainingServicesAreSingleton()
 
 ## Rich Entity
 
-Adds `QueryAttribute` to classes that inject `IQueryContext<TEntity>`. Using
-generic argument of `IQueryContext<TEntity>` finds corresponding entity class
-and add `EntityAttribute` to it.
+Adds `EntityAttribute` to classes that inject `IEntityContext<TEntity>`.
 
 Configures `NHibernate` to initialize entities using dependency injection,
 making them rich entities.

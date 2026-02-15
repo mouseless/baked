@@ -44,6 +44,7 @@ Bake.New
 |                    | Label                              |                                    |
 |                    | Locatable                          |                                    |
 |                    | Namespace as Route                 |                                    |
+|                    | Query                              |                                    |
 |                    | Records are DTOs                   |                                    |
 |                    | Remaining Services are Singleton   |                                    |
 |                    | Rich Transient                     |                                    |
