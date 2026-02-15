@@ -5,12 +5,13 @@ using Baked.Orm;
 
 namespace Baked.CodingStyle.Id;
 
-public class IdMapperTemplate : CodeTemplateBase
+public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
 {
     public static readonly string[] GlobalUsings =
         [
             "Baked.Business",
             "Baked.CodingStyle.Id",
+            "Baked.Orm",
             "FluentNHibernate",
             "FluentNHibernate.Automapping",
             "FluentNHibernate.Diagnostics",
@@ -21,7 +22,7 @@ public class IdMapperTemplate : CodeTemplateBase
 
     readonly List<(TypeModel Type, IdAttribute.MappingOptions IdMapping)> _entities = [];
 
-    public IdMapperTemplate(DomainModel _domain)
+    public AutoPersistenceModelConfigurerTemplate(DomainModel _domain)
     {
         foreach (var entity in _domain.Types.Having<EntityAttribute>())
         {
@@ -39,12 +40,12 @@ public class IdMapperTemplate : CodeTemplateBase
     }
 
     protected override IEnumerable<string> Render() =>
-        [IdMapper()];
+        [Configurer()];
 
-    string IdMapper() => $$"""
+    string Configurer() => $$"""
         namespace IdCodingStyleFeature;
 
-        public class IdMapper : IIdMapper
+        public class AutoPersistenceModelConfigurer : IAutoPersistenceModelConfigurer
         {
             public void Configure(AutoPersistenceModel model)
             {

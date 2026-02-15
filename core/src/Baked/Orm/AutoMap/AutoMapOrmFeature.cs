@@ -35,6 +35,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add(typeof(EntityAttribute));
+            builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
@@ -44,10 +45,12 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                 generatedAssemblies.Add(nameof(AutoMapOrmFeature),
                     assembly => assembly
                         .AddReferenceFrom<AutoMapOrmFeature>()
+                        .AddCodes(new AutoPersistenceModelConfigurerTemplate(domain))
                         .AddCodes(new ManyToOneFetcherTemplate(domain))
                         .AddCodes(new TypeModelTypeSourceTemplate(domain)),
                     usings:
                     [
+                        .. AutoPersistenceModelConfigurerTemplate.GlobalUsings,
                         .. ManyToOneFetcherTemplate.GlobalUsings,
                         .. TypeModelTypeSourceTemplate.GlobalUsings
                     ]
@@ -76,7 +79,12 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                model.AddTypeSource(generatedContext.Assemblies[nameof(AutoMapOrmFeature)].CreateRequiredImplementationInstance<ITypeSource>());
+                var featureAssembly = generatedContext.Assemblies[nameof(AutoMapOrmFeature)];
+                var typeSource = featureAssembly.CreateRequiredImplementationInstance<ITypeSource>();
+                var modelConfigurer = featureAssembly.CreateRequiredImplementationInstance<IAutoPersistenceModelConfigurer>();
+
+                model.AddTypeSource(typeSource);
+                modelConfigurer.Configure(model);
             });
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));

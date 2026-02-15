@@ -1,8 +1,8 @@
 ﻿using FluentNHibernate.Automapping;
 
-namespace Baked.CodingStyle.Id;
+namespace Baked.Orm;
 
-public interface IIdMapper
+public interface IAutoPersistenceModelConfigurer
 {
     void Configure(AutoPersistenceModel model);
 }

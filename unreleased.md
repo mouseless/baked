@@ -15,10 +15,12 @@
   - `Id` can be mapped as `Generated`, `AutoIncrement` or `Assigned`
 - `LocatableCodingStyle` feature is now added which manages binding of
   locatable transients
-- `QueryCodingStyle` feature is now added to find and mark query classes of
-  locatables
 - `ILocator<>` generic interface is now introduced for configuring locators for
   `RichTransient` and `Entity` types and their extensions
+- `QueryCodingStyle` feature is now added to find and mark query classes of
+  locatables
+- `UniqueCodingStyle` feature is now added that adds unique attribute to
+  properties with a `SingleBy...` or `AnyBy...` query
 
 ## Improvements
 
@@ -33,6 +35,8 @@
     `Child.ParentWrapper.Parent` will render all properties of the parent
 - `ExtendedContractResolver` is added as a default contract resolver to allow
   customization of json serialization through `RestApiLayer`
+- `Orm.UniqueAttribute` is introduced in abstractions which causes
+  `AutoMapOrmFeature` to set unique constraint for the properties that have it
 - `DefaultThemeFeature` now uses `Text` to render locatable properties
 - `DataTableDefaultsUxFeature` now uses label (or id) property to display
   locatable properties

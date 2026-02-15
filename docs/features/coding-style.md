@@ -214,6 +214,18 @@ c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
 >
 > Default suffix is `Context`.
 
+## Unique
+
+Adds `UniqueAttribute` to entity properties of which corresponding query class
+has either a `SingleBy...` or `AnyBy...` query method, e.g., `User.Username`
+property would be treated as unique if either `Users.SingleByUsername` or
+`Users.AnyByUsername` exists.
+
+> [!NOTE]
+>
+> Having `UniqueAttribute` on a property tells `AutoMapOrmFeature` to configure
+> that column to have a unique constraint.
+
 ## `Uri` Return is Redirect
 
 Adds redirect support to your api endpoints. It configures an endpoint to use

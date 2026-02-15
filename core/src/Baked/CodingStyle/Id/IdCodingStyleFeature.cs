@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Orm;
 using FluentNHibernate.Conventions.Helpers;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +28,8 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 generatedAssemblies.Add(nameof(IdCodingStyleFeature),
                     assembly => assembly
                         .AddReferenceFrom<IdCodingStyleFeature>()
-                        .AddCodes(new IdMapperTemplate(domain)),
-                    usings: [.. IdMapperTemplate.GlobalUsings]
+                        .AddCodes(new AutoPersistenceModelConfigurerTemplate(domain)),
+                    usings: [.. AutoPersistenceModelConfigurerTemplate.GlobalUsings]
                 );
             });
         });
@@ -39,9 +40,9 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             configurator.UsingGeneratedContext(context =>
             {
-                var idMapper = context.Assemblies[nameof(IdCodingStyleFeature)].CreateImplementationInstance<IIdMapper>();
-
-                idMapper?.Configure(model);
+                context.Assemblies[nameof(IdCodingStyleFeature)]
+                    .CreateImplementationInstance<IAutoPersistenceModelConfigurer>()
+                    ?.Configure(model);
             });
         });
 

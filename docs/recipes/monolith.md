@@ -57,7 +57,7 @@ Bake.New
 |                    | Rich Entity                              |                                    |
 |                    | Rich Transient                           |                                    |
 |                    | Scoped by Suffix                         |                                    |
-|                    | Single by Unique                         |                                    |
+|                    | Unique                                   |                                    |
 |                    | `Uri` Return is Redirect                 |                                    |
 |                    | Use Built-in Types                       |                                    |
 |                    | Use Nullable Types                       |                                    |
