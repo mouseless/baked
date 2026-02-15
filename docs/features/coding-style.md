@@ -48,9 +48,9 @@ This feature provides `Id` configuration for transient and entity classes.
 c => c.Id()
 ```
 
-Single property of type `Baked.Business.Id` with is marked with `IdAttribute`.
-For entities `Id` properties are mapped with `IdGuidUserType` and generated with
-`IdGuidGenerator` as `DbType.Guid`.
+Single property of type `Baked.Business.Id` is marked with `IdAttribute`. For
+entities, `Id` properties are mapped with `IdGuidUserType` and generated with
+`IdGuidGenerator` using `DbType.Guid`.
 
 ```csharp
 public class Entity(IEntityContext<Parent> _context)
@@ -76,8 +76,8 @@ public class Entity(IEntityContext<Parent> _context)
 
 Adds `TransientAttribute` to the services that has an `Initializer` method.
 This coding style makes usages like `_newEntity().With(name)` possible.
-`Transient` type's initializer parameters are added to query and initalizer
-is invoked with given parameters when constructing target.
+`Transient` type's initializer parameters are added to query string and
+initalizer is invoked with given parameters when constructing target.
 
 > [!NOTE]
 >
@@ -117,7 +117,7 @@ c => c.Locatable()
 ## Locatable Extension
 
 Allows classes to extend locatables via composition. This marks a transient
-class as an locatable extension when it implements implicit casting to a
+class as a locatable extension when it implements implicit casting to a
 locatable. Methods of these extension classes are rendered under locatable
 group.
 
@@ -135,8 +135,8 @@ c => c.NamespaceAsRoute()
 
 ## Object as JSON
 
-Configures all `object` parameters, return types and properties to be treated
-as `JSON` content.
+Configures all `object` parameters, return types and properties to be treated as
+`JSON` content.
 
 ```csharp
 c => c.ObjectAsJson()
@@ -152,8 +152,8 @@ as `GET` endpoints.
 
 > [!WARNING]
 >
-> A class `IQueryContext` is not considered as a query class unless it satisfies
-> the plural naming convention.
+> A class that injects `IQueryContext` is not considered as a query class unless
+> it satisfies the plural naming convention.
 
 ## Records are DTOs
 

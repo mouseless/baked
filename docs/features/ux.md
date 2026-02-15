@@ -111,7 +111,7 @@ c => c.EnumParameterIsSelect(maxMemberCountForSelectButton: ...)
 
 ## Initializer Parameters are in Page Title
 
-Adds initializer parameters of a report class to the page title area of a
+Adds initializer parameters of a transient class to the page title area of a
 `TabbedPage`.
 
 ```csharp
