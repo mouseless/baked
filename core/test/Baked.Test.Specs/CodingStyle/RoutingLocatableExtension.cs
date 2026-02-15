@@ -25,6 +25,14 @@ public class RoutingLocatableExtension : TestNfr
     }
 
     [Test]
+    public async Task Rich_transient_extensions_are_served_under_same_routes__async_version()
+    {
+        var response = await Client.PostAsync("/rich-transient-asyncs/12/from-extension", new StringContent(string.Empty));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
+
+    [Test]
     public async Task Extensions_can_be_used_as_parameters_just_like_locatables()
     {
         var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { int32 = 1 }));
