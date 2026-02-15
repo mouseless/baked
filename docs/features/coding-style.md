@@ -48,9 +48,9 @@ This feature provides `Id` configuration for transient and entity classes.
 c => c.Id()
 ```
 
-Single property of type `Baked.Business.Id` with name `Id` is marked with
-`IdAttribute`. For entities `Id` properties are mapped with `IdGuidUserType`
-and auto generated with `IdGuidGenerator` as `DbType.Guid`.
+Single property of type `Baked.Business.Id` with is marked with `IdAttribute`.
+For entities `Id` properties are mapped with `IdGuidUserType` and generated with
+`IdGuidGenerator` as `DbType.Guid`.
 
 ```csharp
 public class Entity(IEntityContext<Parent> _context)
@@ -59,6 +59,18 @@ public class Entity(IEntityContext<Parent> _context)
     ...
 }
 ```
+
+> [!TIP]
+>
+> To override ID mapping of an entity, add a property attribute configuration on
+> `IdAttribute` as below,
+>
+> ```csharp
+> builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+>     when: c => c.Type.Is<MyEntity>(),
+>     attribute: id => id.Assigned() // or id.AutoIncrement()
+> );
+> ```
 
 ## Initializable
 

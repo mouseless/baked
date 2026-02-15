@@ -10,9 +10,9 @@
   contain a guide to enable proxifying in domain assemblies
 - `IdCodingStyle` feature is now added which configures primary key and foreign
   key references for entities
-  - A property named `Id` with `Baked.Business.Id` user type is required for a
-    property to be configured as `Id`
-  - `Id` user type can be mapped as `Guid`, `AutoIncrement` or `Assigned`
+  - A property with `Baked.Business.Id` type is required for a property to be
+    configured as primary key
+  - `Id` can be mapped as `Generated`, `AutoIncrement` or `Assigned`
 - `LocatableCodingStyle` feature is now added which manages binding of
   locatable transients
 - `ILocator<>` generic interface is now introduced for configuring locators for
