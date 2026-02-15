@@ -119,6 +119,9 @@ public static class BusinessExtensions
     ) where TAttribute : Attribute =>
         method.DefaultOverload.Parameters.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
 
+    public static bool HasIdInfo(this TypeModel type) =>
+        type.TryGetIdInfo(out var _);
+
     public static IdInfo GetIdInfo(this TypeModel type)
     {
         if (!type.TryGetIdInfo(out var result))

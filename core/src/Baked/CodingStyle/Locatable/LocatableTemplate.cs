@@ -95,9 +95,9 @@ public class LocatableTemplate : CodeTemplateBase
             public Dictionary<Type, string> IdPropertyNames => new()
             {
             {{ForEach(_locatables
-                .Where(l => l.Properties.Having<IdAttribute>().Any())
-                .Select(l => new { Type = l, IdProperty = l.Properties.Having<IdAttribute>().Single() }), context => $$"""
-               { typeof({{context.Type.CSharpFriendlyFullName}}), "{{context.IdProperty.Name}}" },
+                .Where(l => l.HasIdInfo())
+                .Select(l => new { Type = l, IdPropertyName = l.GetIdInfo().PropertyName }), context => $$"""
+               { typeof({{context.Type.CSharpFriendlyFullName}}), "{{context.IdPropertyName}}" },
             """, indentation: 2)}}
             };
 

@@ -130,6 +130,7 @@ display in `DataTable` columns.
 c => c.LabelsAreFrozen()
 ```
 
+- Brings label columns before other columns via `DataAttribute.Order`
 - Label columns in a `DataTable` are frozen and have minimum width
 - The first label column is used as the table’s data key if no key is set
 

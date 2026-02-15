@@ -5,13 +5,13 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
     [Test]
     public async Task Serializes_only_id_and_label_for_direct_parent_of_an_entity()
     {
-        var parent = await Client.PostParents(name: "parent");
+        var parent = await Client.PostParents(name: "parent", surname: "test");
         await Client.PostParentsChildren(id: (object)parent.id);
 
         var children = await Client.GetParentsChildren((object)parent.id);
         object? actual = children[0].parent;
 
-        actual?.ShouldDeeplyBe(new { parent?.id, name = "parent" });
+        actual?.ShouldDeeplyBe(new { parent?.id, name = "parent", surname = "test" });
     }
 
     [Test]
