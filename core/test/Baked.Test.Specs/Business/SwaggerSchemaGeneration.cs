@@ -94,17 +94,24 @@ public class SwaggerSchemaGeneration : TestNfr
         ((string?)schema?.properties["parameter2"].description).ShouldBe("Parameter 2 documentation");
     }
 
-    [TestCase("EntityParameters", "entityId", "Entity description")]
-    [TestCase("EntityListParameters", "entityIds", "Entities description")]
-    [TestCase("EntityListParameters", "otherEntityIds", "Other entities description")]
-    public async Task Entity_parameter_comments_are_kept_even_if_their_name_change(string method, string parameter, string expected)
+    [TestCase("/method-samples/entity-parameters", 0, "singleId", "Single description")]
+    [TestCase("/method-samples/entity-parameters", 1, "enumerableIds", "Enumerable description")]
+    [TestCase("/method-samples/entity-parameters", 2, "arrayIds", "Array description")]
+    [TestCase("/method-samples/transient-parameters", 0, "singleId", "Single description")]
+    [TestCase("/method-samples/transient-parameters", 1, "enumerableIds", "Enumerable description")]
+    [TestCase("/method-samples/transient-parameters", 2, "arrayIds", "Array description")]
+    [TestCase("/method-samples/transient-async-parameters", 0, "singleId", "Single description")]
+    [TestCase("/method-samples/transient-async-parameters", 1, "enumerableIds", "Enumerable description")]
+    [TestCase("/method-samples/transient-async-parameters", 2, "arrayIds", "Array description")]
+    public async Task Locatable_parameter_comments_are_kept_even_if_their_name_change(string path, int parameterIndex, string expectedName, string expectedDescription)
     {
         var response = await Client.GetAsync("/swagger/samples/swagger.json");
 
         dynamic? content = await response.Content.Deserialize();
-        var schema = content?.components.schemas[$"{method}Request"];
+        var parameters = content?.paths[path].get.parameters;
 
-        ((string?)schema?.properties[parameter].description).ShouldBe(expected);
+        ((string?)parameters?[parameterIndex].name).ShouldBe(expectedName);
+        ((string?)parameters?[parameterIndex].description).ShouldBe(expectedDescription);
     }
 
     [Test]

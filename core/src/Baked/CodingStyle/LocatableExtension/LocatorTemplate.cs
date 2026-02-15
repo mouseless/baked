@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.CodeGeneration;
 using Baked.Domain.Model;
-using System.Reflection;
 
 namespace Baked.CodingStyle.LocatableExtension;
 
@@ -14,7 +13,7 @@ public class LocatorTemplate : CodeTemplateBase
             "Baked.Orm"
         ];
 
-    List<TypeModel> _locatableExtensionTypes = [];
+    readonly List<TypeModel> _locatableExtensionTypes = [];
 
     public LocatorTemplate(DomainModel domain)
     {
@@ -23,11 +22,10 @@ public class LocatorTemplate : CodeTemplateBase
             if (!item.GetMembers().TryGet<LocatableAttribute>(out var _)) { continue; }
 
             _locatableExtensionTypes.Add(item);
-            item.Apply(t => References.Add(t.Assembly));
         }
-    }
 
-    public List<Assembly> References { get; } = [];
+        AddReferences(_locatableExtensionTypes);
+    }
 
     protected override IEnumerable<string> Render() =>
         [
@@ -49,6 +47,13 @@ public class LocatorTemplate : CodeTemplateBase
         {
             public {{extension.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
                 ({{extension.CSharpFriendlyFullName}})_locator.Locate(id, throwNotFound: throwNotFound);
+
+            public LazyLocatable<{{extension.CSharpFriendlyFullName}}> LocateLazily(Id id)
+            {
+                var result = _locator.LocateLazily(id);
+
+                return new(({{extension.CSharpFriendlyFullName}})result.Value, result.Initialize);
+            }
 
             public IEnumerable<{{extension.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
                 _locator.LocateMany(ids).Select(e => ({{extension.CSharpFriendlyFullName}})e);

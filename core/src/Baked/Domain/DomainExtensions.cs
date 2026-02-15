@@ -133,9 +133,13 @@ public static class DomainExtensions
     ///
     /// `Publicize.Fody` weaver adds this to all originally non-public members.
     /// </summary>
-    public static bool IsOriginallyPublic(this MemberInfo? memberInfo) =>
-        memberInfo is not null &&
-        !memberInfo.GetCustomAttributes().OfType<EditorBrowsableAttribute>().Any(eba => eba.State == EditorBrowsableState.Advanced);
+    public static bool IsOriginallyPublic(this MemberInfo? memberInfo)
+    {
+        if (memberInfo is null) { return false; }
+        if (memberInfo is PropertyInfo property) { return property.GetMethod?.IsOriginallyPublic() == true; }
+
+        return !memberInfo.GetCustomAttributes().OfType<EditorBrowsableAttribute>().Any(eba => eba.State == EditorBrowsableState.Advanced);
+    }
 
     public static DomainModel TheDomainModel(this Stubber giveMe) =>
         giveMe.Spec.GenerateContext.GetDomainModel();

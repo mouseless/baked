@@ -15,10 +15,10 @@ public class AddLocateActionConvention<T> : IDomainModelConvention<TypeModelCont
         if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
         if (!context.Type.TryGetIdInfo(out var idInfo)) { return; }
 
-        controller.Action["Locate"] = new("Locate",
+        var action = controller.Action["Locate"] = new("Locate",
             routeParts: [context.Type.Name.Pluralize()],
             returnType: context.Type.CSharpFriendlyFullName,
-            returnIsAsync: locatable.IsAsync,
+            returnIsAsync: false,
             returnIsVoid: false,
             parameters:
             [
@@ -31,5 +31,10 @@ public class AddLocateActionConvention<T> : IDomainModelConvention<TypeModelCont
             Method = HttpMethod.Get,
             FindTargetStatement = ParameterModelAttribute.TargetParameterName
         };
+
+        if (locatable.IsAsync)
+        {
+            action.MakeAsync();
+        }
     }
 }

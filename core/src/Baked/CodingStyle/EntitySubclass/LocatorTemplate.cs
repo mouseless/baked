@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.CodeGeneration;
 using Baked.Domain.Model;
-using System.Reflection;
 
 namespace Baked.CodingStyle.EntitySubclass;
 
@@ -34,12 +33,11 @@ public class LocatorTemplate : CodeTemplateBase
             var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters.First();
             if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { continue; }
 
-            _entitySubclassTypes.Add((item, queryType, singleByUniqueMethod, uniqueParameter));
-            item.Apply(t => References.Add(t.Assembly));
+            _entitySubclassTypes.Add((entitySubclassType, queryType, singleByUniqueMethod, uniqueParameter));
         }
-    }
 
-    public List<Assembly> References { get; } = [];
+        AddReferences(_entitySubclassTypes.Select(est => est.SubclassType));
+    }
 
     protected override IEnumerable<string> Render() =>
         [
@@ -55,14 +53,17 @@ public class LocatorTemplate : CodeTemplateBase
 
         namespace EntitySubclassViaCompositionCodingStyleFeature;
 
-        {{ForEach(_entitySubclassTypes, s => $$"""
-        public class {{s.SubclassType.Name}}Locator({{s.QueryType.CSharpFriendlyFullName}} _query)
-            : ILocator<{{s.SubclassType.CSharpFriendlyFullName}}>
+        {{ForEach(_entitySubclassTypes, context => $$"""
+        public class {{context.SubclassType.Name}}Locator({{context.QueryType.CSharpFriendlyFullName}} _query)
+            : ILocator<{{context.SubclassType.CSharpFriendlyFullName}}>
         {
-            public {{s.SubclassType.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
-                ({{s.SubclassType.CSharpFriendlyFullName}})_query.{{s.UniqueMethod.Name}}({{Parameter(s.UniqueParameter)}}, throwNotFound: throwNotFound);
+            public {{context.SubclassType.CSharpFriendlyFullName}} Locate(Baked.Business.Id id, bool throwNotFound) =>
+                ({{context.SubclassType.CSharpFriendlyFullName}})_query.{{context.UniqueMethod.Name}}({{Parameter(context.UniqueParameter)}}, throwNotFound: throwNotFound);
 
-            public IEnumerable<{{s.SubclassType.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
+            public LazyLocatable<{{context.SubclassType.CSharpFriendlyFullName}}> LocateLazily(Baked.Business.Id _) =>
+                throw new InvalidOperationException("`{{context.SubclassType.Name}}` cannot be located lazily, use the actual entity and cast later");
+
+            public IEnumerable<{{context.SubclassType.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Baked.Business.Id> ids) =>
                 ids.Select(id => Locate(id, false));
         }
         """)}}
@@ -80,8 +81,8 @@ public class LocatorTemplate : CodeTemplateBase
         {
             public void AddServices(IServiceCollection services)
             {
-            {{ForEach(_entitySubclassTypes, s => $$"""
-                services.AddSingleton<ILocator<{{s.SubclassType.CSharpFriendlyFullName}}>, {{s.SubclassType.Name}}Locator>();
+            {{ForEach(_entitySubclassTypes, context => $$"""
+                services.AddSingleton<ILocator<{{context.SubclassType.CSharpFriendlyFullName}}>, {{context.SubclassType.Name}}Locator>();
             """)}}
             }
         }
@@ -90,5 +91,5 @@ public class LocatorTemplate : CodeTemplateBase
     string Parameter(ParameterModel parameter) =>
         parameter.ParameterType.IsEnum
             ? $$"""({{parameter.ParameterType.CSharpFriendlyFullName}})Enum.Parse<{{parameter.ParameterType.CSharpFriendlyFullName}}>($"{id}")"""
-            : """${id}""";
+            : "${id}";
 }

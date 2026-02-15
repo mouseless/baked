@@ -41,6 +41,7 @@ Bake.New
 |                    | Command Pattern                    |                                    |
 |                    | Id                                 |                                    |
 |                    | Initializable                      |                                    |
+|                    | Label                              |                                    |
 |                    | Locatable                          |                                    |
 |                    | Namespace as Route                 |                                    |
 |                    | Records are DTOs                   |                                    |
@@ -87,13 +88,15 @@ flowchart LR;
       CB(CreateBuilder)
       BC(BuildConfiguration)
       AS(AddServices)
+      CS(ConfigureServices)
       B(Build)
       PB(PostBuild)
       R(Run)
 
       CB -->|ConfigurationManager<br/>WebApplicationBuilder| BC
       BC -->|GeneratedContext| AS
-      AS -->|IServiceCollection| B
+      AS -->|IServiceCollection| CS
+      CS -->|ServiceCollectionConfiguration| B
       B -->|IServiceProvider<br/>WebApplication|PB
       PB --> R
     end

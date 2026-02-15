@@ -40,9 +40,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
-                    assembly => assembly
-                        .AddReferences(_domainServiceCollection.References)
-                        .AddCodes(new ServiceAdderTemplate(_domainServiceCollection)),
+                    assembly => assembly.AddCodes(new ServiceAdderTemplate(_domainServiceCollection)),
                     compilerOptions => compilerOptions.WithUsings(_domainServiceCollection.Usings)
                 );
             })

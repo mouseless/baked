@@ -3,8 +3,7 @@ using Baked.Domain.Model;
 
 namespace Baked.Orm.AutoMap;
 
-public class ManyToOneFetcherTemplate(DomainModel _domain)
-    : CodeTemplateBase
+public class ManyToOneFetcherTemplate : CodeTemplateBase
 {
     public static string[] GlobalUsings =
         [
@@ -16,24 +15,32 @@ public class ManyToOneFetcherTemplate(DomainModel _domain)
             "NHibernate.Linq"
         ];
 
-    protected override IEnumerable<string> Render() => [
-        ServiceAdder(),
-        .. _domain
+    readonly IEnumerable<TypeModelMembers> _entities;
+
+    public ManyToOneFetcherTemplate(DomainModel domain)
+    {
+        _entities = domain
             .Types
             .Having<EntityAttribute>()
             .Where(type => type.HasMembers())
-            .Select(type => type.GetMembers())
-            .Select(ManyToOneFetcher)
+            .Select(type => type.GetMembers());
+
+        AddReferences(_entities);
+    }
+
+    protected override IEnumerable<string> Render() => [
+        ServiceAdder(),
+        .. _entities.Select(ManyToOneFetcher)
     ];
 
     string ServiceAdder() => $$"""
-        namespace AutoMapFeature;
+        namespace AutoMapOrmFeature;
 
         public class ServiceAdder : IServiceAdder
         {
             public void AddServices(IServiceCollection services)
             {
-            {{ForEach(_domain.Types.Having<EntityAttribute>(), entity => $$"""
+            {{ForEach(_entities, entity => $$"""
                 services.AddSingleton<IManyToOneFetcher<{{entity.CSharpFriendlyFullName}}>, {{entity.Name}}ManyToOneFetcher>();
             """)}}
             }
@@ -41,7 +48,7 @@ public class ManyToOneFetcherTemplate(DomainModel _domain)
     """;
 
     string ManyToOneFetcher(TypeModelMembers entity) => $$"""
-        namespace AutoMapFeature;
+        namespace AutoMapOrmFeature;
 
         public class {{entity.Name}}ManyToOneFetcher : IManyToOneFetcher<{{entity.CSharpFriendlyFullName}}>
         {

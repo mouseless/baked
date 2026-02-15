@@ -23,7 +23,7 @@
       {{ lc("No records found") }}
     </template>
     <Column
-      v-for="column in columns"
+      v-for="column in columns.filter(c => !c.hidden)"
       :key="column.key"
       :header="l(column.title)"
       :field="column.key"

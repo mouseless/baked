@@ -8,7 +8,7 @@ app.Features.AddCodingStyles([...]);
 
 ## Add/Remove Child
 
-Configures method routes in `AddChild` and `RemoveChild(Child)` signature to 
+Configures method routes in `AddChild` and `RemoveChild(Child)` signature to
 have a resource route `POST /../children` and `DELETE /../children/{childId}`
 respectively.
 
@@ -33,7 +33,7 @@ uses the first unique property to discriminate entity records.
 
 > [!WARNING]
 >
-> First unique property is expected to be `enum` or `string`. Otherwise 
+> First unique property is expected to be `enum` or `string`. Otherwise
 > subclass routing won't work.
 
 ```csharp
@@ -48,7 +48,7 @@ This feature provides `Id` configuration for transient and entity classes.
 c => c.Id()
 ```
 
-Single property of type `Baked.Business.Id` with name `Id` is marked with 
+Single property of type `Baked.Business.Id` with name `Id` is marked with
 `IdAttribute`. For entities `Id` properties are mapped with `IdGuidUserType`
 and auto generated with `IdGuidGenerator` as `DbType.Guid`.
 
@@ -62,8 +62,8 @@ public class Entity(IEntityContext<Parent> _context)
 
 ## Initializable
 
-Adds `TransientAttribute` to the services that has an `Initializer` method. 
-This coding style makes usages like `newEntity().With(name)` possible. 
+Adds `TransientAttribute` to the services that has an `Initializer` method.
+This coding style makes usages like `newEntity().With(name)` possible.
 `Transient` type's initializer parameters are added to query and initalizer
 is invoked with given parameters when constructing target.
 
@@ -75,10 +75,23 @@ is invoked with given parameters when constructing target.
 c => c.Initializable()
 ```
 
+## Label
+
+Marks selected string properties as labels by giving `LabelAttribute` to
+properties with matching names.
+
+```csharp
+c => c.Label(propertyNames: [...])
+```
+
+> [!NOTE]
+>
+> Default value of `propertyNames` is `["Display", "Label", "Name", "Title"]`.
+
 ## Locatable
 
-Manages binding of `Locatable` targets and api inputs. For `Locatable` types, 
-this feature adds id parameter to route, configures finding target and parameter 
+Manages binding of `Locatable` targets and api inputs. For `Locatable` types,
+this feature adds id parameter to route, configures finding target and parameter
 lookup expressions by using `Locatable` attribute.
 
 > [!NOTE]
@@ -91,9 +104,9 @@ c => c.Locatable()
 
 ## Locatable Extension
 
-Allows classes to extend locatables via composition. This marks a transient 
-class as an locatable extension when it implements implicit casting to a 
-locatable. Methods of these extension classes are rendered under locatable 
+Allows classes to extend locatables via composition. This marks a transient
+class as an locatable extension when it implements implicit casting to a
+locatable. Methods of these extension classes are rendered under locatable
 group.
 
 ```csharp
@@ -110,7 +123,7 @@ c => c.NamespaceAsRoute()
 
 ## Object as JSON
 
-Configures all `object` parameters, return types and properties to be treated 
+Configures all `object` parameters, return types and properties to be treated
 as `JSON` content.
 
 ```csharp
@@ -141,7 +154,7 @@ Adds `QueryAttribute` to classes that inject `IQueryContext<TEntity>`. Using
 generic argument of `IQueryContext<TEntity>` finds corresponding entity class
 and add `EntityAttribute` to it.
 
-Configures `NHibernate` to initialize entities using dependency injection, 
+Configures `NHibernate` to initialize entities using dependency injection,
 making them rich entities.
 
 Configures routes and swagger docs to use entity methods as resource actions.
@@ -153,8 +166,8 @@ c => c.RichEntity()
 ## Rich Transient
 
 Configures transient services as api services. This coding style marks a type
-having a public initializer with a single `Business.Id` parameter which will 
-render from route, as `RichTransient`, configures `Locatable` attribure and 
+having a public initializer with a single `Business.Id` parameter which will
+render from route, as `RichTransient`, configures `Locatable` attribure and
 generates locators.
 
 Rich transients can be method parameters and located using their locators.
@@ -183,7 +196,7 @@ c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
 Adds redirect support to your api endpoints. It configures an endpoint to use
 redirect result when its corresponding method returns `Uri`. Combined with
 `CommandPattern`, it allows you to create callback `GET` endpoints when method
-doesn't have any parameters. For actions that have parameters, it configures 
+doesn't have any parameters. For actions that have parameters, it configures
 its corresponding endpoint to accept form instead of a `json` body.
 
 ```csharp

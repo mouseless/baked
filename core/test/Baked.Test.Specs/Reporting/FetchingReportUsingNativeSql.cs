@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -14,7 +13,7 @@ public class FetchingReportUsingNativeSql : TestNfr
         await Client.PostAsync("/entities", JsonContent.Create(new { @string = "test-2" }));
 
         var response = await Client.GetAsync("report-samples/entity?string=test");
-        dynamic? content = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        dynamic? content = await response.Content.Deserialize();
 
         ((int?)content?[0].count).ShouldBe(2);
         ((string?)content?[0].@string).ShouldBe("test-1");

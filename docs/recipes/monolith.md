@@ -46,6 +46,7 @@ Bake.New
 |                    | Entity Subclass                          |                                    |
 |                    | Id                                       |                                    |
 |                    | Initializable                            |                                    |
+|                    | Label                                    |                                    |
 |                    | Locatable                                |                                    |
 |                    | Locatable Extension                      |                                    |
 |                    | Namespace as Route                       |                                    |
@@ -80,9 +81,9 @@ Bake.New
 |                    | Actions as Data Panels                   |                                    |
 |                    | Data Table defaults                      |                                    |
 |                    | Description Property                     |                                    |
-|                    | Designated String Properties are Label   |                                    |
 |                    | Enum Parameter is Select                 |                                    |
 |                    | Initializer Parameters are in Page Title |                                    |
+|                    | Labels are Frozen                        |                                    |
 |                    | List is Data Table                       |                                    |
 |                    | Numeric Values are Formatted             |                                    |
 |                    | Object with List is Data Table           |                                    |
@@ -115,13 +116,15 @@ flowchart LR;
       CB(CreateBuilder)
       BC(BuildConfiguration)
       AS(AddServices)
+      CS(ConfigureServices)
       B(Build)
       PB(PostBuild)
       R(Run)
 
       CB -->|ConfigurationManager<br/>WebApplicationBuilder| BC
       BC -->|GeneratedContext| AS
-      AS -->|IServiceCollection| B
+      AS -->|IServiceCollection| CS
+      CS -->|ServiceCollectionConfiguration| B
       B -->|IServiceProvider<br/>WebApplication| PB
       PB --> R
     end

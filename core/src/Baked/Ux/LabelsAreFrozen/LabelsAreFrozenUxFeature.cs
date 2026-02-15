@@ -1,30 +1,28 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-namespace Baked.Ux.DesignatedStringPropertiesAreLabel;
+namespace Baked.Ux.LabelsAreFrozen;
 
-public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> propertyNames)
+public class LabelsAreFrozenUxFeature()
     : IFeature<UxConfigurator>
 {
-    readonly HashSet<string> _propertyNames = [.. propertyNames];
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Index.Property.Add<LabelAttribute>();
-            builder.Conventions.SetPropertyAttribute(
-                attribute: () => new LabelAttribute(),
-                when: c => c.Property.PropertyType.Is<string>() && _propertyNames.Contains(c.Property.Name)
+            builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+                when: c => c.Property.Has<LabelAttribute>(),
+                attribute: data => data.Order = -10
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+                when: c => c.Property.Has<LabelAttribute>(),
                 schema: dtc =>
                 {
                     dtc.Frozen = true;
                     dtc.MinWidth = true;
-                },
-                when: c => c.Property.Has<LabelAttribute>()
+                }
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c) =>

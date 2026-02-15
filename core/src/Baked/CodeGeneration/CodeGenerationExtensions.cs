@@ -72,8 +72,14 @@ public static class CodeGenerationExtensions
         generatedAssemblies.Add(descriptor);
     }
 
-    public static GeneratedAssemblyDescriptor AddCode(this GeneratedAssemblyDescriptor descriptor, string code) => descriptor.AddCodes(code);
-    public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, ICodeTemplate codeTemplate) => descriptor.AddCodes([.. codeTemplate.Render()]);
+    public static GeneratedAssemblyDescriptor AddCode(this GeneratedAssemblyDescriptor descriptor, string code) =>
+        descriptor.AddCodes(code);
+
+    public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, ICodeTemplate codeTemplate) =>
+        descriptor
+          .AddReferences(codeTemplate.References)
+          .AddCodes([.. codeTemplate.Render()]);
+
     public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, params IEnumerable<string> codes)
     {
         descriptor.Codes.AddRange(codes);

@@ -3,9 +3,17 @@ using Baked.RestApi.Model;
 
 namespace Baked.RestApi;
 
-public class ApiCodeTemplate(ApiModel _apiModel)
-    : CodeTemplateBase
+public class ApiCodeTemplate : CodeTemplateBase
 {
+    readonly ApiModel _apiModel;
+
+    public ApiCodeTemplate(ApiModel apiModel)
+    {
+        _apiModel = apiModel;
+
+        AddReferences(_apiModel.References);
+    }
+
     protected override IEnumerable<string> Render() =>
         _apiModel.Controllers.Select(Controller);
 

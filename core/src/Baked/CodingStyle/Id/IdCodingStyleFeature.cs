@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Baked.CodingStyle.Id;
 
-public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
+public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -24,14 +24,10 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
         {
             configurator.UsingDomainModel(domain =>
             {
-                generatedAssemblies.Add(nameof(IdCodingStyeFeature),
-                    assembly =>
-                    {
-                        var codeTemplate = new IdMapperTemplate(domain);
-                        assembly.AddCodes(codeTemplate);
-                        assembly.AddReferences(codeTemplate.References);
-                        assembly.AddReferenceFrom<IdCodingStyeFeature>();
-                    },
+                generatedAssemblies.Add(nameof(IdCodingStyleFeature),
+                    assembly => assembly
+                        .AddReferenceFrom<IdCodingStyleFeature>()
+                        .AddCodes(new IdMapperTemplate(domain)),
                     usings: [.. IdMapperTemplate.GlobalUsings]
                 );
             });
@@ -43,7 +39,7 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
 
             configurator.UsingGeneratedContext(context =>
             {
-                var idMapper = context.Assemblies[nameof(IdCodingStyeFeature)].CreateImplementationInstance<IIdMapper>();
+                var idMapper = context.Assemblies[nameof(IdCodingStyleFeature)].CreateImplementationInstance<IIdMapper>();
 
                 idMapper?.Configure(model);
             });
@@ -61,7 +57,7 @@ public class IdCodingStyeFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            // Use 'MapType' instead of 'ISchemaFilter' for 
+            // Use 'MapType' instead of 'ISchemaFilter' for
             // not render 'Id' as a reference and display properties
             // instead of only '$ref' in schemas
             swaggerGenOptions.MapType<Business.Id>(() => new OpenApiSchema { Type = "string" });
