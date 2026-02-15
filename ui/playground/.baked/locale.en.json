@@ -61,7 +61,7 @@
   "GetItems": "Items",
   "GetItems.ExportFileName": "items-export",
   "GetLeft": "Left",
-  "GetParents": "GetParents",
+  "GetParents": "Parents",
   "GetParents.ExportFileName": "GetParents.ExportFileName",
   "GetRight": "Right",
   "GetScoped": "Scoped",

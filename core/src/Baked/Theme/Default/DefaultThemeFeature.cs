@@ -65,6 +65,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: () => B.Text(),
                 order: -10
             );
+            builder.Conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
+                component: () => B.Text(),
+                order: -10
+            );
 
             // Method defaults
             builder.Index.Method.Add<ActionAttribute>();

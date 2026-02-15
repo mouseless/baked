@@ -75,7 +75,7 @@ public class LocatableTemplate : CodeTemplateBase
                 {
                 {{ForEach(locatable.Properties.Having<LabelAttribute>(), label => $$"""
                     "{{label.Name.Camelize()}}" => locatable.{{label.Name}},
-                """, separator: $",{Environment.NewLine}", indentation: 2)}}
+                """, indentation: 2)}}
                     _ => throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{locatable.Name}}`")
                 };
         }

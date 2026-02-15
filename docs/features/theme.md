@@ -71,7 +71,8 @@ experiences, see [UX Feature](ux.md)
 | Property   | All public properties get a `DataAttribute` with a camelized name and titleized label    |
 |            | `IdAttribute` is added to properties named as `Id`                                       |
 |            | Id properties are set to be hidden                                                       |
-|            | `string` and `Guid` properties render using `String`                                     |
+|            | `string` and `Guid` properties render using `Text`                                       |
+|            | Properties of types with `LocatableAttribute` render using `Text`                        |
 | Method     | All actions with `ActionModelAttribute` get `ActionAttribute` and `TabNameAttribute`     |
 |            | `FormPage` is added for any method at component path `/page/*/*`                         |
 |            | `Content` schema is added to any method                                                  |

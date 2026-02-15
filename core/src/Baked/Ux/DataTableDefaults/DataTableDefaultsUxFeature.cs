@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.Business;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -28,6 +29,10 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 schema: (c, cc) => PropertyDataTableColumn(c.Property, cc)
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+                when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
+                schema: (dtc, c, cc) => dtc.Hidden = cc.Path.StartsWith(nameof(Page), c.Property.PropertyType.Name) ? true : null
+            );
+            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: (dtc, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -35,6 +40,21 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
+                }
+            );
+            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+                when: c => c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
+                schema: (dtc, c, cc) =>
+                {
+                    var data = c.Property.Get<DataAttribute>();
+                    var members = c.Property.PropertyType.GetMembers();
+                    var labelProperty =
+                        members.FirstPropertyOrDefault<LabelAttribute>() ??
+                        members.FirstProperty<IdAttribute>();
+                    var labelData = labelProperty.Get<DataAttribute>();
+
+                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
+                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}.{labelData.Prop}");
                 }
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(

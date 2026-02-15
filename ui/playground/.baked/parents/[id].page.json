@@ -279,6 +279,21 @@
                     "minWidth": true,
                     "exportable": true,
                     "frozen": true
+                  },
+                  {
+                    "key": "parent",
+                    "component": {
+                      "type": "Text",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.parent.name"
+                      }
+                    },
+                    "title": "Parent",
+                    "exportable": true,
+                    "hidden": true
                   }
                 ],
                 "dataKey": "id",

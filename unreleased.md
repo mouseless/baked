@@ -31,6 +31,15 @@
     `Child.ParentWrapper.Parent` will render all properties of the parent
 - `ExtendedContractResolver` is added as a default contract resolver to allow
   customization of json serialization through `RestApiLayer`
+- `DefaultThemeFeature` now uses `Text` to render locatable properties
+- `DataTableDefaultsUxFeature` now uses label (or id) property to display
+  locatable properties
+- `DataTableDefaultsUxFeature` now hides columns of the same type as the page
+- `DataTable.Column` now has `Hidden` property to hide it in front end without
+  removing the column from descriptor
+- `LabelsAreFrozenUxFeature` (former
+  `DesignatedStringPropertiesAreLabelUxFeature`) now sets order of label
+  properties to `-10` to have them before any other
 
 ## Breaking Changes
 

@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Theme.Default;
 using Baked.Ui;
 
 namespace Baked.Ux.LabelsAreFrozen;
@@ -11,13 +12,17 @@ public class LabelsAreFrozenUxFeature()
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+                when: c => c.Property.Has<LabelAttribute>(),
+                attribute: data => data.Order = -10
+            );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+                when: c => c.Property.Has<LabelAttribute>(),
                 schema: dtc =>
                 {
                     dtc.Frozen = true;
                     dtc.MinWidth = true;
-                },
-                when: c => c.Property.Has<LabelAttribute>()
+                }
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c) =>

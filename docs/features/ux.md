@@ -71,7 +71,12 @@ c => c.DataTableDefaults()
 ```
 
 - Sets row count to 5 and adds paginator
-- Adds data properties as columns
+- Adds properties with `DataAttribute` as columns
+  - For locatable properties, uses the first label (or id) property as component
+    data, e.g., `row.parent.name`
+  - Otherwise, sets the property value as component data, e.g., `row.name`
+- Hides locatable properties of type as the same as the type of current page,
+  e.g., `Child.Parent` column is hidden under any `Parent` page
 - Adds export action to header
 - Prepares action column to include item actions along with a reload reaction
 - Action and dialog buttons use `text` variant using rounded style
