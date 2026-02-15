@@ -45,6 +45,12 @@ public record struct Id : IParsable<Id>, IEquatable<Id>, IComparable, IComparabl
         return CompareTo(id);
     }
 
+    public override readonly int GetHashCode() =>
+        _value.GetHashCode();
+
+    public override readonly string ToString() =>
+        _value;
+
     public static bool operator <(Id left, Id right)
     {
         return left.CompareTo(right) < 0;
@@ -64,10 +70,4 @@ public record struct Id : IParsable<Id>, IEquatable<Id>, IComparable, IComparabl
     {
         return left.CompareTo(right) >= 0;
     }
-
-    public override readonly int GetHashCode() =>
-        _value.GetHashCode();
-
-    public override readonly string ToString() =>
-        _value;
 }
