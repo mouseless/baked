@@ -125,7 +125,7 @@ flowchart LR;
       CB -->|ConfigurationManager<br/>WebApplicationBuilder| BC
       BC -->|GeneratedContext| AS
       AS -->|IServiceCollection| CS
-      CS -->|ServiceCollectionConfiguration| B
+      CS -->|ServiceCollectionWrapper| B
       B -->|IServiceProvider<br/>WebApplication| PB
       PB --> R
     end
