@@ -117,15 +117,13 @@ flowchart LR;
       CB(CreateBuilder)
       BC(BuildConfiguration)
       AS(AddServices)
-      CS(ConfigureServices)
       B(Build)
       PB(PostBuild)
       R(Run)
 
       CB -->|ConfigurationManager<br/>WebApplicationBuilder| BC
       BC -->|GeneratedContext| AS
-      AS -->|IServiceCollection| CS
-      CS -->|ServiceCollectionWrapper| B
+      AS -->|IServiceCollection| B
       B -->|IServiceProvider<br/>WebApplication| PB
       PB --> R
     end

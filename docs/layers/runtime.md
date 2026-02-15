@@ -49,24 +49,6 @@ configurator.ConfigureServiceCollection(services =>
 });
 ```
 
-### `ServiceCollectionWrapper`
-
-This target is provided in `ConfigureServices` phase. To configure it in a
-feature;
-
-```csharp
-configurator.ConfigureServiceCollection(configuration =>
-{
-    ...
-}, afterAddServices: true);
-```
-
-> [!NOTE]
->
-> This is just a wrapper target that provides `IServiceCollection` in a phase
-> after `AddServices` so that you can make extra `services.Configure...` calls
-> after `services.Add...` calls.
-
 ### `IServiceProvider`
 
 This target is provided in `PostBuild` phase. To configure it in a feature;
@@ -92,8 +74,5 @@ This layer introduces following `Start` phases to the application it is added;
   of `Settings` API from features
 - `AddServices`: This phase creates a `IServiceCollection` instance and places
   it in the application context
-- `ConfigureServices`: This phase depends on a `IServiceCollection` instance to be added
-  so that there is an extra phase after `AddServices` is done and before
-  `IServiceProvider` is built
 - `PostBuild`: This phase depends on a `IServiceProvider` instance to be added
   to application context so that it can be provided from this layer
