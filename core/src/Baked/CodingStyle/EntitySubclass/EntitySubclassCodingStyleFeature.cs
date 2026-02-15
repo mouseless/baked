@@ -51,7 +51,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
 
                     set(c.Type, new LocatableAttribute());
                 },
-                order: 10
+                order: 40
             );
             builder.Conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),

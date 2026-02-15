@@ -122,6 +122,13 @@
 - `LabelAttribute` and `QueryAttribute` are moved to `Baked.Business` namespace
 - `EntityAttribute.QueryType` property is now removed, use
   `LocatableAttribute.QueryType`
+  - This change allows query domain objets for any locatable domain object, such
+    as rich transients
+  - For this reason, the convention that sets `QueryType` for entities is now
+    pushed from order `0` to order `30` to make sure all domain objects gets
+    `LocatableAttribute`
+  - If you have conventions that depend on query type of an entity or depend on
+    `TryGetQueryType` extension, make sure you set its order after `30`
 - `TryGetEntityAttribute` is removed, use `TryGetLocatableAttribute`
 - `TryGetQueryContextType` is now redundant and removed
 - `Business.DomainAssemblies.Regexes` is moved to `CodingStyle.Query.Regexes`
