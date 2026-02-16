@@ -24,19 +24,8 @@ public static class RuntimeExtensions
     public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
        configurator.Configure(configuration);
 
-    public static void ConfigureServiceCollection(this LayerConfigurator configurator, Action<IServiceCollection> configuration,
-        bool afterAddServices = false
-    )
-    {
-        if (afterAddServices)
-        {
-            configurator.Configure((ServiceCollectionWrapper wrapper) => configuration(wrapper.Services));
-
-            return;
-        }
-
+    public static void ConfigureServiceCollection(this LayerConfigurator configurator, Action<IServiceCollection> configuration) =>
         configurator.Configure(configuration);
-    }
 
     public static void ConfigureServiceProvider(this LayerConfigurator configurator, Action<IServiceProvider> configuration) =>
         configurator.Configure(configuration);

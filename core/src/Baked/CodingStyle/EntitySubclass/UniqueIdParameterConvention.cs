@@ -28,7 +28,7 @@ public class UniqueIdParameterConvention : IDomainModelConvention<MethodModelCon
         var valueExpression = uniqueParameter.ParameterType.IsEnum
             ? $"{uniqueParameter.ParameterType.CSharpFriendlyFullName}.{subclassName}"
             : $"\"{subclassName}\"";
-        valueExpression = $"Baked.Business.Id.Parse({valueExpression})";
+        valueExpression = $"Baked.Business.Id.Create({valueExpression})";
 
         var id = action.Parameter[ParameterModelAttribute.TargetParameterName];
         id.IsHardCoded = true;

@@ -7,6 +7,8 @@ public class RichTransientExtension
 {
     RichTransientWithData _richTransient = default!;
 
+    public Baked.Business.Id Id => _richTransient.Id;
+
     internal RichTransientExtension With(RichTransientWithData richTransient)
     {
         _richTransient = richTransient;
@@ -14,18 +16,16 @@ public class RichTransientExtension
         return this;
     }
 
-    internal Baked.Business.Id Id => _richTransient.Id;
-
     public string FromExtension() =>
         $"This method is from extension for {nameof(RichTransientWithData)}:{_richTransient.Id}";
 
-    public static implicit operator RichTransientExtension(RichTransientWithData entity) =>
-        entity.Cast().To<RichTransientExtension>();
+    public static implicit operator RichTransientExtension(RichTransientWithData real) =>
+        real.Cast().To<RichTransientExtension>();
 }
 
 public class RichTransientExtensions(Func<RichTransientExtension> _newRichTransientExtension)
     : ICasts<RichTransientWithData, RichTransientExtension>
 {
-    RichTransientExtension ICasts<RichTransientWithData, RichTransientExtension>.To(RichTransientWithData from) =>
-        _newRichTransientExtension().With(from);
+    RichTransientExtension ICasts<RichTransientWithData, RichTransientExtension>.To(RichTransientWithData real) =>
+        _newRichTransientExtension().With(real);
 }

@@ -48,9 +48,9 @@ This feature provides `Id` configuration for transient and entity classes.
 c => c.Id()
 ```
 
-Single property of type `Baked.Business.Id` with name `Id` is marked with
-`IdAttribute`. For entities `Id` properties are mapped with `IdGuidUserType`
-and auto generated with `IdGuidGenerator` as `DbType.Guid`.
+Single property of type `Baked.Business.Id` is marked with `IdAttribute`. For
+entities, `Id` properties are mapped with `IdGuidUserType` and generated with
+`IdGuidGenerator` using `DbType.Guid`.
 
 ```csharp
 public class Entity(IEntityContext<Parent> _context)
@@ -60,12 +60,24 @@ public class Entity(IEntityContext<Parent> _context)
 }
 ```
 
+> [!TIP]
+>
+> To override ID mapping of an entity, add a property attribute configuration on
+> `IdAttribute` as below,
+>
+> ```csharp
+> builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+>     when: c => c.Type.Is<MyEntity>(),
+>     attribute: id => id.Assigned() // or id.AutoIncrement()
+> );
+> ```
+
 ## Initializable
 
 Adds `TransientAttribute` to the services that has an `Initializer` method.
-This coding style makes usages like `newEntity().With(name)` possible.
-`Transient` type's initializer parameters are added to query and initalizer
-is invoked with given parameters when constructing target.
+This coding style makes usages like `_newEntity().With(name)` possible.
+`Transient` type's initializer parameters are added to query string and
+initalizer is invoked with given parameters when constructing target.
 
 > [!NOTE]
 >
@@ -105,7 +117,7 @@ c => c.Locatable()
 ## Locatable Extension
 
 Allows classes to extend locatables via composition. This marks a transient
-class as an locatable extension when it implements implicit casting to a
+class as a locatable extension when it implements implicit casting to a
 locatable. Methods of these extension classes are rendered under locatable
 group.
 
@@ -123,12 +135,25 @@ c => c.NamespaceAsRoute()
 
 ## Object as JSON
 
-Configures all `object` parameters, return types and properties to be treated
-as `JSON` content.
+Configures all `object` parameters, return types and properties to be treated as
+`JSON` content.
 
 ```csharp
 c => c.ObjectAsJson()
 ```
+
+## Query
+
+Adds `QueryAttribute` to the classes that has plural name of a locatable class,
+e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a query.
+
+Removes `FirstBy`, `SingleBy` and `By` names from API routes and configure them
+as `GET` endpoints.
+
+> [!WARNING]
+>
+> A class that injects `IQueryContext` is not considered as a query class unless
+> it satisfies the plural naming convention.
 
 ## Records are DTOs
 
@@ -150,9 +175,7 @@ c => c.RemainingServicesAreSingleton()
 
 ## Rich Entity
 
-Adds `QueryAttribute` to classes that inject `IQueryContext<TEntity>`. Using
-generic argument of `IQueryContext<TEntity>` finds corresponding entity class
-and add `EntityAttribute` to it.
+Adds `EntityAttribute` to classes that inject `IEntityContext<TEntity>`.
 
 Configures `NHibernate` to initialize entities using dependency injection,
 making them rich entities.
@@ -190,6 +213,18 @@ c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
 > [!NOTE]
 >
 > Default suffix is `Context`.
+
+## Unique
+
+Adds `UniqueAttribute` to entity properties of which corresponding query class
+has either a `SingleBy...` or `AnyBy...` query method, e.g., `User.Username`
+property would be treated as unique if either `Users.SingleByUsername` or
+`Users.AnyByUsername` exists.
+
+> [!NOTE]
+>
+> Having `UniqueAttribute` on a property tells `AutoMapOrmFeature` to configure
+> that column to have a unique constraint.
 
 ## `Uri` Return is Redirect
 

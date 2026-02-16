@@ -33,13 +33,13 @@ public class EntityExtension
             evenMoreExtensions.Sum(e => e._entity.Int32)
         );
 
-    public static implicit operator EntityExtension(Entity entity) =>
-        entity.Cast().To<EntityExtension>();
+    public static implicit operator EntityExtension(Entity real) =>
+        real.Cast().To<EntityExtension>();
 }
 
 public class EntityExtensions(Func<EntityExtension> _newEntityExtension)
     : ICasts<Entity, EntityExtension>
 {
-    EntityExtension ICasts<Entity, EntityExtension>.To(Entity from) =>
-        _newEntityExtension().With(from);
+    EntityExtension ICasts<Entity, EntityExtension>.To(Entity real) =>
+        _newEntityExtension().With(real);
 }

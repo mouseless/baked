@@ -51,12 +51,13 @@ Bake.New
 |                    | Locatable Extension                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
+|                    | Query                                    |                                    |
 |                    | Records are DTOs                         |                                    |
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Rich Entity                              |                                    |
 |                    | Rich Transient                           |                                    |
 |                    | Scoped by Suffix                         |                                    |
-|                    | Single by Unique                         |                                    |
+|                    | Unique                                   |                                    |
 |                    | `Uri` Return is Redirect                 |                                    |
 |                    | Use Built-in Types                       |                                    |
 |                    | Use Nullable Types                       |                                    |
@@ -116,15 +117,13 @@ flowchart LR;
       CB(CreateBuilder)
       BC(BuildConfiguration)
       AS(AddServices)
-      CS(ConfigureServices)
       B(Build)
       PB(PostBuild)
       R(Run)
 
       CB -->|ConfigurationManager<br/>WebApplicationBuilder| BC
       BC -->|GeneratedContext| AS
-      AS -->|IServiceCollection| CS
-      CS -->|ServiceCollectionConfiguration| B
+      AS -->|IServiceCollection| B
       B -->|IServiceProvider<br/>WebApplication| PB
       PB --> R
     end

@@ -42,23 +42,16 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             configurator.UsingGeneratedContext(generatedContext =>
             {
                 services.AddFromAssembly(generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]);
-            });
-        });
 
-        configurator.ConfigureServiceCollection(services =>
-        {
-            configurator.UsingGeneratedContext(generatedContext =>
-            {
                 var idPropertyNames = generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
                     .CreateRequiredImplementationInstance<ILocatableContext>()
                     .IdPropertyNames;
-
-                services.Configure<MvcOptions>(options =>
+                services.PostConfigure<MvcOptions>(options =>
                 {
                     options.ModelMetadataDetailsProviders.Add(new LocatableMetadataDetailsProvider(idPropertyNames));
                 });
             });
-        }, afterAddServices: true);
+        });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {

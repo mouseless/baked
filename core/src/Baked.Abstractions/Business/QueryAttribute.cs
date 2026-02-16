@@ -2,7 +2,7 @@
 
 [AttributeUsage(AttributeTargets.Class)]
 public class QueryAttribute(Type locatableType)
-    : Attribute
+    : Attribute()
 {
     public Type LocatableType { get; } = locatableType;
 }

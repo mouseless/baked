@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Model;
+using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -144,5 +145,16 @@ public static class BusinessExtensions
         idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
 
         return true;
+    }
+
+    public static Id AnId(this Stubber _,
+        string? starts = default
+    )
+    {
+        starts ??= string.Empty;
+
+        const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
+
+        return Id.Parse($"{starts}{template[starts.Length..]}");
     }
 }

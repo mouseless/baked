@@ -2,7 +2,6 @@
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
-using Baked.RestApi.Conventions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
@@ -118,11 +117,6 @@ public class DomainAssembliesBusinessFeature(
                 attribute: () => new CasterAttribute(),
                 when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
             );
-
-            builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
-            builder.Conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
-                _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
-            ));
         });
 
         configurator.ConfigureServiceCollection(services =>

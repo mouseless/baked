@@ -28,10 +28,11 @@ public class ManyToOneFetcherTemplate : CodeTemplateBase
         AddReferences(_entities);
     }
 
-    protected override IEnumerable<string> Render() => [
-        ServiceAdder(),
-        .. _entities.Select(ManyToOneFetcher)
-    ];
+    protected override IEnumerable<string> Render() =>
+        [
+            ServiceAdder(),
+            .. _entities.Select(ManyToOneFetcher)
+        ];
 
     string ServiceAdder() => $$"""
         namespace AutoMapOrmFeature;

@@ -10,13 +10,17 @@
   contain a guide to enable proxifying in domain assemblies
 - `IdCodingStyle` feature is now added which configures primary key and foreign
   key references for entities
-  - A property named `Id` with `Baked.Business.Id` user type is required for a
-    property to be configured as `Id`
-  - `Id` user type can be mapped as `Guid`, `AutoIncrement` or `Assigned`
+  - A property with `Baked.Business.Id` type is required for a property to be
+    configured as primary key
+  - `Id` can be mapped as `Generated`, `AutoIncrement` or `Assigned`
 - `LocatableCodingStyle` feature is now added which manages binding of
   locatable transients
 - `ILocator<>` generic interface is now introduced for configuring locators for
   `RichTransient` and `Entity` types and their extensions
+- `QueryCodingStyle` feature is now added to find and mark query classes of
+  locatables
+- `UniqueCodingStyle` feature is now added that adds unique attribute to
+  properties with a `SingleBy...` or `AnyBy...` query
 
 ## Improvements
 
@@ -31,6 +35,8 @@
     `Child.ParentWrapper.Parent` will render all properties of the parent
 - `ExtendedContractResolver` is added as a default contract resolver to allow
   customization of json serialization through `RestApiLayer`
+- `Orm.UniqueAttribute` is introduced in abstractions which causes
+  `AutoMapOrmFeature` to set unique constraint for the properties that have it
 - `DefaultThemeFeature` now uses `Text` to render locatable properties
 - `DataTableDefaultsUxFeature` now uses label (or id) property to display
   locatable properties
@@ -113,4 +119,16 @@
   `EntitySubclassCodingStyleFeature`
 - `DesignatedStringPropertiesAreLabelUxFeature` is now split into two,
   `LabelCodingStyleFeature` and `LabelsAreFrozenUxFeature`
-- `LabelAttribute` is moved to `Baked.Business` namespace
+- `LabelAttribute` and `QueryAttribute` are moved to `Baked.Business` namespace
+- `EntityAttribute.QueryType` property is now removed, use
+  `LocatableAttribute.QueryType`
+  - This change allows query domain objets for any locatable domain object, such
+    as rich transients
+  - For this reason, the convention that sets `QueryType` for entities is now
+    pushed from order `0` to order `30` to make sure all domain objects gets
+    `LocatableAttribute`
+  - If you have conventions that depend on query type of an entity or depend on
+    `TryGetQueryType` extension, make sure you set its order after `30`
+- `TryGetEntityAttribute` is removed, use `TryGetLocatableAttribute`
+- `TryGetQueryContextType` is now redundant and removed
+- `Business.DomainAssemblies.Regexes` is moved to `CodingStyle.Query.Regexes`

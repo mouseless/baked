@@ -3,7 +3,7 @@ using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.AddRemoveChild;
 
-public class OnlyEntityParameterIsInRouteForDeleteChildConvention : IDomainModelConvention<MethodModelContext>
+public class OnlyLocatableParameterIsInRouteForDeleteChildConvention : IDomainModelConvention<MethodModelContext>
 {
     public void Apply(MethodModelContext context)
     {
@@ -14,7 +14,7 @@ public class OnlyEntityParameterIsInRouteForDeleteChildConvention : IDomainModel
 
         var onlyParameter = action.InvokedMethodParameters.Single();
         if (onlyParameter.Orphan) { return; }
-        if (!context.Method.DefaultOverload.Parameters[onlyParameter.Id].ParameterType.TryGetEntityAttribute(out var _)) { return; }
+        if (!context.Method.DefaultOverload.Parameters[onlyParameter.Id].ParameterType.TryGetLocatableAttribute(out var _)) { return; }
 
         onlyParameter.From = ParameterModelFrom.Route;
         onlyParameter.RoutePosition = 3;

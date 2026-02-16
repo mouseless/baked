@@ -5,9 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
+using static Baked.Runtime.RuntimeLayer;
+
 namespace Baked.Runtime;
 
-public class RuntimeLayer : LayerBase
+public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild>
 {
     public const string FileProvidersKey = "CompositeFileProvider";
 
@@ -20,20 +22,10 @@ public class RuntimeLayer : LayerBase
         _loggingBuilder = new LoggingBuilder(_services);
     }
 
-    protected override PhaseContext GetContext(IPhase phase) =>
-        phase switch
-        {
-            BuildConfiguration buildConfiguration => GetContext(buildConfiguration),
-            AddServices addServices => GetContext(addServices),
-            ConfigureServices configureServices => GetContext(configureServices),
-            PostBuild postBuild => GetContext(postBuild),
-            _ => base.GetContext(phase)
-        };
-
-    PhaseContext GetContext(BuildConfiguration phase) =>
+    protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContext<IConfigurationBuilder>(Context.GetConfigurationManager());
 
-    PhaseContext GetContext(AddServices phase)
+    protected override PhaseContext GetContext(AddServices phase)
     {
         _services.AddLogging();
         _services.AddSingleton<ServiceProviderAccessor>();
@@ -62,21 +54,13 @@ public class RuntimeLayer : LayerBase
         ;
     }
 
-    PhaseContext GetContext(ConfigureServices phase)
-    {
-        var wrapper = new ServiceCollectionWrapper(_services);
-
-        return phase.CreateContext(wrapper);
-    }
-
-    PhaseContext GetContext(PostBuild phase) =>
+    protected override PhaseContext GetContext(PostBuild phase) =>
         phase.CreateContext(Context.GetServiceProvider());
 
     protected override IEnumerable<IPhase> GetStartPhases()
     {
         yield return new BuildConfiguration();
         yield return new AddServices(_services);
-        yield return new ConfigureServices();
         yield return new PostBuild();
     }
 
@@ -96,11 +80,6 @@ public class RuntimeLayer : LayerBase
         {
             Context.Add(_services);
         }
-    }
-
-    public class ConfigureServices : PhaseBase<IServiceCollection>
-    {
-        protected override void Initialize(IServiceCollection _) { }
     }
 
     public class PostBuild : PhaseBase<IServiceProvider>

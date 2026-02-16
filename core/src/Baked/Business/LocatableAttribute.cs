@@ -3,6 +3,7 @@
 [AttributeUsage(AttributeTargets.Class)]
 public class LocatableAttribute : Attribute
 {
+    public Type? QueryType { get; set; }
     public bool IsAsync { get; set; } = false;
 
     public string RenderLocate(string serviceExpression, string idExpression,
@@ -16,6 +17,6 @@ public class LocatableAttribute : Attribute
             ? $"await {serviceExpression}.LocateManyAsync({idsExpression})"
             : $"{serviceExpression}.LocateMany({idsExpression})";
 
-    public string BuildLocatorType(string locatableType) =>
+    public string RenderLocatorType(string locatableType) =>
         IsAsync ? $"Baked.Business.IAsyncLocator<{locatableType}>" : $"Baked.Business.ILocator<{locatableType}>";
 }

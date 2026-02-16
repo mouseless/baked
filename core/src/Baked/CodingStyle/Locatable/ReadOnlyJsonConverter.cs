@@ -26,7 +26,7 @@ public abstract class ReadOnlyJsonConverter<TLocatable>(ILocator<TLocatable> _lo
             if (!reader.Read()) { break; }
             if (reader.Value is null) { continue; }
 
-            id = Business.Id.Parse(reader.Value);
+            id = Business.Id.Create(reader.Value);
         }
 
         if (!id.HasValue) { return null; }

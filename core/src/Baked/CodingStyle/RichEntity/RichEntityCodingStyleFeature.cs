@@ -1,8 +1,10 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Model;
 using Baked.Orm;
 using Baked.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.RichEntity;
 
@@ -15,24 +17,10 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
-                    members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)))),
-                apply: (context, set) =>
-                {
-                    var query = context.Type;
-                    var parameter =
-                        query.GetMembers()
-                            .Constructors
-                            .SelectMany(o => o.Parameters)
-                            .First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)));
-
-                    var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
-                    entity.Apply(t =>
-                        set(query, new QueryAttribute(t))
-                    );
-                    query.Apply(t =>
-                        set(entity.GetMetadata(), new EntityAttribute(t))
-                    );
-                }
+                    TryGetEntityContextParameter(members, out var entityContextParameter) &&
+                    entityContextParameter.ParameterType.TryGetGenerics(out var entityContextGenerics) &&
+                    entityContextGenerics.GenericTypeArguments.First().Model == c.Type,
+                attribute: () => new EntityAttribute()
             );
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Has<EntityAttribute>(),
@@ -65,5 +53,14 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 return result;
             };
         });
+    }
+
+    bool TryGetEntityContextParameter(TypeModelMembers type, [NotNullWhen(true)] out ParameterModel? parameter)
+    {
+        parameter = type.Constructors
+            .Select(o => o.Parameters.SingleOrDefault(p => p.ParameterType.IsAssignableTo(typeof(IEntityContext<>))))
+            .FirstOrDefault(p => p is not null);
+
+        return parameter is not null;
     }
 }

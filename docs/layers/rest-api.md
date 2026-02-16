@@ -53,10 +53,10 @@ This target is provided in `AddServices` phase. To configure it in a feature;
 > It contains a `IServiceProvider` instance to help you serialize json objects
 > into rich domain objects.
 >
-> You may this resolver to;
+> You may use this resolver to;
 >
 > - Set a proxy type via `ProxyType` property to ignore the proxy objects and
->   serialize using actual base type
+>   serialize them using the actual base type
 > - Change a type's json contract via `.SetType(...)` method
 > - Change a property's json contract via `.SetProperty(...)` method
 
