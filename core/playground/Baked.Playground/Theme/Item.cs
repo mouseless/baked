@@ -1,3 +1,5 @@
-﻿namespace Baked.Playground.Theme;
+﻿using Baked.Business;
 
-public record Item(string Id, string Value);
+namespace Baked.Playground.Theme;
+
+public record Item(Id Id, string Value);

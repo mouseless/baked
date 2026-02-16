@@ -71,7 +71,12 @@ c => c.DataTableDefaults()
 ```
 
 - Sets row count to 5 and adds paginator
-- Adds data properties as columns
+- Adds properties with `DataAttribute` as columns
+  - For locatable properties, uses the first label (or id) property as component
+    data, e.g., `row.parent.name`
+  - Otherwise, sets the property value as component data, e.g., `row.name`
+- Hides locatable properties of type as the same as the type of current page,
+  e.g., `Child.Parent` column is hidden under any `Parent` page
 - Adds export action to header
 - Prepares action column to include item actions along with a reload reaction
 - Action and dialog buttons use `text` variant using rounded style
@@ -85,23 +90,6 @@ UI space when under a `DataTable` or a `Fieldset`.
 - Set `Field.Wide` to `true` to have a full width under a fieldset
 - Sets up a dialog button to show the content of description properties in a
   dialog under data tables
-
-## Designated String Properties are Label
-
-Marks selected string properties as labels to have a better display in
-`DataTable` columns.
-
-```csharp
-c => c.DesignatedStringPropertiesAreLabel(propertyNames: [...])
-```
-
-- Properties with matching names are given `LabelAttribute`
-- Label columns in a `DataTable` are frozen and have minimum width
-- The first label column is used as the table’s data key if no key is set
-
-> [!NOTE]
->
-> Default value of `propertyNames` is `["Display", "Label", "Name", "Title"]`.
 
 ## Enum Parameter is Select
 
@@ -123,7 +111,7 @@ c => c.EnumParameterIsSelect(maxMemberCountForSelectButton: ...)
 
 ## Initializer Parameters are in Page Title
 
-Adds initializer parameters of a report class to the page title area of a
+Adds initializer parameters of a transient class to the page title area of a
 `TabbedPage`.
 
 ```csharp
@@ -132,6 +120,19 @@ c => c.InitializerParametersAreInPageTitle()
 
 - Adds initializer parameters as query parameters of the page
 - Works for types marked with `TransientAttribute`
+
+## Labels are Frozen
+
+Configure label properties (properties with `LabelAttribute`) to have a better
+display in `DataTable` columns.
+
+```csharp
+c => c.LabelsAreFrozen()
+```
+
+- Brings label columns before other columns via `DataAttribute.Order`
+- Label columns in a `DataTable` are frozen and have minimum width
+- The first label column is used as the table’s data key if no key is set
 
 ## List is Data Table
 

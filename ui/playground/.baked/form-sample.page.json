@@ -100,8 +100,16 @@
                   {
                     "key": "surname",
                     "component": {
-                      "type": "Text",
-                      "schema": {},
+                      "type": "NavLink",
+                      "schema": {
+                        "path": "/parents/[id]",
+                        "params": {
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "row.id",
+                          "targetProp": "id"
+                        }
+                      },
                       "data": {
                         "type": "Context",
                         "key": "parent",
@@ -109,7 +117,9 @@
                       }
                     },
                     "title": "Surname",
-                    "exportable": true
+                    "minWidth": true,
+                    "exportable": true,
+                    "frozen": true
                   },
                   {
                     "key": "description",
@@ -213,7 +223,7 @@
                           },
                           "action": {
                             "type": "Remote",
-                            "path": "parents/{id:guid}/",
+                            "path": "parents/{id}/",
                             "method": "PUT",
                             "params": {
                               "type": "Context",
@@ -255,7 +265,7 @@
                           },
                           "action": {
                             "type": "Remote",
-                            "path": "parents/{id:guid}/",
+                            "path": "parents/{id}/",
                             "method": "DELETE",
                             "params": {
                               "type": "Context",

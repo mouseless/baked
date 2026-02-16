@@ -1,4 +1,5 @@
-﻿using Baked.Database;
+﻿using Baked.Business;
+using Baked.Database;
 using Baked.Orm;
 
 namespace Baked.Playground.Orm;
@@ -12,7 +13,7 @@ namespace Baked.Playground.Orm;
 /// </remarks>
 public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
 {
-    public Guid Id { get; private set; } = default!;
+    public Id Id { get; private set; } = default!;
     public Guid? Guid { get; private set; } = default!;
     public string? String { get; private set; } = default!;
     /// <summary>
@@ -200,14 +201,6 @@ public class Entities(IQueryContext<Entity> _context)
 
     internal bool AnyByEnum(Enumeration @enum) =>
         _context.AnyBy(e => e.Enum == @enum);
-
-    public Entity SingleByUnique(string unique,
-        bool throwNotFound = false
-    ) => _context.SingleBy(e => e.Unique == unique) ?? throw RecordNotFoundException.For<Entity>(nameof(unique), unique, notFound: throwNotFound);
-
-    public Entity SingleByEnum(Enumeration @enum,
-        bool throwNotFound = false
-    ) => _context.SingleBy(e => e.Enum == @enum) ?? throw RecordNotFoundException.For<Entity>(nameof(@enum), @enum, notFound: throwNotFound);
 
     public Entity? FirstByString(string startsWith,
         bool asc = false,

@@ -48,14 +48,18 @@ public abstract class DataSourceSpec : Spec
             app.Features.AddCodingStyles([
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
+                c => c.Id(),
+                c => c.Initializable(),
+                c => c.Label(),
+                c => c.Locatable(),
                 c => c.NamespaceAsRoute(),
+                c => c.Query(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes(),
-                c => c.WithMethod()
+                c => c.UseNullableTypes()
             ]);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);

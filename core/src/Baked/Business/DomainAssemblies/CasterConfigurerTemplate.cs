@@ -3,8 +3,30 @@ using Baked.Domain.Model;
 
 namespace Baked.Business.DomainAssemblies;
 
-public class CasterConfigurerTemplate(DomainModel _domain) : CodeTemplateBase
+public class CasterConfigurerTemplate : CodeTemplateBase
 {
+    public static string[] GlobalUsings =
+        [
+            "Baked.Business",
+            "Baked.Business.DomainAssemblies",
+            "Baked.Runtime",
+            "Microsoft.Extensions.DependencyInjection"
+        ];
+
+    readonly DomainModel _domain;
+    readonly IEnumerable<TypeModelInheritance> _types;
+
+    public CasterConfigurerTemplate(DomainModel domain)
+    {
+        _domain = domain;
+        _types = domain.Types
+            .Having<CasterAttribute>()
+            .Where(t => t.HasInheritance())
+            .Select(t => t.GetInheritance());
+
+        AddReferences(_types);
+    }
+
     protected override IEnumerable<string> Render() =>
         [Caster()];
 
@@ -15,8 +37,8 @@ public class CasterConfigurerTemplate(DomainModel _domain) : CodeTemplateBase
     {
         public void Configure()
         {
-            {{ForEach(_domain.Types.Having<CasterAttribute>(), type =>
-                ForEach(type.GetInheritance().Interfaces.Where(i => i.Model.IsGenericType && !i.Model.IsGenericTypeDefinition && i.Model.IsAssignableTo(typeof(ICasts<,>))), @interface =>
+            {{ForEach(_types, type =>
+                ForEach(type.Interfaces.Where(i => i.Model.IsGenericType && !i.Model.IsGenericTypeDefinition && i.Model.IsAssignableTo(typeof(ICasts<,>))), @interface =>
                 {
                     var result = string.Empty;
                     type.Apply(t => @interface.Apply(i =>

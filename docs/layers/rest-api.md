@@ -46,6 +46,20 @@ This target is provided in `AddServices` phase. To configure it in a feature;
  });
 ```
 
+> [!TIP]
+>
+> This layer creates and sets an `ExtendedContractResolver` instance as the
+> default contract resolver under `options.SerializerSettings.ContractResolver`.
+> It contains a `IServiceProvider` instance to help you serialize json objects
+> into rich domain objects.
+>
+> You may use this resolver to;
+>
+> - Set a proxy type via `ProxyType` property to ignore the proxy objects and
+>   serialize them using the actual base type
+> - Change a type's json contract via `.SetType(...)` method
+> - Change a property's json contract via `.SetProperty(...)` method
+
 ### `SwaggerGenOptions`
 
 This target is provided in `AddServices` phase right after

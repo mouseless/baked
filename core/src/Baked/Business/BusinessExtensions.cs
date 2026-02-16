@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Model;
+using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -118,4 +119,42 @@ public static class BusinessExtensions
         Func<ParameterModel, bool>? filter = default
     ) where TAttribute : Attribute =>
         method.DefaultOverload.Parameters.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
+
+    public static bool HasIdInfo(this TypeModel type) =>
+        type.TryGetIdInfo(out var _);
+
+    public static IdInfo GetIdInfo(this TypeModel type)
+    {
+        if (!type.TryGetIdInfo(out var result))
+        {
+            throw new InvalidOperationException($"`{type.Name}` does not have `IdentifierInfo`");
+        }
+
+        return result;
+    }
+
+    public static bool TryGetIdInfo(this TypeModel type, [NotNullWhen(true)] out IdInfo? idInfo)
+    {
+        idInfo = null;
+
+        if (!type.TryGetMembers(out var members)) { return false; }
+
+        var idProperty = members.FirstPropertyOrDefault<IdAttribute>();
+        if (idProperty is null) { return false; }
+
+        idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
+
+        return true;
+    }
+
+    public static Id AnId(this Stubber _,
+        string? starts = default
+    )
+    {
+        starts ??= string.Empty;
+
+        const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
+
+        return Id.Parse($"{starts}{template[starts.Length..]}");
+    }
 }

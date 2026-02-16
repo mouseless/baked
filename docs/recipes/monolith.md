@@ -43,20 +43,24 @@ Bake.New
 | Coding Style(s)    | :white_check_mark:                       | :white_check_mark:                 |
 |                    | Add/Remove Child                         |                                    |
 |                    | Command Pattern                          |                                    |
-|                    | Entity Extension via Composition         |                                    |
-|                    | Entity Subclass via Composition          |                                    |
+|                    | Entity Subclass                          |                                    |
+|                    | Id                                       |                                    |
+|                    | Initializable                            |                                    |
+|                    | Label                                    |                                    |
+|                    | Locatable                                |                                    |
+|                    | Locatable Extension                      |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
+|                    | Query                                    |                                    |
 |                    | Records are DTOs                         |                                    |
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Rich Entity                              |                                    |
 |                    | Rich Transient                           |                                    |
 |                    | Scoped by Suffix                         |                                    |
-|                    | Single by Unique                         |                                    |
+|                    | Unique                                   |                                    |
 |                    | `Uri` Return is Redirect                 |                                    |
 |                    | Use Built-in Types                       |                                    |
 |                    | Use Nullable Types                       |                                    |
-|                    | With Method                              |                                    |
 | Communication      | :white_check_mark: HTTP                  | :white_check_mark: Mock            |
 | Core               | :white_check_mark: Dotnet                | :white_check_mark: Mock            |
 | Cors               | :white_check_mark: Disabled              | :no_entry:                         |
@@ -78,9 +82,9 @@ Bake.New
 |                    | Actions as Data Panels                   |                                    |
 |                    | Data Table defaults                      |                                    |
 |                    | Description Property                     |                                    |
-|                    | Designated String Properties are Label   |                                    |
 |                    | Enum Parameter is Select                 |                                    |
 |                    | Initializer Parameters are in Page Title |                                    |
+|                    | Labels are Frozen                        |                                    |
 |                    | List is Data Table                       |                                    |
 |                    | Numeric Values are Formatted             |                                    |
 |                    | Object with List is Data Table           |                                    |

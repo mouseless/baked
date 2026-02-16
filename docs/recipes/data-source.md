@@ -39,14 +39,18 @@ Bake.New
 | Coding Style(s)    | :white_check_mark:                 | :white_check_mark:                 |
 |                    | Add/Remove Child                   |                                    |
 |                    | Command Pattern                    |                                    |
+|                    | Id                                 |                                    |
+|                    | Initializable                      |                                    |
+|                    | Label                              |                                    |
+|                    | Locatable                          |                                    |
 |                    | Namespace as Route                 |                                    |
+|                    | Query                              |                                    |
 |                    | Records are DTOs                   |                                    |
 |                    | Remaining Services are Singleton   |                                    |
 |                    | Rich Transient                     |                                    |
 |                    | Scoped by Suffix                   |                                    |
 |                    | Use Built-in Types                 |                                    |
 |                    | Use Nullable Types                 |                                    |
-|                    | With Method                        |                                    |
 | Core               | :white_check_mark: Dotnet          | :white_check_mark: Mock            |
 | Database           | :white_check_mark: Sqlite          | :white_check_mark: In Memory       |
 | Exception Handling | :white_check_mark: Problem Details | :white_check_mark:                 |

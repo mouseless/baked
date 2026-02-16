@@ -1,0 +1,75 @@
+﻿using Baked.Business;
+using Baked.CodeGeneration;
+using Baked.Domain.Model;
+using Baked.Orm;
+
+namespace Baked.CodingStyle.Id;
+
+public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
+{
+    public static readonly string[] GlobalUsings =
+        [
+            "Baked.Business",
+            "Baked.CodingStyle.Id",
+            "Baked.Orm",
+            "FluentNHibernate",
+            "FluentNHibernate.Automapping",
+            "FluentNHibernate.Diagnostics",
+            "FluentNHibernate.Conventions.Helpers",
+            "FluentNHibernate.Mapping",
+            "NHibernate.Linq",
+        ];
+
+    readonly List<(TypeModel Type, IdAttribute.MappingOptions IdMapping)> _entities = [];
+
+    public AutoPersistenceModelConfigurerTemplate(DomainModel _domain)
+    {
+        foreach (var entity in _domain.Types.Having<EntityAttribute>())
+        {
+            var idProperty = entity.GetMembers().FirstPropertyOrDefault<IdAttribute>();
+            if (idProperty is null) { continue; }
+            if (!idProperty.PropertyType.Is<Business.Id>()) { continue; }
+
+            var idAttribute = idProperty.Get<IdAttribute>();
+            var mapping = idAttribute.Mapping ?? new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
+
+            _entities.Add((entity, mapping));
+        }
+
+        AddReferences(_entities.Select(e => e.Type));
+    }
+
+    protected override IEnumerable<string> Render() =>
+        [Configurer()];
+
+    string Configurer() => $$"""
+        namespace IdCodingStyleFeature;
+
+        public class AutoPersistenceModelConfigurer : IAutoPersistenceModelConfigurer
+        {
+            public void Configure(AutoPersistenceModel model)
+            {
+            {{ForEach(_entities, e => $$"""
+                {{ModelOverride(e.Type, e.IdMapping)}}
+                {{ForeignKeyOverride(e.Type)}}
+            """)}}
+            }
+        }
+    """;
+
+    string ModelOverride(TypeModel typeModel, IdAttribute.MappingOptions idMapping) => $$"""
+        model.Override<{{typeModel.CSharpFriendlyFullName}}>(x =>
+        {{If(idMapping.IdentifierGenerator is null, () => $$"""
+            x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{idMapping.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Assigned()
+        """, @else: () => $$"""
+            x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{idMapping.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Custom<{{idMapping.IdentifierGenerator?.GetCSharpFriendlyFullName()}}>()
+        """)}}
+        );
+    """;
+
+    string ForeignKeyOverride(TypeModel typeModel) => $$"""
+        {{ForEach(typeModel.GetMembers().Properties.Where(p => p.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>()), p => $$"""
+            model.Override<{{typeModel.CSharpFriendlyFullName}}> (x => x.References(r => r.{{p.Name}}).Column("{{p.Name}}{{p.PropertyType.GetIdInfo().PropertyName}}"));
+        """)}}
+    """;
+}

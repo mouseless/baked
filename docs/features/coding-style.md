@@ -8,8 +8,8 @@ app.Features.AddCodingStyles([...]);
 
 ## Add/Remove Child
 
-Configures routes for methods in `AddChild` and `RemoveChild(Child)` signature
-to have a resource route `POST /../children` and `DELETE /../children/{childId}`
+Configures method routes in `AddChild` and `RemoveChild(Child)` signature to
+have a resource route `POST /../children` and `DELETE /../children/{childId}`
 respectively.
 
 ```csharp
@@ -24,17 +24,7 @@ Uses class names as route and removes `Execute` and `Process` names from route.
 c => c.CommandPattern()
 ```
 
-## Entity Extension via Composition
-
-Allows classes to extend entities via composition. This marks a transient class
-as an entity extension when it implements implicit casting to an entity. Methods
-of these extension classes are rendered under entity group.
-
-```csharp
-c => c.EntityExtensionViaComposition()
-```
-
-## Entity Subclass via Composition
+## Entity Subclass
 
 Allows classes to be subclasses of entities via composition. This marks a
 transient class as an entity subclass when it implements explicit casting to an
@@ -43,12 +33,98 @@ uses the first unique property to discriminate entity records.
 
 > [!WARNING]
 >
-> First unique property is expected to be `enum` or `string`. Otherwise subclass
-> routing won't work.
+> First unique property is expected to be `enum` or `string`. Otherwise
+> subclass routing won't work.
 
 ```csharp
-c => c.EntitySubclassViaComposition()
+c => c.EntitySubclass()
 ```
+
+## Id
+
+This feature provides `Id` configuration for transient and entity classes.
+
+```csharp
+c => c.Id()
+```
+
+Single property of type `Baked.Business.Id` is marked with `IdAttribute`. For
+entities, `Id` properties are mapped with `IdGuidUserType` and generated with
+`IdGuidGenerator` using `DbType.Guid`.
+
+```csharp
+public class Entity(IEntityContext<Parent> _context)
+{
+    public Id Id { get; private set; } = default!;
+    ...
+}
+```
+
+> [!TIP]
+>
+> To override ID mapping of an entity, add a property attribute configuration on
+> `IdAttribute` as below,
+>
+> ```csharp
+> builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+>     when: c => c.Type.Is<MyEntity>(),
+>     attribute: id => id.Assigned() // or id.AutoIncrement()
+> );
+> ```
+
+## Initializable
+
+Adds `TransientAttribute` to the services that has an `Initializer` method.
+This coding style makes usages like `_newEntity().With(name)` possible.
+`Transient` type's initializer parameters are added to query string and
+initalizer is invoked with given parameters when constructing target.
+
+> [!NOTE]
+>
+> Default initializer method name is set to `With`
+
+```csharp
+c => c.Initializable()
+```
+
+## Label
+
+Marks selected string properties as labels by giving `LabelAttribute` to
+properties with matching names.
+
+```csharp
+c => c.Label(propertyNames: [...])
+```
+
+> [!NOTE]
+>
+> Default value of `propertyNames` is `["Display", "Label", "Name", "Title"]`.
+
+## Locatable
+
+Manages binding of `Locatable` targets and api inputs. For `Locatable` types,
+this feature adds id parameter to route, configures finding target and parameter
+lookup expressions by using `Locatable` attribute.
+
+> [!NOTE]
+>
+> Parameter lookup is only supported for `Locatable` types
+
+```csharp
+c => c.Locatable()
+```
+
+## Locatable Extension
+
+Allows classes to extend locatables via composition. This marks a transient
+class as a locatable extension when it implements implicit casting to a
+locatable. Methods of these extension classes are rendered under locatable
+group.
+
+```csharp
+c => c.LocatableExtension()
+```
+
 ## Namespace as Route
 
 Reflects namespace of a domain class as base route for its endpoints.
@@ -65,6 +141,19 @@ Configures all `object` parameters, return types and properties to be treated as
 ```csharp
 c => c.ObjectAsJson()
 ```
+
+## Query
+
+Adds `QueryAttribute` to the classes that has plural name of a locatable class,
+e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a query.
+
+Removes `FirstBy`, `SingleBy` and `By` names from API routes and configure them
+as `GET` endpoints.
+
+> [!WARNING]
+>
+> A class that injects `IQueryContext` is not considered as a query class unless
+> it satisfies the plural naming convention.
 
 ## Records are DTOs
 
@@ -86,12 +175,10 @@ c => c.RemainingServicesAreSingleton()
 
 ## Rich Entity
 
-Adds `QueryAttribute` to classes that inject `IQueryContext<TEntity>`. Using
-generic argument of `IQueryContext<TEntity>` finds corresponding entity class
-and add `EntityAttribute` to it.
+Adds `EntityAttribute` to classes that inject `IEntityContext<TEntity>`.
 
-Configures `NHibernate` to initialize entities using dependency injection, making
-them rich entities.
+Configures `NHibernate` to initialize entities using dependency injection,
+making them rich entities.
 
 Configures routes and swagger docs to use entity methods as resource actions.
 
@@ -101,12 +188,12 @@ c => c.RichEntity()
 
 ## Rich Transient
 
-Configures transient services as api services. This coding style allows you to
-have a public initializer (`With`) with parameters which will render as query
-parameters or single `id` parameter which will render from route.
+Configures transient services as api services. This coding style marks a type
+having a public initializer with a single `Business.Id` parameter which will
+render from route, as `RichTransient`, configures `Locatable` attribure and
+generates locators.
 
-Rich transients with `id` types can be method parameters and located using
-their initializers.
+Rich transients can be method parameters and located using their locators.
 
 Configures routes and swagger docs to use entity methods as resource actions.
 
@@ -127,26 +214,25 @@ c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
 >
 > Default suffix is `Context`.
 
-## Single by Unique
+## Unique
 
-Scans query classes to have methods that conforms to `SingleBy[Property]` naming
-convetion. Treats such methods as single by unique methods and adds that
-property to entity id route parameter so that entites can be found through
-unique properties as well as their ids. For instance, if entity has
-`SingleByName` then its id route parameter is updated from `{id}` to
-`{idOrName}`.
+Adds `UniqueAttribute` to entity properties of which corresponding query class
+has either a `SingleBy...` or `AnyBy...` query method, e.g., `User.Username`
+property would be treated as unique if either `Users.SingleByUsername` or
+`Users.AnyByUsername` exists.
 
-```csharp
-c => c.SingleByUnique()
-```
+> [!NOTE]
+>
+> Having `UniqueAttribute` on a property tells `AutoMapOrmFeature` to configure
+> that column to have a unique constraint.
 
 ## `Uri` Return is Redirect
 
 Adds redirect support to your api endpoints. It configures an endpoint to use
 redirect result when its corresponding method returns `Uri`. Combined with
 `CommandPattern`, it allows you to create callback `GET` endpoints when method
-doesn't have any parameters. For actions that have parameters, it configures its
-corresponding endpoint to accept form instead of a `json` body.
+doesn't have any parameters. For actions that have parameters, it configures
+its corresponding endpoint to accept form instead of a `json` body.
 
 ```csharp
 c => c.UriReturnIsRedirect()
@@ -176,13 +262,4 @@ forbid sending null or empty values to not-null parameters.
 
 ```csharp
 c => c.UseNullableTypes()
-```
-
-## With Method
-
-Adds `TransientAttribute` to the services that has a `With` method. This coding
-style makes usages like `newEntity().With(name)` possible.
-
-```csharp
-c => c.WithMethod()
 ```

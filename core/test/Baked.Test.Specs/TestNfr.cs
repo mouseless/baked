@@ -1,8 +1,7 @@
-﻿using Baked.Playground.CodingStyle.EntitySubclassViaComposition;
+﻿using Baked.Playground.CodingStyle.EntitySubclass;
 using Baked.Playground.Orm;
 using Baked.Testing;
 using Humanizer;
-using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
 namespace Baked.Test;
@@ -25,7 +24,7 @@ public abstract class TestNfr : MonolithNfr
             var entitiesResponse = await Client.GetAsync($"/{entitiesRoute}");
             await CheckResponse($"GET /{entitiesRoute}", entitiesResponse);
 
-            var entities = (IEnumerable?)JsonConvert.DeserializeObject(await entitiesResponse.Content.ReadAsStringAsync()) ?? Array.Empty<object>();
+            var entities = (IEnumerable?)await entitiesResponse.Content.Deserialize() ?? Array.Empty<object>();
             foreach (dynamic entity in entities)
             {
                 var deleteResponse = await Client.DeleteAsync($"/{entitiesRoute}/{entity?.id}");

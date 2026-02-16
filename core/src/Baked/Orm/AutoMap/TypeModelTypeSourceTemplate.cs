@@ -3,16 +3,32 @@ using Baked.Domain.Model;
 
 namespace Baked.Orm.AutoMap;
 
-public class TypeModelTypeSourceTemplate(DomainModel _domain)
-    : CodeTemplateBase
+public class TypeModelTypeSourceTemplate : CodeTemplateBase
 {
-    Lazy<IEnumerable<TypeModel>> _entities = new(() => _domain.Types.Having<EntityAttribute>().Where(CheckType));
+    public static string[] GlobalUsings =
+        [
+            "Baked.Orm",
+            "Baked.Runtime",
+            "FluentNHibernate",
+            "FluentNHibernate.Diagnostics",
+            "Microsoft.Extensions.DependencyInjection",
+            "NHibernate.Linq"
+        ];
+
+    readonly IEnumerable<TypeModel> _entities;
+
+    public TypeModelTypeSourceTemplate(DomainModel domain)
+    {
+        _entities = domain.Types.Having<EntityAttribute>().Where(CheckType);
+
+        AddReferences(_entities);
+    }
 
     protected override IEnumerable<string> Render() =>
         [TypeModelSource()];
 
     string TypeModelSource() => $$"""
-    namespace AutoMapFeature;
+    namespace AutoMapOrmFeature;
 
     public class TypeModelTypeSource
         : ITypeSource
@@ -22,9 +38,9 @@ public class TypeModelTypeSourceTemplate(DomainModel _domain)
 
         IEnumerable<Type> ITypeSource.GetTypes()
         {
-            {{If(!_entities.Value.Any(), () => """
+            {{If(!_entities.Any(), () => """
             return Array.Empty<Type>();
-            """, @else: () => ForEach(_entities.Value, entity => $$"""
+            """, @else: () => ForEach(_entities, entity => $$"""
             yield return typeof({{entity.CSharpFriendlyFullName}});
             """)
             )}}
@@ -38,6 +54,7 @@ public class TypeModelTypeSourceTemplate(DomainModel _domain)
     {
         Type? result = null;
         model.Apply(t => result = t);
+
         return result != null;
     }
 }

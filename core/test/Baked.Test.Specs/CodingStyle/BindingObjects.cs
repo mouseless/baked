@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
@@ -15,7 +14,7 @@ public class BindingObjects : TestNfr
                 canBe = "sent"
             }
         ));
-        var actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        var actual = await response.Content.Deserialize();
 
         actual.ShouldDeeplyBe(
             new
@@ -36,7 +35,7 @@ public class BindingObjects : TestNfr
                 @object2 = new { param2 = "param2" }
             }
         ));
-        var actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        var actual = await response.Content.Deserialize();
 
         actual.ShouldDeeplyBe(
             new

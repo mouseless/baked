@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.RestApi;
-using Baked.RestApi.Conventions;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -34,15 +34,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
-
-            builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
-            builder.Conventions.Add(new LookupEntityByIdConvention());
-            builder.Conventions.Add(new LookupEntitiesByIdsConvention());
-            builder.Conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
-                _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
-            ));
+            builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
@@ -50,28 +43,18 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(AutoMapOrmFeature),
-                assembly =>
-                {
-                    assembly
+                    assembly => assembly
                         .AddReferenceFrom<AutoMapOrmFeature>()
+                        .AddCodes(new AutoPersistenceModelConfigurerTemplate(domain))
                         .AddCodes(new ManyToOneFetcherTemplate(domain))
-                        .AddCodes(new TypeModelTypeSourceTemplate(domain));
-
-                    foreach (var entity in domain.Types.Having<EntityAttribute>())
-                    {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings:
-                [
-                    "Baked.Orm",
-                    "Baked.Runtime",
-                    "FluentNHibernate",
-                    "FluentNHibernate.Diagnostics",
-                    "Microsoft.Extensions.DependencyInjection",
-                    "NHibernate.Linq"
-                ]
-            );
+                        .AddCodes(new TypeModelTypeSourceTemplate(domain)),
+                    usings:
+                    [
+                        .. AutoPersistenceModelConfigurerTemplate.GlobalUsings,
+                        .. ManyToOneFetcherTemplate.GlobalUsings,
+                        .. TypeModelTypeSourceTemplate.GlobalUsings
+                    ]
+                );
             });
         });
 
@@ -84,6 +67,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
+            services.AddSingleton(typeof(ILocator<>), typeof(EntityLocator<>));
         });
 
         configurator.ConfigureFluentConfiguration(builder =>
@@ -95,18 +79,16 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                var assembly = generatedContext.Assemblies[nameof(AutoMapOrmFeature)];
+                var featureAssembly = generatedContext.Assemblies[nameof(AutoMapOrmFeature)];
+                var typeSource = featureAssembly.CreateRequiredImplementationInstance<ITypeSource>();
+                var modelConfigurer = featureAssembly.CreateRequiredImplementationInstance<IAutoPersistenceModelConfigurer>();
 
-                var typeSource = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(ITypeSource))) ?? throw new("`ITypeSource` implementation not found");
-                var typeSourceInstance = (ITypeSource?)Activator.CreateInstance(typeSource) ?? throw new($"Cannot create instance of {typeSource}");
-
-                model.AddTypeSource(typeSourceInstance);
+                model.AddTypeSource(typeSource);
+                modelConfigurer.Configure(model);
             });
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));
-            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
-            model.Conventions.Add(ForeignKey.EndsWith("Id"));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
@@ -116,7 +98,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             automapping.ShouldMapType.Add(_ => true);
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
@@ -152,9 +133,9 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
-            if (options.SerializerSettings.ContractResolver is null) { return; }
+            if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 
-            options.SerializerSettings.ContractResolver = new ProxyAwareContractResolver<INHibernateProxy>(options.SerializerSettings.ContractResolver);
+            contractResolver.ProxyType = typeof(INHibernateProxy);
         });
     }
 }

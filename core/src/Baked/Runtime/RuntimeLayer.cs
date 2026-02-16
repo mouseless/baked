@@ -27,9 +27,8 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
 
     protected override PhaseContext GetContext(AddServices phase)
     {
-        var services = Context.GetServiceCollection();
-        services.AddLogging();
-        services.AddSingleton<ServiceProviderAccessor>();
+        _services.AddLogging();
+        _services.AddSingleton<ServiceProviderAccessor>();
 
         return phase.CreateContextBuilder()
             .Add(_services)
@@ -37,7 +36,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
             .Add(_threadOptions)
             .OnDispose(() =>
             {
-                services.AddSingleton<IFileProvider>(sp =>
+                _services.AddSingleton<IFileProvider>(sp =>
                     new CompositeFileProvider(sp.UsingCurrentScope().GetKeyedServices<IFileProvider>(FileProvidersKey))
                 );
 
@@ -83,8 +82,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         }
     }
 
-    public class PostBuild
-        : PhaseBase<IServiceProvider>
+    public class PostBuild : PhaseBase<IServiceProvider>
     {
         protected override void Initialize(IServiceProvider _) { }
     }

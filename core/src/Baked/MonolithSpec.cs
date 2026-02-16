@@ -60,20 +60,24 @@ public abstract class MonolithSpec : Spec
             [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
-                c => c.EntityExtensionViaComposition(),
-                c => c.EntitySubclassViaComposition(),
+                c => c.EntitySubclass(),
+                c => c.Id(),
+                c => c.Initializable(),
+                c => c.Label(),
+                c => c.Locatable(),
+                c => c.LocatableExtension(),
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
+                c => c.Query(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
-                c => c.SingleByUnique(),
+                c => c.Unique(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes(),
-                c => c.WithMethod()
+                c => c.UseNullableTypes()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
@@ -98,9 +102,9 @@ public abstract class MonolithSpec : Spec
                     c => c.ActionsAsDataPanels(),
                     c => c.DataTableDefaults(),
                     c => c.DescriptionProperty(),
-                    c => c.DesignatedStringPropertiesAreLabel(),
                     c => c.EnumParameterIsSelect(),
                     c => c.InitializerParametersAreInPageTitle(),
+                    c => c.LabelsAreFrozen(),
                     c => c.ListIsDataTable(),
                     c => c.NumericValuesAreFormatted(),
                     c => c.ObjectWithListIsDataTable(),

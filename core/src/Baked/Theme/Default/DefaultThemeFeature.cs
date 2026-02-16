@@ -41,20 +41,20 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                   r.Path.Contains("[id]") &&
                   c.Type.TryGetMembers(out var members) &&
                   members.Properties.Having<IdAttribute>().Any(),
-                attribute: (r, c) => r.Params["id"] = c.Type.GetMembers().Properties.Having<IdAttribute>().First().Get<DataAttribute>().Prop
+                attribute: (r, c) =>
+                {
+                    var idAttribute = c.Type.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
+
+                    r.Params[idAttribute.RouteName] = idAttribute.RouteName;
+                }
             );
 
             // Property defaults
             builder.Index.Property.Add<DataAttribute>();
-            builder.Index.Property.Add<IdAttribute>();
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 order: -10
-            );
-            builder.Conventions.SetPropertyAttribute(
-                when: c => c.Property.Name == "Id",
-                attribute: () => new IdAttribute()
             );
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
@@ -62,6 +62,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>(),
+                component: () => B.Text(),
+                order: -10
+            );
+            builder.Conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
                 component: () => B.Text(),
                 order: -10
             );

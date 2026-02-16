@@ -23,6 +23,7 @@ public record DataTable : IComponentSchema
         public bool? MinWidth { get; set; }
         public bool? Exportable { get; set; }
         public bool? Frozen { get; set; }
+        public bool? Hidden { get; set; }
     }
 
     public record Footer(string Label)

@@ -40,7 +40,7 @@
             },
             "action": {
               "type": "Remote",
-              "path": "parents/{id:guid}/children",
+              "path": "parents/{id}/children",
               "method": "POST",
               "params": {
                 "type": "Computed",
@@ -112,7 +112,7 @@
             },
             "action": {
               "type": "Remote",
-              "path": "parents/{id:guid}/",
+              "path": "parents/{id}/",
               "method": "PUT",
               "params": {
                 "type": "Computed",
@@ -157,7 +157,7 @@
             },
             "action": {
               "type": "Remote",
-              "path": "parents/{id:guid}/",
+              "path": "parents/{id}/",
               "method": "DELETE",
               "params": {
                 "type": "Computed",
@@ -229,7 +229,7 @@
           },
           "data": {
             "type": "Remote",
-            "path": "parents/{id:guid}",
+            "path": "parents/{id}",
             "params": {
               "type": "Computed",
               "composable": "useNuxtRoute",
@@ -279,6 +279,21 @@
                     "minWidth": true,
                     "exportable": true,
                     "frozen": true
+                  },
+                  {
+                    "key": "parent",
+                    "component": {
+                      "type": "Text",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.parent.name"
+                      }
+                    },
+                    "title": "Parent",
+                    "exportable": true,
+                    "hidden": true
                   }
                 ],
                 "dataKey": "id",
@@ -296,7 +311,7 @@
               },
               "data": {
                 "type": "Remote",
-                "path": "parents/{id:guid}/children",
+                "path": "parents/{id}/children",
                 "query": {
                   "type": "Computed",
                   "composable": "useNuxtRoute",

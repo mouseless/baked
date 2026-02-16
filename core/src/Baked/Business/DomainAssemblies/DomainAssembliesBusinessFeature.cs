@@ -63,7 +63,10 @@ public class DomainAssembliesBusinessFeature(
 
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<CasterAttribute>();
+            builder.Index.Type.Add<QueryAttribute>();
             builder.Index.Method.Add<InitializerAttribute>();
+            builder.Index.Property.Add<IdAttribute>();
+            builder.Index.Property.Add<LabelAttribute>();
 
             builder.Conventions.SetTypeAttribute(
                 attribute: context =>
@@ -137,24 +140,10 @@ public class DomainAssembliesBusinessFeature(
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
-                    assembly =>
-                    {
-                        assembly
-                            .AddReferenceFrom<DomainAssembliesBusinessFeature>()
-                            .AddCodes(new CasterConfigurerTemplate(domain));
-
-                        foreach (var entity in domain.Types.Having<CasterAttribute>())
-                        {
-                            entity.Apply(t => assembly.AddReferenceFrom(t));
-                        }
-                    },
-                    usings:
-                    [
-                        "Baked.Business",
-                        "Baked.Business.DomainAssemblies",
-                        "Baked.Runtime",
-                        "Microsoft.Extensions.DependencyInjection"
-                    ]
+                    assembly => assembly
+                        .AddReferenceFrom<DomainAssembliesBusinessFeature>()
+                        .AddCodes(new CasterConfigurerTemplate(domain)),
+                    usings: [.. CasterConfigurerTemplate.GlobalUsings]
                 );
             });
         });
@@ -175,12 +164,9 @@ public class DomainAssembliesBusinessFeature(
 
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                var assembly = generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)];
-
-                var type = assembly.GetExportedTypes().SingleOrDefault(t => t.Name.Contains("CasterConfigurer")) ?? throw new("`ICasterConfigurer` implementation not found");
-                var typeInstance = (ICasterConfigurer?)Activator.CreateInstance(type) ?? throw new($"Cannot create instance of {type}");
-
-                typeInstance.Configure();
+                generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)]
+                    .CreateRequiredImplementationInstance<ICasterConfigurer>()
+                    .Configure();
             });
         });
 

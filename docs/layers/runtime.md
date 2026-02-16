@@ -1,8 +1,8 @@
 # Runtime
 
-This layer serves as foundation and provides common libraries for an 
-application. Baked uses .NET's standard libraries for providing an environment 
-based configuration mechanism, dependency injection container for inversion of 
+This layer serves as foundation and provides common libraries for an
+application. Baked uses .NET's standard libraries for providing an environment
+based configuration mechanism, dependency injection container for inversion of
 control and logging mechanism for monitoring and diagnostic purposes.
 
 ```csharp
@@ -11,9 +11,9 @@ app.Layers.AddRuntime();
 
 ## Configuration Targets
 
-`Runtime` layer provides `IConfigurationBuilder`, `ILoggingBuilder`, 
-`IServiceCollection`, `IServiceProvider` and `ThreadOptions` as configuration 
-targets.
+`Runtime` layer provides `IConfigurationBuilder`, `ILoggingBuilder`,
+`IServiceCollection`, `ServiceCollectionWrapper`, `IServiceProvider` and
+`ThreadOptions` as configuration targets.
 
 ### `IConfigurationBuilder`
 
@@ -62,7 +62,7 @@ configurator.ConfigureServiceProvider(sp =>
 
 ### `ThreadOptions`
 
-This target is provided in add `AddServices` phase. When configured, min and 
+This target is provided in add `AddServices` phase. When configured, min and
 max `workerthreads` and `completionPortThreads` values are set from
 `MinThreadCount` and `MaxThreadCount` value as `1x` and `2x` respectively
 

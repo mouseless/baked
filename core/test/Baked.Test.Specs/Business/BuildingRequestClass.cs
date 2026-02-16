@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 
 namespace Baked.Test.Business;
 
@@ -15,7 +14,7 @@ public class BuildingRequestClass : TestNfr
                 numeric = 1
             }
         ));
-        var actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        var actual = await response.Content.Deserialize();
 
         actual.ShouldDeeplyBe(
            new
