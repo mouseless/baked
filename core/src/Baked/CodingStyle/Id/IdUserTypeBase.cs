@@ -1,6 +1,5 @@
 ﻿using Baked.DataAccess;
 using NHibernate.Engine;
-using NHibernate.SqlTypes;
 using NHibernate.Type;
 using System.Data.Common;
 
@@ -8,7 +7,6 @@ namespace Baked.CodingStyle.Id;
 
 public abstract class IdUserTypeBase : UserTypeBase
 {
-    public abstract override SqlType[] SqlTypes { get; }
     public abstract NullableType NHibernateType { get; }
     public abstract object Convert(object value);
 

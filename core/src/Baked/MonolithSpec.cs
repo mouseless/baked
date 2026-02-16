@@ -77,7 +77,8 @@ public abstract class MonolithSpec : Spec
                 c => c.Unique(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes()
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);

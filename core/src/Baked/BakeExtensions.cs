@@ -90,7 +90,8 @@ public static class BakeExtensions
                 c => c.Unique(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes()
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
@@ -191,7 +192,8 @@ public static class BakeExtensions
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes()
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
             ]);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);

@@ -48,7 +48,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureAutomapping(automapping =>
         {
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Business.Id) && m.Name == "Id");
+            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Business.Id));
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>

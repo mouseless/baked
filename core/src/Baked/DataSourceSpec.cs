@@ -59,7 +59,8 @@ public abstract class DataSourceSpec : Spec
                 c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
                 c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes()
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
             ]);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
