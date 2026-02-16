@@ -1,13 +1,20 @@
 # Unreleased
 
-## Features
+## Improvements
 
-- To support `Publicize.Fody` weaving, domain model now treats members with
-  `EditorBrowsable(State=Advanced)` as private
-  - `IsOriginallyPublic()` extension is introduced to check if attribute is
-    present on a member info
-- [Layers / Domain](../layers/domain.md#proxifying-entities) is updated to
-  contain a guide to enable proxifying in domain assemblies
+- Computed data and composite data now support sync load
+  - If there is no async in the parts of composite data, it performs a sync load
+  - Computed data does a sync load unless specified otherwise
+- `IData` now has a `IsAsync` property
+  - It is set to `true` in `RemoteData`
+  - It is set to `false` in `InlineData` and `ContextData`
+  - In `CompositeData`, it is set to `false` if all of the parts are not async
+  - In `ComputedData`, it is set to `false` value unless it is provided
+    externally or `Options` is async
+- `Datas.Composables` now provide `UseLoginRedirect` extension
+- `useDataMounter` composable is now added for a more convenient data fetching
+- Default assignments in `ui/*.cs` components are removed, defaults are provided
+  in `components/*.vue` components
 - `IdCodingStyle` feature is now added which configures primary key and foreign
   key references for entities
   - A property with `Baked.Business.Id` type is required for a property to be
@@ -49,6 +56,10 @@
 
 ## Breaking Changes
 
+- All `computeSync` renamed to `compute`, in composables
+- `IData` now has a `IsAsync` property
+- `create` factory method of `useEvents` is now removed, you may use `useEvents`
+  composable directly
 - Entity and rich transient domain objects are now rendered ID objects instead
   of ID strings in API endpoints
   - E.g., for a method like `public void Sample(Entity entity)`;

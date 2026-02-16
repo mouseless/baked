@@ -1,4 +1,5 @@
 name: Publish
+
 on:
   pull_request:
     types:
@@ -6,6 +7,11 @@ on:
     branches:
       - main
       - 'epic/**'
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: write
+
 jobs:
   remove-label:
     # Remove when not in release branch
@@ -135,8 +141,6 @@ jobs:
           for file in *.tgz; do
             npm publish "$file" --access public
           done
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
   generate-docs:
     needs: check-version

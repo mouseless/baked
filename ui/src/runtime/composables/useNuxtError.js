@@ -3,11 +3,11 @@ import { useError } from "#app";
 export default function() {
   const error = useError();
 
-  function computeSync() {
+  function compute() {
     return error;
   }
 
   return {
-    computeSync
+    compute
   };
 }

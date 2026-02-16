@@ -66,6 +66,17 @@ test.describe("Filter Links", () => {
     await expect(component.getByTestId("LINK_1")).not.toBeVisible();
   });
 
+  test("ignore white space", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill(" A");
+
+    await expect(component.getByTestId("LINK_1")).toBeVisible();
+    await expect(component.getByTestId("LINK_2")).not.toBeVisible();
+  });
+
   test("not found", async({ page }) => {
     const component = page.getByTestId(id);
 
@@ -76,6 +87,20 @@ test.describe("Filter Links", () => {
     await expect(component.getByTestId("LINK_1")).not.toBeVisible();
     await expect(component.getByTestId("LINK_2")).not.toBeVisible();
     await expect(component).toHaveText("No item available!");
+  });
+});
+
+test.describe("White Space Sensitive", () => {
+  const id = "White Space Sensitive";
+
+  test("filter", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill(" A");
+
+    await expect(component.getByTestId("LINK_1")).not.toBeVisible();
   });
 });
 

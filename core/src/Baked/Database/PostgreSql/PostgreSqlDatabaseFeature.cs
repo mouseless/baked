@@ -25,7 +25,11 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
 
         configurator.ConfigurePersistence(persistence =>
         {
-            persistence.Configurer = PostgreSQLConfiguration.PostgreSQL83.ConnectionString(_connectionString);
+            persistence.Configurer =
+                PostgreSQLConfiguration.PostgreSQL83
+                    .ConnectionString(_connectionString)
+                    .Dialect<CustomPostgreSQL83Dialect>()
+            ;
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

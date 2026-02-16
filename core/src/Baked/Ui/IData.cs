@@ -3,6 +3,7 @@
 public interface IData
 {
     string Type { get; }
+    bool IsAsync { get; }
     bool? RequireLocalization { get; }
 
     public static IData operator +(IData? left, IData right)

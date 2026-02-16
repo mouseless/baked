@@ -1,4 +1,5 @@
 name: Regular Checks - Project - Core
+
 on:
   pull_request:
     branches:
@@ -6,8 +7,10 @@ on:
       - 'epic/**'
     paths:
       - 'core/**/*'
+
 env:
   MIN_COVERAGE: 85
+
 jobs:
   # outputs matrix json so that windows is only added when head branch is a release branch
   prepare:

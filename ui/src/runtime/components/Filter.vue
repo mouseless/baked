@@ -9,6 +9,7 @@
   </IconField>
 </template>
 <script setup>
+import { watch } from "vue";
 import { IconField, InputIcon, InputText } from "primevue";
 import { useLocalization } from "#imports";
 
@@ -19,5 +20,12 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { placeholder } = schema;
+const { placeholder, whiteSpaceSensitive } = schema;
+
+watch(model, (newValue, oldValue) => {
+  if(newValue === oldValue) { return; }
+  if(whiteSpaceSensitive) { return; }
+
+  model.value = newValue.trim();
+});
 </script>

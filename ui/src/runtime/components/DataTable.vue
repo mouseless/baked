@@ -39,7 +39,7 @@
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
-        <AwaitLoading :skeleton="{ class:'min-h-5' }">
+        <AwaitLoading :skeleton="{ class: 'min-h-5' }">
           <ProvideParentContext
             v-if="data"
             :data="row.$getRow()"
@@ -88,7 +88,7 @@
         v-if="actions"
         #body="{ data: row, index }"
       >
-        <AwaitLoading :skeleton="{ class:'min-h-5' }">
+        <AwaitLoading :skeleton="{ class: 'min-h-5' }">
           <ProvideParentContext
             v-if="data"
             :data="row.$getRow()"
@@ -120,7 +120,7 @@
           :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
-            <AwaitLoading :skeleton="{ class:'min-h-5' }">
+            <AwaitLoading :skeleton="{ class: 'min-h-5' }">
               <Bake
                 v-if="data"
                 :name="`rows/footer/${column.key}`"
@@ -161,7 +161,11 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { actions, columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const exportOptions = schema.exportOptions && {
+  buttonIcon: "pi pi-download",
+  ...schema.exportOptions
+};
 
 const contextData = context.injectContextData();
 const dataDescriptor = context.injectDataDescriptor();
@@ -211,12 +215,12 @@ onMounted(async() => {
     } = exportOptions;
 
     if(formatterName) {
-      formatter = (await composableResolver.resolve(formatterName)).default();
+      formatter = composableResolver.resolve(formatterName).default();
     }
 
     let parameterFormatter = null;
     if(parameterFormatterName) {
-      parameterFormatter = (await composableResolver.resolve(parameterFormatterName)).default();
+      parameterFormatter = composableResolver.resolve(parameterFormatterName).default();
     }
 
     if(appendParameters && dataDescriptor) {
@@ -242,14 +246,6 @@ function exportFunction({ data, field }) {
 </script>
 <style>
 .b-component--DataTable {
-  .p-datatable-table-container {
-    /*
-     * TODO remove when primevue fixes scroll overflow issue. observed after
-     * upgrading from v4.4.1 to v4.5.4
-     */
-    max-width: calc(100vw - 2 * (1.125rem + 1rem));
-  }
-
   a {
     @apply text-sm;
   }

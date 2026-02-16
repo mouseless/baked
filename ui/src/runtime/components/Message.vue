@@ -27,5 +27,5 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { icon, severity, localizeMessage } = schema;
+const { icon, severity = "info", localizeMessage } = schema;
 </script>
