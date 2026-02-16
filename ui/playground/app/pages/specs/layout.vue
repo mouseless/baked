@@ -47,5 +47,5 @@ import { useLocalization, useLoginRedirect } from "#imports";
 const { localize: l } = useLocalization();
 const loginRedirect = useLoginRedirect();
 
-const loginPath = loginRedirect.computeSync();
+const loginPath = loginRedirect.compute();
 </script>

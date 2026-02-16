@@ -1,4 +1,5 @@
 name: Regular Checks - Project - UI
+
 on:
   pull_request:
     branches:
@@ -6,6 +7,7 @@ on:
       - 'epic/**'
     paths:
       - 'ui/**/*'
+
 jobs:
   build:
     name: Build

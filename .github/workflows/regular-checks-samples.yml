@@ -1,4 +1,5 @@
 name: Regular Checks - Samples
+
 on:
   pull_request:
     branches:
@@ -6,6 +7,7 @@ on:
       - 'epic/**'
     paths:
       - 'samples/**/*'
+
 jobs:
   prepare:
     name: Prepare

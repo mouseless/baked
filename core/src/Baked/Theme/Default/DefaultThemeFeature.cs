@@ -112,12 +112,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(SimpleForm.Inputs));
+                    cc = cc.Drill(nameof(SimpleForm), nameof(SimpleForm.Inputs));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
                         sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                            parameter.GetRequiredSchema<Input>(cc)
                         );
                     }
                 }
@@ -125,12 +125,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddMethodComponentConfiguration<FormPage>(
                 component: (sf, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(FormPage.Inputs));
+                    cc = cc.Drill(nameof(FormPage), nameof(FormPage.Inputs));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
                         sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                            parameter.GetRequiredSchema<Input>(cc)
                         );
                     }
                 }

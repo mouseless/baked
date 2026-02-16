@@ -74,21 +74,32 @@ export default {
   aCompositeData(parts) {
     parts = $(parts, [this.anInlineData()]);
 
-    return {
+    const result = {
       type: "Composite",
       parts
     };
+
+    if(parts.some(p => p?.isAsync === true || p.type === "Remote")) {
+      result["isAsync"] = true;
+    }
+
+    return result;
   },
 
-  aComputedData({ composable, options } = {}) {
+  aComputedData({ composable, options, isAsync } = {}) {
     composable = $(composable, "useFakeComputed");
     options = $(options, this.anInlineData({ data: "fake" }));
+    isAsync = $(isAsync, false);
 
-    return {
+    const result = {
       type: "Computed",
       composable,
       options
     };
+
+    if(isAsync) { result["isAsync"] = isAsync; }
+
+    return result;
   },
 
   aConditional({ testId, fallback, conditions, data } = {}) {
@@ -176,16 +187,17 @@ export default {
     };
   },
 
-  aDataPanel({ title, collapsed, localizeTitle, inputs, content } = {}) {
+  aDataPanel({ title, collapsed, localizeTitle, inputs, content, toggleable } = {}) {
     title = $(title, this.anInlineData("Spec: Test Title"));
     collapsed = $(collapsed, false);
     inputs = $(inputs, []);
     content = $(content, this.anExpected());
+    toggleable = $(toggleable, true);
     localizeTitle = $(localizeTitle, title.type === "Inline");
 
     return {
       type: "DataPanel",
-      schema: { title, collapsed, localizeTitle, inputs, content }
+      schema: { title, collapsed, localizeTitle, inputs, content, toggleable }
     };
   },
 
@@ -364,13 +376,15 @@ export default {
     };
   },
 
-  aFilter({ placeholder, action } = {}) {
+  aFilter({ placeholder, action, whiteSpaceSensitive } = {}) {
     placeholder = $(placeholder, "Filter");
+    whiteSpaceSensitive = $(whiteSpaceSensitive, false);
 
     return {
       type: "Filter",
       schema: {
-        placeholder
+        placeholder,
+        whiteSpaceSensitive
       },
       action
     };
@@ -706,7 +720,8 @@ export default {
       ? this.anInlineData(data)
       : this.aComputedData({
         composable: "useDelayedData",
-        options: this.anInlineData({ ms: 1, data })
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
       });
 
     return {
@@ -727,7 +742,8 @@ export default {
       ? this.anInlineData(data)
       : this.aComputedData({
         composable: "useDelayedData",
-        options: this.anInlineData({ ms: 1, data })
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
       });
 
     return {

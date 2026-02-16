@@ -37,7 +37,7 @@ public record DataTable : IComponentSchema
         public string CsvSeparator { get; set; } = CsvSeparator;
         public string FileName { get; set; } = FileName;
         public string? Formatter { get; set; }
-        public string? ButtonIcon { get; set; } = "pi pi-download";
+        public string? ButtonIcon { get; set; }
         public string? ButtonLabel { get; set; }
         public bool? AppendParameters { get; set; }
         public string? ParameterSeparator { get; set; }

@@ -20,7 +20,11 @@ const variants = [
   {
     name: "Base with computed title",
     descriptor: giveMe.aDataPanel({
-      title: giveMe.aComputedData({ composable: "useDelayedData", options: giveMe.anInlineData({ ms: 1, data: "Title" }) }),
+      title: giveMe.aComputedData({
+        composable: "useDelayedData",
+        options: giveMe.anInlineData({ ms: 1, data: "Title" }),
+        isAsync: true
+      }),
       collapsed: false
     })
   },
@@ -29,6 +33,13 @@ const variants = [
     descriptor: giveMe.aDataPanel({
       collapsed: true,
       content: giveMe.anExpected({ testId: "content", value: "DISPLAY ON EXPAND" })
+    })
+  },
+  {
+    name: "Toggle off",
+    descriptor: giveMe.aDataPanel({
+      toggleable: false,
+      content: giveMe.anExpected({ testId: "content", value: "ALWAYS DISPLAY" })
     })
   },
   {

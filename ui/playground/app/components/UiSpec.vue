@@ -130,7 +130,7 @@ const allVariants = computed(() => {
   return result;
 });
 
-context.provideEvents(events.create());
+context.provideEvents(events);
 context.providePageContext(pageContext);
 
 onMounted(async() => {
@@ -157,7 +157,8 @@ function prepareDescriptor(variant) {
     variant.descriptor.data = {
       type: "Computed",
       composable: "useDelayedData",
-      options: { type: "Inline", value: { ms: variant.delay, data: variant.descriptor.data?.value } }
+      options: { type: "Inline", value: { ms: variant.delay, data: variant.descriptor.data?.value } },
+      isAsync: true
     };
   }
 

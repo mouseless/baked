@@ -3,11 +3,12 @@
     ref="panel"
     :header="localizeTitle ? l(title) : title"
     :collapsed="collapsedState"
-    toggleable
+    :toggleable="toggleable ?? true"
     :pt="
       {
         headerActions: 'flex gap-2 items-center',
-        title: 'max-sm:truncate'
+        title: 'max-sm:truncate',
+        contentContainer: 'block'
       }
     "
     @update:collapsed="onCollapsed"
@@ -79,15 +80,15 @@
   </Panel>
 </template>
 <script setup>
-import { computed, onMounted, ref, useTemplateRef } from "vue";
+import { computed, ref, useTemplateRef } from "vue";
 import { Message, Panel, Button } from "primevue";
 import { Bake, Inputs, PersistentPopover } from "#components";
-import { useBreakpoints, useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
+import { useBreakpoints, useContext, useDataMounter, useUiStates, useLocalization } from "#imports";
 
 const { value: { panelStates } } = useUiStates();
 const { isMd } = useBreakpoints();
 const context = useContext();
-const dataFetcher = useDataFetcher();
+const { mount: mountData } = useDataMounter();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization({ group: "DataPanel" });
 const panel = useTemplateRef("panel");
@@ -96,7 +97,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { collapsed, content, inputs, localizeTitle, title: titleData } = schema;
+const { collapsed, content, inputs, localizeTitle, title: titleData, toggleable } = schema;
 
 const contextData = context.injectContextData();
 const path = context.injectPath();
@@ -111,14 +112,7 @@ if(inputs.length > 0) {
   contextData.parent["parameters"] = values;
 }
 
-const title = ref(dataFetcher.get({ data: titleData, contextData }));
-const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
-
-onMounted(async() => {
-  if(shouldLoadTitle) {
-    title.value = await dataFetcher.fetch({ data: titleData, contextData });
-  }
-});
+const title = mountData(titleData);
 
 function togglePopover(event) {
   popover.value.toggle(event);
