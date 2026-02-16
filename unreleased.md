@@ -1,6 +1,6 @@
 # Unreleased
 
-## Improvements
+## Features
 
 - Computed data and composite data now support sync load
   - If there is no async in the parts of composite data, it performs a sync load
