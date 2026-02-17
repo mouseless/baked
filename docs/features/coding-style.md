@@ -18,11 +18,15 @@ c => c.AddRemoveChild()
 
 ## Command Pattern
 
-Uses class names as route and removes `Execute` and `Process` names from route.
+Uses class names as route and removes configured method names from route.
 
 ```csharp
-c => c.CommandPattern()
+c => c.CommandPattern(methodNames: [...])
 ```
+
+> [!NOTE]
+>
+> Default value of `methodNames` is `["Execute", "Process"]`.
 
 ## Entity Subclass
 
@@ -79,13 +83,13 @@ This coding style makes usages like `_newEntity().With(name)` possible.
 `Transient` type's initializer parameters are added to query string and
 initalizer is invoked with given parameters when constructing target.
 
+```csharp
+c => c.Initializable(initializerNames: [...])
+```
+
 > [!NOTE]
 >
-> Default initializer method name is set to `With`
-
-```csharp
-c => c.Initializable()
-```
+> Default value of `initializerNames` is `["With"]`.
 
 ## Label
 
@@ -207,12 +211,12 @@ Adds `ScopedAttribute` to the services that has name with any of the given
 suffixes.
 
 ```csharp
-c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
+c => c.ScopedBySuffix(suffixes: [...])
 ```
 
 > [!NOTE]
 >
-> Default suffix is `Context`.
+> Default value of `suffixes` is `["Context"]`.
 
 ## Unique
 
@@ -241,19 +245,19 @@ c => c.UriReturnIsRedirect()
 ## Use Built-in Types
 
 Configures built-in .NET types to be used as entity properties and service
-parameters. Uses `IParsable` interface to configure primitives. Additionally
+parameters. Uses `IParsable<>` interface to configure primitives. Additionally
 configures `string`, enums, `Uri` and `IEnumerable<>` types.
 
 It also allows for string properties to use `TEXT` column type instead of
 `VARCHAR` by suffixes.
 
 ```csharp
-c => c.UseBuiltInTypes(textPropertySuffixes: ["Data", "Description"])
+c => c.UseBuiltInTypes(textPropertySuffixes: [...])
 ```
 
 > [!TIP]
 >
-> Default text property suffix is `Data`.
+> Default value of `textPropertySuffixes` is `["Data", "Description"]`.
 
 ## Use Nullable Types
 
@@ -275,8 +279,8 @@ to and from `string` in json and API endpoints.
 c => c.ValueType()
 ```
 
-To create a value type implement `IParsable<TSelf>` and override `ToString()`.
-Below is an example implementation;
+To create a value type implement `IParsable<>` and override `ToString()`. Below
+is an example implementation;
 
 ```csharp
 public readonly record struct MyValue : IParsable<MyValue>

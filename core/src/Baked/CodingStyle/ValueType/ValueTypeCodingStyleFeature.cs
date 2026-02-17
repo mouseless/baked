@@ -21,7 +21,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     !c.Type.IsEnum &&
                     c.Type.Namespace is not null &&
                     !c.Type.Namespace.StartsWith("System") &&
-                    c.Type.ImplementsIParsable(),
+                    c.Type.IsAssignableTo(typeof(IParsable<>)),
                 attribute: () => new ValueTypeAttribute()
             );
         });

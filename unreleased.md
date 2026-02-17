@@ -15,7 +15,7 @@
   locatables
 - `UniqueCodingStyle` feature is now added that adds unique attribute to
   properties with a `SingleBy...` or `AnyBy...` query
-- `CustomValueTypeCodingStyle` is now added that allows defining value types
+- `ValueTypeCodingStyle` feature is now added that allows defining value types
   which gets automatically mapped to string db columns and gets parsed in api
   endpoints
 
@@ -56,6 +56,9 @@
 - `LabelsAreFrozenUxFeature` (former
   `DesignatedStringPropertiesAreLabelUxFeature`) now sets order of label
   properties to `-10` to have them before any other
+- Recipes now allow configuring coding styles that provide configuration
+- `UseBuiltInTypesCodingStyleFeature` adds `Description` for the default
+  `textPropertySuffixes` configuration
 
 ## Breaking Changes
 
