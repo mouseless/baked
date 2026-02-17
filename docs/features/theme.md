@@ -71,8 +71,10 @@ experiences, see [UX Feature](ux.md)
 | Property   | All public properties get a `DataAttribute` with a camelized name and titleized label    |
 |            | `IdAttribute` is added to properties named as `Id`                                       |
 |            | Id properties are set to be hidden                                                       |
-|            | `string` and `Guid` properties render using `Text`                                       |
-|            | Properties of types with `LocatableAttribute` render using `Text`                        |
+|            | Configures `Text` component to display properties;                                       |
+|            | &nbsp; ↳ with type `string` or `Guid`                                                    |
+|            | &nbsp; ↳ or with type that has `LocatableAttribute`                                      |
+|            | &nbsp; ↳ or with type that has `ValueTypeAttribute`                                      |
 | Method     | All actions with `ActionModelAttribute` get `ActionAttribute` and `TabNameAttribute`     |
 |            | `FormPage` is added for any method at component path `/page/*/*`                         |
 |            | `Content` schema is added to any method                                                  |
@@ -83,6 +85,7 @@ experiences, see [UX Feature](ux.md)
 |            | Parameters with `ParameterModelAttribute` use `Input` schema                             |
 |            | Required and default values are taken from the attribute                                 |
 |            | `string` parameters render using `InputText`                                             |
+|            | parameters with type that has `ValueTypeAttribute` render using `InputText`              |
 |            | `int` parameters render using `InputNumber`                                              |
 | Enum       | Enum types render inline with `EnumInline`                                               |
 | Page Title | `PageTitle` is added for any type at component path `/page/*/*page/title`                |

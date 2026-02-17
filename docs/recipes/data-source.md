@@ -51,6 +51,7 @@ Bake.New
 |                    | Scoped by Suffix                   |                                    |
 |                    | Use Built-in Types                 |                                    |
 |                    | Use Nullable Types                 |                                    |
+|                    | Value Type                         |                                    |
 | Core               | :white_check_mark: Dotnet          | :white_check_mark: Mock            |
 | Database           | :white_check_mark: Sqlite          | :white_check_mark: In Memory       |
 | Exception Handling | :white_check_mark: Problem Details | :white_check_mark:                 |

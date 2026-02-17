@@ -1,3 +1,3 @@
-namespace Baked.CodingStyle.ValueType;
+namespace Baked.Business;
 
 public class ValueTypeAttribute : Attribute;

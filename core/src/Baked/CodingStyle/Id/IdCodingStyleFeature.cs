@@ -14,6 +14,10 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            builder.Conventions.RemoveTypeAttribute<ValueTypeAttribute>(
+                when: c => c.Type.Is<Business.Id>(),
+                order: 10
+            );
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Property.PropertyType.Is<Business.Id>(),
                 attribute: c => new IdAttribute(c.Property.Name.Camelize()),

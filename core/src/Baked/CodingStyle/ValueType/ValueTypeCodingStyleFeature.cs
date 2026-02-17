@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.Business;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -14,7 +15,12 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Index.Type.Add<ValueTypeAttribute>();
 
             builder.Conventions.SetTypeAttribute(
-                when: c => c.Type.IsCustomValueType() && !c.Type.Is<Business.Id>(),
+                when: c =>
+                    c.Type.IsValueType &&
+                    !c.Type.IsEnum &&
+                    c.Type.Namespace is not null &&
+                    !c.Type.Namespace.StartsWith("System") &&
+                    c.Type.ImplementsIParsable(),
                 attribute: () => new ValueTypeAttribute()
             );
         });
@@ -34,14 +40,22 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            model.Conventions.Add(new ValueTypeConvention());
+            configurator.UsingGeneratedContext(generatedContext =>
+            {
+                var valueTypes = generatedContext
+                    .Assemblies[nameof(ValueTypeCodingStyleFeature)]
+                    .CreateRequiredImplementationInstance<IEnumerable<Type>>();
+
+                model.Conventions.Add(new ValueTypeConvention(valueTypes));
+            });
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                var valueTypes = generatedContext.Assemblies[nameof(ValueTypeCodingStyleFeature)]
+                var valueTypes = generatedContext
+                    .Assemblies[nameof(ValueTypeCodingStyleFeature)]
                     .CreateRequiredImplementationInstance<IEnumerable<Type>>();
 
                 foreach (var valueType in valueTypes)
@@ -63,7 +77,8 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
-                var valueTypes = generatedContext.Assemblies[nameof(ValueTypeCodingStyleFeature)]
+                var valueTypes = generatedContext
+                    .Assemblies[nameof(ValueTypeCodingStyleFeature)]
                     .CreateRequiredImplementationInstance<IEnumerable<Type>>();
 
                 foreach (var valueType in valueTypes)
