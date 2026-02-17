@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
-using FluentNHibernate.Conventions.Helpers;
+using Baked.RestApi;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -40,8 +40,6 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            model.Conventions.Add(ForeignKey.EndsWith("Id"));
-
             configurator.UsingGeneratedContext(context =>
             {
                 context.Assemblies[nameof(IdCodingStyleFeature)]
@@ -50,14 +48,10 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureAutomapping(automapping =>
-        {
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Business.Id));
-        });
-
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             options.SerializerSettings.Converters.Add(new IdJsonConverter());
+            options.SerializerSettings.Converters.Add(new NullableJsonConverter<Business.Id>(new IdJsonConverter()));
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

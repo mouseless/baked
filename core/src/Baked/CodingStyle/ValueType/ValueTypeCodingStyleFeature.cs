@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.RestApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -60,15 +61,16 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                 foreach (var valueType in valueTypes)
                 {
-                    options.SerializerSettings.Converters.Add(
+                    var converter =
                         (JsonConverter?)Activator.CreateInstance(typeof(ValueTypeJsonConverter<>).MakeGenericType(valueType)) ??
-                        throw new($"Cannot create instance of a value type json converter for {valueType.Name}")
-                    );
+                        throw new($"Cannot create instance of a value type json converter for {valueType.Name}");
 
-                    options.SerializerSettings.Converters.Add(
-                        (JsonConverter?)Activator.CreateInstance(typeof(ValueTypeJsonConverter<>.Nullable).MakeGenericType(valueType)) ??
-                        throw new($"Cannot create instance of a nullable value type json converter for {valueType.Name}")
-                    );
+                    var nullableConverter =
+                        (JsonConverter?)Activator.CreateInstance(typeof(NullableJsonConverter<>).MakeGenericType(valueType), converter) ??
+                        throw new($"Cannot create instance of a nullable json converter for {valueType.Name}");
+
+                    options.SerializerSettings.Converters.Add(converter);
+                    options.SerializerSettings.Converters.Add(nullableConverter);
                 }
             });
         });
