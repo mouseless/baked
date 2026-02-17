@@ -1,4 +1,7 @@
 using Baked.Architecture;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace Baked.CodingStyle.ValueType;
 
@@ -6,6 +9,29 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Index.Type.Add<ValueTypeAttribute>();
+
+            builder.Conventions.SetTypeAttribute(
+                when: c => c.Type.IsCustomValueType() && !c.Type.Is<Business.Id>(),
+                attribute: () => new ValueTypeAttribute()
+            );
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            configurator.UsingDomainModel(domain =>
+            {
+                generatedAssemblies.Add(nameof(ValueTypeCodingStyleFeature),
+                    assembly => assembly
+                        .AddReferenceFrom<ValueTypeCodingStyleFeature>()
+                        .AddCodes(new ValueTypeTemplate(domain)),
+                    usings: [.. ValueTypeTemplate.GlobalUsings]
+                );
+            });
+        });
+
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             model.Conventions.Add(new ValueTypeConvention());
@@ -13,12 +39,38 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
-            // options.SerializerSettings.Converters.Add(new ValueTypeJsonConverter());
+            configurator.UsingGeneratedContext(generatedContext =>
+            {
+                var valueTypes = generatedContext.Assemblies[nameof(ValueTypeCodingStyleFeature)]
+                    .CreateRequiredImplementationInstance<IEnumerable<Type>>();
+
+                foreach (var valueType in valueTypes)
+                {
+                    options.SerializerSettings.Converters.Add(
+                        (JsonConverter?)Activator.CreateInstance(typeof(ValueTypeJsonConverter<>).MakeGenericType(valueType)) ??
+                        throw new($"Cannot create instance of a value type json converter for {valueType.Name}")
+                    );
+
+                    options.SerializerSettings.Converters.Add(
+                        (JsonConverter?)Activator.CreateInstance(typeof(ValueTypeJsonConverter<>.Nullable).MakeGenericType(valueType)) ??
+                        throw new($"Cannot create instance of a nullable value type json converter for {valueType.Name}")
+                    );
+                }
+            });
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            // swaggerGenOptions.MapType<Business.Id>(() => new OpenApiSchema { Type = "string" });
+            configurator.UsingGeneratedContext(generatedContext =>
+            {
+                var valueTypes = generatedContext.Assemblies[nameof(ValueTypeCodingStyleFeature)]
+                    .CreateRequiredImplementationInstance<IEnumerable<Type>>();
+
+                foreach (var valueType in valueTypes)
+                {
+                    swaggerGenOptions.MapType(valueType, () => new OpenApiSchema { Type = "string" });
+                }
+            });
         });
     }
 }

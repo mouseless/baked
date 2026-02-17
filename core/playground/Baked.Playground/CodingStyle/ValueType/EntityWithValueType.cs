@@ -1,20 +1,18 @@
-﻿using Baked.Business;
-using Baked.Orm;
+﻿using Baked.Orm;
 
-namespace Baked.CodingStyle.ValueType;
+namespace Baked.Playground.CodingStyle.ValueType;
 
 public class EntityWithValueType(IEntityContext<EntityWithValueType> _context)
 {
-    public Id Id { get; private set; } = default!;
-    public ValueType ValueType { get; private set; } = default!;
-    public ValueType? ValueTypeNullable { get; private set; } = default!;
+    public Baked.Business.Id Id { get; private set; } = default!;
+    public Value Value { get; private set; } = default!;
+    public Value? ValueNullable { get; private set; } = default!;
+    public Value? ValueNullableNull { get; private set; } = default!;
 
-    public EntityWithValueType With(ValueType valueType,
-        ValueType? valueTypeNullable = default
-    )
+    public EntityWithValueType With(Value value)
     {
-        ValueType = valueType;
-        ValueTypeNullable = valueTypeNullable;
+        Value = value;
+        ValueNullable = value;
 
         return _context.Insert(this);
     }
@@ -22,6 +20,9 @@ public class EntityWithValueType(IEntityContext<EntityWithValueType> _context)
 
 public class EntityWithValueTypes(IQueryContext<EntityWithValueType> _context)
 {
-    public List<EntityWithValueType> By() =>
-        _context.By();
+    public List<EntityWithValueType> By(
+        Value? value = default
+    ) => _context.By(
+        whereIf: [(value is not null, ewvt => ewvt.Value == value)]
+    );
 }

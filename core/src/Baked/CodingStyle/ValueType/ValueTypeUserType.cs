@@ -9,7 +9,7 @@ namespace Baked.CodingStyle.ValueType;
 public class ValueTypeUserType<T> : UserTypeBase
     where T : struct, IParsable<T>
 {
-    public override SqlType[] SqlTypes => [SqlTypeFactory.GetString(255)];
+    public override SqlType[] SqlTypes => [NHibernateUtil.String.SqlType];
     public override Type ReturnedType => typeof(T);
 
     public override object? NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object _)

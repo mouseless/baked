@@ -1,4 +1,5 @@
 ﻿using Baked.Playground.CodingStyle.RichTransient;
+using Baked.Playground.CodingStyle.ValueType;
 using Baked.Playground.Orm;
 using Microsoft.Extensions.Logging;
 
@@ -86,6 +87,26 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public void RecordListParameters(List<Record> records) =>
         _logger.LogInformation($"{nameof(RecordParameters)} was called with {records.Join(", ")}");
 
+    public IEnumerable<Value> GetValueTypeParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
+        [single, .. enumerable, .. array];
+
+    // TODO fix nullabel array rendering
+    // public IEnumerable<Value?> GetValueTypeParametersNullable(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
+    // [single, .. enumerable, .. array];
+
+    public IEnumerable<Value> ValueTypeParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
+        [single, .. enumerable, .. array];
+
+    // TODO fix nullabel array rendering
+    // public IEnumerable<Value?> ValueTypeParametersNullable(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
+    // [single, .. enumerable, .. array];
+
+    public IEnumerable<Value> RecordWithValueType(RecordWith<Value> record) =>
+        [record.Single, .. record.Enumerable, .. record.Array];
+
+    public IEnumerable<Value?> RecordWithValueTypeNullable(RecordWith<Value?> record) =>
+        [record.Single, .. record.Enumerable, .. record.Array];
+
     /// <param name="single">
     /// Single description
     /// </param>
@@ -101,7 +122,7 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public IEnumerable<Entity> EntityParameters(Entity single, IEnumerable<Entity> enumerable, Entity[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<Entity> RecordWithEntity(RecordWithEntity record) =>
+    public IEnumerable<Entity> RecordWithEntity(RecordWith<Entity> record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 
     /// <param name="single">
@@ -119,7 +140,7 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public IEnumerable<RichTransientWithData> TransientParameters(RichTransientWithData single, IEnumerable<RichTransientWithData> enumerable, RichTransientWithData[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<RichTransientWithData> RecordWithRichTransient(RecordWithRichTransient record) =>
+    public IEnumerable<RichTransientWithData> RecordWithRichTransient(RecordWith<RichTransientWithData> record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 
     /// <param name="single">
@@ -137,7 +158,7 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public IEnumerable<RichTransientAsync> TransientAsyncParameters(RichTransientAsync single, IEnumerable<RichTransientAsync> enumerable, RichTransientAsync[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<RichTransientAsync> RecordWithRichTransientAsync(RecordWithRichTransientAsync record) =>
+    public IEnumerable<RichTransientAsync> RecordWithRichTransientAsync(RecordWith<RichTransientAsync> record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 
     internal Internal Internal() =>
