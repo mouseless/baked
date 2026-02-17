@@ -1,6 +1,7 @@
 using Baked.Playground.Business;
 using Baked.Playground.CodingStyle.LocatableExtension;
 using Baked.Playground.CodingStyle.RichTransient;
+using Baked.Playground.CodingStyle.ValueType;
 using Baked.Playground.Orm;
 using Microsoft.Extensions.Logging;
 
@@ -65,4 +66,13 @@ public class NullableSamples(ILogger<NullableSamples> _logger)
     public void RichTransient(RichTransientWithData notNull, RichTransientWithData? nullable,
         RichTransientWithData? optionalNullable = default
     ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
+
+    public IEnumerable<Value?> GetValueTypeParameters(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
+        [single, .. enumerable, .. array];
+
+    public IEnumerable<Value?> ValueTypeParameters(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
+        [single, .. enumerable, .. array];
+
+    public IEnumerable<Value?> RecordWithValueType(RecordWith<Value?> record) =>
+        [record.Single, .. record.Enumerable, .. record.Array];
 }

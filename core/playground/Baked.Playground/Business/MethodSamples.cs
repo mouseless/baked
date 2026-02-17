@@ -90,21 +90,10 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public IEnumerable<Value> GetValueTypeParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
         [single, .. enumerable, .. array];
 
-    // TODO fix nullabel array rendering
-    // public IEnumerable<Value?> GetValueTypeParametersNullable(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
-    // [single, .. enumerable, .. array];
-
     public IEnumerable<Value> ValueTypeParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
         [single, .. enumerable, .. array];
 
-    // TODO fix nullabel array rendering
-    // public IEnumerable<Value?> ValueTypeParametersNullable(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
-    // [single, .. enumerable, .. array];
-
     public IEnumerable<Value> RecordWithValueType(RecordWith<Value> record) =>
-        [record.Single, .. record.Enumerable, .. record.Array];
-
-    public IEnumerable<Value?> RecordWithValueTypeNullable(RecordWith<Value?> record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 
     /// <param name="single">
