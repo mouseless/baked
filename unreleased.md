@@ -18,6 +18,9 @@
 - `ValueTypeCodingStyle` feature is now added that allows defining value types
   which gets automatically mapped to string db columns and gets parsed in api
   endpoints
+- `ClientCodingStyle` feature is now added that identifies client interfaces,
+  removes controller for their implementations and add singleton mock
+  automatically
 
 ## Improvements
 

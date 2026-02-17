@@ -10,7 +10,7 @@ public abstract class TestSpec : MonolithSpec
             business: c => c.DomainAssemblies(typeof(Entity).Assembly, baseNamespace: "Baked.Playground"),
             communication: c => c.Mock(defaultResponses: response =>
             {
-                response.ForClient<ExternalSamples>(response: "test result");
+                response.ForClient<GitHubClient>(response: "test result");
                 response.ForClient<InternalSamples>(response: "path1 response", when: r => r.UrlOrPath.Equals("path1"));
                 response.ForClient<InternalSamples>(response: "path2 response", when: r => r.UrlOrPath.Equals("path2"));
             }),

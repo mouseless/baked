@@ -79,6 +79,7 @@ public abstract class MonolithSpec : Spec
             app.Features.AddCodingStyles(
             [
                 c => c.AddRemoveChild(),
+                c => c.Client(),
                 commandPattern,
                 c => c.EntitySubclass(),
                 c => c.Id(),

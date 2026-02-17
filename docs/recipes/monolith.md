@@ -42,6 +42,7 @@ Bake.New
 |                    | Scoped Memory                            |                                    |
 | Coding Style(s)    | :white_check_mark:                       | :white_check_mark:                 |
 |                    | Add/Remove Child                         |                                    |
+|                    | Client                                   |                                    |
 |                    | Command Pattern                          |                                    |
 |                    | Entity Subclass                          |                                    |
 |                    | Id                                       |                                    |

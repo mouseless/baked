@@ -16,6 +16,16 @@ respectively.
 c => c.AddRemoveChild()
 ```
 
+## Client
+
+Configures `IXxxClient` interfaces as outgoing clients and removes rest binding
+for their implementations. Also, adds singleton mock override for the interface
+to inject mock instances to domain objects that use client interfaces.
+
+```csharp
+c => c.Client()
+```
+
 ## Command Pattern
 
 Uses class names as route and removes configured method names from route.

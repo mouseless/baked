@@ -8,7 +8,7 @@ public class VerifyingClients : TestSpec
     [Test]
     public async Task Verify_includes_parameters_only_when_given()
     {
-        var client = MockMe.TheClient<ExternalSamples>();
+        var client = MockMe.TheClient<GitHubClient>();
 
         await client.Send(new("path", HttpMethod.Get));
         await client.Send(new("path", HttpMethod.Get), allowErrorResponse: true);
@@ -33,7 +33,7 @@ public class VerifyingClients : TestSpec
     [Test]
     public async Task Verify_must_satisfy_all_parameters_when_given()
     {
-        var client = MockMe.TheClient<ExternalSamples>();
+        var client = MockMe.TheClient<GitHubClient>();
 
         await client.Send(new Request("path", HttpMethod.Get).AddAuthorization("token"), allowErrorResponse: true);
         await client.Send(new Request("path", HttpMethod.Post, Content: new(new { content = "another content" })).AddAuthorization("token"), allowErrorResponse: true);
