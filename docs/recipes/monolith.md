@@ -42,6 +42,7 @@ Bake.New
 |                    | Scoped Memory                            |                                    |
 | Coding Style(s)    | :white_check_mark:                       | :white_check_mark:                 |
 |                    | Add/Remove Child                         |                                    |
+|                    | Client                                   |                                    |
 |                    | Command Pattern                          |                                    |
 |                    | Entity Subclass                          |                                    |
 |                    | Id                                       |                                    |
@@ -61,6 +62,7 @@ Bake.New
 |                    | `Uri` Return is Redirect                 |                                    |
 |                    | Use Built-in Types                       |                                    |
 |                    | Use Nullable Types                       |                                    |
+|                    | Value Type                               |                                    |
 | Communication      | :white_check_mark: HTTP                  | :white_check_mark: Mock            |
 | Core               | :white_check_mark: Dotnet                | :white_check_mark: Mock            |
 | Cors               | :white_check_mark: Disabled              | :no_entry:                         |

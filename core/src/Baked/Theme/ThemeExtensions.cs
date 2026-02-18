@@ -79,20 +79,6 @@ public static class ThemeExtensions
     public static IEnumerable<string> GetEnumNames(this TypeModel type) =>
         [.. type.Apply(t => Enum.GetNames(t).Select(n => n.TrimStart('_')))];
 
-    public static TypeModel SkipNullable(this TypeModel type)
-    {
-        if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
-        if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
-        if (type.IsGenericTypeDefinition) { return type; }
-
-        return generics.GenericTypeArguments.First().Model;
-    }
-
-    public static TypeModel SkipTask(this TypeModel typeModel) =>
-        typeModel.IsAssignableTo<Task>() && typeModel.IsGenericType
-            ? typeModel.GetGenerics().GenericTypeArguments.First().Model
-            : typeModel;
-
     public static bool ReturnsList(this MethodOverloadModel methodOverload) =>
         methodOverload.ReturnType.SkipTask().IsAssignableTo<IList>();
 

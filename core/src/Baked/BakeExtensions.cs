@@ -3,6 +3,12 @@ using Baked.Authentication;
 using Baked.Authorization;
 using Baked.Business;
 using Baked.Caching;
+using Baked.CodingStyle;
+using Baked.CodingStyle.CommandPattern;
+using Baked.CodingStyle.Initializable;
+using Baked.CodingStyle.Label;
+using Baked.CodingStyle.ScopedBySuffix;
+using Baked.CodingStyle.UseBuiltInTypes;
 using Baked.Communication;
 using Baked.Core;
 using Baked.Cors;
@@ -36,6 +42,13 @@ public static class BakeExtensions
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
         Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter = default,
         Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme = default,
+
+        Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature>? commandPattern = default,
+        Func<CodingStyleConfigurator, InitializableCodingStyleFeature>? initializable = default,
+        Func<CodingStyleConfigurator, LabelCodingStyleFeature>? label = default,
+        Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature>? scopedBySuffix = default,
+        Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature>? useBuiltInTypes = default,
+
         Action<ApplicationDescriptor>? configure = default
     )
     {
@@ -52,6 +65,13 @@ public static class BakeExtensions
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
         rateLimiter ??= c => c.Concurrency();
+
+        commandPattern ??= c => c.CommandPattern();
+        initializable ??= c => c.Initializable();
+        label ??= c => c.Label();
+        scopedBySuffix ??= c => c.ScopedBySuffix();
+        useBuiltInTypes ??= c => c.UseBuiltInTypes();
+
         configure ??= _ => { };
 
         return bake.Application(app =>
@@ -72,11 +92,12 @@ public static class BakeExtensions
             app.Features.AddCodingStyles(
             [
                 c => c.AddRemoveChild(),
-                c => c.CommandPattern(),
+                c => c.Client(),
+                commandPattern,
                 c => c.EntitySubclass(),
                 c => c.Id(),
-                c => c.Initializable(),
-                c => c.Label(),
+                initializable,
+                label,
                 c => c.Locatable(),
                 c => c.LocatableExtension(),
                 c => c.NamespaceAsRoute(),
@@ -86,11 +107,12 @@ public static class BakeExtensions
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),
                 c => c.RichTransient(),
-                c => c.ScopedBySuffix(),
+                scopedBySuffix,
                 c => c.Unique(),
                 c => c.UriReturnIsRedirect(),
-                c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes()
+                useBuiltInTypes,
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
@@ -149,6 +171,13 @@ public static class BakeExtensions
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
         Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter = default,
         Func<ReportingConfigurator, IFeature<ReportingConfigurator>>? reporting = default,
+
+        Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature>? commandPattern = default,
+        Func<CodingStyleConfigurator, InitializableCodingStyleFeature>? initializable = default,
+        Func<CodingStyleConfigurator, LabelCodingStyleFeature>? label = default,
+        Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature>? scopedBySuffix = default,
+        Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature>? useBuiltInTypes = default,
+
         Action<ApplicationDescriptor>? configure = default
     )
     {
@@ -161,6 +190,12 @@ public static class BakeExtensions
         logging ??= c => c.Request();
         rateLimiter ??= c => c.Concurrency();
         reporting ??= c => c.NativeSql();
+
+        commandPattern ??= c => c.CommandPattern();
+        initializable ??= c => c.Initializable();
+        label ??= c => c.Label();
+        scopedBySuffix ??= c => c.ScopedBySuffix();
+        useBuiltInTypes ??= c => c.UseBuiltInTypes();
 
         configure ??= _ => { };
 
@@ -179,19 +214,20 @@ public static class BakeExtensions
             app.Features.AddCodingStyles(
             [
                 c => c.AddRemoveChild(),
-                c => c.CommandPattern(),
+                commandPattern,
                 c => c.Id(),
-                c => c.Initializable(),
-                c => c.Label(),
+                initializable,
+                label,
                 c => c.Locatable(),
                 c => c.NamespaceAsRoute(),
                 c => c.Query(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichTransient(),
-                c => c.ScopedBySuffix(),
-                c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes()
+                scopedBySuffix,
+                useBuiltInTypes,
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
             ]);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);

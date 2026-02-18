@@ -16,13 +16,27 @@ respectively.
 c => c.AddRemoveChild()
 ```
 
-## Command Pattern
+## Client
 
-Uses class names as route and removes `Execute` and `Process` names from route.
+Configures `IXxxClient` interfaces as outgoing clients and removes rest binding
+for their implementations. Also, adds singleton mock override for the interface
+to inject mock instances to domain objects that use client interfaces.
 
 ```csharp
-c => c.CommandPattern()
+c => c.Client()
 ```
+
+## Command Pattern
+
+Uses class names as route and removes configured method names from route.
+
+```csharp
+c => c.CommandPattern(methodNames: [...])
+```
+
+> [!NOTE]
+>
+> Default value of `methodNames` is `["Execute", "Process"]`.
 
 ## Entity Subclass
 
@@ -79,13 +93,13 @@ This coding style makes usages like `_newEntity().With(name)` possible.
 `Transient` type's initializer parameters are added to query string and
 initalizer is invoked with given parameters when constructing target.
 
+```csharp
+c => c.Initializable(initializerNames: [...])
+```
+
 > [!NOTE]
 >
-> Default initializer method name is set to `With`
-
-```csharp
-c => c.Initializable()
-```
+> Default value of `initializerNames` is `["With"]`.
 
 ## Label
 
@@ -207,12 +221,12 @@ Adds `ScopedAttribute` to the services that has name with any of the given
 suffixes.
 
 ```csharp
-c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
+c => c.ScopedBySuffix(suffixes: [...])
 ```
 
 > [!NOTE]
 >
-> Default suffix is `Context`.
+> Default value of `suffixes` is `["Context"]`.
 
 ## Unique
 
@@ -241,19 +255,19 @@ c => c.UriReturnIsRedirect()
 ## Use Built-in Types
 
 Configures built-in .NET types to be used as entity properties and service
-parameters. Uses `IParsable` interface to configure primitives. Additionally
+parameters. Uses `IParsable<>` interface to configure primitives. Additionally
 configures `string`, enums, `Uri` and `IEnumerable<>` types.
 
 It also allows for string properties to use `TEXT` column type instead of
 `VARCHAR` by suffixes.
 
 ```csharp
-c => c.UseBuiltInTypes(textPropertySuffixes: ["Data", "Description"])
+c => c.UseBuiltInTypes(textPropertySuffixes: [...])
 ```
 
 > [!TIP]
 >
-> Default text property suffix is `Data`.
+> Default value of `textPropertySuffixes` is `["Data", "Description"]`.
 
 ## Use Nullable Types
 
@@ -262,4 +276,55 @@ forbid sending null or empty values to not-null parameters.
 
 ```csharp
 c => c.UseNullableTypes()
+```
+
+## Value Type
+
+Allows creating custom value types via `IParsable<T>` interface. It marks these
+types as `ValueTypeAttribute` and maps them using `ValueTypeUserType` in data
+access layer using `NHibernateUtil.String`. Allows serializing and deserializing
+to and from `string` in json and API endpoints.
+
+```csharp
+c => c.ValueType()
+```
+
+To create a value type implement `IParsable<>` and override `ToString()`. Below
+is an example implementation;
+
+```csharp
+public readonly record struct MyValue : IParsable<MyValue>
+{
+    public static MyValue Parse(string s, IFormatProvider? provider)
+    {
+        if (!TryParse(s, provider, out var result))
+        {
+            throw new FormatException($"'{s}' is not in an expected format");
+        }
+
+        return result;
+    }
+
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out MyValue result
+    )
+    {
+        // Add your custom validation and parse logic here
+        result = new(s ?? string.Empty);
+
+        return true;
+    }
+
+    readonly string _data;
+
+    MyValue(string data)
+    {
+        _data = data;
+    }
+
+    public override string ToString() =>
+        _data;
+}
 ```

@@ -1,6 +1,12 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Caching;
+using Baked.CodingStyle;
+using Baked.CodingStyle.CommandPattern;
+using Baked.CodingStyle.Initializable;
+using Baked.CodingStyle.Label;
+using Baked.CodingStyle.ScopedBySuffix;
+using Baked.CodingStyle.UseBuiltInTypes;
 using Baked.Communication;
 using Baked.Core;
 using Baked.Database;
@@ -32,6 +38,13 @@ public abstract class MonolithSpec : Spec
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
         Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme = default,
+
+        Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature>? commandPattern = default,
+        Func<CodingStyleConfigurator, InitializableCodingStyleFeature>? initializable = default,
+        Func<CodingStyleConfigurator, LabelCodingStyleFeature>? label = default,
+        Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature>? scopedBySuffix = default,
+        Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature>? useBuiltInTypes = default,
+
         Action<ApplicationDescriptor>? configure = default
     )
     {
@@ -43,6 +56,13 @@ public abstract class MonolithSpec : Spec
         localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
+
+        commandPattern ??= c => c.CommandPattern();
+        initializable ??= c => c.Initializable();
+        label ??= c => c.Label();
+        scopedBySuffix ??= c => c.ScopedBySuffix();
+        useBuiltInTypes ??= c => c.UseBuiltInTypes();
+
         configure ??= _ => { };
 
         Init(app =>
@@ -59,11 +79,12 @@ public abstract class MonolithSpec : Spec
             app.Features.AddCodingStyles(
             [
                 c => c.AddRemoveChild(),
-                c => c.CommandPattern(),
+                c => c.Client(),
+                commandPattern,
                 c => c.EntitySubclass(),
                 c => c.Id(),
-                c => c.Initializable(),
-                c => c.Label(),
+                initializable,
+                label,
                 c => c.Locatable(),
                 c => c.LocatableExtension(),
                 c => c.NamespaceAsRoute(),
@@ -73,11 +94,12 @@ public abstract class MonolithSpec : Spec
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),
                 c => c.RichTransient(),
-                c => c.ScopedBySuffix(),
+                scopedBySuffix,
                 c => c.Unique(),
                 c => c.UriReturnIsRedirect(),
-                c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes()
+                useBuiltInTypes,
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);

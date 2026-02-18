@@ -157,4 +157,21 @@ public static class BusinessExtensions
 
         return Id.Parse($"{starts}{template[starts.Length..]}");
     }
+
+    public static TypeModel SkipNullable(this TypeModel type)
+    {
+        if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
+        if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
+        if (type.IsGenericTypeDefinition) { return type; }
+
+        return generics.GenericTypeArguments.First().Model;
+    }
+
+    public static Type SkipNullable(this Type type) =>
+        Nullable.GetUnderlyingType(type) ?? type;
+
+    public static TypeModel SkipTask(this TypeModel typeModel) =>
+        typeModel.IsAssignableTo<Task>() && typeModel.IsGenericType
+            ? typeModel.GetGenerics().GenericTypeArguments.First().Model
+            : typeModel;
 }

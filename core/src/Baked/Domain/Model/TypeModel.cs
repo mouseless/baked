@@ -49,6 +49,7 @@ public class TypeModel : IModel, IEquatable<TypeModel>
         if (Type == typeof(uint)) { return "uint"; }
         if (Type == typeof(ulong)) { return "ulong"; }
         if (Type == typeof(ushort)) { return "ushort"; }
+        if (IsArray) { return $"{this.GetElementType().CSharpFriendlyFullName}[]"; }
         if (!IsGenericType) { return (FullName ?? Name).Replace('+', '.'); }
 
         if (this is TypeModelGenerics generics)

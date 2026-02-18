@@ -9,7 +9,7 @@ public static class UseBuiltInTypesCodingStyleExtensions
 {
     public static UseBuiltInTypesCodingStyleFeature UseBuiltInTypes(this CodingStyleConfigurator _,
         IEnumerable<string>? textPropertySuffixes = default
-    ) => new(textPropertySuffixes ?? ["Data"]);
+    ) => new(textPropertySuffixes ?? ["Data", "Description"]);
 
     public static bool TryGetElementType(this TypeModel type, [NotNullWhen(true)] out TypeModel? elementType)
     {

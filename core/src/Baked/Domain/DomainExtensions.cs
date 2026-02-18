@@ -54,6 +54,7 @@ public static class DomainExtensions
         types.Add(typeof(T));
 
     public static string GetCSharpFriendlyFullName(this Type type) =>
+        type.IsArray ? $"{type.GetElementType()?.GetCSharpFriendlyFullName()}[]" :
         !type.IsGenericType ? type.FullName ?? type.Name :
         type.GetGenericTypeDefinition() == typeof(Nullable<>) ? $"{type.GenericTypeArguments.First().GetCSharpFriendlyFullName()}?" :
         type.Name.IndexOf("`") < 0 ? type.FullName ?? type.Name :

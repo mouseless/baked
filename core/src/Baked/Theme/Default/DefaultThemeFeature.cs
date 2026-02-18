@@ -61,14 +61,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 attribute: data => data.Visible = false
             );
             builder.Conventions.AddPropertyComponent(
-                when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>(),
+                when: c =>
+                    c.Property.PropertyType.Is<string>() ||
+                    c.Property.PropertyType.Is<Guid>() ||
+                    c.Property.PropertyType.TryGetMetadata(out var metadata) &&
+                    (
+                        metadata.Has<LocatableAttribute>() ||
+                        metadata.Has<ValueTypeAttribute>()
+                    ),
                 component: () => B.Text(),
-                order: -10
-            );
-            builder.Conventions.AddPropertyComponent(
-                when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
-                component: () => B.Text(),
-                order: -10
+                order: UiLayer.MinConventionOrder + 10
             );
 
             // Method defaults
@@ -150,7 +152,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
             builder.Conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.Is<string>(),
+                when: c =>
+                    c.Parameter.ParameterType.Is<string>() ||
+                    c.Parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
                 component: (c, cc) => ParameterInputText(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );

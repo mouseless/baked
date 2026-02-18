@@ -1,6 +1,12 @@
 using Baked.Architecture;
 using Baked.Business;
 using Baked.Caching;
+using Baked.CodingStyle;
+using Baked.CodingStyle.CommandPattern;
+using Baked.CodingStyle.Initializable;
+using Baked.CodingStyle.Label;
+using Baked.CodingStyle.ScopedBySuffix;
+using Baked.CodingStyle.UseBuiltInTypes;
 using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;
@@ -22,6 +28,13 @@ public abstract class DataSourceSpec : Spec
         Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<ReportingConfigurator, IFeature<ReportingConfigurator>>? reporting = default,
+
+        Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature>? commandPattern = default,
+        Func<CodingStyleConfigurator, InitializableCodingStyleFeature>? initializable = default,
+        Func<CodingStyleConfigurator, LabelCodingStyleFeature>? label = default,
+        Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature>? scopedBySuffix = default,
+        Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature>? useBuiltInTypes = default,
+
         Action<ApplicationDescriptor>? configure = default
     )
     {
@@ -32,6 +45,13 @@ public abstract class DataSourceSpec : Spec
         localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         reporting ??= c => c.Mock();
+
+        commandPattern ??= c => c.CommandPattern();
+        initializable ??= c => c.Initializable();
+        label ??= c => c.Label();
+        scopedBySuffix ??= c => c.ScopedBySuffix();
+        useBuiltInTypes ??= c => c.UseBuiltInTypes();
+
         configure ??= _ => { };
 
         Init(app =>
@@ -47,19 +67,20 @@ public abstract class DataSourceSpec : Spec
             app.Features.AddCachings(cachings);
             app.Features.AddCodingStyles([
                 c => c.AddRemoveChild(),
-                c => c.CommandPattern(),
+                commandPattern,
                 c => c.Id(),
-                c => c.Initializable(),
-                c => c.Label(),
+                initializable,
+                label,
                 c => c.Locatable(),
                 c => c.NamespaceAsRoute(),
                 c => c.Query(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichTransient(),
-                c => c.ScopedBySuffix(),
-                c => c.UseBuiltInTypes(),
-                c => c.UseNullableTypes()
+                scopedBySuffix,
+                useBuiltInTypes,
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
             ]);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
