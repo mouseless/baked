@@ -61,7 +61,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: { },
   moduleDependencies: {
     "@nuxtjs/i18n": {
-      version: "10.2.1",
+      version: "10.2.3",
       defaults: {
         strategy: "no_prefix",
         detectBrowserLanguage: {

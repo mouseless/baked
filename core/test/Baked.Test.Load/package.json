@@ -5,10 +5,10 @@
     "test": "artillery run test.yml"
   },
   "dependencies": {
-    "cors": "2.8.5",
+    "cors": "2.8.6",
     "express": "5.2.1"
   },
   "devDependencies": {
-    "artillery": "2.0.27"
+    "artillery": "2.0.30"
   }
 }
