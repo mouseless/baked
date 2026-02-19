@@ -13,8 +13,14 @@ public class LabelCodingStyleFeature(IEnumerable<string> propertyNames)
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetPropertyAttribute(
+                when: c =>
+                    (
+                        c.Property.PropertyType.Is<string>() ||
+                        c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>()
+                    ) &&
+                    _propertyNames.Contains(c.Property.Name),
                 attribute: () => new LabelAttribute(),
-                when: c => c.Property.PropertyType.Is<string>() && _propertyNames.Contains(c.Property.Name)
+                order: 10
             );
         });
     }
