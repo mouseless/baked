@@ -20,6 +20,11 @@ public class FormSample(Parents _parents, Func<Parent> _newParent)
         }
     }
 
-    public List<Parent> GetParents() =>
-        _parents.By();
+    public List<Parent> GetParents(
+        int? take = 10,
+        int? skip = 0
+    ) => _parents.By(
+        take: take,
+        skip: skip
+    );
 }

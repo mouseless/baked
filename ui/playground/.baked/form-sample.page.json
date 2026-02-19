@@ -154,7 +154,26 @@
                   }
                 ],
                 "dataKey": "id",
-                "paginator": true,
+                "paginator": false,
+                "serverPaginatorOptions": {
+                  "take": {
+                    "type": "Select",
+                    "schema": {
+                      "label": "Take",
+                      "localizeLabel": false,
+                      "stateful": true
+                    },
+                    "data": {
+                      "type": "Inline",
+                      "value": [
+                        10,
+                        20,
+                        50,
+                        100
+                      ]
+                    }
+                  }
+                },
                 "rows": 5,
                 "exportOptions": {
                   "csvSeparator": ";",
@@ -290,14 +309,24 @@
                 "type": "Remote",
                 "path": "form-sample/parents",
                 "query": {
-                  "type": "Computed",
-                  "composable": "useNuxtRoute",
-                  "options": {
-                    "type": "Inline",
-                    "value": {
-                      "property": "query"
+                  "type": "Composite",
+                  "parts": [
+                    {
+                      "type": "Computed",
+                      "composable": "useNuxtRoute",
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Context",
+                      "key": "parent",
+                      "prop": "parameters"
                     }
-                  }
+                  ]
                 }
               },
               "reactions": {
@@ -315,6 +344,10 @@
                     {
                       "type": "On",
                       "on": "clear-parents"
+                    },
+                    {
+                      "type": "On",
+                      "on": "page-changed"
                     }
                   ]
                 }

@@ -215,6 +215,7 @@ public static class DomainComponents
                 dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
                 dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
                 dt.Actions = method.GetSchema<DataTable.Column>(context.Drill(nameof(DataTable.Actions)));
+                dt.ServerPaginatorOptions = method.GetSchema<DataTable.ServerPaginator>(context.Drill(nameof(DataTable.ServerPaginatorOptions)));
 
                 options.Apply(dt);
             },

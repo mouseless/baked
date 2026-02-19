@@ -22,6 +22,15 @@
     <template #empty>
       {{ lc("No records found") }}
     </template>
+    <div
+      v-if="!paginator && serverPaginatorOptions"
+      class="flex w-full justify-end items-end"
+    >
+      <ServerPaginator
+        :schema="serverPaginatorOptions"
+        :data="data"
+      />
+    </div>
     <Column
       v-for="column in columns.filter(c => !c.hidden)"
       :key="column.key"
@@ -146,8 +155,8 @@ import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { AwaitLoading, Bake, ProvideParentContext } from "#components";
 import { useComposableResolver, useContext, useDataFetcher, useLocalization } from "#imports";
+import { AwaitLoading, Bake, ProvideParentContext, ServerPaginator } from "#components";
 
 const context = useContext();
 const composableResolver = useComposableResolver();
@@ -161,9 +170,14 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { actions, columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { actions, columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, serverPaginatorOptions } = schema;
 const exportOptions = schema.exportOptions && {
   buttonIcon: "pi pi-download",
+  ...schema.exportOptions
+};
+const virtualScrollerOptions = schema.virtualScrollerOptions && {
+  appendOnly: true,
+  numToleratedItems: 10,
   ...schema.exportOptions
 };
 
@@ -252,6 +266,10 @@ function exportFunction({ data, field }) {
 
   .p-button {
     @apply -my-2;
+  }
+
+  .p-datatable-tbody td.p-datatable-frozen-column {
+    z-index: 1;
   }
 }
 </style>

@@ -12,6 +12,9 @@
   "MenuPage": {
     "No item available!": "Hiçbir öğe mevcut değil!"
   },
+  "ServerPaginator": {
+    "Page {page}": "Sayfa {page}"
+  },
   "TabbedPage": {
     "Select required values to view this page": "Bu sayfayı görüntülemek için gerekli seçimleri yapın"
   },
