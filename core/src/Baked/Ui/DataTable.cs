@@ -6,6 +6,7 @@ public record DataTable : IComponentSchema
     public string? DataKey { get; set; }
     public string? ItemsProp { get; set; }
     public bool? Paginator { get; set; }
+    public ServerPaginator? ServerPaginatorOptions { get; set; }
     public int? Rows { get; set; }
     public int? RowsWhenLoading { get; set; }
     public string? ScrollHeight { get; set; }
@@ -44,10 +45,18 @@ public record DataTable : IComponentSchema
         public string? ParameterFormatter { get; set; }
     }
 
+    public record ServerPaginator
+    {
+        public IComponentDescriptor? Take { get; set; }
+        public string? TakeParameterName { get; set; }
+        public string? SkipParameterName { get; set; }
+        public string? PageChangeEventName { get; set; }
+    }
+
     public record VirtualScroller()
     {
         public int? ItemSize { get; set; }
-        public int? NumToleratedItems { get; set; } = 10;
-        public bool? AppendOnly { get; set; } = true;
+        public int? NumToleratedItems { get; set; }
+        public bool? AppendOnly { get; set; }
     }
 }

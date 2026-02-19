@@ -82,8 +82,8 @@
 <script setup>
 import { computed, ref, useTemplateRef } from "vue";
 import { Message, Panel, Button } from "primevue";
-import { Bake, Inputs, PersistentPopover } from "#components";
 import { useBreakpoints, useContext, useDataMounter, useUiStates, useLocalization } from "#imports";
+import { Bake, Inputs, PersistentPopover } from "#components";
 
 const { value: { panelStates } } = useUiStates();
 const { isMd } = useBreakpoints();

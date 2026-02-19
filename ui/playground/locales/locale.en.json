@@ -12,6 +12,9 @@
   "MenuPage": {
     "No item available!": "No item available!"
   },
+  "ServerPaginator": {
+    "Page {page}": "Page {page}"
+  },
   "TabbedPage": {
     "Select required values to view this page": "Select required values to view this page"
   },

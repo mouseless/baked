@@ -60,6 +60,10 @@ public static class Components
         Action<DataTable.Footer>? options = default
     ) => options.Apply(new(label));
 
+    public static DataTable.ServerPaginator DataTableServerPaginator(
+        Action<DataTable.ServerPaginator>? options = default
+    ) => options.Apply(new());
+
     public static DataTable.VirtualScroller DataTableVirtualScroller(
         Action<DataTable.VirtualScroller>? options = default
     ) => options.Apply(new());

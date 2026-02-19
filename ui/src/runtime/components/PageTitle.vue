@@ -137,8 +137,8 @@
 import { onMounted, ref } from "vue";
 import { Button } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake, PersistentPopover } from "#components";
 import { useBreakpoints, useHead, useLocalization } from "#imports";
+import { Bake, PersistentPopover } from "#components";
 
 const { isMd } = useBreakpoints();
 const { localize: l } = useLocalization();

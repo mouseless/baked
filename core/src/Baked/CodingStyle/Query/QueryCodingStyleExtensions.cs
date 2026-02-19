@@ -20,16 +20,16 @@ public static class QueryCodingStyleExtensions
             metadata.TryGet(out queryAttribute);
     }
 
-    public static bool TryGetLocatableType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? entityType)
+    public static bool TryGetLocatableType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)
     {
         if (!type.TryGetQueryAttribute(out var queryAttribute))
         {
-            entityType = default;
+            locatableType = default;
 
             return false;
         }
 
-        entityType = domain.Types[queryAttribute.LocatableType];
+        locatableType = domain.Types[queryAttribute.LocatableType];
 
         return true;
     }

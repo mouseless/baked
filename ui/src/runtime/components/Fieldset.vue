@@ -26,8 +26,8 @@
 </template>
 <script setup>
 import { Fieldset } from "primevue";
-import { AwaitLoading, Bake } from "#components";
 import { useLocalization } from "#imports";
+import { AwaitLoading, Bake } from "#components";
 
 const { localize: l } = useLocalization();
 
