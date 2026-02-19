@@ -51,8 +51,8 @@
 import { onBeforeUnmount, ref } from "vue";
 import { Divider } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake } from "#components";
 import { useContext, useLocalization } from "#imports";
+import { Bake } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();

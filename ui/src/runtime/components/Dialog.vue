@@ -33,8 +33,8 @@
 <script setup>
 import { ref } from "vue";
 import { Dialog } from "primevue";
-import { Bake, Button } from "#components";
 import { useLocalization } from "#imports";
+import { Bake, Button } from "#components";
 
 const { localize: l } = useLocalization();
 

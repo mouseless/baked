@@ -103,8 +103,8 @@
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import { Button, Skeleton } from "primevue";
-import { Bake, Logo, PersistentPopover, SideMenuItem } from "#components";
 import { useBreakpoints, useContext } from "#imports";
+import { Bake, Logo, PersistentPopover, SideMenuItem } from "#components";
 
 const { isMd } = useBreakpoints();
 const context = useContext();
