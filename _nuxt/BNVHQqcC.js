@@ -1,1 +1,0 @@
-import{_ as o}from"./DlAUqK2U.js";import{o as r,c as s,v as t}from"./CGhbxXQG.js";const n={};function c(e,a){return r(),s("li",null,[t(e.$slots,"default")])}const f=Object.assign(o(n,[["render",c]]),{__name:"ProseLi"});export{f as default};
