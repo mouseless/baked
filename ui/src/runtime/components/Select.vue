@@ -13,6 +13,7 @@
         :options="data"
         :placeholder="l(label)"
         :show-clear
+        :filter
         class="hide-placeholder w-full"
       >
         <template #value="slotProps">
@@ -44,16 +45,17 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, localizeLabel, optionLabel, optionValue, showClear, stateful } = schema;
+const { filter, label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const selected = ref();
 
 // two way binding between model and selected
 watch(
-  [() => data, () => model.value],
+  [() => data, () => targetProp ? model.value[targetProp] : model.value],
   ([_data, _model]) => {
     if(!_data) { return; }
+
     const value = stateful ? (selectStates[path] ?? _model) : _model;
     setSelected(value);
   },
@@ -75,10 +77,11 @@ function getValueLabel(slotProps) {
 
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;
-  model.value = selectedValue;
+  const newModel = targetProp ? { [targetProp]: selectedValue } : selectedValue;
+  model.value = newModel;
 
   if(stateful) {
-    selectStates[path] = selectedValue;
+    selectStates[path] = newModel;
   }
 }
 
@@ -98,16 +101,18 @@ function setSelected(value) {
   }
 }
 </script>
-<style lang="scss">
-/*
-placeholder gives select the initial width, but it overlaps with label so it is
-hidden
-*/
-.hide-placeholder .p-placeholder {
-  visibility: hidden;
-}
+<style>
+.b-component--Select {
+  /*
+  placeholder gives select the initial width, but it overlaps with label so it is
+  hidden
+  */
+  .hide-placeholder .p-placeholder {
+    visibility: hidden;
+  }
 
-.p-select-label {
-  font-size: inherit;
+  .p-select-label {
+    font-size: inherit;
+  }
 }
 </style>

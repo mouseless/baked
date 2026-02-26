@@ -36,15 +36,16 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful } = schema;
+const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const selected = ref();
 
 watch(
-  [() => data, () => model.value],
+  [() => data, () => targetProp ? model.value[targetProp] : model.value],
   ([_data, _model]) => {
     if(!_data) { return; }
+
     const value = stateful ? (selectButtonStates[path] ?? _model) : _model;
     setSelected(value);
   },
@@ -60,10 +61,11 @@ function getOptionLabel(slotProps) {
 
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;
-  model.value = selectedValue;
+  const newModel = targetProp ? { [targetProp]: selectedValue } : selectedValue;
+  model.value = newModel;
 
   if(stateful) {
-    selectButtonStates[path] = selectedValue;
+    selectButtonStates[path] = newModel;
   }
 }
 
@@ -85,15 +87,17 @@ function setSelected(value) {
 </script>
 <style>
 .p-popover-content {
-  .p-selectbutton {
-    @apply max-sm:flex-col;
+  .b-component--SelectButton {
+    .p-selectbutton {
+      @apply max-sm:flex-col;
 
-    .p-togglebutton {
-      &:first-child {
-        @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
-      }
-      &:last-child {
-        @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
+      .p-togglebutton {
+        &:first-child {
+          @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
+        }
+        &:last-child {
+          @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
+        }
       }
     }
   }

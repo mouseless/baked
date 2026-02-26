@@ -1,7 +1,7 @@
 ﻿namespace Baked.Ui;
 
 public record Select(string Label)
-    : IComponentSchema
+    : ISelect, IComponentSchema
 {
     public string Label { get; set; } = Label;
     public string? OptionLabel { get; set; }
@@ -9,4 +9,6 @@ public record Select(string Label)
     public bool? LocalizeLabel { get; set; }
     public bool? ShowClear { get; set; }
     public bool? Stateful { get; set; }
+    public bool? Filter { get; set; }
+    public string? TargetProp { get; set; }
 }
