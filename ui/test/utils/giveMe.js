@@ -708,7 +708,7 @@ export default {
     return screens.find(screen => screen.name === name) || null;
   },
 
-  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp, data, inline, action } = {}) {
+  aSelect({ filter, label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp, data, inline, action } = {}) {
     label = $(label, "Spec: Test");
     localizeLabel = $(localizeLabel, false);
     showClear = $(showClear, false);
@@ -726,7 +726,7 @@ export default {
 
     return {
       type: "Select",
-      schema: { label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp },
+      schema: { filter, label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp },
       data,
       action
     };

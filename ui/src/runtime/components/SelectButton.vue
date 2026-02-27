@@ -42,7 +42,7 @@ const path = context.injectPath();
 const selected = ref();
 
 watch(
-  [() => data, () => targetProp ? model.value[targetProp] : model.value],
+  [() => data, getModel],
   ([_data, _model]) => {
     if(!_data) { return; }
 
@@ -59,14 +59,21 @@ function getOptionLabel(slotProps) {
   return localizeLabel ? l(result) : result;
 }
 
+function getModel() {
+  return targetProp ? model.value?.[targetProp] : model.value;
+}
+
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;
-  const newModel = targetProp ? { [targetProp]: selectedValue } : selectedValue;
-  model.value = newModel;
-
   if(stateful) {
-    selectButtonStates[path] = newModel;
+    selectButtonStates[path] = selectedValue;
   }
+
+  model.value = selectedValue
+    ? targetProp
+      ? { [targetProp]: selectedValue }
+      : selectedValue
+    : undefined;
 }
 
 function setSelected(value) {
@@ -79,7 +86,7 @@ function setSelected(value) {
 
   if(stateful) {
     const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
-    if(model.value !== selectedValue) {
+    if(getModel() !== selectedValue) {
       setModel(selected.value);
     }
   }

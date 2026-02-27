@@ -102,10 +102,16 @@ const variants = [
     name: "Target Prop",
     descriptor: giveMe.aSelectButton({
       targetProp: "id",
-      data: ["VALUE_A", "VALUE_B"],
-      inline: false
+      optionLabel: "label",
+      optionValue: "code",
+      data: [
+        { code: "VALUE_A", label: "Label A" },
+        { code: "VALUE_B", label: "Label B" }
+      ],
+      stateful: true,
+      allowEmpty: true
     }),
-    model: ref({ })
+    model: ref()
   }
 ];
 </script>

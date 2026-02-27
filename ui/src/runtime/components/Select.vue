@@ -52,7 +52,7 @@ const selected = ref();
 
 // two way binding between model and selected
 watch(
-  [() => data, () => targetProp ? model.value[targetProp] : model.value],
+  [() => data, getModel],
   ([_data, _model]) => {
     if(!_data) { return; }
 
@@ -75,14 +75,21 @@ function getValueLabel(slotProps) {
   return localizeLabel ? l(result) : result;
 }
 
+function getModel() {
+  return targetProp ? model.value?.[targetProp] : model.value;
+}
+
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;
-  const newModel = targetProp ? { [targetProp]: selectedValue } : selectedValue;
-  model.value = newModel;
-
   if(stateful) {
-    selectStates[path] = newModel;
+    selectStates[path] = selectedValue;
   }
+
+  model.value = selectedValue
+    ? targetProp
+      ? { [targetProp]: selectedValue }
+      : selectedValue
+    : undefined;
 }
 
 function setSelected(value) {
@@ -95,7 +102,7 @@ function setSelected(value) {
 
   if(stateful) {
     const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
-    if(model.value !== selectedValue) {
+    if(getModel() !== selectedValue) {
       setModel(selected.value);
     }
   }

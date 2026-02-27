@@ -224,6 +224,18 @@ test.describe("Target Prop", () => {
 
     await options.nth(0).click();
 
-    await expect(model).toContainText("\"id\": \"VALUE_A\"");
+    await expect(model).toHaveText("{ \"id\": \"VALUE_A\" }");
+  });
+
+  test("respects target prop when retaining selected state", async({ page }) => {
+    const component = page.getByTestId(id);
+    const options = component.locator(primevue.selectbutton.option);
+    const model = page.getByTestId(`${id}:model`);
+    await options.nth(1).click();
+
+    await page.locator("a[href='/specs']").nth(0).click();
+    await page.locator("a[href='/specs/select-button']").nth(0).click();
+
+    await expect(model).toHaveText("{ \"id\": \"VALUE_B\" }");
   });
 });
