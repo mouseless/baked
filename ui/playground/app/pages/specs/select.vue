@@ -128,6 +128,15 @@ const variants = [
     }),
     model: ref(),
     pageContextKey: "test:select"
+  },
+  {
+    name: "Target Prop",
+    descriptor: giveMe.aSelect({
+      targetProp: "id",
+      data: ["ValueA", "ValueB"],
+      inline: false
+    }),
+    model: ref({ })
   }
 ];
 </script>

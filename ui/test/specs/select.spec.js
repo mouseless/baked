@@ -263,3 +263,18 @@ test.describe("Page Context - Option Label and Value", () => {
     await expect(pageContext).toHaveText("ValueB");
   });
 });
+
+test.describe("Target Prop", () => {
+  const id = "Target Prop";
+
+  test("model value is set with target prop key", async({ page }) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
+    const model = page.getByTestId(`${id}:model`);
+
+    await component.click();
+    await options.nth(0).click();
+
+    await expect(model).toContainText("\"id\": \"ValueA\"");
+  });
+});

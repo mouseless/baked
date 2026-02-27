@@ -97,6 +97,15 @@ const variants = [
     }),
     model: ref(),
     pageContextKey: "test:select-button"
+  },
+  {
+    name: "Target Prop",
+    descriptor: giveMe.aSelectButton({
+      targetProp: "id",
+      data: ["VALUE_A", "VALUE_B"],
+      inline: false
+    }),
+    model: ref({ })
   }
 ];
 </script>
