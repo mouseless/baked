@@ -14,7 +14,7 @@
         :placeholder="l(label)"
         :show-clear
         :filter
-        class="hide-placeholder w-full"
+        class="w-full"
       >
         <template #value="slotProps">
           <span>
@@ -114,7 +114,7 @@ function setSelected(value) {
   placeholder gives select the initial width, but it overlaps with label so it is
   hidden
   */
-  .hide-placeholder .p-placeholder {
+  .p-placeholder {
     visibility: hidden;
   }
 

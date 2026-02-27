@@ -94,17 +94,15 @@ function setSelected(value) {
 </script>
 <style>
 .p-popover-content {
-  .b-component--SelectButton {
-    .p-selectbutton {
-      @apply max-sm:flex-col;
+  .b-component--SelectButton.p-selectbutton {
+    @apply max-sm:flex-col;
 
-      .p-togglebutton {
-        &:first-child {
-          @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
-        }
-        &:last-child {
-          @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
-        }
+    .p-togglebutton {
+      &:first-child {
+        @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
+      }
+      &:last-child {
+        @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
       }
     }
   }
