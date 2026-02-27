@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
@@ -63,13 +64,30 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                 schema: (c, cc) => PropertyField(c.Property, cc)
             );
             builder.Conventions.AddPropertySchemaConfiguration<Field>(
+                when: c =>
+                    c.Property.Has<DataAttribute>() &&
+                    c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
+                schema: (dtc, c, cc) =>
+                {
+                    var data = c.Property.Get<DataAttribute>();
+                    var members = c.Property.PropertyType.GetMembers();
+                    var labelProperty =
+                        members.FirstPropertyOrDefault<LabelAttribute>() ??
+                        members.FirstProperty<IdAttribute>();
+                    var labelData = labelProperty.Get<DataAttribute>();
+
+                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
+                }
+            );
+            builder.Conventions.AddPropertySchemaConfiguration<Field>(
                 when: c => c.Property.Has<DataAttribute>(),
                 schema: (f, c) =>
                 {
                     var prop = c.Property.Get<DataAttribute>().Prop;
 
-                    f.Component.Data = Context.Parent(options: cd => cd.Prop = $"data.{prop}");
-                }
+                    f.Component.Data ??= Context.Parent(options: cd => cd.Prop = $"data.{prop}");
+                },
+                order: UiLayer.MaxConventionOrder - 10
             );
         });
     }

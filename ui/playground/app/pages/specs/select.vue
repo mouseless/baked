@@ -128,6 +128,21 @@ const variants = [
     }),
     model: ref(),
     pageContextKey: "test:select"
+  },
+  {
+    name: "Target Prop",
+    descriptor: giveMe.aSelect({
+      targetProp: "id",
+      optionLabel: "label",
+      optionValue: "code",
+      data: [
+        { code: "ValueA", label: "Label A" },
+        { code: "ValueB", label: "Label B" }
+      ],
+      stateful: true,
+      showClear: true
+    }),
+    model: ref()
   }
 ];
 </script>

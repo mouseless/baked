@@ -97,6 +97,21 @@ const variants = [
     }),
     model: ref(),
     pageContextKey: "test:select-button"
+  },
+  {
+    name: "Target Prop",
+    descriptor: giveMe.aSelectButton({
+      targetProp: "id",
+      optionLabel: "label",
+      optionValue: "code",
+      data: [
+        { code: "VALUE_A", label: "Label A" },
+        { code: "VALUE_B", label: "Label B" }
+      ],
+      stateful: true,
+      allowEmpty: true
+    }),
+    model: ref()
   }
 ];
 </script>

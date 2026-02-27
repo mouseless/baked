@@ -25,7 +25,6 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     TryFindIdProperty(members, out var idProperty) &&
                     members.Methods.Any(m =>
                         m.Has<InitializerAttribute>() &&
-                        m.DefaultOverload.IsPublic &&
                         m.DefaultOverload.Parameters.Count == 1 &&
                         m.DefaultOverload.Parameters.All(p =>
                             p.Name == idProperty.Name.Camelize() &&
@@ -46,7 +45,9 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 {
                     if (!c.Type.TryGetMembers(out var members)) { return; }
 
-                    var initializer = members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>() && m.DefaultOverload.IsPublic) ?? throw new($"`{c.Type.Name}` should have had public initializer");
+                    var initializer =
+                        members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>()) ??
+                        throw new($"`{c.Type.Name}` should have had an initializer");
                     locatable.IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
                 },
                 order: 10

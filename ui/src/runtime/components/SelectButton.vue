@@ -36,15 +36,16 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful } = schema;
+const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const selected = ref();
 
 watch(
-  [() => data, () => model.value],
+  [() => data, getModel],
   ([_data, _model]) => {
     if(!_data) { return; }
+
     const value = stateful ? (selectButtonStates[path] ?? _model) : _model;
     setSelected(value);
   },
@@ -58,13 +59,21 @@ function getOptionLabel(slotProps) {
   return localizeLabel ? l(result) : result;
 }
 
+function getModel() {
+  return targetProp ? model.value?.[targetProp] : model.value;
+}
+
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;
-  model.value = selectedValue;
-
   if(stateful) {
     selectButtonStates[path] = selectedValue;
   }
+
+  model.value = selectedValue
+    ? targetProp
+      ? { [targetProp]: selectedValue }
+      : selectedValue
+    : undefined;
 }
 
 function setSelected(value) {
@@ -77,7 +86,7 @@ function setSelected(value) {
 
   if(stateful) {
     const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
-    if(model.value !== selectedValue) {
+    if(getModel() !== selectedValue) {
       setModel(selected.value);
     }
   }
@@ -85,7 +94,7 @@ function setSelected(value) {
 </script>
 <style>
 .p-popover-content {
-  .p-selectbutton {
+  .b-component--SelectButton.p-selectbutton {
     @apply max-sm:flex-col;
 
     .p-togglebutton {

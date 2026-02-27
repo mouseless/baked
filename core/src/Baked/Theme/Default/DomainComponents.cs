@@ -176,35 +176,47 @@ public static class DomainComponents
 
     public static ComponentDescriptor<Select> ParameterSelect(ParameterModel parameter, ComponentContext context,
         Action<Select>? options = default
-    )
+    ) => ParameterSelect<InlineData>(parameter, context, options: options);
+
+    public static ComponentDescriptor<Select> ParameterSelect<TData>(ParameterModel parameter, ComponentContext context,
+        Action<Select>? options = default
+    ) where TData : IData
     {
         context = context.Drill(nameof(Select));
         var (_, l) = context;
 
         if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
 
-        var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
+        var data = metadata.GetRequiredSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
         return B.Select(l(parameter.Name.Titleize()), data, options: options);
     }
 
     public static ComponentDescriptor<SelectButton> ParameterSelectButton(ParameterModel parameter, ComponentContext context,
         Action<SelectButton>? options = default
-    )
+    ) => ParameterSelectButton<InlineData>(parameter, context, options: options);
+
+    public static ComponentDescriptor<SelectButton> ParameterSelectButton<TData>(ParameterModel parameter, ComponentContext context,
+        Action<SelectButton>? options = default
+    ) where TData : IData
     {
         context = context.Drill(nameof(SelectButton));
         var (_, l) = context;
 
         if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
 
-        var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
+        var data = metadata.GetRequiredSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
         return B.SelectButton(data, options: options);
     }
 
     public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,
         Action<DataTable>? options = default
-    )
+    ) => MethodDataTable<RemoteData>(method, context, options: options);
+
+    public static ComponentDescriptor<DataTable> MethodDataTable<TData>(MethodModel method, ComponentContext context,
+        Action<DataTable>? options = default
+    ) where TData : IData
     {
         context = context.Drill(nameof(DataTable));
 
@@ -219,7 +231,7 @@ public static class DomainComponents
 
                 options.Apply(dt);
             },
-            data: method.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data)))
+            data: method.GetSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)))
         );
     }
 
@@ -347,14 +359,18 @@ public static class DomainComponents
 
     public static ComponentDescriptor<Fieldset> TypeFieldset(TypeModelMembers type, ComponentContext context,
         Action<Fieldset>? options = default
-    )
+    ) => TypeFieldset<RemoteData>(type, context, options: options);
+
+    public static ComponentDescriptor<Fieldset> TypeFieldset<TData>(TypeModelMembers type, ComponentContext context,
+        Action<Fieldset>? options = default
+    ) where TData : IData
     {
         context = context.Drill(nameof(Fieldset));
         var label = type.Properties.Having<LabelAttribute>().FirstOrDefault() ??
             throw new($"`{type.Name}` should have a label property to render as a `{nameof(Fieldset)}`");
         if (!label.TryGet<DataAttribute>(out var labelData)) { throw new($"`{label.Name}` should have a `{nameof(DataAttribute)}`"); }
 
-        var data = type.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data)));
+        var data = type.GetSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
         return B.Fieldset(labelData.Prop, options: options, data: data);
     }

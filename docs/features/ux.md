@@ -209,6 +209,9 @@ c => c.PropertiesAsFieldset()
 - A content is created under `.../simple-page/contents/fields` path
 - Each data property is configured as one field under a `Fieldset` instance
 - Field components get their data from parent context
+  - For locatable properties, uses the first label (or id) property as component
+    data, e.g., `data.parent.name`
+  - Otherwise, sets the property value as component data, e.g., `data.name`
 
 ## Routed Types as Nav Links
 

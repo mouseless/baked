@@ -13,7 +13,8 @@
         :options="data"
         :placeholder="l(label)"
         :show-clear
-        class="hide-placeholder w-full"
+        :filter
+        class="w-full"
       >
         <template #value="slotProps">
           <span>
@@ -44,16 +45,17 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, localizeLabel, optionLabel, optionValue, showClear, stateful } = schema;
+const { filter, label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const selected = ref();
 
 // two way binding between model and selected
 watch(
-  [() => data, () => model.value],
+  [() => data, getModel],
   ([_data, _model]) => {
     if(!_data) { return; }
+
     const value = stateful ? (selectStates[path] ?? _model) : _model;
     setSelected(value);
   },
@@ -73,13 +75,21 @@ function getValueLabel(slotProps) {
   return localizeLabel ? l(result) : result;
 }
 
+function getModel() {
+  return targetProp ? model.value?.[targetProp] : model.value;
+}
+
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;
-  model.value = selectedValue;
-
   if(stateful) {
     selectStates[path] = selectedValue;
   }
+
+  model.value = selectedValue
+    ? targetProp
+      ? { [targetProp]: selectedValue }
+      : selectedValue
+    : undefined;
 }
 
 function setSelected(value) {
@@ -92,22 +102,24 @@ function setSelected(value) {
 
   if(stateful) {
     const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
-    if(model.value !== selectedValue) {
+    if(getModel() !== selectedValue) {
       setModel(selected.value);
     }
   }
 }
 </script>
-<style lang="scss">
-/*
-placeholder gives select the initial width, but it overlaps with label so it is
-hidden
-*/
-.hide-placeholder .p-placeholder {
-  visibility: hidden;
-}
+<style>
+.b-component--Select {
+  /*
+  placeholder gives select the initial width, but it overlaps with label so it is
+  hidden
+  */
+  .p-placeholder {
+    visibility: hidden;
+  }
 
-.p-select-label {
-  font-size: inherit;
+  .p-select-label {
+    font-size: inherit;
+  }
 }
 </style>
