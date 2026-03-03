@@ -1,6 +1,13 @@
 <template>
-  <div class="flex items-center gap-1 justify-center">
-    <span class="text-sm mr-2 max-xs:hidden">{{ lc("Page {page}", { page }) }}</span>
+  <div class="flex items-center justify-center gap-1">
+    <Bake
+      v-if="takeComponent && isXs"
+      v-model="take"
+      name="take"
+      class="dark:bg-zinc-950 bg-slate-50 border-none shadow-none mr-2"
+      :descriptor="takeComponent"
+    />
+    <span class="whitespace-nowrap text-xs max-xs:hidden">{{ lc("Page {page}", { page }) }}</span>
     <Button
       rounded
       variant="text"
@@ -18,12 +25,6 @@
       size="small"
       :disabled="!allowNext"
       @click="page++"
-    />
-    <Bake
-      v-if="takeComponent && isXs"
-      v-model="take"
-      name="take"
-      :descriptor="takeComponent"
     />
   </div>
 </template>
