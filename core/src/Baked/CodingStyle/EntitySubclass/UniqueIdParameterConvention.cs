@@ -17,6 +17,7 @@ public class UniqueIdParameterConvention : IDomainModelConvention<MethodModelCon
         if (!queryType.TryGetMembers(out var queryMembers)) { return; }
         if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
+        if (!entitySubclassType.TryGetIdInfo(out var idInfo)) { return; }
 
         var singleByUniqueMethod = queryMembers.Methods.FirstOrDefault(m => m.Name != "SingleBy" && m.Name.StartsWith("SingleBy"));
         if (singleByUniqueMethod is null) { return; }
@@ -30,7 +31,7 @@ public class UniqueIdParameterConvention : IDomainModelConvention<MethodModelCon
             : $"\"{subclassName}\"";
         valueExpression = $"Baked.Business.Id.Create({valueExpression})";
 
-        var id = action.Parameter[ParameterModelAttribute.TargetParameterName];
+        var id = action.Parameter[idInfo.PropertyName.Camelize()];
         id.IsHardCoded = true;
         id.InternalName = uniqueParameter.Name.Camelize();
         id.Name = uniqueParameter.Name.Camelize();

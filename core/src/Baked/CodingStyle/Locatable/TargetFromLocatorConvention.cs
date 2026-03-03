@@ -15,7 +15,7 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
         if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
         if (!metadata.TryGetIdInfo(out var idInfo)) { return; }
 
-        var id = action.Parameter[ParameterModelAttribute.TargetParameterName];
+        var id = action.Parameter[idInfo.PropertyName.Camelize()];
         var throwNotFound = action.Parameter["throwNotFound"] =
             new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query)
             {

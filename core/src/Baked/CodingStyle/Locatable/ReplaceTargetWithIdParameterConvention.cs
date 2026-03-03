@@ -6,7 +6,7 @@ using Humanizer;
 
 namespace Baked.CodingStyle.Locatable;
 
-public class AddIdParameterToRouteConvention : IDomainModelConvention<MethodModelContext>
+public class ReplaceTargetWithIdParameterConvention : IDomainModelConvention<MethodModelContext>
 {
     public void Apply(MethodModelContext context)
     {
@@ -17,12 +17,13 @@ public class AddIdParameterToRouteConvention : IDomainModelConvention<MethodMode
         if (!members.TryGetIdInfo(out var idInfo)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
 
-        action.Parameter[ParameterModelAttribute.TargetParameterName] =
+        action.Parameter.Remove(ParameterModelAttribute.TargetParameterName);
+        action.Parameter[idInfo.PropertyName.Camelize()] =
             new(idInfo.PropertyName.Camelize(), idInfo.Type, ParameterModelFrom.Route)
             {
                 IsInvokeMethodParameter = false,
                 RoutePosition = 1
             };
-        action.Parameter[ParameterModelAttribute.TargetParameterName].AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
+        action.Parameter[idInfo.PropertyName.Camelize()].AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
     }
 }
