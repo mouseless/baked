@@ -292,3 +292,17 @@ test.describe("Target Prop", () => {
     await expect(model).toHaveText("{ \"id\": \"ValueB\" }");
   });
 });
+
+test.describe("Remove Float Label on Select", () => {
+  const id = "No Float Label";
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
+    await expect(component.locator(primevue.select.base)).toBeAttached();
+    await component.click();
+    await options.nth(1).click();
+
+    await expect(component.locator(primevue.select.label)).toHaveScreenshot();
+  });
+});

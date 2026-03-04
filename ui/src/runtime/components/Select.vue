@@ -58,7 +58,7 @@ const { filter, label, localizeLabel, noFloatLabel, optionLabel, optionValue, sh
 const path = context.injectPath();
 const selected = ref();
 
-const labelComponent = computed(() => (noFloatLabel ? "templete" : FloatLabel));
+const labelComponent = computed(() => (noFloatLabel ? "div" : FloatLabel));
 const labelProps = computed(() => (noFloatLabel ? {} : { variant: "on" }));
 
 // two way binding between model and selected
