@@ -108,8 +108,11 @@
                 "localizeTitle": true,
                 "inputs": [],
                 "content": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "MyText",
+                  "schema": {
+                    "somethingExtra": "this is extra!",
+                    "maxLength": 100
+                  },
                   "data": {
                     "type": "Remote",
                     "path": "report-page-sample/wide",
@@ -147,8 +150,11 @@
                 "localizeTitle": true,
                 "inputs": [],
                 "content": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "MyText",
+                  "schema": {
+                    "somethingExtra": "this is extra!",
+                    "maxLength": 100
+                  },
                   "data": {
                     "type": "Remote",
                     "path": "report-page-sample/left",
@@ -187,8 +193,11 @@
                 "localizeTitle": true,
                 "inputs": [],
                 "content": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "MyText",
+                  "schema": {
+                    "somethingExtra": "this is extra!",
+                    "maxLength": 100
+                  },
                   "data": {
                     "type": "Remote",
                     "path": "report-page-sample/right",

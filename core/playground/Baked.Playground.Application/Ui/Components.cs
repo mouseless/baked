@@ -20,6 +20,10 @@ public static class Components
         Action<LoginPage>? options = default
     ) => new(options.Apply(new(path)));
 
+    public static ComponentDescriptor<MyText> MyText(
+        Action<MyText>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<RoutedPage> RoutedPage(string path,
         Action<RoutedPage>? options = default
     ) => new(options.Apply(new(path)));
