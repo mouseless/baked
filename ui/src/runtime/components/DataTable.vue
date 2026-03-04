@@ -23,13 +23,29 @@
       {{ lc("No records found") }}
     </template>
     <div
-      v-if="!paginator && serverPaginatorOptions"
-      class="flex w-full justify-end items-end"
+      class="
+        flex flex-row items-center justify-end
+        gap-4 mb-2 py-4 px-2 rounded-sm
+      "
     >
-      <ServerPaginator
-        :schema="serverPaginatorOptions"
-        :data="data"
-      />
+      <div
+        v-if="sort"
+        class="flex items-end justify-end"
+      >
+        <Bake
+          name="sort"
+          :descriptor="sort"
+        />
+      </div>
+      <div
+        v-if="!paginator && serverPaginatorOptions"
+        class="flex justify-end"
+      >
+        <ServerPaginator
+          :schema="serverPaginatorOptions"
+          :data="data"
+        />
+      </div>
     </div>
     <Column
       v-for="column in columns.filter(c => !c.hidden)"
@@ -170,7 +186,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { actions, columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, serverPaginatorOptions } = schema;
+const { actions, columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, serverPaginatorOptions, sort } = schema;
 const exportOptions = schema.exportOptions && {
   buttonIcon: "pi pi-download",
   ...schema.exportOptions

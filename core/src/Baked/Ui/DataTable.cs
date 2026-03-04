@@ -14,6 +14,7 @@ public record DataTable : IComponentSchema
     public Footer? FooterTemplate { get; set; }
     public Export? ExportOptions { get; set; }
     public Column? Actions { get; set; }
+    public IComponentDescriptor? Sort { get; set; }
 
     public record Column(string Key)
     {
