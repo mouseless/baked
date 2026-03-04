@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Playground.Caching;
 using Baked.Playground.Orm;
+using Baked.Playground.Ui;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -49,9 +50,23 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
             // String api rendering
             builder.Conventions.AddMethodComponent(
-                component: (c, cc) => MethodText(c.Method, cc),
                 when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
+                component: (c, cc) => MethodText(c.Method, cc)
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Text>(
+                component: t => t.Override(C.MyText())
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Text>(
+                component: t => t.Schema.MaxLength = 100
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Text>(
+                component: t =>
+                {
+                    if (t.Schema is not MyText mt) { return; }
+
+                    mt.SomethingExtra = "this is extra!";
+                }
             );
 
             // Non-localized enums

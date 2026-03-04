@@ -43,8 +43,11 @@
                 "localizeTitle": true,
                 "inputs": [],
                 "content": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "MyText",
+                  "schema": {
+                    "somethingExtra": "this is extra!",
+                    "maxLength": 100
+                  },
                   "data": {
                     "type": "Remote",
                     "path": "cache-samples/scoped",
@@ -79,8 +82,11 @@
                 "localizeTitle": true,
                 "inputs": [],
                 "content": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "MyText",
+                  "schema": {
+                    "somethingExtra": "this is extra!",
+                    "maxLength": 100
+                  },
                   "data": {
                     "type": "Remote",
                     "path": "cache-samples/application",

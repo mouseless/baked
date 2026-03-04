@@ -11,4 +11,5 @@ public record Select(string Label)
     public bool? Stateful { get; set; }
     public bool? Filter { get; set; }
     public string? TargetProp { get; set; }
+    public bool? NoFloatLabel { get; set; }
 }

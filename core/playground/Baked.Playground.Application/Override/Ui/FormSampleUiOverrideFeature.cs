@@ -6,6 +6,7 @@ using Baked.Ui;
 using Humanizer;
 
 using static Baked.Ui.Datas;
+using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
 
@@ -32,17 +33,35 @@ public class FormSampleUiOverrideFeature : IFeature
                 {
                     dp.Schema.Inputs.RemoveAt(dp.Schema.Inputs.FindIndex(i => i.Name == "take"));
                     dp.Schema.Inputs.RemoveAt(dp.Schema.Inputs.FindIndex(i => i.Name == "skip"));
+                    dp.Schema.Inputs.RemoveAt(dp.Schema.Inputs.FindIndex(i => i.Name == "sort"));
                 }
             );
 
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
-                component: dt =>
+                component: (dt, c, cc) =>
                 {
                     dt.ReloadOn(nameof(FormSample.ClearParents).Kebaberize());
                     dt.ReloadOn("page-changed");
                     dt.Schema.Paginator = false;
-                });
+                    dt.Schema.Sort = c.Method.DefaultOverload.Parameters["sort"].GetComponent(cc.Drill(nameof(DataTable.Sort)));
+
+                    if (dt.Schema.Sort is not null && dt.Schema.Sort.Schema is ISelect select)
+                    {
+                        dt.ReloadWhen("sort");
+                        dt.Schema.Sort.Action = Publish.PageContextValue("sort");
+                        select.Stateful = true;
+                    }
+                }
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
+                schema: rd => rd.Query += Context.Page(options: cd =>
+                {
+                    cd.Prop = "sort";
+                    cd.TargetProp = "sort";
+                })
+            );
 
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
@@ -52,7 +71,11 @@ public class FormSampleUiOverrideFeature : IFeature
                     var (_, l) = cc;
 
                     dtsp.Take = B.Select(l("Take"), Inline(new[] { 10, 20, 50, 100 }, options: i => i.RequireLocalization = false),
-                        options: s => s.Stateful = true
+                        options: s =>
+                        {
+                            s.Stateful = true;
+                            s.NoFloatLabel = true;
+                        }
                     );
                 })
             );
