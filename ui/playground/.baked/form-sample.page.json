@@ -161,7 +161,8 @@
                     "schema": {
                       "label": "Take",
                       "localizeLabel": false,
-                      "stateful": true
+                      "stateful": true,
+                      "noFloatLabel": true
                     },
                     "data": {
                       "type": "Inline",

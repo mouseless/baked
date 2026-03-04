@@ -52,7 +52,11 @@ public class FormSampleUiOverrideFeature : IFeature
                     var (_, l) = cc;
 
                     dtsp.Take = B.Select(l("Take"), Inline(new[] { 10, 20, 50, 100 }, options: i => i.RequireLocalization = false),
-                        options: s => s.Stateful = true
+                        options: s =>
+                        {
+                            s.Stateful = true;
+                            s.NoFloatLabel = true;
+                        }
                     );
                 })
             );

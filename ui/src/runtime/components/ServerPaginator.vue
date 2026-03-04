@@ -4,7 +4,7 @@
       v-if="takeComponent && isXs"
       v-model="take"
       name="take"
-      class="dark:bg-zinc-950 bg-slate-50 border-none shadow-none mr-2"
+      class="dark:bg-zinc-950 bg-slate-50 border-none rounded-md shadow-none mr-2"
       :descriptor="takeComponent"
     />
     <span class="whitespace-nowrap text-xs max-xs:hidden">{{ lc("Page {page}", { page }) }}</span>
