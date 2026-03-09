@@ -76,8 +76,9 @@ jobs:
         # to log collector warnings.
         run: |
           dotnet test -c Release \
-            --collect:"XPlat Code Coverage" \
-            --logger trx \
+            --coverage \
+            --coverage-output-format cobertura \
+            --report-trx \
             --results-directory .coverage \
             --settings test/runsettings.xml
       - name: Merge Multiple Test Coverage Report
