@@ -78,9 +78,9 @@ jobs:
           dotnet test -c Release \
             --coverage \
             --coverage-output-format cobertura \
+            --coverage-settings test/runsettings.xml \
             --report-trx \
-            --results-directory .coverage \
-            --settings test/runsettings.xml
+            --results-directory .coverage
       - name: Merge Multiple Test Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: danielpalme/ReportGenerator-GitHub-Action@5.5.3
