@@ -85,7 +85,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: danielpalme/ReportGenerator-GitHub-Action@5.5.3
         with:
-          reports: 'core/.coverage/*/coverage.cobertura.xml'
+          reports: 'core/.coverage/*/*.cobertura.xml'
           targetdir: 'core/coveragereport'
           reporttypes: 'Cobertura'
       - name: Code Coverage Summary Report
