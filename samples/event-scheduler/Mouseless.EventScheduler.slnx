@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Mouseless.EventScheduler.Application/Mouseless.EventScheduler.Application.csproj" />
+    <Project Path="src/Mouseless.EventScheduler/Mouseless.EventScheduler.csproj" />
+  </Folder>
+</Solution>

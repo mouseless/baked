@@ -1,3 +1,116 @@
 # Unreleased
 
 ## .NET Upgrade
+
+Baked now supports .NET 10! Below you can find a task list to upgrade your
+projects.
+
+```markdown
+- [ ] install dotnet 10
+- [ ] upgrade dotnet version to `10`
+  `Directory.Build.props`, `github actions`, `Dockerfile`, `.vimspector`
+- [ ] upgrade c# version to `14`
+- [ ] make sure packages fine with dotnet 10
+- Opportunistic Improvements
+  - [ ] Use `CompareOptions.NumericOrdering` property of the `StringComparer`
+  object if it will make things easier
+  - [ ] At first glance, it didn't seem necessary, but if needed, it looks like
+  description support has been added to `ProducesAttribute`,
+  `ProducesResponseTypeAttribute`, and `ProducesDefaultResponseTypeAttribute`
+  - [ ] Use `RedirectHttpResult.IsLocalUrl` in places that check whether the URL
+  redirects to the locale or externally
+  - [ ] Use if necessary, the `field` keyword in properties
+  - [ ] Now allows `nameof` for unbound generics. If there were different
+  approaches previously because it wasn't allowed, these can be simplified
+  - [ ] The partial constructor feature now supported. Use it if we need to
+  - probably, the analyzer will already warn you, but just in case;
+    - [ ] use implicit `Span` conversions to array
+    - [ ] use simple lambda parameters with modifiers
+    - [ ] use Null-Conditional assignment
+- Required Migrations
+  - [ ] use `.slnx` instead of `.sln`. To migrate: `dotnet sln migrate`
+  - [ ] use extension members
+    - Property extensions will be used for those that do not take parameters and
+    for specifying layer builders. exp: `configure.Ui.ComponentPresets(...)`
+  - [ ] use `Microsoft Testing Platform` for testing
+    - [ ] add `<OutputType>Exe</OutputType>` to all test projects
+    - [ ] add `<EnableNUnitRunner>true</EnableNUnitRunner>` to `Directory.Build.Props`
+    - [ ] some test flag changed. check [here](https://learn.microsoft.com/en-us/dotnet/core/testing/migrating-vstest-microsoft-testing-platform#update-dotnet-test-invocations)
+    - [ ] add `global.json`
+      ```json
+      {
+        "test": {
+          "runner": "Microsoft.Testing.Platform"
+        }
+      }
+      ```
+- Troubleshooting & Pitfalls(You should also test the tasks that can be checked
+  to be sure)
+  - `HttpContent` now returns `BrowserHttpReadStream` instead of `MemoryStream`
+  - The warning level for audits has been raised in `dotnet restore`. If the
+  error encountered cannot be resolved, the warning level can be lowered in
+  `Directory.Build.props` or the relevant warning can be ignored
+  - Validation APIs moved to `Microsoft.Extensions.Validation`
+  - If you encounter any issues with OpenAPI, check [here](https://github.com/microsoft/OpenAPI.NET/blob/main/docs/upgrade-guide-2.md)
+    - `Microsoft.OpenApi.Models` no more exist. use `Microsoft.OpenApi`
+    - The default initialization has been removed from some collections.
+    If null, initialization is required.
+    - `OpenApiSecurityRequirement` now takes, `OpenApiSecuritySchemeReference`
+    and `List<string>`
+  - It may throw an error for `Microsoft.AspNetCore.Localization`
+  There is no longer a need to import this package separately
+  - [ ] If `dotnet restore` is waiting for user input, it should be set to
+  `--interactive false`
+  - [ ] If you encounter an error or receive incorrect results when obtaining
+  coverage, you may need to set `EnableDynamicNativeInstrumentation` to `true`
+  - [ ] Now, in form post actions, `nullable` fields are automatically set to
+  null when they receive an empty string
+```
+
+## Improvements
+
+- Computed data and composite data now support sync load
+  - If there is no async in the parts of composite data, it performs a sync load
+  - Computed data does a sync load unless specified otherwise
+- `IData` now has a `IsAsync` property
+  - It is set to `true` in `RemoteData`
+  - It is set to `false` in `InlineData` and `ContextData`
+  - In `CompositeData`, it is set to `false` if all of the parts are not async
+  - In `ComputedData`, it is set to `false` value unless it is provided
+    externally or `Options` is async
+- `Datas.Composables` now provide `UseLoginRedirect` extension
+- `useDataMounter` composable is now added for a more convenient data fetching
+
+## Breaking Changes
+
+- All `computeSync` renamed to `compute`, in composables
+- `IData` now has a `IsAsync` property
+- `create` factory method of `useEvents` is now removed, you may use `useEvents`
+  composable directly
+
+## Library Upgrades
+
+| NuGet Package                                    | Old Version | New Version |
+| ---                                              | ---         | ---         |
+| Humanizer.Core                                   | 3.0.1       | 3.0.10      |
+| Microsoft.AspNetCore.Authentication.JwtBearer    | 9.0.11      | 10.0.3      |
+| Microsoft.AspNetCore.Mvc.NewtonsoftJson          | 9.0.11      | 10.0.3      |
+| Microsoft.AspNetCore.Mvc.Testing                 | 9.0.11      | 10.0.3      |
+| Microsoft.Data.Sqlite.Core                       | 10.0.1      | 10.0.3      |
+| Microsoft.Extensions.Caching.Abstractions        | 10.0.1      | 10.0.3      |
+| Microsoft.Extensions.Configuration.Abstractions  | 10.0.1      | 10.0.3      |
+| Microsoft.Extensions.Configuration.Binder        | 10.0.1      | 10.0.3      |
+| Microsoft.Extensions.FileProviders.Abstractions  | 10.0.1      | 10.0.3      |
+| Microsoft.Extensions.Localization                | 10.0.1      | removed     |
+| Microsoft.Extensions.Localization.Abstractions   | 10.0.1      | 10.0.3      |
+| Microsoft.Extensions.Logging.Abstractions        | 10.0.1      | 10.0.3      |
+| Microsoft.Extensions.TimeProvider.Testing        | 10.1.0      | 10.3.0      |
+| Microsoft.NET.Test.Sdk                           | 18.0.1      | 18.3.0      |
+| MySql.Data                                       | 9.5.0       | 9.6.0       |
+| NHibernate.Extensions.Sqlite                     | 9.0.11      | 10.0.0      |
+| NUnit                                            | 4.4.0       | 4.5.1       |
+| NUnit3TestAdapter                                | 6.0.1       | 6.1.0       |
+| Oracle.ManagedDataAccess.Core                    | 23.26.0     | 23.26.100   |
+| Swashbuckle.AspNetCore                           | 9.0.6       | 10.1.4      |
+| Swashbuckle.AspNetCore.Annotations               | 9.0.6       | 10.1.4      |
+| System.IdentityModel.Tokens.Jwt
