@@ -17,114 +17,119 @@
 // while.
 //
 // only respond with code snippet.
-using Microsoft.OpenApi.Models;
+//
+// After the .NET 10 update, the code was reviewed again and the errors were fixed.
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Baked.Binding.Rest
+namespace Baked.Binding.Rest;
+
+public class RemoveUnusedSchemasDocumentFilter : IDocumentFilter
 {
-    public class RemoveUnusedSchemasDocumentFilter : IDocumentFilter
+    public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
-        public void Apply(OpenApiDocument doc, DocumentFilterContext context)
+        if (swaggerDoc.Components?.Schemas is not { Count: > 0 } schemas)
         {
-            if (doc.Components?.Schemas == null)
+            return;
+        }
+
+        var used = new HashSet<string>();
+        CollectFromPaths(swaggerDoc, used);
+        CollectFromSchemaProperties(schemas, used);
+
+        foreach (var key in schemas.Keys.Except(used).ToList())
+        {
+            schemas.Remove(key);
+        }
+    }
+
+    static void CollectFromPaths(OpenApiDocument doc, HashSet<string> used)
+    {
+        if (doc.Paths is null) { return; }
+
+        foreach (var path in doc.Paths.Values)
+        {
+            if (path.Operations is null) { continue; }
+
+            foreach (var op in path.Operations.Values)
             {
-                return;
-            }
-
-            var schemas = doc.Components.Schemas;
-            var used = new HashSet<string>();
-            var stack = new Stack<OpenApiSchema>();
-
-            void Add(OpenApiSchema s)
-            {
-                if (s == null)
+                if (op.Parameters is not null)
                 {
-                    return;
-                }
-
-                if (s.Reference?.Id != null)
-                {
-                    if (used.Add(s.Reference.Id) && schemas.TryGetValue(s.Reference.Id, out var target))
+                    foreach (var param in op.Parameters)
                     {
-                        stack.Push(target);
+                        CollectFromSchema(param.Schema, used);
                     }
                 }
 
-                stack.Push(s);
-            }
+                if (op.RequestBody?.Content is not null)
+                {
+                    foreach (var media in op.RequestBody.Content.Values)
+                    {
+                        CollectFromSchema(media.Schema, used);
+                    }
+                }
 
-            foreach (var path in doc.Paths.Values)
+                if (op.Responses is null) { continue; }
+
+                foreach (var response in op.Responses.Values)
+                {
+                    if (response.Content is null) { continue; }
+
+                    foreach (var media in response.Content.Values)
+                    {
+                        CollectFromSchema(media.Schema, used);
+                    }
+                }
+            }
+        }
+    }
+
+    static void CollectFromSchemaProperties(IDictionary<string, IOpenApiSchema> schemas, HashSet<string> used)
+    {
+        foreach (var schema in schemas.Values)
+        {
+            if (schema.Properties is null) { continue; }
+
+            foreach (var prop in schema.Properties.Values)
             {
-                foreach (var op in path.Operations.Values)
-                {
-                    foreach (var p in op.Parameters)
-                    {
-                        Add(p.Schema);
-                    }
-
-                    if (op.RequestBody != null)
-                    {
-                        foreach (var c in op.RequestBody.Content.Values)
-                        {
-                            Add(c.Schema);
-                        }
-                    }
-
-                    foreach (var r in op.Responses.Values)
-                    {
-                        foreach (var c in r.Content.Values)
-                        {
-                            Add(c.Schema);
-                        }
-                    }
-                }
+                CollectFromSchema(prop, used);
             }
+        }
+    }
 
-            while (stack.Count > 0)
+    static void CollectFromSchema(IOpenApiSchema? schema, HashSet<string> used)
+    {
+        if (schema is null) { return; }
+
+        if (schema is OpenApiSchemaReference { Reference.Id: { } referenceId })
+        {
+            used.Add(referenceId);
+            return;
+        }
+
+        if (schema.Properties is not null)
+        {
+            foreach (var prop in schema.Properties.Values)
             {
-                var s = stack.Pop();
-
-                if (s.Reference?.Id != null)
-                {
-                    if (used.Add(s.Reference.Id) && schemas.TryGetValue(s.Reference.Id, out var target))
-                    {
-                        stack.Push(target);
-                        continue;
-                    }
-                }
-
-                foreach (var p in s.Properties.Values)
-                {
-                    Add(p);
-                }
-
-                Add(s.Items);
-
-                foreach (var a in s.AllOf)
-                {
-                    Add(a);
-                }
-
-                foreach (var a in s.OneOf)
-                {
-                    Add(a);
-                }
-
-                foreach (var a in s.AnyOf)
-                {
-                    Add(a);
-                }
-
-                Add(s.AdditionalProperties);
+                CollectFromSchema(prop, used);
             }
+        }
 
-            foreach (var key in schemas.Keys.ToList())
-            {
-                if (!used.Contains(key))
-                {
-                    schemas.Remove(key);
-                }
-            }
+        CollectFromSchema(schema.Items, used);
+
+        foreach (var sub in schema.AllOf ?? [])
+        {
+            CollectFromSchema(sub, used);
+        }
+
+        foreach (var sub in schema.AnyOf ?? [])
+        {
+            CollectFromSchema(sub, used);
+        }
+
+        foreach (var sub in schema.OneOf ?? [])
+        {
+            CollectFromSchema(sub, used);
         }
     }
 }

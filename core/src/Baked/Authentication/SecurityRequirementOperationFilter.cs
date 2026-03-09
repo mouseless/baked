@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Authentication;
@@ -15,9 +15,9 @@ public class SecurityRequirementOperationFilter<T>(IEnumerable<string> _schemeId
         var requirement = new OpenApiSecurityRequirement();
         foreach (var schemeId in _schemeIds)
         {
-            requirement.Add(new() { Reference = new() { Type = ReferenceType.SecurityScheme, Id = schemeId } }, Array.Empty<string>());
+            requirement.Add(new OpenApiSecuritySchemeReference(schemeId), []);
         }
 
-        operation.Security.Add(requirement);
+        operation.Security?.Add(requirement);
     }
 }

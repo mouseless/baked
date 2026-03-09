@@ -4,7 +4,7 @@ using Baked.Business;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml;
@@ -76,7 +76,7 @@ public static class RestBindingExtensions
             mediaTypes["application/json"] = mediaType = new() { };
         }
 
-        mediaType.Example = OpenApiAnyFactory.CreateFromJson(example);
+        mediaType.Example = example;
     }
 
     public static void SetJsonExample(this IDictionary<string, OpenApiMediaType> mediaTypes, string? example)
@@ -88,6 +88,6 @@ public static class RestBindingExtensions
             mediaTypes["application/json"] = mediaType = new() { };
         }
 
-        mediaType.Example = OpenApiAnyFactory.CreateFromJson(example);
+        mediaType.Example = example;
     }
 }

@@ -3,7 +3,7 @@ using Baked.Architecture;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.Authentication.FixedBearerToken;
 
@@ -56,7 +56,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
                         name,
                         new()
                         {
-                            Type = "string",
+                            Type = JsonSchemaType.String,
                             Description = Settings.Optional($"Authentication:FixedBearerToken:Description:{name}", name)
                         },
                         documentName: documentName
@@ -67,7 +67,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
                     "hash",
                     new()
                     {
-                        Type = "string",
+                        Type = JsonSchemaType.String,
                         Description = Settings.Optional(
                             "Authentication:FixedBearerToken:Description:hash",
                             "Concatenate all form post parameters with secret " +

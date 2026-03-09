@@ -3,7 +3,7 @@ using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.Authentication.Jwt;
 
@@ -29,7 +29,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme,
-                new()
+                new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,

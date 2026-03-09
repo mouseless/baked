@@ -4,7 +4,7 @@ using Baked.Orm;
 using Baked.RestApi;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.CodingStyle.Id;
 
@@ -59,7 +59,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             // Use 'MapType' instead of 'ISchemaFilter' for
             // not render 'Id' as a reference and display properties
             // instead of only '$ref' in schemas
-            swaggerGenOptions.MapType<Business.Id>(() => new OpenApiSchema { Type = "string" });
+            swaggerGenOptions.MapType<Business.Id>(() => new OpenApiSchema { Type = JsonSchemaType.String });
         });
     }
 }

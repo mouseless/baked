@@ -2,7 +2,7 @@
 using Baked.RestApi.Model;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.CodingStyle.ObjectAsJson;
 
@@ -30,7 +30,7 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            swaggerGenOptions.MapType<object>(() => new OpenApiSchema { Type = "object" }); // Makes endpoint content template an object.
+            swaggerGenOptions.MapType<object>(() => new OpenApiSchema { Type = JsonSchemaType.Object }); // Makes endpoint content template an object.
             swaggerGenOptions.SchemaFilter<NullTypesAreObjectSchemaFilter>();
             swaggerGenOptions.OperationFilter<ObjectResponseOperationFilter>();
         });

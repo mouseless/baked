@@ -1,6 +1,6 @@
 using Baked.Architecture;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.Playground.Override.RestApi;
 

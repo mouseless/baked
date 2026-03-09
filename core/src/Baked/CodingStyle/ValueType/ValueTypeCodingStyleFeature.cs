@@ -2,7 +2,7 @@ using Baked.Architecture;
 using Baked.Business;
 using Baked.RestApi;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Newtonsoft.Json;
 
 namespace Baked.CodingStyle.ValueType;
@@ -85,7 +85,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                 foreach (var valueType in valueTypes)
                 {
-                    swaggerGenOptions.MapType(valueType, () => new OpenApiSchema { Type = "string" });
+                    swaggerGenOptions.MapType(valueType, () => new OpenApiSchema { Type = JsonSchemaType.String });
                 }
             });
         });

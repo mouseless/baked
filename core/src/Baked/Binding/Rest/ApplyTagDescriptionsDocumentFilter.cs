@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Binding.Rest;
@@ -11,10 +11,16 @@ public class ApplyTagDescriptionsDocumentFilter(TagDescriptions _descriptions)
         var documentTags = new HashSet<string>();
         foreach (var (pathKey, path) in swaggerDoc.Paths)
         {
+            if (path.Operations is null) { continue; }
+
             foreach (var (method, operation) in path.Operations)
             {
+                if (operation.Tags is null) { continue; }
+
                 foreach (var tag in operation.Tags)
                 {
+                    if (tag.Name is null) { continue; }
+
                     documentTags.Add(tag.Name);
                 }
             }
@@ -24,7 +30,7 @@ public class ApplyTagDescriptionsDocumentFilter(TagDescriptions _descriptions)
         {
             if (!documentTags.Contains(name)) { continue; }
 
-            swaggerDoc.Tags.Add(new() { Name = name, Description = description });
+            swaggerDoc.Tags?.Add(new() { Name = name, Description = description });
         }
     }
 }
