@@ -30,7 +30,16 @@ public class ApplyTagDescriptionsDocumentFilter(TagDescriptions _descriptions)
         {
             if (!documentTags.Contains(name)) { continue; }
 
-            swaggerDoc.Tags?.Add(new() { Name = name, Description = description });
+            swaggerDoc.Tags ??= new HashSet<OpenApiTag>();
+
+            var existingTag = swaggerDoc.Tags.SingleOrDefault(tag => tag.Name == name);
+            if (existingTag is not null)
+            {
+                existingTag.Description = description;
+                continue;
+            }
+
+            swaggerDoc.Tags.Add(new() { Name = name, Description = description });
         }
     }
 }

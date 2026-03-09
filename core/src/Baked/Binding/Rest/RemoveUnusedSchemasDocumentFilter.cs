@@ -1,6 +1,6 @@
-﻿// AI-GEN
+﻿// AI-GEN(Claude AI Sonnet 4.6)
 //
-// swashbuckle c#:
+// swashbuckle c# (.net 10 / Microsoft.OpenApi v2):
 //
 // create a document filter that removes any schema that isn't being used in
 // any of paths parameters, request or response properties and properties of
@@ -13,12 +13,17 @@
 // smallest code possible with minimal nesting and performant code. (use
 // hashset and/or dictionary etc.)
 //
-// always use brackets for if, for and while.  never single line if, for or
+// always use brackets for if, for and while. never single line if, for or
 // while.
 //
-// only respond with code snippet.
+// use `IOpenApiSchema` instead of `OpenApiSchema`. use `OpenApiSchemaReference`
+// for reference detection via `Reference.Id`. use null-safe path traversal with
+// `.Where(x => x.Operations is not null).SelectMany(x => x.Operations!.Values)`
+// instead of `?? []` on ValueCollections. combine AllOf/AnyOf/OneOf traversal
+// with `.Concat()`. use `HashSet<string>.Contains` for unused key filtering
+// instead of `Except()`.
 //
-// After the .NET 10 update, the code was reviewed again and the errors were fixed.
+// only respond with code snippet.
 using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -34,76 +39,52 @@ public class RemoveUnusedSchemasDocumentFilter : IDocumentFilter
         }
 
         var used = new HashSet<string>();
-        CollectFromPaths(swaggerDoc, used);
-        CollectFromSchemaProperties(schemas, used);
+        CollectFromPaths(swaggerDoc, schemas, used);
 
-        foreach (var key in schemas.Keys.Except(used).ToList())
+        var unused = schemas.Keys.Where(k => !used.Contains(k)).ToList();
+        foreach (var key in unused)
         {
             schemas.Remove(key);
         }
     }
 
-    static void CollectFromPaths(OpenApiDocument doc, HashSet<string> used)
+    static void CollectFromPaths(OpenApiDocument doc, IDictionary<string, IOpenApiSchema> schemas, HashSet<string> used)
     {
-        if (doc.Paths is null) { return; }
+        var operations = doc.Paths?.Values
+            .Where(path => path.Operations is not null)
+            .SelectMany(path => path.Operations!.Values);
 
-        foreach (var path in doc.Paths.Values)
+        if (operations is null) { return; }
+
+        foreach (var op in operations)
         {
-            if (path.Operations is null) { continue; }
-
-            foreach (var op in path.Operations.Values)
+            foreach (var param in op.Parameters ?? [])
             {
-                if (op.Parameters is not null)
-                {
-                    foreach (var param in op.Parameters)
-                    {
-                        CollectFromSchema(param.Schema, used);
-                    }
-                }
+                CollectFromSchema(param.Schema, schemas, used);
+            }
 
-                if (op.RequestBody?.Content is not null)
-                {
-                    foreach (var media in op.RequestBody.Content.Values)
-                    {
-                        CollectFromSchema(media.Schema, used);
-                    }
-                }
+            foreach (var media in op.RequestBody?.Content?.Values ?? [])
+            {
+                CollectFromSchema(media.Schema, schemas, used);
+            }
 
-                if (op.Responses is null) { continue; }
-
-                foreach (var response in op.Responses.Values)
-                {
-                    if (response.Content is null) { continue; }
-
-                    foreach (var media in response.Content.Values)
-                    {
-                        CollectFromSchema(media.Schema, used);
-                    }
-                }
+            foreach (var media in op.Responses?.Values.SelectMany(r => r.Content?.Values ?? []) ?? [])
+            {
+                CollectFromSchema(media.Schema, schemas, used);
             }
         }
     }
 
-    static void CollectFromSchemaProperties(IDictionary<string, IOpenApiSchema> schemas, HashSet<string> used)
-    {
-        foreach (var schema in schemas.Values)
-        {
-            if (schema.Properties is null) { continue; }
-
-            foreach (var prop in schema.Properties.Values)
-            {
-                CollectFromSchema(prop, used);
-            }
-        }
-    }
-
-    static void CollectFromSchema(IOpenApiSchema? schema, HashSet<string> used)
+    static void CollectFromSchema(IOpenApiSchema? schema, IDictionary<string, IOpenApiSchema> schemas, HashSet<string> used)
     {
         if (schema is null) { return; }
 
         if (schema is OpenApiSchemaReference { Reference.Id: { } referenceId })
         {
-            used.Add(referenceId);
+            if (!used.Add(referenceId)) { return; }
+            if (!schemas.TryGetValue(referenceId, out var referencedSchema)) { return; }
+
+            CollectFromSchema(referencedSchema, schemas, used);
             return;
         }
 
@@ -111,25 +92,15 @@ public class RemoveUnusedSchemasDocumentFilter : IDocumentFilter
         {
             foreach (var prop in schema.Properties.Values)
             {
-                CollectFromSchema(prop, used);
+                CollectFromSchema(prop, schemas, used);
             }
         }
 
-        CollectFromSchema(schema.Items, used);
+        CollectFromSchema(schema.Items, schemas, used);
 
-        foreach (var sub in schema.AllOf ?? [])
+        foreach (var sub in (schema.AllOf ?? []).Concat(schema.AnyOf ?? []).Concat(schema.OneOf ?? []))
         {
-            CollectFromSchema(sub, used);
-        }
-
-        foreach (var sub in schema.AnyOf ?? [])
-        {
-            CollectFromSchema(sub, used);
-        }
-
-        foreach (var sub in schema.OneOf ?? [])
-        {
-            CollectFromSchema(sub, used);
+            CollectFromSchema(sub, schemas, used);
         }
     }
 }

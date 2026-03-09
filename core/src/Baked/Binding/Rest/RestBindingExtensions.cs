@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Nodes;
 using System.Xml;
 
 namespace Baked;
@@ -76,7 +77,7 @@ public static class RestBindingExtensions
             mediaTypes["application/json"] = mediaType = new() { };
         }
 
-        mediaType.Example = example;
+        mediaType.Example = JsonNode.Parse(example);
     }
 
     public static void SetJsonExample(this IDictionary<string, OpenApiMediaType> mediaTypes, string? example)
@@ -88,6 +89,6 @@ public static class RestBindingExtensions
             mediaTypes["application/json"] = mediaType = new() { };
         }
 
-        mediaType.Example = example;
+        mediaType.Example = JsonNode.Parse(example);
     }
 }

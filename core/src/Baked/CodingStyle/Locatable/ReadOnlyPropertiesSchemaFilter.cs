@@ -24,7 +24,11 @@ public class ReadOnlyPropertiesSchemaFilter(Dictionary<Type, string> _idProperty
             }
             else if (property is OpenApiSchemaReference referenceProperty)
             {
-                referenceProperty.ReadOnly = !isId;
+                schema.Properties[name] = new OpenApiSchema
+                {
+                    ReadOnly = !isId,
+                    AllOf = [referenceProperty]
+                };
             }
         }
     }
