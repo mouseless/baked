@@ -66,7 +66,6 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10
-      - run: find . -name "*.runsettings" -o -name "runsettings.xml" 2>/dev/null
       - name: Test
         if: ${{ matrix.os != 'ubuntu-latest' }}
         run: dotnet test -c Release
@@ -93,7 +92,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: core/coveragereport/Cobertura.xml
+          filename: .coverage/*.cobertura.xml
           badge: true
           format: 'markdown'
           output: 'both'
