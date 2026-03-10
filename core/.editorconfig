@@ -233,6 +233,7 @@ dotnet_diagnostic.SA1131.severity = error # Use Readable Conditions
 dotnet_diagnostic.SA1132.severity = error # Do Not Combine Fields
 dotnet_diagnostic.SA1133.severity = error # Do Not Combine Attributes
 dotnet_diagnostic.SA1136.severity = error # Enum Values Should Be On Separate Lines
+dotnet_diagnostic.SA1201.severity = none # An element within a C# code file is out of order in relation to the other elements in the code. In new extension member syntax give error
 dotnet_diagnostic.SA1210.severity = error # Using Directives Must Be Ordered Alphabetically By Namespace
 dotnet_diagnostic.SA1211.severity = error # Using Alias Directives Must Be Ordered Alphabetically By Namespace
 dotnet_diagnostic.SA1212.severity = error # Property Accessors Must Follow Order
