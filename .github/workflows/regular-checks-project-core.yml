@@ -88,11 +88,12 @@ jobs:
           reports: 'core/.coverage/*.cobertura.xml'
           targetdir: 'core/coveragereport'
           reporttypes: 'Cobertura'
+      - run: find . -name "*.cobertura" -o -name "*.cobertura.xml" 2>/dev/null
       - name: Code Coverage Summary Report
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: .coverage/*.cobertura.xml
+          filename: core/.coverage/*.cobertura.xml
           badge: true
           format: 'markdown'
           output: 'both'
