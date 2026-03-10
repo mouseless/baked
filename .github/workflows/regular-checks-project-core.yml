@@ -66,6 +66,7 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10
+      - run: find . -name "*.runsettings" -o -name "runsettings.xml" 2>/dev/null
       - name: Test
         if: ${{ matrix.os != 'ubuntu-latest' }}
         run: dotnet test -c Release
@@ -78,7 +79,7 @@ jobs:
           dotnet test -c Release \
             --coverage \
             --coverage-output-format cobertura \
-            --coverage-settings test/runsettings.xml \
+            --coverage-settings ./test/runsettings.xml \
             --report-trx \
             --results-directory .coverage
       - name: Merge Multiple Test Coverage Report
