@@ -1,16 +1,16 @@
 <Configuration>
-    <CodeCoverage>
-        <ModulePaths>
-            <Exclude>
-                <ModulePath>.*Baked\.Test\..*</ModulePath>
-            </Exclude>
-        </ModulePaths>
-        <Attributes>
-            <Exclude>
-                <Attribute>^System\.ObsoleteAttribute$</Attribute>
-                <Attribute>^System\.CodeDom\.Compiler\.GeneratedCodeAttribute$</Attribute>
-                <Attribute>^System\.Runtime\.CompilerServices\.CompilerGeneratedAttribute$</Attribute>
-            </Exclude>
-        </Attributes>
-    </CodeCoverage>
+  <CodeCoverage>
+    <ModulePaths>
+      <Exclude>
+        <ModulePath>.*\\Baked\.Test\.[^\\]+\.dll$</ModulePath>
+      </Exclude>
+    </ModulePaths>
+    <Attributes>
+      <Exclude>
+        <Attribute>^System\.ObsoleteAttribute$</Attribute>
+        <Attribute>^System\.CodeDom\.Compiler\.GeneratedCodeAttribute$</Attribute>
+        <Attribute>^System\.Runtime\.CompilerServices\.CompilerGeneratedAttribute$</Attribute>
+      </Exclude>
+    </Attributes>
+  </CodeCoverage>
 </Configuration>
