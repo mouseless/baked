@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Baked.Runtime;
+using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 
 namespace Baked.DataAccess;
 
 public class DelegatedInterceptor(IServiceProvider _serviceProvider, InterceptorConfiguration _interceptorConfiguration)
-    : EmptyInterceptor
+    : EmptyInterceptor, IHasServiceProvider
 {
+    IServiceProvider IHasServiceProvider.ServiceProvider => _serviceProvider;
     ISessionFactory SessionFactory => _serviceProvider.UsingCurrentScope().GetRequiredService<ISessionFactory>();
 
     public override object Instantiate(string clazz, object id)
