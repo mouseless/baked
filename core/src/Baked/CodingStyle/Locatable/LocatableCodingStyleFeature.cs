@@ -10,7 +10,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<LocatableAttribute>();
 
@@ -23,7 +23,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(LocatableCodingStyleFeature),
                     assembly => assembly

@@ -9,7 +9,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<LocatableExtensionAttribute>();
 
@@ -74,7 +74,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(LocatableExtensionCodingStyleFeature),
                     assembly => assembly

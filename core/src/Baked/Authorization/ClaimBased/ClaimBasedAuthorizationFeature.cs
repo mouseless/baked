@@ -10,7 +10,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetMethodAttribute(
                 attribute: c => c.Type.Get<AllowAnonymousAttribute>(),

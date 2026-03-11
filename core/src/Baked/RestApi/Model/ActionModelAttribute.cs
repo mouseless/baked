@@ -32,7 +32,7 @@ public class ActionModelAttribute(
     ///
     /// Use conventions to set a custom value.
     /// </summary>
-    public bool ReturnIsAsync { get; set; } = default!;
+    public bool ReturnIsAsync { get; set; } = default;
 
     /// <summary>
     /// Do NOT set this property directly from the attribute definition, e.g.,
@@ -41,7 +41,7 @@ public class ActionModelAttribute(
     ///
     /// Use conventions to set a custom value.
     /// </summary>
-    public bool ReturnIsVoid { get; set; } = default!;
+    public bool ReturnIsVoid { get; set; } = default;
 
     /// <summary>
     /// Do NOT set this property directly from the attribute definition, e.g.,
@@ -50,7 +50,7 @@ public class ActionModelAttribute(
     ///
     /// Use conventions to set a custom value.
     /// </summary>
-    public bool InvocationIsAsync { get; set; } = default!;
+    public bool InvocationIsAsync { get; set; } = default;
 
     public Func<string, string> ReturnResultRenderer { get; set; } = resultExpression => resultExpression;
     public string FindTargetStatement { get; set; } = ParameterModelAttribute.TargetParameterName;

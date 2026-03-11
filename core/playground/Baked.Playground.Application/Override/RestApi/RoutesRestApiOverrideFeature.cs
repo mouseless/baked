@@ -11,7 +11,7 @@ public class RoutesRestApiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddLocateAction<Child>();
             builder.Conventions.AddLocateAction<Entity>();

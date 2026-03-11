@@ -25,7 +25,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             """);
         });
 
-        configurator.ConfigureDomainTypeCollection(types =>
+        configurator.Domain.ConfigureDomainTypeCollection(types =>
         {
             types.Add<HandledException>();
         });

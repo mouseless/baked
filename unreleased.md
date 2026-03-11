@@ -87,6 +87,8 @@ projects.
 - `IData` now has a `IsAsync` property
 - `create` factory method of `useEvents` is now removed, you may use `useEvents`
   composable directly
+- `LayerConfigurator` extensions are now grouped under layer specific
+  configurators like `configurator.Domain.ConfigureDomainModelBuilder`
 
 ## Library Upgrades
 

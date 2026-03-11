@@ -31,7 +31,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
     {
         base.Configure(configurator);
 
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // Custom theme CSV formatter settings
             builder.Conventions.AddMethodSchemaConfiguration<DataTable.Export>(

@@ -11,7 +11,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<ValueTypeAttribute>();
 
@@ -28,7 +28,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(ValueTypeCodingStyleFeature),
                     assembly => assembly

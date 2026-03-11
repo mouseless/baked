@@ -119,7 +119,7 @@ domain model, for instance to a type, use the `AddTypeComponent` extension of
 `IDomainModelConventionCollection`;
 
 ```csharp
-configurator.ConfigureDomainModelBuilder(builder =>
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
 {
     builder.Conventions.AddTypeComponent(
         when: c => c.Type...,
@@ -190,7 +190,7 @@ domain models that don't have the given `TComponentSchema` or `TSchema` at the
 expected component path.
 
 ```csharp
-configurator.ConfigureDomainModelBuilder(builder =>
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
 {
     // This convention will automatically apply only to the types that have a
     // `SimplePage` component

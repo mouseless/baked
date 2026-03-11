@@ -20,7 +20,7 @@ public class DomainAssembliesBusinessFeature(
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainTypeCollection(types =>
+        configurator.Domain.ConfigureDomainTypeCollection(types =>
         {
             foreach (var (assembly, _) in _assemblyDescriptors)
             {
@@ -49,7 +49,7 @@ public class DomainAssembliesBusinessFeature(
             """);
         });
 
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
             builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
@@ -137,7 +137,7 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
                     assembly => assembly
@@ -148,7 +148,7 @@ public class DomainAssembliesBusinessFeature(
             });
         });
 
-        configurator.ConfigureDomainServiceCollection(services =>
+        configurator.Domain.ConfigureDomainServiceCollection(services =>
         {
             services.References.AddRange(_assemblyDescriptors.Select(ad => ad.assembly));
             services.Usings.AddRange([

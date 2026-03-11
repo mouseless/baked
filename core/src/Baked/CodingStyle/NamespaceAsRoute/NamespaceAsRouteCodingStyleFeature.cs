@@ -7,7 +7,7 @@ public class NamespaceAsRouteCodingStyleFeature : IFeature<CodingStyleConfigurat
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.Add(new UseNamespaceForBaseRouteConvention(), order: RestApiLayer.MaxConventionOrder - 10);
         });

@@ -13,7 +13,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
                 attribute: () => new PubliclyInitializableAttribute(),

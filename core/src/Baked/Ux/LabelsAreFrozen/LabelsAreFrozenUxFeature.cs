@@ -10,7 +10,7 @@ public class LabelsAreFrozenUxFeature()
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<LabelAttribute>(),

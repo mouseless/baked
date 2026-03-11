@@ -14,7 +14,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // domain attribute indices
             builder.Index.Type.Add<ControllerModelAttribute>();
@@ -89,7 +89,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
         {
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 foreach (var type in domain.Types.Having<ControllerModelAttribute>())
                 {

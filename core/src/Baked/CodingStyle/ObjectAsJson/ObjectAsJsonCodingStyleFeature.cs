@@ -10,7 +10,7 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),

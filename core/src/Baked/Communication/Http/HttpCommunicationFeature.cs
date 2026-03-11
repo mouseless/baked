@@ -8,7 +8,7 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainTypeCollection(types => types.Add(typeof(IClient<>)));
+        configurator.Domain.ConfigureDomainTypeCollection(types => types.Add(typeof(IClient<>)));
 
         configurator.ConfigureHttpClients(descriptors =>
         {

@@ -7,7 +7,7 @@ public class CustomAttributeDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
                 attribute: () => new CustomAttribute(),

@@ -15,6 +15,29 @@ namespace Baked;
 
 public static class DomainExtensions
 {
+    public class Configurator(LayerConfigurator _configurator)
+    {
+        public void ConfigureDomainTypeCollection(Action<IDomainTypeCollection> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureDomainModelBuilder(Action<DomainModelBuilderOptions> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureDomainServiceCollection(Action<DomainServiceCollection> configuration) =>
+            ConfigureDomainServiceCollection((services, _) => configuration(services));
+
+        public void ConfigureDomainServiceCollection(Action<DomainServiceCollection, DomainModel> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void UsingDomainModel(Action<DomainModel> configuration) =>
+            _configurator.Use(configuration);
+    }
+
+    extension(LayerConfigurator configurator)
+    {
+        public Configurator Domain => new(configurator);
+    }
+
     extension(ICollection<ILayer> layers)
     {
         public void AddDomain() =>
@@ -25,30 +48,9 @@ public static class DomainExtensions
     {
         public IDomainTypeCollection GetDomainTypes() =>
             application.Get<IDomainTypeCollection>();
-    }
 
-    extension(ApplicationContext context)
-    {
         public DomainModel GetDomainModel() =>
-            context.Get<DomainModel>();
-    }
-
-    extension(LayerConfigurator configurator)
-    {
-        public void ConfigureDomainTypeCollection(Action<IDomainTypeCollection> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureDomainModelBuilder(Action<DomainModelBuilderOptions> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureDomainServiceCollection(Action<DomainServiceCollection> configuration) =>
-            configurator.ConfigureDomainServiceCollection((services, _) => configuration(services));
-
-        public void ConfigureDomainServiceCollection(Action<DomainServiceCollection, DomainModel> configuration) =>
-            configurator.Configure(configuration);
-
-        public void UsingDomainModel(Action<DomainModel> configuration) =>
-            configurator.Use(configuration);
+            application.Get<DomainModel>();
     }
 
     extension(List<DomainServiceDescriptor> serviceModels)
@@ -530,6 +532,7 @@ public static class DomainExtensions
         public bool TryGetMembers([NotNullWhen(true)] out TypeModelMembers? result) =>
             type.TryGetInfo(out result);
 
+#pragma warning disable IDE0051
         bool HasInfo<TInfo>() where TInfo : TypeModel =>
             type is TInfo;
 
@@ -543,9 +546,12 @@ public static class DomainExtensions
 
             return result is not null;
         }
+#pragma warning restore IDE0051
     }
 
+#pragma warning disable IDE0052
     static readonly string _xmlLeftIndent = new string(' ', 3 * 4);
+#pragma warning restore IDE0052
 
     extension(XmlNode? xmlNode)
     {

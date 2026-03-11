@@ -24,7 +24,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 {
     public virtual void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // Type defaults
             builder.Index.Type.Add<RouteAttribute>();
@@ -268,7 +268,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
         configurator.ConfigurePageDescriptors(pages =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 configurator.UsingLocalization(l =>
                 {

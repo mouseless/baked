@@ -42,7 +42,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         // Applies default theme rules
         base.Configure(configurator);
 
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // Your custom conventions and page overrides
         });

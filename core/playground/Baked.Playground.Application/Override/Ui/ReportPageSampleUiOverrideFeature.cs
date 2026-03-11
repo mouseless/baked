@@ -14,7 +14,7 @@ public class ReportPageSampleUiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // Tabs
             builder.Conventions.AddMethodAttributeConfiguration<TabNameAttribute>(

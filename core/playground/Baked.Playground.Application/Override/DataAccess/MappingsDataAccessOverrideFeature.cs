@@ -9,7 +9,7 @@ public class MappingsDataAccessOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
                 when: c => c.Type.Is<EntityWithAutoIncrementId>(),

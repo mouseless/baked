@@ -12,7 +12,7 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Property.Add<DescriptionAttribute>();
             builder.Conventions.SetPropertyAttribute(

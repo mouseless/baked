@@ -44,7 +44,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
         {
             var plugin = new JwtAuthenticationPlugin();
 
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 plugin.AnonymousApiRoutes.AddRange(
                     domain.Types

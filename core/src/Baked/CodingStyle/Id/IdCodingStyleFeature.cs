@@ -12,7 +12,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.RemoveTypeAttribute<ValueTypeAttribute>(
                 when: c => c.Type.Is<Business.Id>(),
@@ -27,7 +27,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(IdCodingStyleFeature),
                     assembly => assembly
