@@ -17,7 +17,7 @@ public class DefaultResponseBuilder
         foreach (var (response, statusCode, when) in setups)
         {
             mock.Setup(c => c.Send(It.Is<Request>(r => when(r)), It.IsAny<bool>()))
-                .ReturnsAsync([new Response(statusCode, response)]);
+                .ReturnsAsync(new Response(statusCode, response));
         }
     }
 
