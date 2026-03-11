@@ -87,7 +87,7 @@ public static class CodeGenerationExtensions
     extension(GeneratedAssemblyDescriptor descriptor)
     {
         public GeneratedAssemblyDescriptor AddCode(string code) =>
-            descriptor.AddCodes(code);
+            descriptor.AddCodes([code]);
 
         public GeneratedAssemblyDescriptor AddCodes(ICodeTemplate codeTemplate) =>
             descriptor
@@ -103,7 +103,7 @@ public static class CodeGenerationExtensions
 
         public GeneratedAssemblyDescriptor AddReferenceFrom<T>() => descriptor.AddReferenceFrom(typeof(T));
         public GeneratedAssemblyDescriptor AddReferenceFrom(Type type) => descriptor.AddReference(type.Assembly);
-        public GeneratedAssemblyDescriptor AddReference(Assembly reference) => descriptor.AddReferences(reference);
+        public GeneratedAssemblyDescriptor AddReference(Assembly reference) => descriptor.AddReferences([reference]);
         public GeneratedAssemblyDescriptor AddReferences(params IEnumerable<Assembly> references)
         {
             descriptor.References.AddRange(references);
@@ -155,15 +155,12 @@ public static class CodeGenerationExtensions
         }
     }
 
-    extension(SyntaxNode? node)
+    static SyntaxNode? GetScopeNode(this SyntaxNode? node)
     {
-        SyntaxNode? GetScopeNode()
-        {
-            if (node is null) { return null; }
-            if (node is MethodDeclarationSyntax or ClassDeclarationSyntax) { return node; }
+        if (node is null) { return null; }
+        if (node is MethodDeclarationSyntax or ClassDeclarationSyntax) { return node; }
 
-            return GetScopeNode(node?.Parent);
-        }
+        return GetScopeNode(node?.Parent);
     }
 
     extension(Stubber _)

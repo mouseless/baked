@@ -23,7 +23,7 @@ public static class ReportingExtensions
         {
             result
                 .Setup(df => df.Execute(It.IsAny<string>(), It.IsAny<Dictionary<string, object?>>()))
-                .ReturnsAsync(data);
+                .ReturnsAsync([data]);
         }
 
         if (queryNotFound == true)
