@@ -1,4 +1,4 @@
-Bake.New
+Bake
     .Monolith(
         business: c => c.DomainAssemblies(typeof(Contact).Assembly),
         database: c => c.Sqlite("Mouseless.EventScheduler.db"),

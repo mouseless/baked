@@ -11,137 +11,164 @@ namespace Baked;
 
 public static class CodeGenerationExtensions
 {
-    public static void AddCodeGeneration(this ICollection<ILayer> layers) =>
-        layers.Add(new CodeGenerationLayer());
+    extension(ICollection<ILayer> layers)
+    {
+        public void AddCodeGeneration() =>
+            layers.Add(new CodeGenerationLayer());
+    }
 
-    public static IGeneratedAssemblyCollection GetGeneratedAssemblyCollection(this ApplicationContext context) =>
+    extension(ApplicationContext context)
+    {
+        public IGeneratedAssemblyCollection GetGeneratedAssemblyCollection() =>
         context.Get<IGeneratedAssemblyCollection>();
 
-    public static GeneratedContext GetGeneratedContext(this ApplicationContext context) =>
-        context.Get<GeneratedContext>();
+        public GeneratedContext GetGeneratedContext() =>
+            context.Get<GeneratedContext>();
 
-    public static Assembly GetGeneratedAssembly(this ApplicationContext context, string name) =>
-        context.Get<GeneratedContext>().Assemblies[name];
-
-    public static void ConfigureGeneratedAssemblyCollection(this LayerConfigurator configurator, Action<IGeneratedAssemblyCollection> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureGeneratedFileCollection(this LayerConfigurator configurator, Action<IGeneratedFileCollection> configuration) =>
-       configurator.Configure(configuration);
-
-    public static void UsingGeneratedContext(this LayerConfigurator configurator, Action<GeneratedContext> configuration) =>
-        configurator.Use(configuration);
-
-    /// <summary>
-    /// Adds a descriptor for a generated assembly with given parameters
-    ///
-    /// ℹ️  Any layer or feature generates code which accesses non-public members should
-    /// be explicitly added tobe added to abstraction project `.targets` file
-    /// </summary>
-    public static void Add(this IGeneratedAssemblyCollection generatedAssemblies, string name, Action<GeneratedAssemblyDescriptor> descriptorBuilder,
-        Func<CSharpCompilationOptions, CSharpCompilationOptions>? compilationOptionsBuilder = default
-    )
-    {
-        var descriptor = new GeneratedAssemblyDescriptor(name);
-
-        descriptorBuilder(descriptor);
-        descriptor.CompilationOptions = compilationOptionsBuilder?.Invoke(descriptor.CompilationOptions) ?? descriptor.CompilationOptions;
-
-        generatedAssemblies.Add(descriptor);
+        public Assembly GetGeneratedAssembly(string name) =>
+            context.Get<GeneratedContext>().Assemblies[name];
     }
 
-    public static void Add(this IGeneratedAssemblyCollection generatedAssemblies, string name, Action<GeneratedAssemblyDescriptor> descriptorBuilder,
-        List<string>? usings = default
-    )
+    extension(LayerConfigurator configurator)
     {
-        usings ??= [];
-        usings.AddRange([
-            "Baked",
-            "System",
-            "System.Linq",
-            "System.Collections",
-            "System.Collections.Generic",
-            "System.Threading.Tasks"
-        ]);
+        public void ConfigureGeneratedAssemblyCollection(Action<IGeneratedAssemblyCollection> configuration) =>
+            configurator.Configure(configuration);
 
-        var descriptor = new GeneratedAssemblyDescriptor(name);
+        public void ConfigureGeneratedFileCollection(Action<IGeneratedFileCollection> configuration) =>
+           configurator.Configure(configuration);
 
-        descriptorBuilder(descriptor);
-        descriptor.CompilationOptions = descriptor.CompilationOptions.WithUsings(usings);
-
-        generatedAssemblies.Add(descriptor);
+        public void UsingGeneratedContext(Action<GeneratedContext> configuration) =>
+            configurator.Use(configuration);
     }
 
-    public static GeneratedAssemblyDescriptor AddCode(this GeneratedAssemblyDescriptor descriptor, string code) =>
-        descriptor.AddCodes(code);
-
-    public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, ICodeTemplate codeTemplate) =>
-        descriptor
-          .AddReferences(codeTemplate.References)
-          .AddCodes([.. codeTemplate.Render()]);
-
-    public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, params IEnumerable<string> codes)
+    extension(IGeneratedAssemblyCollection generatedAssemblies)
     {
-        descriptor.Codes.AddRange(codes);
+        /// <summary>
+        /// Adds a descriptor for a generated assembly with given parameters
+        ///
+        /// ℹ️  Any layer or feature generates code which accesses non-public members should
+        /// be explicitly added tobe added to abstraction project `.targets` file
+        /// </summary>
+        public void Add(string name, Action<GeneratedAssemblyDescriptor> descriptorBuilder,
+            Func<CSharpCompilationOptions, CSharpCompilationOptions>? compilationOptionsBuilder = default
+        )
+        {
+            var descriptor = new GeneratedAssemblyDescriptor(name);
 
-        return descriptor;
+            descriptorBuilder(descriptor);
+            descriptor.CompilationOptions = compilationOptionsBuilder?.Invoke(descriptor.CompilationOptions) ?? descriptor.CompilationOptions;
+
+            generatedAssemblies.Add(descriptor);
+        }
+
+        public void Add(string name, Action<GeneratedAssemblyDescriptor> descriptorBuilder,
+            List<string>? usings = default
+        )
+        {
+            usings ??= [];
+            usings.AddRange([
+                "Baked",
+                "System",
+                "System.Linq",
+                "System.Collections",
+                "System.Collections.Generic",
+                "System.Threading.Tasks"
+            ]);
+
+            var descriptor = new GeneratedAssemblyDescriptor(name);
+
+            descriptorBuilder(descriptor);
+            descriptor.CompilationOptions = descriptor.CompilationOptions.WithUsings(usings);
+
+            generatedAssemblies.Add(descriptor);
+        }
     }
 
-    public static GeneratedAssemblyDescriptor AddReferenceFrom<T>(this GeneratedAssemblyDescriptor descriptor) => descriptor.AddReferenceFrom(typeof(T));
-    public static GeneratedAssemblyDescriptor AddReferenceFrom(this GeneratedAssemblyDescriptor descriptor, Type type) => descriptor.AddReference(type.Assembly);
-    public static GeneratedAssemblyDescriptor AddReference(this GeneratedAssemblyDescriptor descriptor, Assembly reference) => descriptor.AddReferences(reference);
-    public static GeneratedAssemblyDescriptor AddReferences(this GeneratedAssemblyDescriptor descriptor, params IEnumerable<Assembly> references)
+    extension(GeneratedAssemblyDescriptor descriptor)
     {
-        descriptor.References.AddRange(references);
+        public GeneratedAssemblyDescriptor AddCode(string code) =>
+            descriptor.AddCodes(code);
 
-        return descriptor;
+        public GeneratedAssemblyDescriptor AddCodes(ICodeTemplate codeTemplate) =>
+            descriptor
+              .AddReferences(codeTemplate.References)
+              .AddCodes([.. codeTemplate.Render()]);
+
+        public GeneratedAssemblyDescriptor AddCodes(params IEnumerable<string> codes)
+        {
+            descriptor.Codes.AddRange(codes);
+
+            return descriptor;
+        }
+
+        public GeneratedAssemblyDescriptor AddReferenceFrom<T>() => descriptor.AddReferenceFrom(typeof(T));
+        public GeneratedAssemblyDescriptor AddReferenceFrom(Type type) => descriptor.AddReference(type.Assembly);
+        public GeneratedAssemblyDescriptor AddReference(Assembly reference) => descriptor.AddReferences(reference);
+        public GeneratedAssemblyDescriptor AddReferences(params IEnumerable<Assembly> references)
+        {
+            descriptor.References.AddRange(references);
+
+            return descriptor;
+        }
     }
 
-    public static void Add(this IGeneratedFileCollection generatedFiles, string name, string content,
-        string? extension = default,
-        string? outdir = default
-    )
+    extension(IGeneratedFileCollection generatedFiles)
     {
-        extension ??= "txt";
-        extension = extension[(extension.LastIndexOf('.') + 1)..];
+        public void Add(string name, string content,
+            string? extension = default,
+            string? outdir = default
+        )
+        {
+            extension ??= "txt";
+            extension = extension[(extension.LastIndexOf('.') + 1)..];
 
-        generatedFiles.Add(new(name) { Content = content, Extension = extension, Outdir = outdir });
+            generatedFiles.Add(new(name) { Content = content, Extension = extension, Outdir = outdir });
+        }
+
+        public void AddAsJson<T>(T instance,
+            string? name = default,
+            string? outdir = default
+        ) => generatedFiles.AddAsJson(name ?? typeof(T).Name, instance, outdir: outdir);
+
+        public void AddAsJson<T>(string name, T instance,
+            JsonSerializerSettings? settings = default,
+            string? outdir = default
+        )
+        {
+            settings ??= new();
+            settings.Formatting = Formatting.Indented;
+
+            var writer = new StringWriter();
+            JsonSerializer.Create(settings).Serialize(writer, instance);
+            generatedFiles.Add(name, writer.ToString(), "json", outdir: outdir);
+        }
     }
 
-    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance,
-        string? name = default,
-        string? outdir = default
-    ) => generatedFiles.AddAsJson(name ?? typeof(T).Name, instance, outdir: outdir);
-
-    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, string name, T instance,
-        JsonSerializerSettings? settings = default,
-        string? outdir = default
-    )
+    extension(Diagnostic diagnostic)
     {
-        settings ??= new();
-        settings.Formatting = Formatting.Indented;
+        internal string? FindClosestScopedCode()
+        {
+            var tree = diagnostic.Location.SourceTree;
+            if (tree is null) { return null; }
 
-        var writer = new StringWriter();
-        JsonSerializer.Create(settings).Serialize(writer, instance);
-        generatedFiles.Add(name, writer.ToString(), "json", outdir: outdir);
+            return tree.GetRoot().FindNode(diagnostic.Location.SourceSpan).GetScopeNode()?.ToString() ?? diagnostic.Location.SourceTree?.ToString();
+        }
     }
 
-    internal static string? FindClosestScopedCode(this Diagnostic diagnostic)
+    extension(SyntaxNode? node)
     {
-        var tree = diagnostic.Location.SourceTree;
-        if (tree is null) { return null; }
+        SyntaxNode? GetScopeNode()
+        {
+            if (node is null) { return null; }
+            if (node is MethodDeclarationSyntax or ClassDeclarationSyntax) { return node; }
 
-        return tree.GetRoot().FindNode(diagnostic.Location.SourceSpan).GetScopeNode()?.ToString() ?? diagnostic.Location.SourceTree?.ToString();
+            return GetScopeNode(node?.Parent);
+        }
     }
 
-    static SyntaxNode? GetScopeNode(this SyntaxNode? node)
+    extension(Stubber _)
     {
-        if (node is null) { return null; }
-        if (node is MethodDeclarationSyntax or ClassDeclarationSyntax) { return node; }
-
-        return GetScopeNode(node?.Parent);
+        public string ALocation() =>
+            Path.GetDirectoryName(Assembly.GetCallingAssembly().Location ?? string.Empty) ?? string.Empty;
     }
-
-    public static string ALocation(this Stubber _) =>
-        Path.GetDirectoryName(Assembly.GetCallingAssembly().Location ?? string.Empty) ?? string.Empty;
 }
