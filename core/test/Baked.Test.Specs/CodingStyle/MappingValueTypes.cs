@@ -33,8 +33,8 @@ public class MappingValueTypes : TestSpec
 
         actual.ShouldNotBeNull();
         actual.ShouldBe(expected);
-        actual.Value.ShouldBe(Value.Parse("test"));
-        actual.ValueNullable.ShouldBe(Value.Parse("test"));
+        actual.Value.ShouldBe("test");
+        actual.ValueNullable.ShouldBe("test");
         actual.ValueNullableNull.ShouldBeNull();
     }
 }

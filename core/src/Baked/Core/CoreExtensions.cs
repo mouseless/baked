@@ -83,6 +83,23 @@ public static class CoreExtensions
     public static void ShouldBe(this Uri? uri, string urlString) =>
         uri?.ToString().ShouldBe(urlString);
 
+    public static void ShouldBe<T>(this T valueType, string? @string)
+        where T : struct, IParsable<T>
+    {
+        if (string.IsNullOrWhiteSpace(@string))
+        {
+            valueType.ShouldBe(default(T));
+        }
+        else
+        {
+            valueType.ToString().ShouldBe(@string);
+        }
+    }
+
+    public static void ShouldBe<T>(this T? valueType, string? @string)
+        where T : struct, IParsable<T> =>
+        valueType?.ToString().ShouldBe(@string);
+
     public static void ShouldContainKeys<TKey, TValue>(this Dictionary<TKey, TValue> dictionary,
         params TKey[] keys
     ) where TKey : notnull
