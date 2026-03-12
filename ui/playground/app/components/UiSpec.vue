@@ -45,7 +45,7 @@
           </div>
           <div
             v-else
-            class="space-x-4"
+            class="space-x-4 flex"
           >
             <div
               :data-testid="variant.name"
