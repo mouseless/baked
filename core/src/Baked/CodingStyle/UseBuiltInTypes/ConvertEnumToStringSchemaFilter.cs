@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Nodes;
-using Microsoft.OpenApi;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text.Json.Nodes;
 
 namespace Baked.CodingStyle.UseBuiltInTypes;
 
