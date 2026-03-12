@@ -14,7 +14,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureGeneratedFileCollection(files =>
+        configurator.CodeGeneration.ConfigureGeneratedFileCollection(files =>
         {
             if (configurator.IsNfr())
             {

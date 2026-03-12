@@ -11,6 +11,23 @@ namespace Baked;
 
 public static class CodeGenerationExtensions
 {
+    public class Configurator(LayerConfigurator _configurator)
+    {
+        public void ConfigureGeneratedAssemblyCollection(Action<IGeneratedAssemblyCollection> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureGeneratedFileCollection(Action<IGeneratedFileCollection> configuration) =>
+           _configurator.Configure(configuration);
+
+        public void UsingGeneratedContext(Action<GeneratedContext> configuration) =>
+            _configurator.Use(configuration);
+    }
+
+    extension(LayerConfigurator configurator)
+    {
+        public Configurator CodeGeneration => new(configurator);
+    }
+
     extension(ICollection<ILayer> layers)
     {
         public void AddCodeGeneration() =>
@@ -27,18 +44,6 @@ public static class CodeGenerationExtensions
 
         public Assembly GetGeneratedAssembly(string name) =>
             context.Get<GeneratedContext>().Assemblies[name];
-    }
-
-    extension(LayerConfigurator configurator)
-    {
-        public void ConfigureGeneratedAssemblyCollection(Action<IGeneratedAssemblyCollection> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureGeneratedFileCollection(Action<IGeneratedFileCollection> configuration) =>
-           configurator.Configure(configuration);
-
-        public void UsingGeneratedContext(Action<GeneratedContext> configuration) =>
-            configurator.Use(configuration);
     }
 
     extension(IGeneratedAssemblyCollection generatedAssemblies)

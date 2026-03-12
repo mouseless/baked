@@ -10,7 +10,7 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
     {
         configurator.Domain.ConfigureDomainTypeCollection(types => types.Add(typeof(IClient<>)));
 
-        configurator.ConfigureHttpClients(descriptors =>
+        configurator.HttpClient.ConfigureHttpClients(descriptors =>
         {
             var configurations = Settings.Optional<Dictionary<string, ClientConfig>>("Communication:Http", []).GetSection() ?? [];
             configurations.TryGetValue(HttpClientLayer.DefaultConfigKey, out var defaultSettings);

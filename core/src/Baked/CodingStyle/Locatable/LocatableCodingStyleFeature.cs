@@ -21,7 +21,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 10);
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>
             {
@@ -39,7 +39,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             services.AddScopedWithFactory<LocatableInitializations>();
             services.AddSingleton<InitializeLocatablesFilter>();
 
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 services.AddFromAssembly(generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]);
 
@@ -57,7 +57,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
                     .CreateRequiredImplementationInstance<ILocatableContext>()
@@ -67,7 +67,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var idPropertyNames = generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
                     .CreateRequiredImplementationInstance<ILocatableContext>()

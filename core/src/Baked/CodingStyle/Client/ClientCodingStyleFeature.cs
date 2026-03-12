@@ -22,7 +22,7 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>
             {
@@ -37,7 +37,7 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.Testing.ConfigureTestConfiguration(tests =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var clients = generatedContext
                     .Assemblies[nameof(ClientCodingStyleFeature)]

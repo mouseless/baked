@@ -67,7 +67,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>
             {
@@ -82,7 +82,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            configurator.UsingGeneratedContext(context =>
+            configurator.CodeGeneration.UsingGeneratedContext(context =>
             {
                 services.AddFromAssembly(context.Assemblies[nameof(RichTransientCodingStyleFeature)]);
             });

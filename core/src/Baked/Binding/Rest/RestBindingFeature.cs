@@ -103,7 +103,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             });
         });
 
-        configurator.ConfigureGeneratedFileCollection(files =>
+        configurator.CodeGeneration.ConfigureGeneratedFileCollection(files =>
         {
             files.AddAsJson(_tagDescriptions);
             files.AddAsJson(_examples);
@@ -130,7 +130,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             swaggerGenOptions.SchemaFilter<RemoveNonPublicPropertiesSchemaFilter>();
             swaggerGenOptions.DocumentFilter<RemoveUnusedSchemasDocumentFilter>();
 
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var tagDescriptions = generatedContext.ReadFileAsJson<TagDescriptions>() ?? [];
                 swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);

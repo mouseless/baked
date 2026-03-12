@@ -16,7 +16,7 @@ Code generation layer provides `IGeneratedAssemblyCollection`,
 This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureGeneratedAssemblyCollection(assemblies =>
+configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(assemblies =>
 {
     ...
 });
@@ -27,7 +27,7 @@ configurator.ConfigureGeneratedAssemblyCollection(assemblies =>
 This target is provided in `Compile` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureGeneratedFileCollection(files =>
+configurator.CodeGeneration.ConfigureGeneratedFileCollection(files =>
 {
     ...
 });
@@ -49,7 +49,7 @@ This layer introduces following `Generate` phases to the application it is added
 > method;
 >
 > ```csharp
-> configurator.UsingGeneratedContext(generatedContext =>
+> configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
 > {
 >     // generated assembly
 >     var assembly = generatedContext.Assemblies[...];

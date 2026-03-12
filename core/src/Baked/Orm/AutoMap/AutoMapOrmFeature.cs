@@ -38,7 +38,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>
             {
@@ -60,7 +60,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 services.AddFromAssembly(generatedContext.Assemblies[nameof(AutoMapOrmFeature)]);
             });
@@ -77,7 +77,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var featureAssembly = generatedContext.Assemblies[nameof(AutoMapOrmFeature)];
                 var typeSource = featureAssembly.CreateRequiredImplementationInstance<ITypeSource>();

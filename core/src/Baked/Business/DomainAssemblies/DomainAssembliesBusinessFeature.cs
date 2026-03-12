@@ -135,7 +135,7 @@ public class DomainAssembliesBusinessFeature(
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>
             {
@@ -162,7 +162,7 @@ public class DomainAssembliesBusinessFeature(
         {
             Caster.SetServiceProvider(sp);
 
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)]
                     .CreateRequiredImplementationInstance<ICasterConfigurer>()
