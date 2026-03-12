@@ -33,6 +33,21 @@ public static class RuntimeExtensions
     extension(LayerConfigurator configurator)
     {
         public Configurator Runtime => new(configurator);
+
+        public bool IsNfr() =>
+            configurator.IsEnvironment(nameof(Nfr));
+
+        public bool IsDevelopment() =>
+            configurator.IsEnvironment(Environments.Development);
+
+        public bool IsStaging() =>
+            configurator.IsEnvironment(Environments.Staging);
+
+        public bool IsProduction() =>
+            configurator.IsEnvironment(Environments.Production);
+
+        public bool IsEnvironment(string environment) =>
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment;
     }
 
     extension(List<ILayer> layers)
@@ -48,25 +63,6 @@ public static class RuntimeExtensions
 
         public IServiceProvider GetServiceProvider() =>
             context.Get<IServiceProvider>();
-    }
-
-    extension(LayerConfigurator configurator)
-    {
-        // TODO - bunlarıda yukarı almak lazım mı?
-        public bool IsNfr() =>
-            configurator.IsEnvironment(nameof(Nfr));
-
-        public bool IsDevelopment() =>
-            configurator.IsEnvironment(Environments.Development);
-
-        public bool IsStaging() =>
-            configurator.IsEnvironment(Environments.Staging);
-
-        public bool IsProduction() =>
-            configurator.IsEnvironment(Environments.Production);
-
-        public bool IsEnvironment(string environment) =>
-            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment;
     }
 
     extension(IServiceCollection services)

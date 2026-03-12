@@ -45,7 +45,7 @@ public static class JwtAuthenticationExtensions
             new JwtSecurityTokenHandler().CanReadToken(token.Replace("Bearer", string.Empty).Trim());
 
         public void ShouldBeJwt() =>
-           IsJwt(token).ShouldBeTrue();
+           token.IsJwt().ShouldBeTrue();
     }
 
     extension(Mocker mockMe)

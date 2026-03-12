@@ -32,6 +32,7 @@ projects.
   - [ ] use extension members
     - Property extensions will be used for those that do not take parameters and
     for specifying layer builders. exp: `configure.Ui.ComponentPresets(...)`
+    - [ ] Move all extensions to the newly introduced `extension` block
   - [ ] use `Microsoft Testing Platform` for testing
     - [ ] add `<OutputType>Exe</OutputType>` to all test projects
     - [ ] add `<EnableNUnitRunner>true</EnableNUnitRunner>` to `Directory.Build.Props`

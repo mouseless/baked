@@ -26,9 +26,9 @@ namespace Baked;
 
 public static class BakeExtensions
 {
-    extension(Bake)
+    extension(Bake bake)
     {
-        public static Application Monolith(
+        public Application Monolith(
             Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
             IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
             Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization = default,
@@ -76,7 +76,7 @@ public static class BakeExtensions
 
             configure ??= _ => { };
 
-            return Bake.New.Application(app =>
+            return bake.Application(app =>
             {
                 app.Layers.AddCodeGeneration();
                 app.Layers.AddDataAccess();
@@ -162,7 +162,7 @@ public static class BakeExtensions
             });
         }
 
-        public static Application DataSource(
+        public Application DataSource(
             Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
             IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>>? cachings = default,
             Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
@@ -201,7 +201,7 @@ public static class BakeExtensions
 
             configure ??= _ => { };
 
-            return Bake.New.Application(app =>
+            return bake.Application(app =>
             {
                 app.Layers.AddCodeGeneration();
                 app.Layers.AddDataAccess();

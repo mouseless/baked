@@ -70,40 +70,20 @@ public static class CoreExtensions
     {
         #region Encryption
 
-        public byte[] ToMD5()
-        {
-            using var md5 = MD5.Create();
-            // TODO - öneriye bir bak
-            return md5.ComputeHash(str.ToUtf8Bytes());
-        }
+        public byte[] ToMD5() =>
+            MD5.HashData(str.ToUtf8Bytes());
 
-        public byte[] ToSHA512()
-        {
-            using var sha512 = SHA512.Create();
+        public byte[] ToSHA512() =>
+            SHA512.HashData(str.ToUtf8Bytes());
 
-            return sha512.ComputeHash(str.ToUtf8Bytes());
-        }
+        public byte[] ToSHA384() =>
+            SHA384.HashData(str.ToUtf8Bytes());
 
-        public byte[] ToSHA384()
-        {
-            using var sha384 = SHA384.Create();
+        public byte[] ToSHA256() =>
+            SHA256.HashData(str.ToUtf8Bytes());
 
-            return sha384.ComputeHash(str.ToUtf8Bytes());
-        }
-
-        public byte[] ToSHA256()
-        {
-            using var sha256 = SHA256.Create();
-
-            return sha256.ComputeHash(str.ToUtf8Bytes());
-        }
-
-        public byte[] ToSHA1()
-        {
-            using var sha1 = SHA1.Create();
-
-            return sha1.ComputeHash(str.ToUtf8Bytes());
-        }
+        public byte[] ToSHA1() =>
+            SHA1.HashData(str.ToUtf8Bytes());
 
         public byte[] FromBase64() =>
             Convert.FromBase64String(str);

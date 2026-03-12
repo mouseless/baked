@@ -1,6 +1,6 @@
 ﻿using Baked.Playground.Orm;
 
-Bake
+Bake.New
     .Monolith(
         business: c => c.DomainAssemblies(typeof(Entity).Assembly,
             baseNamespace: "Baked.Playground",
