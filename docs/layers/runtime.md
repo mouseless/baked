@@ -21,7 +21,7 @@ This target is provided in `BuildConfiguration` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.ConfigureConfigurationBuilder(configuration =>
+configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
 {
     ...
 });
@@ -32,7 +32,7 @@ configurator.ConfigureConfigurationBuilder(configuration =>
 This target is provided in `AddServices` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureLoggingBuilder(logging =>
+configurator.Runtime.ConfigureLoggingBuilder(logging =>
 {
     ...
 });
@@ -43,7 +43,7 @@ configurator.ConfigureLoggingBuilder(logging =>
 This target is provided in `AddServices` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureServiceCollection(services =>
+configurator.Runtime.ConfigureServiceCollection(services =>
 {
     ...
 });
@@ -54,7 +54,7 @@ configurator.ConfigureServiceCollection(services =>
 This target is provided in `PostBuild` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureServiceProvider(sp =>
+configurator.Runtime.ConfigureServiceProvider(sp =>
 {
     ...
 });

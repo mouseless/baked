@@ -13,7 +13,7 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, SkippedTransaction>();
         });

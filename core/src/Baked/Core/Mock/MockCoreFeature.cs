@@ -8,7 +8,7 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<TimeProvider, ResettableFakeTimeProvider>();
             services.AddSingleton<ITextTransformer, HumanizerTextTransformer>();

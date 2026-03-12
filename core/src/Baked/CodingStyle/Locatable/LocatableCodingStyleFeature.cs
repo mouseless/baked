@@ -34,7 +34,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddScopedWithFactory<LocatableInitializations>();
             services.AddSingleton<InitializeLocatablesFilter>();

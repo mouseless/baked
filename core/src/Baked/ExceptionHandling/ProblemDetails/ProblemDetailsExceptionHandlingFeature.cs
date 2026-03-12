@@ -12,7 +12,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureConfigurationBuilder(configuration =>
+        configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault("""
             {
@@ -30,7 +30,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             types.Add<HandledException>();
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, AuthenticationExceptionHandler>();
             services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();

@@ -12,7 +12,7 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
         });

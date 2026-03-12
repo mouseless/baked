@@ -12,6 +12,29 @@ namespace Baked;
 
 public static class RuntimeExtensions
 {
+    public class Configurator(LayerConfigurator _configurator)
+    {
+        public void ConfigureLoggingBuilder(Action<ILoggingBuilder> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureServiceCollection(Action<IServiceCollection> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureServiceProvider(Action<IServiceProvider> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureConfigurationBuilder(Action<IConfigurationBuilder> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureThreadOptions(Action<ThreadOptions> configuration) =>
+            _configurator.Configure(configuration);
+    }
+
+    extension(LayerConfigurator configurator)
+    {
+        public Configurator Runtime => new(configurator);
+    }
+
     extension(List<ILayer> layers)
     {
         public void AddRuntime() =>
@@ -29,21 +52,7 @@ public static class RuntimeExtensions
 
     extension(LayerConfigurator configurator)
     {
-        public void ConfigureLoggingBuilder(Action<ILoggingBuilder> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureServiceCollection(Action<IServiceCollection> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureServiceProvider(Action<IServiceProvider> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureConfigurationBuilder(Action<IConfigurationBuilder> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureThreadOptions(Action<ThreadOptions> configuration) =>
-            configurator.Configure(configuration);
-
+        // TODO - bunlarıda yukarı almak lazım mı?
         public bool IsNfr() =>
             configurator.IsEnvironment(nameof(Nfr));
 

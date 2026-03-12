@@ -80,7 +80,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             configurator.UsingGeneratedContext(context =>
             {

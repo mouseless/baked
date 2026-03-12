@@ -27,7 +27,7 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
             }
         });
 
-        configurator.ConfigureServiceCollection(serviceCollection =>
+        configurator.Runtime.ConfigureServiceCollection(serviceCollection =>
         {
             serviceCollection.AddSingleton(typeof(HttpClientFactory<>));
             serviceCollection.AddSingleton(typeof(IClient<>), typeof(Client<>));

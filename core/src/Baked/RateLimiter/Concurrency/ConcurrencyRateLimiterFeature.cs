@@ -21,7 +21,7 @@ public class ConcurrencyRateLimiterFeature(
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddRateLimiter(options =>
                 options.AddConcurrencyLimiter(policyName: "Concurrency", options =>
@@ -33,7 +33,7 @@ public class ConcurrencyRateLimiterFeature(
             );
         });
 
-        configurator.ConfigureThreadOptions(options =>
+        configurator.Runtime.ConfigureThreadOptions(options =>
         {
             var limit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment() ? 5 : 20);
             options.MinThreadCount = limit * 2;

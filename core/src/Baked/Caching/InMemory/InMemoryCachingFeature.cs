@@ -19,7 +19,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddMemoryCache(_options);
         });

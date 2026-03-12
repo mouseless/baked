@@ -85,7 +85,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             configurator.UsingGeneratedContext(context =>
             {

@@ -8,7 +8,7 @@ public class RequestLoggingFeature(bool singleLine)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureConfigurationBuilder(configuration =>
+        configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
             {
@@ -21,7 +21,7 @@ public class RequestLoggingFeature(bool singleLine)
             """);
         });
 
-        configurator.ConfigureLoggingBuilder(logging =>
+        configurator.Runtime.ConfigureLoggingBuilder(logging =>
         {
             logging.AddSimpleConsole(options =>
             {

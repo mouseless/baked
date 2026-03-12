@@ -10,7 +10,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
         });

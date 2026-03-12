@@ -27,7 +27,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddAuthorization(options =>
             {

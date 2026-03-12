@@ -21,7 +21,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITokenBuilder, JwtTokenBuilder>();
         });

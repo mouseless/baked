@@ -27,7 +27,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton(new TokenOptions(_tokens));
         });

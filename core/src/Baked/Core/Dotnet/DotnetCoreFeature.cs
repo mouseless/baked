@@ -11,7 +11,7 @@ public class DotnetCoreFeature(Assembly? _entryAssembly, Func<Assembly, string?>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             var entryAssembly = _entryAssembly
                 ?? (configurator.IsNfr() ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())

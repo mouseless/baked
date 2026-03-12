@@ -19,7 +19,7 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<Func<IMemoryCache>>(sp => () => sp.UsingCurrentScope().GetRequiredKeyedService<IMemoryCache>("ScopedMemory"));
             services.AddKeyedScoped<IMemoryCache, MemoryCache>("ScopedMemory");

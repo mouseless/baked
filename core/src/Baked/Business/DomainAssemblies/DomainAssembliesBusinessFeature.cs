@@ -34,7 +34,7 @@ public class DomainAssembliesBusinessFeature(
             }
         });
 
-        configurator.ConfigureConfigurationBuilder(configuration =>
+        configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
             {
@@ -119,7 +119,7 @@ public class DomainAssembliesBusinessFeature(
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
             {
@@ -158,7 +158,7 @@ public class DomainAssembliesBusinessFeature(
             ]);
         });
 
-        configurator.ConfigureServiceProvider(sp =>
+        configurator.Runtime.ConfigureServiceProvider(sp =>
         {
             Caster.SetServiceProvider(sp);
 

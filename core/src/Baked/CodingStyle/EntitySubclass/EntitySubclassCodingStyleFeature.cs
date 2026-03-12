@@ -80,7 +80,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             configurator.UsingGeneratedContext(context =>
             {

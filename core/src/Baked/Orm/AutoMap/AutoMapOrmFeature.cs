@@ -18,7 +18,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureConfigurationBuilder(configuration =>
+        configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
             {
@@ -58,7 +58,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {

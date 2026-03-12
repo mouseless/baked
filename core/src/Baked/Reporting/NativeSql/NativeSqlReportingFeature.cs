@@ -9,7 +9,7 @@ public class NativeSqlReportingFeature(Setting<string> _basePath)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureConfigurationBuilder(configuration =>
+        configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
             {
@@ -23,7 +23,7 @@ public class NativeSqlReportingFeature(Setting<string> _basePath)
             """);
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton(new ReportOptions(_basePath));
             services.AddSingleton<IReportContext, ReportContext>();

@@ -14,7 +14,7 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
