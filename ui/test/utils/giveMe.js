@@ -733,7 +733,7 @@ export default {
     };
   },
 
-  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, targetProp, data, inline, action } = {}) {
+  aSelectButton({ action, allowEmpty, data, inline, label, localizeLabel, optionLabel, optionValue, stateful, targetProp } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
@@ -749,7 +749,7 @@ export default {
 
     return {
       type: "SelectButton",
-      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful, targetProp },
+      schema: { allowEmpty, label, localizeLabel, optionLabel, optionValue, stateful, targetProp },
       data,
       action
     };

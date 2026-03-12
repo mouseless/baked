@@ -5,19 +5,31 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <SelectButton
-      v-if="data"
-      v-model="selected"
-      :options="data"
-      :allow-empty
-      :data-key="optionValue"
-      :option-label
-      :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
-    >
-      <template #option="slotProps">
-        <span>{{ getOptionLabel(slotProps) }}</span>
-      </template>
-    </SelectButton>
+    <div :class="label ? 'flex flex-col' : 'inline-block'">
+      <label
+        v-if="label"
+        class="
+          b-component--SelectButton-Label
+          text-xs text-slate-500 font-normal
+          dark:text-zinc-400 mb-1 ml-2
+        "
+      >
+        {{ label }}
+      </label>
+      <SelectButton
+        v-if="data"
+        v-model="selected"
+        :options="data"
+        :allow-empty
+        :data-key="optionValue"
+        :option-label
+        :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
+      >
+        <template #option="slotProps">
+          <span>{{ getOptionLabel(slotProps) }}</span>
+        </template>
+      </SelectButton>
+    </div>
   </AwaitLoading>
 </template>
 <script setup>
@@ -36,7 +48,7 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful, targetProp } = schema;
+const { allowEmpty = false, label, localizeLabel, optionLabel, optionValue, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const selected = ref();
