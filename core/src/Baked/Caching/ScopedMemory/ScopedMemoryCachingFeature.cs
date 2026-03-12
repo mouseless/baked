@@ -32,7 +32,7 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
             );
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.TearDowns.Add(spec =>
             {

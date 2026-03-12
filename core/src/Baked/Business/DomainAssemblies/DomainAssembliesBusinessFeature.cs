@@ -170,7 +170,7 @@ public class DomainAssembliesBusinessFeature(
             });
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.SetUps.Add(spec =>
             {

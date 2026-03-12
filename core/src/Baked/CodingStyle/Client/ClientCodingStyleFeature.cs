@@ -35,7 +35,7 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureTestConfiguration(tests =>
+        configurator.Testing.ConfigureTestConfiguration(tests =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {

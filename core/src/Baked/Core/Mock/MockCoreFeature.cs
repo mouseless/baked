@@ -15,7 +15,7 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
             services.AddSingleton<FakeSettings>();
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.Mocks.Add<IConfiguration>(singleton: true);
             test.SetUps.Add(spec =>

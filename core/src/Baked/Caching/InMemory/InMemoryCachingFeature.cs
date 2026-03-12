@@ -31,7 +31,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
             );
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.TearDowns.Add(spec =>
             {

@@ -7,16 +7,21 @@ namespace Baked;
 
 public static class TestingExtensions
 {
-    extension(List<ILayer> layers)
+    public class Configurator(LayerConfigurator _configurator)
     {
-        public void AddTesting() =>
-            layers.Add(new TestingLayer());
+        public void ConfigureTestConfiguration(Action<TestConfiguration> configuration) =>
+            _configurator.Configure(configuration);
     }
 
     extension(LayerConfigurator configurator)
     {
-        public void ConfigureTestConfiguration(Action<TestConfiguration> configuration) =>
-            configurator.Configure(configuration);
+        public Configurator Testing => new(configurator);
+    }
+
+    extension(List<ILayer> layers)
+    {
+        public void AddTesting() =>
+            layers.Add(new TestingLayer());
     }
 
     extension(IMockCollection mocks)

@@ -34,7 +34,7 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
             });
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.SetUps.Add(spec =>
             {

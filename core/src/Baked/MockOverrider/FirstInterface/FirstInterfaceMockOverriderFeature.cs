@@ -7,7 +7,7 @@ public class FirstInterfaceMockOverriderFeature : IFeature<MockOverriderConfigur
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.MockFactory = new MockOverriderMockFactory();
             test.TearDowns.Add(spec =>
