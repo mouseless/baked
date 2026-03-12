@@ -55,6 +55,7 @@ public static class CoreExtensions
             return await streamReader.ReadToEndAsync();
         }
 
+#pragma warning disable IDE0051
         StreamReader CreateStreamReader(string subpath)
         {
             var fileInfo = provider.GetFileInfo(subpath);
@@ -62,6 +63,7 @@ public static class CoreExtensions
 
             return new(fileInfo.CreateReadStream(), Encoding.UTF8);
         }
+#pragma warning restore IDE0051
     }
 
     extension(string str)

@@ -36,9 +36,9 @@ public static class MockOverriderExtensions
 
     extension(IServiceProvider serviceProvider)
     {
+#pragma warning disable IDE0051
         T OverrideMocksAndGetRequiredService<T>(params IEnumerable<object?> mockOverrides) where T : notnull =>
             (T)serviceProvider.OverrideMocksAndGetRequiredService(typeof(T), mockOverrides);
-
         object OverrideMocksAndGetRequiredService(Type type, params IEnumerable<object?> mockOverrides)
         {
             var overrider = serviceProvider.GetRequiredService<IMockOverrider>();
@@ -52,5 +52,6 @@ public static class MockOverriderExtensions
 
             return serviceProvider.GetRequiredService(type);
         }
+#pragma warning restore IDE0051
     }
 }
