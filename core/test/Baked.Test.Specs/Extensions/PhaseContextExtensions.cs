@@ -5,80 +5,86 @@ namespace Baked.Test;
 
 public static class PhaseContextExtensions
 {
-    public static PhaseContext APhaseContext(this Stubber giveMe,
-        ApplicationContext? context = default,
-        object? target = default,
-        object[]? targets = default,
-        Action? onDispose = default
-    )
+    extension(Stubber giveMe)
     {
-        targets ??= [target ?? new()];
-        onDispose ??= () => { };
-
-        return new(targets.Select(t => giveMe.ALayerConfigurator(context: context, target: t)).ToList())
+        public PhaseContext APhaseContext(
+            ApplicationContext? context = default,
+            object? target = default,
+            object[]? targets = default,
+            Action? onDispose = default
+        )
         {
-            OnDispose = onDispose
-        };
-    }
+            targets ??= [target ?? new()];
+            onDispose ??= () => { };
 
-    public static void ShouldConfigureTarget<TTarget>(this PhaseContext phaseContext, TTarget expected)
-    {
-        var configured = false;
-        foreach (var configurator in phaseContext.Configurators)
-        {
-            configurator.Configure((TTarget actual) =>
+            return new(targets.Select(t => giveMe.ALayerConfigurator(context: context, target: t)).ToList())
             {
-                actual.ShouldBe(expected);
-
-                configured = true;
-            });
+                OnDispose = onDispose
+            };
         }
-
-        configured.ShouldBeTrue("Phase context didn't get configured");
     }
 
-    public static void ShouldConfigureTwoTargets<TTarget1, TTarget2>(this PhaseContext phaseContext, TTarget1 expected1, TTarget2 expected2)
+    extension(PhaseContext phaseContext)
     {
-        var configured = false;
-        foreach (var configurator in phaseContext.Configurators)
+        public void ShouldConfigureTarget<TTarget>(TTarget expected)
         {
-            configurator.Configure((TTarget1 actual1, TTarget2 actual2) =>
+            var configured = false;
+            foreach (var configurator in phaseContext.Configurators)
             {
-                actual1.ShouldBe(expected1);
-                actual2.ShouldBe(expected2);
+                configurator.Configure((TTarget actual) =>
+                {
+                    actual.ShouldBe(expected);
 
-                configured = true;
-            });
+                    configured = true;
+                });
+            }
+
+            configured.ShouldBeTrue("Phase context didn't get configured");
         }
 
-        configured.ShouldBeTrue("Phase context didn't get configured");
-    }
-
-    public static void ShouldConfigureThreeTargets<TTarget1, TTarget2, TTarget3>(this PhaseContext phaseContext, TTarget1 expected1, TTarget2 expected2, TTarget3 expected3)
-    {
-        var configured = false;
-        foreach (var configurator in phaseContext.Configurators)
+        public void ShouldConfigureTwoTargets<TTarget1, TTarget2>(TTarget1 expected1, TTarget2 expected2)
         {
-            configurator.Configure((TTarget1 actual1, TTarget2 actual2, TTarget3 actual3) =>
+            var configured = false;
+            foreach (var configurator in phaseContext.Configurators)
             {
-                actual1.ShouldBe(expected1);
-                actual2.ShouldBe(expected2);
-                actual3.ShouldBe(expected3);
+                configurator.Configure((TTarget1 actual1, TTarget2 actual2) =>
+                {
+                    actual1.ShouldBe(expected1);
+                    actual2.ShouldBe(expected2);
 
-                configured = true;
-            });
+                    configured = true;
+                });
+            }
+
+            configured.ShouldBeTrue("Phase context didn't get configured");
         }
 
-        configured.ShouldBeTrue("Phase context didn't get configured");
-    }
-
-    public static void ShouldAddValueToContextOnDispose<T>(this PhaseContext phaseContext, T value, ApplicationContext context)
-    {
-        using (phaseContext)
+        public void ShouldConfigureThreeTargets<TTarget1, TTarget2, TTarget3>(TTarget1 expected1, TTarget2 expected2, TTarget3 expected3)
         {
-            context.ShouldNotHave(value);
+            var configured = false;
+            foreach (var configurator in phaseContext.Configurators)
+            {
+                configurator.Configure((TTarget1 actual1, TTarget2 actual2, TTarget3 actual3) =>
+                {
+                    actual1.ShouldBe(expected1);
+                    actual2.ShouldBe(expected2);
+                    actual3.ShouldBe(expected3);
+
+                    configured = true;
+                });
+            }
+
+            configured.ShouldBeTrue("Phase context didn't get configured");
         }
 
-        context.ShouldHave(value);
+        public void ShouldAddValueToContextOnDispose<T>(T value, ApplicationContext context)
+        {
+            using (phaseContext)
+            {
+                context.ShouldNotHave(value);
+            }
+
+            context.ShouldHave(value);
+        }
     }
 }

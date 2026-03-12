@@ -6,8 +6,11 @@ namespace Baked;
 
 public static class ProblemDetailsExceptionHandlingExtensions
 {
-    public static ProblemDetailsExceptionHandlingFeature ProblemDetails(this ExceptionHandlingConfigurator _,
-        Setting<string>? typeUrlFormat = default,
-        Setting<bool>? showUnhandled = default
-    ) => new(typeUrlFormat, showUnhandled);
+    extension(ExceptionHandlingConfigurator _)
+    {
+        public ProblemDetailsExceptionHandlingFeature ProblemDetails(
+            Setting<string>? typeUrlFormat = default,
+            Setting<bool>? showUnhandled = default
+        ) => new(typeUrlFormat, showUnhandled);
+    }
 }

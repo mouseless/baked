@@ -186,10 +186,12 @@ public class WelcomePageGreetingFeature(string _path)
 ```csharp
 public static class WelcomePageGreetingExtensions
 {
-    public static WelcomePageGreetingFeature WelcomePage(
-        this GreetingConfigurator source,
-        string? path = default
-    ) => new(path ?? "/");
+    extension(GreetingConfigurator source)
+    {
+        public static WelcomePageGreetingFeature WelcomePage(
+            string? path = default
+        ) => new(path ?? "/");
+    }
 }
 ```
 

@@ -67,7 +67,9 @@ public static class DataAccessExtensions
 
     extension(Stubber giveMe)
     {
-        public ISession TheSession(bool clear = false)
+        public ISession TheSession(
+            bool clear = false
+        )
         {
             var result = giveMe.The<ISession>();
             if (clear)

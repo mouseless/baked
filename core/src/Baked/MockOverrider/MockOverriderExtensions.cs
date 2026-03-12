@@ -7,41 +7,50 @@ namespace Baked;
 
 public static class MockOverriderExtensions
 {
-    public static void AddMockOverrider(this List<IFeature> features, Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>> configure) =>
-        features.Add(configure(new()));
-
-    public static T The<T>(this Stubber giveMe, object? mockOverride, params IEnumerable<object?> otherMockOverrides) where T : notnull =>
-        giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService<T>([mockOverride, .. otherMockOverrides]);
-
-    public static object The(this Stubber giveMe, Type type, object? mockOverride, params IEnumerable<object?> otherMockOverrides) =>
-        giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService(type, [mockOverride, .. otherMockOverrides]);
-
-    public static T An<T>(this Stubber giveMe, object? mockOverride, params IEnumerable<object?> otherMockOverrides) where T : notnull =>
-        giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService<T>([mockOverride, .. otherMockOverrides]);
-
-    public static object An(this Stubber giveMe, Type type, object? mockOverride, params IEnumerable<object?> otherMockOverrides) =>
-        giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService(type, [mockOverride, .. otherMockOverrides]);
-
-    public static T A<T>(this Stubber giveMe, object? mockOverride, params IEnumerable<object?> otherMockOverrides) where T : notnull =>
-        giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService<T>([mockOverride, .. otherMockOverrides]);
-
-    public static object A(this Stubber giveMe, Type type, params IEnumerable<object?> mockOverrides) =>
-        giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService(type, mockOverrides);
-
-    static T OverrideMocksAndGetRequiredService<T>(this IServiceProvider serviceProvider, params IEnumerable<object?> mockOverrides) where T : notnull =>
-        (T)serviceProvider.OverrideMocksAndGetRequiredService(typeof(T), mockOverrides);
-
-    static object OverrideMocksAndGetRequiredService(this IServiceProvider serviceProvider, Type type, params IEnumerable<object?> mockOverrides)
+    extension(List<IFeature> features)
     {
-        var overrider = serviceProvider.GetRequiredService<IMockOverrider>();
+        public void AddMockOverrider(Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>> configure) =>
+            features.Add(configure(new()));
+    }
 
-        foreach (var mocked in mockOverrides)
+    extension(Stubber giveMe)
+    {
+        public T The<T>(object? mockOverride, params IEnumerable<object?> otherMockOverrides) where T : notnull =>
+            giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService<T>([mockOverride, .. otherMockOverrides]);
+
+        public object The(Type type, object? mockOverride, params IEnumerable<object?> otherMockOverrides) =>
+            giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService(type, [mockOverride, .. otherMockOverrides]);
+
+        public T An<T>(object? mockOverride, params IEnumerable<object?> otherMockOverrides) where T : notnull =>
+            giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService<T>([mockOverride, .. otherMockOverrides]);
+
+        public object An(Type type, object? mockOverride, params IEnumerable<object?> otherMockOverrides) =>
+            giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService(type, [mockOverride, .. otherMockOverrides]);
+
+        public T A<T>(object? mockOverride, params IEnumerable<object?> otherMockOverrides) where T : notnull =>
+            giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService<T>([mockOverride, .. otherMockOverrides]);
+
+        public object A(Type type, params IEnumerable<object?> mockOverrides) =>
+            giveMe.TheServiceProvider().OverrideMocksAndGetRequiredService(type, mockOverrides);
+    }
+
+    extension(IServiceProvider serviceProvider)
+    {
+        T OverrideMocksAndGetRequiredService<T>(params IEnumerable<object?> mockOverrides) where T : notnull =>
+            (T)serviceProvider.OverrideMocksAndGetRequiredService(typeof(T), mockOverrides);
+
+        object OverrideMocksAndGetRequiredService(Type type, params IEnumerable<object?> mockOverrides)
         {
-            if (mocked is null) { continue; }
+            var overrider = serviceProvider.GetRequiredService<IMockOverrider>();
 
-            overrider.Override(mocked);
+            foreach (var mocked in mockOverrides)
+            {
+                if (mocked is null) { continue; }
+
+                overrider.Override(mocked);
+            }
+
+            return serviceProvider.GetRequiredService(type);
         }
-
-        return serviceProvider.GetRequiredService(type);
     }
 }

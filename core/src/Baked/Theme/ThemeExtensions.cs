@@ -33,7 +33,8 @@ public static class ThemeExtensions
 
     extension(Router router)
     {
-        public Route Index(string? title = default,
+        public Route Index(
+            string? title = default,
             string? icon = default
         ) => router.Root("/", title ?? "Home", icon ?? "pi pi-home");
 

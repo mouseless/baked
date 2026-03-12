@@ -6,15 +6,22 @@ namespace Baked;
 
 public static class IdCodingStyleExtensions
 {
-    public static IdCodingStyleFeature Id(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        // TODO - Should it be Property? ama benzerleri parametreli
+        public IdCodingStyleFeature Id() =>
+            new();
+    }
 
-    public static void Generated(this IdAttribute id) =>
-        id.Mapping = new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
+    extension(IdAttribute id)
+    {
+        public void Generated() =>
+            id.Mapping = new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
 
-    public static void AutoIncrement(this IdAttribute id) =>
-        id.Mapping = new(typeof(IdIntUserType)) { IdentifierGenerator = typeof(NHibernate.Id.IdentityGenerator) };
+        public void AutoIncrement() =>
+            id.Mapping = new(typeof(IdIntUserType)) { IdentifierGenerator = typeof(NHibernate.Id.IdentityGenerator) };
 
-    public static void Assigned(this IdAttribute id) =>
-        id.Mapping = new(typeof(IdStringUserType)) { IdentifierGenerator = typeof(NHibernate.Id.Assigned) };
+        public void Assigned() =>
+            id.Mapping = new(typeof(IdStringUserType)) { IdentifierGenerator = typeof(NHibernate.Id.Assigned) };
+    }
 }

@@ -5,12 +5,15 @@ namespace Baked;
 
 public static class LabelCodingStyleExtensions
 {
-    public static LabelCodingStyleFeature Label(this CodingStyleConfigurator _,
-        IEnumerable<string>? propertyNames = default
-    )
+    extension(CodingStyleConfigurator _)
     {
-        propertyNames ??= ["Display", "Label", "Name", "Title"];
+        public LabelCodingStyleFeature Label(
+            IEnumerable<string>? propertyNames = default
+        )
+        {
+            propertyNames ??= ["Display", "Label", "Name", "Title"];
 
-        return new(propertyNames);
+            return new(propertyNames);
+        }
     }
 }

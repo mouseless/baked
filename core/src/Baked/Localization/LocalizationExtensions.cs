@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class LocalizationExtensions
 {
-    public static void AddLocalization(this IList<IFeature> features, Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> configure) =>
-        features.Add(configure(new()));
+    extension(IList<IFeature> features)
+    {
+        public void AddLocalization(Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> configure) =>
+            features.Add(configure(new()));
+    }
 }

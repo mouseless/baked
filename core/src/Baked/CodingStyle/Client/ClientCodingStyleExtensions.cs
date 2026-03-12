@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class ClientCodingStyleExtensions
 {
-    public static ClientCodingStyleFeature Client(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public ClientCodingStyleFeature Client() =>
+            new();
+    }
 }

@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class CorsExtensions
 {
-    public static void AddCors(this IList<IFeature> features, Func<CorsConfigurator, IFeature<CorsConfigurator>> configure) =>
-        features.Add(configure(new()));
+    extension(IList<IFeature> features)
+    {
+        public void AddCors(Func<CorsConfigurator, IFeature<CorsConfigurator>> configure) =>
+            features.Add(configure(new()));
+    }
 }

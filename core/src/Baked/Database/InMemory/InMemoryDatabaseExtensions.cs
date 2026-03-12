@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class InMemoryDatabaseExtensions
 {
-    public static InMemoryDatabaseFeature InMemory(this DatabaseConfigurator _) =>
-        new();
+    extension(DatabaseConfigurator _)
+    {
+        public InMemoryDatabaseFeature InMemory() =>
+            new();
+    }
 }

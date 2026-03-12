@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class SwaggerGreetingExtensions
 {
-    public static SwaggerGreetingFeature Swagger(this GreetingConfigurator _) =>
-        new();
+    extension(GreetingConfigurator _)
+    {
+        public SwaggerGreetingFeature Swagger() =>
+            new();
+    }
 }

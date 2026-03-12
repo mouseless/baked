@@ -7,28 +7,34 @@ namespace Baked;
 
 public static class UseBuiltInTypesCodingStyleExtensions
 {
-    public static UseBuiltInTypesCodingStyleFeature UseBuiltInTypes(this CodingStyleConfigurator _,
-        IEnumerable<string>? textPropertySuffixes = default
-    ) => new(textPropertySuffixes ?? ["Data", "Description"]);
-
-    public static bool TryGetElementType(this TypeModel type, [NotNullWhen(true)] out TypeModel? elementType)
+    extension(CodingStyleConfigurator _)
     {
-        elementType = default;
-
-        if (!type.IsAssignableTo(typeof(IEnumerable<>))) { return false; }
-        if (!type.TryGetGenerics(out var enumerableGenerics)) { return false; }
-
-        elementType = type.IsArray
-            ? enumerableGenerics.ElementType
-            : enumerableGenerics.GenericTypeArguments.FirstOrDefault()?.Model;
-
-        return elementType is not null;
+        public UseBuiltInTypesCodingStyleFeature UseBuiltInTypes(
+            IEnumerable<string>? textPropertySuffixes = default
+        ) => new(textPropertySuffixes ?? ["Data", "Description"]);
     }
 
-    public static TypeModel GetElementType(this TypeModel type)
+    extension(TypeModel type)
     {
-        if (!type.TryGetElementType(out var result)) { throw new($"{type.Name} does not have an element type"); }
+        public bool TryGetElementType([NotNullWhen(true)] out TypeModel? elementType)
+        {
+            elementType = default;
 
-        return result;
+            if (!type.IsAssignableTo(typeof(IEnumerable<>))) { return false; }
+            if (!type.TryGetGenerics(out var enumerableGenerics)) { return false; }
+
+            elementType = type.IsArray
+                ? enumerableGenerics.ElementType
+                : enumerableGenerics.GenericTypeArguments.FirstOrDefault()?.Model;
+
+            return elementType is not null;
+        }
+
+        public TypeModel GetElementType()
+        {
+            if (!type.TryGetElementType(out var result)) { throw new($"{type.Name} does not have an element type"); }
+
+            return result;
+        }
     }
 }

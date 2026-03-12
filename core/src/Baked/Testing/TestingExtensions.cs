@@ -21,14 +21,20 @@ public static class TestingExtensions
 
     extension(IMockCollection mocks)
     {
-        public void Add<T>(bool singleton = false, Action<Mock<T>>? setup = default) where T : class =>
+        public void Add<T>(
+            bool singleton = false,
+            Action<Mock<T>>? setup = default
+        ) where T : class =>
             mocks.Add(new(
                 Type: typeof(T),
                 Singleton: singleton,
                 Setup: setup == default ? default : obj => setup((Mock<T>)obj)
             ));
 
-        public void Add(Type service, bool singleton = false, Action<Mock>? setup = default) =>
+        public void Add(Type service,
+            bool singleton = false,
+            Action<Mock>? setup = default
+        ) =>
             mocks.Add(new(
                 Type: service,
                 Singleton: singleton,

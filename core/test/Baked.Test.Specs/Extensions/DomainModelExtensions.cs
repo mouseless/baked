@@ -5,40 +5,43 @@ namespace Baked.Test;
 
 public static class DomainModelExtensions
 {
-    public static AttributeCollection AnAttributeCollection(this Stubber _,
-        string? name = default,
-        Attribute? item = default,
-        IEnumerable<Attribute>? items = default
-    )
+    extension(Stubber _)
     {
-        name ??= "Test";
-        items ??= [];
-
-        var result = new AttributeCollection(name);
-
-        if (item is not null)
+        public AttributeCollection AnAttributeCollection(
+            string? name = default,
+            Attribute? item = default,
+            IEnumerable<Attribute>? items = default
+        )
         {
-            AddOrSet(item);
-        }
+            name ??= "Test";
+            items ??= [];
 
-        foreach (var current in items)
-        {
-            AddOrSet(current);
-        }
+            var result = new AttributeCollection(name);
 
-        void AddOrSet(Attribute attribute)
-        {
-            if (attribute.AllowsMultiple())
+            if (item is not null)
             {
-                ((IMutableAttributeCollection)result).Add(attribute);
-            }
-            else
-            {
-                ((IMutableAttributeCollection)result).Set(attribute);
+                AddOrSet(item);
             }
 
-        }
+            foreach (var current in items)
+            {
+                AddOrSet(current);
+            }
 
-        return result;
+            void AddOrSet(Attribute attribute)
+            {
+                if (attribute.AllowsMultiple())
+                {
+                    ((IMutableAttributeCollection)result).Add(attribute);
+                }
+                else
+                {
+                    ((IMutableAttributeCollection)result).Set(attribute);
+                }
+
+            }
+
+            return result;
+        }
     }
 }

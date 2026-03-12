@@ -22,8 +22,11 @@ public static class Caster
         to[toType] = getCaster;
     }
 
-    public static Casting<TFrom> Cast<TFrom>(this TFrom from) =>
-        new(from);
+    extension<TFrom>(TFrom from)
+    {
+        public Casting<TFrom> Cast() =>
+            new(from);
+    }
 
     public class Casting<TFrom>(TFrom _from)
     {

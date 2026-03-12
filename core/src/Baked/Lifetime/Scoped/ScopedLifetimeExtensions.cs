@@ -8,11 +8,17 @@ namespace Baked;
 
 public static class ScopedLifetimeExtensions
 {
-    public static ScopedLifetimeFeature Scoped(this LifetimeConfigurator _) =>
-        new();
+    extension(LifetimeConfigurator _)
+    {
+        public ScopedLifetimeFeature Scoped() =>
+            new();
+    }
 
-    public static void AddScoped(this DomainServiceCollection services, TypeModel type,
-        bool useFactory = true,
-        bool forward = false
-    ) => services.Add(type, ServiceLifetime.Scoped, useFactory: useFactory, forward: forward);
+    extension(DomainServiceCollection services)
+    {
+        public void AddScoped(TypeModel type,
+            bool useFactory = true,
+            bool forward = false
+        ) => services.Add(type, ServiceLifetime.Scoped, useFactory: useFactory, forward: forward);
+    }
 }

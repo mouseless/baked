@@ -5,6 +5,10 @@ namespace Baked;
 
 public static class NumericValuesAreFormattedUxExtensions
 {
-    public static NumericValuesAreFormattedUxFeature NumericValuesAreFormatted(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        // TODO - bunlarda da property e geçmek gerekir mi?
+        public NumericValuesAreFormattedUxFeature NumericValuesAreFormatted() =>
+            new();
+    }
 }

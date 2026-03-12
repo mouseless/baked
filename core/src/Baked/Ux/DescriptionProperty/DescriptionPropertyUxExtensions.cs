@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class DescriptionPropertyUxExtensions
 {
-    public static DescriptionPropertyUxFeature DescriptionProperty(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public DescriptionPropertyUxFeature DescriptionProperty() =>
+            new();
+    }
 }

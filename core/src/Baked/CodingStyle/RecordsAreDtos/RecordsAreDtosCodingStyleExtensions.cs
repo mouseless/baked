@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class RecordsAreDtosCodingStyleExtensions
 {
-    public static RecordsAreDtosCodingStyleFeature RecordsAreDtos(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public RecordsAreDtosCodingStyleFeature RecordsAreDtos() =>
+            new();
+    }
 }

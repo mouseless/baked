@@ -27,11 +27,14 @@ Or you may prefer to create your custom theme on top of this default theme;
 ```csharp
 public static class CustomThemeExtensions
 {
-    public static CustomThemeFeature Custom(this ThemeConfigurator _) =>
-        new(
-        [
-            // All app routes
-        ]);
+    extension(ThemeConfigurator _)
+    {
+        public static CustomThemeFeature Custom() =>
+            new(
+            [
+                // All app routes
+            ]);
+    }
 }
 
 public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)

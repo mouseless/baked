@@ -6,49 +6,55 @@ namespace Baked.Test;
 
 public static class ParentExtensions
 {
-    public static Parent AParent(this Stubber giveMe,
-        string? name = default,
-        string? surname = default,
-        bool withChild = false
-    )
+    extension(Stubber giveMe)
     {
-        name ??= giveMe.AString();
-        surname ??= giveMe.AString();
-
-        var result = giveMe.A<Parent>().With(name, surname);
-        if (withChild)
+        public Parent AParent(
+            string? name = default,
+            string? surname = default,
+            bool withChild = false
+        )
         {
-            result.AddChild(giveMe.AString());
+            name ??= giveMe.AString();
+            surname ??= giveMe.AString();
+
+            var result = giveMe.A<Parent>().With(name, surname);
+            if (withChild)
+            {
+                result.AddChild(giveMe.AString());
+            }
+
+            return result;
+        }
+    }
+
+    extension(System.Net.Http.HttpClient client)
+    {
+        public async Task<dynamic> PostParents(
+            string? name = default,
+            string? surname = default
+        )
+        {
+            name ??= "test";
+            surname ??= "test";
+
+            var response = await client.PostAsync("/parents", JsonContent.Create(new { name, surname }));
+            dynamic? result = await response.Content.Deserialize();
+
+            return result ?? throw new("Response should've been not-null");
         }
 
-        return result;
-    }
+        public async Task PostParentsChildren(object id)
+        {
+            var response = await client.PostAsync($"/parents/{id}/children", JsonContent.Create(new { name = "child" }));
+            await response.Content.Deserialize();
+        }
 
-    public static async Task<dynamic> PostParents(this System.Net.Http.HttpClient client,
-        string? name = default,
-        string? surname = default
-    )
-    {
-        name ??= "test";
-        surname ??= "test";
+        public async Task<dynamic> GetParentsChildren(object id)
+        {
+            var response = await client.GetAsync($"/parents/{id}/children");
+            dynamic? result = await response.Content.Deserialize();
 
-        var response = await client.PostAsync("/parents", JsonContent.Create(new { name, surname }));
-        dynamic? result = await response.Content.Deserialize();
-
-        return result ?? throw new("Response should've been not-null");
-    }
-
-    public static async Task PostParentsChildren(this System.Net.Http.HttpClient client, object id)
-    {
-        var response = await client.PostAsync($"/parents/{id}/children", JsonContent.Create(new { name = "child" }));
-        await response.Content.Deserialize();
-    }
-
-    public static async Task<dynamic> GetParentsChildren(this System.Net.Http.HttpClient client, object id)
-    {
-        var response = await client.GetAsync($"/parents/{id}/children");
-        dynamic? result = await response.Content.Deserialize();
-
-        return result ?? throw new("Response should've been not-null");
+            return result ?? throw new("Response should've been not-null");
+        }
     }
 }

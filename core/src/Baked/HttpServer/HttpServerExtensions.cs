@@ -67,6 +67,9 @@ public static class HttpServerExtensions
 
     extension(Stubber giveMe)
     {
+        public RequestDelegate ARequestDelegate() =>
+            _ => Task.CompletedTask;
+
         public HttpRequest AnHttpRequest(
             string? schema = default,
             string? host = default,
@@ -149,11 +152,5 @@ public static class HttpServerExtensions
 
             return mock.Object;
         }
-    }
-
-    extension(Stubber _)
-    {
-        public RequestDelegate ARequestDelegate() =>
-            _ => Task.CompletedTask;
     }
 }

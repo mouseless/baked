@@ -4,6 +4,9 @@ namespace Baked;
 
 public static class AuthorizationExtensions
 {
-    public static bool HasClaim(this ClaimsPrincipal claims, string claimType) =>
-        claims.HasClaim(c => c.Type == claimType);
+    extension(ClaimsPrincipal claims)
+    {
+        public bool HasClaim(string claimType) =>
+            claims.HasClaim(c => c.Type == claimType);
+    }
 }
