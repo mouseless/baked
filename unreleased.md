@@ -11,6 +11,13 @@ projects.
   `Directory.Build.props`, `github actions`, `Dockerfile`, `.vimspector`
 - [ ] upgrade c# version to `14`
 - [ ] make sure packages fine with dotnet 10
+- [ ] upgrade github actions
+  - `checkout@v6`
+  - `setup-dotnet@v5`
+  - `setup-node@v6`
+  - `upload-artifact@v7`
+  - `download-artifact@v8`
+  - `danielpalme/ReportGenerator-GitHub-Action@5.5.3`
 - Opportunistic Improvements
   - [ ] Use `CompareOptions.NumericOrdering` property of the `StringComparer`
   object if it will make things easier
@@ -45,6 +52,7 @@ projects.
         }
       }
       ```
+    - [ ] make scripts
 - Troubleshooting & Pitfalls(You should also test the tasks that can be checked
   to be sure)
   - `HttpContent` now returns `BrowserHttpReadStream` instead of `MemoryStream`
@@ -58,6 +66,11 @@ projects.
     If null, initialization is required.
     - `OpenApiSecurityRequirement` now takes, `OpenApiSecuritySchemeReference`
     and `List<string>`
+    - now also in `ISchemaFilter`;
+      - `OpenApiSchema` is now `IOpenApiSchema`
+      - `schema.Type` is now `JsonSchemaType`
+      - `schema.Properties` now nullable
+      - `schema.Example` is now `JsonNode`
   - It may throw an error for `Microsoft.AspNetCore.Localization`
   There is no longer a need to import this package separately
   - [ ] If `dotnet restore` is waiting for user input, it should be set to
