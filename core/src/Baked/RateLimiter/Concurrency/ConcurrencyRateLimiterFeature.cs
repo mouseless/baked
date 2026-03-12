@@ -45,7 +45,7 @@ public class ConcurrencyRateLimiterFeature(
             middlewares.Add(app => app.UseRateLimiter(), order: -30);
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("Microsoft.AspNetCore.RateLimiting");
         });

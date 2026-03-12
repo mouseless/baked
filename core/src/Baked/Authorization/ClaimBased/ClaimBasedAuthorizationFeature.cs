@@ -45,7 +45,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             middlewares.Add(app => app.UseAuthorization(), order: 20);
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("Microsoft.AspNetCore.Authorization");
         });

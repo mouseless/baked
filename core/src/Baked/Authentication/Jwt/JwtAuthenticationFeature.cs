@@ -26,7 +26,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
             services.AddSingleton<ITokenBuilder, JwtTokenBuilder>();
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme,
                 new OpenApiSecurityScheme()

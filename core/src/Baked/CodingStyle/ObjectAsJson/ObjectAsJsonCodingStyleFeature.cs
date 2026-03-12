@@ -28,7 +28,7 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
             ));
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.MapType<object>(() => new OpenApiSchema { Type = JsonSchemaType.Object }); // Makes endpoint content template an object.
             swaggerGenOptions.SchemaFilter<NullTypesAreObjectSchemaFilter>();

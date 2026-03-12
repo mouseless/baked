@@ -53,7 +53,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 
@@ -65,7 +65,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {

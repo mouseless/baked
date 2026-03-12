@@ -6,7 +6,7 @@ public class MultiDocumentRestApiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.SwaggerDoc("samples", new() { Title = "Samples", Version = "v1" });
             swaggerGenOptions.SwaggerDoc("external", new() { Title = "External", Version = "v1" });
@@ -17,7 +17,7 @@ public class MultiDocumentRestApiOverrideFeature : IFeature
             );
         });
 
-        configurator.ConfigureSwaggerUIOptions(swaggerUIOptions =>
+        configurator.RestApi.ConfigureSwaggerUIOptions(swaggerUIOptions =>
         {
             swaggerUIOptions.SwaggerEndpoint($"samples/swagger.json", "Samples");
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");

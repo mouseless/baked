@@ -145,7 +145,7 @@ To access and use objects stored in application context in a feature,
 action with context phase artifact.
 
 ```csharp
-configurator.ConfigureApiModel(api =>
+configurator.RestApi.ConfigureApiModel(api =>
 {
     configurator.UseDomainModel(domain =>
     {

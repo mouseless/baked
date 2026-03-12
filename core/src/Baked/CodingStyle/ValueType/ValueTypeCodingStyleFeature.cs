@@ -51,7 +51,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
@@ -75,7 +75,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {

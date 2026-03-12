@@ -32,7 +32,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
             services.AddSingleton(new TokenOptions(_tokens));
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             foreach (var documentName in _documentNames)
             {

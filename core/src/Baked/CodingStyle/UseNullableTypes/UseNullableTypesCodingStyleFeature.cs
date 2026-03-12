@@ -40,7 +40,7 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
             builder.Conventions.Add(new SetDefaultValueForNullableEnumConvention());
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.AddRange([
                 "Microsoft.AspNetCore.Mvc.ModelBinding",

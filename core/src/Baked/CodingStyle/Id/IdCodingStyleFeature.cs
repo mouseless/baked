@@ -48,13 +48,13 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             options.SerializerSettings.Converters.Add(new IdJsonConverter());
             options.SerializerSettings.Converters.Add(new NullableJsonConverter<Business.Id>(new IdJsonConverter()));
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             // Use 'MapType' instead of 'ISchemaFilter' for
             // not render 'Id' as a reference and display properties

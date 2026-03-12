@@ -58,12 +58,12 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
             ));
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.SchemaFilter<ConvertEnumToStringSchemaFilter>();
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
         });

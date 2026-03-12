@@ -130,7 +130,7 @@ public class DomainAssembliesBusinessFeature(
             }
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
         });
@@ -178,7 +178,7 @@ public class DomainAssembliesBusinessFeature(
             });
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             foreach (var (assembly, _) in _assemblyDescriptors)
             {

@@ -65,7 +65,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
             );
         });
 
-        configurator.ConfigureSwaggerGenOptions(swg =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swg =>
         {
             swg.OperationFilter<LocalizationOperationFilter>();
         });

@@ -15,31 +15,36 @@ namespace Baked;
 
 public static class RestApiExtensions
 {
-    extension(IList<ILayer> layers)
+    public class Configurator(LayerConfigurator _configurator)
     {
-        public void AddRestApi() =>
-            layers.Add(new RestApiLayer());
+        public void ConfigureApiModel(Action<ApiModel> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureApplicationParts(Action<IApplicationPartCollection> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureMvcNewtonsoftJsonOptions(Action<MvcNewtonsoftJsonOptions> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureSwaggerGenOptions(Action<SwaggerGenOptions> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureSwaggerOptions(Action<SwaggerOptions> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureSwaggerUIOptions(Action<SwaggerUIOptions> configuration) =>
+            _configurator.Configure(configuration);
     }
 
     extension(LayerConfigurator configurator)
     {
-        public void ConfigureApiModel(Action<ApiModel> configuration) =>
-            configurator.Configure(configuration);
+        public Configurator RestApi => new(configurator);
+    }
 
-        public void ConfigureApplicationParts(Action<IApplicationPartCollection> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureMvcNewtonsoftJsonOptions(Action<MvcNewtonsoftJsonOptions> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureSwaggerGenOptions(Action<SwaggerGenOptions> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureSwaggerOptions(Action<SwaggerOptions> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureSwaggerUIOptions(Action<SwaggerUIOptions> configuration) =>
-            configurator.Configure(configuration);
+    extension(IList<ILayer> layers)
+    {
+        public void AddRestApi() =>
+            layers.Add(new RestApiLayer());
     }
 
     extension(IMvcBuilder mvcBuilder)

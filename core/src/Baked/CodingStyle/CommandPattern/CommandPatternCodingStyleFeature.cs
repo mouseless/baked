@@ -53,7 +53,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
             ), order: -10);
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {

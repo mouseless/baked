@@ -13,7 +13,7 @@ public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigu
             builder.Conventions.Add(new UriReturnWithParameterIsFormPostConvention(), order: -10);
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("System.Net");
         });

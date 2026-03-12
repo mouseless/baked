@@ -18,7 +18,7 @@ This layer provides `ApiModel` to generate controllers from domain objects,
 This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureApiModel(api =>
+configurator.RestApi.ConfigureApiModel(api =>
 {
     ...
 });
@@ -29,7 +29,7 @@ configurator.ConfigureApiModel(api =>
 This target is provided in `AddServices` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureApplicationParts(applicationParts =>
+configurator.RestApi.ConfigureApplicationParts(applicationParts =>
 {
     ...
 });
@@ -40,7 +40,7 @@ configurator.ConfigureApplicationParts(applicationParts =>
 This target is provided in `AddServices` phase. To configure it in a feature;
 
 ```csharp
- configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+ configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
  {
      ...
  });
@@ -66,7 +66,7 @@ This target is provided in `AddServices` phase right after
 `IApplicationPartCollection`. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
 {
     ...
 });
@@ -78,7 +78,7 @@ This target is provided in `AddServices` phase right after
 `SwaggerGenOptions`. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureSwaggerOptions(swaggerOptions =>
+configurator.RestApi.ConfigureSwaggerOptions(swaggerOptions =>
 {
     ...
 });
@@ -90,7 +90,7 @@ This target is provided in `AddServices` phase right after
 `SwaggerOptions`. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureSwaggerUIOptions(swaggerUIOptions =>
+configurator.RestApi.ConfigureSwaggerUIOptions(swaggerUIOptions =>
 {
     ...
 });

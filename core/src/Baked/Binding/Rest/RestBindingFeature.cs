@@ -85,7 +85,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             );
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
@@ -109,7 +109,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             files.AddAsJson(_examples);
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.EnableAnnotations();
 

@@ -131,7 +131,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             });
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 
