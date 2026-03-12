@@ -202,14 +202,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
         });
 
-        configurator.ConfigureComponentExports(exports =>
+        configurator.Ui.ConfigureComponentExports(exports =>
         {
             exports.AddFromExtensions(typeof(B));
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
-            configurator.UsingLocalization(l =>
+            configurator.Ui.UsingLocalization(l =>
             {
                 app.Error = B.ErrorPage(
                     options: ep =>
@@ -235,9 +235,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             });
         });
 
-        configurator.ConfigureLayoutDescriptors(layouts =>
+        configurator.Ui.ConfigureLayoutDescriptors(layouts =>
         {
-            configurator.UsingLocalization(l =>
+            configurator.Ui.UsingLocalization(l =>
             {
                 layouts.Add(B.DefaultLayout("default", options: dl =>
                 {
@@ -266,11 +266,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             layouts.Add(B.ModalLayout("modal"));
         });
 
-        configurator.ConfigurePageDescriptors(pages =>
+        configurator.Ui.ConfigurePageDescriptors(pages =>
         {
             configurator.Domain.UsingDomainModel(domain =>
             {
-                configurator.UsingLocalization(l =>
+                configurator.Ui.UsingLocalization(l =>
                 {
                     var sitemap = _routes.ToImmutableList();
                     foreach (var route in _routes)

@@ -53,7 +53,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             );
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             app.Plugins.Add(new ErrorHandlingPlugin
             {

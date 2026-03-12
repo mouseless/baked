@@ -25,7 +25,7 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
             services.AddKeyedScoped<IMemoryCache, MemoryCache>("ScopedMemory");
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             app.Plugins.Add(
                 new CacheUserPlugin { ExpirationInMinutes = (int)clientExpiration.GetValue().TotalMinutes }

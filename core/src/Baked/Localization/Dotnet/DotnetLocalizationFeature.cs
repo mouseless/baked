@@ -23,7 +23,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
 
             var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' should have existed"), "../../../../Locales");
 
-            configurator.UsingLocaleTemplate(localeTemplate =>
+            configurator.Ui.UsingLocaleTemplate(localeTemplate =>
             {
                 files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir), name: $"locale.{_language.Name}", outdir: "Ui");
 
@@ -70,7 +70,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
             swg.OperationFilter<LocalizationOperationFilter>();
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             app.I18n.DefaultLanguage = new(_language.Name, _language.EnglishName);
             app.I18n.SupportedLanguages.Add(app.I18n.DefaultLanguage);

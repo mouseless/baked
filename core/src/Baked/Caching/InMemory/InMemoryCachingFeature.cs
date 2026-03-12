@@ -24,7 +24,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
             services.AddMemoryCache(_options);
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             app.Plugins.Add(
                 new CacheApplicationPlugin { ExpirationInMinutes = (int)clientExpiration.GetValue().TotalMinutes }

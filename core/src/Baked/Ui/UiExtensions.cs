@@ -6,31 +6,36 @@ namespace Baked;
 
 public static class UiExtensions
 {
-    extension(List<ILayer> layers)
+    public class Configurator(LayerConfigurator _configurator)
     {
-        public void AddUi() =>
-            layers.Add(new UiLayer());
+        public void ConfigureAppDescriptor(Action<AppDescriptor> configure) =>
+            _configurator.Configure(configure);
+
+        public void ConfigureComponentExports(Action<ComponentExports> configure) =>
+            _configurator.Configure(configure);
+
+        public void ConfigureLayoutDescriptors(Action<LayoutDescriptors> configure) =>
+            _configurator.Configure(configure);
+
+        public void ConfigurePageDescriptors(Action<PageDescriptors> configure) =>
+            _configurator.Configure(configure);
+
+        public void UsingLocaleTemplate(Action<ILocaleTemplate> localeTemplate) =>
+           _configurator.Use(localeTemplate);
+
+        public void UsingLocalization(Action<NewLocaleKey> l) =>
+            _configurator.Use(l);
     }
 
     extension(LayerConfigurator configurator)
     {
-        public void ConfigureAppDescriptor(Action<AppDescriptor> configure) =>
-            configurator.Configure(configure);
+        public Configurator Ui => new(configurator);
+    }
 
-        public void ConfigureComponentExports(Action<ComponentExports> configure) =>
-            configurator.Configure(configure);
-
-        public void ConfigureLayoutDescriptors(Action<LayoutDescriptors> configure) =>
-            configurator.Configure(configure);
-
-        public void ConfigurePageDescriptors(Action<PageDescriptors> configure) =>
-            configurator.Configure(configure);
-
-        public void UsingLocaleTemplate(Action<ILocaleTemplate> localeTemplate) =>
-           configurator.Use(localeTemplate);
-
-        public void UsingLocalization(Action<NewLocaleKey> l) =>
-            configurator.Use(l);
+    extension(List<ILayer> layers)
+    {
+        public void AddUi() =>
+            layers.Add(new UiLayer());
     }
 
     extension(ComponentExports exports)

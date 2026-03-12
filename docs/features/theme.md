@@ -50,13 +50,13 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             // Your custom conventions and page overrides
         });
 
-        configurator.ConfigureComponentExports(c =>
+        configurator.Ui.ConfigureComponentExports(c =>
         {
             // Add your component exports using your own `Components` extensions
             // c.AddFromExtensions(typeof(Components));
         });
 
-        configurator.ConfigurePageDescriptors(pages =>
+        configurator.Ui.ConfigurePageDescriptors(pages =>
         {
             // Add other pages like `auth/login.vue` etc.
         });

@@ -36,7 +36,7 @@ and `PageDescriptors` configuration target for registering pages using
 This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureAppDescriptor(app =>
+configurator.Ui.ConfigureAppDescriptor(app =>
 {
     ...
 });
@@ -47,7 +47,7 @@ configurator.ConfigureAppDescriptor(app =>
 This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureComponentExports(exports =>
+configurator.Ui.ConfigureComponentExports(exports =>
 {
     ...
 });
@@ -58,7 +58,7 @@ configurator.ConfigureComponentExports(exports =>
 This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureLayoutDescriptors(layouts =>
+configurator.Ui.ConfigureLayoutDescriptors(layouts =>
 {
     ...
 });
@@ -69,7 +69,7 @@ configurator.ConfigureLayoutDescriptors(layouts =>
 This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigurePageDescriptors(pages =>
+configurator.Ui.ConfigurePageDescriptors(pages =>
 {
     ...
 });
@@ -80,7 +80,7 @@ configurator.ConfigurePageDescriptors(pages =>
 > To access the localization function from a feature use below extension method.
 >
 > ```csharp
-> configurator.UsingLocalization(l =>
+> configurator.Ui.UsingLocalization(l =>
 > {
 >     // use this function to add that key to UI project;
 >     // l("A localized message")
@@ -98,7 +98,7 @@ configurator.ConfigurePageDescriptors(pages =>
 > can use `UsingLocaleTemplate` function.
 >
 > ```csharp
-> configurator.UsingLocaleTemplate(localeTemplate =>
+> configurator.Ui.UsingLocaleTemplate(localeTemplate =>
 > {
 >     ...
 > });

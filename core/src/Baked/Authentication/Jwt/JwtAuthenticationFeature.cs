@@ -40,7 +40,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>([JwtBearerDefaults.AuthenticationScheme]);
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             var plugin = new JwtAuthenticationPlugin();
 
