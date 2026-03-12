@@ -14,34 +14,39 @@ namespace Baked;
 
 public static class DataAccessExtensions
 {
-    extension(ICollection<ILayer> layers)
+    public class Configurator(LayerConfigurator _configurator)
     {
-        public void AddDataAccess() =>
-            layers.Add(new DataAccessLayer());
+        public void ConfigureFluentConfiguration(Action<FluentConfiguration> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigurePersistence(Action<PersistenceConfiguration> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureAutomapping(Action<AutomappingConfiguration> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureAutoPersistenceModel(Action<AutoPersistenceModel> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureNHibernateInterceptor(Action<InterceptorConfiguration> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureDatabaseInitializationCollection(Action<IDatabaseInitializationCollection> configuration) =>
+            _configurator.Configure((IDatabaseInitializationCollection initializations, IServiceProvider sp) => configuration(initializations));
+
+        public void ConfigureDatabaseInitializationCollection(Action<IDatabaseInitializationCollection, IServiceProvider> configuration) =>
+            _configurator.Configure(configuration);
     }
 
     extension(LayerConfigurator configurator)
     {
-        public void ConfigureFluentConfiguration(Action<FluentConfiguration> configuration) =>
-            configurator.Configure(configuration);
+        public Configurator DataAccess => new(configurator);
+    }
 
-        public void ConfigurePersistence(Action<PersistenceConfiguration> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureAutomapping(Action<AutomappingConfiguration> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureAutoPersistenceModel(Action<AutoPersistenceModel> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureNHibernateInterceptor(Action<InterceptorConfiguration> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureDatabaseInitializationCollection(Action<IDatabaseInitializationCollection> configuration) =>
-            configurator.Configure((IDatabaseInitializationCollection initializations, IServiceProvider sp) => configuration(initializations));
-
-        public void ConfigureDatabaseInitializationCollection(Action<IDatabaseInitializationCollection, IServiceProvider> configuration) =>
-            configurator.Configure(configuration);
+    extension(ICollection<ILayer> layers)
+    {
+        public void AddDataAccess() =>
+            layers.Add(new DataAccessLayer());
     }
 
     extension(IDatabaseInitializationCollection initializations)

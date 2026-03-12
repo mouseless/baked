@@ -19,12 +19,12 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer = SQLiteConfiguration.Microsoft.UsingFile(FullFilePath);
         });
 
-        configurator.ConfigureDatabaseInitializationCollection((initializations, sp) =>
+        configurator.DataAccess.ConfigureDatabaseInitializationCollection((initializations, sp) =>
         {
             initializations.AddInitializer(sf =>
             {

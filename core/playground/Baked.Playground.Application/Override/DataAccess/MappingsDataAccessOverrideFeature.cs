@@ -22,7 +22,7 @@ public class MappingsDataAccessOverrideFeature : IFeature
             );
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());

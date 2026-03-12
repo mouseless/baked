@@ -70,12 +70,12 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(ILocator<>), typeof(EntityLocator<>));
         });
 
-        configurator.ConfigureFluentConfiguration(builder =>
+        configurator.DataAccess.ConfigureFluentConfiguration(builder =>
         {
             builder.MaxFetchDepth(1);
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {
@@ -94,7 +94,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
         });
 
-        configurator.ConfigureAutomapping(automapping =>
+        configurator.DataAccess.ConfigureAutomapping(automapping =>
         {
             automapping.ShouldMapType.Add(_ => true);
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);

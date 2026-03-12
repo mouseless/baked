@@ -38,7 +38,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
             configurator.UsingGeneratedContext(context =>
             {

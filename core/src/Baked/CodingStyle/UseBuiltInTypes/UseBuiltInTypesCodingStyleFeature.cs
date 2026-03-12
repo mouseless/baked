@@ -47,7 +47,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
             builder.Conventions.Add(new StringDefaultValueConvention());
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
             model.Conventions.Add(ConventionBuilder.Property.When(
                 x => x.Expect(p =>

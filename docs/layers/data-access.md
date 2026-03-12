@@ -10,7 +10,7 @@ app.Layers.AddDataAccess();
 ## Configuration Targets
 
 This layer provides `PersistenceConfiguration`, `AutomappingConfiguration`
-`AutoPersistenceModel`, `InterceptorConfiguration`, `FluentConfiguration` 
+`AutoPersistenceModel`, `InterceptorConfiguration`, `FluentConfiguration`
 for configuring _NHibernate_ behavior and `IDatabaseInitializationCollection`
 for configuring database initialization actions.
 
@@ -20,7 +20,7 @@ This target is provided in `AddServices` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.ConfigurePersistence(persistence =>
+configurator.DataAccess.ConfigurePersistence(persistence =>
 {
     ...
 });
@@ -32,7 +32,7 @@ This target is provided in `AddServices` phase right after
 `PersistenceConfiguration`. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureNHibernateInterceptor(interceptor =>
+configurator.DataAccess.ConfigureNHibernateInterceptor(interceptor =>
 {
     ...
 });
@@ -44,7 +44,7 @@ This target is provided in `AddServices` phase right after
 `InterceptorConfiguration`. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureAutomapping(automapping =>
+configurator.DataAccess.ConfigureAutomapping(automapping =>
 {
     ...
 });
@@ -56,7 +56,7 @@ This target is provided in `AddServices` phase right after
 `AutomappingConfiguration`. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureAutoPersistenceModel(autoPersistenceModel =>
+configurator.DataAccess.ConfigureAutoPersistenceModel(autoPersistenceModel =>
 {
     ...
 });
@@ -68,7 +68,7 @@ This target is provided in `AddServices` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.ConfigureFluentConfiguration(fluentConfiguration =>
+configurator.DataAccess.ConfigureFluentConfiguration(fluentConfiguration =>
 {
     ...
 });
@@ -80,7 +80,7 @@ This target is provided in `PostBuild` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.ConfigureDatabaseInitializationCollection(initializations =>
+configurator.DataAccess.DataAccess.ConfigureDatabaseInitializationCollection(initializations =>
 {
     ...
 });

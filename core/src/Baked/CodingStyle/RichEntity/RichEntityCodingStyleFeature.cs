@@ -42,7 +42,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.Add(new EntityInitializerIsPostResourceConvention());
         });
 
-        configurator.ConfigureNHibernateInterceptor(interceptor =>
+        configurator.DataAccess.ConfigureNHibernateInterceptor(interceptor =>
         {
             interceptor.Instantiator = (ctx, id) =>
             {

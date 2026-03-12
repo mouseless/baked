@@ -17,7 +17,7 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer =
                 OracleDataClientConfiguration.Oracle10
@@ -26,7 +26,7 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
                     .ConnectionString(_connectionString);
         });
 
-        configurator.ConfigureFluentConfiguration(fluent =>
+        configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
         {
             if (_autoUpdateSchema)
             {

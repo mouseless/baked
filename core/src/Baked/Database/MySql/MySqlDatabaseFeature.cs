@@ -15,7 +15,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigureFluentConfiguration(fluent =>
+        configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
         {
             if (_autoUpdateSchema)
             {
@@ -23,7 +23,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
             }
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer =
                 MySQLConfiguration.Standard

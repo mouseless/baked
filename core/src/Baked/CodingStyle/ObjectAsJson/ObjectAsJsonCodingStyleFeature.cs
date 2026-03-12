@@ -20,7 +20,7 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.Add(new SingleObjectParametersDontUseRequestClassConvention());
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
             model.Conventions.Add(ConventionBuilder.Property.When(
                 x => x.Expect(p => p.Property.PropertyType == typeof(object)),

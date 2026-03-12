@@ -18,12 +18,12 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
             services.AddSingleton<ITransaction, SkippedTransaction>();
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer = SQLiteConfiguration.Microsoft.InMemory(cache: SqliteCacheMode.Shared);
         });
 
-        configurator.ConfigureDatabaseInitializationCollection((initializations, sp) =>
+        configurator.DataAccess.ConfigureDatabaseInitializationCollection((initializations, sp) =>
         {
             initializations.AddInitializer(sf =>
             {

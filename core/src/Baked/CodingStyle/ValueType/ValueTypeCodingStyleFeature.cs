@@ -39,7 +39,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
             configurator.UsingGeneratedContext(generatedContext =>
             {

@@ -15,7 +15,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigureFluentConfiguration(fluent =>
+        configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
         {
             if (_autoUpdateSchema)
             {
@@ -23,7 +23,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             }
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer =
                 PostgreSQLConfiguration.PostgreSQL83
