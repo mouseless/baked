@@ -7,7 +7,7 @@ public class SwaggerGreetingFeature : IFeature<GreetingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureEndpointRouteBuilder(endpoints =>
+        configurator.HttpServer.ConfigureEndpointRouteBuilder(endpoints =>
         {
             endpoints.MapGet("/", context =>
             {

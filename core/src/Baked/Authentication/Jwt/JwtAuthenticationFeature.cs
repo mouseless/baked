@@ -12,7 +12,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthenticationCollection(authentications =>
+        configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
         {
             authentications.Add(
                 scheme: JwtBearerDefaults.AuthenticationScheme,

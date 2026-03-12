@@ -40,7 +40,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app => app.UseAuthorization(), order: 20);
         });

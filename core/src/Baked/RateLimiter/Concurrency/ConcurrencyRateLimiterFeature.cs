@@ -40,7 +40,7 @@ public class ConcurrencyRateLimiterFeature(
             options.MaxThreadCount = limit * 4;
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app => app.UseRateLimiter(), order: -30);
         });

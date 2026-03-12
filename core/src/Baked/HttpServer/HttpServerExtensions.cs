@@ -17,6 +17,23 @@ namespace Baked;
 
 public static class HttpServerExtensions
 {
+    public class Configurator(LayerConfigurator _configurator)
+    {
+        public void ConfigureAuthenticationCollection(Action<IAuthenticationCollection> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureMiddlewareCollection(Action<IMiddlewareCollection> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureEndpointRouteBuilder(Action<IEndpointRouteBuilder> configuration) =>
+            _configurator.Configure(configuration);
+    }
+
+    extension(LayerConfigurator configurator)
+    {
+        public Configurator HttpServer => new(configurator);
+    }
+
     extension(List<ILayer> layers)
     {
         public void AddHttpServer() =>
@@ -33,18 +50,6 @@ public static class HttpServerExtensions
 
         public WebApplication GetWebApplication() =>
             context.Get<WebApplication>();
-    }
-
-    extension(LayerConfigurator configurator)
-    {
-        public void ConfigureAuthenticationCollection(Action<IAuthenticationCollection> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureMiddlewareCollection(Action<IMiddlewareCollection> configuration) =>
-            configurator.Configure(configuration);
-
-        public void ConfigureEndpointRouteBuilder(Action<IEndpointRouteBuilder> configuration) =>
-            configurator.Configure(configuration);
     }
 
     extension(IAuthenticationCollection authentications)

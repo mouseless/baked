@@ -38,7 +38,7 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
             });
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<FlatTransactionMiddleware>();
         });

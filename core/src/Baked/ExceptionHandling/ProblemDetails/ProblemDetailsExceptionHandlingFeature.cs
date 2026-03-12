@@ -41,7 +41,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             services.AddProblemDetails();
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app =>
                 {

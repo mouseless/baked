@@ -32,7 +32,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             ;
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<FlatTransactionMiddleware>();
         });

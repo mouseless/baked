@@ -100,7 +100,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app =>
                 app.Use(async (context, next) =>

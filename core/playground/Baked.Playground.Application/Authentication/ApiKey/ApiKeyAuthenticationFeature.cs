@@ -9,7 +9,7 @@ public class ApiKeyAuthenticationFeature()
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthenticationCollection(authentications =>
+        configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
         {
             authentications.Add(
                 scheme: "ApiKey",

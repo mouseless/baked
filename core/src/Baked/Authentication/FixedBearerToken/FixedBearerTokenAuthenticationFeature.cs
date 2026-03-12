@@ -12,7 +12,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthenticationCollection(authentications =>
+        configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
         {
             authentications.Add(
                 scheme: "FixedBearerToken",

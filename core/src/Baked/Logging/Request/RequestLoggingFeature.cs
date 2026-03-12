@@ -32,7 +32,7 @@ public class RequestLoggingFeature(bool singleLine)
             });
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<MappedMethodLogScopeMiddleware>(order: -20);
         });

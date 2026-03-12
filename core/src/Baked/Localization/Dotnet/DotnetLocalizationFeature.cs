@@ -48,7 +48,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
             services.AddSingleton(sp => sp.GetRequiredService<IStringLocalizerFactory>().Create("locale", entryAssemblyName));
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app =>
                 {

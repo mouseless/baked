@@ -106,7 +106,7 @@ public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app => app.UseWelcomePage());
         });

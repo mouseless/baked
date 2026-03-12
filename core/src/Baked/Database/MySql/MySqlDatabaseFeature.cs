@@ -31,7 +31,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
                     .Dialect<CustomMySQL57Dialect>();
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<FlatTransactionMiddleware>();
         });
