@@ -20,7 +20,7 @@ public static class CodeGenerationExtensions
     extension(ApplicationContext context)
     {
         public IGeneratedAssemblyCollection GetGeneratedAssemblyCollection() =>
-        context.Get<IGeneratedAssemblyCollection>();
+            context.Get<IGeneratedAssemblyCollection>();
 
         public GeneratedContext GetGeneratedContext() =>
             context.Get<GeneratedContext>();

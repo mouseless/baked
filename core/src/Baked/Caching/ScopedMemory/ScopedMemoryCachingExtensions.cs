@@ -9,24 +9,30 @@ namespace Baked;
 
 public static class ScopedMemoryCachingExtensions
 {
-    public static ScopedMemoryCachingFeature ScopedMemory(this CachingConfigurator _,
-        Setting<TimeSpan>? clientExpiration = default
-    ) => new(clientExpiration ?? TimeSpan.FromHours(1));
-
-    public static IMemoryCache AMemoryCache(this Stubber giveMe,
-        bool clear = false
-    )
+    extension(CachingConfigurator _)
     {
-        var getMemoryCache = giveMe.The<Func<IMemoryCache>>();
-        var memoryCache = getMemoryCache();
+        public ScopedMemoryCachingFeature ScopedMemory(
+            Setting<TimeSpan>? clientExpiration = default
+        ) => new(clientExpiration ?? TimeSpan.FromHours(1));
+    }
 
-        if (clear)
+    extension(Stubber giveMe)
+    {
+        public IMemoryCache AMemoryCache(
+            bool clear = false
+        )
         {
-            if (memoryCache is not MemoryCache concreteMemoryCache) { throw new AssertionException("Cache cannot be cleared because it is not a `MemoryCache` instance"); }
+            var getMemoryCache = giveMe.The<Func<IMemoryCache>>();
+            var memoryCache = getMemoryCache();
 
-            concreteMemoryCache.Clear();
+            if (clear)
+            {
+                if (memoryCache is not MemoryCache concreteMemoryCache) { throw new AssertionException("Cache cannot be cleared because it is not a `MemoryCache` instance"); }
+
+                concreteMemoryCache.Clear();
+            }
+
+            return memoryCache;
         }
-
-        return memoryCache;
     }
 }
