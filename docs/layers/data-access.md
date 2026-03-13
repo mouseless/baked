@@ -80,7 +80,7 @@ This target is provided in `PostBuild` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.DataAccess.DataAccess.ConfigureDatabaseInitializationCollection(initializations =>
+configurator.DataAccess.ConfigureDatabaseInitializationCollection(initializations =>
 {
     ...
 });

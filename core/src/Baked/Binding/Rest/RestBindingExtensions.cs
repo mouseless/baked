@@ -62,7 +62,7 @@ public static class RestBindingExtensions
         public bool IsPublicInstanceWithNoSpecialName =>
             overload.IsPublic && !overload.IsStatic && !overload.IsSpecialName;
 
-        public bool AllParametersAreApiInput =>
+        public bool AllParametersAreApiInput() =>
             overload.Parameters.All(p => p.IsApiInput);
     }
 

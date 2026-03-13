@@ -23,7 +23,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                     !members.Has<LocatableAttribute>() &&
                     members.Methods.Any(m =>
                         m.Has<InitializerAttribute>() &&
-                        m.DefaultOverload.AllParametersAreApiInput &&
+                        m.DefaultOverload.AllParametersAreApiInput() &&
                         m.DefaultOverload.IsPublicInstanceWithNoSpecialName
                     ),
                 order: 40

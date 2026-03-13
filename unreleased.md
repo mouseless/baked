@@ -45,13 +45,6 @@ projects.
     - [ ] add `<EnableNUnitRunner>true</EnableNUnitRunner>` to `Directory.Build.Props`
     - [ ] some test flag changed. check [here](https://learn.microsoft.com/en-us/dotnet/core/testing/migrating-vstest-microsoft-testing-platform#update-dotnet-test-invocations)
     - [ ] add `global.json`
-      ```json
-      {
-        "test": {
-          "runner": "Microsoft.Testing.Platform"
-        }
-      }
-      ```
     - [ ] make scripts
 - Troubleshooting & Pitfalls(You should also test the tasks that can be checked
   to be sure)
@@ -91,7 +84,6 @@ projects.
     `options: mr => mr.Database = ...`
 - The following extensions are now properties:
   - `IsPublicInstanceWithNoSpecialName`
-  - `AllParametersAreApiInput`
   - `IsApiInput`
   - `XmlNode.GetSummary()` -> `XmlNode.Summary`
   - `XmlNode.GetRemarks()` -> `XmlNode.Remarks`

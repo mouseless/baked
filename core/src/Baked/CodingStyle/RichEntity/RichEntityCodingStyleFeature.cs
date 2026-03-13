@@ -33,7 +33,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
-                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput),
+                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
                 attribute: c => new ActionModelAttribute(),
                 order: 30
             );

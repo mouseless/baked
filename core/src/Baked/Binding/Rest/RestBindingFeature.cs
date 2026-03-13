@@ -40,7 +40,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     !c.Method.Has<ExternalAttribute>() &&
                     !c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
-                    c.Method.DefaultOverload.AllParametersAreApiInput,
+                    c.Method.DefaultOverload.AllParametersAreApiInput(),
                 order: RestApiLayer.MaxConventionOrder
             );
             builder.Conventions.SetParameterAttribute(
