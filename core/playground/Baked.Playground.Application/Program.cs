@@ -6,9 +6,9 @@ Bake.New
             baseNamespace: "Baked.Playground",
             setNamespaceWhen: t => t.Namespace is not null && t.Namespace.StartsWith("Baked.Playground.CodingStyle.NamespaceAsRoute")
         ),
-        options: recipe =>
+        options: mr =>
         {
-            recipe.Authentications =
+            mr.Authentications =
             [
                 c => c.Jwt(
                     configurePlugin: plugin =>
@@ -39,19 +39,19 @@ Bake.New
                 ),
                 c => c.ApiKey()
             ];
-            recipe.Authorization = c => c.ClaimBased(
+            mr.Authorization = c => c.ClaimBased(
                 claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC", "Refresh"],
                 baseClaims: ["BaseA", "BaseB"]
             );
-            recipe.Core = c => c.Dotnet(baseNamespace: "Baked.Playground");
-            recipe.Cors = c => c.AspNetCore(Settings.Required<string>("CorsOrigin:0"), Settings.Required<string>("CorsOrigin:1"));
-            recipe.Database = c => c
+            mr.Core = c => c.Dotnet(baseNamespace: "Baked.Playground");
+            mr.Cors = c => c.AspNetCore(Settings.Required<string>("CorsOrigin:0"), Settings.Required<string>("CorsOrigin:1"));
+            mr.Database = c => c
                 .Sqlite()
                 .ForProduction(c.PostgreSql());
-            recipe.ExceptionHandling = c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}");
-            recipe.Localization = c => c.Dotnet(language: new("en"), otherLanguages: [new("tr")]);
-            recipe.Theme = c => c.Custom();
-            recipe.Configure = app =>
+            mr.ExceptionHandling = c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}");
+            mr.Localization = c => c.Dotnet(language: new("en"), otherLanguages: [new("tr")]);
+            mr.Theme = c => c.Custom();
+            mr.Configure = app =>
             {
                 app.Features.AddReporting(c => c
                     .NativeSql(basePath: "Reporting/Sqlite")

@@ -88,7 +88,7 @@ projects.
 - `Monolith` and `DataSource` configuration is now grouped under recipe
   callbacks in `BakeExtensions` and `*Spec` helpers
   - Individual parameters such as `database:` are now configured through
-    `options: recipe => recipe.Database = ...`
+    `options: mr => mr.Database = ...`
 - The following extensions are now properties:
   - `IsPublicInstanceWithNoSpecialName`
   - `AllParametersAreApiInput`
