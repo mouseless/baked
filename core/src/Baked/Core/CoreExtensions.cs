@@ -66,13 +66,15 @@ public static class CoreExtensions
             string? value = default
         ) => value ?? "test string";
 
-        public DateTime ADateTime(int year = 2023,
+        public DateTime ADateTime(
+            int year = 2023,
             int month = 9,
             int day = 17,
             int hour = 13,
             int minute = 29,
             int second = 00
         ) => new(year, month, day, hour, minute, second);
+
         public Dictionary<TKey, TValue> ADictionary<TKey, TValue>(params IEnumerable<(TKey, TValue)> pairs)
             where TKey : notnull
         => pairs.ToDictionary(pair => pair.Item1, pair => pair.Item2);
