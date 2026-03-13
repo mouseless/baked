@@ -52,7 +52,8 @@ test.describe("Base w/ Label", () => {
 
   test("label must shown if has label prop", async({ page }) => {
     const component = page.getByTestId(id);
-    await expect(component.locator(".b-component--SelectButton-Label")).toBeAttached();
+
+    await expect(component.locator("label")).toHaveText("Label");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {

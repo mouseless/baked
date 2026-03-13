@@ -21,7 +21,7 @@ const variants = [
   {
     name: "Base w/ Label",
     descriptor: giveMe.aSelectButton({
-      label: "SelectButton Label"
+      label: "Spec: Label"
     })
   },
   {
