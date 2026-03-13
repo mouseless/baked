@@ -8,7 +8,6 @@ public static class IdCodingStyleExtensions
 {
     extension(CodingStyleConfigurator _)
     {
-        // TODO - Should it be Property? ama benzerleri parametreli
         public IdCodingStyleFeature Id() =>
             new();
     }

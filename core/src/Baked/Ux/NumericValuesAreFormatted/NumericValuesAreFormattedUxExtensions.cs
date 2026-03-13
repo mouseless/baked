@@ -7,7 +7,6 @@ public static class NumericValuesAreFormattedUxExtensions
 {
     extension(UxConfigurator _)
     {
-        // TODO - bunlarda da property e geçmek gerekir mi?
         public NumericValuesAreFormattedUxFeature NumericValuesAreFormatted() =>
             new();
     }
