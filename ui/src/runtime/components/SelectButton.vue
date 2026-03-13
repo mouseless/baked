@@ -9,12 +9,11 @@
       <label
         v-if="label"
         class="
-          b-component--SelectButton-Label
           text-xs text-slate-500 font-normal
           dark:text-zinc-400 mb-1 ml-2
         "
       >
-        {{ label }}
+        {{ l(label) }}
       </label>
       <SelectButton
         v-if="data"
