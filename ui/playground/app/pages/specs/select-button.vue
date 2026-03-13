@@ -19,6 +19,12 @@ const variants = [
     model: ref()
   },
   {
+    name: "Base w/ Label",
+    descriptor: giveMe.aSelectButton({
+      label: "Spec: Label"
+    })
+  },
+  {
     name: "Base w/ Localization",
     descriptor: giveMe.aSelectButton({
       localizeLabel: true,

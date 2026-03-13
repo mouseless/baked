@@ -57,7 +57,7 @@ public class TestPageUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodComponentConfiguration<Text>(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                component: (@string) => @string.Schema.MaxLength = 20
+                component: t => t.Schema.MaxLength = 20
             );
         });
     }

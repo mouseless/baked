@@ -4,7 +4,7 @@ namespace Baked.Ui;
 
 public interface IComponentDescriptor : ISupportsReaction
 {
-    string Type { get; }
+    string Type { get; set; }
     IComponentSchema Schema { get; }
     IData? Data { get; set; }
     public IAction? Action { get; set; }

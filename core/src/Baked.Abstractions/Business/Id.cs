@@ -1,4 +1,6 @@
-﻿namespace Baked.Business;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Baked.Business;
 
 public record struct Id : IParsable<Id>, IEquatable<Id>, IComparable, IComparable<Id>
 {
@@ -16,7 +18,16 @@ public record struct Id : IParsable<Id>, IEquatable<Id>, IComparable, IComparabl
     public static Id Parse(string s, IFormatProvider? _) =>
         new(s.Trim());
 
-    public static bool TryParse(string? s, IFormatProvider? provider, out Id result)
+    public static bool TryParse(
+        [NotNullWhen(true)] string? code,
+        [MaybeNullWhen(false)] out Id result
+    ) => TryParse(code, null, out result);
+
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out Id result
+    )
     {
         result = s is null ? Empty : Create(s);
 
@@ -69,5 +80,24 @@ public record struct Id : IParsable<Id>, IEquatable<Id>, IComparable, IComparabl
     public static bool operator >=(Id left, Id right)
     {
         return left.CompareTo(right) >= 0;
+    }
+
+    [return: NotNullIfNotNull(nameof(id))]
+    public static implicit operator string?(Id? id)
+    {
+        return id?._value;
+    }
+
+    [return: NotNullIfNotNull(nameof(str))]
+    public static implicit operator Id?(string? str)
+    {
+        if (str is null) { return null; }
+
+        return Parse(str);
+    }
+
+    public static implicit operator Id(string str)
+    {
+        return Parse(str);
     }
 }

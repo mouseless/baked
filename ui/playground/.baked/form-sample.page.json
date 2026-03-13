@@ -161,7 +161,8 @@
                     "schema": {
                       "label": "Take",
                       "localizeLabel": false,
-                      "stateful": true
+                      "stateful": true,
+                      "noFloatLabel": true
                     },
                     "data": {
                       "type": "Inline",
@@ -303,6 +304,37 @@
                   "alignRight": true,
                   "exportable": false,
                   "frozen": true
+                },
+                "sort": {
+                  "type": "SelectButton",
+                  "schema": {
+                    "allowEmpty": true,
+                    "optionLabel": "label",
+                    "optionValue": "value",
+                    "localizeLabel": true,
+                    "stateful": true
+                  },
+                  "data": {
+                    "type": "Inline",
+                    "value": [
+                      {
+                        "label": "Sort.Asc",
+                        "value": "Asc"
+                      },
+                      {
+                        "label": "Sort.Desc",
+                        "value": "Desc"
+                      }
+                    ]
+                  },
+                  "action": {
+                    "type": "Publish",
+                    "pageContextKey": "sort",
+                    "data": {
+                      "type": "Context",
+                      "key": "model"
+                    }
+                  }
                 }
               },
               "data": {
@@ -325,6 +357,12 @@
                       "type": "Context",
                       "key": "parent",
                       "prop": "parameters"
+                    },
+                    {
+                      "type": "Context",
+                      "key": "page",
+                      "prop": "sort",
+                      "targetProp": "sort"
                     }
                   ]
                 }
@@ -348,6 +386,10 @@
                     {
                       "type": "On",
                       "on": "page-changed"
+                    },
+                    {
+                      "type": "When",
+                      "when": "sort"
                     }
                   ]
                 }

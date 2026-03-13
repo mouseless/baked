@@ -708,13 +708,14 @@ export default {
     return screens.find(screen => screen.name === name) || null;
   },
 
-  aSelect({ filter, label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp, data, inline, action } = {}) {
-    label = $(label, "Spec: Test");
-    localizeLabel = $(localizeLabel, false);
-    showClear = $(showClear, false);
-    stateful = $(stateful, false);
+  aSelect({ action, data, filter, inline, label, localizeLabel, noFloatLabel, optionLabel, optionValue, showClear, stateful, targetProp } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
+    label = $(label, "Spec: Test");
+    localizeLabel = $(localizeLabel, false);
+    noFloatLabel = $(noFloatLabel, false);
+    showClear = $(showClear, false);
+    stateful = $(stateful, false);
 
     data = inline
       ? this.anInlineData(data)
@@ -726,13 +727,13 @@ export default {
 
     return {
       type: "Select",
-      schema: { filter, label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp },
+      schema: { filter, label, localizeLabel, noFloatLabel, optionLabel, optionValue, showClear, stateful, targetProp },
       data,
       action
     };
   },
 
-  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, targetProp, data, inline, action } = {}) {
+  aSelectButton({ action, allowEmpty, data, inline, label, localizeLabel, optionLabel, optionValue, stateful, targetProp } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
@@ -748,7 +749,7 @@ export default {
 
     return {
       type: "SelectButton",
-      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful, targetProp },
+      schema: { allowEmpty, label, localizeLabel, optionLabel, optionValue, stateful, targetProp },
       data,
       action
     };

@@ -47,6 +47,22 @@ test.describe("Base", () => {
   });
 });
 
+test.describe("Base w/ Label", () => {
+  const id = "Base w/ Label";
+
+  test("label must shown if has label prop", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator("label")).toHaveText("Label");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+});
+
 test.describe("Base w/ Localization", () => {
   const id = "Base w/ Localization";
 

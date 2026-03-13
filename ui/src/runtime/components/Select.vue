@@ -5,7 +5,10 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <FloatLabel variant="on">
+    <component
+      :is="labelComponent"
+      v-bind="labelProps"
+    >
       <Select
         v-bind="$attrs"
         v-model="selected"
@@ -25,12 +28,17 @@
           <span>{{ getOptionLabel(slotProps) }}</span>
         </template>
       </Select>
-      <label :for="path">{{ l(label) }}</label>
-    </FloatLabel>
+      <label
+        v-if="!noFloatLabel"
+        :for="path"
+      >
+        {{ l(label) }}
+      </label>
+    </component>
   </AwaitLoading>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { FloatLabel, Select, Skeleton } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
 import { AwaitLoading } from "#components";
@@ -45,10 +53,13 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { filter, label, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
+const { filter, label, localizeLabel, noFloatLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const selected = ref();
+
+const labelComponent = computed(() => (noFloatLabel ? "div" : FloatLabel));
+const labelProps = computed(() => (noFloatLabel ? {} : { variant: "on" }));
 
 // two way binding between model and selected
 watch(

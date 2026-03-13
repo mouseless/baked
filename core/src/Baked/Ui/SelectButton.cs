@@ -8,4 +8,5 @@ public record SelectButton : ISelect, IComponentSchema
     public bool? LocalizeLabel { get; set; }
     public bool? Stateful { get; set; }
     public string? TargetProp { get; set; }
+    public string? Label { get; set; }
 }

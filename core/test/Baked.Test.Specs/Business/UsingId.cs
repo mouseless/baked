@@ -69,4 +69,13 @@ public class UsingId
 
         actual.ShouldBe(Id.Parse("a"));
     }
+
+    [Test]
+    public void Implicit_conversion_from_and_to_string()
+    {
+        Id id = "İstanbul 34";
+        string str = id;
+
+        str.ShouldBe(id);
+    }
 }

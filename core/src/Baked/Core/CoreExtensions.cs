@@ -127,6 +127,27 @@ public static class CoreExtensions
         }
     }
 
+    extension<T>(T valueType) where T : struct, IParsable<T>
+    {
+        public void ShouldBe(string? @string)
+        {
+            if (string.IsNullOrWhiteSpace(@string))
+            {
+                valueType.ShouldBe(default(T));
+            }
+            else
+            {
+                valueType.ToString().ShouldBe(@string);
+            }
+        }
+    }
+
+    extension<T>(T? valueType) where T : struct, IParsable<T>
+    {
+        public void ShouldBe(string? @string) =>
+            valueType?.ToString().ShouldBe(@string);
+    }
+
     extension(object? payload)
     {
         public void ShouldDeeplyBe(object? json,
