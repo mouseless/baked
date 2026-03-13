@@ -59,16 +59,16 @@ public static class RestBindingExtensions
 
     extension(MethodOverloadModel overload)
     {
-        public bool IsPublicInstanceWithNoSpecialName() =>
+        public bool IsPublicInstanceWithNoSpecialName =>
             overload.IsPublic && !overload.IsStatic && !overload.IsSpecialName;
 
-        public bool AllParametersAreApiInput() =>
-            overload.Parameters.All(IsApiInput);
+        public bool AllParametersAreApiInput =>
+            overload.Parameters.All(p => p.IsApiInput);
     }
 
     extension(ParameterModel parameter)
     {
-        public bool IsApiInput() =>
+        public bool IsApiInput =>
             parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>();
     }
 

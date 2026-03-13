@@ -36,7 +36,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
             services.AddSingleton<IExceptionHandler, UnauthorizedAccessExceptionHandler>();
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
-            services.AddSingleton(new ExceptionHandlerSettings(_typeUrlFormat, _showUnhandled ?? configurator.IsStaging()));
+            services.AddSingleton(new ExceptionHandlerSettings(_typeUrlFormat, _showUnhandled ?? configurator.IsStaging));
             services.AddExceptionHandler<ExceptionHandler>();
             services.AddProblemDetails();
         });

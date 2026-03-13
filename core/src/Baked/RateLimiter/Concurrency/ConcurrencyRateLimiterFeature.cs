@@ -26,16 +26,16 @@ public class ConcurrencyRateLimiterFeature(
             services.AddRateLimiter(options =>
                 options.AddConcurrencyLimiter(policyName: "Concurrency", options =>
                 {
-                    options.PermitLimit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment() ? 5 : 20);
+                    options.PermitLimit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment ? 5 : 20);
                     options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                    options.QueueLimit = _queueLimit?.GetValue() ?? (configurator.IsDevelopment() ? 100 : 1000);
+                    options.QueueLimit = _queueLimit?.GetValue() ?? (configurator.IsDevelopment ? 100 : 1000);
                 })
             );
         });
 
         configurator.Runtime.ConfigureThreadOptions(options =>
         {
-            var limit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment() ? 5 : 20);
+            var limit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment ? 5 : 20);
             options.MinThreadCount = limit * 2;
             options.MaxThreadCount = limit * 4;
         });

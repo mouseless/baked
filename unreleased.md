@@ -89,6 +89,14 @@ projects.
   callbacks in `BakeExtensions` and `*Spec` helpers
   - Individual parameters such as `database:` are now configured through
     `options: recipe => recipe.Database = ...`
+- The following extensions are now properties:
+  - `IsPublicInstanceWithNoSpecialName`
+  - `AllParametersAreApiInput`
+  - `IsApiInput`
+  - `XmlNode.GetSummary()` -> `XmlNode.Summary`
+  - `XmlNode.GetRemarks()` -> `XmlNode.Remarks`
+  - `XmlNode.GetReturns()` -> `XmlNode.Returns`
+  - `IsNfr`, `IsDevelopment`, `IsStaging`, `IsProduction`
 
 ## Library Upgrades
 

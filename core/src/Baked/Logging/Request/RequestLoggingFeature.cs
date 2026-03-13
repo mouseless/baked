@@ -14,7 +14,7 @@ public class RequestLoggingFeature(bool singleLine)
             {
               "Logging": {
                 "LogLevel": {
-                  "Microsoft.AspNetCore.Hosting.Diagnostics": "{{(configurator.IsProduction() ? "Error" : "Information")}}"
+                  "Microsoft.AspNetCore.Hosting.Diagnostics": "{{(configurator.IsProduction ? "Error" : "Information")}}"
                 }
               }
             }

@@ -57,7 +57,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&
-                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
+                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput),
                 order: 30
             );
 

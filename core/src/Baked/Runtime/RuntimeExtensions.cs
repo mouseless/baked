@@ -34,16 +34,16 @@ public static class RuntimeExtensions
     {
         public Configurator Runtime => new(configurator);
 
-        public bool IsNfr() =>
+        public bool IsNfr =>
             configurator.IsEnvironment(nameof(Nfr));
 
-        public bool IsDevelopment() =>
+        public bool IsDevelopment =>
             configurator.IsEnvironment(Environments.Development);
 
-        public bool IsStaging() =>
+        public bool IsStaging =>
             configurator.IsEnvironment(Environments.Staging);
 
-        public bool IsProduction() =>
+        public bool IsProduction =>
             configurator.IsEnvironment(Environments.Production);
 
         public bool IsEnvironment(string environment) =>

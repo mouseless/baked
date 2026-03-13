@@ -25,7 +25,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
               "Logging": {
                 "LogLevel": {
                   "NHibernate": "None",
-                  "NHibernate.Sql": "{{(configurator.IsDevelopment() ? "Debug" : "None")}}"
+                  "NHibernate.Sql": "{{(configurator.IsDevelopment ? "Debug" : "None")}}"
                 }
               }
             }

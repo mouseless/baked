@@ -14,7 +14,7 @@ public class DotnetCoreFeature(Assembly? _entryAssembly, Func<Assembly, string?>
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             var entryAssembly = _entryAssembly
-                ?? (configurator.IsNfr() ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
+                ?? (configurator.IsNfr ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
                 ?? throw new("'EntryAssembly' should have existed");
 
             services.AddSingleton(TimeProvider.System);

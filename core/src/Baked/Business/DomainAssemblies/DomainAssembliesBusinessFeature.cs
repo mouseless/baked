@@ -40,7 +40,7 @@ public class DomainAssembliesBusinessFeature(
             {
               "Logging": {
                 "LogLevel": {
-                  "Default": "{{(configurator.IsProduction() ? "Error" : "Information")}}",
+                  "Default": "{{(configurator.IsProduction ? "Error" : "Information")}}",
                   "Microsoft.AspNetCore": "Error",
                   "Microsoft.Hosting.Lifetime": "Information"
                 }

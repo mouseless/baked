@@ -13,7 +13,7 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.TryGet<ControllerModelAttribute>(out var controller)) { return; }
 
-        var summary = members.Documentation.GetSummary();
+        var summary = members.Documentation.Summary;
 
         _descriptions[controller.GroupName] = summary ?? string.Empty;
         _examples.TryAdd($"{context.Type.FullName}", new(
@@ -32,8 +32,8 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
             context.Method.Documentation.GetExampleCode("response")
         ));
 
-        var summary = context.Method.Documentation.GetSummary();
-        var remarks = context.Method.Documentation.GetRemarks();
+        var summary = context.Method.Documentation.Summary;
+        var remarks = context.Method.Documentation.Remarks;
         if (summary is null && remarks is null) { return; }
 
         action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary.EscapeNewLines()}\", Description = \"{remarks.EscapeNewLines()}\")");

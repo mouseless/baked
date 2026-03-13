@@ -555,13 +555,13 @@ public static class DomainExtensions
 
     extension(XmlNode? xmlNode)
     {
-        public string? GetSummary() =>
+        public string? Summary =>
             xmlNode.GetChildTagInnerText("summary");
 
-        public string? GetRemarks() =>
+        public string? Remarks =>
             xmlNode.GetChildTagInnerText("remarks");
 
-        public string? GetReturns() =>
+        public string? Returns =>
             xmlNode.GetChildTagInnerText("returns");
 
         public string? GetExampleCode(string @for,

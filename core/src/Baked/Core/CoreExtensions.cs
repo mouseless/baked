@@ -100,7 +100,7 @@ public static class CoreExtensions
     extension(string? @string)
     {
         public void ShouldBe(object? expected, string format) =>
-        @string.ShouldBe(string.Format(format, expected));
+            @string.ShouldBe(string.Format(format, expected));
     }
 
     extension(Uri? uri)

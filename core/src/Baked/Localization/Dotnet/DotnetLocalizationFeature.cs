@@ -16,7 +16,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
     {
         configurator.CodeGeneration.ConfigureGeneratedFileCollection(files =>
         {
-            if (configurator.IsNfr())
+            if (configurator.IsNfr)
             {
                 return;
             }
@@ -40,7 +40,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddLocalization(option => option.ResourcesPath = "Locales");
-            var entryAssembly = (configurator.IsNfr() ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
+            var entryAssembly = (configurator.IsNfr ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
                 ?? throw new("'EntryAssembly' should have existed");
             var entryAssemblyName = entryAssembly.GetName().Name
                 ?? throw new("'EntryAssembly' should have a name");

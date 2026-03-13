@@ -16,7 +16,7 @@ public class NativeSqlReportingFeature(Setting<string> _basePath)
               "Logging": {
                 "LogLevel": {
                   "NHibernate": "None",
-                  "NHibernate.Sql": "{{(configurator.IsDevelopment() ? "Debug" : "None")}}"
+                  "NHibernate.Sql": "{{(configurator.IsDevelopment ? "Debug" : "None")}}"
                 }
               }
             }
