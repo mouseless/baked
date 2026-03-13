@@ -18,6 +18,9 @@ public class ReadOnlyPropertiesSchemaFilter(Dictionary<Type, string> _idProperty
         {
             var isId = name == _idPropertyNames[context.Type].Camelize();
 
+            // referenced properties (e.g. enums) ignores readonly property,
+            // wrapping reference creates a successful workaround and hides
+            // these properties in inputs
             if (property is OpenApiSchema concreteProperty)
             {
                 concreteProperty.ReadOnly = !isId;
