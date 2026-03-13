@@ -18,7 +18,7 @@ This target is provided in `AddServices` phase as the target. To configure it
 in a feature;
 
 ```csharp
-configurator.ConfigureHttpClient(clients =>
+configurator.HttpClient.ConfigureHttpClients(clients =>
 {
     ...
 });
