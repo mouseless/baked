@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class DataTableDefaultsUxExtensions
 {
-    public static DataTableDefaultsUxFeature DataTableDefaults(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public DataTableDefaultsUxFeature DataTableDefaults() =>
+            new();
+    }
 }

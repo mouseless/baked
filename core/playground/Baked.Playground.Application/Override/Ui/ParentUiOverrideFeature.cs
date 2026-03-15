@@ -12,7 +12,7 @@ public class ParentUiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddEntityRemoteData<Parent>();
             builder.Conventions.SetPropertyAttribute(

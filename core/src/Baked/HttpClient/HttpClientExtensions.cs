@@ -5,9 +5,20 @@ namespace Baked;
 
 public static class HttpClientExtensions
 {
-    public static void AddHttpClient(this List<ILayer> layers) =>
-        layers.Add(new HttpClientLayer());
+    public class Configurator(LayerConfigurator _configurator)
+    {
+        public void ConfigureHttpClients(Action<List<HttpClientDescriptor>> configuration) =>
+            _configurator.Configure(configuration);
+    }
 
-    public static void ConfigureHttpClients(this LayerConfigurator configurator, Action<List<HttpClientDescriptor>> configuration) =>
-        configurator.Configure(configuration);
+    extension(LayerConfigurator configurator)
+    {
+        public Configurator HttpClient => new(configurator);
+    }
+
+    extension(List<ILayer> layers)
+    {
+        public void AddHttpClient() =>
+            layers.Add(new HttpClientLayer());
+    }
 }

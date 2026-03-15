@@ -38,7 +38,7 @@ jobs:
       # - false means pack & push is required
       action: ${{ steps.check.outputs.action }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Parse Version
         id: parse
         run: |
@@ -69,13 +69,13 @@ jobs:
     outputs:
       version: ${{ needs.check-version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9
+          dotnet-version: 10
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
@@ -84,7 +84,7 @@ jobs:
           cd core
           dotnet pack -o "../nuget-packages" -c Release
       - name: Upload Nuget Packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nuget-packages
           path: nuget-packages/
@@ -95,7 +95,7 @@ jobs:
           npm i
           npm pack --pack-destination "../npm-packages"
       - name: Upload npm Packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: npm-packages
           path: npm-packages/
@@ -105,13 +105,13 @@ jobs:
     needs: pack-projects
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9
+          dotnet-version: 10
       - name: Download Nuget Packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: nuget-packages
       - name: Push Nuget
@@ -128,12 +128,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
       - name: Download npm Packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: npm-packages
       - name: Push npm
@@ -149,11 +149,11 @@ jobs:
     outputs:
       version: ${{ needs.check-version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - name: Setup NodeJS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
       - name: Disable AppArmour
@@ -164,7 +164,7 @@ jobs:
           npm install
           npm run generate:production
       - name: Upload Docs Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docs
           path: docs/.theme/.output/public
@@ -177,7 +177,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout docs branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: baked.mouseless.codes
       - name: Remove Old Files
@@ -185,7 +185,7 @@ jobs:
           git rm -rf .
           git clean -fxd
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: docs
       - name: Commit & Push

@@ -4,23 +4,29 @@ namespace Baked;
 
 public static class CommunicationExtensions
 {
-    public static Uri WithQuery(this Uri uri, Dictionary<string, string> parameters)
+    extension(Uri uri)
     {
-        var builder = new UriBuilder(uri);
-
-        if (!string.IsNullOrEmpty(builder.Query))
+        public Uri WithQuery(Dictionary<string, string> parameters)
         {
-            builder.Query += "&";
+            var builder = new UriBuilder(uri);
+
+            if (!string.IsNullOrEmpty(builder.Query))
+            {
+                builder.Query += "&";
+            }
+
+            builder.Query += parameters.ToQueryString();
+
+            return builder.Uri;
         }
-
-        builder.Query += parameters.ToQueryString();
-
-        return builder.Uri;
     }
 
-    public static string ToFormBody(this Dictionary<string, string> parameters) =>
-        parameters.ToQueryString();
+    extension(Dictionary<string, string> parameters)
+    {
+        public string ToFormBody() =>
+            parameters.ToQueryString();
 
-    public static string ToQueryString(this Dictionary<string, string> parameters) =>
-        string.Join("&", parameters.Select(pair => $"{pair.Key}={WebUtility.UrlEncode(pair.Value)}"));
+        public string ToQueryString() =>
+            string.Join("&", parameters.Select(pair => $"{pair.Key}={WebUtility.UrlEncode(pair.Value)}"));
+    }
 }

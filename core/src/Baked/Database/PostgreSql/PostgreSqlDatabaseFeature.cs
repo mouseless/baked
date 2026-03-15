@@ -10,12 +10,12 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigureFluentConfiguration(fluent =>
+        configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
         {
             if (_autoUpdateSchema)
             {
@@ -23,7 +23,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             }
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer =
                 PostgreSQLConfiguration.PostgreSQL83
@@ -32,7 +32,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             ;
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<FlatTransactionMiddleware>();
         });

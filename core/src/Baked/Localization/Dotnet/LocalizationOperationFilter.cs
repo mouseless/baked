@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Localization.Dotnet;
@@ -11,7 +11,7 @@ public class LocalizationOperationFilter : IOperationFilter
         var returnType = context.MethodInfo.ReturnType;
         if (returnType == typeof(RedirectResult) || returnType == typeof(Task<RedirectResult>)) { return; }
 
-        operation.Parameters ??= new List<OpenApiParameter>();
+        operation.Parameters ??= new List<IOpenApiParameter>();
 
         operation.Parameters.Add(new OpenApiParameter
         {
@@ -20,7 +20,7 @@ public class LocalizationOperationFilter : IOperationFilter
             Required = false,
             Schema = new OpenApiSchema
             {
-                Type = "string",
+                Type = JsonSchemaType.String,
                 Default = null
             }
         });
@@ -32,7 +32,7 @@ public class LocalizationOperationFilter : IOperationFilter
             Required = false,
             Schema = new OpenApiSchema
             {
-                Type = "string",
+                Type = JsonSchemaType.String,
                 Default = null
             }
         });

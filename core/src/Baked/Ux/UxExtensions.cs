@@ -5,9 +5,12 @@ namespace Baked;
 
 public static class UxExtensions
 {
-    public static void AddUx(this List<IFeature> features, IEnumerable<Func<UxConfigurator, IFeature<UxConfigurator>>> configures) =>
-        features.AddRange(configures.Select(configure => configure(new())));
+    extension(List<IFeature> features)
+    {
+        public void AddUx(IEnumerable<Func<UxConfigurator, IFeature<UxConfigurator>>> configures) =>
+            features.AddRange(configures.Select(configure => configure(new())));
 
-    public static void AddUxes(this List<IFeature> features, IEnumerable<Func<UxConfigurator, IFeature<UxConfigurator>>> configures) =>
-        features.AddUx(configures);
+        public void AddUxes(IEnumerable<Func<UxConfigurator, IFeature<UxConfigurator>>> configures) =>
+            features.AddUx(configures);
+    }
 }

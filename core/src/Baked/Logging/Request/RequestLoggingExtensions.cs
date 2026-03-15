@@ -5,7 +5,10 @@ namespace Baked;
 
 public static class RequestLoggingExtensions
 {
-    public static RequestLoggingFeature Request(this LoggingConfigurator _,
-        bool singleLine = false
-    ) => new(singleLine: singleLine);
+    extension(LoggingConfigurator _)
+    {
+        public RequestLoggingFeature Request(
+            bool singleLine = false
+        ) => new(singleLine: singleLine);
+    }
 }

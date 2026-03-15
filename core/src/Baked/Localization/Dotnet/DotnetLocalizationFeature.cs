@@ -14,16 +14,16 @@ public class DotnetLocalizationFeature(CultureInfo _language,
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureGeneratedFileCollection(files =>
+        configurator.CodeGeneration.ConfigureGeneratedFileCollection(files =>
         {
-            if (configurator.IsNfr())
+            if (configurator.IsNfr)
             {
                 return;
             }
 
             var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' should have existed"), "../../../../Locales");
 
-            configurator.UsingLocaleTemplate(localeTemplate =>
+            configurator.Ui.UsingLocaleTemplate(localeTemplate =>
             {
                 files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir), name: $"locale.{_language.Name}", outdir: "Ui");
 
@@ -37,10 +37,10 @@ public class DotnetLocalizationFeature(CultureInfo _language,
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddLocalization(option => option.ResourcesPath = "Locales");
-            var entryAssembly = (configurator.IsNfr() ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
+            var entryAssembly = (configurator.IsNfr ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
                 ?? throw new("'EntryAssembly' should have existed");
             var entryAssemblyName = entryAssembly.GetName().Name
                 ?? throw new("'EntryAssembly' should have a name");
@@ -48,7 +48,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
             services.AddSingleton(sp => sp.GetRequiredService<IStringLocalizerFactory>().Create("locale", entryAssemblyName));
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app =>
                 {
@@ -65,12 +65,12 @@ public class DotnetLocalizationFeature(CultureInfo _language,
             );
         });
 
-        configurator.ConfigureSwaggerGenOptions(swg =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swg =>
         {
             swg.OperationFilter<LocalizationOperationFilter>();
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             app.I18n.DefaultLanguage = new(_language.Name, _language.EnglishName);
             app.I18n.SupportedLanguages.Add(app.I18n.DefaultLanguage);

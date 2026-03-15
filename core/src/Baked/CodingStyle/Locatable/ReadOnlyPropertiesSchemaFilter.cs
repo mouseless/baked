@@ -1,5 +1,5 @@
 ﻿using Humanizer;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.CodingStyle.Locatable;
@@ -9,25 +9,29 @@ public class ReadOnlyPropertiesSchemaFilter(Dictionary<Type, string> _idProperty
 {
     readonly HashSet<Type> _locatableSet = [.. _idPropertyNames.Keys];
 
-    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+    public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
     {
         if (!_locatableSet.Contains(context.Type)) { return; }
+        if (schema.Properties is null) { return; }
 
         foreach (var (name, property) in schema.Properties)
         {
             var isId = name == _idPropertyNames[context.Type].Camelize();
 
-            property.ReadOnly = !isId;
-
             // referenced properties (e.g. enums) ignores readonly property,
             // wrapping reference creates a successful workaround and hides
             // these properties in inputs
-            if (property.Reference != null && property.ReadOnly)
+            if (property is OpenApiSchema concreteProperty)
             {
-                var reference = property.Reference;
-
-                property.AllOf = new List<OpenApiSchema> { new OpenApiSchema { Reference = reference } };
-                property.Reference = null;
+                concreteProperty.ReadOnly = !isId;
+            }
+            else if (property is OpenApiSchemaReference referenceProperty)
+            {
+                schema.Properties[name] = new OpenApiSchema
+                {
+                    ReadOnly = !isId,
+                    AllOf = [referenceProperty]
+                };
             }
         }
     }

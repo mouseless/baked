@@ -9,21 +9,21 @@ public class NativeSqlReportingFeature(Setting<string> _basePath)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureConfigurationBuilder(configuration =>
+        configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
             {
               "Logging": {
                 "LogLevel": {
                   "NHibernate": "None",
-                  "NHibernate.Sql": "{{(configurator.IsDevelopment() ? "Debug" : "None")}}"
+                  "NHibernate.Sql": "{{(configurator.IsDevelopment ? "Debug" : "None")}}"
                 }
               }
             }
             """);
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton(new ReportOptions(_basePath));
             services.AddSingleton<IReportContext, ReportContext>();

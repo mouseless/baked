@@ -12,86 +12,101 @@ namespace Baked;
 
 public static class LocatableCodingStyleExtensions
 {
-    public static LocatableCodingStyleFeature Locatable(this CodingStyleConfigurator _) =>
-        new();
-
-    public static ParameterModelAttribute AddLocatorAsService(this LocatableAttribute locatable, ActionModelAttribute action, TypeModel locatableType) =>
-        action.Parameter[$"{locatableType.Name.Camelize()}Locator"] = new($"{locatableType.Name.Camelize()}Locator", locatable.RenderLocatorType(locatableType.CSharpFriendlyFullName), ParameterModelFrom.Services)
-        {
-            IsInvokeMethodParameter = false
-        };
-
-    public static void AddLocateAction<TLocatable>(this IDomainModelConventionCollection conventions) =>
-        conventions.Add(new AddLocateActionConvention<TLocatable>(), order: RestApiLayer.MaxConventionOrder);
-
-    public static string BuildLocate(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
-        string? notNullParameterExpression = default,
-        bool nullable = false
-    )
+    extension(CodingStyleConfigurator _)
     {
-        notNullParameterExpression ??= parameter;
+        public LocatableCodingStyleFeature Locatable() =>
+            new();
+    }
 
-        var locate = locatable.RenderLocate(locatorServiceParameter.Name, notNullParameterExpression);
-        if (nullable)
+    extension(LocatableAttribute locatable)
+    {
+        public ParameterModelAttribute AddLocatorAsService(ActionModelAttribute action, TypeModel locatableType) =>
+            action.Parameter[$"{locatableType.Name.Camelize()}Locator"] = new($"{locatableType.Name.Camelize()}Locator", locatable.RenderLocatorType(locatableType.CSharpFriendlyFullName), ParameterModelFrom.Services)
+            {
+                IsInvokeMethodParameter = false
+            };
+
+        public string BuildLocate(ParameterModelAttribute locatorServiceParameter, string parameter,
+            string? notNullParameterExpression = default,
+            bool nullable = false
+        )
         {
-            locate = $"({parameter} != null ? {locate} : null)";
+            notNullParameterExpression ??= parameter;
+
+            var locate = locatable.RenderLocate(locatorServiceParameter.Name, notNullParameterExpression);
+            if (nullable)
+            {
+                locate = $"({parameter} != null ? {locate} : null)";
+            }
+
+            return locate;
         }
 
-        return locate;
-    }
-
-    public static string BuildLocateMany(this LocatableAttribute locatable, ParameterModelAttribute locatorServiceParameter, string parameter,
-        bool isArray = false
-    )
-    {
-        var locateMany = locatable.RenderLocateMany(locatorServiceParameter.Name, parameter);
-
-        return isArray ? $"({locateMany}).ToArray()" : $"({locateMany}).ToList()";
-    }
-
-    public static void ConvertToId(this ParameterModelAttribute parameter, IdInfo idInfo,
-        string? name = default,
-        bool dontAddRequired = false,
-        bool nullable = false
-    )
-    {
-        name ??= $"{parameter.Name}{idInfo.PropertyName}";
-
-        if (!nullable && dontAddRequired)
+        public string BuildLocateMany(ParameterModelAttribute locatorServiceParameter, string parameter,
+            bool isArray = false
+        )
         {
-            parameter.AddRequiredAttributes(isValueType: true);
+            var locateMany = locatable.RenderLocateMany(locatorServiceParameter.Name, parameter);
+
+            return isArray ? $"({locateMany}).ToArray()" : $"({locateMany}).ToList()";
+        }
+    }
+
+    extension(IDomainModelConventionCollection conventions)
+    {
+        public void AddLocateAction<TLocatable>() =>
+            conventions.Add(new AddLocateActionConvention<TLocatable>(), order: RestApiLayer.MaxConventionOrder);
+    }
+
+    extension(ParameterModelAttribute parameter)
+    {
+        public void ConvertToId(IdInfo idInfo,
+            string? name = default,
+            bool dontAddRequired = false,
+            bool nullable = false
+        )
+        {
+            name ??= $"{parameter.Name}{idInfo.PropertyName}";
+
+            if (!nullable && dontAddRequired)
+            {
+                parameter.AddRequiredAttributes(isValueType: true);
+            }
+
+            parameter.Type = nullable ? $"{idInfo.Type}?" : idInfo.Type;
+            parameter.Name = name;
         }
 
-        parameter.Type = nullable ? $"{idInfo.Type}?" : idInfo.Type;
-        parameter.Name = name;
-    }
-
-    public static void ConvertToIds(this ParameterModelAttribute parameter, IdInfo idInfo)
-    {
-        parameter.Type = $"IEnumerable<{idInfo.Type}>";
-        parameter.Name = $"{parameter.Name.Singularize()}{idInfo.PropertyName.Pluralize()}";
-    }
-
-    public static bool TryGetLocatableAttribute(this TypeModel type, [NotNullWhen(true)] out LocatableAttribute? locatableAttribute)
-    {
-        locatableAttribute = default;
-
-        return
-            type.TryGetMetadata(out var metadata) &&
-            metadata.TryGet(out locatableAttribute);
-    }
-
-    public static bool TryGetQueryType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
-    {
-        if (!type.TryGetLocatableAttribute(out var locatableAttribute) || locatableAttribute.QueryType is null)
+        public void ConvertToIds(IdInfo idInfo)
         {
-            queryType = default;
+            parameter.Type = $"IEnumerable<{idInfo.Type}>";
+            parameter.Name = $"{parameter.Name.Singularize()}{idInfo.PropertyName.Pluralize()}";
+        }
+    }
 
-            return false;
+    extension(TypeModel type)
+    {
+        public bool TryGetLocatableAttribute([NotNullWhen(true)] out LocatableAttribute? locatableAttribute)
+        {
+            locatableAttribute = default;
+
+            return
+                type.TryGetMetadata(out var metadata) &&
+                metadata.TryGet(out locatableAttribute);
         }
 
-        queryType = domain.Types[locatableAttribute.QueryType];
+        public bool TryGetQueryType(DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
+        {
+            if (!type.TryGetLocatableAttribute(out var locatableAttribute) || locatableAttribute.QueryType is null)
+            {
+                queryType = default;
 
-        return true;
+                return false;
+            }
+
+            queryType = domain.Types[locatableAttribute.QueryType];
+
+            return true;
+        }
     }
 }

@@ -13,17 +13,17 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, SkippedTransaction>();
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer = SQLiteConfiguration.Microsoft.InMemory(cache: SqliteCacheMode.Shared);
         });
 
-        configurator.ConfigureDatabaseInitializationCollection((initializations, sp) =>
+        configurator.DataAccess.ConfigureDatabaseInitializationCollection((initializations, sp) =>
         {
             initializations.AddInitializer(sf =>
             {
@@ -34,7 +34,7 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
             });
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.SetUps.Add(spec =>
             {

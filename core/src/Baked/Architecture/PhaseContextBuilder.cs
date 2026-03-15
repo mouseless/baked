@@ -47,35 +47,38 @@ public class PhaseContextBuilder
 
 public static class PhaseContextBuilderExtensions
 {
-    public static PhaseContext CreateEmptyContext(this IPhase _) =>
-        PhaseContext.Empty;
-
-    public static PhaseContextBuilder CreateContextBuilder(this IPhase phase) => new(phase);
-
-    public static PhaseContext CreateContext<TTarget>(this IPhase phase, TTarget target,
-        Action? onDispose = default
-    )
-        where TTarget : notnull
+    extension(IPhase phase)
     {
-        return phase.CreateContextBuilder().Add(target).OnDispose(onDispose).Build();
-    }
+        public PhaseContext CreateEmptyContext() =>
+            PhaseContext.Empty;
 
-    public static PhaseContext CreateContext<TTarget1, TTarget2>(this IPhase phase, TTarget1 target1, TTarget2 target2,
-        Action? onDispose = default
-    )
-        where TTarget1 : notnull
-        where TTarget2 : notnull
-    {
-        return phase.CreateContextBuilder().Add(target1, target2).OnDispose(onDispose).Build();
-    }
+        public PhaseContextBuilder CreateContextBuilder() => new(phase);
 
-    public static PhaseContext CreateContext<TTarget1, TTarget2, TTarget3>(this IPhase phase, TTarget1 target1, TTarget2 target2, TTarget3 target3,
-        Action? onDispose = default
-    )
-        where TTarget1 : notnull
-        where TTarget2 : notnull
-        where TTarget3 : notnull
-    {
-        return phase.CreateContextBuilder().Add(target1, target2, target3).OnDispose(onDispose).Build();
+        public PhaseContext CreateContext<TTarget>(TTarget target,
+            Action? onDispose = default
+        )
+            where TTarget : notnull
+        {
+            return phase.CreateContextBuilder().Add(target).OnDispose(onDispose).Build();
+        }
+
+        public PhaseContext CreateContext<TTarget1, TTarget2>(TTarget1 target1, TTarget2 target2,
+            Action? onDispose = default
+        )
+            where TTarget1 : notnull
+            where TTarget2 : notnull
+        {
+            return phase.CreateContextBuilder().Add(target1, target2).OnDispose(onDispose).Build();
+        }
+
+        public PhaseContext CreateContext<TTarget1, TTarget2, TTarget3>(TTarget1 target1, TTarget2 target2, TTarget3 target3,
+            Action? onDispose = default
+        )
+            where TTarget1 : notnull
+            where TTarget2 : notnull
+            where TTarget3 : notnull
+        {
+            return phase.CreateContextBuilder().Add(target1, target2, target3).OnDispose(onDispose).Build();
+        }
     }
 }

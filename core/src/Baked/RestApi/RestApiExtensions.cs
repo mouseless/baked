@@ -15,146 +15,175 @@ namespace Baked;
 
 public static class RestApiExtensions
 {
-    public static void AddRestApi(this IList<ILayer> layers) =>
-        layers.Add(new RestApiLayer());
-
-    public static void ConfigureApiModel(this LayerConfigurator configurator, Action<ApiModel> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureApplicationParts(this LayerConfigurator configurator, Action<IApplicationPartCollection> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureMvcNewtonsoftJsonOptions(this LayerConfigurator configurator, Action<MvcNewtonsoftJsonOptions> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureSwaggerGenOptions(this LayerConfigurator configurator, Action<SwaggerGenOptions> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureSwaggerOptions(this LayerConfigurator configurator, Action<SwaggerOptions> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureSwaggerUIOptions(this LayerConfigurator configurator, Action<SwaggerUIOptions> configuration) =>
-        configurator.Configure(configuration);
-
-    public static IMvcBuilder AddApplicationParts(this IMvcBuilder mvcBuilder, IApplicationPartCollection applicationParts)
+    public class Configurator(LayerConfigurator _configurator)
     {
-        foreach (var applicationPart in applicationParts)
-        {
-            mvcBuilder.AddApplicationPart(applicationPart.Assembly);
-        }
+        public void ConfigureApiModel(Action<ApiModel> configuration) =>
+            _configurator.Configure(configuration);
 
-        return mvcBuilder;
+        public void ConfigureApplicationParts(Action<IApplicationPartCollection> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureMvcNewtonsoftJsonOptions(Action<MvcNewtonsoftJsonOptions> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureSwaggerGenOptions(Action<SwaggerGenOptions> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureSwaggerOptions(Action<SwaggerOptions> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureSwaggerUIOptions(Action<SwaggerUIOptions> configuration) =>
+            _configurator.Configure(configuration);
     }
 
-    public static IMvcBuilder AddNewtonsoftJson(this IMvcBuilder mvcBuilder, MvcNewtonsoftJsonOptions options)
+    extension(LayerConfigurator configurator)
     {
-        mvcBuilder.AddNewtonsoftJson();
-        mvcBuilder.Services.AddOptions();
-        mvcBuilder.Services.AddSingleton<IOptions<MvcNewtonsoftJsonOptions>>(sp =>
+        public Configurator RestApi => new(configurator);
+    }
+
+    extension(IList<ILayer> layers)
+    {
+        public void AddRestApi() =>
+            layers.Add(new RestApiLayer());
+    }
+
+    extension(IMvcBuilder mvcBuilder)
+    {
+        public IMvcBuilder AddApplicationParts(IApplicationPartCollection applicationParts)
         {
-            if (options.SerializerSettings.ContractResolver is IContractResolverWithServiceProvider contractResolver)
+            foreach (var applicationPart in applicationParts)
             {
-                contractResolver.ServiceProvider = sp;
+                mvcBuilder.AddApplicationPart(applicationPart.Assembly);
             }
 
-            return new OptionsWrapper<MvcNewtonsoftJsonOptions>(options);
-        });
-
-        return mvcBuilder;
-    }
-
-    public static void Add<T>(this ICollection<Assembly> assemblies) =>
-        assemblies.Add(typeof(T).Assembly);
-
-    public static void AddAttribute<T>(this ActionModelAttribute action) where T : Attribute =>
-        action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
-
-    public static string GetRouteString(this ParameterModelAttribute parameter)
-    {
-        var constraint = parameter switch
-        {
-            { Type: nameof(Guid) } => ":guid",
-            _ when parameter.Type == typeof(Guid).FullName => ":guid",
-            _ => string.Empty
-        };
-
-        return $"{{{parameter.Name}{constraint}}}";
-    }
-
-    public static List<string> RemoveAll(this List<string> parts, string partToRemove)
-    {
-        for (var i = 0; i < parts.Count; i++)
-        {
-            if (parts[i] == partToRemove)
-            {
-                parts.RemoveAt(i);
-                i--;
-            }
+            return mvcBuilder;
         }
 
-        return parts;
+        public IMvcBuilder AddNewtonsoftJson(MvcNewtonsoftJsonOptions options)
+        {
+            mvcBuilder.AddNewtonsoftJson();
+            mvcBuilder.Services.AddOptions();
+            mvcBuilder.Services.AddSingleton<IOptions<MvcNewtonsoftJsonOptions>>(sp =>
+            {
+                if (options.SerializerSettings.ContractResolver is IContractResolverWithServiceProvider contractResolver)
+                {
+                    contractResolver.ServiceProvider = sp;
+                }
+
+                return new OptionsWrapper<MvcNewtonsoftJsonOptions>(options);
+            });
+
+            return mvcBuilder;
+        }
     }
 
-    public static List<string> Replace(this List<string> parts, string oldPart, string newPart)
+    extension(ICollection<Assembly> assemblies)
     {
-        for (var i = 0; i < parts.Count; i++)
+        public void Add<T>() =>
+            assemblies.Add(typeof(T).Assembly);
+    }
+
+    extension(ActionModelAttribute action)
+    {
+        public void AddAttribute<T>() where T : Attribute =>
+            action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
+
+        public void MakeAsync()
         {
-            if (parts[i] == oldPart)
+            if (action.ReturnIsAsync) { return; }
+
+            action.ReturnIsAsync = true;
+            action.ReturnType = action.ReturnIsVoid ? "Task" : $"Task<{action.ReturnType}>";
+        }
+    }
+
+    extension(ParameterModelAttribute parameter)
+    {
+        public string GetRouteString()
+        {
+            var constraint = parameter switch
             {
-                parts[i] = newPart;
+                { Type: nameof(Guid) } => ":guid",
+                _ when parameter.Type == typeof(Guid).FullName => ":guid",
+                _ => string.Empty
+            };
+
+            return $"{{{parameter.Name}{constraint}}}";
+        }
+    }
+
+    extension(List<string> parts)
+    {
+        public List<string> RemoveAll(string partToRemove)
+        {
+            for (var i = 0; i < parts.Count; i++)
+            {
+                if (parts[i] == partToRemove)
+                {
+                    parts.RemoveAt(i);
+                    i--;
+                }
             }
+
+            return parts;
         }
 
-        return parts;
-    }
-
-    public static void MakeAsync(this ActionModelAttribute action)
-    {
-        if (action.ReturnIsAsync) { return; }
-
-        action.ReturnIsAsync = true;
-        action.ReturnType = action.ReturnIsVoid ? "Task" : $"Task<{action.ReturnType}>";
-    }
-
-    public static void AddConfigureAction<T>(this IDomainModelConventionCollection conventions, string name,
-        HttpMethod? method = default,
-        List<string>? routeParts = default,
-        bool? useForm = default,
-        bool? useRequestClassForBody = default,
-        Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
-    )
-    {
-        conventions.Add(
-            new ConfigureActionConvention<T>(name, action =>
+        public List<string> Replace(string oldPart, string newPart)
+        {
+            for (var i = 0; i < parts.Count; i++)
             {
-                if (method is not null) { action.Method = method; }
-                if (routeParts is not null) { action.RouteParts = routeParts; }
-                if (useForm is not null) { action.UseForm = useForm.Value; }
-                if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
-                if (parameter is not null) { parameter(action.Parameter); }
-            }),
-            order: RestApiLayer.MinConventionOrder + 10
-        );
+                if (parts[i] == oldPart)
+                {
+                    parts[i] = newPart;
+                }
+            }
+
+            return parts;
+        }
     }
 
-    public static void AddOverrideAction<T>(this IDomainModelConventionCollection conventions, string name,
-        HttpMethod? method = default,
-        List<string>? routeParts = default,
-        bool? useForm = default,
-        bool? useRequestClassForBody = default,
-        Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
-    )
+    extension(IDomainModelConventionCollection conventions)
     {
-        conventions.Add(
-            new ConfigureActionConvention<T>(name, action =>
-            {
-                if (method is not null) { action.Method = method; }
-                if (routeParts is not null) { action.RouteParts = routeParts; }
-                if (useForm is not null) { action.UseForm = useForm.Value; }
-                if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
-                if (parameter is not null) { parameter(action.Parameter); }
-            }),
-            order: RestApiLayer.MaxConventionOrder - 10
-        );
+        public void AddConfigureAction<T>(string name,
+            HttpMethod? method = default,
+            List<string>? routeParts = default,
+            bool? useForm = default,
+            bool? useRequestClassForBody = default,
+            Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
+        )
+        {
+            conventions.Add(
+                new ConfigureActionConvention<T>(name, action =>
+                {
+                    if (method is not null) { action.Method = method; }
+                    if (routeParts is not null) { action.RouteParts = routeParts; }
+                    if (useForm is not null) { action.UseForm = useForm.Value; }
+                    if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
+                    if (parameter is not null) { parameter(action.Parameter); }
+                }),
+                order: RestApiLayer.MinConventionOrder + 10
+            );
+        }
+
+        public void AddOverrideAction<T>(string name,
+            HttpMethod? method = default,
+            List<string>? routeParts = default,
+            bool? useForm = default,
+            bool? useRequestClassForBody = default,
+            Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
+        )
+        {
+            conventions.Add(
+                new ConfigureActionConvention<T>(name, action =>
+                {
+                    if (method is not null) { action.Method = method; }
+                    if (routeParts is not null) { action.RouteParts = routeParts; }
+                    if (useForm is not null) { action.UseForm = useForm.Value; }
+                    if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
+                    if (parameter is not null) { parameter(action.Parameter); }
+                }),
+                order: RestApiLayer.MaxConventionOrder - 10
+            );
+        }
     }
 }

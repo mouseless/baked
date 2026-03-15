@@ -5,12 +5,15 @@ namespace Baked;
 
 public static class ObjectExtensions
 {
-    public static T AnInstanceOf<T>(this Stubber _)
+    extension(Stubber _)
     {
-        var result = Activator.CreateInstance(typeof(T));
+        public T AnInstanceOf<T>()
+        {
+            var result = Activator.CreateInstance(typeof(T));
 
-        result.ShouldNotBeNull();
+            result.ShouldNotBeNull();
 
-        return (T)result;
+            return (T)result;
+        }
     }
 }

@@ -8,14 +8,14 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<TimeProvider, ResettableFakeTimeProvider>();
             services.AddSingleton<ITextTransformer, HumanizerTextTransformer>();
             services.AddSingleton<FakeSettings>();
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.Mocks.Add<IConfiguration>(singleton: true);
             test.SetUps.Add(spec =>

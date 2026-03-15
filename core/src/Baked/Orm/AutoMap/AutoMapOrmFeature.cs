@@ -18,29 +18,29 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureConfigurationBuilder(configuration =>
+        configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
             {
               "Logging": {
                 "LogLevel": {
                   "NHibernate": "None",
-                  "NHibernate.Sql": "{{(configurator.IsDevelopment() ? "Debug" : "None")}}"
+                  "NHibernate.Sql": "{{(configurator.IsDevelopment ? "Debug" : "None")}}"
                 }
               }
             }
             """);
         });
 
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add(typeof(EntityAttribute));
             builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(AutoMapOrmFeature),
                     assembly => assembly
@@ -58,9 +58,9 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 services.AddFromAssembly(generatedContext.Assemblies[nameof(AutoMapOrmFeature)]);
             });
@@ -70,14 +70,14 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(ILocator<>), typeof(EntityLocator<>));
         });
 
-        configurator.ConfigureFluentConfiguration(builder =>
+        configurator.DataAccess.ConfigureFluentConfiguration(builder =>
         {
             builder.MaxFetchDepth(1);
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var featureAssembly = generatedContext.Assemblies[nameof(AutoMapOrmFeature)];
                 var typeSource = featureAssembly.CreateRequiredImplementationInstance<ITypeSource>();
@@ -94,13 +94,13 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
         });
 
-        configurator.ConfigureAutomapping(automapping =>
+        configurator.DataAccess.ConfigureAutomapping(automapping =>
         {
             automapping.ShouldMapType.Add(_ => true);
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app =>
                 app.Use(async (context, next) =>
@@ -131,7 +131,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             });
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 

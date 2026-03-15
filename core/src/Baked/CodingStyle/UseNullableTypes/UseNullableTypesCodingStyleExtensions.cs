@@ -9,22 +9,28 @@ namespace Baked;
 
 public static class UseNullableTypesCodingStyleExtensions
 {
-    public static UseNullableTypesCodingStyleFeature UseNullableTypes(this CodingStyleConfigurator _) =>
-        new();
-
-    public static void AddRequiredAttributes(this ParameterModelAttribute parameter, bool isValueType)
+    extension(CodingStyleConfigurator _)
     {
-        if (parameter.FromRoute || parameter.FromServices) { return; }
+        public UseNullableTypesCodingStyleFeature UseNullableTypes() =>
+            new();
+    }
 
-        if (isValueType)
+    extension(ParameterModelAttribute parameter)
+    {
+        public void AddRequiredAttributes(bool isValueType)
         {
-            parameter.AdditionalAttributes.Add($"{nameof(BindRequiredAttribute)}");
-        }
-        else
-        {
-            parameter.AdditionalAttributes.Add($"{nameof(RequiredAttribute)}");
-        }
+            if (parameter.FromRoute || parameter.FromServices) { return; }
 
-        parameter.AdditionalAttributes.Add($"{nameof(JsonPropertyAttribute)}(Required = {nameof(Required)}.{Required.Always})");
+            if (isValueType)
+            {
+                parameter.AdditionalAttributes.Add($"{nameof(BindRequiredAttribute)}");
+            }
+            else
+            {
+                parameter.AdditionalAttributes.Add($"{nameof(RequiredAttribute)}");
+            }
+
+            parameter.AdditionalAttributes.Add($"{nameof(JsonPropertyAttribute)}(Required = {nameof(Required)}.{Required.Always})");
+        }
     }
 }

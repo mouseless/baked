@@ -2,7 +2,7 @@ using Baked.Architecture;
 using Baked.Business;
 using Baked.RestApi;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Newtonsoft.Json;
 
 namespace Baked.CodingStyle.ValueType;
@@ -11,7 +11,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<ValueTypeAttribute>();
 
@@ -26,9 +26,9 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(ValueTypeCodingStyleFeature),
                     assembly => assembly
@@ -39,9 +39,9 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var valueTypes = generatedContext
                     .Assemblies[nameof(ValueTypeCodingStyleFeature)]
@@ -51,9 +51,9 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var valueTypes = generatedContext
                     .Assemblies[nameof(ValueTypeCodingStyleFeature)]
@@ -75,9 +75,9 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var valueTypes = generatedContext
                     .Assemblies[nameof(ValueTypeCodingStyleFeature)]
@@ -85,7 +85,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                 foreach (var valueType in valueTypes)
                 {
-                    swaggerGenOptions.MapType(valueType, () => new OpenApiSchema { Type = "string" });
+                    swaggerGenOptions.MapType(valueType, () => new OpenApiSchema { Type = JsonSchemaType.String });
                 }
             });
         });

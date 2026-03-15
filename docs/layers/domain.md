@@ -22,7 +22,7 @@ used in `Start` mode for auto registering domain types to service collection.
 This target is provided in `AddDomainTypes` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureDomainTypeCollection(types =>
+configurator.Domain.ConfigureDomainTypeCollection(types =>
 {
     ...
 });
@@ -34,7 +34,7 @@ This target exposes options for configuring built-in `DomainModelBuilder` and is
 provided in `AddDomainTypes` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureDomainModelBuilder(builder =>
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
 {
     ...
 });
@@ -47,7 +47,7 @@ This target is provided in `GenerateCode` phase and it is used to generated
 mode. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureDomainServiceCollection((services, domain) =>
+configurator.Domain.ConfigureDomainServiceCollection((services, domain) =>
 {
     // use domain metadata to register services at generate time
     ...

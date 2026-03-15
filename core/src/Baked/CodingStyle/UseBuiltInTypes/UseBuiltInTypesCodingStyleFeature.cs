@@ -13,7 +13,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
@@ -47,7 +47,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
             builder.Conventions.Add(new StringDefaultValueConvention());
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
             model.Conventions.Add(ConventionBuilder.Property.When(
                 x => x.Expect(p =>
@@ -58,12 +58,12 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
             ));
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.SchemaFilter<ConvertEnumToStringSchemaFilter>();
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
         });

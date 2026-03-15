@@ -8,10 +8,16 @@ namespace Baked;
 
 public static class SingletonLifetimeExtensions
 {
-    public static SingletonLifetimeFeature Singleton(this LifetimeConfigurator _) =>
-        new();
+    extension(LifetimeConfigurator _)
+    {
+        public SingletonLifetimeFeature Singleton() =>
+            new();
+    }
 
-    public static void AddSingleton(this DomainServiceCollection services, TypeModel type,
-        bool forward = false
-    ) => services.Add(type, ServiceLifetime.Singleton, forward: forward);
+    extension(DomainServiceCollection services)
+    {
+        public void AddSingleton(TypeModel type,
+            bool forward = false
+        ) => services.Add(type, ServiceLifetime.Singleton, forward: forward);
+    }
 }

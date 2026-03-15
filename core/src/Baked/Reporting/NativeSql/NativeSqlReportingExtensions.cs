@@ -6,7 +6,10 @@ namespace Baked;
 
 public static class NativeSqlReportingExtensions
 {
-    public static NativeSqlReportingFeature NativeSql(this ReportingConfigurator _,
-        Setting<string>? basePath = default
-    ) => new(basePath ?? string.Empty);
+    extension(ReportingConfigurator _)
+    {
+        public NativeSqlReportingFeature NativeSql(
+            Setting<string>? basePath = default
+        ) => new(basePath ?? string.Empty);
+    }
 }

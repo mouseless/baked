@@ -12,12 +12,12 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer =
                 OracleDataClientConfiguration.Oracle10
@@ -26,7 +26,7 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
                     .ConnectionString(_connectionString);
         });
 
-        configurator.ConfigureFluentConfiguration(fluent =>
+        configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
         {
             if (_autoUpdateSchema)
             {
@@ -36,7 +36,7 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
             fluent.ExposeConfiguration(c => c.SetProperty(NHibernate.Cfg.Environment.OracleSuppressDecimalInvalidCastException, "true"));
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<FlatTransactionMiddleware>();
         });

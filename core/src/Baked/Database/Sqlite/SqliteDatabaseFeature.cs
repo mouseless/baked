@@ -14,17 +14,17 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer = SQLiteConfiguration.Microsoft.UsingFile(FullFilePath);
         });
 
-        configurator.ConfigureDatabaseInitializationCollection((initializations, sp) =>
+        configurator.DataAccess.ConfigureDatabaseInitializationCollection((initializations, sp) =>
         {
             initializations.AddInitializer(sf =>
             {
@@ -38,7 +38,7 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
             });
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<FlatTransactionMiddleware>();
         });

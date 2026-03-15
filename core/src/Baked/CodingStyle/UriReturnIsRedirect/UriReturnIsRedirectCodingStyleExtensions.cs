@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class UriReturnIsRedirectCodingStyleExtensions
 {
-    public static UriReturnIsRedirectCodingStyleFeature UriReturnIsRedirect(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public UriReturnIsRedirectCodingStyleFeature UriReturnIsRedirect() =>
+            new();
+    }
 }

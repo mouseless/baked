@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class UniqueCodingStyleExtensions
 {
-    public static UniqueCodingStyleFeature Unique(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public UniqueCodingStyleFeature Unique() =>
+            new();
+    }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.CodingStyle.ObjectAsJson;
@@ -9,9 +9,16 @@ public class ObjectResponseOperationFilter : IOperationFilter
     {
         if (!IsObject(context.MethodInfo.ReturnType)) { return; }
 
-        if (!operation.Responses.TryGetValue("200", out var response))
+        operation.Responses ??= new OpenApiResponses();
+
+        OpenApiResponse response;
+        if (operation.Responses.TryGetValue("200", out var existingResponse) && existingResponse is OpenApiResponse concreteResponse)
         {
-            operation.Responses["200"] = response = new() { Description = "Success" };
+            response = concreteResponse;
+        }
+        else
+        {
+            operation.Responses["200"] = response = new OpenApiResponse() { Description = "Success" };
         }
 
         if (response.Content is null)

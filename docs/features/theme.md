@@ -27,11 +27,14 @@ Or you may prefer to create your custom theme on top of this default theme;
 ```csharp
 public static class CustomThemeExtensions
 {
-    public static CustomThemeFeature Custom(this ThemeConfigurator _) =>
-        new(
-        [
-            // All app routes
-        ]);
+    extension(ThemeConfigurator _)
+    {
+        public static CustomThemeFeature Custom() =>
+            new(
+            [
+                // All app routes
+            ]);
+    }
 }
 
 public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
@@ -42,18 +45,18 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         // Applies default theme rules
         base.Configure(configurator);
 
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // Your custom conventions and page overrides
         });
 
-        configurator.ConfigureComponentExports(c =>
+        configurator.Ui.ConfigureComponentExports(c =>
         {
             // Add your component exports using your own `Components` extensions
             // c.AddFromExtensions(typeof(Components));
         });
 
-        configurator.ConfigurePageDescriptors(pages =>
+        configurator.Ui.ConfigurePageDescriptors(pages =>
         {
             // Add other pages like `auth/login.vue` etc.
         });

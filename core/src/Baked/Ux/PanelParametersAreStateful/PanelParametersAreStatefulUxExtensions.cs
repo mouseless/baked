@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class PanelParametersAreStatefulUxExtensions
 {
-    public static PanelParametersAreStatefulUxFeature PanelParametersAreStateful(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public PanelParametersAreStatefulUxFeature PanelParametersAreStateful() =>
+            new();
+    }
 }

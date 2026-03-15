@@ -1,5 +1,5 @@
 ﻿using Baked.Binding;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.CodingStyle.CommandPattern;
@@ -15,8 +15,11 @@ public class XmlExamplesFromClassOperationFilter(IEnumerable<string> actionNames
         if (!_actionNames.Contains(mappedMethod.MethodName)) { return; }
         if (!_methodExamplesDictionary.TryGetValue(mappedMethod.TypeFullName, out var example)) { return; }
 
-        operation.RequestBody?.Content.SetJsonExample(example.Request);
-        operation.Responses.TryGetValue("200", out var response);
-        response?.Content.SetJsonExample(example.Response);
+        operation.RequestBody?.Content?.SetJsonExample(example.Request);
+
+        if (operation.Responses?.TryGetValue("200", out var response) == true)
+        {
+            response.Content?.SetJsonExample(example.Response);
+        }
     }
 }

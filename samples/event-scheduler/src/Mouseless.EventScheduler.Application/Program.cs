@@ -1,7 +1,10 @@
 Bake.New
     .Monolith(
         business: c => c.DomainAssemblies(typeof(Contact).Assembly),
-        database: c => c.Sqlite("Mouseless.EventScheduler.db"),
-        configure: app => app.Features.AddOverrides()
+        options: mr =>
+        {
+            mr.Database = c => c.Sqlite("Mouseless.EventScheduler.db");
+            mr.Configure = app => app.Features.AddOverrides();
+        }
     )
     .Run();

@@ -32,7 +32,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
     {
         base.Configure(configurator);
 
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // Custom theme CSV formatter settings
             builder.Conventions.AddMethodSchemaConfiguration<DataTable.Export>(
@@ -80,12 +80,12 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
         });
 
-        configurator.ConfigureComponentExports(c =>
+        configurator.Ui.ConfigureComponentExports(c =>
         {
             c.AddFromExtensions(typeof(C));
         });
 
-        configurator.ConfigurePageDescriptors(pages =>
+        configurator.Ui.ConfigurePageDescriptors(pages =>
         {
             pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
             pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));

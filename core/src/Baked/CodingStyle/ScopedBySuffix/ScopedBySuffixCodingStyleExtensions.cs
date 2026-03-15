@@ -5,7 +5,10 @@ namespace Baked;
 
 public static class ScopedBySuffixCodingStyleExtensions
 {
-    public static ScopedBySuffixCodingStyleFeature ScopedBySuffix(this CodingStyleConfigurator _,
-        IEnumerable<string>? suffixes = default
-    ) => new(suffixes ?? ["Context"]);
+    extension(CodingStyleConfigurator _)
+    {
+        public ScopedBySuffixCodingStyleFeature ScopedBySuffix(
+            IEnumerable<string>? suffixes = default
+        ) => new(suffixes ?? ["Context"]);
+    }
 }

@@ -18,14 +18,14 @@ build:
 	@(cd core && dotnet build -v d /p:GenerateArgs="--warn-for-missing-component")
 	@(cd ui && npm run build)
 test:
-	@(cd core && dotnet test --logger quackers)
+	@(cd core && dotnet test --output Detailed)
 	@(cd ui && BUILD_SILENT=1 npm run test -- $(NPMARGS))
 coverage:
 	@( \
 		cd core && \
 		rm -rf .coverage && \
-		dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml && \
-		dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html && \
+		dotnet test -c Release --coverage --coverage-output-format cobertura --coverage-settings ./test/runsettings.xml --report-trx --results-directory .coverage
+		dotnet reportgenerator -reports:.coverage/*.cobertura.xml -targetdir:.coverage/html && \
 		open .coverage/html/index.html \
 	)
 run:

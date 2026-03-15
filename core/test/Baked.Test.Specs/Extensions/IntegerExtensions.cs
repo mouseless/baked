@@ -4,5 +4,8 @@ namespace Baked.Test;
 
 public static class IntegerExtensions
 {
-    public static int AnInt(this Stubber _) => 42;
+    extension(Stubber _)
+    {
+        public int AnInt() => 42;
+    }
 }

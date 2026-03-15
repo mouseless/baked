@@ -12,7 +12,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
                 when: c =>
@@ -42,7 +42,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.Add(new EntityInitializerIsPostResourceConvention());
         });
 
-        configurator.ConfigureNHibernateInterceptor(interceptor =>
+        configurator.DataAccess.ConfigureNHibernateInterceptor(interceptor =>
         {
             interceptor.Instantiator = (ctx, id) =>
             {

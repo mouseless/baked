@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class ActionsAsButtonsUxExtensions
 {
-    public static ActionsAsButtonsUxFeature ActionsAsButtons(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public ActionsAsButtonsUxFeature ActionsAsButtons() =>
+            new();
+    }
 }

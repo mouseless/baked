@@ -9,7 +9,7 @@ public class ChildUiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Type.Is<Child>() && c.Property.PropertyType.Is<ParentWrapper>(),

@@ -9,17 +9,23 @@ namespace Baked;
 
 public static class LifetimeExtensions
 {
-    public static void AddLifetimes(this List<IFeature> features, IEnumerable<Func<LifetimeConfigurator, IFeature<LifetimeConfigurator>>> configures) =>
-        features.AddRange(configures.Select(configure => configure(new())));
+    extension(List<IFeature> features)
+    {
+        public void AddLifetimes(IEnumerable<Func<LifetimeConfigurator, IFeature<LifetimeConfigurator>>> configures) =>
+            features.AddRange(configures.Select(configure => configure(new())));
+    }
 
-    public static void Add(this DomainServiceCollection services, TypeModel type, ServiceLifetime serviceLifetime,
-        bool useFactory = true,
-        bool forward = false
-    ) => services.Add(
+    extension(DomainServiceCollection services)
+    {
+        public void Add(TypeModel type, ServiceLifetime serviceLifetime,
+            bool useFactory = true,
+            bool forward = false
+        ) => services.Add(
             type: type,
             serviceLifetime: serviceLifetime,
             useFactory: useFactory,
             interfaces: !type.TryGetInheritance(out var inheritance) ? [] : inheritance.Interfaces.Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>()),
             forward: forward
         );
+    }
 }

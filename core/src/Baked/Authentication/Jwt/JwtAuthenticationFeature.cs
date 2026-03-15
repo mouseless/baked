@@ -3,7 +3,7 @@ using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.Authentication.Jwt;
 
@@ -12,7 +12,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthenticationCollection(authentications =>
+        configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
         {
             authentications.Add(
                 scheme: JwtBearerDefaults.AuthenticationScheme,
@@ -21,15 +21,15 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITokenBuilder, JwtTokenBuilder>();
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme,
-                new()
+                new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
@@ -40,11 +40,11 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>([JwtBearerDefaults.AuthenticationScheme]);
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             var plugin = new JwtAuthenticationPlugin();
 
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 plugin.AnonymousApiRoutes.AddRange(
                     domain.Types

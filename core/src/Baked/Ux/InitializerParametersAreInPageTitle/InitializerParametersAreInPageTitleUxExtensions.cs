@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class InitializerParametersAreInPageTitleUxExtensions
 {
-    public static InitializerParametersAreInPageTitleUxFeature InitializerParametersAreInPageTitle(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public InitializerParametersAreInPageTitleUxFeature InitializerParametersAreInPageTitle() =>
+            new();
+    }
 }

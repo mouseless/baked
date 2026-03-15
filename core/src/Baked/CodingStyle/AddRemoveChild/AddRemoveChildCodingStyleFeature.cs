@@ -10,7 +10,7 @@ public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action =>

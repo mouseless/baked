@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class ActionsAsDataPanelsUxExtensions
 {
-    public static ActionsAsDataPanelsUxFeature ActionsAsDataPanels(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public ActionsAsDataPanelsUxFeature ActionsAsDataPanels() =>
+            new();
+    }
 }

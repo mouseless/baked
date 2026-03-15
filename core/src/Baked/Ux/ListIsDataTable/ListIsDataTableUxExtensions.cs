@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class ListIsDataTableUxExtensions
 {
-    public static ListIsDataTableUxFeature ListIsDataTable(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public ListIsDataTableUxFeature ListIsDataTable() =>
+            new();
+    }
 }

@@ -14,7 +14,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // domain attribute indices
             builder.Index.Type.Add<ControllerModelAttribute>();
@@ -31,7 +31,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   !c.Type.IsAbstract &&
                   !c.Type.IsGenericType &&
                   c.Type.TryGetMembers(out var members) &&
-                  members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName()),
+                  members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName),
               order: 10
             );
             builder.Conventions.SetMethodAttribute(
@@ -39,13 +39,13 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 when: c =>
                     !c.Method.Has<ExternalAttribute>() &&
                     !c.Method.Has<InitializerAttribute>() &&
-                    c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName() &&
+                    c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
                 order: RestApiLayer.MaxConventionOrder
             );
             builder.Conventions.SetParameterAttribute(
                 attribute: c => new ParameterModelAttribute(),
-                when: c => c.Parameter.IsApiInput(),
+                when: c => c.Parameter.IsApiInput,
                 order: RestApiLayer.MaxConventionOrder
             );
 
@@ -85,11 +85,11 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             );
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 foreach (var type in domain.Types.Having<ControllerModelAttribute>())
                 {
@@ -103,13 +103,13 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             });
         });
 
-        configurator.ConfigureGeneratedFileCollection(files =>
+        configurator.CodeGeneration.ConfigureGeneratedFileCollection(files =>
         {
             files.AddAsJson(_tagDescriptions);
             files.AddAsJson(_examples);
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.EnableAnnotations();
 
@@ -130,7 +130,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             swaggerGenOptions.SchemaFilter<RemoveNonPublicPropertiesSchemaFilter>();
             swaggerGenOptions.DocumentFilter<RemoveUnusedSchemasDocumentFilter>();
 
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var tagDescriptions = generatedContext.ReadFileAsJson<TagDescriptions>() ?? [];
                 swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);

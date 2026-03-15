@@ -9,24 +9,30 @@ namespace Baked;
 
 public static class InMemoryCachingExtensions
 {
-    public static InMemoryCachingFeature InMemory(this CachingConfigurator _,
-        Action<MemoryCacheOptions>? options = default,
-        Setting<TimeSpan>? clientExpiration = default
-    ) => new(options ?? (_ => { }), clientExpiration ?? TimeSpan.FromHours(1));
-
-    public static IMemoryCache TheMemoryCache(this Stubber giveMe,
-        bool clear = false
-    )
+    extension(CachingConfigurator _)
     {
-        var memoryCache = giveMe.The<IMemoryCache>();
+        public InMemoryCachingFeature InMemory(
+            Action<MemoryCacheOptions>? options = default,
+            Setting<TimeSpan>? clientExpiration = default
+        ) => new(options ?? (_ => { }), clientExpiration ?? TimeSpan.FromHours(1));
+    }
 
-        if (clear)
+    extension(Stubber giveMe)
+    {
+        public IMemoryCache TheMemoryCache(
+            bool clear = false
+        )
         {
-            if (memoryCache is not MemoryCache concreteMemoryCache) { throw new AssertionException("Cache cannot be cleared because it is not a `MemoryCache` instance"); }
+            var memoryCache = giveMe.The<IMemoryCache>();
 
-            concreteMemoryCache.Clear();
+            if (clear)
+            {
+                if (memoryCache is not MemoryCache concreteMemoryCache) { throw new AssertionException("Cache cannot be cleared because it is not a `MemoryCache` instance"); }
+
+                concreteMemoryCache.Clear();
+            }
+
+            return memoryCache;
         }
-
-        return memoryCache;
     }
 }

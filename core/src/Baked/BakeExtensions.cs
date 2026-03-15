@@ -1,250 +1,32 @@
 ﻿using Baked.Architecture;
-using Baked.Authentication;
-using Baked.Authorization;
 using Baked.Business;
-using Baked.Caching;
-using Baked.CodingStyle;
-using Baked.CodingStyle.CommandPattern;
-using Baked.CodingStyle.Initializable;
-using Baked.CodingStyle.Label;
-using Baked.CodingStyle.ScopedBySuffix;
-using Baked.CodingStyle.UseBuiltInTypes;
-using Baked.Communication;
-using Baked.Core;
-using Baked.Cors;
-using Baked.Database;
-using Baked.ExceptionHandling;
-using Baked.Greeting;
-using Baked.Localization;
-using Baked.Logging;
-using Baked.Orm;
-using Baked.RateLimiter;
-using Baked.Reporting;
-using Baked.Theme;
 
 namespace Baked;
 
 public static class BakeExtensions
 {
-    public static Application Monolith(this Bake bake,
-        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
-        IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
-        Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization = default,
-        IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>>? cachings = default,
-        Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
-        Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
-        Func<CorsConfigurator, IFeature<CorsConfigurator>>? cors = default,
-        Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
-        Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
-        Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
-        Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
-        Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
-        Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
-        Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter = default,
-        Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme = default,
-
-        Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature>? commandPattern = default,
-        Func<CodingStyleConfigurator, InitializableCodingStyleFeature>? initializable = default,
-        Func<CodingStyleConfigurator, LabelCodingStyleFeature>? label = default,
-        Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature>? scopedBySuffix = default,
-        Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature>? useBuiltInTypes = default,
-
-        Action<ApplicationDescriptor>? configure = default
-    )
+    extension(Bake bake)
     {
-        authentications ??= [c => c.FixedBearerToken()];
-        authorization ??= c => c.ClaimBased();
-        cachings ??= [c => c.InMemory(), c => c.ScopedMemory()];
-        communication ??= c => c.Http();
-        core ??= c => c.Dotnet();
-        cors ??= c => c.Disabled();
-        database ??= c => c.Sqlite();
-        exceptionHandling ??= c => c.ProblemDetails();
-        greeting ??= c => c.Swagger();
-        localization ??= c => c.Dotnet();
-        logging ??= c => c.Request();
-        orm ??= c => c.AutoMap();
-        rateLimiter ??= c => c.Concurrency();
-
-        commandPattern ??= c => c.CommandPattern();
-        initializable ??= c => c.Initializable();
-        label ??= c => c.Label();
-        scopedBySuffix ??= c => c.ScopedBySuffix();
-        useBuiltInTypes ??= c => c.UseBuiltInTypes();
-
-        configure ??= _ => { };
-
-        return bake.Application(app =>
+        public Application Monolith(
+            Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+            Action<MonolithRecipe>? options = default
+        )
         {
-            app.Layers.AddCodeGeneration();
-            app.Layers.AddDataAccess();
-            app.Layers.AddDomain();
-            app.Layers.AddHttpClient();
-            app.Layers.AddHttpServer();
-            app.Layers.AddRestApi();
-            app.Layers.AddRuntime();
+            var recipe = new MonolithRecipe(business);
+            options?.Invoke(recipe);
 
-            app.Features.AddAuthentications(authentications);
-            app.Features.AddAuthorization(authorization);
-            app.Features.AddBinding(c => c.Rest());
-            app.Features.AddBusiness(business);
-            app.Features.AddCachings(cachings);
-            app.Features.AddCodingStyles(
-            [
-                c => c.AddRemoveChild(),
-                c => c.Client(),
-                commandPattern,
-                c => c.EntitySubclass(),
-                c => c.Id(),
-                initializable,
-                label,
-                c => c.Locatable(),
-                c => c.LocatableExtension(),
-                c => c.NamespaceAsRoute(),
-                c => c.ObjectAsJson(),
-                c => c.Query(),
-                c => c.RecordsAreDtos(),
-                c => c.RemainingServicesAreSingleton(),
-                c => c.RichEntity(),
-                c => c.RichTransient(),
-                scopedBySuffix,
-                c => c.Unique(),
-                c => c.UriReturnIsRedirect(),
-                useBuiltInTypes,
-                c => c.UseNullableTypes(),
-                c => c.ValueType()
-            ]);
-            app.Features.AddCommunication(communication);
-            app.Features.AddCore(core);
-            app.Features.AddCors(cors);
-            app.Features.AddDatabase(database);
-            app.Features.AddExceptionHandling(exceptionHandling);
-            app.Features.AddGreeting(greeting);
-            app.Features.AddLifetimes(
-            [
-                c => c.Scoped(),
-                c => c.Singleton(),
-                c => c.Transient()
-            ]);
-            app.Features.AddLocalization(localization);
-            app.Features.AddLogging(logging);
-            app.Features.AddOrm(orm);
-            app.Features.AddRateLimiter(rateLimiter);
+            return bake.Application(recipe.Apply);
+        }
 
-            if (theme is not null)
-            {
-                app.Layers.AddUi();
-
-                app.Features.AddUx(
-                [
-                    c => c.ActionsAsButtons(),
-                    c => c.ActionsAreContents(),
-                    c => c.ActionsAsDataPanels(),
-                    c => c.DataTableDefaults(),
-                    c => c.DescriptionProperty(),
-                    c => c.EnumParameterIsSelect(),
-                    c => c.InitializerParametersAreInPageTitle(),
-                    c => c.LabelsAreFrozen(),
-                    c => c.ListIsDataTable(),
-                    c => c.NumericValuesAreFormatted(),
-                    c => c.ObjectWithListIsDataTable(),
-                    c => c.PanelParametersAreStateful(),
-                    c => c.PropertiesAsFieldset(),
-                    c => c.RoutedTypesAsNavLinks()
-                ]);
-
-                app.Features.AddTheme(theme);
-            }
-
-            configure(app);
-        });
-    }
-
-    public static Application DataSource(this Bake bake,
-        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
-        IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>>? cachings = default,
-        Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
-        Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
-        Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
-        Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
-        Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
-        Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
-        Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter = default,
-        Func<ReportingConfigurator, IFeature<ReportingConfigurator>>? reporting = default,
-
-        Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature>? commandPattern = default,
-        Func<CodingStyleConfigurator, InitializableCodingStyleFeature>? initializable = default,
-        Func<CodingStyleConfigurator, LabelCodingStyleFeature>? label = default,
-        Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature>? scopedBySuffix = default,
-        Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature>? useBuiltInTypes = default,
-
-        Action<ApplicationDescriptor>? configure = default
-    )
-    {
-        cachings ??= [c => c.InMemory(), c => c.ScopedMemory()];
-        core ??= c => c.Dotnet();
-        database ??= c => c.Sqlite();
-        exceptionHandling ??= c => c.ProblemDetails();
-        greeting ??= c => c.Swagger();
-        localization ??= c => c.Dotnet();
-        logging ??= c => c.Request();
-        rateLimiter ??= c => c.Concurrency();
-        reporting ??= c => c.NativeSql();
-
-        commandPattern ??= c => c.CommandPattern();
-        initializable ??= c => c.Initializable();
-        label ??= c => c.Label();
-        scopedBySuffix ??= c => c.ScopedBySuffix();
-        useBuiltInTypes ??= c => c.UseBuiltInTypes();
-
-        configure ??= _ => { };
-
-        return bake.Application(app =>
+        public Application DataSource(
+            Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+            Action<DataSourceRecipe>? options = default
+        )
         {
-            app.Layers.AddCodeGeneration();
-            app.Layers.AddDataAccess();
-            app.Layers.AddDomain();
-            app.Layers.AddHttpServer();
-            app.Layers.AddRestApi();
-            app.Layers.AddRuntime();
+            var recipe = new DataSourceRecipe(business);
+            options?.Invoke(recipe);
 
-            app.Features.AddBinding(c => c.Rest());
-            app.Features.AddBusiness(business);
-            app.Features.AddCachings(cachings);
-            app.Features.AddCodingStyles(
-            [
-                c => c.AddRemoveChild(),
-                commandPattern,
-                c => c.Id(),
-                initializable,
-                label,
-                c => c.Locatable(),
-                c => c.NamespaceAsRoute(),
-                c => c.Query(),
-                c => c.RecordsAreDtos(),
-                c => c.RemainingServicesAreSingleton(),
-                c => c.RichTransient(),
-                scopedBySuffix,
-                useBuiltInTypes,
-                c => c.UseNullableTypes(),
-                c => c.ValueType()
-            ]);
-            app.Features.AddCore(core);
-            app.Features.AddDatabase(database);
-            app.Features.AddExceptionHandling(exceptionHandling);
-            app.Features.AddGreeting(greeting);
-            app.Features.AddLifetimes(
-            [
-                c => c.Scoped(),
-                c => c.Singleton(),
-                c => c.Transient()
-            ]);
-            app.Features.AddLocalization(localization);
-            app.Features.AddLogging(logging);
-            app.Features.AddRateLimiter(rateLimiter);
-            app.Features.AddReporting(reporting);
-
-            configure(app);
-        });
+            return bake.Application(recipe.Apply);
+        }
     }
 }

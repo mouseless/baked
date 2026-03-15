@@ -10,12 +10,12 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigureFluentConfiguration(fluent =>
+        configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
         {
             if (_autoUpdateSchema)
             {
@@ -23,7 +23,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
             }
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.DataAccess.ConfigurePersistence(persistence =>
         {
             persistence.Configurer =
                 MySQLConfiguration.Standard
@@ -31,7 +31,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
                     .Dialect<CustomMySQL57Dialect>();
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<FlatTransactionMiddleware>();
         });

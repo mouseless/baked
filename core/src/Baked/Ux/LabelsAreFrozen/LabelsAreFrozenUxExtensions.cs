@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class LabelsAreFrozenUxExtensions
 {
-    public static LabelsAreFrozenUxFeature LabelsAreFrozen(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public LabelsAreFrozenUxFeature LabelsAreFrozen() =>
+            new();
+    }
 }

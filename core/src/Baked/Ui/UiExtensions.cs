@@ -6,61 +6,78 @@ namespace Baked;
 
 public static class UiExtensions
 {
-    public static void AddUi(this List<ILayer> layers) =>
-        layers.Add(new UiLayer());
-
-    public static void ConfigureAppDescriptor(this LayerConfigurator configurator, Action<AppDescriptor> configure) =>
-        configurator.Configure(configure);
-
-    public static void ConfigureComponentExports(this LayerConfigurator configurator, Action<ComponentExports> configure) =>
-        configurator.Configure(configure);
-
-    public static void ConfigureLayoutDescriptors(this LayerConfigurator configurator, Action<LayoutDescriptors> configure) =>
-        configurator.Configure(configure);
-
-    public static void ConfigurePageDescriptors(this LayerConfigurator configurator, Action<PageDescriptors> configure) =>
-        configurator.Configure(configure);
-
-    public static void UsingLocaleTemplate(this LayerConfigurator configurator, Action<ILocaleTemplate> localeTemplate) =>
-       configurator.Use(localeTemplate);
-
-    public static void UsingLocalization(this LayerConfigurator configurator, Action<NewLocaleKey> l) =>
-        configurator.Use(l);
-
-    public static void AddFromExtensions(this ComponentExports exports, Type type)
+    public class Configurator(LayerConfigurator _configurator)
     {
-        var extensions = type.GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public) ?? [];
-        var componentTypes = extensions
-            .Where(m =>
-                m.ReturnType.IsAssignableTo(typeof(IComponentDescriptor)) &&
-                !m.GetGenericArguments().Any()
-            )
-            .Select(m => m.Name);
+        public void ConfigureAppDescriptor(Action<AppDescriptor> configure) =>
+            _configurator.Configure(configure);
 
-        exports.AddRange(componentTypes);
+        public void ConfigureComponentExports(Action<ComponentExports> configure) =>
+            _configurator.Configure(configure);
+
+        public void ConfigureLayoutDescriptors(Action<LayoutDescriptors> configure) =>
+            _configurator.Configure(configure);
+
+        public void ConfigurePageDescriptors(Action<PageDescriptors> configure) =>
+            _configurator.Configure(configure);
+
+        public void UsingLocaleTemplate(Action<ILocaleTemplate> localeTemplate) =>
+           _configurator.Use(localeTemplate);
+
+        public void UsingLocalization(Action<NewLocaleKey> l) =>
+            _configurator.Use(l);
     }
 
-    public static void ReloadOn(this ISupportsReaction source, string @event,
-        IConstraint? constraint = default
-    ) => source.AddReaction("reload", new OnTrigger(@event) { Constraint = constraint });
-
-    public static void ReloadWhen(this ISupportsReaction source, string key,
-        IConstraint? constraint = default
-    ) => source.AddReaction("reload", new WhenTrigger(key) { Constraint = constraint });
-
-    public static void ShowOn(this ISupportsReaction source, string @event,
-        IConstraint? constraint = default
-    ) => source.AddReaction("show", new OnTrigger(@event) { Constraint = constraint });
-
-    public static void ShowWhen(this ISupportsReaction source, string key,
-        IConstraint? constraint = default
-    ) => source.AddReaction("show", new WhenTrigger(key) { Constraint = constraint });
-
-    public static void AddReaction(this ISupportsReaction source, string reaction, ITrigger trigger)
+    extension(LayerConfigurator configurator)
     {
-        source.Reactions ??= new();
+        public Configurator Ui => new(configurator);
+    }
 
-        source.Reactions.TryGetValue(reaction, out var current);
-        source.Reactions[reaction] = current + trigger;
+    extension(List<ILayer> layers)
+    {
+        public void AddUi() =>
+            layers.Add(new UiLayer());
+    }
+
+    extension(ComponentExports exports)
+    {
+        public void AddFromExtensions(Type type)
+        {
+            var extensions = type.GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public) ?? [];
+            var componentTypes = extensions
+                .Where(m =>
+                    m.ReturnType.IsAssignableTo(typeof(IComponentDescriptor)) &&
+                    !m.GetGenericArguments().Any()
+                )
+                .Select(m => m.Name);
+
+            exports.AddRange(componentTypes);
+        }
+    }
+
+    extension(ISupportsReaction source)
+    {
+        public void ReloadOn(string @event,
+            IConstraint? constraint = default
+        ) => source.AddReaction("reload", new OnTrigger(@event) { Constraint = constraint });
+
+        public void ReloadWhen(string key,
+            IConstraint? constraint = default
+        ) => source.AddReaction("reload", new WhenTrigger(key) { Constraint = constraint });
+
+        public void ShowOn(string @event,
+            IConstraint? constraint = default
+        ) => source.AddReaction("show", new OnTrigger(@event) { Constraint = constraint });
+
+        public void ShowWhen(string key,
+            IConstraint? constraint = default
+        ) => source.AddReaction("show", new WhenTrigger(key) { Constraint = constraint });
+
+        public void AddReaction(string reaction, ITrigger trigger)
+        {
+            source.Reactions ??= new();
+
+            source.Reactions.TryGetValue(reaction, out var current);
+            source.Reactions[reaction] = current + trigger;
+        }
     }
 }

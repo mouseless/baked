@@ -5,6 +5,7 @@
   <PropertyGroup>
     <RootNamespace>Baked.Test</RootNamespace>
     <IsPackable>false</IsPackable>
+    <EnableNUnitRunner>true</EnableNUnitRunner>
   </PropertyGroup>
 
   <ItemGroup>

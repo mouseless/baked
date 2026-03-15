@@ -68,7 +68,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
             ReadOnlyCollection<ConstructorModel> BuildConstructors()
             {
                 var constructorInfos = type.GetConstructors(builder.Options.BindingFlags.Constructor) ?? [];
-                if (!constructorInfos.Any()) { return ReadOnlyCollection<ConstructorModel>.Empty; }
+                if (!constructorInfos.Any()) { return []; }
 
                 return constructorInfos.Select(BuildConstructor).ToList().AsReadOnly();
             }

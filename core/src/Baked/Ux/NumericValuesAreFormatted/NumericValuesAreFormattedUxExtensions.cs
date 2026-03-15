@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class NumericValuesAreFormattedUxExtensions
 {
-    public static NumericValuesAreFormattedUxFeature NumericValuesAreFormatted(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public NumericValuesAreFormattedUxFeature NumericValuesAreFormatted() =>
+            new();
+    }
 }

@@ -1,22 +1,22 @@
-﻿using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text.Json.Nodes;
 
 namespace Baked.CodingStyle.UseBuiltInTypes;
 
 public class ConvertEnumToStringSchemaFilter : ISchemaFilter
 {
-    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+    public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
     {
-        if (!context.Type.IsEnum) { return; }
+        if (!context.Type.IsEnum || schema is not OpenApiSchema openApiSchema) { return; }
 
-        schema.Type = "string";
-        schema.Format = null;
-        schema.Enum.Clear();
+        openApiSchema.Type = JsonSchemaType.String;
+        openApiSchema.Format = null;
+        openApiSchema.Enum = [];
 
         foreach (var enumName in Enum.GetNames(context.Type))
         {
-            schema.Enum.Add(new OpenApiString(enumName.ToLowerInvariant()));
+            openApiSchema.Enum.Add(JsonValue.Create(enumName.ToLowerInvariant())!);
         }
     }
 }

@@ -8,11 +8,17 @@ namespace Baked;
 
 public static class FakeReportingExtensions
 {
-    public static FakeReportingFeature Fake(this ReportingConfigurator _,
-        Setting<string>? basePath = default
-    ) => new(basePath ?? string.Empty);
+    extension(ReportingConfigurator _)
+    {
+        public FakeReportingFeature Fake(
+            Setting<string>? basePath = default
+        ) => new(basePath ?? string.Empty);
+    }
 
-    public static IReportContext AFakeReportContext(this Stubber giveMe,
-        string basePath = "Fake"
-    ) => new ReportContext(giveMe.The<IFileProvider>(), new(basePath));
+    extension(Stubber giveMe)
+    {
+        public IReportContext AFakeReportContext(
+            string basePath = "Fake"
+        ) => new ReportContext(giveMe.The<IFileProvider>(), new(basePath));
+    }
 }

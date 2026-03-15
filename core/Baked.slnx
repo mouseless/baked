@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/playground/">
+    <Project Path="playground/Baked.Playground.Application/Baked.Playground.Application.csproj" />
+    <Project Path="playground/Baked.Playground/Baked.Playground.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Baked.Abstractions/Baked.Abstractions.csproj" />
+    <Project Path="src/Baked/Baked.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Baked.Test.Specs/Baked.Test.Specs.csproj" />
+  </Folder>
+</Solution>

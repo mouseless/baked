@@ -6,13 +6,16 @@ namespace Baked;
 
 public static class DotnetLocalizationExtensions
 {
-    public static DotnetLocalizationFeature Dotnet(this LocalizationConfigurator _,
-        CultureInfo? language = null,
-        IEnumerable<CultureInfo>? otherLanguages = null
-    )
+    extension(LocalizationConfigurator _)
     {
-        language ??= new("en");
+        public DotnetLocalizationFeature Dotnet(
+            CultureInfo? language = null,
+            IEnumerable<CultureInfo>? otherLanguages = null
+        )
+        {
+            language ??= new("en");
 
-        return new(language, otherLanguages);
+            return new(language, otherLanguages);
+        }
     }
 }

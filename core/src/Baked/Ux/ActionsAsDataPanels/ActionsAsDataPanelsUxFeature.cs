@@ -10,7 +10,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),

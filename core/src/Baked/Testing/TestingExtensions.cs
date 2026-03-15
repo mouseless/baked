@@ -7,53 +7,80 @@ namespace Baked;
 
 public static class TestingExtensions
 {
-    public static void AddTesting(this List<ILayer> layers) =>
-        layers.Add(new TestingLayer());
-
-    public static void ConfigureTestConfiguration(this LayerConfigurator configurator, Action<TestConfiguration> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void Add<T>(this IMockCollection mocks, bool singleton = false, Action<Mock<T>>? setup = default) where T : class =>
-        mocks.Add(new(
-            Type: typeof(T),
-            Singleton: singleton,
-            Setup: setup == default ? default : obj => setup((Mock<T>)obj)
-        ));
-
-    public static void Add(this IMockCollection mocks, Type service, bool singleton = false, Action<Mock>? setup = default) =>
-        mocks.Add(new(
-            Type: service,
-            Singleton: singleton,
-            Setup: setup == default ? default : obj => setup(obj)
-        ));
-
-    public static void Returns<TMock, TResult>(this ISetup<TMock, TResult> setup, params IList<TResult> results) where TMock : class
+    public class Configurator(LayerConfigurator _configurator)
     {
-        int currentResultIndex = 0;
-
-        setup.Returns(() =>
-        {
-            if (currentResultIndex >= results.Count)
-            {
-                currentResultIndex = 0;
-            }
-
-            return results[currentResultIndex++];
-        });
+        public void ConfigureTestConfiguration(Action<TestConfiguration> configuration) =>
+            _configurator.Configure(configuration);
     }
 
-    public static void ReturnsAsync<TMock, TResult>(this ISetup<TMock, Task<TResult>> setup, params IList<TResult> results) where TMock : class
+    extension(LayerConfigurator configurator)
     {
-        int currentResultIndex = 0;
-
-        setup.ReturnsAsync(() =>
-        {
-            if (currentResultIndex >= results.Count)
-            {
-                currentResultIndex = 0;
-            }
-
-            return results[currentResultIndex++];
-        });
+        public Configurator Testing => new(configurator);
     }
+
+    extension(List<ILayer> layers)
+    {
+        public void AddTesting() =>
+            layers.Add(new TestingLayer());
+    }
+
+    extension(IMockCollection mocks)
+    {
+        public void Add<T>(
+            bool singleton = false,
+            Action<Mock<T>>? setup = default
+        ) where T : class =>
+            mocks.Add(new(
+                Type: typeof(T),
+                Singleton: singleton,
+                Setup: setup == default ? default : obj => setup((Mock<T>)obj)
+            ));
+
+        public void Add(Type service,
+            bool singleton = false,
+            Action<Mock>? setup = default
+        ) =>
+            mocks.Add(new(
+                Type: service,
+                Singleton: singleton,
+                Setup: setup == default ? default : obj => setup(obj)
+            ));
+    }
+
+    extension<TMock, TResult>(ISetup<TMock, TResult> setup) where TMock : class
+    {
+        public void Returns(params IList<TResult> results)
+        {
+            int currentResultIndex = 0;
+
+            setup.Returns(() =>
+            {
+                if (currentResultIndex >= results.Count)
+                {
+                    currentResultIndex = 0;
+                }
+
+                return results[currentResultIndex++];
+            });
+        }
+    }
+
+    extension<TMock, TResult>(ISetup<TMock, Task<TResult>> setup) where TMock : class
+    {
+        public void ReturnsAsync(params IList<TResult> results)
+        {
+            int currentResultIndex = 0;
+
+            setup.ReturnsAsync(() =>
+            {
+                if (currentResultIndex >= results.Count)
+                {
+                    currentResultIndex = 0;
+                }
+
+                return results[currentResultIndex++];
+            });
+        }
+    }
+
 }

@@ -6,14 +6,14 @@ public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigu
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.Add(new UriReturnIsRedirectConvention());
             builder.Conventions.Add(new UriReturnWithoutParameterIsGetConvention());
             builder.Conventions.Add(new UriReturnWithParameterIsFormPostConvention(), order: -10);
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("System.Net");
         });

@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class BindingExtensions
 {
-    public static void AddBinding(this List<IFeature> features, Func<BindingConfigurator, IFeature<BindingConfigurator>> configure) =>
-        features.Add(configure(new()));
+    extension(List<IFeature> features)
+    {
+        public void AddBinding(Func<BindingConfigurator, IFeature<BindingConfigurator>> configure) =>
+            features.Add(configure(new()));
+    }
 }

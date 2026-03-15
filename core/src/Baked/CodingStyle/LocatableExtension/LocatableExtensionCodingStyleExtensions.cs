@@ -7,18 +7,24 @@ namespace Baked;
 
 public static class LocatableExtensionCodingStyleExtensions
 {
-    public static LocatableExtensionCodingStyleFeature LocatableExtension(this CodingStyleConfigurator _) =>
-        new();
-
-    public static bool TryGetLocatableTypeFromExtension(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)
+    extension(CodingStyleConfigurator _)
     {
-        locatableType = default;
+        public LocatableExtensionCodingStyleFeature LocatableExtension() =>
+            new();
+    }
 
-        if (!type.TryGetMetadata(out var locatableExtensionMetadata)) { return false; }
-        if (!locatableExtensionMetadata.TryGet<LocatableExtensionAttribute>(out var locatableExtensionAttribute)) { return false; }
+    extension(TypeModel type)
+    {
+        public bool TryGetLocatableTypeFromExtension(DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)
+        {
+            locatableType = default;
 
-        locatableType = domain.Types[locatableExtensionAttribute.LocatableType];
+            if (!type.TryGetMetadata(out var locatableExtensionMetadata)) { return false; }
+            if (!locatableExtensionMetadata.TryGet<LocatableExtensionAttribute>(out var locatableExtensionAttribute)) { return false; }
 
-        return true;
+            locatableType = domain.Types[locatableExtensionAttribute.LocatableType];
+
+            return true;
+        }
     }
 }
