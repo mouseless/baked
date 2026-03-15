@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class RemainingServicesAreSingletonCodingStyleExtensions
 {
-    public static RemainingServicesAreSingletonCodingStyleFeature RemainingServicesAreSingleton(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public RemainingServicesAreSingletonCodingStyleFeature RemainingServicesAreSingleton() =>
+            new();
+    }
 }

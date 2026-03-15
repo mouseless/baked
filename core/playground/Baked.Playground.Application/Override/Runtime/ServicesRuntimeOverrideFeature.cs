@@ -7,7 +7,7 @@ public class ServicesRuntimeOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, SampleExceptionHandler>();
             services.AddHostedService<SeedDataTrigger>();

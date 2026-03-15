@@ -11,7 +11,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodComponent(
                 when: c => c.Method.DefaultOverload.ReturnsList(),

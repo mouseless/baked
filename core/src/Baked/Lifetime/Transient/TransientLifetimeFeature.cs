@@ -6,12 +6,12 @@ public class TransientLifetimeFeature : IFeature<LifetimeConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<TransientAttribute>();
         });
 
-        configurator.ConfigureDomainServiceCollection((services, domain) =>
+        configurator.Domain.ConfigureDomainServiceCollection((services, domain) =>
         {
             foreach (var transient in domain.Types.Having<TransientAttribute>())
             {

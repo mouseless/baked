@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class RoutedTypesAsNavLinksUxExtensions
 {
-    public static RoutedTypesAsNavLinksUxFeature RoutedTypesAsNavLinks(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public RoutedTypesAsNavLinksUxFeature RoutedTypesAsNavLinks() =>
+            new();
+    }
 }

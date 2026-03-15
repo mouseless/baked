@@ -1,17 +1,19 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.CodingStyle.ObjectAsJson;
 
 public class NullTypesAreObjectSchemaFilter : ISchemaFilter
 {
-    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+    public void Apply(IOpenApiSchema schema, SchemaFilterContext _)
     {
-        foreach (var property in schema.Properties.Values)
+        if (schema.Properties is null) { return; }
+
+        foreach (var property in schema.Properties.Values.OfType<OpenApiSchema>())
         {
             if (property.Type is null)
             {
-                property.Type = "object";
+                property.Type = JsonSchemaType.Object;
             }
         }
     }

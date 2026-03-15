@@ -8,80 +8,86 @@ namespace Baked;
 
 public static class MockCoreExtensions
 {
-    public static MockCoreFeature Mock(this CoreConfigurator _) =>
-        new();
-
-    public static TimeProvider TheTime(this Mocker mockMe,
-        DateTime? now = default,
-        bool passSomeTime = false,
-        bool reset = false
-    )
+    extension(CoreConfigurator _)
     {
-        var fakeTimeProvider = (ResettableFakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
-
-        if (reset)
-        {
-            fakeTimeProvider.Reset();
-        }
-
-        if (now is not null)
-        {
-            fakeTimeProvider.SetUtcNow(new(now.Value, fakeTimeProvider.LocalTimeZone.BaseUtcOffset));
-        }
-
-        if (passSomeTime)
-        {
-            fakeTimeProvider.Advance(TimeSpan.FromSeconds(1));
-        }
-
-        return fakeTimeProvider;
+        public MockCoreFeature Mock() =>
+            new();
     }
 
-    public static void ASetting<T>(this Mocker mockMe,
-        string? key = default,
-        T? value = default
-    ) => mockMe.ASetting(key: key, value: $"{value}");
-
-    public static void ASetting(this Mocker mockMe,
-        string? key = default,
-        string? value = default
-    )
+    extension(Mocker mockMe)
     {
-        key ??= "Test:Configuration";
-        value ??= "value";
+        public TimeProvider TheTime(
+            DateTime? now = default,
+            bool passSomeTime = false,
+            bool reset = false
+        )
+        {
+            var fakeTimeProvider = (ResettableFakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
 
-        var settings = mockMe.Spec.GiveMe.The<FakeSettings>();
+            if (reset)
+            {
+                fakeTimeProvider.Reset();
+            }
 
-        settings[key] = value;
-    }
+            if (now is not null)
+            {
+                fakeTimeProvider.SetUtcNow(new(now.Value, fakeTimeProvider.LocalTimeZone.BaseUtcOffset));
+            }
 
-    public static IConfiguration TheConfiguration(this Mocker mockMe,
-        Func<string, string?>? defaultValueProvider = default
-    )
-    {
-        defaultValueProvider ??= _ => default;
+            if (passSomeTime)
+            {
+                fakeTimeProvider.Advance(TimeSpan.FromSeconds(1));
+            }
 
-        var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
-        var settings = mockMe.Spec.GiveMe.The<FakeSettings>();
+            return fakeTimeProvider;
+        }
 
-        Moq.Mock.Get(configuration)
-           .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
-           {
-               var mockSection = new Mock<IConfigurationSection>();
+        public void ASetting<T>(
+            string? key = default,
+            T? value = default
+        ) => mockMe.ASetting(key: key, value: $"{value}");
 
-               mockSection.Setup(s => s.Value).Returns(() =>
+        public void ASetting(
+            string? key = default,
+            string? value = default
+        )
+        {
+            key ??= "Test:Configuration";
+            value ??= "value";
+
+            var settings = mockMe.Spec.GiveMe.The<FakeSettings>();
+
+            settings[key] = value;
+        }
+
+        public IConfiguration TheConfiguration(
+            Func<string, string?>? defaultValueProvider = default
+        )
+        {
+            defaultValueProvider ??= _ => default;
+
+            var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
+            var settings = mockMe.Spec.GiveMe.The<FakeSettings>();
+
+            Moq.Mock.Get(configuration)
+               .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
                {
-                   if (settings.TryGetValue(key, out var result))
-                   {
-                       return result;
-                   }
+                   var mockSection = new Mock<IConfigurationSection>();
 
-                   return defaultValueProvider(key);
+                   mockSection.Setup(s => s.Value).Returns(() =>
+                   {
+                       if (settings.TryGetValue(key, out var result))
+                       {
+                           return result;
+                       }
+
+                       return defaultValueProvider(key);
+                   });
+
+                   return mockSection.Object;
                });
 
-               return mockSection.Object;
-           });
-
-        return configuration;
+            return configuration;
+        }
     }
 }

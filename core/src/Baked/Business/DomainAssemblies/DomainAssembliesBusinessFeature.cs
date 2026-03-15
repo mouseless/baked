@@ -20,7 +20,7 @@ public class DomainAssembliesBusinessFeature(
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainTypeCollection(types =>
+        configurator.Domain.ConfigureDomainTypeCollection(types =>
         {
             foreach (var (assembly, _) in _assemblyDescriptors)
             {
@@ -34,13 +34,13 @@ public class DomainAssembliesBusinessFeature(
             }
         });
 
-        configurator.ConfigureConfigurationBuilder(configuration =>
+        configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
             {
               "Logging": {
                 "LogLevel": {
-                  "Default": "{{(configurator.IsProduction() ? "Error" : "Information")}}",
+                  "Default": "{{(configurator.IsProduction ? "Error" : "Information")}}",
                   "Microsoft.AspNetCore": "Error",
                   "Microsoft.Hosting.Lifetime": "Information"
                 }
@@ -49,7 +49,7 @@ public class DomainAssembliesBusinessFeature(
             """);
         });
 
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
             builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
@@ -119,7 +119,7 @@ public class DomainAssembliesBusinessFeature(
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
             {
@@ -130,14 +130,14 @@ public class DomainAssembliesBusinessFeature(
             }
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
                     assembly => assembly
@@ -148,7 +148,7 @@ public class DomainAssembliesBusinessFeature(
             });
         });
 
-        configurator.ConfigureDomainServiceCollection(services =>
+        configurator.Domain.ConfigureDomainServiceCollection(services =>
         {
             services.References.AddRange(_assemblyDescriptors.Select(ad => ad.assembly));
             services.Usings.AddRange([
@@ -158,11 +158,11 @@ public class DomainAssembliesBusinessFeature(
             ]);
         });
 
-        configurator.ConfigureServiceProvider(sp =>
+        configurator.Runtime.ConfigureServiceProvider(sp =>
         {
             Caster.SetServiceProvider(sp);
 
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)]
                     .CreateRequiredImplementationInstance<ICasterConfigurer>()
@@ -170,7 +170,7 @@ public class DomainAssembliesBusinessFeature(
             });
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.SetUps.Add(spec =>
             {
@@ -178,7 +178,7 @@ public class DomainAssembliesBusinessFeature(
             });
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             foreach (var (assembly, _) in _assemblyDescriptors)
             {

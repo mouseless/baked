@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class HttpCommunicationExtensions
 {
-    public static HttpCommunicationFeature Http(this CommunicationConfigurator _) =>
-        new();
+    extension(CommunicationConfigurator _)
+    {
+        public HttpCommunicationFeature Http() =>
+            new();
+    }
 }

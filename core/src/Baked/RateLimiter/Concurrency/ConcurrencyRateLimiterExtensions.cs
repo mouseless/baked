@@ -6,8 +6,11 @@ namespace Baked;
 
 public static class ConcurrencyRateLimiterExtensions
 {
-    public static ConcurrencyRateLimiterFeature Concurrency(this RateLimiterConfigurator _,
-        Setting<int>? permitLimit = default,
-        Setting<int>? queueLimit = default
-    ) => new(permitLimit, queueLimit);
+    extension(RateLimiterConfigurator _)
+    {
+        public ConcurrencyRateLimiterFeature Concurrency(
+            Setting<int>? permitLimit = default,
+            Setting<int>? queueLimit = default
+        ) => new(permitLimit, queueLimit);
+    }
 }

@@ -14,8 +14,8 @@ public class IncludeClassDocsForActionNamesConvention(IEnumerable<string> action
         if (!_actionNames.Contains(action.Name)) { return; }
         if (context.Type.Documentation is null) { return; }
 
-        var summary = context.Type.Documentation.GetSummary();
-        var remarks = context.Type.Documentation.GetRemarks();
+        var summary = context.Type.Documentation.Summary;
+        var remarks = context.Type.Documentation.Remarks;
         if (summary is null && remarks is null) { return; }
 
         action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary.EscapeNewLines()}\", Description = \"{remarks.EscapeNewLines()}\")");

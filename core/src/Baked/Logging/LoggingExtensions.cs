@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class LoggingExtensions
 {
-    public static void AddLogging(this List<IFeature> features, Func<LoggingConfigurator, IFeature<LoggingConfigurator>> configure) =>
-        features.Add(configure(new()));
+    extension(List<IFeature> features)
+    {
+        public void AddLogging(FeatureFunc<LoggingConfigurator> configure) =>
+            features.Add(configure(new()));
+    }
 }

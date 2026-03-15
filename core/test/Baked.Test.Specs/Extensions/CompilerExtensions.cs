@@ -5,22 +5,25 @@ namespace Baked.Test;
 
 public static class CompilerExtensions
 {
-    public static Compiler ACompiler(this Stubber _,
-        string? code = default,
-        IEnumerable<Type>? referencesFrom = default
-    )
+    extension(Stubber _)
     {
-        code ??= "public class Test { }";
-        referencesFrom ??= [typeof(string)];
-
-        var descriptor = new GeneratedAssemblyDescriptor("Test");
-        descriptor.Codes.Add(code);
-
-        foreach (var type in referencesFrom)
+        public Compiler ACompiler(
+            string? code = default,
+            IEnumerable<Type>? referencesFrom = default
+        )
         {
-            descriptor.AddReferenceFrom(type);
-        }
+            code ??= "public class Test { }";
+            referencesFrom ??= [typeof(string)];
 
-        return new(descriptor);
+            var descriptor = new GeneratedAssemblyDescriptor("Test");
+            descriptor.Codes.Add(code);
+
+            foreach (var type in referencesFrom)
+            {
+                descriptor.AddReferenceFrom(type);
+            }
+
+            return new(descriptor);
+        }
     }
 }

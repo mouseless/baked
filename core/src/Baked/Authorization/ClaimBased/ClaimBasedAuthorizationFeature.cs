@@ -10,7 +10,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetMethodAttribute(
                 attribute: c => c.Type.Get<AllowAnonymousAttribute>(),
@@ -27,7 +27,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddAuthorization(options =>
             {
@@ -40,12 +40,12 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app => app.UseAuthorization(), order: 20);
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("Microsoft.AspNetCore.Authorization");
         });

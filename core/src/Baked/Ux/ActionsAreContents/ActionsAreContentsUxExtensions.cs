@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class ActionsAreContentsUxExtensions
 {
-    public static ActionsAreContentsUxFeature ActionsAreContents(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public ActionsAreContentsUxFeature ActionsAreContents() =>
+            new();
+    }
 }

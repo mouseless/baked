@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Authentication;
@@ -15,7 +15,7 @@ public class AddFormParameterToRedirectOperationFilter<T>(string _name, OpenApiS
         if (!operation.RequestBody.Content.TryGetValue("multipart/form-data", out var content)) { return; }
         if (operation.Responses is null || !operation.Responses.ContainsKey("302")) { return; }
 
-        content.Schema.Required.Add(_name);
-        content.Schema.Properties[_name] = _property;
+        content.Schema?.Required?.Add(_name);
+        content.Schema?.Properties?[_name] = _property;
     }
 }

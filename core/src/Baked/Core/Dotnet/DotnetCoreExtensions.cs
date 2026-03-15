@@ -6,8 +6,11 @@ namespace Baked;
 
 public static class DotnetCoreExtensions
 {
-    public static DotnetCoreFeature Dotnet(this CoreConfigurator _,
-        Assembly? entryAssembly = default,
-        string? baseNamespace = default
-    ) => new(entryAssembly, baseNamespace is not null ? _ => baseNamespace : a => a.GetNameBeforeApplicationSuffix());
+    extension(CoreConfigurator _)
+    {
+        public DotnetCoreFeature Dotnet(
+            Assembly? entryAssembly = default,
+            string? baseNamespace = default
+        ) => new(entryAssembly, baseNamespace is not null ? _ => baseNamespace : a => a.GetNameBeforeApplicationSuffix());
+    }
 }

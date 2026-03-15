@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Authentication;
@@ -10,6 +10,6 @@ public class SecurityDefinitionDocumentFilter(string _schemeId, OpenApiSecurityS
     {
         if (!string.IsNullOrWhiteSpace(_documentName) && context.DocumentName != _documentName) { return; }
 
-        swaggerDoc.Components.SecuritySchemes[_schemeId] = _scheme;
+        swaggerDoc.Components?.SecuritySchemes?[_schemeId] = _scheme;
     }
 }

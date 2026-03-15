@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class ValueTypeCodingStyleExtensions
 {
-    public static ValueTypeCodingStyleFeature ValueType(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public ValueTypeCodingStyleFeature ValueType() =>
+            new();
+    }
 }

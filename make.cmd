@@ -7,10 +7,12 @@ if "%1"=="" (
     echo Usage: %0 ^<command^>
     echo.
     echo Available commands: run, format, build, test, coverage, install
+    echo Test options: %0 test, %0 test backend, %0 test frontend
     exit /b 1
 )
 
 set CMD=%1
+set SUBCMD=%2
 
 if /i "%CMD%"=="format" goto format
 if /i "%CMD%"=="install" goto install
@@ -60,21 +62,36 @@ goto end
 
 :test
 echo Running tests...
+if /i "%SUBCMD%"=="backend" goto test_backend
+if /i "%SUBCMD%"=="frontend" goto test_frontend
+call :test_backend
+if errorlevel 1 goto end
+call :test_frontend
+goto end
+
+:test_backend
+echo Running backend tests...
 cd core
-dotnet test --logger quackers
+dotnet test --output Detailed
+set TEST_EXIT=%ERRORLEVEL%
 cd ..
+exit /b %TEST_EXIT%
+
+:test_frontend
+echo Running frontend tests...
 cd ui
 set BUILD_SILENT=1
-npm test
+call npm test
+set TEST_EXIT=%ERRORLEVEL%
 cd ..
-goto end
+exit /b %TEST_EXIT%
 
 :coverage
 echo Generating coverage report...
 cd core
 if exist .coverage rmdir /s /q .coverage
-dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test\runsettings.xml
-dotnet reportgenerator -reports:.coverage\*\coverage.cobertura.xml -targetdir:.coverage\html
+dotnet test -c Release --coverage --coverage-output-format cobertura --coverage-settings .\test\runsettings.xml --report-trx --results-directory .coverage
+dotnet reportgenerator -reports:.coverage\*.cobertura.xml -targetdir:.coverage\html
 start .coverage\html\index.html
 cd ..
 goto end

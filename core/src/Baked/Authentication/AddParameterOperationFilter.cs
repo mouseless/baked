@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Authentication;
@@ -11,13 +11,13 @@ public class AddParameterOperationFilter<T>(OpenApiParameter _parameter, int _po
         if (!string.IsNullOrWhiteSpace(_documentName) && context.DocumentName != _documentName) { return; }
         if (!context.MethodInfo.CustomAttributes.Any(a => a.AttributeType == typeof(T))) { return; }
 
-        if (_position >= 0 && _position < operation.Parameters.Count)
+        if (_position >= 0 && _position < operation.Parameters?.Count)
         {
             operation.Parameters.Insert(_position, _parameter);
         }
         else
         {
-            operation.Parameters.Add(_parameter);
+            operation.Parameters?.Add(_parameter);
         }
     }
 }

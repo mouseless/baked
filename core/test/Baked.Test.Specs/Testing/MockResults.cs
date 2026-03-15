@@ -25,7 +25,7 @@ public class MockResults : TestSpec
     {
         var mock = new Mock<IMockedInterface>();
         var setup = () => mock.Setup(c => c.TestAsyncObject(It.IsAny<object>()));
-        setup().ReturnsAsync(["first", "second"]);
+        setup().ReturnsAsync("first", "second");
 
         (await mock.Object.TestAsyncObject(this)).ShouldBe("first");
         (await mock.Object.TestAsyncObject(this)).ShouldBe("second");

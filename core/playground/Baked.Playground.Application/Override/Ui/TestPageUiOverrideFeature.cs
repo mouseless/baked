@@ -14,7 +14,7 @@ public class TestPageUiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeComponent(
                 when: c => c.Type.Is<TestPage>(),

@@ -39,11 +39,11 @@ jobs:
       run:
         working-directory: core
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9
+          dotnet-version: 10
       - name: Restore Dependencies
         run: dotnet restore
       - name: Format Solution
@@ -61,11 +61,11 @@ jobs:
       run:
         working-directory: core
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9
+          dotnet-version: 10
       - name: Test
         if: ${{ matrix.os != 'ubuntu-latest' }}
         run: dotnet test -c Release
@@ -76,28 +76,22 @@ jobs:
         # to log collector warnings.
         run: |
           dotnet test -c Release \
-            --collect:"XPlat Code Coverage" \
-            --logger trx \
-            --results-directory .coverage \
-            --settings test/runsettings.xml
-      - name: Merge Multiple Test Coverage Report
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
-        with:
-          reports: 'core/.coverage/*/coverage.cobertura.xml'
-          targetdir: 'core/coveragereport'
-          reporttypes: 'Cobertura'
+            --coverage \
+            --coverage-output-format cobertura \
+            --coverage-settings ./test/runsettings.xml \
+            --report-trx \
+            --results-directory .coverage
       - name: Code Coverage Summary Report
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: core/coveragereport/Cobertura.xml
+          filename: core/.coverage/*.cobertura.xml
           badge: true
           format: 'markdown'
           output: 'both'
       - name: Upload Reports
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-reports
           path: code-coverage-results.md
@@ -106,9 +100,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download Reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: coverage-reports
       - name: Write to Job Summary

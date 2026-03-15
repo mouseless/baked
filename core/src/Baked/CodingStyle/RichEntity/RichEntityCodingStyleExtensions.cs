@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class RichEntityCodingStyleExtensions
 {
-    public static RichEntityCodingStyleFeature RichEntity(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public RichEntityCodingStyleFeature RichEntity() =>
+            new();
+    }
 }

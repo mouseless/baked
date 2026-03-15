@@ -17,7 +17,7 @@ application.
 This target is provided in `AddServices` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureAuthenticationCollection(authentications =>
+configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
 {
     ...
 });
@@ -29,7 +29,7 @@ This target is provided in `Build` phase as the first target. To configure it in
 a feature;
 
 ```csharp
-configurator.ConfigureMiddlewareCollection(middlewares =>
+configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
 {
     ...
 });
@@ -41,7 +41,7 @@ This target is provided in `Build` phase right after `IMiddlewareCollection`. To
 configure it in a feature;
 
 ```csharp
-configurator.ConfigureEndpointRouteBuilder(routes =>
+configurator.HttpServer.ConfigureEndpointRouteBuilder(routes =>
 {
     ...
 });

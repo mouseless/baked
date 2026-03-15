@@ -6,12 +6,12 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<SingletonAttribute>();
         });
 
-        configurator.ConfigureDomainServiceCollection((services, domain) =>
+        configurator.Domain.ConfigureDomainServiceCollection((services, domain) =>
         {
             foreach (var singleton in domain.Types.Having<SingletonAttribute>())
             {

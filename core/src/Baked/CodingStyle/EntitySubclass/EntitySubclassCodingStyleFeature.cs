@@ -10,7 +10,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<EntitySubclassAttribute>();
 
@@ -67,9 +67,9 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
             builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(EntitySubclassCodingStyleFeature),
                     assembly => assembly
@@ -80,9 +80,9 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            configurator.UsingGeneratedContext(context =>
+            configurator.CodeGeneration.UsingGeneratedContext(context =>
             {
                 services.AddFromAssembly(context.Assemblies[nameof(EntitySubclassCodingStyleFeature)]);
             });

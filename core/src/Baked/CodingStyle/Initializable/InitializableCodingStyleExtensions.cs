@@ -5,7 +5,10 @@ namespace Baked;
 
 public static class InitializableCodingStyleExtensions
 {
-    public static InitializableCodingStyleFeature Initializable(this CodingStyleConfigurator _,
-        string[]? initializerNames = default
-    ) => new(initializerNames ?? ["With"]);
+    extension(CodingStyleConfigurator _)
+    {
+        public InitializableCodingStyleFeature Initializable(
+            string[]? initializerNames = default
+        ) => new(initializerNames ?? ["With"]);
+    }
 }

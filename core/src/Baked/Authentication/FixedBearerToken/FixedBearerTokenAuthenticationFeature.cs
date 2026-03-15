@@ -3,7 +3,7 @@ using Baked.Architecture;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.Authentication.FixedBearerToken;
 
@@ -12,7 +12,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthenticationCollection(authentications =>
+        configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
         {
             authentications.Add(
                 scheme: "FixedBearerToken",
@@ -27,12 +27,12 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton(new TokenOptions(_tokens));
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             foreach (var documentName in _documentNames)
             {
@@ -56,7 +56,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
                         name,
                         new()
                         {
-                            Type = "string",
+                            Type = JsonSchemaType.String,
                             Description = Settings.Optional($"Authentication:FixedBearerToken:Description:{name}", name)
                         },
                         documentName: documentName
@@ -67,7 +67,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
                     "hash",
                     new()
                     {
-                        Type = "string",
+                        Type = JsonSchemaType.String,
                         Description = Settings.Optional(
                             "Authentication:FixedBearerToken:Description:hash",
                             "Concatenate all form post parameters with secret " +

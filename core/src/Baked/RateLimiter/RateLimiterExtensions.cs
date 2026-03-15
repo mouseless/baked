@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class RateLimiterExtensions
 {
-    public static void AddRateLimiter(this List<IFeature> features, Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>> configure) =>
-       features.Add(configure(new()));
+    extension(List<IFeature> features)
+    {
+        public void AddRateLimiter(FeatureFunc<RateLimiterConfigurator> configure) =>
+            features.Add(configure(new()));
+    }
 }

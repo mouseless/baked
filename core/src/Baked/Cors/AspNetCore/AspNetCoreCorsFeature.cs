@@ -10,12 +10,12 @@ public class AspNetCoreCorsFeature(Action<CorsOptions> _optionsBuilder, string _
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddCors(options => _optionsBuilder(options));
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app => app.UseCors(_defaultPolicyName));
         });

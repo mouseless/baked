@@ -30,8 +30,11 @@ implementing a new layer;
    1. `Add` extension to `List<ILayer>`, e.g., `AddRuntime()`
    1. `Get` extensions to `ApplicationContext`, e.g.,
       `GetWebApplicationBuilder()`, `GetWebApplication()`
-   1. `Configure` extensions to `LayerConfigurator` per configuration
-      target(s), e.g., `ConfigureServiceCollection()`
+    1. A nested `Configurator` class that wraps `LayerConfigurator` and exposes
+        `Configure*` or other layer-specific methods per configuration target,
+        e.g., `ConfigureServiceCollection()`
+    1. An extension to `LayerConfigurator` that returns the layer-specific
+        configurator, e.g., `configurator.Runtime`, `configurator.HttpClient`
 1. Place phase implementations as nested classes under the layer class
 1. Don't use any suffix for phases and use method-like names, e.g., `Build` and
    `Run`
@@ -75,7 +78,7 @@ public class LayerX : LayerBase
 ## Adding Phases
 
 By default `LayerBase` returns no phases. To add one or more phases into the
-application, you need to override `GetStartPhases()` or `GetGeneratePhases()` methods 
+application, you need to override `GetStartPhases()` or `GetGeneratePhases()` methods
 as shown below;
 
 ```csharp
@@ -96,7 +99,7 @@ public class SampleLayer : LayerBase
 }
 ```
 
-Here `SampleLayer` adds two phases, `DoA` to `Start` mode and `DoB` to `Generate` 
+Here `SampleLayer` adds two phases, `DoA` to `Start` mode and `DoB` to `Generate`
 mode of the application.
 
 > [!TIP]

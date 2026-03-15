@@ -4,7 +4,7 @@ using Baked.Orm;
 using Baked.RestApi;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.CodingStyle.Id;
 
@@ -12,7 +12,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.RemoveTypeAttribute<ValueTypeAttribute>(
                 when: c => c.Type.Is<Business.Id>(),
@@ -25,9 +25,9 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(IdCodingStyleFeature),
                     assembly => assembly
@@ -38,9 +38,9 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureAutoPersistenceModel(model =>
+        configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
-            configurator.UsingGeneratedContext(context =>
+            configurator.CodeGeneration.UsingGeneratedContext(context =>
             {
                 context.Assemblies[nameof(IdCodingStyleFeature)]
                     .CreateImplementationInstance<IAutoPersistenceModelConfigurer>()
@@ -48,18 +48,18 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
             options.SerializerSettings.Converters.Add(new IdJsonConverter());
             options.SerializerSettings.Converters.Add(new NullableJsonConverter<Business.Id>(new IdJsonConverter()));
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             // Use 'MapType' instead of 'ISchemaFilter' for
             // not render 'Id' as a reference and display properties
             // instead of only '$ref' in schemas
-            swaggerGenOptions.MapType<Business.Id>(() => new OpenApiSchema { Type = "string" });
+            swaggerGenOptions.MapType<Business.Id>(() => new OpenApiSchema { Type = JsonSchemaType.String });
         });
     }
 }

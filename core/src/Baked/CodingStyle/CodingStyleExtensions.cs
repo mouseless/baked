@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class CodingStyleExtensions
 {
-    public static void AddCodingStyles(this List<IFeature> features, IEnumerable<Func<CodingStyleConfigurator, IFeature<CodingStyleConfigurator>>> configures) =>
-        features.AddRange(configures.Select(configure => configure(new())));
+    extension(List<IFeature> features)
+    {
+        public void AddCodingStyles(IEnumerable<FeatureFunc<CodingStyleConfigurator>> configures) =>
+            features.AddRange(configures.Select(configure => configure(new())));
+    }
 }

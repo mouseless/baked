@@ -14,38 +14,38 @@ public class ConcurrencyRateLimiterFeature(
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(action =>
                 action.AdditionalAttributes.Add("""EnableRateLimiting("Concurrency")""")
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddRateLimiter(options =>
                 options.AddConcurrencyLimiter(policyName: "Concurrency", options =>
                 {
-                    options.PermitLimit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment() ? 5 : 20);
+                    options.PermitLimit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment ? 5 : 20);
                     options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                    options.QueueLimit = _queueLimit?.GetValue() ?? (configurator.IsDevelopment() ? 100 : 1000);
+                    options.QueueLimit = _queueLimit?.GetValue() ?? (configurator.IsDevelopment ? 100 : 1000);
                 })
             );
         });
 
-        configurator.ConfigureThreadOptions(options =>
+        configurator.Runtime.ConfigureThreadOptions(options =>
         {
-            var limit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment() ? 5 : 20);
+            var limit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment ? 5 : 20);
             options.MinThreadCount = limit * 2;
             options.MaxThreadCount = limit * 4;
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add(app => app.UseRateLimiter(), order: -30);
         });
 
-        configurator.ConfigureApiModel(api =>
+        configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("Microsoft.AspNetCore.RateLimiting");
         });

@@ -5,39 +5,46 @@ namespace Baked.Test;
 
 public static class ApplicationContextExtensions
 {
-    public static ApplicationContext AnApplicationContext(this Stubber _) => new();
-    public static ApplicationContext AnApplicationContext<T>(this Stubber giveMe, T content) where T : notnull
+    extension(Stubber giveMe)
     {
-        var result = giveMe.AnApplicationContext();
+        public ApplicationContext AnApplicationContext() => new();
 
-        result.Add(content);
-
-        return result;
-    }
-
-    public static ApplicationContext AnApplicationContext<T1, T2>(this Stubber giveMe, T1 content1, T2 content2)
-        where T1 : notnull
-        where T2 : notnull
-    {
-        var result = giveMe.AnApplicationContext();
-
-        result.Add(content1);
-        result.Add(content2);
-
-        return result;
-    }
-
-    public static void ShouldHave<T>(this ApplicationContext context, T value)
-    {
-        context.Has<T>().ShouldBeTrue($"Context should have an item with type {typeof(T)}");
-        context.Get<T>().ShouldBe(value);
-    }
-
-    public static void ShouldNotHave<T>(this ApplicationContext context, T value)
-    {
-        if (context.Has<T>())
+        public ApplicationContext AnApplicationContext<T>(T content) where T : notnull
         {
-            context.Get<T>().ShouldNotBe(value);
+            var result = giveMe.AnApplicationContext();
+
+            result.Add(content);
+
+            return result;
+        }
+
+        public ApplicationContext AnApplicationContext<T1, T2>(T1 content1, T2 content2)
+            where T1 : notnull
+            where T2 : notnull
+        {
+            var result = giveMe.AnApplicationContext();
+
+            result.Add(content1);
+            result.Add(content2);
+
+            return result;
+        }
+    }
+
+    extension(ApplicationContext context)
+    {
+        public void ShouldHave<T>(T value)
+        {
+            context.Has<T>().ShouldBeTrue($"Context should have an item with type {typeof(T)}");
+            context.Get<T>().ShouldBe(value);
+        }
+
+        public void ShouldNotHave<T>(T value)
+        {
+            if (context.Has<T>())
+            {
+                context.Get<T>().ShouldNotBe(value);
+            }
         }
     }
 }

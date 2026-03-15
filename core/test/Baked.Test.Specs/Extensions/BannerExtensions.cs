@@ -6,13 +6,22 @@ namespace Baked.Test;
 
 public static class BannerExtensions
 {
-    public static IBanner ABanner(this Mocker _) =>
-        new Mock<IBanner>().Object;
+    extension(Mocker _)
+    {
+        public IBanner ABanner() =>
+            new Mock<IBanner>().Object;
+    }
 
-    public static void VerifyPrinted(this IBanner banner) =>
-        Mock.Get(banner).Verify(b => b.Print());
+    extension(IBanner banner)
+    {
+        public void VerifyPrinted() =>
+            Mock.Get(banner).Verify(b => b.Print());
+    }
 
-    public static BakedBanner ABakedBanner(this Stubber _,
-        RunFlags runFlags = RunFlags.Start
-    ) => new(runFlags);
+    extension(Stubber _)
+    {
+        public BakedBanner ABakedBanner(
+            RunFlags runFlags = RunFlags.Start
+        ) => new(runFlags);
+    }
 }

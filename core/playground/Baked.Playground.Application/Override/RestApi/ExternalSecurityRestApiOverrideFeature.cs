@@ -1,6 +1,6 @@
 using Baked.Architecture;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Baked.Playground.Override.RestApi;
 
@@ -8,7 +8,7 @@ public class ExternalSecurityRestApiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             swaggerGenOptions.AddSecurityDefinition("Custom",
                 new()

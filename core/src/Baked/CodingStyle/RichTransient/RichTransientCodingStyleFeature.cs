@@ -12,7 +12,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<RichTransientAttribute>();
 
@@ -67,9 +67,9 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            configurator.UsingDomainModel(domain =>
+            configurator.Domain.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(RichTransientCodingStyleFeature),
                     assembly => assembly
@@ -80,9 +80,9 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             });
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            configurator.UsingGeneratedContext(context =>
+            configurator.CodeGeneration.UsingGeneratedContext(context =>
             {
                 services.AddFromAssembly(context.Assemblies[nameof(RichTransientCodingStyleFeature)]);
             });

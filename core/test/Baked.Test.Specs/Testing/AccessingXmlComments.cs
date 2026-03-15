@@ -9,7 +9,7 @@ public class AccessingXmlComments : TestSpec
     {
         var documentation = GiveMe.TheDocumentation<DocumentationSamples>();
 
-        documentation.GetSummary().ShouldBe("Class summary");
+        documentation.Summary.ShouldBe("Class summary");
     }
 
     [Test]
@@ -17,8 +17,8 @@ public class AccessingXmlComments : TestSpec
     {
         var documentation = GiveMe.TheDocumentation<DocumentationSamples>(method: nameof(DocumentationSamples.Method));
 
-        documentation.GetSummary().ShouldBe("Method summary");
-        documentation.GetRemarks().ShouldBe("Method description");
+        documentation.Summary.ShouldBe("Method summary");
+        documentation.Remarks.ShouldBe("Method description");
         documentation.GetExampleCode(@for: "request").ShouldBe("""
         {
           "parameter1": "value 1",
@@ -45,6 +45,6 @@ public class AccessingXmlComments : TestSpec
     {
         var documentation = GiveMe.TheDocumentation<DocumentedData>(property: nameof(DocumentedData.Property));
 
-        documentation.GetSummary().ShouldBe("Property summary");
+        documentation.Summary.ShouldBe("Property summary");
     }
 }

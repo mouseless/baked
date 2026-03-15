@@ -12,60 +12,72 @@ namespace Baked;
 
 public static class JwtAuthenticationExtensions
 {
-    public static JwtAuthenticationFeature Jwt(this AuthenticationConfigurator _,
-        Action<JwtBearerOptions>? configureOptions = default,
-        Action<JwtAuthenticationPlugin>? configurePlugin = default
-    )
+    extension(AuthenticationConfigurator _)
     {
-        configureOptions ??= new(options =>
+        public JwtAuthenticationFeature Jwt(
+            Action<JwtBearerOptions>? configureOptions = default,
+            Action<JwtAuthenticationPlugin>? configurePlugin = default
+        )
         {
-            options.TokenValidationParameters = new TokenValidationParameters
+            configureOptions ??= new(options =>
             {
-                ClockSkew = TimeSpan.FromSeconds(Settings.Required<int>("Authentication:Jwt:ClockSkewInSeconds")),
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = Settings.Required<string>("Authentication:Jwt:Issuer"),
-                ValidAudience = Settings.Required<string>("Authentication:Jwt:Audience"),
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.Required<string>("Authentication:Jwt:Key")))
-            };
-        });
-        configurePlugin ??= new(_ => { });
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ClockSkew = TimeSpan.FromSeconds(Settings.Required<int>("Authentication:Jwt:ClockSkewInSeconds")),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Settings.Required<string>("Authentication:Jwt:Issuer"),
+                    ValidAudience = Settings.Required<string>("Authentication:Jwt:Audience"),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.Required<string>("Authentication:Jwt:Key")))
+                };
+            });
+            configurePlugin ??= new(_ => { });
 
-        return new(configureOptions, configurePlugin);
+            return new(configureOptions, configurePlugin);
+        }
     }
 
-    public static bool IsJwt(this string token) =>
-       new JwtSecurityTokenHandler().CanReadToken(token.Replace("Bearer", string.Empty).Trim());
-
-    public static void ShouldBeJwt(this string token) =>
-       IsJwt(token).ShouldBeTrue();
-
-    public static void TheJwtSettings(this Mocker mockMe,
-        string? key = null,
-        string? issuer = null,
-        string? audience = null,
-        int? expirationForAccess = null,
-        int? expirationForRefresh = null
-    )
+    extension(string token)
     {
-        key ??= "9a0dc4b934ca4bb5b79bf43b5dcddcce";
-        issuer ??= "Issuer";
-        audience ??= "Audience";
-        expirationForAccess ??= 5;
-        expirationForRefresh ??= 50;
+        public bool IsJwt() =>
+            new JwtSecurityTokenHandler().CanReadToken(token.Replace("Bearer", string.Empty).Trim());
 
-        mockMe.ASetting(key: "Authentication:Jwt:Key", value: key);
-        mockMe.ASetting(key: "Authentication:Jwt:Issuer", value: issuer);
-        mockMe.ASetting(key: "Authentication:Jwt:Audience", value: audience);
-        mockMe.ASetting(key: "Authentication:Jwt:ExpiresInMinutes:Access", value: expirationForAccess.GetValueOrDefault());
-        mockMe.ASetting(key: "Authentication:Jwt:ExpiresInMinutes:Refresh", value: expirationForRefresh.GetValueOrDefault());
+        public void ShouldBeJwt() =>
+           token.IsJwt().ShouldBeTrue();
     }
 
-    public static JwtSecurityToken TheSecurityToken(this Stubber _, string credential) =>
-        new JwtSecurityTokenHandler().ReadJwtToken(credential);
+    extension(Mocker mockMe)
+    {
+        public void TheJwtSettings(
+            string? key = null,
+            string? issuer = null,
+            string? audience = null,
+            int? expirationForAccess = null,
+            int? expirationForRefresh = null
+        )
+        {
+            key ??= "9a0dc4b934ca4bb5b79bf43b5dcddcce";
+            issuer ??= "Issuer";
+            audience ??= "Audience";
+            expirationForAccess ??= 5;
+            expirationForRefresh ??= 50;
 
-    public static JwtTokenBuilder AJwtTokenBuilder(this Stubber giveMe) =>
-        new(giveMe.The<IConfiguration>(), giveMe.The<TimeProvider>());
+            mockMe.ASetting(key: "Authentication:Jwt:Key", value: key);
+            mockMe.ASetting(key: "Authentication:Jwt:Issuer", value: issuer);
+            mockMe.ASetting(key: "Authentication:Jwt:Audience", value: audience);
+            mockMe.ASetting(key: "Authentication:Jwt:ExpiresInMinutes:Access", value: expirationForAccess.GetValueOrDefault());
+            mockMe.ASetting(key: "Authentication:Jwt:ExpiresInMinutes:Refresh", value: expirationForRefresh.GetValueOrDefault());
+        }
+    }
+
+    extension(Stubber giveMe)
+    {
+        public JwtSecurityToken TheSecurityToken(string credential) =>
+            new JwtSecurityTokenHandler().ReadJwtToken(credential);
+
+        public JwtTokenBuilder AJwtTokenBuilder() =>
+            new(giveMe.The<IConfiguration>(), giveMe.The<TimeProvider>());
+    }
 }

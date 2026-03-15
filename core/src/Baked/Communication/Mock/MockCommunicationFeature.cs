@@ -7,7 +7,7 @@ public class MockCommunicationFeature(Action<DefaultResponseBuilder> _setupDefau
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureTestConfiguration(tests =>
+        configurator.Testing.ConfigureTestConfiguration(tests =>
         {
             var builder = new DefaultResponseBuilder();
             _setupDefaultResponses(builder);

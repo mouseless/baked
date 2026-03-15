@@ -35,7 +35,8 @@ Bake.New
 | Authentication(s)  | :white_check_mark:                       | :no_entry:                         |
 |                    | Fixed Bearer Token                       |                                    |
 | Authorization      | :white_check_mark: Claim Based           | :no_entry:                         |
-| Binding            | :white_check_mark: Rest                  | :white_check_mark:                 |
+| Binding(s)         | :white_check_mark:                       | :white_check_mark:                 |
+|                    | Rest                                     |                                    |
 | Business           | :white_check_mark: (No Default)          | :white_check_mark:                 |
 | Caching(s)         | :white_check_mark:                       | :white_check_mark:                 |
 |                    | In-Memory                                |                                    |
@@ -77,8 +78,9 @@ Bake.New
 | Logging            | :white_check_mark: Request               | :no_entry:                         |
 | Mocking Overrider  | :no_entry:                               | :white_check_mark: First Interface |
 | ORM                | :white_check_mark: Auto Map              | :white_check_mark:                 |
-| Theme              | :white_check_mark: (No Default)          | :white_check_mark:                 |
-| UX(s)              | :white_check_mark:                       | :white_check_mark:                 |
+| Rate Limiter       | :white_check_mark: Concurrency           | :no_entry:                         |
+| Theme              | :white_check_mark: (No Default)          | :no_entry:                         |
+| UX(s)              | :white_check_mark:                       | :no_entry:                         |
 |                    | Actions as Buttons                       |                                    |
 |                    | Actions are Contents                     |                                    |
 |                    | Actions as Data Panels                   |                                    |

@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class AddRemoveChildCodingStyleExtensions
 {
-    public static AddRemoveChildCodingStyleFeature AddRemoveChild(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public AddRemoveChildCodingStyleFeature AddRemoveChild() =>
+            new();
+    }
 }

@@ -6,12 +6,12 @@ public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<ScopedAttribute>();
         });
 
-        configurator.ConfigureDomainServiceCollection((services, domain) =>
+        configurator.Domain.ConfigureDomainServiceCollection((services, domain) =>
         {
             foreach (var scoped in domain.Types.Having<ScopedAttribute>())
             {

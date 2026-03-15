@@ -1,3 +1,5 @@
-﻿namespace Baked.Testing;
+﻿using Baked.Testing;
+
+namespace Baked.Monolith;
 
 public abstract class MonolithNfr : WebApplicationNfr;

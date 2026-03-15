@@ -11,7 +11,7 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "user"),
@@ -19,20 +19,20 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<Func<IMemoryCache>>(sp => () => sp.UsingCurrentScope().GetRequiredKeyedService<IMemoryCache>("ScopedMemory"));
             services.AddKeyedScoped<IMemoryCache, MemoryCache>("ScopedMemory");
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             app.Plugins.Add(
                 new CacheUserPlugin { ExpirationInMinutes = (int)clientExpiration.GetValue().TotalMinutes }
             );
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.TearDowns.Add(spec =>
             {

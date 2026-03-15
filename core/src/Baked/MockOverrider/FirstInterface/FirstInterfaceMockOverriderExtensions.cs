@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class FirstInterfaceMockOverriderExtensions
 {
-    public static FirstInterfaceMockOverriderFeature FirstInterface(this MockOverriderConfigurator _) =>
-        new();
+    extension(MockOverriderConfigurator _)
+    {
+        public FirstInterfaceMockOverriderFeature FirstInterface() =>
+            new();
+    }
 }

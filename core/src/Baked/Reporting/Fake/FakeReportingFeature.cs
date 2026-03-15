@@ -9,7 +9,7 @@ public class FakeReportingFeature(Setting<string> _basePath) :
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton(new ReportOptions(_basePath));
             services.AddSingleton<IReportContext, ReportContext>();

@@ -5,8 +5,11 @@ namespace Baked;
 
 public static class OverrideExtensions
 {
-    public static void AddOverrides(this List<IFeature> features)
+    extension(List<IFeature> features)
     {
-        features.Add(new RoutesRestApiOverrideFeature());
+        public void AddOverrides()
+        {
+            features.Add(new RoutesRestApiOverrideFeature());
+        }
     }
 }

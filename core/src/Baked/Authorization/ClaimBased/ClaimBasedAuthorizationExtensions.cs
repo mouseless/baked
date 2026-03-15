@@ -5,14 +5,17 @@ namespace Baked;
 
 public static class ClaimBasedAuthorizationExtensions
 {
-    public static ClaimBasedAuthorizationFeature ClaimBased(this AuthorizationConfigurator _,
-        IEnumerable<string>? claims = default,
-        IEnumerable<string>? baseClaims = default
-    )
+    extension(AuthorizationConfigurator _)
     {
-        claims ??= [];
-        baseClaims ??= [];
+        public ClaimBasedAuthorizationFeature ClaimBased(
+            IEnumerable<string>? claims = default,
+            IEnumerable<string>? baseClaims = default
+        )
+        {
+            claims ??= [];
+            baseClaims ??= [];
 
-        return new(claims, baseClaims);
+            return new(claims, baseClaims);
+        }
     }
 }

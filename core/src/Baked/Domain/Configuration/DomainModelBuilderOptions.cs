@@ -21,8 +21,8 @@ public class DomainModelBuilderOptions
     public class DomainIndexOptions
     {
         public ICollection<Type> Type { get; } = [];
+        public ICollection<Type> Property { get; } = [];
         public ICollection<Type> Method { get; } = [];
         public ICollection<Type> Parameter { get; } = [];
-        public ICollection<Type> Property { get; } = [];
     }
 }

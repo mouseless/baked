@@ -6,7 +6,7 @@ public class MockReportingFeature : IFeature<ReportingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.Mocks.Add<IReportContext>(singleton: true);
         });

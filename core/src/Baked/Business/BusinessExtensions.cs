@@ -10,168 +10,191 @@ namespace Baked;
 
 public static class BusinessExtensions
 {
-    public static void AddBusiness(this List<IFeature> features, Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) =>
-        features.Add(configure(new()));
+    extension(List<IFeature> features)
+    {
+        public void AddBusiness(FeatureFunc<BusinessConfigurator> configure) =>
+            features.Add(configure(new()));
+    }
 
+#pragma warning disable IDE0052
     static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 2, [typeof(IServiceCollection)]) ??
         throw new("AddTransientWithFactory<TService, TImplementation> should have existed");
 
     static readonly MethodInfo _addScopedWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddScopedWithFactory), 2, [typeof(IServiceCollection)]) ??
         throw new("AddScopedWithFactory<TService, TImplementation> should have existed");
+#pragma warning restore IDE0052
 
-    public static IServiceCollection AddTransientWithFactory(this IServiceCollection services, Type service) =>
-        (IServiceCollection?)_addTransientWithFactory.MakeGenericMethod(service, service).Invoke(null, [services]) ??
-        throw new("Should've returned an IServiceCollection instance");
-    public static IServiceCollection AddTransientWithFactory(this IServiceCollection services, Type service, Type implementation) =>
-        (IServiceCollection?)_addTransientWithFactory.MakeGenericMethod(service, implementation).Invoke(null, [services]) ??
-        throw new("Should've returned an IServiceCollection instance");
-
-    public static IServiceCollection AddTransientWithFactory<TService>(this IServiceCollection services) where TService : class =>
-        services.AddTransientWithFactory<TService, TService>();
-
-    public static IServiceCollection AddTransientWithFactory<TService, TImplementation>(this IServiceCollection services)
-        where TService : class
-        where TImplementation : class, TService
-    => services
-        .AddSingleton<Func<TService>>(sp => () => sp.UsingCurrentScope().GetRequiredService<TService>())
-        .AddTransient<TService, TImplementation>();
-
-    public static IServiceCollection AddScopedWithFactory(this IServiceCollection services, Type service) =>
-        (IServiceCollection?)_addScopedWithFactory.MakeGenericMethod(service, service).Invoke(null, [services]) ??
-        throw new("Should've returned an IServiceCollection instance");
-    public static IServiceCollection AddScopedWithFactory(this IServiceCollection services, Type service, Type implementation) =>
-        (IServiceCollection?)_addScopedWithFactory.MakeGenericMethod(service, implementation).Invoke(null, [services]) ??
-        throw new("Should've returned an IServiceCollection instance");
-    public static void AddScopedWithFactory<TService>(this IServiceCollection services) where TService : class =>
-        services.AddScopedWithFactory<TService, TService>();
-
-    public static IServiceCollection AddScopedWithFactory<TService, TImplementation>(this IServiceCollection services)
-        where TService : class
-        where TImplementation : class, TService
-    => services
-        .AddSingleton<Func<TService>>(sp => () => sp.UsingCurrentScope().GetRequiredService<TService>())
-        .AddScoped<TService, TImplementation>();
-
-    public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services, bool forward)
-        where TService : class
-        where TImplementation : class, TService
-    => services.AddSingleton(typeof(TService), typeof(TImplementation), forward: forward);
-
-    public static IServiceCollection AddSingleton(this IServiceCollection services, Type service, Type implementation, bool forward)
+    extension(IServiceCollection services)
     {
-        if (!forward) { return services.AddSingleton(service, implementation); }
+        public IServiceCollection AddTransientWithFactory(Type service) =>
+            (IServiceCollection?)_addTransientWithFactory.MakeGenericMethod(service, service).Invoke(null, [services]) ??
+            throw new("Should've returned an IServiceCollection instance");
+        public IServiceCollection AddTransientWithFactory(Type service, Type implementation) =>
+            (IServiceCollection?)_addTransientWithFactory.MakeGenericMethod(service, implementation).Invoke(null, [services]) ??
+            throw new("Should've returned an IServiceCollection instance");
 
-        return services.AddSingleton(service, sp => sp.UsingCurrentScope().GetRequiredService(implementation));
+        public IServiceCollection AddTransientWithFactory<TService>() where TService : class =>
+            services.AddTransientWithFactory<TService, TService>();
+
+        public IServiceCollection AddTransientWithFactory<TService, TImplementation>()
+            where TService : class
+            where TImplementation : class, TService
+        => services
+            .AddSingleton<Func<TService>>(sp => () => sp.UsingCurrentScope().GetRequiredService<TService>())
+            .AddTransient<TService, TImplementation>();
+
+        public IServiceCollection AddScopedWithFactory(Type service) =>
+            (IServiceCollection?)_addScopedWithFactory.MakeGenericMethod(service, service).Invoke(null, [services]) ??
+            throw new("Should've returned an IServiceCollection instance");
+        public IServiceCollection AddScopedWithFactory(Type service, Type implementation) =>
+            (IServiceCollection?)_addScopedWithFactory.MakeGenericMethod(service, implementation).Invoke(null, [services]) ??
+            throw new("Should've returned an IServiceCollection instance");
+        public void AddScopedWithFactory<TService>() where TService : class =>
+            services.AddScopedWithFactory<TService, TService>();
+
+        public IServiceCollection AddScopedWithFactory<TService, TImplementation>()
+            where TService : class
+            where TImplementation : class, TService
+        => services
+            .AddSingleton<Func<TService>>(sp => () => sp.UsingCurrentScope().GetRequiredService<TService>())
+            .AddScoped<TService, TImplementation>();
+
+        public IServiceCollection AddSingleton<TService, TImplementation>(bool forward)
+            where TService : class
+            where TImplementation : class, TService
+        => services.AddSingleton(typeof(TService), typeof(TImplementation), forward: forward);
+
+        public IServiceCollection AddSingleton(Type service, Type implementation, bool forward)
+        {
+            if (!forward) { return services.AddSingleton(service, implementation); }
+
+            return services.AddSingleton(service, sp => sp.UsingCurrentScope().GetRequiredService(implementation));
+        }
     }
 
-    public static bool TryGetNamespace(this TypeModel type, [NotNullWhen(true)] out string? @namespace)
+    extension(TypeModel type)
     {
-        if (!type.TryGetNamespaceAttribute(out var namespaceAttribute) || string.IsNullOrWhiteSpace(namespaceAttribute.Value))
+        public bool TryGetNamespace([NotNullWhen(true)] out string? @namespace)
         {
-            @namespace = null;
+            if (!type.TryGetNamespaceAttribute(out var namespaceAttribute) || string.IsNullOrWhiteSpace(namespaceAttribute.Value))
+            {
+                @namespace = null;
 
-            return false;
+                return false;
+            }
+
+            @namespace = namespaceAttribute.Value;
+
+            return true;
         }
 
-        @namespace = namespaceAttribute.Value;
-
-        return true;
-    }
-
-    public static bool TryGetNamespaceAttribute(this TypeModel type, [NotNullWhen(true)] out NamespaceAttribute? namespaceAttribute)
-    {
-        namespaceAttribute = default;
-
-        return
-            type.TryGetMetadata(out var metadata) &&
-            metadata.TryGet(out namespaceAttribute);
-    }
-
-    public static PropertyModel FirstProperty<TAttribute>(this TypeModelMembers members,
-        Func<PropertyModel, bool>? filter = default
-    ) where TAttribute : Attribute =>
-        members.FirstPropertyOrDefault<TAttribute>(filter: filter) ??
-        throw new($"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`");
-
-    public static PropertyModel? FirstPropertyOrDefault<TAttribute>(this TypeModelMembers members,
-        Func<PropertyModel, bool>? filter = default
-    ) where TAttribute : Attribute =>
-        members.Properties.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
-
-    public static MethodModel FirstMethod<TAttribute>(this TypeModelMembers members,
-        Func<MethodModel, bool>? filter = default
-    ) where TAttribute : Attribute =>
-        members.FirstMethodOrDefault<TAttribute>(filter: filter) ??
-        throw new($"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`");
-
-    public static MethodModel? FirstMethodOrDefault<TAttribute>(this TypeModelMembers members,
-        Func<MethodModel, bool>? filter = default
-    ) where TAttribute : Attribute =>
-        members.Methods.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
-
-    public static ParameterModel FirstParameter<TAttribute>(this MethodModel method,
-        Func<ParameterModel, bool>? filter = default
-    ) where TAttribute : Attribute =>
-        method.FirstParameterOrDefault<TAttribute>(filter: filter) ??
-        throw new($"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`");
-
-    public static ParameterModel? FirstParameterOrDefault<TAttribute>(this MethodModel method,
-        Func<ParameterModel, bool>? filter = default
-    ) where TAttribute : Attribute =>
-        method.DefaultOverload.Parameters.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
-
-    public static bool HasIdInfo(this TypeModel type) =>
-        type.TryGetIdInfo(out var _);
-
-    public static IdInfo GetIdInfo(this TypeModel type)
-    {
-        if (!type.TryGetIdInfo(out var result))
+        public bool TryGetNamespaceAttribute([NotNullWhen(true)] out NamespaceAttribute? namespaceAttribute)
         {
-            throw new InvalidOperationException($"`{type.Name}` does not have `IdentifierInfo`");
+            namespaceAttribute = default;
+
+            return
+                type.TryGetMetadata(out var metadata) &&
+                metadata.TryGet(out namespaceAttribute);
         }
 
-        return result;
+        public bool HasIdInfo() =>
+            type.TryGetIdInfo(out var _);
+
+        public IdInfo GetIdInfo()
+        {
+            if (!type.TryGetIdInfo(out var result))
+            {
+                throw new InvalidOperationException($"`{type.Name}` does not have `IdentifierInfo`");
+            }
+
+            return result;
+        }
+
+        public bool TryGetIdInfo([NotNullWhen(true)] out IdInfo? idInfo)
+        {
+            idInfo = null;
+
+            if (!type.TryGetMembers(out var members)) { return false; }
+
+            var idProperty = members.FirstPropertyOrDefault<IdAttribute>();
+            if (idProperty is null) { return false; }
+
+            idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
+
+            return true;
+        }
+
+        public TypeModel SkipNullable()
+        {
+            if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
+            if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
+            if (type.IsGenericTypeDefinition) { return type; }
+
+            return generics.GenericTypeArguments.First().Model;
+        }
+
+        public TypeModel SkipTask() =>
+            type.IsAssignableTo<Task>() && type.IsGenericType
+                ? type.GetGenerics().GenericTypeArguments.First().Model
+                : type;
     }
 
-    public static bool TryGetIdInfo(this TypeModel type, [NotNullWhen(true)] out IdInfo? idInfo)
+    extension(TypeModelMembers members)
     {
-        idInfo = null;
+        public PropertyModel FirstProperty<TAttribute>(
+            Func<PropertyModel, bool>? filter = default
+        ) where TAttribute : Attribute =>
+            members.FirstPropertyOrDefault<TAttribute>(filter: filter) ??
+            throw new($"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`");
 
-        if (!type.TryGetMembers(out var members)) { return false; }
+        public PropertyModel? FirstPropertyOrDefault<TAttribute>(
+            Func<PropertyModel, bool>? filter = default
+        ) where TAttribute : Attribute =>
+            members.Properties.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
 
-        var idProperty = members.FirstPropertyOrDefault<IdAttribute>();
-        if (idProperty is null) { return false; }
+        public MethodModel FirstMethod<TAttribute>(
+            Func<MethodModel, bool>? filter = default
+        ) where TAttribute : Attribute =>
+            members.FirstMethodOrDefault<TAttribute>(filter: filter) ??
+            throw new($"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`");
 
-        idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
-
-        return true;
+        public MethodModel? FirstMethodOrDefault<TAttribute>(
+            Func<MethodModel, bool>? filter = default
+        ) where TAttribute : Attribute =>
+            members.Methods.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
     }
 
-    public static Id AnId(this Stubber _,
-        string? starts = default
-    )
+    extension(MethodModel method)
     {
-        starts ??= string.Empty;
+        public ParameterModel FirstParameter<TAttribute>(
+            Func<ParameterModel, bool>? filter = default
+        ) where TAttribute : Attribute =>
+            method.FirstParameterOrDefault<TAttribute>(filter: filter) ??
+            throw new($"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`");
 
-        const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
-
-        return Id.Parse($"{starts}{template[starts.Length..]}");
+        public ParameterModel? FirstParameterOrDefault<TAttribute>(
+            Func<ParameterModel, bool>? filter = default
+        ) where TAttribute : Attribute =>
+            method.DefaultOverload.Parameters.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
     }
 
-    public static TypeModel SkipNullable(this TypeModel type)
+    extension(Stubber _)
     {
-        if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
-        if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
-        if (type.IsGenericTypeDefinition) { return type; }
+        public Id AnId(
+            string? starts = default
+        )
+        {
+            starts ??= string.Empty;
 
-        return generics.GenericTypeArguments.First().Model;
+            const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
+
+            return Id.Parse($"{starts}{template[starts.Length..]}");
+        }
     }
 
-    public static Type SkipNullable(this Type type) =>
-        Nullable.GetUnderlyingType(type) ?? type;
-
-    public static TypeModel SkipTask(this TypeModel typeModel) =>
-        typeModel.IsAssignableTo<Task>() && typeModel.IsGenericType
-            ? typeModel.GetGenerics().GenericTypeArguments.First().Model
-            : typeModel;
+    extension(Type type)
+    {
+        public Type SkipNullable() =>
+            Nullable.GetUnderlyingType(type) ?? type;
+    }
 }

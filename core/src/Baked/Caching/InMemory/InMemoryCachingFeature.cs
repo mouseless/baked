@@ -11,7 +11,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "application"),
@@ -19,19 +19,19 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
             );
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddMemoryCache(_options);
         });
 
-        configurator.ConfigureAppDescriptor(app =>
+        configurator.Ui.ConfigureAppDescriptor(app =>
         {
             app.Plugins.Add(
                 new CacheApplicationPlugin { ExpirationInMinutes = (int)clientExpiration.GetValue().TotalMinutes }
             );
         });
 
-        configurator.ConfigureTestConfiguration(test =>
+        configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.TearDowns.Add(spec =>
             {

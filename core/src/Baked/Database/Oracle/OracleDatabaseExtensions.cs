@@ -6,11 +6,14 @@ namespace Baked;
 
 public static class OracleDatabaseExtensions
 {
-    public static OracleDatabaseFeature Oracle(this DatabaseConfigurator _,
-        Setting<string>? connectionString = default,
-        Setting<bool>? autoUpdateSchema = default
-    ) => new(
-        connectionString ?? Settings.Required<string>("Database:Oracle:ConnectionString"),
-        autoUpdateSchema ?? Settings.Optional("Database:Oracle:AutoUpdateSchema", false)
-    );
+    extension(DatabaseConfigurator _)
+    {
+        public OracleDatabaseFeature Oracle(
+            Setting<string>? connectionString = default,
+            Setting<bool>? autoUpdateSchema = default
+        ) => new(
+            connectionString ?? Settings.Required<string>("Database:Oracle:ConnectionString"),
+            autoUpdateSchema ?? Settings.Optional("Database:Oracle:AutoUpdateSchema", false)
+        );
+    }
 }

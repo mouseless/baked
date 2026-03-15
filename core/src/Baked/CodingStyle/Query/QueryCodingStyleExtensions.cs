@@ -8,29 +8,35 @@ namespace Baked;
 
 public static class QueryCodingStyleExtensions
 {
-    public static QueryCodingStyleFeature Query(this CodingStyleConfigurator _) =>
-        new();
-
-    public static bool TryGetQueryAttribute(this TypeModel type, [NotNullWhen(true)] out QueryAttribute? queryAttribute)
+    extension(CodingStyleConfigurator _)
     {
-        queryAttribute = default;
-
-        return
-            type.TryGetMetadata(out var metadata) &&
-            metadata.TryGet(out queryAttribute);
+        public QueryCodingStyleFeature Query() =>
+            new();
     }
 
-    public static bool TryGetLocatableType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)
+    extension(TypeModel type)
     {
-        if (!type.TryGetQueryAttribute(out var queryAttribute))
+        public bool TryGetQueryAttribute([NotNullWhen(true)] out QueryAttribute? queryAttribute)
         {
-            locatableType = default;
+            queryAttribute = default;
 
-            return false;
+            return
+                type.TryGetMetadata(out var metadata) &&
+                metadata.TryGet(out queryAttribute);
         }
 
-        locatableType = domain.Types[queryAttribute.LocatableType];
+        public bool TryGetLocatableType(DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)
+        {
+            if (!type.TryGetQueryAttribute(out var queryAttribute))
+            {
+                locatableType = default;
 
-        return true;
+                return false;
+            }
+
+            locatableType = domain.Types[queryAttribute.LocatableType];
+
+            return true;
+        }
     }
 }

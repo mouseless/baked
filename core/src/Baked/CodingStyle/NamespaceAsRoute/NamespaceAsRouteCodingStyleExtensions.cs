@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class NamespaceAsRouteCodingStyleExtensions
 {
-    public static NamespaceAsRouteCodingStyleFeature NamespaceAsRoute(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public NamespaceAsRouteCodingStyleFeature NamespaceAsRoute() =>
+            new();
+    }
 }

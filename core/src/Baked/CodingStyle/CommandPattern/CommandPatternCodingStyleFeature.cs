@@ -13,7 +13,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
                 attribute: () => new PubliclyInitializableAttribute(),
@@ -24,7 +24,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                     members.Methods.Any(m =>
                         m.Has<InitializerAttribute>() &&
                         m.DefaultOverload.AllParametersAreApiInput() &&
-                        m.DefaultOverload.IsPublicInstanceWithNoSpecialName()
+                        m.DefaultOverload.IsPublicInstanceWithNoSpecialName
                     ),
                 order: 40
             );
@@ -53,9 +53,9 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
             ), order: -10);
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            configurator.UsingGeneratedContext(generatedContext =>
+            configurator.CodeGeneration.UsingGeneratedContext(generatedContext =>
             {
                 var examples = generatedContext.ReadFileAsJson<RequestResponseExamples>() ?? [];
                 swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, examples);

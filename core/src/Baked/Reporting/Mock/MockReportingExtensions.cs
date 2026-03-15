@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class MockReportingExtensions
 {
-    public static MockReportingFeature Mock(this ReportingConfigurator _) =>
-        new();
+    extension(ReportingConfigurator _)
+    {
+        public MockReportingFeature Mock() =>
+            new();
+    }
 }

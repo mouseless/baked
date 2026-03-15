@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class ObjectAsJsonCodingStyleExtensions
 {
-    public static ObjectAsJsonCodingStyleFeature ObjectAsJson(this CodingStyleConfigurator _) =>
-        new();
+    extension(CodingStyleConfigurator _)
+    {
+        public ObjectAsJsonCodingStyleFeature ObjectAsJson() =>
+            new();
+    }
 }

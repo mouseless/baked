@@ -5,7 +5,10 @@ namespace Baked;
 
 public static class EnumParameterIsSelectUxExtensions
 {
-    public static EnumParameterIsSelectUxFeature EnumParameterIsSelect(this UxConfigurator _,
-        int maxMemberCountForSelectButton = 3
-    ) => new(maxMemberCountForSelectButton);
+    extension(UxConfigurator _)
+    {
+        public EnumParameterIsSelectUxFeature EnumParameterIsSelect(
+            int maxMemberCountForSelectButton = 3
+        ) => new(maxMemberCountForSelectButton);
+    }
 }

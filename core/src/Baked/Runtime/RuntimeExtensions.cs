@@ -12,121 +12,153 @@ namespace Baked;
 
 public static class RuntimeExtensions
 {
-    public static void AddRuntime(this List<ILayer> layers) =>
-        layers.Add(new RuntimeLayer());
-
-    public static IServiceCollection GetServiceCollection(this ApplicationContext context) =>
-        context.Get<IServiceCollection>();
-
-    public static IServiceProvider GetServiceProvider(this ApplicationContext context) =>
-        context.Get<IServiceProvider>();
-
-    public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
-       configurator.Configure(configuration);
-
-    public static void ConfigureServiceCollection(this LayerConfigurator configurator, Action<IServiceCollection> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureServiceProvider(this LayerConfigurator configurator, Action<IServiceProvider> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureConfigurationBuilder(this LayerConfigurator configurator, Action<IConfigurationBuilder> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureThreadOptions(this LayerConfigurator configurator, Action<ThreadOptions> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void AddFromAssembly(this IServiceCollection services, Assembly assembly)
+    public class Configurator(LayerConfigurator _configurator)
     {
-        var serviceAdder = assembly.CreateRequiredImplementationInstance<IServiceAdder>();
+        public void ConfigureLoggingBuilder(Action<ILoggingBuilder> configuration) =>
+            _configurator.Configure(configuration);
 
-        serviceAdder.AddServices(services);
+        public void ConfigureServiceCollection(Action<IServiceCollection> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureServiceProvider(Action<IServiceProvider> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureConfigurationBuilder(Action<IConfigurationBuilder> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureThreadOptions(Action<ThreadOptions> configuration) =>
+            _configurator.Configure(configuration);
     }
 
-    public static void AddFileProvider(this IServiceCollection services, IFileProvider implementation)
+    extension(LayerConfigurator configurator)
     {
-        services.AddKeyedSingleton(RuntimeLayer.FileProvidersKey, implementation);
-        services.AddSingleton(implementation);
+        public Configurator Runtime => new(configurator);
+
+        public bool IsNfr =>
+            configurator.IsEnvironment(nameof(Nfr));
+
+        public bool IsDevelopment =>
+            configurator.IsEnvironment(Environments.Development);
+
+        public bool IsStaging =>
+            configurator.IsEnvironment(Environments.Staging);
+
+        public bool IsProduction =>
+            configurator.IsEnvironment(Environments.Production);
+
+        public bool IsEnvironment(string environment) =>
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment;
     }
 
-    public static void AddJson(this IConfigurationBuilder builder, string json) =>
-        builder.Add(new JsonConfigurationSource(json));
-
-    public static void AddJsonAsDefault(this IConfigurationBuilder builder, string json) =>
-        builder.Sources.Insert(
-            Math.Max(builder.Sources.Count - 4, 0), // try to insert before appsetttings.json + appsettings.[Environment].json + 2 more default configurations
-            new JsonConfigurationSource(json)
-        );
-
-    public static T? CreateImplementationInstance<T>(this Assembly assembly)
+    extension(List<ILayer> layers)
     {
-        var instanceType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(T)));
-        if (instanceType == null) { return default; }
-
-        return (T?)Activator.CreateInstance(instanceType) ?? throw new($"Cannot create instance of {instanceType}");
+        public void AddRuntime() =>
+            layers.Add(new RuntimeLayer());
     }
 
-    public static T CreateRequiredImplementationInstance<T>(this Assembly assembly) =>
-        assembly.CreateImplementationInstance<T>() ?? throw new($"`{typeof(T)}` implementation not found");
-
-    public static IFeature<TConfigurator> ForNfr<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnNfr) =>
-        @default.For(nameof(Nfr), featureOnNfr);
-
-    public static IFeature<TConfigurator> ForDevelopment<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnDevelopment) =>
-        @default.For(Environments.Development, featureOnDevelopment);
-
-    public static IFeature<TConfigurator> ForStaging<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnStaging) =>
-        @default.For(Environments.Staging, featureOnStaging);
-
-    public static IFeature<TConfigurator> ForProduction<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnProduction) =>
-        @default.For(Environments.Production, featureOnProduction);
-
-    public static IFeature<TConfigurator> For<TConfigurator>(this IFeature<TConfigurator> @default, string environment, IFeature<TConfigurator> featureOnEnvironment)
+    extension(ApplicationContext context)
     {
-        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment)
+        public IServiceCollection GetServiceCollection() =>
+            context.Get<IServiceCollection>();
+
+        public IServiceProvider GetServiceProvider() =>
+            context.Get<IServiceProvider>();
+    }
+
+    extension(IServiceCollection services)
+    {
+        public void AddFromAssembly(Assembly assembly)
         {
-            return featureOnEnvironment;
+            var serviceAdder = assembly.CreateRequiredImplementationInstance<IServiceAdder>();
+
+            serviceAdder.AddServices(services);
         }
 
-        return @default;
+        public void AddFileProvider(IFileProvider implementation)
+        {
+            services.AddKeyedSingleton(RuntimeLayer.FileProvidersKey, implementation);
+            services.AddSingleton(implementation);
+        }
     }
 
-    public static bool IsNfr(this LayerConfigurator configurator) =>
-        configurator.IsEnvironment(nameof(Nfr));
+    extension(IConfigurationBuilder builder)
+    {
+        public void AddJson(string json) =>
+            builder.Add(new JsonConfigurationSource(json));
 
-    public static bool IsDevelopment(this LayerConfigurator configurator) =>
-        configurator.IsEnvironment(Environments.Development);
+        public void AddJsonAsDefault(string json) =>
+            builder.Sources.Insert(
+                Math.Max(builder.Sources.Count - 4, 0), // try to insert before appsetttings.json + appsettings.[Environment].json + 2 more default configurations
+                new JsonConfigurationSource(json)
+            );
+    }
 
-    public static bool IsStaging(this LayerConfigurator configurator) =>
-        configurator.IsEnvironment(Environments.Staging);
+    extension(Assembly assembly)
+    {
+        public T? CreateImplementationInstance<T>()
+        {
+            var instanceType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(T)));
+            if (instanceType == null) { return default; }
 
-    public static bool IsProduction(this LayerConfigurator configurator) =>
-        configurator.IsEnvironment(Environments.Production);
+            return (T?)Activator.CreateInstance(instanceType) ?? throw new($"Cannot create instance of {instanceType}");
+        }
 
-    public static bool IsEnvironment(this LayerConfigurator _, string environment) =>
-        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment;
+        public T CreateRequiredImplementationInstance<T>() =>
+            assembly.CreateImplementationInstance<T>() ?? throw new($"`{typeof(T)}` implementation not found");
+    }
 
-    public static IServiceProvider UsingCurrentScope(this IServiceProvider sp) =>
-        sp.GetRequiredService<ServiceProviderAccessor>().GetServiceProvider() ?? sp;
+    extension<TConfigurator>(IFeature<TConfigurator> @default)
+    {
+        public IFeature<TConfigurator> ForNfr(IFeature<TConfigurator> featureOnNfr) =>
+            @default.For(nameof(Nfr), featureOnNfr);
 
-    public static IServiceProvider TheServiceProvider(this Stubber giveMe) =>
-        giveMe.Spec.StartContext.GetServiceProvider().UsingCurrentScope();
+        public IFeature<TConfigurator> ForDevelopment(IFeature<TConfigurator> featureOnDevelopment) =>
+            @default.For(Environments.Development, featureOnDevelopment);
 
-    public static T The<T>(this Stubber giveMe) where T : notnull =>
-        giveMe.TheServiceProvider().GetRequiredService<T>();
+        public IFeature<TConfigurator> ForStaging(IFeature<TConfigurator> featureOnStaging) =>
+            @default.For(Environments.Staging, featureOnStaging);
 
-    public static object The(this Stubber giveMe, Type type) =>
-        giveMe.TheServiceProvider().GetRequiredService(type);
+        public IFeature<TConfigurator> ForProduction(IFeature<TConfigurator> featureOnProduction) =>
+            @default.For(Environments.Production, featureOnProduction);
 
-    public static T An<T>(this Stubber giveMe) where T : notnull =>
-        giveMe.TheServiceProvider().GetRequiredService<T>();
+        public IFeature<TConfigurator> For(string environment, IFeature<TConfigurator> featureOnEnvironment)
+        {
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment)
+            {
+                return featureOnEnvironment;
+            }
 
-    public static object An(this Stubber giveMe, Type type) =>
-        giveMe.TheServiceProvider().GetRequiredService(type);
+            return @default;
+        }
+    }
 
-    public static T A<T>(this Stubber giveMe) where T : notnull =>
-        giveMe.TheServiceProvider().GetRequiredService<T>();
+    extension(IServiceProvider sp)
+    {
+        public IServiceProvider UsingCurrentScope() =>
+            sp.GetRequiredService<ServiceProviderAccessor>().GetServiceProvider() ?? sp;
+    }
 
-    public static object A(this Stubber giveMe, Type type) =>
-        giveMe.TheServiceProvider().GetRequiredService(type);
+    extension(Stubber giveMe)
+    {
+        public IServiceProvider TheServiceProvider() =>
+            giveMe.Spec.StartContext.GetServiceProvider().UsingCurrentScope();
+
+        public T The<T>() where T : notnull =>
+            giveMe.TheServiceProvider().GetRequiredService<T>();
+
+        public object The(Type type) =>
+            giveMe.TheServiceProvider().GetRequiredService(type);
+
+        public T An<T>() where T : notnull =>
+            giveMe.TheServiceProvider().GetRequiredService<T>();
+
+        public object An(Type type) =>
+            giveMe.TheServiceProvider().GetRequiredService(type);
+
+        public T A<T>() where T : notnull =>
+            giveMe.TheServiceProvider().GetRequiredService<T>();
+
+        public object A(Type type) =>
+            giveMe.TheServiceProvider().GetRequiredService(type);
+    }
 }

@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class AutoMapOrmExtensions
 {
-    public static AutoMapOrmFeature AutoMap(this OrmConfigurator _) =>
-        new();
+    extension(OrmConfigurator _)
+    {
+        public AutoMapOrmFeature AutoMap() =>
+            new();
+    }
 }

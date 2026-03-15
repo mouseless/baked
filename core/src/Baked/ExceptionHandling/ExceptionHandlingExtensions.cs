@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class ExceptionHandlingExtensions
 {
-    public static void AddExceptionHandling(this IList<IFeature> features, Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> configure) =>
-        features.Add(configure(new()));
+    extension(IList<IFeature> features)
+    {
+        public void AddExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> configure) =>
+            features.Add(configure(new()));
+    }
 }

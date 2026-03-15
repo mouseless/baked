@@ -6,16 +6,19 @@ namespace Baked.Test;
 
 public static class BakeExtensions
 {
-    public static Bake ABake(this Stubber giveMe,
-        IBanner? banner = default,
-        ApplicationContext? startContext = default,
-        ApplicationContext? generateContext = default,
-        RunFlags runflags = RunFlags.Start
-    )
+    extension(Stubber giveMe)
     {
-        banner ??= giveMe.Spec.MockMe.ABanner();
-        startContext ??= new();
+        public Bake ABake(
+            IBanner? banner = default,
+            ApplicationContext? startContext = default,
+            ApplicationContext? generateContext = default,
+            RunFlags runflags = RunFlags.Start
+        )
+        {
+            banner ??= giveMe.Spec.MockMe.ABanner();
+            startContext ??= new();
 
-        return new(banner, () => new(startContext, generateContext), runflags);
+            return new(banner, () => new(startContext, generateContext), runflags);
+        }
     }
 }

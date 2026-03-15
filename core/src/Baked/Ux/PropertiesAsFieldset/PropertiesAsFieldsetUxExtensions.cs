@@ -5,6 +5,9 @@ namespace Baked;
 
 public static class PropertiesAsFieldsetUxExtensions
 {
-    public static PropertiesAsFieldsetUxFeature PropertiesAsFieldset(this UxConfigurator _) =>
-        new();
+    extension(UxConfigurator _)
+    {
+        public PropertiesAsFieldsetUxFeature PropertiesAsFieldset() =>
+            new();
+    }
 }
