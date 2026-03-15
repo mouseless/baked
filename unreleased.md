@@ -74,6 +74,10 @@ projects.
   null when they receive an empty string
 ```
 
+## Improvements
+
+- `Bindings` and `CodingStyles` can now be overridden from recipes
+
 ## Breaking Changes
 
 - `LayerConfigurator` extensions are now grouped under layer specific
@@ -91,7 +95,8 @@ projects.
   - `IsNfr`, `IsDevelopment`, `IsStaging`, `IsProduction`
 - `MonolithNfr` and `MonolithSpec` moved to `Bake.Monolith` namespace
 - `DataSourceNfr` and `DataSourceSpec` moved to `Bake.DataSource` namespace
-
+- Binding feature now has become a multiple feature, e.g.,
+  `.AddBindings([c => c.Rest()])`
 
 ## Library Upgrades
 

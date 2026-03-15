@@ -1,6 +1,7 @@
 using Baked.Architecture;
 using Baked.Authentication;
 using Baked.Authorization;
+using Baked.Binding;
 using Baked.Business;
 using Baked.Caching;
 using Baked.CodingStyle;
@@ -21,203 +22,215 @@ using Baked.MockOverrider;
 using Baked.Orm;
 using Baked.RateLimiter;
 using Baked.Theme;
+using Baked.Ux;
+using Baked.Ux.EnumParameterIsSelect;
 
 namespace Baked.Monolith;
 
-public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> _business, ExecutionMode _mode)
+public abstract class MonolithRecipe
 {
-    public class Test(FeatureFunc<BusinessConfigurator> _business) : MonolithRecipe(_business, ExecutionMode.Test);
-    public class Run : MonolithRecipe
-    {
-        public Run(FeatureFunc<BusinessConfigurator> business) : base(business, ExecutionMode.Run)
-        {
-            Authentications(c => c.FixedBearerToken());
-            Authorization(c => c.ClaimBased());
-            Communication(c => c.Http());
-            Core(c => c.Dotnet());
-            Cors(c => c.Disabled());
-            Database(c => c.Sqlite());
-            Greeting(c => c.Swagger());
-            Logging(c => c.Request());
-            MockOverrider(c => c.FirstInterface());
-            RateLimiter(c => c.Concurrency());
-        }
-    }
+    FeatureFunc<BusinessConfigurator> _business;
 
-    FeatureFunc<BusinessConfigurator> _business = _business;
-    IEnumerable<FeatureFunc<AuthenticationConfigurator>> _authentications = [];
-    FeatureFunc<AuthorizationConfigurator>? _authorization = default;
+    IEnumerable<FeatureFunc<BindingConfigurator>> _bindings = [c => c.Rest()];
+    public void Bindings(params IEnumerable<FeatureFunc<BindingConfigurator>> bindings) => _bindings = bindings;
+
     IEnumerable<FeatureFunc<CachingConfigurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
-    FeatureFunc<CommunicationConfigurator> _communication = c => c.Mock();
-    FeatureFunc<CoreConfigurator> _core = c => c.Mock();
-    FeatureFunc<CorsConfigurator>? _cors = default;
-    FeatureFunc<DatabaseConfigurator> _database = c => c.InMemory();
-    FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
-    FeatureFunc<GreetingConfigurator>? _greeting = default;
-    FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
-    FeatureFunc<LoggingConfigurator>? _logging = default;
-    FeatureFunc<MockOverriderConfigurator>? _mockOverrider = default;
-    FeatureFunc<OrmConfigurator> _orm = c => c.AutoMap();
-    FeatureFunc<RateLimiterConfigurator>? _rateLimiter = default;
-    FeatureFunc<ThemeConfigurator>? _theme = default;
+    public void Cachings(params IEnumerable<FeatureFunc<CachingConfigurator>> cachings) => _cachings = cachings;
 
-    Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> _commandPattern = c => c.CommandPattern();
-    Func<CodingStyleConfigurator, InitializableCodingStyleFeature> _initializable = c => c.Initializable();
-    Func<CodingStyleConfigurator, LabelCodingStyleFeature> _label = c => c.Label();
-    Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> _scopedBySuffix = c => c.ScopedBySuffix();
-    Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> _useBuiltInTypes = c => c.UseBuiltInTypes();
+    IEnumerable<FeatureFunc<CodingStyleConfigurator>> _codingStyles;
+
+    FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
+    public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
+
+    IEnumerable<FeatureFunc<Lifetime.LifetimeConfigurator>> _lifetimes = [c => c.Scoped(), c => c.Singleton(), c => c.Transient()];
+    public void Lifetimes(IEnumerable<FeatureFunc<Lifetime.LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
+
+    FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
+    public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;
+
+    FeatureFunc<OrmConfigurator> _orm = c => c.AutoMap();
+    public void Orm(FeatureFunc<OrmConfigurator> orm) => _orm = orm;
+
+    FeatureFunc<CodingStyleConfigurator> _commandPattern = c => c.CommandPattern();
+    public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) => _commandPattern = c => commandPattern(c);
+
+    FeatureFunc<CodingStyleConfigurator> _initializable = c => c.Initializable();
+    public void Initializable(Func<CodingStyleConfigurator, InitializableCodingStyleFeature> initializable) => _initializable = c => initializable(c);
+
+    FeatureFunc<CodingStyleConfigurator> _label = c => c.Label();
+    public void Label(Func<CodingStyleConfigurator, LabelCodingStyleFeature> label) => _label = c => label(c);
+
+    FeatureFunc<CodingStyleConfigurator> _scopedBySuffix = c => c.ScopedBySuffix();
+    public void ScopedBySuffix(Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> scopedBySuffix) => _scopedBySuffix = c => scopedBySuffix(c);
+
+    FeatureFunc<CodingStyleConfigurator> _useBuiltInTypes = c => c.UseBuiltInTypes();
+    public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) => _useBuiltInTypes = c => useBuiltInTypes(c);
 
     Action<ApplicationDescriptor> _configure = _ => { };
+    public void Configure(Action<ApplicationDescriptor> configure) => _configure = configure;
 
-    public void Authentications(params FeatureFunc<AuthenticationConfigurator>[] authentications) =>
-        _authentications = authentications;
-
-    public void Authorization(FeatureFunc<AuthorizationConfigurator>? authorization) =>
-        _authorization = authorization;
-
-    public void Cachings(params FeatureFunc<CachingConfigurator>[] cachings) =>
-        _cachings = cachings;
-
-    public void Communication(FeatureFunc<CommunicationConfigurator> communication) =>
-        _communication = communication;
-
-    public void Core(FeatureFunc<CoreConfigurator> core) =>
-        _core = core;
-
-    public void Cors(FeatureFunc<CorsConfigurator>? cors) =>
-        _cors = cors;
-
-    public void Database(FeatureFunc<DatabaseConfigurator> database) =>
-        _database = database;
-
-    public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) =>
-        _exceptionHandling = exceptionHandling;
-
-    public void Greeting(FeatureFunc<GreetingConfigurator>? greeting) =>
-        _greeting = greeting;
-
-    public void Localization(FeatureFunc<LocalizationConfigurator> localization) =>
-        _localization = localization;
-
-    public void Logging(FeatureFunc<LoggingConfigurator>? logging) =>
-        _logging = logging;
-
-    public void MockOverrider(FeatureFunc<MockOverriderConfigurator>? mockOverrider) =>
-        _mockOverrider = mockOverrider;
-
-    public void Orm(FeatureFunc<OrmConfigurator> orm) =>
-        _orm = orm;
-
-    public void RateLimiter(FeatureFunc<RateLimiterConfigurator>? rateLimiter) =>
-        _rateLimiter = rateLimiter;
-
-    public void Theme(FeatureFunc<ThemeConfigurator>? theme) =>
-        _theme = theme;
-
-    public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) =>
-        _commandPattern = commandPattern;
-
-    public void Initializable(Func<CodingStyleConfigurator, InitializableCodingStyleFeature> initializable) =>
-        _initializable = initializable;
-
-    public void Label(Func<CodingStyleConfigurator, LabelCodingStyleFeature> label) =>
-        _label = label;
-
-    public void ScopedBySuffix(Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> scopedBySuffix) =>
-        _scopedBySuffix = scopedBySuffix;
-
-    public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) =>
-        _useBuiltInTypes = useBuiltInTypes;
-
-    public void Configure(Action<ApplicationDescriptor> configure) =>
-        _configure = configure;
-
-    public void Apply(ApplicationDescriptor app)
+    public MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
     {
-        app.Layers.AddCodeGeneration();
-        app.Layers.AddDataAccess();
-        app.Layers.AddDomain();
-        app.Layers.AddRuntime();
-        if (_mode == ExecutionMode.Test) { app.Layers.AddTesting(); }
-        if (_mode == ExecutionMode.Run) { app.Layers.AddHttpClient(); }
-        if (_mode == ExecutionMode.Run) { app.Layers.AddHttpServer(); }
-        if (_mode == ExecutionMode.Run) { app.Layers.AddRestApi(); }
-
-        app.Features.AddAuthentications(_authentications);
-        if (_authorization is not null) { app.Features.AddAuthorization(_authorization); }
-        app.Features.AddBinding(c => c.Rest());
-        app.Features.AddBusiness(_business);
-        app.Features.AddCachings(_cachings);
-        app.Features.AddCodingStyles(
+        _business = business;
+        _codingStyles =
         [
-            c => c.AddRemoveChild(),
-            c => c.Client(),
-            _commandPattern,
-            c => c.EntitySubclass(),
-            c => c.Id(),
-            _initializable,
-            _label,
-            c => c.Locatable(),
-            c => c.LocatableExtension(),
-            c => c.NamespaceAsRoute(),
-            c => c.ObjectAsJson(),
-            c => c.Query(),
-            c => c.RecordsAreDtos(),
-            c => c.RemainingServicesAreSingleton(),
-            c => c.RichEntity(),
-            c => c.RichTransient(),
-            _scopedBySuffix,
-            c => c.Unique(),
-            c => c.UriReturnIsRedirect(),
-            _useBuiltInTypes,
-            c => c.UseNullableTypes(),
-            c => c.ValueType()
-        ]);
-
-        app.Features.AddCommunication(_communication);
-        app.Features.AddCore(_core);
-        if (_cors is not null) { app.Features.AddCors(_cors); }
-        app.Features.AddDatabase(_database);
-        app.Features.AddExceptionHandling(_exceptionHandling);
-        if (_greeting is not null) { app.Features.AddGreeting(_greeting); }
-        app.Features.AddLifetimes(
-        [
-            c => c.Scoped(),
-            c => c.Singleton(),
-            c => c.Transient()
-        ]);
-        app.Features.AddLocalization(_localization);
-        if (_logging is not null) { app.Features.AddLogging(_logging); }
-        app.Features.AddOrm(_orm);
-        if (_rateLimiter is not null) { app.Features.AddRateLimiter(_rateLimiter); }
-
-        if (_mockOverrider is not null) { app.Features.AddMockOverrider(_mockOverrider); }
-
-        if (_theme is not null)
-        {
-            if (_mode == ExecutionMode.Run) { app.Layers.AddUi(); }
-
-            app.Features.AddUx(
-            [
-                c => c.ActionsAsButtons(),
-                c => c.ActionsAreContents(),
-                c => c.ActionsAsDataPanels(),
-                c => c.DataTableDefaults(),
-                c => c.DescriptionProperty(),
-                c => c.EnumParameterIsSelect(),
-                c => c.InitializerParametersAreInPageTitle(),
-                c => c.LabelsAreFrozen(),
-                c => c.ListIsDataTable(),
-                c => c.NumericValuesAreFormatted(),
-                c => c.ObjectWithListIsDataTable(),
-                c => c.PanelParametersAreStateful(),
-                c => c.PropertiesAsFieldset(),
-                c => c.RoutedTypesAsNavLinks()
-            ]);
-
-            app.Features.AddTheme(_theme);
-        }
-
-        _configure(app);
+                c => c.AddRemoveChild(),
+                c => c.Client(),
+                _commandPattern,
+                c => c.EntitySubclass(),
+                c => c.Id(),
+                _initializable,
+                _label,
+                c => c.Locatable(),
+                c => c.LocatableExtension(),
+                c => c.NamespaceAsRoute(),
+                c => c.ObjectAsJson(),
+                c => c.Query(),
+                c => c.RecordsAreDtos(),
+                c => c.RemainingServicesAreSingleton(),
+                c => c.RichEntity(),
+                c => c.RichTransient(),
+                _scopedBySuffix,
+                c => c.Unique(),
+                c => c.UriReturnIsRedirect(),
+                _useBuiltInTypes,
+                c => c.UseNullableTypes(),
+                c => c.ValueType()
+        ];
     }
+
+    public class Run(FeatureFunc<BusinessConfigurator> business)
+        : MonolithRecipe(business)
+    {
+        IEnumerable<FeatureFunc<AuthenticationConfigurator>> _authentications = [c => c.FixedBearerToken()];
+        public void Authentications(params IEnumerable<FeatureFunc<AuthenticationConfigurator>> authentications) => _authentications = authentications;
+
+        FeatureFunc<AuthorizationConfigurator> _authorization = c => c.ClaimBased();
+        public void Authorization(FeatureFunc<AuthorizationConfigurator> authorization) => _authorization = authorization;
+
+        FeatureFunc<CommunicationConfigurator> _communication = c => c.Http();
+        public void Communication(FeatureFunc<CommunicationConfigurator> communication) => _communication = communication;
+
+        FeatureFunc<CoreConfigurator> _core = c => c.Dotnet();
+        public void Core(FeatureFunc<CoreConfigurator> core) => _core = core;
+
+        FeatureFunc<CorsConfigurator> _cors = c => c.Disabled();
+        public void Cors(FeatureFunc<CorsConfigurator> cors) => _cors = cors;
+
+        FeatureFunc<DatabaseConfigurator> _database = c => c.Sqlite();
+        public void Database(FeatureFunc<DatabaseConfigurator> database) => _database = database;
+
+        FeatureFunc<GreetingConfigurator> _greeting = c => c.Swagger();
+        public void Greeting(FeatureFunc<GreetingConfigurator> greeting) => _greeting = greeting;
+
+        FeatureFunc<LoggingConfigurator> _logging = c => c.Request();
+        public void Logging(FeatureFunc<LoggingConfigurator> logging) => _logging = logging;
+
+        FeatureFunc<RateLimiterConfigurator> _rateLimiter = c => c.Concurrency();
+        public void RateLimiter(FeatureFunc<RateLimiterConfigurator> rateLimiter) => _rateLimiter = rateLimiter;
+
+        FeatureFunc<ThemeConfigurator>? _theme = default;
+        public void Theme(FeatureFunc<ThemeConfigurator>? theme) => _theme = theme;
+
+        FeatureFunc<UxConfigurator> _enumParameterIsSelect = c => c.EnumParameterIsSelect();
+        public void EnumParameterIsSelect(Func<UxConfigurator, EnumParameterIsSelectUxFeature> enumParameterIsSelect) => _enumParameterIsSelect = c => enumParameterIsSelect(c);
+
+        public override void Apply(ApplicationDescriptor app)
+        {
+            app.Layers.AddCodeGeneration();
+            app.Layers.AddDataAccess();
+            app.Layers.AddDomain();
+            app.Layers.AddHttpClient();
+            app.Layers.AddHttpServer();
+            app.Layers.AddRestApi();
+            app.Layers.AddRuntime();
+
+            app.Features.AddAuthentications(_authentications);
+            app.Features.AddAuthorization(_authorization);
+            app.Features.AddBindings(_bindings);
+            app.Features.AddBusiness(_business);
+            app.Features.AddCachings(_cachings);
+            app.Features.AddCodingStyles(_codingStyles);
+            app.Features.AddCommunication(_communication);
+            app.Features.AddCore(_core);
+            app.Features.AddCors(_cors);
+            app.Features.AddDatabase(_database);
+            app.Features.AddExceptionHandling(_exceptionHandling);
+            app.Features.AddGreeting(_greeting);
+            app.Features.AddLifetimes(_lifetimes);
+            app.Features.AddLocalization(_localization);
+            app.Features.AddLogging(_logging);
+            app.Features.AddOrm(_orm);
+            app.Features.AddRateLimiter(_rateLimiter);
+
+            if (_theme is not null)
+            {
+                app.Layers.AddUi();
+
+                app.Features.AddUx(
+                [
+                    c => c.ActionsAsButtons(),
+                    c => c.ActionsAreContents(),
+                    c => c.ActionsAsDataPanels(),
+                    c => c.DataTableDefaults(),
+                    c => c.DescriptionProperty(),
+                    _enumParameterIsSelect,
+                    c => c.InitializerParametersAreInPageTitle(),
+                    c => c.LabelsAreFrozen(),
+                    c => c.ListIsDataTable(),
+                    c => c.NumericValuesAreFormatted(),
+                    c => c.ObjectWithListIsDataTable(),
+                    c => c.PanelParametersAreStateful(),
+                    c => c.PropertiesAsFieldset(),
+                    c => c.RoutedTypesAsNavLinks()
+                ]);
+
+                app.Features.AddTheme(_theme);
+            }
+
+            _configure(app);
+        }
+    }
+
+    public class Test(FeatureFunc<BusinessConfigurator> _business)
+        : MonolithRecipe(_business)
+    {
+        FeatureFunc<MockOverriderConfigurator> _mockOverrider = c => c.FirstInterface();
+        public void MockOverrider(FeatureFunc<MockOverriderConfigurator> mockOverrider) => _mockOverrider = mockOverrider;
+
+        FeatureFunc<CommunicationConfigurator> _communication = c => c.Mock();
+        public void Communication(FeatureFunc<CommunicationConfigurator> communication) => _communication = communication;
+
+        FeatureFunc<CoreConfigurator> _core = c => c.Mock();
+        public void Core(FeatureFunc<CoreConfigurator> core) => _core = core;
+
+        FeatureFunc<DatabaseConfigurator> _database = c => c.InMemory();
+        public void Database(FeatureFunc<DatabaseConfigurator> database) => _database = database;
+
+        public override void Apply(ApplicationDescriptor app)
+        {
+            app.Layers.AddCodeGeneration();
+            app.Layers.AddDataAccess();
+            app.Layers.AddDomain();
+            app.Layers.AddRuntime();
+            app.Layers.AddTesting();
+
+            app.Features.AddBindings(_bindings);
+            app.Features.AddBusiness(_business);
+            app.Features.AddCachings(_cachings);
+            app.Features.AddCodingStyles(_codingStyles);
+            app.Features.AddCommunication(_communication);
+            app.Features.AddCore(_core);
+            app.Features.AddDatabase(_database);
+            app.Features.AddExceptionHandling(_exceptionHandling);
+            app.Features.AddLifetimes(_lifetimes);
+            app.Features.AddLocalization(_localization);
+            app.Features.AddMockOverrider(_mockOverrider);
+            app.Features.AddOrm(_orm);
+
+            _configure(app);
+        }
+    }
+
+    public abstract void Apply(ApplicationDescriptor app);
 }

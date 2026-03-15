@@ -1,9 +1,9 @@
 # Binding
 
-Add this feature implementations using `AddBinding()` extension;
+Add this feature implementations using `AddBindings()` extension;
 
 ```csharp
-app.Features.AddBinding(...);
+app.Features.AddBindings([...]);
 ```
 
 ## Rest

@@ -7,7 +7,7 @@ public static class BindingExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddBinding(Func<BindingConfigurator, IFeature<BindingConfigurator>> configure) =>
-            features.Add(configure(new()));
+        public void AddBindings(params IEnumerable<FeatureFunc<BindingConfigurator>> configures) =>
+            features.AddRange(configures.Select(configure => configure(new())));
     }
 }

@@ -31,7 +31,8 @@ Bake.New
 
 | Name               | Run                                | Test                               |
 | ---                | ---                                | ---                                |
-| Binding            | :white_check_mark: Rest            | :white_check_mark:                 |
+| Binding(s)         | :white_check_mark:                 | :white_check_mark:                 |
+|                    | Rest                               |                                    |
 | Business           | :white_check_mark: (No Default)    | :white_check_mark:                 |
 | Caching(s)         | :white_check_mark:                 | :white_check_mark:                 |
 |                    | In-Memory                          |                                    |
@@ -63,6 +64,7 @@ Bake.New
 | Localization       | :white_check_mark: .NET            | :white_check_mark:                 |
 | Logging            | :white_check_mark: Request         | :no_entry:                         |
 | Mocking Overrider  | :no_entry:                         | :white_check_mark: First Interface |
+| Rate Limiter       | :white_check_mark: Concurrency     | :no_entry:                         |
 | Reporting          | :white_check_mark: NativeSql       | :white_check_mark: Mock            |
 
 > [!NOTE]
