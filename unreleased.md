@@ -89,9 +89,8 @@ projects.
   - `XmlNode.GetRemarks()` -> `XmlNode.Remarks`
   - `XmlNode.GetReturns()` -> `XmlNode.Returns`
   - `IsNfr`, `IsDevelopment`, `IsStaging`, `IsProduction`
-- `MonolithNfr` and `MonolithSpec` moved to under `Bake.Monolith` namespace
-- `DataSourceNfr` and `DataSourceSpec` moved to under `Bake.DataSource`
-  namespace
+- `MonolithNfr` and `MonolithSpec` moved to `Bake.Monolith` namespace
+- `DataSourceNfr` and `DataSourceSpec` moved to `Bake.DataSource` namespace
 
 
 ## Library Upgrades
