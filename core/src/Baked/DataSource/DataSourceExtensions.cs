@@ -8,8 +8,7 @@ public static class DataSourceExtensions
 {
     extension(Bake bake)
     {
-        public Application DataSource(
-            FeatureFunc<BusinessConfigurator> business,
+        public Application DataSource(FeatureFunc<BusinessConfigurator> business,
             Action<DataSourceRecipe.Run>? options = default
         )
         {

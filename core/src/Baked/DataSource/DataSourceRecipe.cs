@@ -22,6 +22,7 @@ namespace Baked.DataSource;
 
 public abstract class DataSourceRecipe
 {
+    // Features
     FeatureFunc<BusinessConfigurator> _business;
 
     IEnumerable<FeatureFunc<BindingConfigurator>> _bindings = [c => c.Rest()];
@@ -31,6 +32,7 @@ public abstract class DataSourceRecipe
     public void Cachings(params IEnumerable<FeatureFunc<CachingConfigurator>> cachings) => _cachings = cachings;
 
     IEnumerable<FeatureFunc<CodingStyleConfigurator>> _codingStyles;
+    public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleConfigurator>> codingStyles) => _codingStyles = codingStyles;
 
     FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
     public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
@@ -41,6 +43,7 @@ public abstract class DataSourceRecipe
     FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
     public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;
 
+    // Coding Styles
     FeatureFunc<CodingStyleConfigurator> _commandPattern = c => c.CommandPattern();
     public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) => _commandPattern = c => commandPattern(c);
 
@@ -56,6 +59,7 @@ public abstract class DataSourceRecipe
     FeatureFunc<CodingStyleConfigurator> _useBuiltInTypes = c => c.UseBuiltInTypes();
     public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) => _useBuiltInTypes = c => useBuiltInTypes(c);
 
+    // Configure
     Action<ApplicationDescriptor> _configure = _ => { };
     public void Configure(Action<ApplicationDescriptor> configure) => _configure = configure;
 

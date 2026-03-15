@@ -8,8 +8,7 @@ public static class MonolithExtensions
 {
     extension(Bake bake)
     {
-        public Application Monolith(
-            FeatureFunc<BusinessConfigurator> business,
+        public Application Monolith(FeatureFunc<BusinessConfigurator> business,
             Action<MonolithRecipe.Run>? options = default
         )
         {

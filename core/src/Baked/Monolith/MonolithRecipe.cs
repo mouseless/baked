@@ -29,6 +29,7 @@ namespace Baked.Monolith;
 
 public abstract class MonolithRecipe
 {
+    // Features
     FeatureFunc<BusinessConfigurator> _business;
 
     IEnumerable<FeatureFunc<BindingConfigurator>> _bindings = [c => c.Rest()];
@@ -38,6 +39,7 @@ public abstract class MonolithRecipe
     public void Cachings(params IEnumerable<FeatureFunc<CachingConfigurator>> cachings) => _cachings = cachings;
 
     IEnumerable<FeatureFunc<CodingStyleConfigurator>> _codingStyles;
+    public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleConfigurator>> codingStyles) => _codingStyles = codingStyles;
 
     FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
     public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
@@ -51,6 +53,7 @@ public abstract class MonolithRecipe
     FeatureFunc<OrmConfigurator> _orm = c => c.AutoMap();
     public void Orm(FeatureFunc<OrmConfigurator> orm) => _orm = orm;
 
+    // Coding Styles
     FeatureFunc<CodingStyleConfigurator> _commandPattern = c => c.CommandPattern();
     public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) => _commandPattern = c => commandPattern(c);
 
@@ -66,6 +69,7 @@ public abstract class MonolithRecipe
     FeatureFunc<CodingStyleConfigurator> _useBuiltInTypes = c => c.UseBuiltInTypes();
     public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) => _useBuiltInTypes = c => useBuiltInTypes(c);
 
+    // Configure
     Action<ApplicationDescriptor> _configure = _ => { };
     public void Configure(Action<ApplicationDescriptor> configure) => _configure = configure;
 
