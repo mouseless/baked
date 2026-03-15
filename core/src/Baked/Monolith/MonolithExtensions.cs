@@ -1,6 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
-using Baked.Recipe.Monolith;
+using Baked.Monolith;
 
 namespace Baked;
 

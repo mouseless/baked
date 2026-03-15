@@ -81,7 +81,7 @@ projects.
 - `Monolith` and `DataSource` configuration is now grouped under recipe
   callbacks in `BakeExtensions` and `*Spec` helpers
   - Individual parameters such as `database:` are now configured through
-    `options: mr => mr.Database = ...`
+    `options: mr => mr.Database(...)`
 - The following extensions are now properties:
   - `IsPublicInstanceWithNoSpecialName`
   - `IsApiInput`
@@ -89,6 +89,10 @@ projects.
   - `XmlNode.GetRemarks()` -> `XmlNode.Remarks`
   - `XmlNode.GetReturns()` -> `XmlNode.Returns`
   - `IsNfr`, `IsDevelopment`, `IsStaging`, `IsProduction`
+- `MonolithNfr` and `MonolithSpec` moved to under `Bake.Monolith` namespace
+- `DataSourceNfr` and `DataSourceSpec` moved to under `Bake.DataSource`
+  namespace
+
 
 ## Library Upgrades
 

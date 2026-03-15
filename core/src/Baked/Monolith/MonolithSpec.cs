@@ -1,9 +1,8 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Recipe.Monolith;
 using Baked.Testing;
 
-namespace Baked;
+namespace Baked.Monolith;
 
 public abstract class MonolithSpec : Spec
 {

@@ -17,7 +17,7 @@ using Baked.MockOverrider;
 using Baked.RateLimiter;
 using Baked.Reporting;
 
-namespace Baked.Recipe.DataSource;
+namespace Baked.DataSource;
 
 public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> _business, ExecutionMode _mode)
 {

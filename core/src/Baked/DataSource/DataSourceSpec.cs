@@ -1,9 +1,8 @@
 using Baked.Architecture;
 using Baked.Business;
-using Baked.Recipe.DataSource;
 using Baked.Testing;
 
-namespace Baked;
+namespace Baked.DataSource;
 
 public abstract class DataSourceSpec : Spec
 {

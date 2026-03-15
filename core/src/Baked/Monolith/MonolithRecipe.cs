@@ -22,7 +22,7 @@ using Baked.Orm;
 using Baked.RateLimiter;
 using Baked.Theme;
 
-namespace Baked.Recipe.Monolith;
+namespace Baked.Monolith;
 
 public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> _business, ExecutionMode _mode)
 {

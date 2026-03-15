@@ -1,6 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
-using Baked.Recipe.DataSource;
+using Baked.DataSource;
 
 namespace Baked;
 
