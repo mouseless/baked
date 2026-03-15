@@ -59,12 +59,9 @@ public class MonolithRecipe(Func<BusinessConfigurator, IFeature<BusinessConfigur
         app.Layers.AddDomain();
         app.Layers.AddRuntime();
         if (Mode == ExecutionMode.Test) { app.Layers.AddTesting(); }
-        if (Mode == ExecutionMode.Run)
-        {
-            app.Layers.AddHttpClient();
-            app.Layers.AddHttpServer();
-            app.Layers.AddRestApi();
-        }
+        if (Mode == ExecutionMode.Run) { app.Layers.AddHttpClient(); }
+        if (Mode == ExecutionMode.Run) { app.Layers.AddHttpServer(); }
+        if (Mode == ExecutionMode.Run) { app.Layers.AddRestApi(); }
 
         app.Features.AddAuthentications(Authentications);
         if (Authorization is not null) { app.Features.AddAuthorization(Authorization); }

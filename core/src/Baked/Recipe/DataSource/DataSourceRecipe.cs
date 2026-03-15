@@ -49,11 +49,8 @@ public class DataSourceRecipe(Func<BusinessConfigurator, IFeature<BusinessConfig
         app.Layers.AddDomain();
         app.Layers.AddRuntime();
         if (Mode == ExecutionMode.Test) { app.Layers.AddTesting(); }
-        if (Mode == ExecutionMode.Run)
-        {
-            app.Layers.AddHttpServer();
-            app.Layers.AddRestApi();
-        }
+        if (Mode == ExecutionMode.Run) { app.Layers.AddHttpServer(); }
+        if (Mode == ExecutionMode.Run) { app.Layers.AddRestApi(); }
 
         app.Features.AddBinding(c => c.Rest());
         app.Features.AddBusiness(Business);
