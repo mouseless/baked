@@ -14,7 +14,7 @@ public static class BakeExtensions
             Action<MonolithRecipe>? options = default
         )
         {
-            var recipe = new MonolithRecipe(business);
+            var recipe = new MonolithRecipe.Run(business);
             options?.Invoke(recipe);
 
             return bake.Application(recipe.Apply);
@@ -25,7 +25,7 @@ public static class BakeExtensions
             Action<DataSourceRecipe>? options = default
         )
         {
-            var recipe = new DataSourceRecipe(business);
+            var recipe = new DataSourceRecipe.Run(business);
             options?.Invoke(recipe);
 
             return bake.Application(recipe.Apply);

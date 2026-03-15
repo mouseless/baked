@@ -1,6 +1,5 @@
 using Baked.Architecture;
 using Baked.Business;
-using Baked.Recipe;
 using Baked.Recipe.DataSource;
 using Baked.Testing;
 
@@ -13,7 +12,7 @@ public abstract class DataSourceSpec : Spec
         Action<DataSourceRecipe>? options = default
     )
     {
-        var recipe = new DataSourceRecipe(business, ExecutionMode.Test);
+        var recipe = new DataSourceRecipe.Test(business);
         options?.Invoke(recipe);
 
         Init(recipe.Apply);

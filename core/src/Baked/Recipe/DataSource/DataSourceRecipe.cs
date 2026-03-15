@@ -19,20 +19,31 @@ using Baked.Reporting;
 
 namespace Baked.Recipe.DataSource;
 
-public class DataSourceRecipe(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business, ExecutionMode mode = ExecutionMode.Run)
+public abstract class DataSourceRecipe(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business, ExecutionMode _mode)
 {
-    public ExecutionMode Mode { get; } = mode;
+    public class Test(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business) : DataSourceRecipe(_business, ExecutionMode.Test);
+    public class Run(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business) : DataSourceRecipe(_business, ExecutionMode.Run)
+    {
+        public override Func<CoreConfigurator, IFeature<CoreConfigurator>> Core { get; set; } = c => c.Dotnet();
+        public override Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> Database { get; set; } = c => c.Sqlite();
+        public override Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting { get; set; } = c => c.Swagger();
+        public override Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging { get; set; } = c => c.Request();
+        public override Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? MockOverrider { get; set; } = default;
+        public override Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? RateLimiter { get; set; } = c => c.Concurrency();
+        public override Func<ReportingConfigurator, IFeature<ReportingConfigurator>> Reporting { get; set; } = c => c.NativeSql();
+    }
+
     public Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; set; } = _business;
     public IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> Cachings { get; set; } = [c => c.InMemory(), c => c.ScopedMemory()];
-    public Func<CoreConfigurator, IFeature<CoreConfigurator>> Core { get; set; } = mode == ExecutionMode.Run ? c => c.Dotnet() : c => c.Mock();
-    public Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> Database { get; set; } = mode == ExecutionMode.Run ? c => c.Sqlite() : c => c.InMemory();
+    public virtual Func<CoreConfigurator, IFeature<CoreConfigurator>> Core { get; set; } = c => c.Mock();
+    public virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> Database { get; set; } = c => c.InMemory();
     public Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> ExceptionHandling { get; set; } = c => c.ProblemDetails();
-    public Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting { get; set; } = mode == ExecutionMode.Run ? c => c.Swagger() : default;
+    public virtual Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting { get; set; } = default;
     public Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> Localization { get; set; } = c => c.Dotnet();
-    public Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging { get; set; } = mode == ExecutionMode.Run ? c => c.Request() : default;
-    public Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? MockOverrider { get; set; } = mode == ExecutionMode.Test ? c => c.FirstInterface() : default;
-    public Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? RateLimiter { get; set; } = mode == ExecutionMode.Run ? c => c.Concurrency() : default;
-    public Func<ReportingConfigurator, IFeature<ReportingConfigurator>> Reporting { get; set; } = mode == ExecutionMode.Run ? c => c.NativeSql() : c => c.Mock();
+    public virtual Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging { get; set; } = default;
+    public virtual Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? MockOverrider { get; set; } = c => c.FirstInterface();
+    public virtual Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? RateLimiter { get; set; } = default;
+    public virtual Func<ReportingConfigurator, IFeature<ReportingConfigurator>> Reporting { get; set; } = c => c.Mock();
 
     public Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> CommandPattern { get; set; } = c => c.CommandPattern();
     public Func<CodingStyleConfigurator, InitializableCodingStyleFeature> Initializable { get; set; } = c => c.Initializable();
@@ -48,9 +59,9 @@ public class DataSourceRecipe(Func<BusinessConfigurator, IFeature<BusinessConfig
         app.Layers.AddDataAccess();
         app.Layers.AddDomain();
         app.Layers.AddRuntime();
-        if (Mode == ExecutionMode.Test) { app.Layers.AddTesting(); }
-        if (Mode == ExecutionMode.Run) { app.Layers.AddHttpServer(); }
-        if (Mode == ExecutionMode.Run) { app.Layers.AddRestApi(); }
+        if (_mode == ExecutionMode.Test) { app.Layers.AddTesting(); }
+        if (_mode == ExecutionMode.Run) { app.Layers.AddHttpServer(); }
+        if (_mode == ExecutionMode.Run) { app.Layers.AddRestApi(); }
 
         app.Features.AddBinding(c => c.Rest());
         app.Features.AddBusiness(Business);

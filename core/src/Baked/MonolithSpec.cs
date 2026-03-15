@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Recipe;
 using Baked.Recipe.Monolith;
 using Baked.Testing;
 
@@ -19,7 +18,7 @@ public abstract class MonolithSpec : Spec
         Action<MonolithRecipe>? options = default
     )
     {
-        var recipe = new MonolithRecipe(business, ExecutionMode.Test);
+        var recipe = new MonolithRecipe.Test(business);
         options?.Invoke(recipe);
 
         Init(recipe.Apply);
