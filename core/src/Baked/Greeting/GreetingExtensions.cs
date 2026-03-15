@@ -7,7 +7,7 @@ public static class GreetingExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddGreeting(Func<GreetingConfigurator, IFeature<GreetingConfigurator>> configure) =>
+        public void AddGreeting(FeatureFunc<GreetingConfigurator> configure) =>
             features.Add(configure(new()));
     }
 }

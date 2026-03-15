@@ -11,7 +11,7 @@ public static class OrmExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddOrm(Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
+        public void AddOrm(FeatureFunc<OrmConfigurator> configure) =>
             features.Add(configure(new()));
     }
 

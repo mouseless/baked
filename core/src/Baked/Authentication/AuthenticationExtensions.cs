@@ -12,7 +12,7 @@ public static class AuthenticationExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddAuthentications(IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> configures) =>
+        public void AddAuthentications(IEnumerable<FeatureFunc<AuthenticationConfigurator>> configures) =>
             features.AddRange(configures.Select(configure => configure(new())));
     }
 

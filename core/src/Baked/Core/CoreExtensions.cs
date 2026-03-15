@@ -13,7 +13,7 @@ public static class CoreExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddCore(Func<CoreConfigurator, IFeature<CoreConfigurator>> configure) =>
+        public void AddCore(FeatureFunc<CoreConfigurator> configure) =>
             features.Add(configure(new()));
     }
 

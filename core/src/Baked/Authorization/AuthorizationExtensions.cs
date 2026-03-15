@@ -7,7 +7,7 @@ public static class AuthorizationExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddAuthorization(Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>> configure) =>
+        public void AddAuthorization(FeatureFunc<AuthorizationConfigurator> configure) =>
             features.Add(configure(new()));
     }
 }

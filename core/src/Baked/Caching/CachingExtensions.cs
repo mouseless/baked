@@ -9,7 +9,7 @@ public static class CachingExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddCachings(IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> configures) =>
+        public void AddCachings(IEnumerable<FeatureFunc<CachingConfigurator>> configures) =>
             features.AddRange(configures.Select(configure => configure(new())));
     }
 

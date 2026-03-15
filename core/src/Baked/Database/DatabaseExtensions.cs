@@ -9,7 +9,7 @@ public static class DatabaseExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddDatabase(Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> configure) =>
+        public void AddDatabase(FeatureFunc<DatabaseConfigurator> configure) =>
             features.Add(configure(new()));
     }
 

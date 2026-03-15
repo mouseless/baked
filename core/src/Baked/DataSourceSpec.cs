@@ -8,7 +8,7 @@ namespace Baked;
 public abstract class DataSourceSpec : Spec
 {
     protected static void Init(
-        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        FeatureFunc<BusinessConfigurator> business,
         Action<DataSourceRecipe>? options = default
     )
     {

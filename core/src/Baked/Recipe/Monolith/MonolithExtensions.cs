@@ -9,7 +9,7 @@ public static class MonolithExtensions
     extension(Bake bake)
     {
         public Application Monolith(
-            Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+            FeatureFunc<BusinessConfigurator> business,
             Action<MonolithRecipe>? options = default
         )
         {

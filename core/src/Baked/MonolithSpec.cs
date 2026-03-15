@@ -14,7 +14,7 @@ public abstract class MonolithSpec : Spec
     }
 
     protected static void Init(
-        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        FeatureFunc<BusinessConfigurator> business,
         Action<MonolithRecipe>? options = default
     )
     {

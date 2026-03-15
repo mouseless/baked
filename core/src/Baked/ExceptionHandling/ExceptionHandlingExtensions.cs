@@ -7,7 +7,7 @@ public static class ExceptionHandlingExtensions
 {
     extension(IList<IFeature> features)
     {
-        public void AddExceptionHandling(Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> configure) =>
+        public void AddExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> configure) =>
             features.Add(configure(new()));
     }
 }

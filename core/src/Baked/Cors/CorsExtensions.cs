@@ -7,7 +7,7 @@ public static class CorsExtensions
 {
     extension(IList<IFeature> features)
     {
-        public void AddCors(Func<CorsConfigurator, IFeature<CorsConfigurator>> configure) =>
+        public void AddCors(FeatureFunc<CorsConfigurator> configure) =>
             features.Add(configure(new()));
     }
 }

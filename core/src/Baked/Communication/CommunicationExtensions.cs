@@ -7,7 +7,7 @@ public static class CommunicationExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddCommunication(Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>> configure) =>
+        public void AddCommunication(FeatureFunc<CommunicationConfigurator> configure) =>
             features.Add(configure(new()));
     }
 }

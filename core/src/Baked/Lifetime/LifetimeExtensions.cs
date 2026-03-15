@@ -11,7 +11,7 @@ public static class LifetimeExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddLifetimes(IEnumerable<Func<LifetimeConfigurator, IFeature<LifetimeConfigurator>>> configures) =>
+        public void AddLifetimes(IEnumerable<FeatureFunc<LifetimeConfigurator>> configures) =>
             features.AddRange(configures.Select(configure => configure(new())));
     }
 

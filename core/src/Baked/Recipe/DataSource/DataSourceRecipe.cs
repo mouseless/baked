@@ -19,12 +19,12 @@ using Baked.Reporting;
 
 namespace Baked.Recipe.DataSource;
 
-public abstract class DataSourceRecipe(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business, ExecutionMode _mode)
+public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> _business, ExecutionMode _mode)
 {
-    public class Test(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business) : DataSourceRecipe(_business, ExecutionMode.Test);
+    public class Test(FeatureFunc<BusinessConfigurator> _business) : DataSourceRecipe(_business, ExecutionMode.Test);
     public class Run : DataSourceRecipe
     {
-        public Run(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business) : base(business, ExecutionMode.Run)
+        public Run(FeatureFunc<BusinessConfigurator> business) : base(business, ExecutionMode.Run)
         {
             Core(c => c.Dotnet());
             Database(c => c.Sqlite());
@@ -36,17 +36,17 @@ public abstract class DataSourceRecipe(Func<BusinessConfigurator, IFeature<Busin
         }
     }
 
-    Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business = _business;
-    IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
-    Func<CoreConfigurator, IFeature<CoreConfigurator>> _core = c => c.Mock();
-    Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> _database = c => c.InMemory();
-    Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> _exceptionHandling = c => c.ProblemDetails();
-    Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? _greeting = default;
-    Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> _localization = c => c.Dotnet();
-    Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? _logging = default;
-    Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? _mockOverrider = c => c.FirstInterface();
-    Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? _rateLimiter = default;
-    Func<ReportingConfigurator, IFeature<ReportingConfigurator>> _reporting = c => c.Mock();
+    FeatureFunc<BusinessConfigurator> _business = _business;
+    IEnumerable<FeatureFunc<CachingConfigurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
+    FeatureFunc<CoreConfigurator> _core = c => c.Mock();
+    FeatureFunc<DatabaseConfigurator> _database = c => c.InMemory();
+    FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
+    FeatureFunc<GreetingConfigurator>? _greeting = default;
+    FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
+    FeatureFunc<LoggingConfigurator>? _logging = default;
+    FeatureFunc<MockOverriderConfigurator>? _mockOverrider = c => c.FirstInterface();
+    FeatureFunc<RateLimiterConfigurator>? _rateLimiter = default;
+    FeatureFunc<ReportingConfigurator> _reporting = c => c.Mock();
 
     Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> _commandPattern = c => c.CommandPattern();
     Func<CodingStyleConfigurator, InitializableCodingStyleFeature> _initializable = c => c.Initializable();
@@ -56,34 +56,34 @@ public abstract class DataSourceRecipe(Func<BusinessConfigurator, IFeature<Busin
 
     Action<ApplicationDescriptor> _configure = _ => { };
 
-    public void Cachings(params Func<CachingConfigurator, IFeature<CachingConfigurator>>[] cachings) =>
+    public void Cachings(params FeatureFunc<CachingConfigurator>[] cachings) =>
         _cachings = cachings;
 
-    public void Core(Func<CoreConfigurator, IFeature<CoreConfigurator>> core) =>
+    public void Core(FeatureFunc<CoreConfigurator> core) =>
         _core = core;
 
-    public void Database(Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> database) =>
+    public void Database(FeatureFunc<DatabaseConfigurator> database) =>
         _database = database;
 
-    public void ExceptionHandling(Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> exceptionHandling) =>
+    public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) =>
         _exceptionHandling = exceptionHandling;
 
-    public void Greeting(Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting) =>
+    public void Greeting(FeatureFunc<GreetingConfigurator>? greeting) =>
         _greeting = greeting;
 
-    public void Localization(Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> localization) =>
+    public void Localization(FeatureFunc<LocalizationConfigurator> localization) =>
         _localization = localization;
 
-    public void Logging(Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging) =>
+    public void Logging(FeatureFunc<LoggingConfigurator>? logging) =>
         _logging = logging;
 
-    public void MockOverrider(Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider) =>
+    public void MockOverrider(FeatureFunc<MockOverriderConfigurator>? mockOverrider) =>
         _mockOverrider = mockOverrider;
 
-    public void RateLimiter(Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter) =>
+    public void RateLimiter(FeatureFunc<RateLimiterConfigurator>? rateLimiter) =>
         _rateLimiter = rateLimiter;
 
-    public void Reporting(Func<ReportingConfigurator, IFeature<ReportingConfigurator>> reporting) =>
+    public void Reporting(FeatureFunc<ReportingConfigurator> reporting) =>
         _reporting = reporting;
 
     public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) =>

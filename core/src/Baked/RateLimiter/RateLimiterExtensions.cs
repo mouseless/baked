@@ -7,7 +7,7 @@ public static class RateLimiterExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddRateLimiter(Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>> configure) =>
+        public void AddRateLimiter(FeatureFunc<RateLimiterConfigurator> configure) =>
             features.Add(configure(new()));
     }
 }

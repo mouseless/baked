@@ -7,10 +7,10 @@ public static class UxExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddUx(IEnumerable<Func<UxConfigurator, IFeature<UxConfigurator>>> configures) =>
+        public void AddUx(IEnumerable<FeatureFunc<UxConfigurator>> configures) =>
             features.AddRange(configures.Select(configure => configure(new())));
 
-        public void AddUxes(IEnumerable<Func<UxConfigurator, IFeature<UxConfigurator>>> configures) =>
+        public void AddUxes(IEnumerable<FeatureFunc<UxConfigurator>> configures) =>
             features.AddUx(configures);
     }
 }

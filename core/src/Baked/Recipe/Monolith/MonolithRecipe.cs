@@ -24,12 +24,12 @@ using Baked.Theme;
 
 namespace Baked.Recipe.Monolith;
 
-public abstract class MonolithRecipe(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business, ExecutionMode _mode)
+public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> _business, ExecutionMode _mode)
 {
-    public class Test(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business) : MonolithRecipe(_business, ExecutionMode.Test);
+    public class Test(FeatureFunc<BusinessConfigurator> _business) : MonolithRecipe(_business, ExecutionMode.Test);
     public class Run : MonolithRecipe
     {
-        public Run(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business) : base(business, ExecutionMode.Run)
+        public Run(FeatureFunc<BusinessConfigurator> business) : base(business, ExecutionMode.Run)
         {
             Authentications(c => c.FixedBearerToken());
             Authorization(c => c.ClaimBased());
@@ -44,22 +44,22 @@ public abstract class MonolithRecipe(Func<BusinessConfigurator, IFeature<Busines
         }
     }
 
-    Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business = _business;
-    IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> _authentications = [];
-    Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? _authorization = default;
-    IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
-    Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>> _communication = c => c.Mock();
-    Func<CoreConfigurator, IFeature<CoreConfigurator>> _core = c => c.Mock();
-    Func<CorsConfigurator, IFeature<CorsConfigurator>>? _cors = default;
-    Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> _database = c => c.InMemory();
-    Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> _exceptionHandling = c => c.ProblemDetails();
-    Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? _greeting = default;
-    Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> _localization = c => c.Dotnet();
-    Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? _logging = default;
-    Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? _mockOverrider = default;
-    Func<OrmConfigurator, IFeature<OrmConfigurator>> _orm = c => c.AutoMap();
-    Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? _rateLimiter = default;
-    Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? _theme = default;
+    FeatureFunc<BusinessConfigurator> _business = _business;
+    IEnumerable<FeatureFunc<AuthenticationConfigurator>> _authentications = [];
+    FeatureFunc<AuthorizationConfigurator>? _authorization = default;
+    IEnumerable<FeatureFunc<CachingConfigurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
+    FeatureFunc<CommunicationConfigurator> _communication = c => c.Mock();
+    FeatureFunc<CoreConfigurator> _core = c => c.Mock();
+    FeatureFunc<CorsConfigurator>? _cors = default;
+    FeatureFunc<DatabaseConfigurator> _database = c => c.InMemory();
+    FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
+    FeatureFunc<GreetingConfigurator>? _greeting = default;
+    FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
+    FeatureFunc<LoggingConfigurator>? _logging = default;
+    FeatureFunc<MockOverriderConfigurator>? _mockOverrider = default;
+    FeatureFunc<OrmConfigurator> _orm = c => c.AutoMap();
+    FeatureFunc<RateLimiterConfigurator>? _rateLimiter = default;
+    FeatureFunc<ThemeConfigurator>? _theme = default;
 
     Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> _commandPattern = c => c.CommandPattern();
     Func<CodingStyleConfigurator, InitializableCodingStyleFeature> _initializable = c => c.Initializable();
@@ -69,49 +69,49 @@ public abstract class MonolithRecipe(Func<BusinessConfigurator, IFeature<Busines
 
     Action<ApplicationDescriptor> _configure = _ => { };
 
-    public void Authentications(params Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>[] authentications) =>
+    public void Authentications(params FeatureFunc<AuthenticationConfigurator>[] authentications) =>
         _authentications = authentications;
 
-    public void Authorization(Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization) =>
+    public void Authorization(FeatureFunc<AuthorizationConfigurator>? authorization) =>
         _authorization = authorization;
 
-    public void Cachings(params Func<CachingConfigurator, IFeature<CachingConfigurator>>[] cachings) =>
+    public void Cachings(params FeatureFunc<CachingConfigurator>[] cachings) =>
         _cachings = cachings;
 
-    public void Communication(Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>> communication) =>
+    public void Communication(FeatureFunc<CommunicationConfigurator> communication) =>
         _communication = communication;
 
-    public void Core(Func<CoreConfigurator, IFeature<CoreConfigurator>> core) =>
+    public void Core(FeatureFunc<CoreConfigurator> core) =>
         _core = core;
 
-    public void Cors(Func<CorsConfigurator, IFeature<CorsConfigurator>>? cors) =>
+    public void Cors(FeatureFunc<CorsConfigurator>? cors) =>
         _cors = cors;
 
-    public void Database(Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> database) =>
+    public void Database(FeatureFunc<DatabaseConfigurator> database) =>
         _database = database;
 
-    public void ExceptionHandling(Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> exceptionHandling) =>
+    public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) =>
         _exceptionHandling = exceptionHandling;
 
-    public void Greeting(Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting) =>
+    public void Greeting(FeatureFunc<GreetingConfigurator>? greeting) =>
         _greeting = greeting;
 
-    public void Localization(Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> localization) =>
+    public void Localization(FeatureFunc<LocalizationConfigurator> localization) =>
         _localization = localization;
 
-    public void Logging(Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging) =>
+    public void Logging(FeatureFunc<LoggingConfigurator>? logging) =>
         _logging = logging;
 
-    public void MockOverrider(Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider) =>
+    public void MockOverrider(FeatureFunc<MockOverriderConfigurator>? mockOverrider) =>
         _mockOverrider = mockOverrider;
 
-    public void Orm(Func<OrmConfigurator, IFeature<OrmConfigurator>> orm) =>
+    public void Orm(FeatureFunc<OrmConfigurator> orm) =>
         _orm = orm;
 
-    public void RateLimiter(Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter) =>
+    public void RateLimiter(FeatureFunc<RateLimiterConfigurator>? rateLimiter) =>
         _rateLimiter = rateLimiter;
 
-    public void Theme(Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme) =>
+    public void Theme(FeatureFunc<ThemeConfigurator>? theme) =>
         _theme = theme;
 
     public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) =>
@@ -130,7 +130,7 @@ public abstract class MonolithRecipe(Func<BusinessConfigurator, IFeature<Busines
         _useBuiltInTypes = useBuiltInTypes;
 
     public void Configure(Action<ApplicationDescriptor> configure) =>
-        _configure += configure;
+        _configure = configure;
 
     public void Apply(ApplicationDescriptor app)
     {

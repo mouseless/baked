@@ -9,7 +9,7 @@ public static class ReportingExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddReporting(Func<ReportingConfigurator, IFeature<ReportingConfigurator>> configure) =>
+        public void AddReporting(FeatureFunc<ReportingConfigurator> configure) =>
             features.Add(configure(new()));
     }
 

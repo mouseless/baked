@@ -12,7 +12,7 @@ public static class BusinessExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddBusiness(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) =>
+        public void AddBusiness(FeatureFunc<BusinessConfigurator> configure) =>
             features.Add(configure(new()));
     }
 

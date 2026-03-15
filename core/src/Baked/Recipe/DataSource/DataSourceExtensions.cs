@@ -9,7 +9,7 @@ public static class DataSourceExtensions
     extension(Bake bake)
     {
         public Application DataSource(
-            Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+            FeatureFunc<BusinessConfigurator> business,
             Action<DataSourceRecipe>? options = default
         )
         {

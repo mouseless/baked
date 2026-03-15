@@ -17,7 +17,7 @@ public static class ThemeExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddTheme(Func<ThemeConfigurator, IFeature<ThemeConfigurator>> configure) =>
+        public void AddTheme(FeatureFunc<ThemeConfigurator> configure) =>
             features.Add(configure(new()));
     }
 

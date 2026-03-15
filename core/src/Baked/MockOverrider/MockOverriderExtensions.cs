@@ -9,7 +9,7 @@ public static class MockOverriderExtensions
 {
     extension(List<IFeature> features)
     {
-        public void AddMockOverrider(Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>> configure) =>
+        public void AddMockOverrider(FeatureFunc<MockOverriderConfigurator> configure) =>
             features.Add(configure(new()));
     }
 
