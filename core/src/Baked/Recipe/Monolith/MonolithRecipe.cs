@@ -27,44 +27,110 @@ namespace Baked.Recipe.Monolith;
 public abstract class MonolithRecipe(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business, ExecutionMode _mode)
 {
     public class Test(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business) : MonolithRecipe(_business, ExecutionMode.Test);
-    public class Run(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business) : MonolithRecipe(_business, ExecutionMode.Run)
+    public class Run : MonolithRecipe
     {
-        public override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> Authentications { get; set; } = [c => c.FixedBearerToken()];
-        public override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization { get; set; } = c => c.ClaimBased();
-        public override Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>> Communication { get; set; } = c => c.Http();
-        public override Func<CoreConfigurator, IFeature<CoreConfigurator>> Core { get; set; } = c => c.Dotnet();
-        public override Func<CorsConfigurator, IFeature<CorsConfigurator>>? Cors { get; set; } = c => c.Disabled();
-        public override Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> Database { get; set; } = c => c.Sqlite();
-        public override Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting { get; set; } = c => c.Swagger();
-        public override Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging { get; set; } = c => c.Request();
-        public override Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? MockOverrider { get; set; } = c => c.FirstInterface();
-        public override Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? RateLimiter { get; set; } = c => c.Concurrency();
+        public Run(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business) : base(business, ExecutionMode.Run)
+        {
+            Authentications(c => c.FixedBearerToken());
+            Authorization(c => c.ClaimBased());
+            Communication(c => c.Http());
+            Core(c => c.Dotnet());
+            Cors(c => c.Disabled());
+            Database(c => c.Sqlite());
+            Greeting(c => c.Swagger());
+            Logging(c => c.Request());
+            MockOverrider(c => c.FirstInterface());
+            RateLimiter(c => c.Concurrency());
+        }
     }
 
-    public Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; set; } = _business;
-    public virtual IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> Authentications { get; set; } = [];
-    public virtual Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization { get; set; } = default;
-    public IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> Cachings { get; set; } = [c => c.InMemory(), c => c.ScopedMemory()];
-    public virtual Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>> Communication { get; set; } = c => c.Mock();
-    public virtual Func<CoreConfigurator, IFeature<CoreConfigurator>> Core { get; set; } = c => c.Mock();
-    public virtual Func<CorsConfigurator, IFeature<CorsConfigurator>>? Cors { get; set; } = default;
-    public virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> Database { get; set; } = c => c.InMemory();
-    public Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> ExceptionHandling { get; set; } = c => c.ProblemDetails();
-    public virtual Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting { get; set; } = default;
-    public Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> Localization { get; set; } = c => c.Dotnet();
-    public virtual Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging { get; set; } = default;
-    public virtual Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? MockOverrider { get; set; } = default;
-    public Func<OrmConfigurator, IFeature<OrmConfigurator>> Orm { get; set; } = c => c.AutoMap();
-    public virtual Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? RateLimiter { get; set; } = default;
-    public Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? Theme { get; set; } = default;
+    Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business = _business;
+    IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> _authentications = [];
+    Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? _authorization = default;
+    IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
+    Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>> _communication = c => c.Mock();
+    Func<CoreConfigurator, IFeature<CoreConfigurator>> _core = c => c.Mock();
+    Func<CorsConfigurator, IFeature<CorsConfigurator>>? _cors = default;
+    Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> _database = c => c.InMemory();
+    Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> _exceptionHandling = c => c.ProblemDetails();
+    Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? _greeting = default;
+    Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> _localization = c => c.Dotnet();
+    Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? _logging = default;
+    Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? _mockOverrider = default;
+    Func<OrmConfigurator, IFeature<OrmConfigurator>> _orm = c => c.AutoMap();
+    Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? _rateLimiter = default;
+    Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? _theme = default;
 
-    public Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> CommandPattern { get; set; } = c => c.CommandPattern();
-    public Func<CodingStyleConfigurator, InitializableCodingStyleFeature> Initializable { get; set; } = c => c.Initializable();
-    public Func<CodingStyleConfigurator, LabelCodingStyleFeature> Label { get; set; } = c => c.Label();
-    public Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> ScopedBySuffix { get; set; } = c => c.ScopedBySuffix();
-    public Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> UseBuiltInTypes { get; set; } = c => c.UseBuiltInTypes();
+    Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> _commandPattern = c => c.CommandPattern();
+    Func<CodingStyleConfigurator, InitializableCodingStyleFeature> _initializable = c => c.Initializable();
+    Func<CodingStyleConfigurator, LabelCodingStyleFeature> _label = c => c.Label();
+    Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> _scopedBySuffix = c => c.ScopedBySuffix();
+    Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> _useBuiltInTypes = c => c.UseBuiltInTypes();
 
-    public Action<ApplicationDescriptor> Configure { get; set; } = _ => { };
+    Action<ApplicationDescriptor> _configure = _ => { };
+
+    public void Authentications(params Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>[] authentications) =>
+        _authentications = authentications;
+
+    public void Authorization(Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization) =>
+        _authorization = authorization;
+
+    public void Cachings(params Func<CachingConfigurator, IFeature<CachingConfigurator>>[] cachings) =>
+        _cachings = cachings;
+
+    public void Communication(Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>> communication) =>
+        _communication = communication;
+
+    public void Core(Func<CoreConfigurator, IFeature<CoreConfigurator>> core) =>
+        _core = core;
+
+    public void Cors(Func<CorsConfigurator, IFeature<CorsConfigurator>>? cors) =>
+        _cors = cors;
+
+    public void Database(Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> database) =>
+        _database = database;
+
+    public void ExceptionHandling(Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> exceptionHandling) =>
+        _exceptionHandling = exceptionHandling;
+
+    public void Greeting(Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting) =>
+        _greeting = greeting;
+
+    public void Localization(Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> localization) =>
+        _localization = localization;
+
+    public void Logging(Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging) =>
+        _logging = logging;
+
+    public void MockOverrider(Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider) =>
+        _mockOverrider = mockOverrider;
+
+    public void Orm(Func<OrmConfigurator, IFeature<OrmConfigurator>> orm) =>
+        _orm = orm;
+
+    public void RateLimiter(Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter) =>
+        _rateLimiter = rateLimiter;
+
+    public void Theme(Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme) =>
+        _theme = theme;
+
+    public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) =>
+        _commandPattern = commandPattern;
+
+    public void Initializable(Func<CodingStyleConfigurator, InitializableCodingStyleFeature> initializable) =>
+        _initializable = initializable;
+
+    public void Label(Func<CodingStyleConfigurator, LabelCodingStyleFeature> label) =>
+        _label = label;
+
+    public void ScopedBySuffix(Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> scopedBySuffix) =>
+        _scopedBySuffix = scopedBySuffix;
+
+    public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) =>
+        _useBuiltInTypes = useBuiltInTypes;
+
+    public void Configure(Action<ApplicationDescriptor> configure) =>
+        _configure += configure;
 
     public void Apply(ApplicationDescriptor app)
     {
@@ -77,20 +143,20 @@ public abstract class MonolithRecipe(Func<BusinessConfigurator, IFeature<Busines
         if (_mode == ExecutionMode.Run) { app.Layers.AddHttpServer(); }
         if (_mode == ExecutionMode.Run) { app.Layers.AddRestApi(); }
 
-        app.Features.AddAuthentications(Authentications);
-        if (Authorization is not null) { app.Features.AddAuthorization(Authorization); }
+        app.Features.AddAuthentications(_authentications);
+        if (_authorization is not null) { app.Features.AddAuthorization(_authorization); }
         app.Features.AddBinding(c => c.Rest());
-        app.Features.AddBusiness(Business);
-        app.Features.AddCachings(Cachings);
+        app.Features.AddBusiness(_business);
+        app.Features.AddCachings(_cachings);
         app.Features.AddCodingStyles(
         [
             c => c.AddRemoveChild(),
             c => c.Client(),
-            CommandPattern,
+            _commandPattern,
             c => c.EntitySubclass(),
             c => c.Id(),
-            Initializable,
-            Label,
+            _initializable,
+            _label,
             c => c.Locatable(),
             c => c.LocatableExtension(),
             c => c.NamespaceAsRoute(),
@@ -100,34 +166,34 @@ public abstract class MonolithRecipe(Func<BusinessConfigurator, IFeature<Busines
             c => c.RemainingServicesAreSingleton(),
             c => c.RichEntity(),
             c => c.RichTransient(),
-            ScopedBySuffix,
+            _scopedBySuffix,
             c => c.Unique(),
             c => c.UriReturnIsRedirect(),
-            UseBuiltInTypes,
+            _useBuiltInTypes,
             c => c.UseNullableTypes(),
             c => c.ValueType()
         ]);
 
-        app.Features.AddCommunication(Communication);
-        app.Features.AddCore(Core);
-        if (Cors is not null) { app.Features.AddCors(Cors); }
-        app.Features.AddDatabase(Database);
-        app.Features.AddExceptionHandling(ExceptionHandling);
-        if (Greeting is not null) { app.Features.AddGreeting(Greeting); }
+        app.Features.AddCommunication(_communication);
+        app.Features.AddCore(_core);
+        if (_cors is not null) { app.Features.AddCors(_cors); }
+        app.Features.AddDatabase(_database);
+        app.Features.AddExceptionHandling(_exceptionHandling);
+        if (_greeting is not null) { app.Features.AddGreeting(_greeting); }
         app.Features.AddLifetimes(
         [
             c => c.Scoped(),
             c => c.Singleton(),
             c => c.Transient()
         ]);
-        app.Features.AddLocalization(Localization);
-        if (Logging is not null) { app.Features.AddLogging(Logging); }
-        app.Features.AddOrm(Orm);
-        if (RateLimiter is not null) { app.Features.AddRateLimiter(RateLimiter); }
+        app.Features.AddLocalization(_localization);
+        if (_logging is not null) { app.Features.AddLogging(_logging); }
+        app.Features.AddOrm(_orm);
+        if (_rateLimiter is not null) { app.Features.AddRateLimiter(_rateLimiter); }
 
-        if (MockOverrider is not null) { app.Features.AddMockOverrider(MockOverrider); }
+        if (_mockOverrider is not null) { app.Features.AddMockOverrider(_mockOverrider); }
 
-        if (Theme is not null)
+        if (_theme is not null)
         {
             if (_mode == ExecutionMode.Run) { app.Layers.AddUi(); }
 
@@ -149,9 +215,9 @@ public abstract class MonolithRecipe(Func<BusinessConfigurator, IFeature<Busines
                 c => c.RoutedTypesAsNavLinks()
             ]);
 
-            app.Features.AddTheme(Theme);
+            app.Features.AddTheme(_theme);
         }
 
-        Configure(app);
+        _configure(app);
     }
 }

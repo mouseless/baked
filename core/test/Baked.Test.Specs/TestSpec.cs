@@ -10,17 +10,17 @@ public abstract class TestSpec : MonolithSpec
             business: c => c.DomainAssemblies(typeof(Entity).Assembly, baseNamespace: "Baked.Playground"),
             options: recipe =>
             {
-                recipe.Communication = c => c.Mock(defaultResponses: response =>
+                recipe.Communication(c => c.Mock(defaultResponses: response =>
                 {
                     response.ForClient<GitHubClient>(response: "test result");
                     response.ForClient<InternalSamples>(response: "path1 response", when: r => r.UrlOrPath.Equals("path1"));
                     response.ForClient<InternalSamples>(response: "path2 response", when: r => r.UrlOrPath.Equals("path2"));
-                });
-                recipe.Configure = app =>
+                }));
+                recipe.Configure(app =>
                 {
                     app.Features.AddReporting(c => c.Mock());
                     app.Features.AddOverrides();
-                };
+                });
             }
         );
 

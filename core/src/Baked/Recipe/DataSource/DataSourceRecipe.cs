@@ -22,36 +22,87 @@ namespace Baked.Recipe.DataSource;
 public abstract class DataSourceRecipe(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business, ExecutionMode _mode)
 {
     public class Test(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business) : DataSourceRecipe(_business, ExecutionMode.Test);
-    public class Run(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business) : DataSourceRecipe(_business, ExecutionMode.Run)
+    public class Run : DataSourceRecipe
     {
-        public override Func<CoreConfigurator, IFeature<CoreConfigurator>> Core { get; set; } = c => c.Dotnet();
-        public override Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> Database { get; set; } = c => c.Sqlite();
-        public override Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting { get; set; } = c => c.Swagger();
-        public override Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging { get; set; } = c => c.Request();
-        public override Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? MockOverrider { get; set; } = default;
-        public override Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? RateLimiter { get; set; } = c => c.Concurrency();
-        public override Func<ReportingConfigurator, IFeature<ReportingConfigurator>> Reporting { get; set; } = c => c.NativeSql();
+        public Run(Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business) : base(business, ExecutionMode.Run)
+        {
+            Core(c => c.Dotnet());
+            Database(c => c.Sqlite());
+            Greeting(c => c.Swagger());
+            Logging(c => c.Request());
+            MockOverrider(default);
+            RateLimiter(c => c.Concurrency());
+            Reporting(c => c.NativeSql());
+        }
     }
 
-    public Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; set; } = _business;
-    public IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> Cachings { get; set; } = [c => c.InMemory(), c => c.ScopedMemory()];
-    public virtual Func<CoreConfigurator, IFeature<CoreConfigurator>> Core { get; set; } = c => c.Mock();
-    public virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> Database { get; set; } = c => c.InMemory();
-    public Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> ExceptionHandling { get; set; } = c => c.ProblemDetails();
-    public virtual Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting { get; set; } = default;
-    public Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> Localization { get; set; } = c => c.Dotnet();
-    public virtual Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging { get; set; } = default;
-    public virtual Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? MockOverrider { get; set; } = c => c.FirstInterface();
-    public virtual Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? RateLimiter { get; set; } = default;
-    public virtual Func<ReportingConfigurator, IFeature<ReportingConfigurator>> Reporting { get; set; } = c => c.Mock();
+    Func<BusinessConfigurator, IFeature<BusinessConfigurator>> _business = _business;
+    IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
+    Func<CoreConfigurator, IFeature<CoreConfigurator>> _core = c => c.Mock();
+    Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> _database = c => c.InMemory();
+    Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> _exceptionHandling = c => c.ProblemDetails();
+    Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? _greeting = default;
+    Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> _localization = c => c.Dotnet();
+    Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? _logging = default;
+    Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? _mockOverrider = c => c.FirstInterface();
+    Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? _rateLimiter = default;
+    Func<ReportingConfigurator, IFeature<ReportingConfigurator>> _reporting = c => c.Mock();
 
-    public Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> CommandPattern { get; set; } = c => c.CommandPattern();
-    public Func<CodingStyleConfigurator, InitializableCodingStyleFeature> Initializable { get; set; } = c => c.Initializable();
-    public Func<CodingStyleConfigurator, LabelCodingStyleFeature> Label { get; set; } = c => c.Label();
-    public Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> ScopedBySuffix { get; set; } = c => c.ScopedBySuffix();
-    public Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> UseBuiltInTypes { get; set; } = c => c.UseBuiltInTypes();
+    Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> _commandPattern = c => c.CommandPattern();
+    Func<CodingStyleConfigurator, InitializableCodingStyleFeature> _initializable = c => c.Initializable();
+    Func<CodingStyleConfigurator, LabelCodingStyleFeature> _label = c => c.Label();
+    Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> _scopedBySuffix = c => c.ScopedBySuffix();
+    Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> _useBuiltInTypes = c => c.UseBuiltInTypes();
 
-    public Action<ApplicationDescriptor> Configure { get; set; } = _ => { };
+    Action<ApplicationDescriptor> _configure = _ => { };
+
+    public void Cachings(params Func<CachingConfigurator, IFeature<CachingConfigurator>>[] cachings) =>
+        _cachings = cachings;
+
+    public void Core(Func<CoreConfigurator, IFeature<CoreConfigurator>> core) =>
+        _core = core;
+
+    public void Database(Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> database) =>
+        _database = database;
+
+    public void ExceptionHandling(Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>> exceptionHandling) =>
+        _exceptionHandling = exceptionHandling;
+
+    public void Greeting(Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting) =>
+        _greeting = greeting;
+
+    public void Localization(Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>> localization) =>
+        _localization = localization;
+
+    public void Logging(Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging) =>
+        _logging = logging;
+
+    public void MockOverrider(Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider) =>
+        _mockOverrider = mockOverrider;
+
+    public void RateLimiter(Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter) =>
+        _rateLimiter = rateLimiter;
+
+    public void Reporting(Func<ReportingConfigurator, IFeature<ReportingConfigurator>> reporting) =>
+        _reporting = reporting;
+
+    public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) =>
+        _commandPattern = commandPattern;
+
+    public void Initializable(Func<CodingStyleConfigurator, InitializableCodingStyleFeature> initializable) =>
+        _initializable = initializable;
+
+    public void Label(Func<CodingStyleConfigurator, LabelCodingStyleFeature> label) =>
+        _label = label;
+
+    public void ScopedBySuffix(Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> scopedBySuffix) =>
+        _scopedBySuffix = scopedBySuffix;
+
+    public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) =>
+        _useBuiltInTypes = useBuiltInTypes;
+
+    public void Configure(Action<ApplicationDescriptor> configure) =>
+        _configure += configure;
 
     public void Apply(ApplicationDescriptor app)
     {
@@ -64,44 +115,44 @@ public abstract class DataSourceRecipe(Func<BusinessConfigurator, IFeature<Busin
         if (_mode == ExecutionMode.Run) { app.Layers.AddRestApi(); }
 
         app.Features.AddBinding(c => c.Rest());
-        app.Features.AddBusiness(Business);
-        app.Features.AddCachings(Cachings);
+        app.Features.AddBusiness(_business);
+        app.Features.AddCachings(_cachings);
         app.Features.AddCodingStyles(
         [
             c => c.AddRemoveChild(),
-            CommandPattern,
+            _commandPattern,
             c => c.Id(),
-            Initializable,
-            Label,
+            _initializable,
+            _label,
             c => c.Locatable(),
             c => c.NamespaceAsRoute(),
             c => c.Query(),
             c => c.RecordsAreDtos(),
             c => c.RemainingServicesAreSingleton(),
             c => c.RichTransient(),
-            ScopedBySuffix,
-            UseBuiltInTypes,
+            _scopedBySuffix,
+            _useBuiltInTypes,
             c => c.UseNullableTypes(),
             c => c.ValueType()
         ]);
 
-        app.Features.AddCore(Core);
-        app.Features.AddDatabase(Database);
-        app.Features.AddExceptionHandling(ExceptionHandling);
-        if (Greeting is not null) { app.Features.AddGreeting(Greeting); }
+        app.Features.AddCore(_core);
+        app.Features.AddDatabase(_database);
+        app.Features.AddExceptionHandling(_exceptionHandling);
+        if (_greeting is not null) { app.Features.AddGreeting(_greeting); }
         app.Features.AddLifetimes(
         [
             c => c.Scoped(),
             c => c.Singleton(),
             c => c.Transient()
         ]);
-        app.Features.AddLocalization(Localization);
-        if (Logging is not null) { app.Features.AddLogging(Logging); }
-        app.Features.AddReporting(Reporting);
-        if (RateLimiter is not null) { app.Features.AddRateLimiter(RateLimiter); }
+        app.Features.AddLocalization(_localization);
+        if (_logging is not null) { app.Features.AddLogging(_logging); }
+        app.Features.AddReporting(_reporting);
+        if (_rateLimiter is not null) { app.Features.AddRateLimiter(_rateLimiter); }
 
-        if (MockOverrider is not null) { app.Features.AddMockOverrider(MockOverrider); }
+        if (_mockOverrider is not null) { app.Features.AddMockOverrider(_mockOverrider); }
 
-        Configure(app);
+        _configure(app);
     }
 }
