@@ -1,4 +1,4 @@
-namespace Baked;
+namespace Baked.Recipe;
 
 public enum ExecutionMode
 {

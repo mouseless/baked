@@ -66,8 +66,6 @@ public static class ThemeExtensions
             );
         }
 
-        #region Add / Remove Schema Metadata
-
         public void AddTypeSchema<TSchema>(Func<TSchema> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
@@ -292,10 +290,6 @@ public static class ThemeExtensions
             );
         }
 
-        #endregion
-
-        #region Add Schema Configuration
-
         public void AddTypeSchemaConfiguration<TSchema>(Action<TSchema> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
@@ -455,10 +449,6 @@ public static class ThemeExtensions
                 order: order
             );
         }
-
-        #endregion
-
-        #region Add / Remove Component Metadata
 
         public void AddTypeComponent<TSchema>(Func<ComponentDescriptor<TSchema>> component,
             Func<TypeModelMetadataContext, bool>? when = default,
@@ -720,10 +710,6 @@ public static class ThemeExtensions
             );
         }
 
-        #endregion
-
-        #region Add Component Configuration
-
         public void AddTypeComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
@@ -891,8 +877,6 @@ public static class ThemeExtensions
                 order: order
             );
         }
-
-        #endregion
     }
 
     extension(TypeModel type)

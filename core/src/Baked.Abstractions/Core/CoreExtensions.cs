@@ -68,8 +68,6 @@ public static class CoreExtensions
 
     extension(string str)
     {
-        #region Encryption
-
         public byte[] ToMD5() =>
             MD5.HashData(str.ToUtf8Bytes());
 
@@ -93,8 +91,6 @@ public static class CoreExtensions
 
         public byte[] ToUtf8Bytes() =>
             Encoding.UTF8.GetBytes(str);
-
-        #endregion
     }
 
     extension(byte[] bytes)

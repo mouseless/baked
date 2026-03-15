@@ -242,7 +242,6 @@ public static class DomainExtensions
 
     extension(IDomainModelConventionCollection conventions)
     {
-        #region Attribute Add/Set/Remove
         public void Add(IDomainModelConvention convention,
             int order = default
         ) => conventions.Add((convention, order));
@@ -390,9 +389,7 @@ public static class DomainExtensions
             int order = default
         ) where TAttribute : Attribute =>
             conventions.Add(new RemoveAttributeConvention<ParameterModelContext, TAttribute>((context, remove) => remove(context.Parameter), when, attributeRequiresIndex: requiresIndex), order);
-        #endregion
 
-        #region Attribute Configuration
         public void AddTypeAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<TypeModelMetadataContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             int order = default
@@ -488,7 +485,6 @@ public static class DomainExtensions
             int order = default
         ) where TAttribute : Attribute =>
             conventions.Add(new ParameterAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order);
-        #endregion
     }
 
     extension(TypeModel type)
