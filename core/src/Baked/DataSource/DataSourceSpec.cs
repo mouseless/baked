@@ -7,7 +7,7 @@ namespace Baked.DataSource;
 public abstract class DataSourceSpec : Spec
 {
     protected static void Init(FeatureFunc<BusinessConfigurator> business,
-        Action<DataSourceRecipe>? options = default
+        Action<DataSourceRecipe.Test>? options = default
     )
     {
         var recipe = new DataSourceRecipe.Test(business);

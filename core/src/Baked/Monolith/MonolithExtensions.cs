@@ -10,7 +10,7 @@ public static class MonolithExtensions
     {
         public Application Monolith(
             FeatureFunc<BusinessConfigurator> business,
-            Action<MonolithRecipe>? options = default
+            Action<MonolithRecipe.Run>? options = default
         )
         {
             var recipe = new MonolithRecipe.Run(business);

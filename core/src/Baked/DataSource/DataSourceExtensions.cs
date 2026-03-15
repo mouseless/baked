@@ -10,7 +10,7 @@ public static class DataSourceExtensions
     {
         public Application DataSource(
             FeatureFunc<BusinessConfigurator> business,
-            Action<DataSourceRecipe>? options = default
+            Action<DataSourceRecipe.Run>? options = default
         )
         {
             var recipe = new DataSourceRecipe.Run(business);

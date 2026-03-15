@@ -14,7 +14,7 @@ public abstract class MonolithSpec : Spec
 
     protected static void Init(
         FeatureFunc<BusinessConfigurator> business,
-        Action<MonolithRecipe>? options = default
+        Action<MonolithRecipe.Test>? options = default
     )
     {
         var recipe = new MonolithRecipe.Test(business);
