@@ -306,3 +306,46 @@ test.describe("Remove Float Label on Select", () => {
     await expect(component.locator(primevue.select.label)).toHaveScreenshot();
   });
 });
+
+test.describe("Filtering on Select w/ label", () => {
+  const id = "Filtering w/ Label";
+
+  test("Select shows the searchbox and list", async({ page }) => {
+    const component = page.getByTestId(id);
+    const header = page.locator(primevue.select.overlayHeader);
+    const list = page.locator(primevue.select.overlayList);
+
+    component.click();
+
+    await expect(header.getByRole("searchbox")).toBeAttached();
+    await expect(list.getByRole("listbox")).toBeAttached();
+  });
+
+  test("Select shows the filtered list", async({ page }) => {
+    const component = page.getByTestId(id);
+    const header = page.locator(primevue.select.overlayHeader);
+    const list = page.locator(primevue.select.overlayList);
+    component.click();
+
+    header.getByRole("searchbox").fill("B");
+
+    await expect(list.getByRole("listbox")).toHaveCount(1);
+    await expect(list.getByRole("listbox").first()).toHaveText("Option B");
+  });
+});
+
+test.describe("Filtering on Select without Label", () => {
+  const id = "Filtering no Label";
+
+  test("Select shows the filtered list", async({ page }) => {
+    const component = page.getByTestId(id);
+    const header = page.locator(primevue.select.overlayHeader);
+    const list = page.locator(primevue.select.overlayList);
+    component.click();
+
+    header.getByRole("searchbox").fill("2");
+
+    await expect(list.getByRole("listbox")).toHaveCount(1);
+    await expect(list.getByRole("listbox").first()).toHaveText("Test Option 2");
+  });
+});

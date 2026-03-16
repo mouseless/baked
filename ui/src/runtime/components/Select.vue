@@ -17,6 +17,9 @@
         :placeholder="l(label)"
         :show-clear
         :filter
+        :auto-filter-focus="filter"
+        :filter-fields="[optionLabel]"
+        reset-filter-on-hide
         class="w-full"
       >
         <template #value="slotProps">

@@ -54,7 +54,9 @@ export default {
     base: ".p-select",
     option: ".p-select-option",
     clearIcon: ".p-select-clear-icon",
-    label: ".p-select-label"
+    label: ".p-select-label",
+    overlayHeader: ".p-select-overlay .p-select-header",
+    overlayList: ".p-select-overlay .p-select-list-container"
   },
   selectbutton: {
     base: ".p-selectbutton",
