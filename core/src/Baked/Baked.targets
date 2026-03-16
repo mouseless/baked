@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors Condition="'$(CopyComponentDescriptors)' != 'true'">false</CopyComponentDescriptors>
+    <SkipGenerate Condition="'$(IsTestProject)' == 'true' And '$(SkipGenerate)' != 'false'">true</SkipGenerate>
+    <SkipGenerate Condition="'$(SkipGenerate)' != 'true'">false</SkipGenerate>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +16,7 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="Generate" AfterTargets="AfterBuild">
+  <Target Name="Generate" AfterTargets="AfterBuild" Condition="'$(SkipGenerate)' != 'true'">
     <Exec Command="dotnet $(TargetPath) --no-build --no-start --generate $(GenerateArgs) -c $(Configuration)" />
   </Target>
 
