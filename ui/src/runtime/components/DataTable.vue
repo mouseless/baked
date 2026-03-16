@@ -25,7 +25,7 @@
     <div
       v-if="sort || (!paginator && serverPaginatorOptions)"
       class="
-        b-DataTable-Header
+        b-Header
         flex flex-row items-center justify-end
         gap-4 mb-2 py-4 px-2 rounded-sm
       "
