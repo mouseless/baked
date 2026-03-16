@@ -162,15 +162,15 @@ const variants = [
       data: [
         { value: "ValueA", label: "Option A" },
         { value: "ValueB", label: "Option B" }
-      ],
+      ]
     }),
     model: ref()
-  }, 
+  },
   {
     name: "Filtering no Label",
     descriptor: giveMe.aSelect({
       label: "Filtering no Label",
-      filter: true,
+      filter: true
     }),
     model: ref()
   }

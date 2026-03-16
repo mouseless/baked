@@ -326,11 +326,11 @@ test.describe("Filtering on Select w/ label", () => {
     const header = page.locator(primevue.select.overlayHeader);
     const list = page.locator(primevue.select.overlayList);
     component.click();
-    
+
     header.getByRole("searchbox").fill("B");
 
     await expect(list.getByRole("listbox")).toHaveCount(1);
-    await expect(list.getByRole("listbox").first()).toHaveText("Option B")
+    await expect(list.getByRole("listbox").first()).toHaveText("Option B");
   });
 });
 
@@ -342,10 +342,10 @@ test.describe("Filtering on Select without Label", () => {
     const header = page.locator(primevue.select.overlayHeader);
     const list = page.locator(primevue.select.overlayList);
     component.click();
-    
+
     header.getByRole("searchbox").fill("2");
 
     await expect(list.getByRole("listbox")).toHaveCount(1);
-    await expect(list.getByRole("listbox").first()).toHaveText("Test Option 2")
+    await expect(list.getByRole("listbox").first()).toHaveText("Test Option 2");
   });
 });
