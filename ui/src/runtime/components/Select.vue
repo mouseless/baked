@@ -18,7 +18,7 @@
         :show-clear
         :filter
         :auto-filter-focus="filter"
-        :filter-fields="optionLabel"
+        :filter-fields="[optionLabel]"
         reset-filter-on-hide
         class="w-full"
       >
