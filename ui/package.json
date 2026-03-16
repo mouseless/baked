@@ -1,6 +1,6 @@
 {
   "name": "@mouseless/baked",
-  "version": "1.2.8",
+  "version": "1.3.0",
   "description": "Baked is an opinionated framework for .NET and Vue. This is the UI package of Baked project.",
   "keywords": [
     "baked",
@@ -51,24 +51,24 @@
     "primevue": "4.5.4"
   },
   "devDependencies": {
-    "@nuxt/eslint": "1.15.1",
+    "@nuxt/eslint": "1.15.2",
     "@nuxt/module-builder": "1.0.2",
     "@nuxt/test-utils": "4.0.0",
     "@playwright/test": "1.58.2",
-    "@types/node": "25.2.3",
+    "@types/node": "25.5.0",
     "changelogen": "0.6.2",
-    "nuxt": "4.3.1",
-    "sass": "1.97.3",
+    "nuxt": "4.4.2",
+    "sass": "1.98.0",
     "typescript": "5.9.3",
-    "vitest": "4.0.18",
-    "vue-tsc": "3.2.4"
+    "vitest": "4.1.0",
+    "vue-tsc": "3.2.5"
   },
   "optionalDependencies": {
-    "@oxc-parser/binding-darwin-arm64": "0.114.0",
-    "@oxc-parser/binding-linux-arm64-gnu": "0.114.0",
-    "@oxc-parser/binding-linux-arm64-musl": "0.114.0",
-    "@oxc-parser/binding-linux-x64-gnu": "0.114.0",
-    "@oxc-parser/binding-linux-x64-musl": "0.114.0",
-    "@oxc-parser/binding-win32-x64-msvc": "0.114.0"
+    "@oxc-parser/binding-darwin-arm64": "0.119.0",
+    "@oxc-parser/binding-linux-arm64-gnu": "0.119.0",
+    "@oxc-parser/binding-linux-arm64-musl": "0.119.0",
+    "@oxc-parser/binding-linux-x64-gnu": "0.119.0",
+    "@oxc-parser/binding-linux-x64-musl": "0.119.0",
+    "@oxc-parser/binding-win32-x64-msvc": "0.119.0"
   }
 }
