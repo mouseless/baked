@@ -2,7 +2,7 @@
   <DataTable
     ref="dataTable"
     :value
-    class="text-sm min-h-24"
+    class="text-sm min-h-20"
     striped-rows
     :data-key
     :paginator="paginator && value.length > rows"
@@ -320,12 +320,28 @@ function exportFunction({ data, field }) {
 
   .p-datatable-table-container {
     @apply
-      border-t border-slate-100
-      dark:border-zinc-800 rounded-b-[--p-border-radius-md]
+      border-slate-100
+      dark:border-zinc-800 rounded-[--p-border-radius-md]
       [.p-panel-content_&]:border-none
-      [.p-panel-content_&]:rounded-none
       [.p-panel-content.p-0_&]:rounded-[--p-border-radius-md]
     ;
+  }
+  &:has(.b-Header) {
+    .p-datatable-table-container {
+      @apply border-t;
+    }
+  }
+
+  &:has(.p-datatable-paginator-bottom) {
+    .p-datatable-table-container {
+      @apply rounded-b-none;
+    }
+  }
+  .p-datatable-paginator-bottom {
+    @apply border-none rounded-none;
+    .p-paginator {
+      @apply rounded-t-none rounded-b-[--p-border-radius-md];
+    }
   }
 
   .b-label-column--wide {
@@ -343,8 +359,8 @@ function exportFunction({ data, field }) {
     @apply -my-2;
   }
 
-  .p-datatable-tbody td.p-datatable-frozen-column {
-    z-index: 1;
+  td.p-datatable-frozen-column {
+    @apply z-[0];
   }
 }
 </style>
