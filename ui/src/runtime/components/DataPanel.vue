@@ -8,7 +8,8 @@
       {
         headerActions: 'flex gap-2 items-center',
         title: 'max-sm:truncate',
-        contentContainer: 'block'
+        contentContainer: 'block',
+        content: 'p-0'
       }
     "
     @update:collapsed="onCollapsed"
