@@ -306,14 +306,14 @@ function exportFunction({ data, field }) {
   @apply
     border border-slate-200 dark:border-zinc-700
     justify-self-center w-full
-    rounded-md
+    rounded-[--p-border-radius-md]
     [.p-panel-content_&]:border-none
     [.p-panel-content_&]:rounded-none
   ;
 
   .b-Header {
     @apply
-      dark:bg-zinc-900 mb-0 rounded-t-md
+      dark:bg-zinc-900 mb-0 rounded-t-[--p-border-radius-md]
       [.p-panel-content_&]:rounded-none
     ;
   }
@@ -321,10 +321,10 @@ function exportFunction({ data, field }) {
   .p-datatable-table-container {
     @apply
       border-t border-slate-100
-      dark:border-zinc-800 rounded-b-md
+      dark:border-zinc-800 rounded-b-[--p-border-radius-md]
       [.p-panel-content_&]:border-none
       [.p-panel-content_&]:rounded-none
-      [.p-panel-content.p-0_&]:rounded-md
+      [.p-panel-content.p-0_&]:rounded-[--p-border-radius-md]
     ;
   }
 
