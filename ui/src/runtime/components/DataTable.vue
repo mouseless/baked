@@ -27,7 +27,7 @@
       class="
         b-Header
         flex flex-row items-center justify-end
-        gap-4 mb-2 py-4 px-2 rounded-sm
+        gap-4 mb-2 py-4 px-2
       "
     >
       <div
@@ -50,17 +50,16 @@
       </div>
     </div>
     <Column
-      v-for="column in columns.filter(c => !c.hidden)"
+      v-for="column in visibleColumns"
       :key="column.key"
       :header="l(column.title)"
       :field="column.key"
       class="text-nowrap"
-      :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
       :exportable="column.exportable"
       :export-header="l(column.title)"
       :pt="{
         columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' },
-        bodyCell: { class: { 'max-xs:!inset-auto': column.frozen } },
+        bodyCell: { class: bodyCellClass(column) },
         headerCell: { class: { 'max-xs:!inset-auto': column.frozen } }
       }"
       :frozen="column.frozen"
@@ -202,6 +201,7 @@ const virtualScrollerOptions = schema.virtualScrollerOptions && {
 const contextData = context.injectContextData();
 const dataDescriptor = context.injectDataDescriptor();
 
+const LABEL_COLUMN_BP = 5;
 const dataTable = ref();
 const headerActionsMenu = ref();
 const headerActions = ref([ ]);
@@ -225,6 +225,8 @@ const value = computed(() => {
 
   return result;
 });
+
+const visibleColumns = computed(() => columns.filter(c => !c.hidden));
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const exportFilename = ref(exportOptions?.fileName ? l(exportOptions.fileName) : null);
 let formatter = null;
@@ -270,6 +272,29 @@ function toggleHeaderActionsMenu(event) {
   headerActionsMenu.value.toggle(event);
 }
 
+function bodyCellClass(column) {
+  const classes = {
+    "max-xs:!inset-auto": column.frozen,
+    "min-w-40": column.minWidth,
+    "text-right": column.alignRight
+  };
+  const total = visibleColumns.value.length;
+  if(total === 1) { return classes; }
+
+  const labelColumn = visibleColumns.value?.filter(vc => vc.frozen)?.slice(-1)[0];
+  if(!labelColumn) { return classes; }
+
+  const columnClass = total <= LABEL_COLUMN_BP
+    ? "b-label-column--narrow"
+    : "b-label-column--wide";
+
+  if(column.key == labelColumn.key) {
+    classes[columnClass] = true;
+
+    return classes;
+  }
+}
+
 function exportFunction({ data, field }) {
   if(!formatter) { return data.value; }
 
@@ -278,6 +303,38 @@ function exportFunction({ data, field }) {
 </script>
 <style>
 .b-component--DataTable {
+  @apply
+    border border-slate-200 dark:border-zinc-700
+    justify-self-center w-full
+    rounded-md
+    [.p-panel-content_&]:border-none
+    [.p-panel-content_&]:rounded-none
+  ;
+
+  .b-Header {
+    @apply
+      dark:bg-zinc-900 mb-0 rounded-t-md
+      [.p-panel-content_&]:rounded-none
+    ;
+  }
+
+  .p-datatable-table-container {
+    @apply
+      border-t border-slate-100
+      dark:border-zinc-800 rounded-b-md
+      [.p-panel-content_&]:border-none
+      [.p-panel-content_&]:rounded-none
+      [.p-panel-content.p-0_&]:rounded-md
+    ;
+  }
+
+  .b-label-column--wide {
+    @apply 3xl:w-[30%] 2xl:w-[20%] xl:w-[15%];
+  }
+  .b-label-column--narrow {
+    @apply 3xl:w-[40%] 2xl:w-[30%] xl:w-[20%];
+  }
+
   a {
     @apply text-sm;
   }
