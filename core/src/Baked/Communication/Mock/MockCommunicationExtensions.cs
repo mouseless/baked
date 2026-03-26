@@ -47,11 +47,11 @@ public static class MockCommunicationExtensions
             }
             else if (response is not null)
             {
-                setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, response.ToJsonString()));
+                setup().ReturnsAsync([new Response(statusCode ?? HttpStatusCode.OK, response.ToJsonString())]);
             }
             else if (responseString is not null)
             {
-                setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, responseString));
+                setup().ReturnsAsync([new Response(statusCode ?? HttpStatusCode.OK, responseString)]);
             }
             else if (responses is not null)
             {
@@ -59,11 +59,11 @@ public static class MockCommunicationExtensions
             }
             else if (noResponse == true)
             {
-                setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, string.Empty));
+                setup().ReturnsAsync([new Response(statusCode ?? HttpStatusCode.OK, string.Empty)]);
             }
             else if (statusCode is not null)
             {
-                setup().ReturnsAsync(new Response(statusCode.Value, "{}"));
+                setup().ReturnsAsync([new Response(statusCode.Value, "{}")]);
             }
 
             if (clearInvocations)

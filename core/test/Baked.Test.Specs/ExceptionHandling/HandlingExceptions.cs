@@ -43,8 +43,8 @@ public class HandlingExceptions : TestSpec
         );
 
         recordNotFoundException.Message.ShouldBe("{0} with {1}: '{2}' does not exist");
-        recordNotFoundException.ExtraData.ShouldContainKeys("name", "field", "value");
-        recordNotFoundException.ExtraData.ValuesShouldBe("Entity", "Id", GiveMe.AGuid("fadf").ToString());
+        recordNotFoundException.ExtraData.ShouldContainKeys(["name", "field", "value"]);
+        recordNotFoundException.ExtraData.ValuesShouldBe(["Entity", "Id", GiveMe.AGuid("fadf").ToString()]);
     }
 
     [Test]

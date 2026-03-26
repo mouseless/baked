@@ -104,6 +104,10 @@ function setSelected(value) {
 }
 </script>
 <style>
+.p-togglebutton-content {
+  @apply whitespace-nowrap;
+}
+
 .p-popover-content {
   .b-component--SelectButton.p-selectbutton {
     @apply max-sm:flex-col;
