@@ -302,46 +302,70 @@ function exportFunction({ data, field }) {
 }
 </script>
 <style>
+/* If Datatable in a DataPanel, clear border and radius */
+.p-panel-content:has(.b-component--DataTable) {
+  .b-component--DataTable {
+    @apply border-none rounded-none;
+
+    .b-Header {
+      @apply rounded-none;
+    }
+    .p-datatable-table-container {
+      @apply border-none;
+    }
+  }
+}
+
+/* Datatable standalone styles */
 .b-component--DataTable {
   @apply
     border border-slate-200 dark:border-zinc-700
     justify-self-center w-full
     rounded-[--p-border-radius-md]
-    [.p-panel-content_&]:border-none
-    [.p-panel-content_&]:rounded-none
   ;
 
-  .b-Header {
-    @apply
-      dark:bg-zinc-900 mb-0 rounded-t-[--p-border-radius-md]
-      [.p-panel-content_&]:rounded-none
-    ;
+  .p-datatable-table-container {
+    @apply border-none rounded-b-[--p-border-radius-md];
   }
 
-  .p-datatable-table-container {
-    @apply
-      border-slate-100
-      dark:border-zinc-800 rounded-[--p-border-radius-md]
-      [.p-panel-content_&]:border-none
-      [.p-panel-content.p-0_&]:rounded-[--p-border-radius-md]
-    ;
-  }
   &:has(.b-Header) {
+    .b-Header {
+      @apply
+        border-b dark:border-zinc-800
+        dark:bg-zinc-900 mb-0
+        rounded-t-[--p-border-radius-md]
+      ;
+    }
     .p-datatable-table-container {
-      @apply border-t;
+      @apply rounded-b-[--p-border-radius-md];
+    }
+  }
+
+  &:has(:not(.b-Header)) {
+    .p-datatable-table-container {
+      @apply rounded-[--p-border-radius-md];
     }
   }
 
   &:has(.p-datatable-paginator-bottom) {
+    .p-datatable-paginator-bottom {
+      @apply
+        border-t rounded-t-none
+        rounded-b-[--p-border-radius-md] border-b-0
+      ;
+    }
     .p-datatable-table-container {
       @apply rounded-b-none;
     }
   }
-  .p-datatable-paginator-bottom {
-    @apply border-none rounded-none;
-    .p-paginator {
-      @apply rounded-t-none rounded-b-[--p-border-radius-md];
-    }
+
+  /* we clear the last tr border because of double border with
+  dt and row. and add tfoot border if has any */
+  tbody > tr:last-child > td {
+    @apply border-b-0;
+  }
+  tfoot > tr > td{
+    @apply border-t;
   }
 
   .b-label-column--wide {
