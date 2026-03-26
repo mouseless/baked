@@ -360,7 +360,10 @@ function exportFunction({ data, field }) {
   }
 
   td.p-datatable-frozen-column {
-    @apply z-[0];
+    @apply z-[1];
+  }
+  .p-datatable-thead {
+    @apply z-[2];
   }
 }
 </style>
