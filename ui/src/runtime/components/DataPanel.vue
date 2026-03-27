@@ -8,7 +8,7 @@
       {
         headerActions: 'flex gap-2 items-center',
         title: 'max-sm:truncate',
-        contentContainer: collapsedState ? 'grid' : 'block'
+        contentContainer: 'block'
       }
     "
     @update:collapsed="onCollapsed"
