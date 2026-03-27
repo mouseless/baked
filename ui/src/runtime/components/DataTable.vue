@@ -290,9 +290,9 @@ function bodyCellClass(column) {
 
   if(column.key == labelColumn.key) {
     classes[columnClass] = true;
-
-    return classes;
   }
+
+  return classes;
 }
 
 function exportFunction({ data, field }) {
