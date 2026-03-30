@@ -8,7 +8,7 @@
       {
         headerActions: 'flex gap-2 items-center',
         title: 'max-sm:truncate',
-        contentContainer: 'block'
+        content: '[contain:inline-size]'
       }
     "
     @update:collapsed="onCollapsed"
