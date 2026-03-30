@@ -1,6 +1,6 @@
 <template>
   <div
-    class="b-Contents w-full grid grid-cols-1 gap-4 lg:grid-cols-2 items-start"
+    class="b-Contents w-full grid grid-cols-1 gap-4 lg:grid-cols-2"
     :class="{ 'max-w-screen-xl 3xl:max-w-screen-2xl': !fullScreen }"
   >
     <slot v-if="$slots.default" />

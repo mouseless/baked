@@ -141,8 +141,3 @@ function onChanged(event) {
   values.value = event.values;
 }
 </script>
-<style>
-.p-panel-content {
-  @apply [&:has(.p-datatable)]:p-0;
-}
-</style>
