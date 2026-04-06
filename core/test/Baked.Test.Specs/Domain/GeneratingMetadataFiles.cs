@@ -6,7 +6,7 @@ using Baked.Theme.Default;
 
 namespace Baked.Test.Domain;
 
-public class GeneratingMetadataFiles : TestSpec
+public class GeneratingMetadataFiles
 {
     //[Entity]
     //[ControllerModel(ClassName = nameof(SampleType), GroupName = "Test")]
@@ -46,9 +46,8 @@ public class GeneratingMetadataFiles : TestSpec
           }
         }
         """;
-        var metadataType = new TypeMetadataModel()
+        var metadataType = new TypeMetadataModel("SampleType")
         {
-            Name = "SampleType",
             Attributes =
             [
                 new(nameof(EntityAttribute)),

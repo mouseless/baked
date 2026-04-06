@@ -1,8 +1,8 @@
 ﻿namespace Baked.Domain.Metadata;
 
-public class TypeMetadataModel
+public class TypeMetadataModel(string name)
 {
-    public string Name { get; set; } = default!;
+    public string Name { get; set; } = name;
     public List<AttributeMetadataModel> Attributes { get; set; } = [];
     public List<PropertyMetadataModel> Properties { get; set; } = [];
 
