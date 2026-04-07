@@ -46,7 +46,7 @@ public class GeneratingMetadataFiles
           }
         }
         """;
-        var metadataType = new TypeMetadataModel("SampleType")
+        var metadataType = new TypeMetadataModel("Baked.Test.Domain.SampleType", "SampleType")
         {
             Attributes =
             [
