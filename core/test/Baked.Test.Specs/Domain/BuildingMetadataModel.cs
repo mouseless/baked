@@ -2,6 +2,7 @@
 using Baked.Orm;
 using Baked.Playground.Orm;
 using Baked.RestApi.Model;
+using static Baked.Domain.Metadata.TypeMetadataModel;
 
 namespace Baked.Test.Domain;
 

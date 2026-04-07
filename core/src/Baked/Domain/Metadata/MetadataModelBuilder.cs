@@ -41,13 +41,13 @@ public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
         foreach (var method in type.Methods)
         {
             var attributes = ExtractAttributes(method, _options.TypeAttributes);
-            metadata.Methods.AddRange(attributes.Select(a => new MethodMetadataModel(a.GetType().Name)));
+            metadata.Methods.AddRange(attributes.Select(a => new MethodMetadataModel(a.GetType().Name, [])));
         }
 
         foreach (var property in type.Properties)
         {
             var attributes = ExtractAttributes(property, _options.TypeAttributes);
-            metadata.Properties.AddRange(attributes.Select(a => new PropertyMetadataModel(a.GetType().Name)));
+            metadata.Properties.AddRange(attributes.Select(a => new PropertyMetadataModel(a.GetType().Name, [])));
         }
 
         return metadata;

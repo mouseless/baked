@@ -11,14 +11,6 @@ public class TypeMetadataModel(string id, string name) : IModel
     public List<PropertyMetadataModel> Properties { get; set; } = [];
 
     public record AttributeMetadataModel(string Type, params (string, object)[]? Values);
-
-    public record MethodMetadataModel(string Name)
-    {
-        public List<AttributeMetadataModel> Attributes { get; set; } = [];
-    }
-
-    public record PropertyMetadataModel(string Name)
-    {
-        public List<AttributeMetadataModel> Attributes { get; set; } = [];
-    }
+    public record MethodMetadataModel(string Name, List<AttributeMetadataModel> Attributes);
+    public record PropertyMetadataModel(string Name, List<AttributeMetadataModel> Attributes);
 }
