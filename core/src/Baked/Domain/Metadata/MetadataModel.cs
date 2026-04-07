@@ -2,6 +2,4 @@
 
 namespace Baked.Domain.Metadata;
 
-public record MetadataModel(
-    ModelCollection<TypeMetadataModel> Types
-);
+public record MetadataModel(ModelCollection<TypeMetadataModel> Types);

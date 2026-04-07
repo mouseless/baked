@@ -2,15 +2,9 @@
 
 namespace Baked.Domain.Metadata;
 
-public class TypeMetadataModel(string id, string name) : IModel
+public record TypeMetadataModel(string Id, string Name) : IModel
 {
-    public string Id { get; set; } = id;
-    public string Name { get; set; } = name;
-    public List<AttributeMetadataModel> Attributes { get; set; } = [];
-    public List<MethodMetadataModel> Methods { get; set; } = [];
-    public List<PropertyMetadataModel> Properties { get; set; } = [];
-
-    public record AttributeMetadataModel(string Type, params (string, object)[]? Values);
-    public record MethodMetadataModel(string Name, List<AttributeMetadataModel> Attributes);
-    public record PropertyMetadataModel(string Name, List<AttributeMetadataModel> Attributes);
+    public List<AttributeMetadataModel> Attributes { get; init; } = [];
+    public List<MethodMetadataModel> Methods { get; init; } = [];
+    public List<PropertyMetadataModel> Properties { get; init; } = [];
 }

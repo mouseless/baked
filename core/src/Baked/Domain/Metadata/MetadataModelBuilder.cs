@@ -1,6 +1,5 @@
 ﻿using Baked.Domain.Model;
-
-using static Baked.Domain.Metadata.TypeMetadataModel;
+using System.Reflection;
 
 namespace Baked.Domain.Metadata;
 
@@ -24,14 +23,11 @@ public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
 
     TypeMetadataModel? Build(TypeModelMetadata type)
     {
-        var attributes = ExtractAttributes(type, _options.TypeAttributes);
-        if (_options.ExcludeTypesMissingAttributes && !attributes.Any())
-        {
-            return default;
-        }
+        var attributes = BuildAttributes(type, _options.TypeAttributes);
+        if (_options.ExcludeTypesMissingAttributes && !attributes.Any()) { return default; }
 
         var typeMetadataModel = new TypeMetadataModel(((IModel)type).Id, type.Name);
-        typeMetadataModel.Attributes.AddRange(attributes.Select(a => new AttributeMetadataModel(a.GetType().Name)));
+        typeMetadataModel.Attributes.AddRange(attributes);
 
         return type.TryGetMembers(out var members) ? BuildMembers(typeMetadataModel, members) : typeMetadataModel;
     }
@@ -40,40 +36,73 @@ public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
     {
         foreach (var method in type.Methods)
         {
-            var attributes = ExtractAttributes(method, _options.TypeAttributes);
-            metadata.Methods.AddRange(attributes.Select(a => new MethodMetadataModel(a.GetType().Name, [])));
+            var attributes = BuildAttributes(method, _options.MethodAttributes);
+            if (!attributes.Any()) { continue; }
+
+            var methodMetadata = new MethodMetadataModel(method.Name, attributes, BuildParameters(method));
+            metadata.Methods.Add(methodMetadata);
         }
 
         foreach (var property in type.Properties)
         {
-            var attributes = ExtractAttributes(property, _options.TypeAttributes);
-            metadata.Properties.AddRange(attributes.Select(a => new PropertyMetadataModel(a.GetType().Name, [])));
+            var attributes = BuildAttributes(property, _options.PropertyAttributes);
+            if (!attributes.Any()) { continue; }
+
+            var propertyMetadata = new PropertyMetadataModel(property.Name, attributes);
+            metadata.Properties.Add(propertyMetadata);
         }
 
         return metadata;
     }
 
-    List<Attribute> ExtractAttributes(ICustomAttributesModel model, List<Type> candidates)
+    List<ParameterMetadataModel> BuildParameters(MethodModel method)
     {
-        var result = new List<Attribute>();
+        var parameters = new List<ParameterMetadataModel>();
+        foreach (var parameter in method.DefaultOverload.Parameters)
+        {
+            var attributes = BuildAttributes(parameter, _options.ParameterAttributes);
+            if (!attributes.Any()) { continue; }
+
+            var parameterMetadata = new ParameterMetadataModel(parameter.Name, attributes);
+            parameters.Add(parameterMetadata);
+        }
+
+        return parameters;
+    }
+
+    List<AttributeMetadataModel> BuildAttributes(ICustomAttributesModel model, List<Type> candidates)
+    {
+        var result = new List<AttributeMetadataModel>();
         foreach (var attributeType in candidates)
         {
             if (attributeType.AllowsMultiple() && model.TryGetAll(attributeType, out var attributes))
             {
-                result.AddRange(attributes);
+                result.AddRange([.. attributes.Select(a => BuildAttribute(attributeType, a))]);
             }
             else if (model.TryGet(attributeType, out var attribute))
             {
-                result.Add(attribute);
+                result.Add(BuildAttribute(attributeType, attribute));
             }
         }
 
         return result;
     }
-}
 
-public class MetadataModelBuilderOptions
-{
-    public List<Type> TypeAttributes { get; set; } = [];
-    public bool ExcludeTypesMissingAttributes { get; set; }
+    // TODO temporari implementation
+    // values will be get directly from
+    // attributes
+    AttributeMetadataModel BuildAttribute<T>(Type type, T instance) where T : Attribute
+    {
+        var attributeMetadata = new AttributeMetadataModel(type.Name)
+        {
+            Values = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.CanRead)
+                .ToDictionary(
+                    p => p.Name,
+                    p => p.GetValue(instance)
+                )
+        };
+
+        return attributeMetadata;
+    }
 }

@@ -1,57 +1,52 @@
-﻿using Baked.Domain.Metadata;
+﻿using Baked.Business;
+using Baked.Domain.Metadata;
+using Baked.Domain.Model;
 using Baked.Orm;
 using Baked.Playground.Orm;
 using Baked.RestApi.Model;
-using static Baked.Domain.Metadata.TypeMetadataModel;
 
 namespace Baked.Test.Domain;
 
 public class BuildingMetadataModel : TestSpec
 {
+    public class NotExistingAttribute : Attribute;
+
     [Test]
-    public void Builds_metadata_model_for_given_type()
+    public void Builds_metadata_model_from_domain_model()
     {
         var domain = GiveMe.TheDomainModel();
         var metadataBuilder = new MetadataModelBuilder(new());
 
-        var metadatModel = metadataBuilder.Build(domain);
+        var metadataModel = metadataBuilder.Build(domain);
 
-        var typeMetadataModel = metadatModel.Types[typeof(Parent).GetCSharpFriendlyFullName()];
-        typeMetadataModel.Name.ShouldBe("Parent");
-        typeMetadataModel.Properties.ShouldContain(p => p.Name == nameof(Parent.Id));
-        typeMetadataModel.Properties.ShouldContain(p => p.Name == nameof(Parent.Name));
-        typeMetadataModel.Properties.ShouldContain(p => p.Name == nameof(Parent.Surname));
-        typeMetadataModel.Properties.ShouldContain(p => p.Name == nameof(Parent.Description));
-        typeMetadataModel.Attributes.ShouldContain(new AttributeMetadataModel(nameof(EntityAttribute)));
-        typeMetadataModel.Attributes.ShouldContain(
-            new AttributeMetadataModel(nameof(ControllerModelAttribute),
-                ("Id", "Baked.Playground.Orm.Parent"),
-                ("ClassName", "Parent"),
-                ("GroupName", "Parents")
-            )
-        );
+        var domainMetadataTypes = domain.Types.Where(t => t is TypeModelMetadata);
+        metadataModel.Types.All(t => domainMetadataTypes.Any(dt => ((IModel)dt).Id == t.Id)).ShouldBe(true);
     }
 
     [Test]
-    public void Type_attributes_can_be_filtered()
+    public void Includes_given_attributes_data_for_types()
     {
         var domain = GiveMe.TheDomainModel();
         var metadataBuilder = new MetadataModelBuilder(new()
         {
-            TypeAttributes = [typeof(EntityAttribute)]
+            TypeAttributes = [typeof(EntityAttribute), typeof(ControllerModelAttribute)]
         });
 
-        var metadatModel = metadataBuilder.Build(domain);
+        var metadataModel = metadataBuilder.Build(domain);
 
-        var typeMetadataModel = metadatModel.Types[typeof(Parent)];
-        typeMetadataModel.Attributes.ShouldContain(a => a.Type == nameof(EntityAttribute));
-        typeMetadataModel.Attributes.ShouldNotContain(a => a.Type == nameof(ControllerModelAttribute));
+        var typeMetadataModel = metadataModel.Types[typeof(Parent)];
+        var attributes = typeMetadataModel.Attributes;
+        attributes.Count.ShouldBe(2);
+        attributes.ShouldContain(a => a.Type == nameof(EntityAttribute));
+        attributes.ShouldContain(a => a.Type == nameof(ControllerModelAttribute) &&
+            a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.Id) && $"{v.Value}" == "Baked.Playground.Orm.Parent") &&
+            a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.ClassName) && $"{v.Value}" == "Playground_Orm_Parent") &&
+            a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.GroupName) && $"{v.Value}" == "Parents")
+        );
     }
 
-    public class NotExistingAttribute : Attribute;
-
     [Test]
-    public void Type_having_no_matching_attributes_can_be_excluded()
+    public void Types_having_no_matching_attributes_can_be_excluded()
     {
         var domain = GiveMe.TheDomainModel();
         var metadataBuilder = new MetadataModelBuilder(new()
@@ -60,8 +55,81 @@ public class BuildingMetadataModel : TestSpec
             ExcludeTypesMissingAttributes = true
         });
 
-        var metadatModel = metadataBuilder.Build(domain);
+        var metadataModel = metadataBuilder.Build(domain);
 
-        metadatModel.Types.Count.ShouldBe(0);
+        metadataModel.Types.Count.ShouldBe(0);
     }
+
+    [Test]
+    public void Metadata_can_include_methods()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var metadataBuilder = new MetadataModelBuilder(new()
+        {
+            MethodAttributes = [typeof(ActionModelAttribute)],
+            ParameterAttributes = [typeof(ParameterModelAttribute)]
+        });
+
+        var metadataModel = metadataBuilder.Build(domain);
+
+        var typeMetadataModel = metadataModel.Types[typeof(Parent)];
+        var methods = typeMetadataModel.Methods;
+        methods.Count.ShouldBe(6);
+        methods.ShouldContain(m => m.Name == nameof(Parent.With));
+        methods.ShouldContain(m => m.Name == nameof(Parent.GetChildren));
+        methods.ShouldContain(m => m.Name == nameof(Parent.AddChild));
+        methods.ShouldContain(m => m.Name == nameof(Parent.Update));
+        methods.ShouldContain(m => m.Name == nameof(Parent.RemoveChild));
+        methods.ShouldContain(m => m.Name == nameof(Parent.Delete));
+        var method = typeMetadataModel.Methods.First(m => m.Name == "With");
+        method.Parameters.ShouldNotBeNull();
+        method.Parameters.Count.ShouldBe(2);
+        method.Parameters[0].Attributes.ShouldContain(a => a.Type == nameof(ParameterModelAttribute));
+    }
+
+    [Test]
+    public void Excludes_methods_not_having_given_attribute()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var metadataBuilder = new MetadataModelBuilder(new()
+        {
+            MethodAttributes = [typeof(InitializerAttribute)]
+        });
+
+        var metadataModel = metadataBuilder.Build(domain);
+
+        var typeMetadataModel = metadataModel.Types[typeof(Parent)];
+        var methods = typeMetadataModel.Methods;
+        methods.Count.ShouldBe(1);
+        methods.ShouldContain(m => m.Name == nameof(Parent.With));
+    }
+
+    [Test]
+    public void Does_not_include_methods_when_not_configued() => this.ShouldFail();
+
+    [Test]
+    public void Does_not_include_parameters_when_not_configured() => this.ShouldFail();
+
+    [Test]
+    public void Metadata_can_includes_properties()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var metadataBuilder = new MetadataModelBuilder(new()
+        {
+            PropertyAttributes = [typeof(IdAttribute)]
+        });
+
+        var metadataModel = metadataBuilder.Build(domain);
+
+        var typeMetadataModel = metadataModel.Types[typeof(Parent)];
+        var properties = typeMetadataModel.Properties;
+        properties.Count.ShouldBe(1);
+        properties.ShouldContain(p => p.Name == nameof(Parent.Id));
+    }
+
+    [Test]
+    public void Does_not_include_properties_when_not_configued() => this.ShouldFail();
+
+    [Test]
+    public void Properties_can_be_excluded() => this.ShouldFail();
 }

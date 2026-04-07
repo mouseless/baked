@@ -2,8 +2,6 @@
 using KdlSharp;
 using KdlSharp.Values;
 
-using static Baked.Domain.Metadata.TypeMetadataModel;
-
 namespace Baked.Domain.Metadata;
 
 public class MetadataSerializer
