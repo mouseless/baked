@@ -39,7 +39,11 @@ public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
             var attributes = BuildAttributes(method, _options.MethodAttributes);
             if (!attributes.Any()) { continue; }
 
-            var methodMetadata = new MethodMetadataModel(method.Name, attributes, BuildParameters(method));
+            var methodMetadata = new MethodMetadataModel(method.Name, attributes)
+            {
+                Parameters = BuildParameters(method)
+            };
+
             metadata.Methods.Add(methodMetadata);
         }
 
@@ -96,7 +100,7 @@ public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
         var attributeMetadata = new AttributeMetadataModel(type.Name)
         {
             Values = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.CanRead)
+                .Where(p => p.CanRead && p.DeclaringType == type)
                 .ToDictionary(
                     p => p.Name,
                     p => p.GetValue(instance)

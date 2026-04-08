@@ -2,6 +2,7 @@
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
+using Baked.Domain.Metadata;
 using Baked.Domain.Model;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,9 @@ public static class DomainExtensions
             ConfigureDomainServiceCollection((services, _) => configuration(services));
 
         public void ConfigureDomainServiceCollection(Action<DomainServiceCollection, DomainModel> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureMetadataSetCollection(Action<MetadataSetCollection> configuration) =>
             _configurator.Configure(configuration);
 
         public void UsingDomainModel(Action<DomainModel> configuration) =>

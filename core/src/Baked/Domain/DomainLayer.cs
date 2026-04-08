@@ -1,5 +1,7 @@
 ﻿using Baked.Architecture;
+using Baked.CodeGeneration;
 using Baked.Domain.Configuration;
+using Baked.Domain.Metadata;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 using static Baked.Domain.DomainLayer;
@@ -12,6 +14,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
     readonly DomainServiceCollection _domainServiceCollection = new();
+    readonly MetadataSetCollection _metadataSetCollection = new();
 
     protected override PhaseContext GetContext(AddDomainTypes phase) =>
         phase.CreateContextBuilder()
@@ -37,12 +40,15 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 
         return phase.CreateContextBuilder()
             .Add(_domainServiceCollection, domain)
+            .Add(_metadataSetCollection)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
                     assembly => assembly.AddCodes(new ServiceAdderTemplate(_domainServiceCollection)),
                     compilerOptions => compilerOptions.WithUsings(_domainServiceCollection.Usings)
                 );
+
+                GenerateMetadataFiles();
             })
             .Build();
     }
@@ -80,6 +86,22 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 
             Context.Add(model);
             builder.PostBuild(model);
+        }
+    }
+
+    void GenerateMetadataFiles()
+    {
+        var domain = Context.GetDomainModel();
+        var files = Context.Get<IGeneratedFileCollection>();
+
+        foreach (var (key, set) in _metadataSetCollection)
+        {
+            var metadataModel = new MetadataModelBuilder(set.BuilderOptions).Build(domain);
+            foreach (var type in metadataModel.Types)
+            {
+                var content = new MetadataSerializer().Serialize(type);
+                files.Add($"{type.Name}", content, extension: "kdl", outdir: Path.Join("Metadata", $"{key}"));
+            }
         }
     }
 }

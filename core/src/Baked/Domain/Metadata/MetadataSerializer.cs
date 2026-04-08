@@ -23,7 +23,7 @@ public class MetadataSerializer
         {
             Indentation = "  ",
             Newline = Environment.NewLine,
-            PreserveStringTypes = true
+            PreserveStringTypes = true,
         });
     }
 
@@ -40,6 +40,8 @@ public class MetadataSerializer
                 var childNode = new KdlNode(GetAttributeName(attribute.Type));
                 foreach (var (key, value) in attribute.Values)
                 {
+                    if (value is null) { continue; }
+
                     childNode.AddProperty(GetPropertyName(key), new KdlString($"{value}"));
                 }
 

@@ -38,6 +38,15 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
+        configurator.Domain.ConfigureMetadataSetCollection(sets =>
+        {
+            sets.GetOrCreate(nameof(AutoMap))
+                .AddAttribute<EntityAttribute>()
+                .AddAttribute<IdAttribute>()
+                .AddAttribute<LabelAttribute>()
+            ;
+        });
+
         configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>

@@ -105,13 +105,54 @@ public class BuildingMetadataModel : TestSpec
     }
 
     [Test]
-    public void Does_not_include_methods_when_not_configued() => this.ShouldFail();
+    public void Does_not_include_methods_when_not_configued()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var metadataBuilder = new MetadataModelBuilder(new());
+
+        var metadataModel = metadataBuilder.Build(domain);
+
+        var typeMetadataModel = metadataModel.Types[typeof(Parent)];
+        typeMetadataModel.Methods.Count.ShouldBe(0);
+    }
 
     [Test]
-    public void Does_not_include_parameters_when_not_configured() => this.ShouldFail();
+    public void Does_not_include_parameters_when_not_configured()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var metadataBuilder = new MetadataModelBuilder(new()
+        {
+            MethodAttributes = [typeof(InitializerAttribute)]
+        });
+
+        var metadataModel = metadataBuilder.Build(domain);
+
+        var typeMetadataModel = metadataModel.Types[typeof(Parent)];
+        var method = typeMetadataModel.Methods.First(m => m.Name == nameof(Parent.With));
+        method.Parameters.Count.ShouldBe(0);
+    }
 
     [Test]
     public void Metadata_can_includes_properties()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var metadataBuilder = new MetadataModelBuilder(new()
+        {
+            PropertyAttributes = [typeof(IdAttribute), typeof(LabelAttribute)]
+        });
+
+        var metadataModel = metadataBuilder.Build(domain);
+
+        var typeMetadataModel = metadataModel.Types[typeof(Parent)];
+        var properties = typeMetadataModel.Properties;
+        properties.Count.ShouldBe(3);
+        properties.ShouldContain(p => p.Name == nameof(Parent.Id));
+        properties.ShouldContain(p => p.Name == nameof(Parent.Name));
+        properties.ShouldContain(p => p.Name == nameof(Parent.Surname));
+    }
+
+    [Test]
+    public void Properties_can_be_excluded()
     {
         var domain = GiveMe.TheDomainModel();
         var metadataBuilder = new MetadataModelBuilder(new()
@@ -128,8 +169,15 @@ public class BuildingMetadataModel : TestSpec
     }
 
     [Test]
-    public void Does_not_include_properties_when_not_configued() => this.ShouldFail();
+    public void Does_not_include_properties_when_not_configued()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var metadataBuilder = new MetadataModelBuilder(new());
 
-    [Test]
-    public void Properties_can_be_excluded() => this.ShouldFail();
+        var metadataModel = metadataBuilder.Build(domain);
+
+        var typeMetadataModel = metadataModel.Types[typeof(Parent)];
+        var properties = typeMetadataModel.Properties;
+        properties.Count.ShouldBe(0);
+    }
 }
