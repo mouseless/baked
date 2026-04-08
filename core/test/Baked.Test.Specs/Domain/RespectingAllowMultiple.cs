@@ -6,6 +6,8 @@ public class RespectingAllowMultiple : TestSpec
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class MultipleAttribute : Attribute;
+
+    [AttributeUsage(AttributeTargets.All)]
     public class SingleAttribute : Attribute;
 
     [Test]

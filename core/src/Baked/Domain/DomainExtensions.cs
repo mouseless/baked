@@ -9,6 +9,7 @@ using Shouldly;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Xml;
 
 namespace Baked;
@@ -191,6 +192,20 @@ public static class DomainExtensions
             if (memberInfo is PropertyInfo property) { return property.GetMethod?.IsOriginallyPublic() == true; }
 
             return !memberInfo.GetCustomAttributes().OfType<EditorBrowsableAttribute>().Any(eba => eba.State == EditorBrowsableState.Advanced);
+        }
+    }
+
+    extension(PropertyInfo propertyInfo)
+    {
+        public bool IsAutoProperty
+        {
+            get
+            {
+                var getMethod = propertyInfo.GetGetMethod();
+                if (getMethod is null) { return false; }
+
+                return getMethod.GetCustomAttribute<CompilerGeneratedAttribute>() is not null;
+            }
         }
     }
 
