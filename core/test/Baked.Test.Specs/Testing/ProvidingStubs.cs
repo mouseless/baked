@@ -1,3 +1,4 @@
+using Baked.Playground.Business;
 using Baked.Playground.Orm;
 using Newtonsoft.Json.Linq;
 
@@ -15,6 +16,24 @@ public class ProvidingStubs : TestSpec
     public void Give_me_an_email()
     {
         GiveMe.AnEmail().ShouldBe("info@test.com");
+    }
+
+    [Test]
+    public void Give_me_a_long()
+    {
+        GiveMe.ALong().ShouldBe(1982329438L);
+    }
+
+    [Test]
+    public void Give_me_a_string()
+    {
+        GiveMe.AString().ShouldBe("test string");
+    }
+
+    [Test]
+    public void Give_me_a_string_with_length()
+    {
+        GiveMe.AString(length: 5).ShouldBe("xxxxx");
     }
 
     [Test]
@@ -106,5 +125,8 @@ public class ProvidingStubs : TestSpec
         GiveMe.TheMethodOf<Abstract>(nameof(Abstract.AbstractMethod))?.ShouldBeAbstract();
         GiveMe.TheMethodOf<Abstract>(nameof(Abstract.VirtualMethod))?.ShouldBeVirtual();
         GiveMe.TheMethodOf<Abstract>(nameof(Abstract.OneParameterMethod))?.ShouldHaveOneParameter<int>();
+
+        GiveMe.TheMethod<MethodSamples>(nameof(MethodSamples.Parameters)).DefaultOverload.Parameters["required"].ShouldBeRequired();
+        GiveMe.TheMethod<MethodSamples>(nameof(MethodSamples.Parameters)).DefaultOverload.Parameters["optional"].ShouldNotBeRequired();
     }
 }

@@ -80,4 +80,14 @@ public static class UiExtensions
             source.Reactions[reaction] = current + trigger;
         }
     }
+
+    extension(List<Input> inputs)
+    {
+        public void Move(string name, int index)
+        {
+            var input = inputs.Find(i => i.Name == name) ?? throw new($"{name} not found");
+            inputs.Remove(input);
+            inputs.Insert(index, input);
+        }
+    }
 }

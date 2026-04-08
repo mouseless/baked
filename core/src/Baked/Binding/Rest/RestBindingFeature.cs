@@ -4,6 +4,7 @@ using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Baked.Binding.Rest;
 
@@ -107,6 +108,14 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
         {
             files.AddAsJson(_tagDescriptions);
             files.AddAsJson(_examples);
+        });
+
+        configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
+        {
+            if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
+
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
         });
 
         configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>

@@ -170,6 +170,21 @@ public static class DomainExtensions
         }
     }
 
+    extension(ParameterModel parameter)
+    {
+        public void ShouldBeRequired()
+        {
+            parameter.IsOptional.ShouldBeFalse($"{parameter.Name} should not be optional");
+            parameter.Has<NotNullAttribute>().ShouldBeTrue($"{parameter.Name} should have `[NotNullAttribute]`");
+        }
+
+        public void ShouldNotBeRequired()
+        {
+            parameter.IsOptional.ShouldBeTrue($"{parameter.Name} should be optional");
+            parameter.Has<NotNullAttribute>().ShouldBeFalse($"{parameter.Name} should not have `[NotNullAttribute]`");
+        }
+    }
+
     extension(Attribute attribute)
     {
         public bool AllowsMultiple() =>

@@ -44,28 +44,6 @@ public static class CoreExtensions
 
     extension(Stubber giveMe)
     {
-        public Dictionary<string, string> ADictionary() =>
-            giveMe.ADictionary<string, string>();
-
-        public Uri AUrl(
-            string? url = default
-        )
-        {
-            url ??= $"https://www.{Regex.Replace(giveMe.AGuid().ToString(), "[0-9]", "x")}.com";
-
-            return new(url);
-        }
-
-        public int AnInteger() =>
-            42;
-
-        public string AnEmail() =>
-            "info@test.com";
-
-        public string AString(
-            string? value = default
-        ) => value ?? "test string";
-
         public DateTime ADateTime(
             int year = 2023,
             int month = 9,
@@ -75,9 +53,15 @@ public static class CoreExtensions
             int second = 00
         ) => new(year, month, day, hour, minute, second);
 
+        public Dictionary<string, string> ADictionary() =>
+            giveMe.ADictionary<string, string>();
+
         public Dictionary<TKey, TValue> ADictionary<TKey, TValue>(params IEnumerable<(TKey, TValue)> pairs)
-            where TKey : notnull
-        => pairs.ToDictionary(pair => pair.Item1, pair => pair.Item2);
+            where TKey : notnull =>
+            pairs.ToDictionary(pair => pair.Item1, pair => pair.Item2);
+
+        public string AnEmail() =>
+            "info@test.com";
 
         public Guid AGuid(
             string? starts = default
@@ -88,6 +72,34 @@ public static class CoreExtensions
             const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
 
             return Guid.Parse($"{starts}{template[starts.Length..]}");
+        }
+
+        public int AnInteger() =>
+            42;
+
+        public long ALong() =>
+            1982329438L;
+
+        public string AString(
+            string? value = default,
+            int? length = default
+        )
+        {
+            if (length is not null)
+            {
+                return new('x', length.Value);
+            }
+
+            return value ?? "test string";
+        }
+
+        public Uri AUrl(
+            string? url = default
+        )
+        {
+            url ??= $"https://www.{Regex.Replace(giveMe.AGuid().ToString(), "[0-9]", "x")}.com";
+
+            return new(url);
         }
 
         public PropertyInfo? ThePropertyOf<T>(string name) =>

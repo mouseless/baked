@@ -33,6 +33,10 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public void AddString(string @string) =>
         _strings.Add(@string);
 
+    public void Parameters(string required,
+        string? optional = default
+    ) => _logger.LogInformation($"{nameof(Parameters)} was called with (required: {required}, optional: {optional})");
+
     public async Task VoidAsync()
     {
         await Task.Delay(10);
