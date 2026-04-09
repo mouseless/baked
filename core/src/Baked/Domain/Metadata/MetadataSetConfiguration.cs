@@ -3,8 +3,8 @@
 public class MetadataSetConfiguration(string name)
 {
     public string Name => name;
-    internal MetadataModelBuilderOptions BuilderOptions { get; } = new();
+    public MetadataModelBuilderOptions BuilderOptions { get; } = new();
 
-    public void ConfigureMetadata(Action<MetadataModelBuilderOptions> configure) =>
+    public void ConfigureBuilderOptions(Action<MetadataModelBuilderOptions> configure) =>
         configure(BuilderOptions);
 }

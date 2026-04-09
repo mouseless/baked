@@ -4,8 +4,10 @@ using KdlSharp.Values;
 
 namespace Baked.Domain.Metadata;
 
-public class MetadataSerializer
+public class KdlMetadataSerializer : ITypeMetadataSerializer
 {
+    public string FileType => "kdl";
+
     public string Serialize(TypeMetadataModel model)
     {
         var root = new KdlNode(model.Name);
@@ -15,6 +17,14 @@ public class MetadataSerializer
         {
             var childNode = new KdlNode(GetPropertyName(property.Name));
             AddAttributeNodes(childNode, property.Attributes);
+
+            root.AddChild(childNode);
+        }
+
+        foreach (var method in model.Methods)
+        {
+            var childNode = new KdlNode(GetPropertyName(method.Name));
+            AddAttributeNodes(childNode, method.Attributes);
 
             root.AddChild(childNode);
         }

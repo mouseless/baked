@@ -28,6 +28,7 @@ public class MetadataSetBuilder(MetadataModelBuilderOptions _options)
 
         var typeMetadataModel = new TypeMetadataModel(((IModel)type).Id, type.Name);
         typeMetadataModel.Attributes.AddRange(attributes);
+        typeMetadataModel.GroupName = _options.TypeGroupName(type);
 
         return type.TryGetMembers(out var members) ? BuildMembers(typeMetadataModel, members) : typeMetadataModel;
     }

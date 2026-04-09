@@ -7,7 +7,7 @@ using Baked.RestApi.Model;
 
 namespace Baked.Test.Domain;
 
-public class BuildingMetadataModel : TestSpec
+public class BuildingMetadataSetModel : TestSpec
 {
     public class NotExistingAttribute : Attribute;
 
@@ -15,7 +15,8 @@ public class BuildingMetadataModel : TestSpec
     public void Builds_metadata_model_from_domain_model()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new());
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -24,13 +25,32 @@ public class BuildingMetadataModel : TestSpec
     }
 
     [Test]
+    public void Group_name_can_be_configured()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        metadataSetConfiguration.ConfigureBuilderOptions(options =>
+        {
+            options.TypeGroupName = _ => "GroupName";
+        });
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
+
+        var metadataModel = metadataBuilder.Build(domain);
+
+        metadataModel.Types.All(t => t.GroupName == "GroupName").ShouldBe(true);
+    }
+
+    [Test]
     public void Includes_given_attributes_data_for_types()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new()
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        metadataSetConfiguration.ConfigureBuilderOptions(options =>
         {
-            TypeAttributes = [typeof(EntityAttribute), typeof(ControllerModelAttribute)]
+            options.AddAttribute<EntityAttribute>();
+            options.AddAttribute<ControllerModelAttribute>();
         });
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -49,11 +69,14 @@ public class BuildingMetadataModel : TestSpec
     public void Types_having_no_matching_attributes_can_be_excluded()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new()
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        metadataSetConfiguration.ConfigureBuilderOptions(options =>
         {
-            TypeAttributes = [typeof(NotExistingAttribute)],
-            ExcludeTypesMissingAttributes = true
+            options.AddAttribute<NotExistingAttribute>();
+
+            options.ExcludeTypesMissingAttributes = true;
         });
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -64,11 +87,16 @@ public class BuildingMetadataModel : TestSpec
     public void Metadata_can_include_methods()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new()
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        metadataSetConfiguration.ConfigureBuilderOptions(options =>
         {
-            MethodAttributes = [typeof(ActionModelAttribute)],
-            ParameterAttributes = [typeof(ParameterModelAttribute)]
+            options.AddAttribute<ControllerModelAttribute>();
+            options.AddAttribute<ActionModelAttribute>();
+            options.AddAttribute<ParameterModelAttribute>();
+
+            options.ExcludeTypesMissingAttributes = true;
         });
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -91,10 +119,12 @@ public class BuildingMetadataModel : TestSpec
     public void Excludes_methods_not_having_given_attribute()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new()
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        metadataSetConfiguration.ConfigureBuilderOptions(options =>
         {
-            MethodAttributes = [typeof(InitializerAttribute)]
+            options.AddAttribute<InitializerAttribute>();
         });
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -108,7 +138,8 @@ public class BuildingMetadataModel : TestSpec
     public void Does_not_include_methods_when_not_configued()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new());
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -120,10 +151,12 @@ public class BuildingMetadataModel : TestSpec
     public void Does_not_include_parameters_when_not_configured()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new()
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        metadataSetConfiguration.ConfigureBuilderOptions(options =>
         {
-            MethodAttributes = [typeof(InitializerAttribute)]
+            options.AddAttribute<InitializerAttribute>();
         });
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -136,10 +169,13 @@ public class BuildingMetadataModel : TestSpec
     public void Metadata_can_includes_properties()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new()
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        metadataSetConfiguration.ConfigureBuilderOptions(options =>
         {
-            PropertyAttributes = [typeof(IdAttribute), typeof(LabelAttribute)]
+            options.AddAttribute<IdAttribute>();
+            options.AddAttribute<LabelAttribute>();
         });
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -155,10 +191,12 @@ public class BuildingMetadataModel : TestSpec
     public void Properties_can_be_excluded()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new()
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        metadataSetConfiguration.ConfigureBuilderOptions(options =>
         {
-            PropertyAttributes = [typeof(IdAttribute)]
+            options.AddAttribute<IdAttribute>();
         });
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -172,7 +210,8 @@ public class BuildingMetadataModel : TestSpec
     public void Does_not_include_properties_when_not_configued()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataSetBuilder(new());
+        var metadataSetConfiguration = new MetadataSetConfiguration("Test");
+        var metadataBuilder = new MetadataSetBuilder(metadataSetConfiguration.BuilderOptions);
 
         var metadataModel = metadataBuilder.Build(domain);
 

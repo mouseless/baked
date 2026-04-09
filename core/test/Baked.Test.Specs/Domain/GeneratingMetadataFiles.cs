@@ -8,33 +8,6 @@ namespace Baked.Test.Domain;
 
 public class GeneratingMetadataFiles
 {
-    //[Entity]
-    //[ControllerModel(ClassName = nameof(SampleType), GroupName = "Test")]
-    //public class SampleType
-    //{
-    //    [Data("id")]
-    //    [Id("id")]
-    //    public Id Id { get; set; }
-    //    [Data("name")]
-    //    [Label]
-    //    public string Name { get; set; } = default!;
-
-    //    [Initializer]
-    //    [ActionModel(method: "Post")]
-    //    public SampleType With(
-    //        [ParameterModel] string name
-    //    )
-    //    {
-    //        Name = name;
-
-    //        return this;
-    //    }
-
-    //    [ActionModel]
-    //    public void Update() { }
-    //    internal void Delete() { }
-    //}
-
     [Test]
     public void Generates_given_metadata()
     {
@@ -44,6 +17,7 @@ public class GeneratingMetadataFiles
           name @label {
             @data prop="Name"
           }
+          surname @label
         }
         """;
         var metadataType = new TypeMetadataModel("Baked.Test.Domain.SampleType", "SampleType")
@@ -63,10 +37,14 @@ public class GeneratingMetadataFiles
                 [
                     new(nameof(DataAttribute), ("Prop","Name")),
                     new(nameof(LabelAttribute))
+                ]),
+                new("Surname",
+                [
+                    new(nameof(LabelAttribute))
                 ])
             ]
         };
-        var metadataSerializer = new MetadataSerializer();
+        var metadataSerializer = new KdlMetadataSerializer();
 
         var actual = metadataSerializer.Serialize(metadataType);
 
