@@ -116,6 +116,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             options.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
+            options.SerializerSettings.SerializationBinder = new PolymorphicSerializationBinder(options.SerializerSettings.SerializationBinder);
         });
 
         configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>

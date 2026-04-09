@@ -27,6 +27,9 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public List<string> GetStrings() =>
         _strings;
 
+    public Data GetData() =>
+        new("data", 42);
+
     public void SetSetting(string value) =>
         _strings.Add(value);
 
