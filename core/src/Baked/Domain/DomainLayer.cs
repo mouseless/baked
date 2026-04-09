@@ -97,9 +97,10 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         foreach (var (key, set) in _metadataSetCollection)
         {
             var metadataModel = new MetadataModelBuilder(set.BuilderOptions).Build(domain);
+            var serializer = new MetadataSerializer();
             foreach (var type in metadataModel.Types)
             {
-                var content = new MetadataSerializer().Serialize(type);
+                var content = serializer.Serialize(type);
                 files.Add($"{type.Name}", content, extension: "kdl", outdir: Path.Join("Metadata", $"{key}"));
             }
         }

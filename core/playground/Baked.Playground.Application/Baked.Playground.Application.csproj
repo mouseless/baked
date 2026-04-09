@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors>true</CopyComponentDescriptors>
+    <CopyMetadataFiles>true</CopyMetadataFiles>
     <UiAppDir>$(ProjectDir)..\..\..\ui\playground</UiAppDir>
   </PropertyGroup>
 

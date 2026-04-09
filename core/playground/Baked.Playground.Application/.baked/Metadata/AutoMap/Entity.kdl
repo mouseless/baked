@@ -1,0 +1,5 @@
+Entity @entity {
+  id {
+    @id routeName="id"
+  }
+}

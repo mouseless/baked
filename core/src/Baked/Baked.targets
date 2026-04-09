@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors Condition="'$(CopyComponentDescriptors)' != 'true'">false</CopyComponentDescriptors>
+    <CopyMetadataFiles Condition="'$(CopyMetadataFiles)' != 'true'">false</CopyMetadataFiles>
     <SkipGenerate Condition="'$(IsTestProject)' == 'true' And '$(SkipGenerate)' != 'false'">true</SkipGenerate>
     <SkipGenerate Condition="'$(SkipGenerate)' != 'true'">false</SkipGenerate>
   </PropertyGroup>
@@ -47,5 +48,26 @@
     </ItemGroup>
     <Copy SourceFiles="@(GeneratedFiles)" DestinationFolder="$(PublishDir)\$(ASPNETCORE_ENVIRONMENT)" SkipUnchangedFiles="true" />
   </Target>
+    
+  <Target Name="CopyMetadataFiles" AfterTargets="AfterBuild" Condition="$(CopyMetadataFiles)">
+    <PropertyGroup>
+      <MetadataFilesDir>$(ProjectDir)\.baked\Metadata</MetadataFilesDir>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(MetadataFilesDir)" Condition="!Exists($(MetadataFilesDir))"/>
+
+    <PropertyGroup>
+      <MetadataSourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">$(OutDir)\Development\Metadata</MetadataSourceFolder>
+      <MetadataSourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'!=''">$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\Metadata</MetadataSourceFolder>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <MetadataFiles Include="$(MetadataSourceFolder)\**\*.kdl" />
+      <MetadataDestinationFiles Include="$(MetadataFilesDir)\**\*.kdl" />
+    </ItemGroup>
+
+    <Delete Files="@(MetadataDestinationFiles)" Condition="!Exists('%(FullPath.Replace($(MetadataFilesDir), $(MetadataSourceFolder)))')" />
+    <Copy SourceFiles="@(MetadataFiles)" DestinationFolder="$(MetadataFilesDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="Exists($(MetadataFilesDir))" />
+  </Target>  
 
 </Project>

@@ -38,6 +38,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
+        // Note this is for demo purposes
         configurator.Domain.ConfigureMetadataSetCollection(sets =>
         {
             sets.GetOrCreate(nameof(AutoMap))

@@ -1,0 +1,7 @@
+Parent @entity {
+  id {
+    @id routeName="id"
+  }
+  name @label
+  surname @label
+}
