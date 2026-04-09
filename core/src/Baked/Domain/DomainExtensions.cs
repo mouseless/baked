@@ -566,7 +566,7 @@ public static class DomainExtensions
 
     extension(MetadataModelBuilderOptions options)
     {
-        public void AddAttribute<T>()
+        public void AddAttribute<T>() where T : Attribute
         {
             var usage = GetAttributeUsage<T>();
             if (usage is null) { return; }
@@ -592,7 +592,7 @@ public static class DomainExtensions
             }
         }
 
-        public void RemoveAttribute<T>()
+        public void RemoveAttribute<T>() where T : Attribute
         {
             var usage = GetAttributeUsage<T>();
             if (usage is null) { return; }

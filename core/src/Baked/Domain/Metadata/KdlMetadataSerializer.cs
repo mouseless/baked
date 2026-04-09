@@ -1,6 +1,7 @@
 ﻿using Humanizer;
 using KdlSharp;
 using KdlSharp.Values;
+using System.Globalization;
 
 namespace Baked.Domain.Metadata;
 
@@ -52,7 +53,14 @@ public class KdlMetadataSerializer : ITypeMetadataSerializer
                 {
                     if (value is null) { continue; }
 
-                    childNode.AddProperty(GetPropertyName(key), new KdlString($"{value}"));
+                    if (value.GetType().IsArray || value.GetType().IsAssignableTo(typeof(ICollection)))
+                    {
+                        childNode.AddProperty(GetPropertyName(key), string.Join(", ", (IEnumerable<object>)value));
+                    }
+                    else
+                    {
+                        childNode.AddProperty(GetPropertyName(key), new KdlString($"{value}"));
+                    }
                 }
 
                 root.AddChild(childNode);
@@ -61,7 +69,7 @@ public class KdlMetadataSerializer : ITypeMetadataSerializer
     }
 
     string GetAttributeName(string type) =>
-        $"@{type.Replace("Attribute", string.Empty).Kebaberize()}";
+        $"@{type.Replace("Attribute", string.Empty).Titleize().Transform(new CultureInfo("en-US"), To.LowerCase).Kebaberize()}";
 
     string GetPropertyName(string name) =>
         $"{name[0].ToString().ToLowerInvariant()}{name[1..]}";

@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Lifetime;
 using Baked.Orm;
-using FluentNHibernate.Automapping;
 
 namespace Baked.Playground.Override.Domain;
 
@@ -12,7 +12,7 @@ public class MetadataSetOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureMetadataSetConfigurationCollection(sets =>
         {
-            sets.GetOrCreate(nameof(AutoMap))
+            sets.GetOrCreate("Orm")
                 .ConfigureBuilderOptions(options =>
                 {
                     options.AddAttribute<EntityAttribute>();
@@ -20,6 +20,23 @@ public class MetadataSetOverrideFeature : IFeature
                     options.AddAttribute<LabelAttribute>();
 
                     options.ExcludeTypesMissingAttributes = true;
+                })
+            ;
+
+            sets.GetOrCreate("Lifetime")
+                .ConfigureBuilderOptions(options =>
+                {
+                    options.AddAttribute<SingletonAttribute>();
+                    options.AddAttribute<ScopedAttribute>();
+                    options.AddAttribute<TransientAttribute>();
+                    options.AddAttribute<InitializerAttribute>();
+
+                    options.ExcludeTypesMissingAttributes = true;
+                    options.TypeGroupName = type =>
+                            type.Has<SingletonAttribute>() ? "Singleton" :
+                            type.Has<ScopedAttribute>() ? "Scoped" :
+                            type.Has<TransientAttribute>() ? "Transient" :
+                            type.Name;
                 })
             ;
         });

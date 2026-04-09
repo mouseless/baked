@@ -1,0 +1,96 @@
+ReportPageSample @transient {
+  with @initializer
+}
+RouteParametersSample @transient {
+  with @initializer
+}
+TestPage @transient {
+  with @initializer
+}
+Child @transient {
+  with @initializer
+}
+Entity @transient {
+  with @initializer
+}
+Parent @transient {
+  with @initializer
+}
+Transient @transient {
+  with @initializer
+}
+TransientAsync @transient {
+  with @initializer
+}
+EntityWithValueType @transient {
+  with @initializer
+}
+RedirectSamples @transient {
+  with @initializer
+}
+RichTransientAsync @transient {
+  with @initializer
+}
+RichTransientChild @transient {
+  with @initializer
+}
+RichTransientNoData @transient {
+  with @initializer
+}
+RichTransientParent @transient {
+  with @initializer
+}
+RichTransientWithCustomIdProperty @transient {
+  with @initializer
+}
+RichTransientWithData @transient {
+  with @initializer
+}
+EntityExtension @transient {
+  with @initializer
+}
+RichTransientAsyncExtension @transient {
+  with @initializer
+}
+RichTransientExtension @transient {
+  with @initializer
+}
+EntityWithAssignedId @transient {
+  with @initializer
+}
+EntityWithAutoIncrementId @transient {
+  with @initializer
+}
+ATypedEntity @transient {
+  with @initializer
+}
+BTypedEntity @transient {
+  with @initializer
+}
+TypedEntity @transient {
+  with @initializer
+}
+ClearCommand @transient {
+  with @initializer
+}
+Command @transient {
+  with @initializer
+}
+CommandWithEntity @transient {
+  with @initializer
+}
+CommandWithRichTransient @transient {
+  with @initializer
+}
+NotRenderedCommand @transient {
+  with @initializer
+}
+CacheSamples @transient {
+  with @initializer
+}
+TransientGeneric`1 @transient {
+  with @initializer
+}
+GenericClass`1 @transient {
+  with @initializer
+}
