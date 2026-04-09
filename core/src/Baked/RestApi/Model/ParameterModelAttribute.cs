@@ -1,10 +1,12 @@
-﻿namespace Baked.RestApi.Model;
+﻿using Baked.Business;
+
+namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Parameter)]
 public class ParameterModelAttribute(
     ParameterModelFrom @from = ParameterModelFrom.BodyOrForm,
     string[]? additionalAttributes = default
-) : Attribute
+) : Attribute, IMetadataSerializer
 {
     public const string TargetParameterName = "target";
 
@@ -46,6 +48,23 @@ public class ParameterModelAttribute(
     public bool FromRoute => From == ParameterModelFrom.Route;
     public bool FromQuery => From == ParameterModelFrom.Query;
     public bool FromBodyOrForm => From == ParameterModelFrom.BodyOrForm;
+
+    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
+        [
+            new(Id),
+            new(From),
+            new(Type),
+            new(Name),
+            new(InternalName),
+            new(IsOptional),
+            new( DefaultValue),
+            new(IsInvokeMethodParameter),
+            new(IsHardCoded),
+            new( Order),
+            new(RoutePosition),
+            new(AdditionalAttributes),
+            new(Orphan)
+        ];
 
     internal ParameterModelAttribute Init(string id, string type, bool isOptional, object? defaultValue)
     {
