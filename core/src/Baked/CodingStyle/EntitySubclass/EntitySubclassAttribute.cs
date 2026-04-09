@@ -4,7 +4,7 @@ namespace Baked.CodingStyle.EntitySubclass;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class EntitySubclassAttribute(Type entityType, string name)
-    : Attribute, IMetadataSerializer
+    : Attribute(), IMetadataSerializer
 {
     public Type EntityType { get; } = entityType;
     public string Name { get; } = name;

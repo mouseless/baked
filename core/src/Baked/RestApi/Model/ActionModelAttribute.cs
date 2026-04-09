@@ -9,7 +9,7 @@ public class ActionModelAttribute(
     string[]? routeParts = default,
     string[]? additionalAttributes = default,
     string[]? preparationStatements = default
-) : Attribute, IMetadataSerializer
+) : Attribute(), IMetadataSerializer
 {
     public ActionModelAttribute(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
       : this()

@@ -2,7 +2,7 @@
 
 [AttributeUsage(AttributeTargets.Property)]
 public class IdAttribute(string RouteName)
-    : Attribute, IMetadataSerializer
+    : Attribute(), IMetadataSerializer
 {
     public string RouteName { get; set; } = RouteName;
     public MappingOptions? Mapping { get; set; }

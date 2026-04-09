@@ -4,7 +4,7 @@ namespace Baked.Authorization;
 
 public class RequireUserAttribute(
   string[]? claims = default
-) : Attribute, IMetadataSerializer
+) : Attribute(), IMetadataSerializer
 {
     public bool Override { get; set; }
 

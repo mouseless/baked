@@ -1,5 +1,5 @@
-﻿using Baked.Domain.Model;
-using System.Reflection;
+﻿using Baked.Business;
+using Baked.Domain.Model;
 
 namespace Baked.Domain.Metadata;
 
@@ -12,7 +12,7 @@ public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
         {
             if (!type.TryGetMetadata(out var metadata)) { continue; }
 
-            var typeMetadataModel = Build(metadata);
+            var typeMetadataModel = BuildMetadata(metadata);
             if (typeMetadataModel is null) { continue; }
 
             types.Add(typeMetadataModel);
@@ -21,7 +21,7 @@ public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
         return new(new(types));
     }
 
-    TypeMetadataModel? Build(TypeModelMetadata type)
+    TypeMetadataModel? BuildMetadata(TypeModelMetadata type)
     {
         var attributes = BuildAttributes(type, _options.TypeAttributes);
         if (_options.ExcludeTypesMissingAttributes && !attributes.Any()) { return default; }
@@ -92,19 +92,11 @@ public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
         return result;
     }
 
-    // TODO temporari implementation
-    // values will be get directly from
-    // attributes
     AttributeMetadataModel BuildAttribute<T>(Type type, T instance) where T : Attribute
     {
         var attributeMetadata = new AttributeMetadataModel(type.Name)
         {
-            Values = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.CanRead && p.DeclaringType == type)
-                .ToDictionary(
-                    p => p.Name,
-                    p => p.GetValue(instance)
-                )
+            Values = instance is IMetadataSerializer serializer ? serializer.Properties.ToDictionary(p => p.Name, p => p.Value) : new()
         };
 
         return attributeMetadata;

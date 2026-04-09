@@ -6,7 +6,7 @@ namespace Baked.RestApi.Model;
 public class ParameterModelAttribute(
     ParameterModelFrom @from = ParameterModelFrom.BodyOrForm,
     string[]? additionalAttributes = default
-) : Attribute, IMetadataSerializer
+) : Attribute(), IMetadataSerializer
 {
     public const string TargetParameterName = "target";
 
