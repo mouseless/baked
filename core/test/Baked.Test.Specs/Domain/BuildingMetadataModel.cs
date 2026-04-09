@@ -15,7 +15,7 @@ public class BuildingMetadataModel : TestSpec
     public void Builds_metadata_model_from_domain_model()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new());
+        var metadataBuilder = new MetadataSetBuilder(new());
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -27,7 +27,7 @@ public class BuildingMetadataModel : TestSpec
     public void Includes_given_attributes_data_for_types()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new()
+        var metadataBuilder = new MetadataSetBuilder(new()
         {
             TypeAttributes = [typeof(EntityAttribute), typeof(ControllerModelAttribute)]
         });
@@ -49,7 +49,7 @@ public class BuildingMetadataModel : TestSpec
     public void Types_having_no_matching_attributes_can_be_excluded()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new()
+        var metadataBuilder = new MetadataSetBuilder(new()
         {
             TypeAttributes = [typeof(NotExistingAttribute)],
             ExcludeTypesMissingAttributes = true
@@ -64,7 +64,7 @@ public class BuildingMetadataModel : TestSpec
     public void Metadata_can_include_methods()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new()
+        var metadataBuilder = new MetadataSetBuilder(new()
         {
             MethodAttributes = [typeof(ActionModelAttribute)],
             ParameterAttributes = [typeof(ParameterModelAttribute)]
@@ -91,7 +91,7 @@ public class BuildingMetadataModel : TestSpec
     public void Excludes_methods_not_having_given_attribute()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new()
+        var metadataBuilder = new MetadataSetBuilder(new()
         {
             MethodAttributes = [typeof(InitializerAttribute)]
         });
@@ -108,7 +108,7 @@ public class BuildingMetadataModel : TestSpec
     public void Does_not_include_methods_when_not_configued()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new());
+        var metadataBuilder = new MetadataSetBuilder(new());
 
         var metadataModel = metadataBuilder.Build(domain);
 
@@ -120,7 +120,7 @@ public class BuildingMetadataModel : TestSpec
     public void Does_not_include_parameters_when_not_configured()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new()
+        var metadataBuilder = new MetadataSetBuilder(new()
         {
             MethodAttributes = [typeof(InitializerAttribute)]
         });
@@ -136,7 +136,7 @@ public class BuildingMetadataModel : TestSpec
     public void Metadata_can_includes_properties()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new()
+        var metadataBuilder = new MetadataSetBuilder(new()
         {
             PropertyAttributes = [typeof(IdAttribute), typeof(LabelAttribute)]
         });
@@ -155,7 +155,7 @@ public class BuildingMetadataModel : TestSpec
     public void Properties_can_be_excluded()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new()
+        var metadataBuilder = new MetadataSetBuilder(new()
         {
             PropertyAttributes = [typeof(IdAttribute)]
         });
@@ -172,7 +172,7 @@ public class BuildingMetadataModel : TestSpec
     public void Does_not_include_properties_when_not_configued()
     {
         var domain = GiveMe.TheDomainModel();
-        var metadataBuilder = new MetadataModelBuilder(new());
+        var metadataBuilder = new MetadataSetBuilder(new());
 
         var metadataModel = metadataBuilder.Build(domain);
 

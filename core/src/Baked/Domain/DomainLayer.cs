@@ -14,7 +14,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
     readonly DomainServiceCollection _domainServiceCollection = new();
-    readonly MetadataSetCollection _metadataSetCollection = new();
+    readonly MetadataSetConfigurationCollection _metadataSetConfigurationCollection = new();
 
     protected override PhaseContext GetContext(AddDomainTypes phase) =>
         phase.CreateContextBuilder()
@@ -40,7 +40,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 
         return phase.CreateContextBuilder()
             .Add(_domainServiceCollection, domain)
-            .Add(_metadataSetCollection)
+            .Add(_metadataSetConfigurationCollection)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
@@ -94,9 +94,9 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         var domain = Context.GetDomainModel();
         var files = Context.Get<IGeneratedFileCollection>();
 
-        foreach (var (key, set) in _metadataSetCollection)
+        foreach (var (key, set) in _metadataSetConfigurationCollection)
         {
-            var metadataModel = new MetadataModelBuilder(set.BuilderOptions).Build(domain);
+            var metadataModel = new MetadataSetBuilder(set.BuilderOptions).Build(domain);
             var serializer = new MetadataSerializer();
             foreach (var type in metadataModel.Types)
             {

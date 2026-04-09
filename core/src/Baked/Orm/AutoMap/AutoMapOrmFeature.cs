@@ -39,12 +39,17 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         });
 
         // Note this is for demo purposes
-        configurator.Domain.ConfigureMetadataSetCollection(sets =>
+        configurator.Domain.ConfigureMetadataSetConfigurationCollection(sets =>
         {
             sets.GetOrCreate(nameof(AutoMap))
-                .AddAttribute<EntityAttribute>()
-                .AddAttribute<IdAttribute>()
-                .AddAttribute<LabelAttribute>()
+                .ConfigureMetadata(options =>
+                {
+                    options.AddAttribute<EntityAttribute>();
+                    options.AddAttribute<IdAttribute>();
+                    options.AddAttribute<LabelAttribute>();
+
+                    options.ExcludeTypesMissingAttributes = true;
+                })
             ;
         });
 

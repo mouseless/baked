@@ -3,9 +3,9 @@ using Baked.Domain.Model;
 
 namespace Baked.Domain.Metadata;
 
-public class MetadataModelBuilder(MetadataModelBuilderOptions _options)
+public class MetadataSetBuilder(MetadataModelBuilderOptions _options)
 {
-    public MetadataModel Build(DomainModel domain)
+    public MetadataSetModel Build(DomainModel domain)
     {
         var types = new List<TypeMetadataModel>();
         foreach (var type in domain.Types)
