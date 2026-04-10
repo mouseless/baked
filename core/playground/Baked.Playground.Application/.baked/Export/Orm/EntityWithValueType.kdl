@@ -1,0 +1,10 @@
+EntityWithValueType @entity {
+  id {
+    @id routeName="id"
+  }
+}
+
+EntityWithValueTypes {
+  @query locatableType="Baked.Playground.CodingStyle.ValueType.EntityWithValueType"
+}
+

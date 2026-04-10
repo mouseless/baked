@@ -1,19 +1,19 @@
 ﻿using Baked.Business;
-using Baked.Domain.Metadata;
+using Baked.Domain.Export;
 using Baked.Orm;
 using Baked.RestApi.Model;
 using Baked.Theme.Default;
 
 namespace Baked.Test.Domain;
 
-public class SerializingMetadata
+public class SerializingAttributeExports : TestSpec
 {
-    static TypeMetadataModel ATypeMetadataModel(
+    static TypeExportModel ATypeExportModel(
         string? id = default,
         string? name = default,
-        List<AttributeMetadataModel>? attributes = default,
-        List<MethodMetadataModel>? methods = default,
-        List<PropertyMetadataModel>? properties = default
+        List<AttributeExportModel>? attributes = default,
+        List<MethodExportModel>? methods = default,
+        List<PropertyExportModel>? properties = default
     )
     {
         id ??= "Baked.Domain.Test";
@@ -27,28 +27,34 @@ public class SerializingMetadata
         };
     }
 
+    class FakeAttribute : Attribute;
+
     [Test]
     public void Serialize_given_type_metadata_model()
     {
         var expected = """
-        SampleType @entity {
-          @controller-model id="Baked.Test.Domain.SampleType" className="SampleType" groupName="Test"
+        sample-type @entity {
+          @fake className="SampleType" string="Post" array="System.String[]" bool=#false int=1
         }
         """;
-        var metadataType = ATypeMetadataModel(
+        var metadataType = ATypeExportModel(
             id: "Baked.Test.Domain.SampleType",
             name: "SampleType",
             attributes:
             [
                 new(nameof(EntityAttribute)),
-                new(nameof(ControllerModelAttribute),
-                    ("Id", "Baked.Test.Domain.SampleType"),
+                new(nameof(FakeAttribute),
+                [
                     ("ClassName", "SampleType"),
-                    ("GroupName", "Test")
-                )
+                    ("String", "Post"),
+                    ("Array", new[] { "sample-types", "id" }),
+                    ("Dictionary", new Dictionary<string, object>{ {"id", new { } } }),
+                    ("Bool", false),
+                    ("Int", 1)
+                ])
             ]
         );
-        var metadataSerializer = new KdlMetadataSerializer();
+        var metadataSerializer = new KdlTypeExportSerializer();
 
         var actual = metadataSerializer.Serialize(metadataType);
 
@@ -59,14 +65,14 @@ public class SerializingMetadata
     public void Serializes_properties()
     {
         var expected = """
-        SampleType {
+        sample-type {
           name @label {
             @data prop="Name"
           }
           surname @label
         }
         """;
-        var metadataType = ATypeMetadataModel(
+        var metadataType = ATypeExportModel(
             name: "SampleType",
             properties:
             [
@@ -81,7 +87,7 @@ public class SerializingMetadata
                 ])
             ]
         );
-        var metadataSerializer = new KdlMetadataSerializer();
+        var metadataSerializer = new KdlTypeExportSerializer();
 
         var actual = metadataSerializer.Serialize(metadataType);
 
@@ -92,31 +98,41 @@ public class SerializingMetadata
     public void Serializes_methods()
     {
         var expected = """
-        SampleType {
+        sample-type {
+          @locatable isAsync=#false
+
           with @initializer {
-            @action-model method="Post" routeParts="sample-types, id"
+            @action-model method="Post" routeParts="System.String[]"
           }
         }
         """;
-        var metadataType = ATypeMetadataModel(
+        var metadataType = ATypeExportModel(
             name: "SampleType",
             methods:
             [
                 new("With",
                 [
+                    new(nameof(LocatableAttribute),
+                        new(nameof(LocatableAttribute.QueryType), null),
+                        new(nameof(LocatableAttribute.IsAsync), false)
+                    ),
                     new(nameof(InitializerAttribute)),
                     new(nameof(ActionModelAttribute),
                     [
                         ("Method", "Post"),
-                        ("RouteParts", new string[] { "sample-types", "id" })
+                        ("RouteParts", new[] { "sample-types", "id" }),
                     ]),
                 ]),
             ]
         );
-        var metadataSerializer = new KdlMetadataSerializer();
+        var metadataSerializer = new KdlTypeExportSerializer();
 
         var actual = metadataSerializer.Serialize(metadataType);
 
         actual.Trim().ShouldBe(expected.Trim());
     }
+
+    [Test]
+    public void Return_empty_content_with_comment_for_no_attribute_export_data() =>
+        this.ShouldFail();
 }

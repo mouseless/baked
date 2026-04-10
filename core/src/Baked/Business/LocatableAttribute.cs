@@ -8,8 +8,8 @@ public class LocatableAttribute : Attribute, IMetadataSerializer
 
     IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
         [
-            new(nameof(QueryType), QueryType),
-            new(nameof(IsAsync), IsAsync)
+            new(QueryType),
+            new(IsAsync)
         ];
 
     public string RenderLocate(string serviceExpression, string idExpression,

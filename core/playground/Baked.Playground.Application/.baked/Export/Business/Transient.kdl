@@ -1,96 +1,177 @@
 ReportPageSample @transient {
   with @initializer
 }
+
 RouteParametersSample @transient {
+  @locatable isAsync="False"
   with @initializer
 }
+
+
 TestPage @transient {
   with @initializer
 }
+
+
 Child @transient {
+  @locatable queryType="Baked.Playground.Orm.Children" isAsync="False"
   with @initializer
 }
+
+
 Entity @transient {
+  @locatable queryType="Baked.Playground.Orm.Entities" isAsync="False"
   with @initializer
 }
+
+
 Parent @transient {
+  @locatable queryType="Baked.Playground.Orm.Parents" isAsync="False"
   with @initializer
 }
+
+
 Transient @transient {
   with @initializer
 }
+
+
 TransientAsync @transient {
   with @initializer
 }
+
+
 EntityWithValueType @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.ValueType.EntityWithValueTypes" isAsync="False"
   with @initializer
 }
+
+
 RedirectSamples @transient {
   with @initializer
 }
+
+
 RichTransientAsync @transient {
+  @locatable isAsync="True"
   with @initializer
 }
+
+
 RichTransientChild @transient {
+  @locatable isAsync="False"
   with @initializer
 }
+
+
 RichTransientNoData @transient {
+  @locatable isAsync="False"
   with @initializer
 }
+
+
 RichTransientParent @transient {
+  @locatable isAsync="False"
   with @initializer
 }
+
+
 RichTransientWithCustomIdProperty @transient {
+  @locatable isAsync="False"
   with @initializer
 }
+
+
 RichTransientWithData @transient {
+  @locatable isAsync="False"
   with @initializer
 }
+
+
 EntityExtension @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.EntityExtensions" isAsync="False"
   with @initializer
 }
+
+
 RichTransientAsyncExtension @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientAsyncExtensions" isAsync="False"
   with @initializer
 }
+
+
 RichTransientExtension @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtensions" isAsync="False"
   with @initializer
 }
+
+
 EntityWithAssignedId @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAssignedIds" isAsync="False"
   with @initializer
 }
+
+
 EntityWithAutoIncrementId @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAutoIncrementIds" isAsync="False"
   with @initializer
 }
+
+
 ATypedEntity @transient {
+  @locatable isAsync="False"
   with @initializer
 }
+
+
 BTypedEntity @transient {
+  @locatable isAsync="False"
   with @initializer
 }
+
+
 TypedEntity @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntities" isAsync="False"
   with @initializer
 }
+
+
 ClearCommand @transient {
   with @initializer
 }
+
+
 Command @transient {
   with @initializer
 }
+
+
 CommandWithEntity @transient {
   with @initializer
 }
+
+
 CommandWithRichTransient @transient {
   with @initializer
 }
+
+
 NotRenderedCommand @transient {
   with @initializer
 }
+
+
 CacheSamples @transient {
   with @initializer
 }
+
+
 TransientGeneric`1 @transient {
   with @initializer
 }
+
+
 GenericClass`1 @transient {
   with @initializer
 }
+

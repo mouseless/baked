@@ -3,3 +3,8 @@ EntityWithAutoIncrementId @entity {
     @id routeName="primaryKey" mapping="MappingOptions { UserType = Baked.CodingStyle.Id.IdIntUserType, IdentifierGenerator = NHibernate.Id.IdentityGenerator }"
   }
 }
+
+EntityWithAutoIncrementIds {
+  @query locatableType="Baked.Playground.CodingStyle.Id.EntityWithAutoIncrementId"
+}
+

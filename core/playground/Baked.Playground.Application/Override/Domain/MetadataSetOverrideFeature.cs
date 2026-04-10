@@ -10,35 +10,44 @@ public class MetadataSetOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureMetadataSetConfigurationCollection(sets =>
+        configurator.Domain.ConfigureAttributeExportCollection(exports =>
         {
-            sets.GetOrCreate("Orm")
-                .ConfigureBuilderOptions(options =>
+            configurator.Domain.UsingDomainModel(domain =>
+            {
+                //exports.Orm(export =>
+                exports.Build("Orm",
+                    export =>
+                    {
+                        export.Include<EntityAttribute>();
+                        export.Include<IdAttribute>();
+                        export.Include<LabelAttribute>();
+                        // buraya filtre ekle
+                        // export.Include<QueryAttribute>(p => p.Value.Get is List);
+                        export.Include<QueryAttribute>();
+
+                        export.TypeGroupName(type =>
+                                type.TryGetLocatableType(domain, out var locatableType) ? locatableType.Name :
+                                type.Name
+                            );
+                    });
+            });
+
+            exports.Build("Business",
+                export =>
                 {
-                    options.AddAttribute<EntityAttribute>();
-                    options.AddAttribute<IdAttribute>();
-                    options.AddAttribute<LabelAttribute>();
+                    export.Include<SingletonAttribute>();
+                    export.Include<ScopedAttribute>();
+                    export.Include<TransientAttribute>();
+                    export.Include<InitializerAttribute>();
+                    export.Include<LocatableAttribute>();
 
-                    options.ExcludeTypesMissingAttributes = true;
-                })
-            ;
-
-            sets.GetOrCreate("Lifetime")
-                .ConfigureBuilderOptions(options =>
-                {
-                    options.AddAttribute<SingletonAttribute>();
-                    options.AddAttribute<ScopedAttribute>();
-                    options.AddAttribute<TransientAttribute>();
-                    options.AddAttribute<InitializerAttribute>();
-
-                    options.ExcludeTypesMissingAttributes = true;
-                    options.TypeGroupName = type =>
+                    export.TypeGroupName(type =>
                             type.Has<SingletonAttribute>() ? "Singleton" :
                             type.Has<ScopedAttribute>() ? "Scoped" :
                             type.Has<TransientAttribute>() ? "Transient" :
-                            type.Name;
-                })
-            ;
+                            type.Name
+                        );
+                });
         });
     }
 }

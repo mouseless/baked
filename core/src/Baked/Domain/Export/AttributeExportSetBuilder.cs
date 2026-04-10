@@ -1,13 +1,13 @@
 ﻿using Baked.Business;
 using Baked.Domain.Model;
 
-namespace Baked.Domain.Metadata;
+namespace Baked.Domain.Export;
 
-public class MetadataSetBuilder(MetadataModelBuilderOptions _options)
+public class AttributeExportSetBuilder(AttributeExport _options)
 {
-    public MetadataSetModel Build(DomainModel domain)
+    public ExportSetModel Build(DomainModel domain)
     {
-        var types = new List<TypeMetadataModel>();
+        var types = new List<TypeExportModel>();
         foreach (var type in domain.Types)
         {
             if (!type.TryGetMetadata(out var metadata)) { continue; }
@@ -21,26 +21,26 @@ public class MetadataSetBuilder(MetadataModelBuilderOptions _options)
         return new(new(types));
     }
 
-    TypeMetadataModel? BuildMetadata(TypeModelMetadata type)
+    TypeExportModel? BuildMetadata(TypeModelMetadata type)
     {
         var attributes = BuildAttributes(type, _options.TypeAttributes);
-        if (_options.ExcludeTypesMissingAttributes && !attributes.Any()) { return default; }
+        if (!attributes.Any()) { return default; }
 
-        var typeMetadataModel = new TypeMetadataModel(((IModel)type).Id, type.Name);
+        var typeMetadataModel = new TypeExportModel(((IModel)type).Id, type.Name);
         typeMetadataModel.Attributes.AddRange(attributes);
-        typeMetadataModel.GroupName = _options.TypeGroupName(type);
+        typeMetadataModel.GroupName = _options.GetTypeGroupName(type);
 
         return type.TryGetMembers(out var members) ? BuildMembers(typeMetadataModel, members) : typeMetadataModel;
     }
 
-    TypeMetadataModel BuildMembers(TypeMetadataModel metadata, TypeModelMembers type)
+    TypeExportModel BuildMembers(TypeExportModel metadata, TypeModelMembers type)
     {
         foreach (var method in type.Methods)
         {
             var attributes = BuildAttributes(method, _options.MethodAttributes);
             if (!attributes.Any()) { continue; }
 
-            var methodMetadata = new MethodMetadataModel(method.Name, attributes)
+            var methodMetadata = new MethodExportModel(method.Name, attributes)
             {
                 Parameters = BuildParameters(method)
             };
@@ -53,31 +53,31 @@ public class MetadataSetBuilder(MetadataModelBuilderOptions _options)
             var attributes = BuildAttributes(property, _options.PropertyAttributes);
             if (!attributes.Any()) { continue; }
 
-            var propertyMetadata = new PropertyMetadataModel(property.Name, attributes);
+            var propertyMetadata = new PropertyExportModel(property.Name, attributes);
             metadata.Properties.Add(propertyMetadata);
         }
 
         return metadata;
     }
 
-    List<ParameterMetadataModel> BuildParameters(MethodModel method)
+    List<ParameterExportModel> BuildParameters(MethodModel method)
     {
-        var parameters = new List<ParameterMetadataModel>();
+        var parameters = new List<ParameterExportModel>();
         foreach (var parameter in method.DefaultOverload.Parameters)
         {
             var attributes = BuildAttributes(parameter, _options.ParameterAttributes);
             if (!attributes.Any()) { continue; }
 
-            var parameterMetadata = new ParameterMetadataModel(parameter.Name, attributes);
+            var parameterMetadata = new ParameterExportModel(parameter.Name, attributes);
             parameters.Add(parameterMetadata);
         }
 
         return parameters;
     }
 
-    List<AttributeMetadataModel> BuildAttributes(ICustomAttributesModel model, List<Type> candidates)
+    List<AttributeExportModel> BuildAttributes(ICustomAttributesModel model, List<Type> candidates)
     {
-        var result = new List<AttributeMetadataModel>();
+        var result = new List<AttributeExportModel>();
         foreach (var attributeType in candidates)
         {
             if (attributeType.AllowsMultiple() && model.TryGetAll(attributeType, out var attributes))
@@ -93,9 +93,9 @@ public class MetadataSetBuilder(MetadataModelBuilderOptions _options)
         return result;
     }
 
-    AttributeMetadataModel BuildAttribute<T>(Type type, T instance) where T : Attribute
+    AttributeExportModel BuildAttribute<T>(Type type, T instance) where T : Attribute
     {
-        var attributeMetadata = new AttributeMetadataModel(type.Name)
+        var attributeMetadata = new AttributeExportModel(type.Name)
         {
             Values = instance is IMetadataSerializer serializer ? serializer.Properties.ToDictionary(p => p.Name, p => p.Value) : new()
         };

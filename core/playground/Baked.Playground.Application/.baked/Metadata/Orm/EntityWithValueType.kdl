@@ -1,5 +1,0 @@
-EntityWithValueType @entity {
-  id {
-    @id routeName="id"
-  }
-}

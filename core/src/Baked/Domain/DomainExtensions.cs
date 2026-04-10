@@ -2,7 +2,7 @@
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
-using Baked.Domain.Metadata;
+using Baked.Domain.Export;
 using Baked.Domain.Model;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +30,7 @@ public static class DomainExtensions
         public void ConfigureDomainServiceCollection(Action<DomainServiceCollection, DomainModel> configuration) =>
             _configurator.Configure(configuration);
 
-        public void ConfigureMetadataSetConfigurationCollection(Action<MetadataSetConfigurationCollection> configuration) =>
+        public void ConfigureAttributeExportCollection(Action<AttributeExportCollection> configuration) =>
             _configurator.Configure(configuration);
 
         public void UsingDomainModel(Action<DomainModel> configuration) =>
@@ -547,76 +547,6 @@ public static class DomainExtensions
             return result is not null;
         }
 #pragma warning restore IDE0051
-    }
-
-#pragma warning disable IDE0051
-    static Dictionary<Type, AttributeUsageAttribute?> _usageCache = new();
-
-    static AttributeUsageAttribute? GetAttributeUsage<T>()
-    {
-        if (!_usageCache.TryGetValue(typeof(T), out var usage))
-        {
-            usage = (AttributeUsageAttribute?)Attribute.GetCustomAttribute(typeof(T), typeof(AttributeUsageAttribute));
-            _usageCache[typeof(T)] = usage;
-        }
-
-        return usage;
-    }
-#pragma warning restore IDE0051
-
-    extension(MetadataModelBuilderOptions options)
-    {
-        public void AddAttribute<T>() where T : Attribute
-        {
-            var usage = GetAttributeUsage<T>();
-            if (usage is null) { return; }
-
-            if (usage.ValidOn == AttributeTargets.Class)
-            {
-                options.TypeAttributes.Add(typeof(T));
-            }
-
-            if (usage.ValidOn == AttributeTargets.Method)
-            {
-                options.MethodAttributes.Add(typeof(T));
-            }
-
-            if (usage.ValidOn == AttributeTargets.Parameter)
-            {
-                options.ParameterAttributes.Add(typeof(T));
-            }
-
-            if (usage.ValidOn == AttributeTargets.Property)
-            {
-                options.PropertyAttributes.Add(typeof(T));
-            }
-        }
-
-        public void RemoveAttribute<T>() where T : Attribute
-        {
-            var usage = GetAttributeUsage<T>();
-            if (usage is null) { return; }
-
-            if (usage.ValidOn == AttributeTargets.Class)
-            {
-                options.TypeAttributes.Remove(typeof(T));
-            }
-
-            if (usage.ValidOn == AttributeTargets.Method)
-            {
-                options.MethodAttributes.Remove(typeof(T));
-            }
-
-            if (usage.ValidOn == AttributeTargets.Parameter)
-            {
-                options.ParameterAttributes.Remove(typeof(T));
-            }
-
-            if (usage.ValidOn == AttributeTargets.Property)
-            {
-                options.PropertyAttributes.Remove(typeof(T));
-            }
-        }
     }
 
 #pragma warning disable IDE0052

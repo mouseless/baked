@@ -79,7 +79,7 @@ public class ActionModelAttribute(
             new(Id),
             new(Name),
             new(Method),
-            new(RouteParts),
+            new(Name: "Route", GetRoute()),
             new(ReturnType),
             new(ReturnIsAsync),
             new(ReturnIsVoid),

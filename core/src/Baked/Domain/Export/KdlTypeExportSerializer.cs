@@ -3,13 +3,13 @@ using KdlSharp;
 using KdlSharp.Values;
 using System.Globalization;
 
-namespace Baked.Domain.Metadata;
+namespace Baked.Domain.Export;
 
-public class KdlMetadataSerializer : ITypeMetadataSerializer
+public class KdlTypeExportSerializer : ITypeExportSerializer
 {
-    public string FileType => "kdl";
+    public string FileExtension => "kdl";
 
-    public string Serialize(TypeMetadataModel model)
+    public string Serialize(TypeExportModel model)
     {
         var root = new KdlNode(model.Name);
         AddAttributeNodes(root, model.Attributes);
@@ -38,7 +38,7 @@ public class KdlMetadataSerializer : ITypeMetadataSerializer
         });
     }
 
-    void AddAttributeNodes(KdlNode root, List<AttributeMetadataModel> attributes)
+    void AddAttributeNodes(KdlNode root, List<AttributeExportModel> attributes)
     {
         foreach (var attribute in attributes)
         {
@@ -53,14 +53,7 @@ public class KdlMetadataSerializer : ITypeMetadataSerializer
                 {
                     if (value is null) { continue; }
 
-                    if (value.GetType().IsArray || value.GetType().IsAssignableTo(typeof(ICollection)))
-                    {
-                        childNode.AddProperty(GetPropertyName(key), string.Join(", ", (IEnumerable<object>)value));
-                    }
-                    else
-                    {
-                        childNode.AddProperty(GetPropertyName(key), new KdlString($"{value}"));
-                    }
+                    childNode.AddProperty(GetPropertyName(key), new KdlString($"{value}"));
                 }
 
                 root.AddChild(childNode);

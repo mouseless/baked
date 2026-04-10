@@ -1,8 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.CodeGeneration;
 using Baked.Domain.Configuration;
-using Baked.Domain.Metadata;
-
+using Baked.Domain.Export;
 using static Baked.CodeGeneration.CodeGenerationLayer;
 using static Baked.Domain.DomainLayer;
 using static Baked.Runtime.RuntimeLayer;
@@ -14,7 +13,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
     readonly DomainServiceCollection _domainServiceCollection = new();
-    readonly MetadataSetConfigurationCollection _metadataSetConfigurationCollection = new();
+    readonly AttributeExportCollection _attributeExportCollection = new();
 
     protected override PhaseContext GetContext(AddDomainTypes phase) =>
         phase.CreateContextBuilder()
@@ -40,7 +39,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 
         return phase.CreateContextBuilder()
             .Add(_domainServiceCollection, domain)
-            .Add(_metadataSetConfigurationCollection)
+            .Add(_attributeExportCollection)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
@@ -94,14 +93,14 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         var domain = Context.GetDomainModel();
         var files = Context.Get<IGeneratedFileCollection>();
 
-        foreach (var (key, set) in _metadataSetConfigurationCollection)
+        foreach (var (key, set) in _attributeExportCollection)
         {
-            var metadataModel = new MetadataSetBuilder(set.BuilderOptions).Build(domain);
-            var contentGenerator = new MetadataFileContentGenerator(new());
-            var result = contentGenerator.Generate(metadataModel);
-            foreach (var (fileName, content) in result)
+            var model = new AttributeExportSetBuilder(set).Build(domain);
+            var contentGenerator = new AttributeExportFileContentGenerator(new());
+            var contents = contentGenerator.Generate(model);
+            foreach (var (fileName, content) in contents)
             {
-                files.Add($"{fileName}", content, extension: "kdl", outdir: Path.Join("Metadata", $"{key}"));
+                files.Add($"{fileName}", content, extension: "kdl", outdir: Path.Join("Export", $"{key}"));
             }
         }
     }

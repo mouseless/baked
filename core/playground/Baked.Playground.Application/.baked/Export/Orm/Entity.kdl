@@ -1,0 +1,10 @@
+Entity @entity {
+  id {
+    @id routeName="id"
+  }
+}
+
+Entities {
+  @query locatableType="Baked.Playground.Orm.Entity"
+}
+
