@@ -1,0 +1,147 @@
+report-page-sample @transient {
+  with @initializer
+}
+
+route-parameters-sample @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+test-page @transient {
+  with @initializer
+}
+
+child @transient {
+  @locatable queryType="Baked.Playground.Orm.Children" isAsync=#false
+  with @initializer
+}
+
+entity @transient {
+  @locatable queryType="Baked.Playground.Orm.Entities" isAsync=#false
+  with @initializer
+}
+
+parent @transient {
+  @locatable queryType="Baked.Playground.Orm.Parents" isAsync=#false
+  with @initializer
+}
+
+transient @transient {
+  with @initializer
+}
+
+transient-async @transient {
+  with @initializer
+}
+
+entity-with-value-type @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.ValueType.EntityWithValueTypes" isAsync=#false
+  with @initializer
+}
+
+redirect-samples @transient {
+  with @initializer
+}
+
+rich-transient-async @transient {
+  @locatable isAsync=#true
+  with @initializer
+}
+
+rich-transient-child @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+rich-transient-no-data @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+rich-transient-parent @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+rich-transient-with-custom-id-property @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+rich-transient-with-data @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+entity-extension @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.EntityExtensions" isAsync=#false
+  with @initializer
+}
+
+rich-transient-async-extension @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientAsyncExtensions" isAsync=#false
+  with @initializer
+}
+
+rich-transient-extension @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtensions" isAsync=#false
+  with @initializer
+}
+
+entity-with-assigned-id @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAssignedIds" isAsync=#false
+  with @initializer
+}
+
+entity-with-auto-increment-id @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAutoIncrementIds" isAsync=#false
+  with @initializer
+}
+
+a-typed-entity @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+b-typed-entity @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+typed-entity @transient {
+  @locatable queryType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntities" isAsync=#false
+  with @initializer
+}
+
+clear-command @transient {
+  with @initializer
+}
+
+command @transient {
+  with @initializer
+}
+
+command-with-entity @transient {
+  with @initializer
+}
+
+command-with-rich-transient @transient {
+  with @initializer
+}
+
+not-rendered-command @transient {
+  with @initializer
+}
+
+cache-samples @transient {
+  with @initializer
+}
+
+transient-generic-1 @transient {
+  with @initializer
+}
+
+generic-class-1 @transient {
+  with @initializer
+}
+

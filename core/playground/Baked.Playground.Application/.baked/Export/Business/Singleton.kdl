@@ -1,0 +1,92 @@
+form-sample @singleton
+
+report-samples @singleton
+
+sync-over-async @singleton
+
+children @singleton
+
+entities @singleton
+
+parents @singleton
+
+seed-data @singleton
+
+localization-samples @singleton
+
+singleton @singleton
+
+transient-generic-usage @singleton
+
+exception-samples @singleton
+
+transaction-samples @singleton
+
+resource-samples @singleton
+
+time-provider-samples @singleton
+
+external-samples @singleton
+
+git-hub-client @singleton
+
+internal-samples @singleton
+
+entity-with-value-types @singleton
+
+nullable-samples @singleton
+
+route-sample @singleton
+
+entity-extensions @singleton
+
+rich-transient-async-extensions @singleton
+
+rich-transient-extensions @singleton
+
+entity-with-assigned-ids @singleton
+
+entity-with-auto-increment-ids @singleton
+
+a-typed-entities @singleton
+
+b-typed-entities @singleton
+
+typed-entities @singleton
+
+create-bulk-command @singleton
+
+documentation-samples @singleton
+
+execute-command @singleton
+
+get-command @singleton
+
+sync-bulk-command @singleton
+
+update-command @singleton
+
+class @singleton
+
+documentation-samples @singleton
+
+method-samples @singleton
+
+nested-type-in-api @singleton
+
+dependent-class @singleton
+
+override-samples @singleton
+
+class-a @singleton
+
+class-a-to-class-b @singleton
+
+class-b @singleton
+
+authorization-class-samples @singleton
+
+authorization-samples @singleton
+
+authentication-samples @singleton
+

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors Condition="'$(CopyComponentDescriptors)' != 'true'">false</CopyComponentDescriptors>
+    <CopyExportFiles Condition="'$(CopyExportFiles)' != 'true'">false</CopyExportFiles>
     <SkipGenerate Condition="'$(IsTestProject)' == 'true' And '$(SkipGenerate)' != 'false'">true</SkipGenerate>
     <SkipGenerate Condition="'$(SkipGenerate)' != 'true'">false</SkipGenerate>
   </PropertyGroup>
@@ -47,5 +48,26 @@
     </ItemGroup>
     <Copy SourceFiles="@(GeneratedFiles)" DestinationFolder="$(PublishDir)\$(ASPNETCORE_ENVIRONMENT)" SkipUnchangedFiles="true" />
   </Target>
+    
+  <Target Name="CopyExportFiles" AfterTargets="AfterBuild" Condition="$(CopyExportFiles)">
+    <PropertyGroup>
+      <ExportFilesDir>$(ProjectDir)\.baked\Export</ExportFilesDir>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(ExportFilesDir)" Condition="!Exists($(ExportFilesDir))"/>
+
+    <PropertyGroup>
+      <ExportSourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">$(OutDir)\Development\Export</ExportSourceFolder>
+      <ExportSourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'!=''">$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\Export</ExportSourceFolder>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ExportFiles Include="$(ExportSourceFolder)\**\*.kdl" />
+      <ExportDestinationFiles Include="$(ExportFilesDir)\**\*.kdl" />
+    </ItemGroup>
+
+    <Delete Files="@(ExportDestinationFiles)" Condition="!Exists('%(FullPath.Replace($(ExportFilesDir), $(ExportSourceFolder)))')" />
+    <Copy SourceFiles="@(ExportFiles)" DestinationFolder="$(ExportFilesDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="Exists($(ExportFilesDir))" />
+  </Target>  
 
 </Project>

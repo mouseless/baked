@@ -1,0 +1,12 @@
+parent @entity {
+  id {
+    @id routeName="id"
+  }
+  name @label
+  surname @label
+}
+
+parents {
+  @query locatableType="Baked.Playground.Orm.Parent"
+}
+
