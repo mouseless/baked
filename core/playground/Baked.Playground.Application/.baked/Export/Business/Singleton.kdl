@@ -1,91 +1,92 @@
-FormSample @singleton
-ReportSamples @singleton
+form-sample @singleton
 
-SyncOverAsync @singleton
+report-samples @singleton
 
-Children @singleton
+sync-over-async @singleton
 
-Entities @singleton
+children @singleton
 
-Parents @singleton
+entities @singleton
 
-SeedData @singleton
+parents @singleton
 
-LocalizationSamples @singleton
+seed-data @singleton
 
-Singleton @singleton
+localization-samples @singleton
 
-TransientGenericUsage @singleton
+singleton @singleton
 
-ExceptionSamples @singleton
+transient-generic-usage @singleton
 
-TransactionSamples @singleton
+exception-samples @singleton
 
-ResourceSamples @singleton
+transaction-samples @singleton
 
-TimeProviderSamples @singleton
+resource-samples @singleton
 
-ExternalSamples @singleton
+time-provider-samples @singleton
 
-GitHubClient @singleton
+external-samples @singleton
 
-InternalSamples @singleton
+git-hub-client @singleton
 
-EntityWithValueTypes @singleton
+internal-samples @singleton
 
-NullableSamples @singleton
+entity-with-value-types @singleton
 
-RouteSample @singleton
+nullable-samples @singleton
 
-EntityExtensions @singleton
+route-sample @singleton
 
-RichTransientAsyncExtensions @singleton
+entity-extensions @singleton
 
-RichTransientExtensions @singleton
+rich-transient-async-extensions @singleton
 
-EntityWithAssignedIds @singleton
+rich-transient-extensions @singleton
 
-EntityWithAutoIncrementIds @singleton
+entity-with-assigned-ids @singleton
 
-ATypedEntities @singleton
+entity-with-auto-increment-ids @singleton
 
-BTypedEntities @singleton
+a-typed-entities @singleton
 
-TypedEntities @singleton
+b-typed-entities @singleton
 
-CreateBulkCommand @singleton
+typed-entities @singleton
 
-DocumentationSamples @singleton
+create-bulk-command @singleton
 
-ExecuteCommand @singleton
+documentation-samples @singleton
 
-GetCommand @singleton
+execute-command @singleton
 
-SyncBulkCommand @singleton
+get-command @singleton
 
-UpdateCommand @singleton
+sync-bulk-command @singleton
 
-Class @singleton
+update-command @singleton
 
-DocumentationSamples @singleton
+class @singleton
 
-MethodSamples @singleton
+documentation-samples @singleton
 
-NestedTypeInApi @singleton
+method-samples @singleton
 
-DependentClass @singleton
+nested-type-in-api @singleton
 
-OverrideSamples @singleton
+dependent-class @singleton
 
-ClassA @singleton
+override-samples @singleton
 
-ClassAToClassB @singleton
+class-a @singleton
 
-ClassB @singleton
+class-a-to-class-b @singleton
 
-AuthorizationClassSamples @singleton
+class-b @singleton
 
-AuthorizationSamples @singleton
+authorization-class-samples @singleton
 
-AuthenticationSamples @singleton
+authorization-samples @singleton
+
+authentication-samples @singleton
 

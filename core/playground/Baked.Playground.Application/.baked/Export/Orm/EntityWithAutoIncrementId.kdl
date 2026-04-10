@@ -1,9 +1,10 @@
-EntityWithAutoIncrementId @entity {
+entity-with-auto-increment-id @entity {
   primaryKey {
     @id routeName="primaryKey" mapping="MappingOptions { UserType = Baked.CodingStyle.Id.IdIntUserType, IdentifierGenerator = NHibernate.Id.IdentityGenerator }"
   }
 }
-EntityWithAutoIncrementIds {
+
+entity-with-auto-increment-ids {
   @query locatableType="Baked.Playground.CodingStyle.Id.EntityWithAutoIncrementId"
 }
 

@@ -1,9 +1,10 @@
-EntityWithAssignedId @entity {
+entity-with-assigned-id @entity {
   id {
     @id routeName="id" mapping="MappingOptions { UserType = Baked.CodingStyle.Id.IdStringUserType, IdentifierGenerator = NHibernate.Id.Assigned }"
   }
 }
-EntityWithAssignedIds {
+
+entity-with-assigned-ids {
   @query locatableType="Baked.Playground.CodingStyle.Id.EntityWithAssignedId"
 }
 

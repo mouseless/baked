@@ -1,9 +1,10 @@
-TypedEntity @entity {
+typed-entity @entity {
   id {
     @id routeName="id"
   }
 }
-TypedEntities {
+
+typed-entities {
   @query locatableType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntity"
 }
 

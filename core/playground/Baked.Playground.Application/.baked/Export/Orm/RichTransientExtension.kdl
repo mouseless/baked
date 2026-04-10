@@ -1,3 +1,4 @@
-RichTransientExtensions {
+rich-transient-extensions {
   @query locatableType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtension"
 }
+

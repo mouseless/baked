@@ -1,10 +1,11 @@
-Child @entity {
+child @entity {
   id {
     @id routeName="id"
   }
   name @label
 }
-Children {
+
+children {
   @query locatableType="Baked.Playground.Orm.Child"
 }
 

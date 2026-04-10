@@ -9,16 +9,21 @@ public class AttributeExportFileContentGenerator(AttributeExportFileContentGener
         var contents = new Dictionary<string, StringBuilder>();
         foreach (var type in model.Types)
         {
-            var content = _options.Serializer.Serialize(type);
-            var fileName = _options.ContentGroupName(type);
-            if (!contents.TryGetValue(fileName, out var value))
+            var content = _options.Serializer.Serialize(type).Trim();
+            if (content.Length == 0)
             {
-                contents[fileName] = new(content);
+                content = $"// No exportable data exists for '{type.Id}'";
+            }
 
-                continue;
+            var fileName = _options.ContentGroupName(type);
+            if (!contents.TryGetValue(fileName, out StringBuilder? value))
+            {
+                value = new();
+                contents[fileName] = value;
             }
 
             value.AppendLine(content);
+            value.AppendLine();
         }
 
         return contents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());

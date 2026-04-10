@@ -11,7 +11,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
 
     public string Serialize(TypeExportModel model)
     {
-        var root = new KdlNode(model.Name);
+        var root = new KdlNode(GetTypeName(model.Name));
         AddAttributeNodes(root, model.Attributes);
 
         foreach (var property in model.Properties)
@@ -24,18 +24,23 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
 
         foreach (var method in model.Methods)
         {
-            var methodNode = new KdlNode(GetPropertyName(method.Name));
+            var methodNode = new KdlNode(GetMethodName(method.Name));
             AddAttributeNodes(methodNode, method.Attributes);
 
             foreach (var parameter in method.Parameters)
             {
-                var parameterNode = new KdlNode(GetPropertyName(parameter.Name));
+                var parameterNode = new KdlNode(GetParameterName(parameter.Name));
                 AddAttributeNodes(parameterNode, parameter.Attributes);
 
                 methodNode.AddChild(parameterNode);
             }
 
             root.AddChild(methodNode);
+        }
+
+        if (!root.Children.Any() && !root.Arguments.Any())
+        {
+            return string.Empty;
         }
 
         return root.ToKdlString(new()
@@ -61,7 +66,10 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
                 {
                     if (value is null) { continue; }
 
-                    childNode.AddProperty(GetPropertyName(key), GetValue(value));
+                    var kdlValue = GetValue(value);
+                    if (kdlValue is KdlNull) { continue; }
+
+                    childNode.AddProperty(GetPropertyName(key), kdlValue);
                 }
 
                 root.AddChild(childNode);
@@ -69,8 +77,17 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
         }
     }
 
-    string GetAttributeName(string type) =>
-        $"@{type.Replace("Attribute", string.Empty).Titleize().Transform(new CultureInfo("en-US"), To.LowerCase).Kebaberize()}";
+    string GetTypeName(string type) =>
+        $"{type.Titleize().Transform(new CultureInfo("en-US"), To.LowerCase).Kebaberize()}";
+
+    string GetAttributeName(string attribute) =>
+        $"@{attribute.Replace("Attribute", string.Empty).Titleize().Transform(new CultureInfo("en-US"), To.LowerCase).Kebaberize()}";
+
+    string GetMethodName(string name) =>
+        $"{name.Titleize().Transform(new CultureInfo("en-US"), To.LowerCase).Kebaberize()}";
+
+    string GetParameterName(string name) =>
+        $"{name[0].ToString().ToLowerInvariant()}{name[1..]}";
 
     string GetPropertyName(string name) =>
         $"{name[0].ToString().ToLowerInvariant()}{name[1..]}";
@@ -78,6 +95,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
     KdlValue GetValue(object value) =>
         value.GetType() switch
         {
+            var type when type.IsAssignableTo(typeof(IDictionary)) => KdlNull.Instance,
             var x when x == typeof(int) => new KdlNumber(Convert.ToDecimal(value), KdlNumberFormat.Decimal),
             var x when x == typeof(decimal) => new KdlNumber((decimal)value, KdlNumberFormat.Decimal),
             var x when x == typeof(bool) => (bool)value ? KdlBoolean.True : KdlBoolean.False,

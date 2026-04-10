@@ -1,146 +1,147 @@
-ReportPageSample @transient {
+report-page-sample @transient {
   with @initializer
 }
-RouteParametersSample @transient {
+
+route-parameters-sample @transient {
   @locatable isAsync=#false
   with @initializer
 }
 
-TestPage @transient {
+test-page @transient {
   with @initializer
 }
 
-Child @transient {
+child @transient {
   @locatable queryType="Baked.Playground.Orm.Children" isAsync=#false
   with @initializer
 }
 
-Entity @transient {
+entity @transient {
   @locatable queryType="Baked.Playground.Orm.Entities" isAsync=#false
   with @initializer
 }
 
-Parent @transient {
+parent @transient {
   @locatable queryType="Baked.Playground.Orm.Parents" isAsync=#false
   with @initializer
 }
 
-Transient @transient {
+transient @transient {
   with @initializer
 }
 
-TransientAsync @transient {
+transient-async @transient {
   with @initializer
 }
 
-EntityWithValueType @transient {
+entity-with-value-type @transient {
   @locatable queryType="Baked.Playground.CodingStyle.ValueType.EntityWithValueTypes" isAsync=#false
   with @initializer
 }
 
-RedirectSamples @transient {
+redirect-samples @transient {
   with @initializer
 }
 
-RichTransientAsync @transient {
+rich-transient-async @transient {
   @locatable isAsync=#true
   with @initializer
 }
 
-RichTransientChild @transient {
+rich-transient-child @transient {
   @locatable isAsync=#false
   with @initializer
 }
 
-RichTransientNoData @transient {
+rich-transient-no-data @transient {
   @locatable isAsync=#false
   with @initializer
 }
 
-RichTransientParent @transient {
+rich-transient-parent @transient {
   @locatable isAsync=#false
   with @initializer
 }
 
-RichTransientWithCustomIdProperty @transient {
+rich-transient-with-custom-id-property @transient {
   @locatable isAsync=#false
   with @initializer
 }
 
-RichTransientWithData @transient {
+rich-transient-with-data @transient {
   @locatable isAsync=#false
   with @initializer
 }
 
-EntityExtension @transient {
+entity-extension @transient {
   @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.EntityExtensions" isAsync=#false
   with @initializer
 }
 
-RichTransientAsyncExtension @transient {
+rich-transient-async-extension @transient {
   @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientAsyncExtensions" isAsync=#false
   with @initializer
 }
 
-RichTransientExtension @transient {
+rich-transient-extension @transient {
   @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtensions" isAsync=#false
   with @initializer
 }
 
-EntityWithAssignedId @transient {
+entity-with-assigned-id @transient {
   @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAssignedIds" isAsync=#false
   with @initializer
 }
 
-EntityWithAutoIncrementId @transient {
+entity-with-auto-increment-id @transient {
   @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAutoIncrementIds" isAsync=#false
   with @initializer
 }
 
-ATypedEntity @transient {
+a-typed-entity @transient {
   @locatable isAsync=#false
   with @initializer
 }
 
-BTypedEntity @transient {
+b-typed-entity @transient {
   @locatable isAsync=#false
   with @initializer
 }
 
-TypedEntity @transient {
+typed-entity @transient {
   @locatable queryType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntities" isAsync=#false
   with @initializer
 }
 
-ClearCommand @transient {
+clear-command @transient {
   with @initializer
 }
 
-Command @transient {
+command @transient {
   with @initializer
 }
 
-CommandWithEntity @transient {
+command-with-entity @transient {
   with @initializer
 }
 
-CommandWithRichTransient @transient {
+command-with-rich-transient @transient {
   with @initializer
 }
 
-NotRenderedCommand @transient {
+not-rendered-command @transient {
   with @initializer
 }
 
-CacheSamples @transient {
+cache-samples @transient {
   with @initializer
 }
 
-TransientGeneric`1 @transient {
+transient-generic-1 @transient {
   with @initializer
 }
 
-GenericClass`1 @transient {
+generic-class-1 @transient {
   with @initializer
 }
 
