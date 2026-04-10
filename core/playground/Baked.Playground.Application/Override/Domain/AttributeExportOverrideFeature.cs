@@ -6,7 +6,7 @@ using Baked.Orm;
 namespace Baked.Playground.Override.Domain;
 
 // Note this is for demo purposes
-public class MetadataSetOverrideFeature : IFeature
+public class AttributeExportOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -14,15 +14,12 @@ public class MetadataSetOverrideFeature : IFeature
         {
             configurator.Domain.UsingDomainModel(domain =>
             {
-                //exports.Orm(export =>
                 exports.Build("Orm",
                     export =>
                     {
                         export.Include<EntityAttribute>();
                         export.Include<IdAttribute>();
                         export.Include<LabelAttribute>();
-                        // buraya filtre ekle
-                        // export.Include<QueryAttribute>(p => p.Value.Get is List);
                         export.Include<QueryAttribute>();
 
                         export.TypeGroupName(type =>
@@ -47,7 +44,8 @@ public class MetadataSetOverrideFeature : IFeature
                             type.Has<TransientAttribute>() ? "Transient" :
                             type.Name
                         );
-                });
+                }
+            );
         });
     }
 }

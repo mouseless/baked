@@ -1,136 +1,91 @@
 FormSample @singleton
-
 ReportSamples @singleton
-
 
 SyncOverAsync @singleton
 
-
 Children @singleton
-
 
 Entities @singleton
 
-
 Parents @singleton
-
 
 SeedData @singleton
 
-
 LocalizationSamples @singleton
-
 
 Singleton @singleton
 
-
 TransientGenericUsage @singleton
-
 
 ExceptionSamples @singleton
 
-
 TransactionSamples @singleton
-
 
 ResourceSamples @singleton
 
-
 TimeProviderSamples @singleton
-
 
 ExternalSamples @singleton
 
-
 GitHubClient @singleton
-
 
 InternalSamples @singleton
 
-
 EntityWithValueTypes @singleton
-
 
 NullableSamples @singleton
 
-
 RouteSample @singleton
-
 
 EntityExtensions @singleton
 
-
 RichTransientAsyncExtensions @singleton
-
 
 RichTransientExtensions @singleton
 
-
 EntityWithAssignedIds @singleton
-
 
 EntityWithAutoIncrementIds @singleton
 
-
 ATypedEntities @singleton
-
 
 BTypedEntities @singleton
 
-
 TypedEntities @singleton
-
 
 CreateBulkCommand @singleton
 
-
 DocumentationSamples @singleton
-
 
 ExecuteCommand @singleton
 
-
 GetCommand @singleton
-
 
 SyncBulkCommand @singleton
 
-
 UpdateCommand @singleton
-
 
 Class @singleton
 
-
 DocumentationSamples @singleton
-
 
 MethodSamples @singleton
 
-
 NestedTypeInApi @singleton
-
 
 DependentClass @singleton
 
-
 OverrideSamples @singleton
-
 
 ClassA @singleton
 
-
 ClassAToClassB @singleton
-
 
 ClassB @singleton
 
-
 AuthorizationClassSamples @singleton
 
-
 AuthorizationSamples @singleton
-
 
 AuthenticationSamples @singleton
 

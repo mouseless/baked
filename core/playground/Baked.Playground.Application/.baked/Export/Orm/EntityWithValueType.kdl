@@ -3,7 +3,6 @@ EntityWithValueType @entity {
     @id routeName="id"
   }
 }
-
 EntityWithValueTypes {
   @query locatableType="Baked.Playground.CodingStyle.ValueType.EntityWithValueType"
 }

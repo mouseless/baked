@@ -18,7 +18,7 @@ public class AttributeExportFileContentGenerator(AttributeExportFileContentGener
                 continue;
             }
 
-            value.AppendLine().AppendLine(content);
+            value.AppendLine(content);
         }
 
         return contents.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());

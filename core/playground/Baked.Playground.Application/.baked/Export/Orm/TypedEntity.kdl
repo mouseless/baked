@@ -3,7 +3,6 @@ TypedEntity @entity {
     @id routeName="id"
   }
 }
-
 TypedEntities {
   @query locatableType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntity"
 }

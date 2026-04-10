@@ -5,7 +5,6 @@ Parent @entity {
   name @label
   surname @label
 }
-
 Parents {
   @query locatableType="Baked.Playground.Orm.Parent"
 }

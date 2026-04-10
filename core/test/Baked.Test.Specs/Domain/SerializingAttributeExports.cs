@@ -102,7 +102,9 @@ public class SerializingAttributeExports : TestSpec
           @locatable isAsync=#false
 
           with @initializer {
-            @action-model method="Post" routeParts="System.String[]"
+            @action-model method="Post" routeParts="System.String[]" {
+              id @from="Route"
+            }
           }
         }
         """;
@@ -122,7 +124,19 @@ public class SerializingAttributeExports : TestSpec
                         ("Method", "Post"),
                         ("RouteParts", new[] { "sample-types", "id" }),
                     ]),
-                ]),
+                ])
+                {
+                    Parameters =
+                    [
+                        new("Id",
+                        [
+                            new(nameof(ParameterModelAttribute),
+                            [
+                                ("From", ParameterModelFrom.Route)
+                            ])
+                        ])
+                    ]
+                },
             ]
         );
         var metadataSerializer = new KdlTypeExportSerializer();

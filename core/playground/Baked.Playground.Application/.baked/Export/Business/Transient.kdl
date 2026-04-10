@@ -1,175 +1,144 @@
 ReportPageSample @transient {
   with @initializer
 }
-
 RouteParametersSample @transient {
-  @locatable isAsync="False"
+  @locatable isAsync=#false
   with @initializer
 }
-
 
 TestPage @transient {
   with @initializer
 }
 
-
 Child @transient {
-  @locatable queryType="Baked.Playground.Orm.Children" isAsync="False"
+  @locatable queryType="Baked.Playground.Orm.Children" isAsync=#false
   with @initializer
 }
-
 
 Entity @transient {
-  @locatable queryType="Baked.Playground.Orm.Entities" isAsync="False"
+  @locatable queryType="Baked.Playground.Orm.Entities" isAsync=#false
   with @initializer
 }
-
 
 Parent @transient {
-  @locatable queryType="Baked.Playground.Orm.Parents" isAsync="False"
+  @locatable queryType="Baked.Playground.Orm.Parents" isAsync=#false
   with @initializer
 }
-
 
 Transient @transient {
   with @initializer
 }
 
-
 TransientAsync @transient {
   with @initializer
 }
 
-
 EntityWithValueType @transient {
-  @locatable queryType="Baked.Playground.CodingStyle.ValueType.EntityWithValueTypes" isAsync="False"
+  @locatable queryType="Baked.Playground.CodingStyle.ValueType.EntityWithValueTypes" isAsync=#false
   with @initializer
 }
-
 
 RedirectSamples @transient {
   with @initializer
 }
 
-
 RichTransientAsync @transient {
-  @locatable isAsync="True"
+  @locatable isAsync=#true
   with @initializer
 }
-
 
 RichTransientChild @transient {
-  @locatable isAsync="False"
+  @locatable isAsync=#false
   with @initializer
 }
-
 
 RichTransientNoData @transient {
-  @locatable isAsync="False"
+  @locatable isAsync=#false
   with @initializer
 }
-
 
 RichTransientParent @transient {
-  @locatable isAsync="False"
+  @locatable isAsync=#false
   with @initializer
 }
-
 
 RichTransientWithCustomIdProperty @transient {
-  @locatable isAsync="False"
+  @locatable isAsync=#false
   with @initializer
 }
-
 
 RichTransientWithData @transient {
-  @locatable isAsync="False"
+  @locatable isAsync=#false
   with @initializer
 }
-
 
 EntityExtension @transient {
-  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.EntityExtensions" isAsync="False"
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.EntityExtensions" isAsync=#false
   with @initializer
 }
-
 
 RichTransientAsyncExtension @transient {
-  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientAsyncExtensions" isAsync="False"
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientAsyncExtensions" isAsync=#false
   with @initializer
 }
-
 
 RichTransientExtension @transient {
-  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtensions" isAsync="False"
+  @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtensions" isAsync=#false
   with @initializer
 }
-
 
 EntityWithAssignedId @transient {
-  @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAssignedIds" isAsync="False"
+  @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAssignedIds" isAsync=#false
   with @initializer
 }
-
 
 EntityWithAutoIncrementId @transient {
-  @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAutoIncrementIds" isAsync="False"
+  @locatable queryType="Baked.Playground.CodingStyle.Id.EntityWithAutoIncrementIds" isAsync=#false
   with @initializer
 }
-
 
 ATypedEntity @transient {
-  @locatable isAsync="False"
+  @locatable isAsync=#false
   with @initializer
 }
-
 
 BTypedEntity @transient {
-  @locatable isAsync="False"
+  @locatable isAsync=#false
   with @initializer
 }
-
 
 TypedEntity @transient {
-  @locatable queryType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntities" isAsync="False"
+  @locatable queryType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntities" isAsync=#false
   with @initializer
 }
-
 
 ClearCommand @transient {
   with @initializer
 }
 
-
 Command @transient {
   with @initializer
 }
-
 
 CommandWithEntity @transient {
   with @initializer
 }
 
-
 CommandWithRichTransient @transient {
   with @initializer
 }
-
 
 NotRenderedCommand @transient {
   with @initializer
 }
 
-
 CacheSamples @transient {
   with @initializer
 }
 
-
 TransientGeneric`1 @transient {
   with @initializer
 }
-
 
 GenericClass`1 @transient {
   with @initializer

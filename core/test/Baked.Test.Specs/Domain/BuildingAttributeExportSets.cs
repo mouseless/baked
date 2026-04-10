@@ -2,6 +2,7 @@
 using Baked.Domain.Export;
 using Baked.Lifetime;
 using Baked.Orm;
+using Baked.Playground.Business;
 using Baked.Playground.Orm;
 using Baked.RestApi.Model;
 using Baked.Theme;
@@ -18,36 +19,29 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<EntityAttribute>();
-
-        attributeExport.Name.ShouldBe("Test");
-        attributeExport.TypeAttributes.ShouldContain(typeof(EntityAttribute));
-        attributeExport.MethodAttributes.ShouldNotContain(typeof(EntityAttribute));
-        attributeExport.ParameterAttributes.ShouldNotContain(typeof(EntityAttribute));
-        attributeExport.PropertyAttributes.ShouldNotContain(typeof(EntityAttribute));
-    }
-
-    [Test]
-    public void Attribute_usage_requirement_can_be_ignored()
-    {
-        var attributeExport = new AttributeExport("Test");
-        attributeExport.Include<EntityAttribute>(requireUsage: false);
-
-        attributeExport.TypeAttributes.ShouldContain(typeof(EntityAttribute));
-        attributeExport.MethodAttributes.ShouldContain(typeof(EntityAttribute));
-        attributeExport.ParameterAttributes.ShouldContain(typeof(EntityAttribute));
-        attributeExport.PropertyAttributes.ShouldContain(typeof(EntityAttribute));
-    }
-
-    [Test]
-    public void Attribute_is_not_added_when_usage_not_specified()
-    {
-        var attributeExport = new AttributeExport("Test");
         attributeExport.Include<ComponentDescriptorBuilderAttribute<Text>>();
 
-        attributeExport.TypeAttributes.ShouldNotContain(typeof(ComponentDescriptorBuilderAttribute<Text>));
-        attributeExport.MethodAttributes.ShouldNotContain(typeof(ComponentDescriptorBuilderAttribute<Text>));
-        attributeExport.ParameterAttributes.ShouldNotContain(typeof(ComponentDescriptorBuilderAttribute<Text>));
-        attributeExport.PropertyAttributes.ShouldNotContain(typeof(ComponentDescriptorBuilderAttribute<Text>));
+        attributeExport.Name.ShouldBe("Test");
+        attributeExport.TypeFilter.ShouldContain<EntityAttribute>();
+        attributeExport.TypeFilter.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.MethodFilters.ShouldNotContain<EntityAttribute>();
+        attributeExport.MethodFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.ParameterFilters.ShouldNotContain<EntityAttribute>();
+        attributeExport.ParameterFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.PropertyFilters.ShouldNotContain<EntityAttribute>();
+        attributeExport.PropertyFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+    }
+
+    [Test]
+    public void Adds_attribute_to_all_filters_when_usage_is_null()
+    {
+        var attributeExport = new AttributeExport("Test");
+        attributeExport.Include<CustomAttribute>();
+
+        attributeExport.TypeFilter.ShouldContain<CustomAttribute>();
+        attributeExport.MethodFilters.ShouldContain<CustomAttribute>();
+        attributeExport.ParameterFilters.ShouldContain<CustomAttribute>();
+        attributeExport.PropertyFilters.ShouldContain<CustomAttribute>();
     }
 
     [Test]
@@ -82,6 +76,22 @@ public class BuildingAttributeExportSets : TestSpec
             a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.ClassName) && $"{v.Value}" == "Playground_Orm_Parent") &&
             a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.GroupName) && $"{v.Value}" == "Parents")
         );
+    }
+
+    [Test]
+    public void Attribute_values_can_be_filtered()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var attributeExport = new AttributeExport("Test");
+        attributeExport.Include<ControllerModelAttribute>(propertyFilter: p => p.Name == nameof(ControllerModelAttribute.Id));
+        var builder = new AttributeExportSetBuilder(attributeExport);
+
+        var model = builder.Build(domain);
+
+        var typeExport = model.Types[typeof(Parent)];
+        var attribute = typeExport.Attributes.First();
+        attribute.Values.Count.ShouldBe(1);
+        attribute.Values.First().Key.ShouldBe(nameof(ControllerModelAttribute.Id));
     }
 
     [Test]

@@ -1,4 +1,5 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.Business;
+using Baked.Domain.Model;
 
 namespace Baked.Domain.Export;
 
@@ -6,62 +7,73 @@ public record AttributeExport(string Name)
 {
     Func<TypeModelMetadata, string> _typeGroupName = type => type.Name;
 
-    public List<Type> TypeAttributes { get; set; } = [];
-    public List<Type> MethodAttributes { get; set; } = [];
-    public List<Type> ParameterAttributes { get; set; } = [];
-    public List<Type> PropertyAttributes { get; set; } = [];
+    public List<AttributeFilter> TypeFilter { get; set; } = [];
+    public List<AttributeFilter> MethodFilters { get; set; } = [];
+    public List<AttributeFilter> ParameterFilters { get; set; } = [];
+    public List<AttributeFilter> PropertyFilters { get; set; } = [];
 
     public void Include<T>(
-        bool requireUsage = true
+        Func<MetadataProperty, bool>? propertyFilter = default
     ) where T : Attribute
     {
         var usage = GetUsage<T>();
-        if (usage is null) { return; }
+        var filter = AttributeFilter.From<T>(propertyFilter);
 
-        if (!requireUsage || usage.ValidOn == AttributeTargets.Class)
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Class))
         {
-            TypeAttributes.Add(typeof(T));
+            TypeFilter.Add(filter);
         }
 
-        if (!requireUsage || usage.ValidOn == AttributeTargets.Method)
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
         {
-            MethodAttributes.Add(typeof(T));
+            MethodFilters.Add(filter);
         }
 
-        if (!requireUsage || usage.ValidOn == AttributeTargets.Parameter)
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
         {
-            ParameterAttributes.Add(typeof(T));
+            ParameterFilters.Add(filter);
         }
 
-        if (!requireUsage || usage.ValidOn == AttributeTargets.Property)
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
         {
-            PropertyAttributes.Add(typeof(T));
+            PropertyFilters.Add(filter);
         }
     }
 
     public void Exclude<T>() where T : Attribute
     {
         var usage = GetUsage<T>();
-        if (usage is null) { return; }
 
-        if (usage.ValidOn == AttributeTargets.Class)
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Class))
         {
-            TypeAttributes.Remove(typeof(T));
+            var item = TypeFilter.FirstOrDefault(f => f.Type == typeof(T));
+            if (item is null) { return; }
+
+            TypeFilter.Remove(item);
         }
 
-        if (usage.ValidOn == AttributeTargets.Method)
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
         {
-            MethodAttributes.Remove(typeof(T));
+            var item = MethodFilters.FirstOrDefault(f => f.Type == typeof(T));
+            if (item is null) { return; }
+
+            MethodFilters.Remove(item);
         }
 
-        if (usage.ValidOn == AttributeTargets.Parameter)
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
         {
-            ParameterAttributes.Remove(typeof(T));
+            var item = ParameterFilters.FirstOrDefault(f => f.Type == typeof(T));
+            if (item is null) { return; }
+
+            ParameterFilters.Remove(item);
         }
 
-        if (usage.ValidOn == AttributeTargets.Property)
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
         {
-            PropertyAttributes.Remove(typeof(T));
+            var item = PropertyFilters.FirstOrDefault(f => f.Type == typeof(T));
+            if (item is null) { return; }
+
+            PropertyFilters.Remove(item);
         }
     }
 
@@ -73,4 +85,20 @@ public record AttributeExport(string Name)
 
     AttributeUsageAttribute? GetUsage<T>() =>
         (AttributeUsageAttribute?)Attribute.GetCustomAttribute(typeof(T), typeof(AttributeUsageAttribute));
+
+    public record AttributeFilter
+    {
+        public static AttributeFilter From<T>(
+            Func<MetadataProperty, bool>? propertyFilter = default
+        ) where T : Attribute =>
+            new(typeof(T)) { PropertyFilter = propertyFilter };
+
+        public Type Type { get; }
+        public Func<MetadataProperty, bool>? PropertyFilter { get; set; }
+
+        AttributeFilter(Type type)
+        {
+            Type = type;
+        }
+    }
 }

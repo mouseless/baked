@@ -1,5 +1,6 @@
 ﻿using Baked.Business;
 using Baked.Domain.Model;
+using static Baked.Domain.Export.AttributeExport;
 
 namespace Baked.Domain.Export;
 
@@ -23,7 +24,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
 
     TypeExportModel? BuildMetadata(TypeModelMetadata type)
     {
-        var attributes = BuildAttributes(type, _options.TypeAttributes);
+        var attributes = BuildAttributes(type, _options.TypeFilter);
         if (!attributes.Any()) { return default; }
 
         var typeMetadataModel = new TypeExportModel(((IModel)type).Id, type.Name);
@@ -37,7 +38,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
     {
         foreach (var method in type.Methods)
         {
-            var attributes = BuildAttributes(method, _options.MethodAttributes);
+            var attributes = BuildAttributes(method, _options.MethodFilters);
             if (!attributes.Any()) { continue; }
 
             var methodMetadata = new MethodExportModel(method.Name, attributes)
@@ -50,7 +51,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
 
         foreach (var property in type.Properties)
         {
-            var attributes = BuildAttributes(property, _options.PropertyAttributes);
+            var attributes = BuildAttributes(property, _options.PropertyFilters);
             if (!attributes.Any()) { continue; }
 
             var propertyMetadata = new PropertyExportModel(property.Name, attributes);
@@ -65,7 +66,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
         var parameters = new List<ParameterExportModel>();
         foreach (var parameter in method.DefaultOverload.Parameters)
         {
-            var attributes = BuildAttributes(parameter, _options.ParameterAttributes);
+            var attributes = BuildAttributes(parameter, _options.ParameterFilters);
             if (!attributes.Any()) { continue; }
 
             var parameterMetadata = new ParameterExportModel(parameter.Name, attributes);
@@ -75,29 +76,31 @@ public class AttributeExportSetBuilder(AttributeExport _options)
         return parameters;
     }
 
-    List<AttributeExportModel> BuildAttributes(ICustomAttributesModel model, List<Type> candidates)
+    List<AttributeExportModel> BuildAttributes(ICustomAttributesModel model, List<AttributeFilter> filters)
     {
         var result = new List<AttributeExportModel>();
-        foreach (var attributeType in candidates)
+        foreach (var filter in filters)
         {
-            if (attributeType.AllowsMultiple() && model.TryGetAll(attributeType, out var attributes))
+            if (filter.Type.AllowsMultiple() && model.TryGetAll(filter.Type, out var attributes))
             {
-                result.AddRange([.. attributes.Select(a => BuildAttribute(attributeType, a))]);
+                result.AddRange([.. attributes.Select(a => BuildAttribute(filter.Type, a, filter))]);
             }
-            else if (model.TryGet(attributeType, out var attribute))
+            else if (model.TryGet(filter.Type, out var attribute))
             {
-                result.Add(BuildAttribute(attributeType, attribute));
+                result.Add(BuildAttribute(filter.Type, attribute, filter));
             }
         }
 
         return result;
     }
 
-    AttributeExportModel BuildAttribute<T>(Type type, T instance) where T : Attribute
+    AttributeExportModel BuildAttribute<T>(Type type, T instance, AttributeFilter filter) where T : Attribute
     {
         var attributeMetadata = new AttributeExportModel(type.Name)
         {
-            Values = instance is IMetadataSerializer serializer ? serializer.Properties.ToDictionary(p => p.Name, p => p.Value) : new()
+            Values = instance is IMetadataSerializer serializer ?
+                serializer.Properties.Where(p => filter.PropertyFilter is null || filter.PropertyFilter.Invoke(p)).ToDictionary(p => p.Name, p => p.Value) :
+                new()
         };
 
         return attributeMetadata;

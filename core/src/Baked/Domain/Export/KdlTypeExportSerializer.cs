@@ -16,18 +16,26 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
 
         foreach (var property in model.Properties)
         {
-            var childNode = new KdlNode(GetPropertyName(property.Name));
-            AddAttributeNodes(childNode, property.Attributes);
+            var propertyNode = new KdlNode(GetPropertyName(property.Name));
+            AddAttributeNodes(propertyNode, property.Attributes);
 
-            root.AddChild(childNode);
+            root.AddChild(propertyNode);
         }
 
         foreach (var method in model.Methods)
         {
-            var childNode = new KdlNode(GetPropertyName(method.Name));
-            AddAttributeNodes(childNode, method.Attributes);
+            var methodNode = new KdlNode(GetPropertyName(method.Name));
+            AddAttributeNodes(methodNode, method.Attributes);
 
-            root.AddChild(childNode);
+            foreach (var parameter in method.Parameters)
+            {
+                var parameterNode = new KdlNode(GetPropertyName(parameter.Name));
+                AddAttributeNodes(parameterNode, parameter.Attributes);
+
+                methodNode.AddChild(parameterNode);
+            }
+
+            root.AddChild(methodNode);
         }
 
         return root.ToKdlString(new()
@@ -53,7 +61,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
                 {
                     if (value is null) { continue; }
 
-                    childNode.AddProperty(GetPropertyName(key), new KdlString($"{value}"));
+                    childNode.AddProperty(GetPropertyName(key), GetValue(value));
                 }
 
                 root.AddChild(childNode);
@@ -66,4 +74,13 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
 
     string GetPropertyName(string name) =>
         $"{name[0].ToString().ToLowerInvariant()}{name[1..]}";
+
+    KdlValue GetValue(object value) =>
+        value.GetType() switch
+        {
+            var x when x == typeof(int) => new KdlNumber(Convert.ToDecimal(value), KdlNumberFormat.Decimal),
+            var x when x == typeof(decimal) => new KdlNumber((decimal)value, KdlNumberFormat.Decimal),
+            var x when x == typeof(bool) => (bool)value ? KdlBoolean.True : KdlBoolean.False,
+            _ => new KdlString($"{value}")
+        };
 }
