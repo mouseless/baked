@@ -68,7 +68,7 @@ public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
     """;
 
     string ForeignKeyOverride(TypeModel typeModel) => $$"""
-        {{ForEach(typeModel.GetMembers().Properties.Where(p => p.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<EntityAttribute>()), p => $$"""
+        {{ForEach(typeModel.GetMembers().GetEntityReferenceProperties(), p => $$"""
             model.Override<{{typeModel.CSharpFriendlyFullName}}> (x => x.References(r => r.{{p.Name}}).Column("{{p.Name}}{{p.PropertyType.GetIdInfo().PropertyName}}"));
         """)}}
     """;
