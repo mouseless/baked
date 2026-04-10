@@ -2,9 +2,9 @@
 using Baked.Playground.Caching;
 using Baked.Ui;
 
-namespace Baked.Playground.Override.Ui;
+namespace Baked.Playground.Override.Domain;
 
-public class CacheSamplesUiOverrideFeature : IFeature
+public class CacheSamplesDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

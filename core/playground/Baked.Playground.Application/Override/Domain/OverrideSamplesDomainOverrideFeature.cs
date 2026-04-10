@@ -1,29 +1,15 @@
 using Baked.Architecture;
-using Baked.Playground.Authentication;
 using Baked.Playground.Business;
-using Baked.Playground.ExceptionHandling;
-using Baked.Playground.Orm;
 using Baked.RestApi.Model;
 
-namespace Baked.Playground.Override.RestApi;
+namespace Baked.Playground.Override.Domain;
 
-public class RoutesRestApiOverrideFeature : IFeature
+public class OverrideSamplesDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddLocateAction<Child>();
-            builder.Conventions.AddLocateAction<Entity>();
-            builder.Conventions.AddLocateAction<Parent>();
-            builder.Conventions.AddConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
-            builder.Conventions.AddConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
-            {
-                p["route"].From = ParameterModelFrom.Route;
-                p["route"].RoutePosition = 2;
-            });
-            builder.Conventions.AddConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
-
             builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
                 routeParts: ["override-samples", "override", "update-route"],
                 method: HttpMethod.Post

@@ -4,7 +4,7 @@ public class RouteSample
 {
     public Baked.Business.Id Id { get; private set; } = default!;
 
-    public RouteSample With(Baked.Business.Id id)
+    internal RouteSample With(Baked.Business.Id id)
     {
         Id = id;
 

@@ -10,9 +10,9 @@ using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
 
-namespace Baked.Playground.Override.Ui;
+namespace Baked.Playground.Override.Domain;
 
-public class FormSampleUiOverrideFeature : IFeature
+public class FormSampleDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

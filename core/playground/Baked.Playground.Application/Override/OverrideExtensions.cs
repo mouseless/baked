@@ -9,18 +9,25 @@ public static class OverrideExtensions
         public void AddOverrides()
         {
             features.Add(new Playground.Override.DataAccess.MappingsDataAccessOverrideFeature());
+            features.Add(new Playground.Override.Domain.AuthenticationSamplesDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.CacheSamplesDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.ChildDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.FormSampleDomainOverrideFeature());
             features.Add(new Playground.Override.Domain.CustomAttributeDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.DocumentationSamplesDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.EntityDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.EntityWithAssignedIdDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.EntityWithAutoIncrementIdDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.ExceptionSamplesDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.OverrideSamplesDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.ParentDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.ReportPageSampleDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.RouteSampleDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.TestPageDomainOverrideFeature());
             features.Add(new Playground.Override.RestApi.MultiDocumentRestApiOverrideFeature());
-            features.Add(new Playground.Override.RestApi.RoutesRestApiOverrideFeature());
             features.Add(new Playground.Override.RestApi.ExternalSecurityRestApiOverrideFeature());
             features.Add(new Playground.Override.Runtime.ServicesRuntimeOverrideFeature());
-            features.Add(new Playground.Override.Ui.CacheSamplesUiOverrideFeature());
-            features.Add(new Playground.Override.Ui.ChildUiOverrideFeature());
-            features.Add(new Playground.Override.Ui.FormSampleUiOverrideFeature());
-            features.Add(new Playground.Override.Ui.ParentUiOverrideFeature());
             features.Add(new Playground.Override.Ui.PluginSampleUiOverrideFeature());
-            features.Add(new Playground.Override.Ui.ReportPageSampleUiOverrideFeature());
-            features.Add(new Playground.Override.Ui.TestPageUiOverrideFeature());
         }
     }
 }
