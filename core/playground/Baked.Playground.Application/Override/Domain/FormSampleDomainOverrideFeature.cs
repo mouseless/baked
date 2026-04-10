@@ -10,9 +10,9 @@ using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
 
-namespace Baked.Playground.Override.Ui;
+namespace Baked.Playground.Override.Domain;
 
-public class FormSampleUiOverrideFeature : IFeature
+public class FormSampleDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -22,6 +22,11 @@ public class FormSampleUiOverrideFeature : IFeature
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
                 attribute: (a, c) => a.RoutePathBack = "/form-sample"
             );
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
+                component: fp => fp.Schema.Inputs.Move("name", 0)
+            );
+
             builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
                 attribute: a => a.HideInLists = true
@@ -36,7 +41,6 @@ public class FormSampleUiOverrideFeature : IFeature
                     dp.Schema.Inputs.RemoveAt(dp.Schema.Inputs.FindIndex(i => i.Name == "sort"));
                 }
             );
-
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
                 component: (dt, c, cc) =>
@@ -62,7 +66,6 @@ public class FormSampleUiOverrideFeature : IFeature
                     cd.TargetProp = "sort";
                 })
             );
-
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ServerPaginatorOptions)),

@@ -126,6 +126,18 @@
             }
           },
           {
+            "title": "Redirect",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/redirect",
+                "icon": "pi pi-microchip",
+                "title": "Redirect",
+                "description": "Provides route redirect capability to be used in a component action "
+              }
+            }
+          },
+          {
             "title": "Routing",
             "component": {
               "type": "CardLink",

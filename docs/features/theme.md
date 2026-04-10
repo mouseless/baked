@@ -89,7 +89,7 @@ experiences, see [UX Feature](ux.md)
 |            | Required and default values are taken from the attribute                                 |
 |            | `string` parameters render using `InputText`                                             |
 |            | parameters with type that has `ValueTypeAttribute` render using `InputText`              |
-|            | `int` parameters render using `InputNumber`                                              |
+|            | `int` and `long` parameters render using `InputNumber`                                   |
 | Enum       | Enum types render inline with `EnumInline`                                               |
 | Page Title | `PageTitle` is added for any type at component path `/page/*/*page/title`                |
 |            | `PageTitle` is added for any method at component path `/page/*/*/*page/title`            |

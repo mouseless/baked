@@ -9,6 +9,7 @@ using Shouldly;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Xml;
 
 namespace Baked;
@@ -169,6 +170,21 @@ public static class DomainExtensions
         }
     }
 
+    extension(ParameterModel parameter)
+    {
+        public void ShouldBeRequired()
+        {
+            parameter.IsOptional.ShouldBeFalse($"{parameter.Name} should not be optional");
+            parameter.Has<NotNullAttribute>().ShouldBeTrue($"{parameter.Name} should have `[NotNullAttribute]`");
+        }
+
+        public void ShouldNotBeRequired()
+        {
+            parameter.IsOptional.ShouldBeTrue($"{parameter.Name} should be optional");
+            parameter.Has<NotNullAttribute>().ShouldBeFalse($"{parameter.Name} should not have `[NotNullAttribute]`");
+        }
+    }
+
     extension(Attribute attribute)
     {
         public bool AllowsMultiple() =>
@@ -191,6 +207,20 @@ public static class DomainExtensions
             if (memberInfo is PropertyInfo property) { return property.GetMethod?.IsOriginallyPublic() == true; }
 
             return !memberInfo.GetCustomAttributes().OfType<EditorBrowsableAttribute>().Any(eba => eba.State == EditorBrowsableState.Advanced);
+        }
+    }
+
+    extension(PropertyInfo propertyInfo)
+    {
+        public bool IsAutoProperty
+        {
+            get
+            {
+                var getMethod = propertyInfo.GetGetMethod();
+                if (getMethod is null) { return false; }
+
+                return getMethod.GetCustomAttribute<CompilerGeneratedAttribute>() is not null;
+            }
         }
     }
 

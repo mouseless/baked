@@ -155,10 +155,11 @@ Right-aligns numeric columns and uses suitable components for each numeric type.
 c => c.NumericValuesAreFormatted()
 ```
 
-- `int` properties render with `Number`
+- `int` and `long` properties render with `Number`
 - `decimal` properties render with `Money`
 - `double` properties render with `Rate`
-- `DataTable` columns for `int`, `double`, `decimal` are right-aligned
+- `DataTable` columns for `int`, `double`, `decimal` and `long` are
+  right-aligned
 
 ## Object with List is Data Table
 

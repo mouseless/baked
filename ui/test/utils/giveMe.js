@@ -494,14 +494,23 @@ export default {
     };
   },
 
-  aLocalAction({ composable, options, showMessage, delay } = {}) {
-    composable = $(composable, delay ? "useDelay" : "useShowMessage");
+  aLocalAction({ composable, options, showMessage, delay, redirect } = {}) {
+    composable = $(composable,
+      redirect ? "useRedirect" :
+        delay ? "useDelay" :
+          "useShowMessage"
+    );
     options = $(options,
-      this.anInlineData(delay
-        ? { time: delay }
-        : { message: $(showMessage, "Test") }
+      this.anInlineData(
+        redirect ? { route: redirect } :
+          delay ? { time: delay } :
+            { message: $(showMessage, "Test") }
       )
     );
+
+    if(redirect && options.type == "Composite") {
+      options.parts.push(this.anInlineData({ route: redirect }));
+    }
 
     return {
       type: "Local",

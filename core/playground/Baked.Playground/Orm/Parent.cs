@@ -11,6 +11,13 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
     public string Surname { get; private set; } = default!;
     public string? Description { get; private set; } = default!;
 
+    // NOTE Calculated reference (directly or over interface) introduces a case
+    // where `Orm.AutoMap.ManyToOneFetcherTemplate` and
+    // `CodingStyle.Id.AutoPersistenceModelConfigurerTemplate` fail when they
+    // don't check property for `IsAutoProperty`
+    internal Entity? CalculatedReference => null;
+    Entity? IParentInterface.CalculatedReferenceOverInterface => CalculatedReference;
+
     public Parent With(string name, string surname)
     {
         Name = name;

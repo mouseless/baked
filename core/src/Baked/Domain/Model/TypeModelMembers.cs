@@ -89,6 +89,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                     builder.GetReference(property.PropertyType),
                     property.GetMethod?.IsPublic == true && property.GetMethod?.IsOriginallyPublic() == true,
                     property.GetMethod?.IsVirtual == true,
+                    property.IsAutoProperty,
                     new($"{type.Name}.{property.Name}", property.GetCustomAttributes())
                 )
                 {

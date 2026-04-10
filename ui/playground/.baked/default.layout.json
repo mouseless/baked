@@ -131,6 +131,12 @@
             "title": "Layout",
             "parentRoute": "/specs"
           },
+          "/specs/redirect": {
+            "route": "/specs/redirect",
+            "icon": "pi pi-microchip",
+            "title": "Redirect",
+            "parentRoute": "/specs"
+          },
           "/specs/routing": {
             "route": "/specs/routing",
             "icon": "pi pi-microchip",
