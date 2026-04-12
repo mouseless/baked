@@ -22,6 +22,21 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
         }
 
         writer.WriteStartObject();
+
+        if (serializer.TypeNameHandling == TypeNameHandling.All ||
+            serializer.TypeNameHandling == TypeNameHandling.Auto && typeof(TLocatable).IsInterface ||
+            serializer.TypeNameHandling == TypeNameHandling.Objects
+        )
+        {
+            var actualType = value.GetType();
+            writer.WritePropertyName("$type");
+
+            serializer.SerializationBinder.BindToName(actualType, out var assemblyName, out var typeName);
+            if (assemblyName is not null) { typeName += $", {assemblyName}"; }
+
+            writer.WriteValue(typeName);
+        }
+
         writer.WritePropertyName(IdProp);
         writer.WriteValue(GetId(value));
 
