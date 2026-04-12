@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using System.Buffers.Text;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -55,7 +56,6 @@ public static class CoreExtensions
             return await streamReader.ReadToEndAsync();
         }
 
-#pragma warning disable IDE0051
         StreamReader CreateStreamReader(string subpath)
         {
             var fileInfo = provider.GetFileInfo(subpath);
@@ -63,7 +63,6 @@ public static class CoreExtensions
 
             return new(fileInfo.CreateReadStream(), Encoding.UTF8);
         }
-#pragma warning restore IDE0051
     }
 
     extension(string str)
@@ -103,5 +102,24 @@ public static class CoreExtensions
 
         public string ToUtf8String() =>
             Encoding.UTF8.GetString(bytes);
+    }
+
+    extension(CultureInfo)
+    {
+        public static void UsingInvariantCulture(Action action)
+        {
+            using (new InvariantCultureScope())
+            {
+                action();
+            }
+        }
+
+        public static T UsingInvariantCulture<T>(Func<T> func)
+        {
+            using (new InvariantCultureScope())
+            {
+                return func();
+            }
+        }
     }
 }
