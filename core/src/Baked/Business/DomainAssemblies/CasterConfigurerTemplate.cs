@@ -5,7 +5,7 @@ namespace Baked.Business.DomainAssemblies;
 
 public class CasterConfigurerTemplate : CodeTemplateBase
 {
-    public static string[] GlobalUsings =
+    public static readonly string[] GlobalUsings =
         [
             "Baked.Business",
             "Baked.Business.DomainAssemblies",
