@@ -112,8 +112,6 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
         configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
-            if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
-
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             options.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
             options.SerializerSettings.SerializationBinder = new PolymorphicSerializationBinder(options.SerializerSettings.SerializationBinder);

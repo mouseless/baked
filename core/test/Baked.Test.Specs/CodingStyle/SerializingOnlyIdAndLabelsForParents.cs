@@ -56,4 +56,19 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
             description = "1 parent description"
         });
     }
+
+    [Test]
+    public async Task Serializes_type_for_locatable_interfaces()
+    {
+        var response = await Client.GetAsync("/rich-transient-with-children/1");
+        dynamic? child = await response.Content.Deserialize();
+        object? actual = child?.@interface;
+
+        actual?.ShouldDeeplyBe(new Dictionary<string, object>()
+        {
+            { "$type", "implemented" },
+            { "id", child.id },
+            { "name", $"{child.id} name" }
+        });
+    }
 }

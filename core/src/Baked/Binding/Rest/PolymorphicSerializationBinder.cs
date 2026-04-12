@@ -1,5 +1,6 @@
 using Humanizer;
 using Newtonsoft.Json.Serialization;
+using System.Globalization;
 
 namespace Baked.Binding.Rest;
 
@@ -22,7 +23,9 @@ public class PolymorphicSerializationBinder(
         }
 
         assemblyName = null;
-        typeName = serializedType.Name[..^suffix.Length].Camelize();
+        typeName = CultureInfo.UsingInvariantCulture(() =>
+            serializedType.Name[..^suffix.Length].Camelize()
+        );
     }
 
     public Type BindToType(string? assemblyName, string typeName) =>
