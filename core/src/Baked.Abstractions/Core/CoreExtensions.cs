@@ -56,6 +56,11 @@ public static class CoreExtensions
             return await streamReader.ReadToEndAsync();
         }
 
+        // WARNING
+        //
+        // Do NOT remove this warning disable section unintentionally.
+        // Without this, GitHub Actions fails on dotnet format
+#pragma warning disable IDE0051
         StreamReader CreateStreamReader(string subpath)
         {
             var fileInfo = provider.GetFileInfo(subpath);
@@ -63,6 +68,7 @@ public static class CoreExtensions
 
             return new(fileInfo.CreateReadStream(), Encoding.UTF8);
         }
+#pragma warning restore IDE0051
     }
 
     extension(string str)
