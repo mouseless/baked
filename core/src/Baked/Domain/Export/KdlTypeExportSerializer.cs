@@ -9,7 +9,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
 {
     public string FileExtension => "kdl";
 
-    public string Serialize(TypeExportModel model)
+    public string Serialize(TypeAttributeExportModel model)
     {
         var root = new KdlNode(GetTypeName(model.Name));
         AddAttributeNodes(root, model.Attributes);

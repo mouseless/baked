@@ -3,6 +3,7 @@ using Baked.Domain.Export;
 using Baked.Lifetime;
 using Baked.Orm;
 using Baked.Playground.Business;
+using Baked.Playground.CodingStyle.Locatable;
 using Baked.Playground.Orm;
 using Baked.RestApi.Model;
 using Baked.Theme;
@@ -96,6 +97,26 @@ public class BuildingAttributeExportSets : TestSpec
             a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.ClassName) && $"{v.Value}" == "Playground_Orm_Parent") &&
             a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.GroupName) && $"{v.Value}" == "Parents")
         );
+    }
+
+    [Test]
+    public void Type_filters_applies_to_class_interface_struct_and_enum()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var attributeExport = new AttributeExport("Test");
+        attributeExport.Include<NamespaceAttribute>();
+        var builder = new AttributeExportSetBuilder(attributeExport);
+
+        var model = builder.Build(domain);
+
+        var classExport = model.Types[typeof(Parent)];
+        classExport.Attributes.ShouldContain(a => a.Type == nameof(NamespaceAttribute));
+        var interfaceExport = model.Types[typeof(ILocatable)];
+        interfaceExport.Attributes.ShouldContain(a => a.Type == nameof(NamespaceAttribute));
+        var structExport = model.Types[typeof(Struct)];
+        structExport.Attributes.ShouldContain(a => a.Type == nameof(NamespaceAttribute));
+        var enumExport = model.Types[typeof(Enum)];
+        enumExport.Attributes.ShouldContain(a => a.Type == nameof(NamespaceAttribute));
     }
 
     [Test]

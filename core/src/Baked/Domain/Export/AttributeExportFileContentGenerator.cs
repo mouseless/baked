@@ -2,9 +2,9 @@
 
 namespace Baked.Domain.Export;
 
-public class AttributeExportFileContentGenerator(ITypeExportSerializer _serializer, Func<TypeExportModel, string> _contentGroupName)
+public class AttributeExportFileContentGenerator(ITypeExportSerializer _serializer, Func<TypeAttributeExportModel, string> _contentGroupName)
 {
-    public Dictionary<string, string> Generate(ExportSetModel model)
+    public Dictionary<string, string> Generate(AttributeExportSetModel model)
     {
         var contents = new Dictionary<string, StringBuilder>();
         foreach (var type in model.Types)

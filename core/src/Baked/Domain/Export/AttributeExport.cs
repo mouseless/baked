@@ -8,12 +8,12 @@ public record AttributeExport(string Name)
     Func<TypeModelMetadata, string> _typeGroupName = type => type.Name;
     Dictionary<Type, AttributeFilter> _attributeFilters = new();
 
-    public List<AttributeFilter> TypeFilters { get; set; } = [];
-    public List<AttributeFilter> MethodFilters { get; set; } = [];
-    public List<AttributeFilter> ParameterFilters { get; set; } = [];
-    public List<AttributeFilter> PropertyFilters { get; set; } = [];
+    public List<AttributeFilter> TypeFilters { get; } = [];
+    public List<AttributeFilter> MethodFilters { get; } = [];
+    public List<AttributeFilter> ParameterFilters { get; } = [];
+    public List<AttributeFilter> PropertyFilters { get; } = [];
     public ITypeExportSerializer Serializer { get; set; } = new KdlTypeExportSerializer();
-    public Func<TypeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
+    public Func<TypeAttributeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
 
     public AttributeFilter Include<T>() where T : Attribute
     {
@@ -24,7 +24,13 @@ public record AttributeExport(string Name)
 
         _attributeFilters[typeof(T)] = filter = AttributeFilter.From<T>();
         var usage = GetUsage<T>();
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Class))
+        if (
+            usage is null ||
+            usage.ValidOn.HasFlag(AttributeTargets.Class) ||
+            usage.ValidOn.HasFlag(AttributeTargets.Interface) ||
+            usage.ValidOn.HasFlag(AttributeTargets.Struct) ||
+            usage.ValidOn.HasFlag(AttributeTargets.Enum)
+        )
         {
             TypeFilters.Add(filter);
         }
@@ -57,7 +63,13 @@ public record AttributeExport(string Name)
         _attributeFilters.Remove(typeof(T));
         var usage = GetUsage<T>();
 
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Class))
+        if (
+            usage is null ||
+            usage.ValidOn.HasFlag(AttributeTargets.Class) ||
+            usage.ValidOn.HasFlag(AttributeTargets.Interface) ||
+            usage.ValidOn.HasFlag(AttributeTargets.Struct) ||
+            usage.ValidOn.HasFlag(AttributeTargets.Enum)
+        )
         {
             TypeFilters.Remove(filter);
         }
