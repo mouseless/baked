@@ -7,15 +7,17 @@
     </template>
     <FloatLabel variant="on">
       <InputText
-        v-model="model"
+        v-model="input"
         v-bind="$attrs"
         class="min-w-60"
+        @update:model-value="onUpdate"
       />
       <label :for="path">{{ l(label) }}</label>
     </FloatLabel>
   </AwaitLoading>
 </template>
 <script setup>
+import { ref } from "vue";
 import { FloatLabel, InputText, Skeleton } from "primevue";
 import { useContext, useLocalization } from "#imports";
 import { AwaitLoading } from "#components";
@@ -28,7 +30,16 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label } = schema;
+const { label, targetProp } = schema;
 
 const path = context.injectPath();
+
+const input = ref("");
+
+function onUpdate(value) {
+  input.value = value;
+  model.value = value && targetProp
+    ? { [targetProp]: value }
+    : value || undefined;
+}
 </script>
