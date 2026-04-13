@@ -814,13 +814,14 @@ export default {
     };
   },
 
-  aText({ value, data, maxLength } = {}) {
+  aText({ value, data, maxLength, prop } = {}) {
     value = $(value, "Test string");
     data = $(data, this.anInlineData(value));
+    prop = $(prop, null);
 
     return {
       type: "Text",
-      schema: { maxLength },
+      schema: { maxLength, prop },
       data
     };
   },

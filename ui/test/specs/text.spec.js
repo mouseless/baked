@@ -65,3 +65,13 @@ test.describe("No Data", () => {
     await expect(page.locator(primevue.tooltip.bottom)).not.toBeAttached();
   });
 });
+
+test.describe("Prop", () => {
+  const id = "Prop";
+
+  test("display text from object prop", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(baked.string.text)).toHaveText("Text from object");
+  });
+});

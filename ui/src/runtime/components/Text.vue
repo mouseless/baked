@@ -14,17 +14,23 @@ import { AwaitLoading } from "#components";
 
 const { truncate } = useFormat();
 
-const { schema, data } = defineProps({
+const { schema, data: raw } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
-const { maxLength } = schema;
+const { maxLength, prop } = schema;
 
-const lengthIsExceeded = computed(() => maxLength && data.length > maxLength);
-const text = computed(() => lengthIsExceeded.value ? truncate(data, maxLength) : data);
+const data = computed(() => {
+  if(!raw) { return null; }
+  if(prop) { return raw[prop]; }
+
+  return raw;
+});
+const lengthIsExceeded = computed(() => maxLength && data.value.length > maxLength);
+const text = computed(() => lengthIsExceeded.value ? truncate(data.value, maxLength) : data.value);
 const tooltip = computed(() => ({
-  value: `${data}`,
+  value: `${data.value}`,
   disabled: !lengthIsExceeded.value,
   pt: {
     root: {
