@@ -24,7 +24,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
 
     TypeExportModel? BuildMetadata(TypeModelMetadata type)
     {
-        var attributes = BuildAttributes(type, _options.TypeFilter);
+        var attributes = BuildAttributes(type, _options.TypeFilters);
         if (!attributes.Any()) { return default; }
 
         var typeMetadataModel = new TypeExportModel(((IModel)type).Id, type.Name);
@@ -99,7 +99,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
         var attributeMetadata = new AttributeExportModel(type.Name)
         {
             Values = instance is IMetadataSerializer serializer ?
-                serializer.Properties.Where(p => filter.PropertyFilter is null || filter.PropertyFilter.Invoke(p)).ToDictionary(p => p.Name, p => p.Value) :
+                serializer.Properties.Where(p => filter.PropertyFilters.All(f => f(p))).ToDictionary(p => p.Name, p => p.Value) :
                 new()
         };
 

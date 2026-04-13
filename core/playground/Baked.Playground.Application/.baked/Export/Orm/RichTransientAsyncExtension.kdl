@@ -1,4 +1,0 @@
-rich-transient-async-extensions {
-  @query locatableType="Baked.Playground.CodingStyle.LocatableExtension.RichTransientAsyncExtension"
-}
-

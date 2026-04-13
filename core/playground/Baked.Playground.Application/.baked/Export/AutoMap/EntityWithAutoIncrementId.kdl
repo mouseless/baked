@@ -4,7 +4,3 @@ entity-with-auto-increment-id @entity {
   }
 }
 
-entity-with-auto-increment-ids {
-  @query locatableType="Baked.Playground.CodingStyle.Id.EntityWithAutoIncrementId"
-}
-

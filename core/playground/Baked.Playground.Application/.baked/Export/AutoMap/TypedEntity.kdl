@@ -1,0 +1,7 @@
+typed-entity @entity {
+  id {
+    @id routeName="id"
+  }
+  type @unique
+}
+

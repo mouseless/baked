@@ -6,24 +6,27 @@ namespace Baked.Domain.Export;
 public record AttributeExport(string Name)
 {
     Func<TypeModelMetadata, string> _typeGroupName = type => type.Name;
+    Dictionary<Type, AttributeFilter> _attributeFilters = new();
 
-    public List<AttributeFilter> TypeFilter { get; set; } = [];
+    public List<AttributeFilter> TypeFilters { get; set; } = [];
     public List<AttributeFilter> MethodFilters { get; set; } = [];
     public List<AttributeFilter> ParameterFilters { get; set; } = [];
     public List<AttributeFilter> PropertyFilters { get; set; } = [];
     public ITypeExportSerializer Serializer { get; set; } = new KdlTypeExportSerializer();
     public Func<TypeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
 
-    public void Include<T>(
-        Func<MetadataProperty, bool>? propertyFilter = default
-    ) where T : Attribute
+    public AttributeFilter Include<T>() where T : Attribute
     {
-        var usage = GetUsage<T>();
-        var filter = AttributeFilter.From<T>(propertyFilter);
+        if (_attributeFilters.TryGetValue(typeof(T), out var filter))
+        {
+            return filter;
+        }
 
+        _attributeFilters[typeof(T)] = filter = AttributeFilter.From<T>();
+        var usage = GetUsage<T>();
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Class))
         {
-            TypeFilter.Add(filter);
+            TypeFilters.Add(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
@@ -40,42 +43,38 @@ public record AttributeExport(string Name)
         {
             PropertyFilters.Add(filter);
         }
+
+        return filter;
     }
 
     public void Exclude<T>() where T : Attribute
     {
+        if (!_attributeFilters.TryGetValue(typeof(T), out var filter))
+        {
+            return;
+        }
+
+        _attributeFilters.Remove(typeof(T));
         var usage = GetUsage<T>();
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Class))
         {
-            var item = TypeFilter.FirstOrDefault(f => f.Type == typeof(T));
-            if (item is null) { return; }
-
-            TypeFilter.Remove(item);
+            TypeFilters.Remove(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
         {
-            var item = MethodFilters.FirstOrDefault(f => f.Type == typeof(T));
-            if (item is null) { return; }
-
-            MethodFilters.Remove(item);
+            MethodFilters.Remove(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
         {
-            var item = ParameterFilters.FirstOrDefault(f => f.Type == typeof(T));
-            if (item is null) { return; }
-
-            ParameterFilters.Remove(item);
+            ParameterFilters.Remove(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
         {
-            var item = PropertyFilters.FirstOrDefault(f => f.Type == typeof(T));
-            if (item is null) { return; }
-
-            PropertyFilters.Remove(item);
+            PropertyFilters.Remove(filter);
         }
     }
 
@@ -90,13 +89,21 @@ public record AttributeExport(string Name)
 
     public record AttributeFilter
     {
-        public static AttributeFilter From<T>(
-            Func<MetadataProperty, bool>? propertyFilter = default
-        ) where T : Attribute =>
-            new(typeof(T)) { PropertyFilter = propertyFilter };
+        public static AttributeFilter From<T>() where T : Attribute =>
+            new(typeof(T));
 
-        public Type Type { get; }
-        public Func<MetadataProperty, bool>? PropertyFilter { get; set; }
+        public Type Type { get; } = default!;
+        public List<Func<MetadataProperty, bool>> PropertyFilters { get; set; } = [];
+
+        public AttributeFilter AddPropertyFilter(List<string> names) =>
+            AddPropertyFilter(m => names.Contains(m.Name));
+
+        public AttributeFilter AddPropertyFilter(Func<MetadataProperty, bool> filter)
+        {
+            PropertyFilters.Add(filter);
+
+            return this;
+        }
 
         AttributeFilter(Type type)
         {

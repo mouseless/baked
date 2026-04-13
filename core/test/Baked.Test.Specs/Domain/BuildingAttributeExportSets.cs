@@ -22,8 +22,8 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<ComponentDescriptorBuilderAttribute<Text>>();
 
         attributeExport.Name.ShouldBe("Test");
-        attributeExport.TypeFilter.ShouldContain<EntityAttribute>();
-        attributeExport.TypeFilter.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.TypeFilters.ShouldContain<EntityAttribute>();
+        attributeExport.TypeFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
         attributeExport.MethodFilters.ShouldNotContain<EntityAttribute>();
         attributeExport.MethodFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
         attributeExport.ParameterFilters.ShouldNotContain<EntityAttribute>();
@@ -33,12 +33,32 @@ public class BuildingAttributeExportSets : TestSpec
     }
 
     [Test]
+    public void Does_not_add_attribute_more_then_once()
+    {
+        var attributeExport = new AttributeExport("Test");
+        attributeExport.Include<EntityAttribute>();
+        attributeExport.Include<EntityAttribute>();
+
+        attributeExport.TypeFilters.Count.ShouldBe(1);
+    }
+
+    [Test]
+    public void Attribute_can_be_removed()
+    {
+        var attributeExport = new AttributeExport("Test");
+        attributeExport.Include<EntityAttribute>();
+        attributeExport.Exclude<EntityAttribute>();
+
+        attributeExport.TypeFilters.Count.ShouldBe(0);
+    }
+
+    [Test]
     public void Adds_attribute_to_all_filters_when_usage_is_null()
     {
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<CustomAttribute>();
 
-        attributeExport.TypeFilter.ShouldContain<CustomAttribute>();
+        attributeExport.TypeFilters.ShouldContain<CustomAttribute>();
         attributeExport.MethodFilters.ShouldContain<CustomAttribute>();
         attributeExport.ParameterFilters.ShouldContain<CustomAttribute>();
         attributeExport.PropertyFilters.ShouldContain<CustomAttribute>();
@@ -83,7 +103,8 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
-        attributeExport.Include<ControllerModelAttribute>(propertyFilter: p => p.Name == nameof(ControllerModelAttribute.Id));
+        attributeExport.Include<ControllerModelAttribute>()
+            .AddPropertyFilter(p => p.Name == nameof(ControllerModelAttribute.Id));
         var builder = new AttributeExportSetBuilder(attributeExport);
 
         var model = builder.Build(domain);

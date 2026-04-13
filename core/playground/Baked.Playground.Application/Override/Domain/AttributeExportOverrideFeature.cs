@@ -32,7 +32,8 @@ public class AttributeExportOverrideFeature : IFeature
 
             exports.RestApi(restApi =>
             {
-                restApi.Include<RequireUserAttribute>(_ => false);
+                restApi.Include<RequireUserAttribute>()
+                    .AddPropertyFilter(_ => false);
                 restApi.Include<AllowAnonymousAttribute>();
             });
         });

@@ -1,4 +1,0 @@
-entity-extensions {
-  @query locatableType="Baked.Playground.CodingStyle.LocatableExtension.EntityExtension"
-}
-
