@@ -45,7 +45,7 @@ cd ..\..
 cd ui
 call npm i
 cd ..
-cd core\playground\Baked.Playground.Load
+cd core\test\Baked.Test.Load
 call npm i
 cd ..\..\..
 goto end
