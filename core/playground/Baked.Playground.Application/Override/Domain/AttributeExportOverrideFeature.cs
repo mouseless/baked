@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Authorization;
 using Baked.Business;
 using Baked.Lifetime;
 
@@ -29,13 +28,6 @@ public class AttributeExportOverrideFeature : IFeature
                         );
                 }
             );
-
-            exports.RestApi(restApi =>
-            {
-                restApi.Include<RequireUserAttribute>()
-                    .AddPropertyFilter(_ => false);
-                restApi.Include<AllowAnonymousAttribute>();
-            });
         });
     }
 }

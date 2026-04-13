@@ -27,6 +27,16 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
         });
 
+        configurator.Domain.ConfigureAttributeExportCollection(exports =>
+        {
+            exports.RestApi(restApi =>
+            {
+                restApi.Include<RequireUserAttribute>()
+                    .AddPropertyFilter(_ => false);
+                restApi.Include<AllowAnonymousAttribute>();
+            });
+        });
+
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddAuthorization(options =>
