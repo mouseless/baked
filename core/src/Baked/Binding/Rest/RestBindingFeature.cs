@@ -42,6 +42,10 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 new(action.Orphan),
                 new(action.HasBody)
             ]);
+            datas.Create<MappedMethodAttribute>(mappedMethod => [
+                new(mappedMethod.TypeFullName),
+                new(mappedMethod.MethodName),
+            ]);
             datas.Create<ParameterModelAttribute>(parameter =>
             [
                 new(parameter.Id),

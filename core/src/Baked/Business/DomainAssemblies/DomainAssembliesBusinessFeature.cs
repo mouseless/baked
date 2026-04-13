@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Binding;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -59,10 +58,6 @@ public class DomainAssembliesBusinessFeature(
             datas.Create<LocatableAttribute>(locatable => [
                 new(locatable.QueryType),
                 new(locatable.IsAsync)
-            ]);
-            datas.Create<MappedMethodAttribute>(mappedMethod => [
-                new(mappedMethod.TypeFullName),
-                new(mappedMethod.MethodName),
             ]);
             datas.Create<NamespaceAttribute>(@namespace => [
                 new(@namespace.Value)
