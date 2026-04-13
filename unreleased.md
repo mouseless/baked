@@ -2,5 +2,5 @@
 
 ## Improvements
 
-- `DomainLayer` now outputs attribute metadata files for each specified type in
-  domain model
+- `DomainLayer` can now output attribute metadata export files for each 
+  specified attribute type combination in domain model

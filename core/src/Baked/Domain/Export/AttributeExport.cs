@@ -95,15 +95,11 @@ public record AttributeExport(string Name)
         public Type Type { get; } = default!;
         public List<Func<MetadataProperty, bool>> PropertyFilters { get; set; } = [];
 
-        public AttributeFilter AddPropertyFilter(List<string> names) =>
+        public void AddPropertyFilter(List<string> names) =>
             AddPropertyFilter(m => names.Contains(m.Name));
 
-        public AttributeFilter AddPropertyFilter(Func<MetadataProperty, bool> filter)
-        {
+        public void AddPropertyFilter(Func<MetadataProperty, bool> filter) =>
             PropertyFilters.Add(filter);
-
-            return this;
-        }
 
         AttributeFilter(Type type)
         {

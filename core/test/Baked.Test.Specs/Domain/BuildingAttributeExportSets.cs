@@ -116,6 +116,25 @@ public class BuildingAttributeExportSets : TestSpec
     }
 
     [Test]
+    public void Adding_multiple_filters_requires_all_to_return_true()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var attributeExport = new AttributeExport("Test");
+        attributeExport.Include<ControllerModelAttribute>()
+            .AddPropertyFilter(p => true);
+        attributeExport.Include<ControllerModelAttribute>()
+            .AddPropertyFilter(p => p.Name == nameof(ControllerModelAttribute.Id));
+        var builder = new AttributeExportSetBuilder(attributeExport);
+
+        var model = builder.Build(domain);
+
+        var typeExport = model.Types[typeof(Parent)];
+        var attribute = typeExport.Attributes.First();
+        attribute.Values.Count.ShouldBe(1);
+        attribute.Values.First().Key.ShouldBe(nameof(ControllerModelAttribute.Id));
+    }
+
+    [Test]
     public void Group_name_can_be_configured()
     {
         var domain = GiveMe.TheDomainModel();

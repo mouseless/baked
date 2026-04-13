@@ -14,16 +14,6 @@ public class AttributeExportCollection : IEnumerable<KeyValuePair<string, Attrib
         configure(export);
     }
 
-    public AttributeExport Get(string key)
-    {
-        if (!_exports.TryGetValue(key, out var export))
-        {
-            export = _exports[key] = new(key);
-        }
-
-        return export;
-    }
-
     public IEnumerator<KeyValuePair<string, AttributeExport>> GetEnumerator() =>
         ((IEnumerable<KeyValuePair<string, AttributeExport>>)_exports).GetEnumerator();
 
