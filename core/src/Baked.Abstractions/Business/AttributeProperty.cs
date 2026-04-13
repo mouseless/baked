@@ -2,9 +2,9 @@
 
 namespace Baked.Business;
 
-public record MetadataProperty(string Name, object? Value)
+public record AttributeProperty(string Name, object? Value)
 {
-    public MetadataProperty(object? value,
+    public AttributeProperty(object? value,
         [CallerArgumentExpression("value")] string name = ""
     ) : this(name, value) { }
 }

@@ -1,10 +1,6 @@
-test-page {
-  @controller-model id="Baked.Playground.Theme.TestPage" className="Playground_Theme_TestPage" groupName="TestPage" orphan=#false
-  get-data {
-    @action-model id="GetData" name="Data" method="GET" route="test-page/data" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    panel {
-      @parameter-model id="panel" from="Query" type="string" name="panel" internalName="panel" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+test-page @controller-model {
+  get-data @action-model {
+    panel @parameter-model
   }
 }
 

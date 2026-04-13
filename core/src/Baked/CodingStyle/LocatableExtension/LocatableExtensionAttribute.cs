@@ -1,15 +1,8 @@
-﻿using Baked.Business;
-
-namespace Baked.CodingStyle.LocatableExtension;
+﻿namespace Baked.CodingStyle.LocatableExtension;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class LocatableExtensionAttribute(Type locatableType)
-    : Attribute(), IMetadataSerializer
+    : Attribute()
 {
     public Type LocatableType { get; } = locatableType;
-
-    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
-        [
-            new(LocatableType),
-        ];
 }

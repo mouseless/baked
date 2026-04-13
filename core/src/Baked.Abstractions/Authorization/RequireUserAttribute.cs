@@ -1,18 +1,10 @@
-﻿using Baked.Business;
-
-namespace Baked.Authorization;
+﻿namespace Baked.Authorization;
 
 public class RequireUserAttribute(
   string[]? claims = default
-) : Attribute(), IMetadataSerializer
+) : Attribute()
 {
     public bool Override { get; set; }
 
     public string[] Claims => claims ?? [];
-
-    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
-        [
-            new(Override),
-            new(Claims)
-        ];
 }

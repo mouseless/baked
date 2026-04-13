@@ -6,23 +6,25 @@ namespace Baked.Domain.Export;
 public record AttributeExport(string Name)
 {
     Func<TypeModelMetadata, string> _typeGroupName = type => type.Name;
-    Dictionary<Type, AttributeFilter> _attributeFilters = new();
+    Dictionary<Type, IAttributeFilter> _attributeFilters = new();
 
-    public List<AttributeFilter> TypeFilters { get; } = [];
-    public List<AttributeFilter> MethodFilters { get; } = [];
-    public List<AttributeFilter> ParameterFilters { get; } = [];
-    public List<AttributeFilter> PropertyFilters { get; } = [];
+    internal AttributeDataBuilderCollection Builders { get; set; } = new();
+    public List<IAttributeFilter> TypeFilters { get; } = [];
+    public List<IAttributeFilter> MethodFilters { get; } = [];
+    public List<IAttributeFilter> ParameterFilters { get; } = [];
+    public List<IAttributeFilter> PropertyFilters { get; } = [];
+
     public ITypeExportSerializer Serializer { get; set; } = new KdlTypeExportSerializer();
     public Func<TypeAttributeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
 
-    public AttributeFilter Include<T>() where T : Attribute
+    public AttributeFilter<T> Include<T>() where T : Attribute
     {
         if (_attributeFilters.TryGetValue(typeof(T), out var filter))
         {
-            return filter;
+            return (AttributeFilter<T>)filter;
         }
 
-        _attributeFilters[typeof(T)] = filter = AttributeFilter.From<T>();
+        _attributeFilters[typeof(T)] = filter = new AttributeFilter<T>();
         var usage = GetUsage<T>();
         if (
             usage is null ||
@@ -50,7 +52,7 @@ public record AttributeExport(string Name)
             PropertyFilters.Add(filter);
         }
 
-        return filter;
+        return (AttributeFilter<T>)filter;
     }
 
     public void Exclude<T>() where T : Attribute
@@ -99,23 +101,31 @@ public record AttributeExport(string Name)
     AttributeUsageAttribute? GetUsage<T>() =>
         (AttributeUsageAttribute?)Attribute.GetCustomAttribute(typeof(T), typeof(AttributeUsageAttribute));
 
-    public record AttributeFilter
+    public class AttributeFilter<T> : IAttributeFilter where T : Attribute
     {
-        public static AttributeFilter From<T>() where T : Attribute =>
-            new(typeof(T));
+        internal List<Func<T, AttributeProperty>> PropertyExtensions { get; } = [];
+        internal List<Func<AttributeProperty, bool>> RemoveProperty { get; } = [];
 
-        public Type Type { get; } = default!;
-        public List<Func<MetadataProperty, bool>> PropertyFilters { get; set; } = [];
+        public void AddData(Func<T, AttributeProperty> property) =>
+            PropertyExtensions.Add(property);
 
-        public void AddPropertyFilter(List<string> names) =>
-            AddPropertyFilter(m => names.Contains(m.Name));
+        public void RemoveData(
+            Func<AttributeProperty, bool>? filter = default
+        ) => RemoveProperty.Add(filter ?? (_ => true));
 
-        public void AddPropertyFilter(Func<MetadataProperty, bool> filter) =>
-            PropertyFilters.Add(filter);
+        Type IAttributeFilter.Type => typeof(T);
 
-        AttributeFilter(Type type)
-        {
-            Type = type;
-        }
+        List<Func<Attribute, AttributeProperty>> IAttributeFilter.PropertyExtensions =>
+             [.. PropertyExtensions.Select(extension => (Func<Attribute, AttributeProperty>)(attr => extension((T)attr)))];
+        List<Func<AttributeProperty, bool>> IAttributeFilter.RemoveProperty =>
+            RemoveProperty;
+    }
+
+    public interface IAttributeFilter
+    {
+        public Type Type { get; }
+
+        public List<Func<Attribute, AttributeProperty>> PropertyExtensions { get; }
+        public List<Func<AttributeProperty, bool>> RemoveProperty { get; }
     }
 }

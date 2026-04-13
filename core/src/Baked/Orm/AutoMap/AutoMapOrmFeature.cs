@@ -32,12 +32,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             """);
         });
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
-        {
-            builder.Index.Type.Add(typeof(EntityAttribute));
-            builder.Index.Property.Add(typeof(UniqueAttribute));
-        });
-
         configurator.Domain.ConfigureAttributeExportCollection(exports =>
         {
             configurator.Domain.UsingDomainModel(domain =>
@@ -54,6 +48,12 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     );
                 });
             });
+        });
+
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Index.Type.Add(typeof(EntityAttribute));
+            builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
         configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

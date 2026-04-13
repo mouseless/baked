@@ -1,165 +1,68 @@
-entity {
-  @controller-model id="Baked.Playground.Orm.Entity" className="Playground_Orm_Entity" groupName="Entities" orphan=#false
-  with {
-    @action-model id="With" name="With" method="POST" route="entities" returnType="Baked.Playground.Orm.Entity" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    guid {
-      @parameter-model id="guid" from="BodyOrForm" type="System.Guid?" name="guid" internalName="guid" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    string {
-      @parameter-model id="string" from="BodyOrForm" type="string" name="string" internalName="string" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    stringData {
-      @parameter-model id="stringData" from="BodyOrForm" type="string" name="stringData" internalName="stringData" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    int32 {
-      @parameter-model id="int32" from="BodyOrForm" type="int?" name="int32" internalName="int32" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    unique {
-      @parameter-model id="unique" from="BodyOrForm" type="string" name="unique" internalName="unique" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    uri {
-      @parameter-model id="uri" from="BodyOrForm" type="System.Uri" name="uri" internalName="uri" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    dynamic {
-      @parameter-model id="dynamic" from="BodyOrForm" type="object" name="dynamic" internalName="dynamic" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enum {
-      @parameter-model id="enum" from="BodyOrForm" type="Baked.Playground.Orm.Enumeration?" name="enum" internalName="enum" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    dateTime {
-      @parameter-model id="dateTime" from="BodyOrForm" type="System.DateTime?" name="dateTime" internalName="dateTime" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+entity @controller-model {
+  with @action-model {
+    guid @parameter-model
+    string @parameter-model
+    stringData @parameter-model
+    int32 @parameter-model
+    unique @parameter-model
+    uri @parameter-model
+    dynamic @parameter-model
+    enum @parameter-model
+    dateTime @parameter-model
   }
-  update {
-    @action-model id="Update" name="" method="PUT" route="entities/{id}/" returnType="System.Threading.Tasks.Task" returnIsAsync=#true returnIsVoid=#true invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    guid {
-      @parameter-model id="guid" from="BodyOrForm" type="System.Guid?" name="guid" internalName="guid" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    string {
-      @parameter-model id="string" from="BodyOrForm" type="string" name="string" internalName="string" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    stringData {
-      @parameter-model id="stringData" from="BodyOrForm" type="string" name="stringData" internalName="stringData" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    int32 {
-      @parameter-model id="int32" from="BodyOrForm" type="int?" name="int32" internalName="int32" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    unique {
-      @parameter-model id="unique" from="BodyOrForm" type="string" name="unique" internalName="unique" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    uri {
-      @parameter-model id="uri" from="BodyOrForm" type="System.Uri" name="uri" internalName="uri" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    dynamic {
-      @parameter-model id="dynamic" from="BodyOrForm" type="object" name="dynamic" internalName="dynamic" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enum {
-      @parameter-model id="enum" from="BodyOrForm" type="Baked.Playground.Orm.Enumeration?" name="enum" internalName="enum" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    dateTime {
-      @parameter-model id="dateTime" from="BodyOrForm" type="System.DateTime?" name="dateTime" internalName="dateTime" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    useTransaction {
-      @parameter-model id="useTransaction" from="BodyOrForm" type="bool" name="useTransaction" internalName="useTransaction" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    throwError {
-      @parameter-model id="throwError" from="BodyOrForm" type="bool" name="throwError" internalName="throwError" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  update @action-model {
+    guid @parameter-model
+    string @parameter-model
+    stringData @parameter-model
+    int32 @parameter-model
+    unique @parameter-model
+    uri @parameter-model
+    dynamic @parameter-model
+    enum @parameter-model
+    dateTime @parameter-model
+    useTransaction @parameter-model
+    throwError @parameter-model
   }
-  update-string {
-    @action-model id="UpdateString" name="String" method="PATCH" route="entities/{id}/string" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    string {
-      @parameter-model id="string" from="BodyOrForm" type="string" name="string" internalName="string" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  update-string @action-model {
+    string @parameter-model
   }
-  lock-and-increment-int-32 {
-    @action-model id="LockAndIncrementInt32" name="LockAndIncrementInt32" method="POST" route="entities/{id}/lock-and-increment-int32" returnType="System.Threading.Tasks.Task<int>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    offset {
-      @parameter-model id="offset" from="BodyOrForm" type="int" name="offset" internalName="offset" isOptional=#true defaultValue=1 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    delayInSeconds {
-      @parameter-model id="delayInSeconds" from="BodyOrForm" type="int" name="delayInSeconds" internalName="delayInSeconds" isOptional=#true defaultValue=5 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  lock-and-increment-int-32 @action-model {
+    offset @parameter-model
+    delayInSeconds @parameter-model
   }
-  delete {
-    @action-model id="Delete" name="" method="DELETE" route="entities/{id}/" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-  }
+  delete @action-model
 }
 
-entities {
-  @controller-model id="Baked.Playground.Orm.Entities" className="Playground_Orm_Entities" groupName="Entities" orphan=#false
-  by {
-    @action-model id="By" name="" method="GET" route="entities" returnType="System.Collections.Generic.List<Baked.Playground.Orm.Entity>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    guid {
-      @parameter-model id="guid" from="Query" type="System.Guid?" name="guid" internalName="guid" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    string {
-      @parameter-model id="string" from="Query" type="string" name="string" internalName="string" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    stringData {
-      @parameter-model id="stringData" from="Query" type="string" name="stringData" internalName="stringData" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    int32 {
-      @parameter-model id="int32" from="Query" type="int?" name="int32" internalName="int32" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    unique {
-      @parameter-model id="unique" from="Query" type="string" name="unique" internalName="unique" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    uri {
-      @parameter-model id="uri" from="Query" type="System.Uri" name="uri" internalName="uri" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enum {
-      @parameter-model id="enum" from="Query" type="Baked.Playground.Orm.Enumeration?" name="enum" internalName="enum" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    dateTime {
-      @parameter-model id="dateTime" from="Query" type="System.DateTime?" name="dateTime" internalName="dateTime" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    take {
-      @parameter-model id="take" from="Query" type="int?" name="take" internalName="take" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    skip {
-      @parameter-model id="skip" from="Query" type="int?" name="skip" internalName="skip" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+entities @controller-model {
+  by @action-model {
+    guid @parameter-model
+    string @parameter-model
+    stringData @parameter-model
+    int32 @parameter-model
+    unique @parameter-model
+    uri @parameter-model
+    enum @parameter-model
+    dateTime @parameter-model
+    take @parameter-model
+    skip @parameter-model
   }
-  first-by-string {
-    @action-model id="FirstByString" name="FirstString" method="GET" route="entities/first-string" returnType="Baked.Playground.Orm.Entity" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    startsWith {
-      @parameter-model id="startsWith" from="Query" type="string" name="startsWith" internalName="startsWith" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    asc {
-      @parameter-model id="asc" from="Query" type="bool" name="asc" internalName="asc" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    desc {
-      @parameter-model id="desc" from="Query" type="bool" name="desc" internalName="desc" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  first-by-string @action-model {
+    startsWith @parameter-model
+    asc @parameter-model
+    desc @parameter-model
   }
-  count-by-date {
-    @action-model id="CountByDate" name="CountDate" method="POST" route="entities/count-date" returnType="System.Collections.Generic.Dictionary<System.DateTime, int>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-  }
+  count-by-date @action-model
 }
 
-entity-extension {
-  @controller-model id="Baked.Playground.CodingStyle.LocatableExtension.EntityExtension" className="Playground_CodingStyle_LocatableExtension_EntityExtension" groupName="Entities" orphan=#false
-  increment-int-32 {
-    @action-model id="IncrementInt32" name="IncrementInt32" method="POST" route="entities/{id}/increment-int32" returnType="System.Threading.Tasks.Task" returnIsAsync=#true returnIsVoid=#true invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+entity-extension @controller-model {
+  increment-int-32 @action-model
+  increment-by @action-model {
+    other @parameter-model
   }
-  increment-by {
-    @action-model id="IncrementBy" name="IncrementBy" method="POST" route="entities/{id}/increment-by" returnType="System.Threading.Tasks.Task" returnIsAsync=#true returnIsVoid=#true invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    other {
-      @parameter-model id="other" from="BodyOrForm" type="Baked.Playground.CodingStyle.LocatableExtension.EntityExtension" name="other" internalName="other" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  increment-by-all {
-    @action-model id="IncrementByAll" name="IncrementByAll" method="POST" route="entities/{id}/increment-by-all" returnType="System.Threading.Tasks.Task" returnIsAsync=#true returnIsVoid=#true invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    extensions {
-      @parameter-model id="extensions" from="BodyOrForm" type="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.LocatableExtension.EntityExtension>" name="extensions" internalName="extensions" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    moreExtensions {
-      @parameter-model id="moreExtensions" from="BodyOrForm" type="Baked.Playground.CodingStyle.LocatableExtension.EntityExtension[]" name="moreExtensions" internalName="moreExtensions" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    evenMoreExtensions {
-      @parameter-model id="evenMoreExtensions" from="BodyOrForm" type="System.Collections.Generic.List<Baked.Playground.CodingStyle.LocatableExtension.EntityExtension>" name="evenMoreExtensions" internalName="evenMoreExtensions" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  increment-by-all @action-model {
+    extensions @parameter-model
+    moreExtensions @parameter-model
+    evenMoreExtensions @parameter-model
   }
 }
 

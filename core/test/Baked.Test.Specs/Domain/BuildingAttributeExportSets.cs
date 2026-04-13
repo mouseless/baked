@@ -120,12 +120,12 @@ public class BuildingAttributeExportSets : TestSpec
     }
 
     [Test]
-    public void Attribute_values_can_be_filtered()
+    public void Attribute_values_can_be_removed()
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<ControllerModelAttribute>()
-            .AddPropertyFilter(p => p.Name == nameof(ControllerModelAttribute.Id));
+            .RemoveData(p => p.Name != nameof(ControllerModelAttribute.Id));
         var builder = new AttributeExportSetBuilder(attributeExport);
 
         var model = builder.Build(domain);
@@ -142,9 +142,9 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<ControllerModelAttribute>()
-            .AddPropertyFilter(p => true);
+            .RemoveData(p => false);
         attributeExport.Include<ControllerModelAttribute>()
-            .AddPropertyFilter(p => p.Name == nameof(ControllerModelAttribute.Id));
+            .RemoveData(p => p.Name != nameof(ControllerModelAttribute.Id));
         var builder = new AttributeExportSetBuilder(attributeExport);
 
         var model = builder.Build(domain);

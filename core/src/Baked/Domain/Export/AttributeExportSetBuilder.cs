@@ -1,11 +1,10 @@
-﻿using Baked.Business;
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 
 using static Baked.Domain.Export.AttributeExport;
 
 namespace Baked.Domain.Export;
 
-public class AttributeExportSetBuilder(AttributeExport _options)
+public class AttributeExportSetBuilder(AttributeExport _export)
 {
     public AttributeExportSetModel Build(DomainModel domain)
     {
@@ -25,12 +24,12 @@ public class AttributeExportSetBuilder(AttributeExport _options)
 
     TypeAttributeExportModel? BuildMetadata(TypeModelMetadata type)
     {
-        var attributes = BuildAttributes(type, _options.TypeFilters);
+        var attributes = BuildAttributes(type, _export.TypeFilters);
         if (!attributes.Any()) { return default; }
 
         var typeMetadataModel = new TypeAttributeExportModel(((IModel)type).Id, type.Name);
         typeMetadataModel.Attributes.AddRange(attributes);
-        typeMetadataModel.GroupName = _options.GetTypeGroupName(type);
+        typeMetadataModel.GroupName = _export.GetTypeGroupName(type);
 
         return type.TryGetMembers(out var members) ? BuildMembers(typeMetadataModel, members) : typeMetadataModel;
     }
@@ -39,7 +38,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
     {
         foreach (var method in type.Methods)
         {
-            var attributes = BuildAttributes(method, _options.MethodFilters);
+            var attributes = BuildAttributes(method, _export.MethodFilters);
             if (!attributes.Any()) { continue; }
 
             var methodMetadata = new MethodAttributeExportModel(method.Name, attributes)
@@ -52,7 +51,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
 
         foreach (var property in type.Properties)
         {
-            var attributes = BuildAttributes(property, _options.PropertyFilters);
+            var attributes = BuildAttributes(property, _export.PropertyFilters);
             if (!attributes.Any()) { continue; }
 
             var propertyMetadata = new PropertyAttributeExportModel(property.Name, attributes);
@@ -67,7 +66,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
         var parameters = new List<ParameterAttributeExportModel>();
         foreach (var parameter in method.DefaultOverload.Parameters)
         {
-            var attributes = BuildAttributes(parameter, _options.ParameterFilters);
+            var attributes = BuildAttributes(parameter, _export.ParameterFilters);
             if (!attributes.Any()) { continue; }
 
             var parameterMetadata = new ParameterAttributeExportModel(parameter.Name, attributes);
@@ -77,7 +76,7 @@ public class AttributeExportSetBuilder(AttributeExport _options)
         return parameters;
     }
 
-    List<AttributeExportModel> BuildAttributes(ICustomAttributesModel model, List<AttributeFilter> filters)
+    List<AttributeExportModel> BuildAttributes(ICustomAttributesModel model, List<IAttributeFilter> filters)
     {
         var result = new List<AttributeExportModel>();
         foreach (var filter in filters)
@@ -95,13 +94,17 @@ public class AttributeExportSetBuilder(AttributeExport _options)
         return result;
     }
 
-    AttributeExportModel BuildAttribute<T>(Type type, T instance, AttributeFilter filter) where T : Attribute
+    AttributeExportModel BuildAttribute<T>(Type type, T instance, IAttributeFilter filter) where T : Attribute
     {
+        var properties = _export.Builders.TryGet<T>(out var builder) ? builder.Invoke(instance) : [];
+        foreach (var extension in filter.PropertyExtensions)
+        {
+            properties.Add(extension(instance));
+        }
+
         var attributeMetadata = new AttributeExportModel(type.Name)
         {
-            Values = instance is IMetadataSerializer serializer ?
-                serializer.Properties.Where(p => filter.PropertyFilters.All(f => f(p))).ToDictionary(p => p.Name, p => p.Value) :
-                new()
+            Values = properties is null ? new() : properties.Where(p => !filter.RemoveProperty.All(r => r(p))).ToDictionary(p => p.Name, p => p.Value)
         };
 
         return attributeMetadata;

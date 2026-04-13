@@ -1,16 +1,10 @@
 ﻿namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class LocatableAttribute : Attribute, IMetadataSerializer
+public class LocatableAttribute : Attribute
 {
     public Type? QueryType { get; set; }
     public bool IsAsync { get; set; } = false;
-
-    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
-        [
-            new(QueryType),
-            new(IsAsync)
-        ];
 
     public string RenderLocate(string serviceExpression, string idExpression,
         string throwNotFoundExpression = "false"

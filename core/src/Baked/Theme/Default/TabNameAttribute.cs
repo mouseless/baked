@@ -1,14 +1,6 @@
-﻿using Baked.Business;
+﻿namespace Baked.Theme.Default;
 
-namespace Baked.Theme.Default;
-
-public class TabNameAttribute
-    : Attribute, IMetadataSerializer
+public class TabNameAttribute : Attribute
 {
     public string Value { get; set; } = "Default";
-
-    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
-        [
-            new(Value)
-        ];
 }

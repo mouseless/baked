@@ -1,241 +1,106 @@
-method-samples {
-  @controller-model id="Baked.Playground.Business.MethodSamples" className="Playground_Business_MethodSamples" groupName="MethodSamples" orphan=#false
-  execute {
-    @action-model id="Execute" name="MethodSamples" method="POST" route="method-samples" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+method-samples @controller-model {
+  execute @action-model
+  update @action-model
+  update-string @action-model
+  delete @action-model
+  void @action-model
+  get-strings @action-model
+  get-data @action-model
+  set-setting @action-model {
+    value @parameter-model
   }
-  update {
-    @action-model id="Update" name="" method="PUT" route="method-samples" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  add-string @action-model {
+    string @parameter-model
   }
-  update-string {
-    @action-model id="UpdateString" name="String" method="PATCH" route="method-samples/string" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  parameters @action-model {
+    required @parameter-model
+    optional @parameter-model
   }
-  delete {
-    @action-model id="Delete" name="" method="DELETE" route="method-samples" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  void-async @action-model
+  get-async @action-model {
+    ms @parameter-model
   }
-  void {
-    @action-model id="Void" name="Void" method="POST" route="method-samples/void" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  request-class @action-model {
+    text @parameter-model
+    numeric @parameter-model
   }
-  get-strings {
-    @action-model id="GetStrings" name="Strings" method="GET" route="method-samples/strings" returnType="System.Collections.Generic.List<string>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  object @action-model {
+    object @parameter-model
   }
-  get-data {
-    @action-model id="GetData" name="Data" method="GET" route="method-samples/data" returnType="Baked.Playground.Business.Data" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  object-async @action-model {
+    object @parameter-model
   }
-  set-setting {
-    @action-model id="SetSetting" name="Setting" method="PATCH" route="method-samples/setting" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    value {
-      @parameter-model id="value" from="BodyOrForm" type="string" name="value" internalName="value" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  multiple-objects @action-model {
+    object1 @parameter-model
+    object2 @parameter-model
   }
-  add-string {
-    @action-model id="AddString" name="Strings" method="POST" route="method-samples/strings" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    string {
-      @parameter-model id="string" from="BodyOrForm" type="string" name="string" internalName="string" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  primitive-parameters @action-model {
+    string @parameter-model
+    int @parameter-model
+    dateTime @parameter-model
   }
-  parameters {
-    @action-model id="Parameters" name="Parameters" method="POST" route="method-samples/parameters" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    required {
-      @parameter-model id="required" from="BodyOrForm" type="string" name="required" internalName="required" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    optional {
-      @parameter-model id="optional" from="BodyOrForm" type="string" name="optional" internalName="optional" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  primitive-list-parameters @action-model {
+    strings @parameter-model
+    ints @parameter-model
+    dateTimes @parameter-model
   }
-  void-async {
-    @action-model id="VoidAsync" name="VoidAsync" method="POST" route="method-samples/void-async" returnType="System.Threading.Tasks.Task" returnIsAsync=#true returnIsVoid=#true invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  record-parameters @action-model {
+    record @parameter-model
   }
-  get-async {
-    @action-model id="GetAsync" name="Async" method="GET" route="method-samples/async" returnType="System.Threading.Tasks.Task<string>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    ms {
-      @parameter-model id="ms" from="Query" type="int" name="ms" internalName="ms" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  record-list-parameters @action-model {
+    records @parameter-model
   }
-  request-class {
-    @action-model id="RequestClass" name="RequestClass" method="POST" route="method-samples/request-class" returnType="Baked.Playground.Business.Record" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    text {
-      @parameter-model id="text" from="BodyOrForm" type="string" name="text" internalName="text" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    numeric {
-      @parameter-model id="numeric" from="BodyOrForm" type="int" name="numeric" internalName="numeric" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  get-value-type-parameters @action-model {
+    single @parameter-model
+    enumerable @parameter-model
+    array @parameter-model
   }
-  object {
-    @action-model id="Object" name="Object" method="POST" route="method-samples/object" returnType="object" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#false additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    object {
-      @parameter-model id="object" from="BodyOrForm" type="object" name="object" internalName="object" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  value-type-parameters @action-model {
+    single @parameter-model
+    enumerable @parameter-model
+    array @parameter-model
   }
-  object-async {
-    @action-model id="ObjectAsync" name="ObjectAsync" method="POST" route="method-samples/object-async" returnType="System.Threading.Tasks.Task<object>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#false useRequestClassForBody=#false additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    object {
-      @parameter-model id="object" from="BodyOrForm" type="object" name="object" internalName="object" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  record-with-value-type @action-model {
+    record @parameter-model
   }
-  multiple-objects {
-    @action-model id="MultipleObjects" name="MultipleObjects" method="POST" route="method-samples/multiple-objects" returnType="object" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    object1 {
-      @parameter-model id="object1" from="BodyOrForm" type="object" name="object1" internalName="object1" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    object2 {
-      @parameter-model id="object2" from="BodyOrForm" type="object" name="object2" internalName="object2" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  get-entity-parameters @action-model {
+    single @parameter-model
+    enumerable @parameter-model
+    array @parameter-model
   }
-  primitive-parameters {
-    @action-model id="PrimitiveParameters" name="PrimitiveParameters" method="POST" route="method-samples/primitive-parameters" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    string {
-      @parameter-model id="string" from="BodyOrForm" type="string" name="string" internalName="string" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    int {
-      @parameter-model id="int" from="BodyOrForm" type="int" name="int" internalName="int" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    dateTime {
-      @parameter-model id="dateTime" from="BodyOrForm" type="System.DateTime" name="dateTime" internalName="dateTime" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  entity-parameters @action-model {
+    single @parameter-model
+    enumerable @parameter-model
+    array @parameter-model
   }
-  primitive-list-parameters {
-    @action-model id="PrimitiveListParameters" name="PrimitiveListParameters" method="POST" route="method-samples/primitive-list-parameters" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    strings {
-      @parameter-model id="strings" from="BodyOrForm" type="System.Collections.Generic.List<string>" name="strings" internalName="strings" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    ints {
-      @parameter-model id="ints" from="BodyOrForm" type="int[]" name="ints" internalName="ints" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    dateTimes {
-      @parameter-model id="dateTimes" from="BodyOrForm" type="System.Collections.Generic.IEnumerable<System.DateTime>" name="dateTimes" internalName="dateTimes" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  record-with-entity @action-model {
+    record @parameter-model
   }
-  record-parameters {
-    @action-model id="RecordParameters" name="RecordParameters" method="POST" route="method-samples/record-parameters" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    record {
-      @parameter-model id="record" from="BodyOrForm" type="Baked.Playground.Business.Record" name="record" internalName="record" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  get-transient-parameters @action-model {
+    single @parameter-model
+    enumerable @parameter-model
+    array @parameter-model
   }
-  record-list-parameters {
-    @action-model id="RecordListParameters" name="RecordListParameters" method="POST" route="method-samples/record-list-parameters" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    records {
-      @parameter-model id="records" from="BodyOrForm" type="System.Collections.Generic.List<Baked.Playground.Business.Record>" name="records" internalName="records" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  transient-parameters @action-model {
+    single @parameter-model
+    enumerable @parameter-model
+    array @parameter-model
   }
-  get-value-type-parameters {
-    @action-model id="GetValueTypeParameters" name="ValueTypeParameters" method="GET" route="method-samples/value-type-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    single {
-      @parameter-model id="single" from="Query" type="Baked.Playground.CodingStyle.ValueType.Value" name="single" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enumerable {
-      @parameter-model id="enumerable" from="Query" type="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value>" name="enumerable" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    array {
-      @parameter-model id="array" from="Query" type="Baked.Playground.CodingStyle.ValueType.Value[]" name="array" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  record-with-rich-transient @action-model {
+    record @parameter-model
   }
-  value-type-parameters {
-    @action-model id="ValueTypeParameters" name="ValueTypeParameters" method="POST" route="method-samples/value-type-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    single {
-      @parameter-model id="single" from="BodyOrForm" type="Baked.Playground.CodingStyle.ValueType.Value" name="single" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enumerable {
-      @parameter-model id="enumerable" from="BodyOrForm" type="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value>" name="enumerable" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    array {
-      @parameter-model id="array" from="BodyOrForm" type="Baked.Playground.CodingStyle.ValueType.Value[]" name="array" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  get-transient-async-parameters @action-model {
+    single @parameter-model
+    enumerable @parameter-model
+    array @parameter-model
   }
-  record-with-value-type {
-    @action-model id="RecordWithValueType" name="RecordWithValueType" method="POST" route="method-samples/record-with-value-type" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    record {
-      @parameter-model id="record" from="BodyOrForm" type="Baked.Playground.Business.RecordWith<Baked.Playground.CodingStyle.ValueType.Value>" name="record" internalName="record" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  transient-async-parameters @action-model {
+    single @parameter-model
+    enumerable @parameter-model
+    array @parameter-model
   }
-  get-entity-parameters {
-    @action-model id="GetEntityParameters" name="EntityParameters" method="GET" route="method-samples/entity-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.Orm.Entity>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    single {
-      @parameter-model id="single" from="Query" type="Baked.Business.Id" name="singleId" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enumerable {
-      @parameter-model id="enumerable" from="Query" type="IEnumerable<Baked.Business.Id>" name="enumerableIds" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    array {
-      @parameter-model id="array" from="Query" type="IEnumerable<Baked.Business.Id>" name="arrayIds" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  entity-parameters {
-    @action-model id="EntityParameters" name="EntityParameters" method="POST" route="method-samples/entity-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.Orm.Entity>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    single {
-      @parameter-model id="single" from="BodyOrForm" type="Baked.Playground.Orm.Entity" name="single" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enumerable {
-      @parameter-model id="enumerable" from="BodyOrForm" type="System.Collections.Generic.IEnumerable<Baked.Playground.Orm.Entity>" name="enumerable" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    array {
-      @parameter-model id="array" from="BodyOrForm" type="Baked.Playground.Orm.Entity[]" name="array" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  record-with-entity {
-    @action-model id="RecordWithEntity" name="RecordWithEntity" method="POST" route="method-samples/record-with-entity" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.Orm.Entity>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    record {
-      @parameter-model id="record" from="BodyOrForm" type="Baked.Playground.Business.RecordWith<Baked.Playground.Orm.Entity>" name="record" internalName="record" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  get-transient-parameters {
-    @action-model id="GetTransientParameters" name="TransientParameters" method="GET" route="method-samples/transient-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.RichTransient.RichTransientWithData>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    single {
-      @parameter-model id="single" from="Query" type="Baked.Business.Id" name="singleId" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enumerable {
-      @parameter-model id="enumerable" from="Query" type="IEnumerable<Baked.Business.Id>" name="enumerableIds" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    array {
-      @parameter-model id="array" from="Query" type="IEnumerable<Baked.Business.Id>" name="arrayIds" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  transient-parameters {
-    @action-model id="TransientParameters" name="TransientParameters" method="POST" route="method-samples/transient-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.RichTransient.RichTransientWithData>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    single {
-      @parameter-model id="single" from="BodyOrForm" type="Baked.Playground.CodingStyle.RichTransient.RichTransientWithData" name="single" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enumerable {
-      @parameter-model id="enumerable" from="BodyOrForm" type="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.RichTransient.RichTransientWithData>" name="enumerable" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    array {
-      @parameter-model id="array" from="BodyOrForm" type="Baked.Playground.CodingStyle.RichTransient.RichTransientWithData[]" name="array" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  record-with-rich-transient {
-    @action-model id="RecordWithRichTransient" name="RecordWithRichTransient" method="POST" route="method-samples/record-with-rich-transient" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.RichTransient.RichTransientWithData>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    record {
-      @parameter-model id="record" from="BodyOrForm" type="Baked.Playground.Business.RecordWith<Baked.Playground.CodingStyle.RichTransient.RichTransientWithData>" name="record" internalName="record" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  get-transient-async-parameters {
-    @action-model id="GetTransientAsyncParameters" name="TransientAsyncParameters" method="GET" route="method-samples/transient-async-parameters" returnType="Task<System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.RichTransient.RichTransientAsync>>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    single {
-      @parameter-model id="single" from="Query" type="Baked.Business.Id" name="singleId" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enumerable {
-      @parameter-model id="enumerable" from="Query" type="IEnumerable<Baked.Business.Id>" name="enumerableIds" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    array {
-      @parameter-model id="array" from="Query" type="IEnumerable<Baked.Business.Id>" name="arrayIds" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  transient-async-parameters {
-    @action-model id="TransientAsyncParameters" name="TransientAsyncParameters" method="POST" route="method-samples/transient-async-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.RichTransient.RichTransientAsync>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    single {
-      @parameter-model id="single" from="BodyOrForm" type="Baked.Playground.CodingStyle.RichTransient.RichTransientAsync" name="single" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    enumerable {
-      @parameter-model id="enumerable" from="BodyOrForm" type="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.RichTransient.RichTransientAsync>" name="enumerable" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    array {
-      @parameter-model id="array" from="BodyOrForm" type="Baked.Playground.CodingStyle.RichTransient.RichTransientAsync[]" name="array" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  record-with-rich-transient-async {
-    @action-model id="RecordWithRichTransientAsync" name="RecordWithRichTransientAsync" method="POST" route="method-samples/record-with-rich-transient-async" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.RichTransient.RichTransientAsync>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    record {
-      @parameter-model id="record" from="BodyOrForm" type="Baked.Playground.Business.RecordWith<Baked.Playground.CodingStyle.RichTransient.RichTransientAsync>" name="record" internalName="record" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  record-with-rich-transient-async @action-model {
+    record @parameter-model
   }
 }
 

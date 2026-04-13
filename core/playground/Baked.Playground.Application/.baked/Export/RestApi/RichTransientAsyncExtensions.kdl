@@ -1,4 +1,2 @@
-rich-transient-async-extensions {
-  @controller-model id="Baked.Playground.CodingStyle.LocatableExtension.RichTransientAsyncExtensions" className="Playground_CodingStyle_LocatableExtension_RichTransientAsyncExtensions" groupName="RichTransientAsyncExtensions" orphan=#false
-}
+rich-transient-async-extensions @controller-model
 

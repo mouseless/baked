@@ -1,4 +1,2 @@
-singleton {
-  @controller-model id="Baked.Playground.Lifetime.Singleton" className="Playground_Lifetime_Singleton" groupName="Singleton" orphan=#false
-}
+singleton @controller-model
 

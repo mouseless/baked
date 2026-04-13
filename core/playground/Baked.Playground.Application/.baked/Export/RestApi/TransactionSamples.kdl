@@ -1,25 +1,12 @@
-transaction-samples {
-  @controller-model id="Baked.Playground.Database.TransactionSamples" className="Playground_Database_TransactionSamples" groupName="TransactionSamples" orphan=#false
-  commit-action {
-    @action-model id="CommitAction" name="CommitAction" method="POST" route="transaction-samples/commit-action" returnType="System.Threading.Tasks.Task" returnIsAsync=#true returnIsVoid=#true invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+transaction-samples @controller-model {
+  commit-action @action-model
+  commit-func @action-model
+  commit-nullable @action-model {
+    entity @parameter-model
+    string @parameter-model
   }
-  commit-func {
-    @action-model id="CommitFunc" name="CommitFunc" method="POST" route="transaction-samples/commit-func" returnType="System.Threading.Tasks.Task" returnIsAsync=#true returnIsVoid=#true invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-  }
-  commit-nullable {
-    @action-model id="CommitNullable" name="CommitNullable" method="POST" route="transaction-samples/commit-nullable" returnType="System.Threading.Tasks.Task" returnIsAsync=#true returnIsVoid=#true invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    entity {
-      @parameter-model id="entity" from="BodyOrForm" type="Baked.Playground.Orm.Entity" name="entity" internalName="entity" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-    string {
-      @parameter-model id="string" from="BodyOrForm" type="string" name="string" internalName="string" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
-  }
-  rollback {
-    @action-model id="Rollback" name="Rollback" method="POST" route="transaction-samples/rollback" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
-    string {
-      @parameter-model id="string" from="BodyOrForm" type="string" name="string" internalName="string" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+  rollback @action-model {
+    string @parameter-model
   }
 }
 

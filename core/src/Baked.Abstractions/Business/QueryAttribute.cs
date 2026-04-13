@@ -2,12 +2,7 @@
 
 [AttributeUsage(AttributeTargets.Class)]
 public class QueryAttribute(Type locatableType)
-    : Attribute(), IMetadataSerializer
+    : Attribute()
 {
     public Type LocatableType { get; } = locatableType;
-
-    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
-        [
-            new(LocatableType)
-        ];
 }

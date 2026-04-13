@@ -27,12 +27,20 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
         });
 
+        configurator.Domain.ConfigureAttributeDatas(datas =>
+        {
+            datas.Create<RequireUserAttribute>(require =>
+            [
+                new(require.Override),
+                new(require.Claims)
+            ]);
+        });
+
         configurator.Domain.ConfigureAttributeExportCollection(exports =>
         {
             exports.RestApi(restApi =>
             {
-                restApi.Include<RequireUserAttribute>()
-                    .AddPropertyFilter(_ => false);
+                restApi.Include<RequireUserAttribute>().RemoveData();
                 restApi.Include<AllowAnonymousAttribute>();
             });
         });

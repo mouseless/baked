@@ -2,16 +2,10 @@
 
 [AttributeUsage(AttributeTargets.Property)]
 public class IdAttribute(string RouteName)
-    : Attribute(), IMetadataSerializer
+    : Attribute()
 {
     public string RouteName { get; set; } = RouteName;
     public MappingOptions? Mapping { get; set; }
-
-    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
-        [
-            new(RouteName),
-            new(Mapping),
-        ];
 
     public record MappingOptions(Type UserType)
     {

@@ -1,6 +1,4 @@
 entity-with-value-type @entity {
-  id {
-    @id routeName="id"
-  }
+  id @id
 }
 

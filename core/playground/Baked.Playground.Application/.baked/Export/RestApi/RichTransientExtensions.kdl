@@ -1,4 +1,2 @@
-rich-transient-extensions {
-  @controller-model id="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtensions" className="Playground_CodingStyle_LocatableExtension_RichTransientExtensions" groupName="RichTransientExtensions" orphan=#false
-}
+rich-transient-extensions @controller-model
 

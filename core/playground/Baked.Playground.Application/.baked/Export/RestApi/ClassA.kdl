@@ -1,4 +1,2 @@
-class-a {
-  @controller-model id="Baked.Playground.Business.Casting.ClassA" className="Playground_Business_Casting_ClassA" groupName="ClassA" orphan=#false
-}
+class-a @controller-model
 

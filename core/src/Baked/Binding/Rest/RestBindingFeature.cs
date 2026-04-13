@@ -3,6 +3,7 @@ using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -15,6 +16,63 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.Domain.ConfigureAttributeDatas(datas =>
+        {
+            datas.Create<ControllerModelAttribute>(controller =>
+            [
+                new(controller.Id),
+                new(controller.ClassName),
+                new(controller.GroupName),
+                new(controller.Action),
+                new(controller.Orphan)
+            ]);
+            datas.Create<ActionModelAttribute>(action =>
+            [
+                new(action.Id),
+                new(action.Name),
+                new(action.Method),
+                new(action.ReturnType),
+                new(action.ReturnIsAsync),
+                new(action.ReturnIsVoid),
+                new(action.InvocationIsAsync),
+                new(action.UseForm),
+                new(action.UseRequestClassForBody),
+                new(action.AdditionalAttributes),
+                new(action.Order),
+                new(action.Orphan),
+                new(action.HasBody)
+            ]);
+            datas.Create<ParameterModelAttribute>(parameter =>
+            [
+                new(parameter.Id),
+                new(parameter.From),
+                new(parameter.Type),
+                new(parameter.Name),
+                new(parameter.InternalName),
+                new(parameter.IsOptional),
+                new(parameter. DefaultValue),
+                new(parameter.IsInvokeMethodParameter),
+                new(parameter.IsHardCoded),
+                new(parameter. Order),
+                new(parameter.RoutePosition),
+                new(parameter.AdditionalAttributes),
+                new(parameter.Orphan)
+            ]);
+        });
+
+        configurator.Domain.ConfigureAttributeExportCollection(exports =>
+        {
+            exports.RestApi(restApi =>
+            {
+                restApi.Include<ControllerModelAttribute>();
+                restApi.Include<ActionModelAttribute>()
+                    .AddData(action => new(Name: "Route", Value: action.GetRoute()));
+                restApi.Include<ParameterModelAttribute>();
+
+                restApi.TypeGroupName(type => type.Get<ControllerModelAttribute>().GroupName);
+            });
+        });
+
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // domain attribute indices

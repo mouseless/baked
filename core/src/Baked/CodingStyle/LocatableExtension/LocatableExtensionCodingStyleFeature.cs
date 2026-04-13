@@ -72,6 +72,14 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
             builder.Conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
         });
 
+        configurator.Domain.ConfigureAttributeDatas(datas =>
+        {
+            datas.Create<LocatableExtensionAttribute>(extension =>
+            [
+                new(extension.LocatableType)
+            ]);
+        });
+
         configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>

@@ -12,6 +12,14 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.Domain.ConfigureAttributeDatas(datas =>
+        {
+            datas.Create<ObjectWithListAttribute>(list =>
+            [
+                new(list.ListPropertyName)
+            ]);
+        });
+
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(

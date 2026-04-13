@@ -1,17 +1,10 @@
-entity-with-assigned-id {
-  @controller-model id="Baked.Playground.CodingStyle.Id.EntityWithAssignedId" className="Playground_CodingStyle_Id_EntityWithAssignedId" groupName="EntityWithAssignedIds" orphan=#false
-  with {
-    @action-model id="With" name="With" method="GET" route="entity-with-assigned-ids/{id}" returnType="Baked.Playground.CodingStyle.Id.EntityWithAssignedId" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-    id {
-      @parameter-model id="id" from="Route" type="Baked.Business.Id" name="id" internalName="id" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=1 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
-    }
+entity-with-assigned-id @controller-model {
+  with @action-model {
+    id @parameter-model
   }
 }
 
-entity-with-assigned-ids {
-  @controller-model id="Baked.Playground.CodingStyle.Id.EntityWithAssignedIds" className="Playground_CodingStyle_Id_EntityWithAssignedIds" groupName="EntityWithAssignedIds" orphan=#false
-  by {
-    @action-model id="By" name="" method="GET" route="entity-with-assigned-ids" returnType="System.Collections.Generic.List<Baked.Playground.CodingStyle.Id.EntityWithAssignedId>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-  }
+entity-with-assigned-ids @controller-model {
+  by @action-model
 }
 

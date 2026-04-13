@@ -67,6 +67,15 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
             builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
 
+        configurator.Domain.ConfigureAttributeDatas(datas =>
+        {
+            datas.Create<EntitySubclassAttribute>(subclass =>
+            [
+                new(subclass.EntityType),
+                new(subclass.Name)
+            ]);
+        });
+
         configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>

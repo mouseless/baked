@@ -1,9 +1,7 @@
-﻿using Baked.Business;
-
-namespace Baked.RestApi.Model;
+﻿namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class ControllerModelAttribute() : Attribute, IMetadataSerializer
+public class ControllerModelAttribute() : Attribute
 {
     public ControllerModelAttribute(string id, string className, string groupName, IEnumerable<ActionModelAttribute> actions)
         : this()
@@ -21,15 +19,6 @@ public class ControllerModelAttribute() : Attribute, IMetadataSerializer
     internal bool Initialized { get; private set; } = false;
 
     public IEnumerable<ActionModelAttribute> Actions => Action.Values.OrderBy(a => a.Order);
-
-    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
-        [
-            new(Id),
-            new(ClassName),
-            new(GroupName),
-            new(Action),
-            new(Orphan)
-        ];
 
     internal ControllerModelAttribute Init(string id, string className, string groupName, IEnumerable<ActionModelAttribute> actions)
     {

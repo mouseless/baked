@@ -1,7 +1,4 @@
-dependent-class {
-  @controller-model id="Baked.Playground.Business.DependentClass" className="Playground_Business_DependentClass" groupName="DependentClass" orphan=#false
-  method {
-    @action-model id="Method" name="Method" method="POST" route="dependent-class/method" returnType="System.Threading.Tasks.Task<Baked.Playground.Business.GenericClass<Baked.Playground.Business.DataType>>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
-  }
+dependent-class @controller-model {
+  method @action-model
 }
 

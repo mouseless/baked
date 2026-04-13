@@ -1,5 +1,4 @@
-﻿using Baked.Business;
-using Humanizer;
+﻿using Humanizer;
 
 namespace Baked.RestApi.Model;
 
@@ -9,7 +8,7 @@ public class ActionModelAttribute(
     string[]? routeParts = default,
     string[]? additionalAttributes = default,
     string[]? preparationStatements = default
-) : Attribute(), IMetadataSerializer
+) : Attribute()
 {
     public ActionModelAttribute(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
       : this()
@@ -73,24 +72,6 @@ public class ActionModelAttribute(
     public IEnumerable<ParameterModelAttribute> ServiceParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Services);
     public IEnumerable<ParameterModelAttribute> NonBodyParameters => NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModelAttribute> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
-
-    IEnumerable<MetadataProperty> IMetadataSerializer.Properties =>
-        [
-            new(Id),
-            new(Name),
-            new(Method),
-            new(Name: "Route", GetRoute()),
-            new(ReturnType),
-            new(ReturnIsAsync),
-            new(ReturnIsVoid),
-            new(InvocationIsAsync),
-            new(UseForm),
-            new(UseRequestClassForBody),
-            new(AdditionalAttributes),
-            new(Order),
-            new(Orphan),
-            new(HasBody)
-        ];
 
     internal ActionModelAttribute Init(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
     {

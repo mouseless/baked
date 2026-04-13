@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -47,6 +48,29 @@ public class DomainAssembliesBusinessFeature(
               }
             }
             """);
+        });
+
+        configurator.Domain.ConfigureAttributeDatas(datas =>
+        {
+            datas.Create<IdAttribute>(id => [
+                new(id.RouteName),
+                new(id.Mapping),
+            ]);
+            datas.Create<LocatableAttribute>(locatable => [
+                new(locatable.QueryType),
+                new(locatable.IsAsync)
+            ]);
+            datas.Create<MappedMethodAttribute>(mappedMethod => [
+                new(mappedMethod.TypeFullName),
+                new(mappedMethod.MethodName),
+            ]);
+            datas.Create<NamespaceAttribute>(@namespace => [
+                new(@namespace.Value)
+            ]);
+            datas.Create<QueryAttribute>(query =>
+            [
+                new(query.LocatableType)
+            ]);
         });
 
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
