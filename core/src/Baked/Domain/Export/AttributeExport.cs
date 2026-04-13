@@ -11,6 +11,8 @@ public record AttributeExport(string Name)
     public List<AttributeFilter> MethodFilters { get; set; } = [];
     public List<AttributeFilter> ParameterFilters { get; set; } = [];
     public List<AttributeFilter> PropertyFilters { get; set; } = [];
+    public ITypeExportSerializer Serializer { get; set; } = new KdlTypeExportSerializer();
+    public Func<TypeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
 
     public void Include<T>(
         Func<MetadataProperty, bool>? propertyFilter = default

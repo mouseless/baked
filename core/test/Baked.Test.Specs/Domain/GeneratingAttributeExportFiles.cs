@@ -85,7 +85,7 @@ public class GeneratingAttributeExportFiles : TestSpec
             ]
         );
         var exportSet = new ExportSetModel(new(new[] { typeExport }));
-        var contentGenerator = new AttributeExportFileContentGenerator(new());
+        var contentGenerator = new AttributeExportFileContentGenerator(new KdlTypeExportSerializer(), type => type.GroupName);
 
         var actual = contentGenerator.Generate(exportSet);
 
@@ -120,7 +120,7 @@ public class GeneratingAttributeExportFiles : TestSpec
        );
 
         var exportSet = new ExportSetModel(new(new[] { typeExportA, typeExportB, typeExportC }));
-        var contentGenerator = new AttributeExportFileContentGenerator(new());
+        var contentGenerator = new AttributeExportFileContentGenerator(new KdlTypeExportSerializer(), type => type.GroupName);
 
         var actual = contentGenerator.Generate(exportSet);
 

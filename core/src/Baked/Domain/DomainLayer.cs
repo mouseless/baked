@@ -96,7 +96,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         foreach (var (key, set) in _attributeExportCollection)
         {
             var model = new AttributeExportSetBuilder(set).Build(domain);
-            var contentGenerator = new AttributeExportFileContentGenerator(new());
+            var contentGenerator = new AttributeExportFileContentGenerator(set.Serializer, set.ContentGroupName);
             var contents = contentGenerator.Generate(model);
             foreach (var (fileName, content) in contents)
             {
