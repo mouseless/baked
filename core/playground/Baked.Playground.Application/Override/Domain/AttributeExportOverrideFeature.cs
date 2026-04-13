@@ -18,7 +18,6 @@ public class AttributeExportOverrideFeature : IFeature
                     export.Include<ScopedAttribute>();
                     export.Include<TransientAttribute>();
                     export.Include<InitializerAttribute>();
-                    export.Include<LocatableAttribute>();
 
                     export.TypeGroupName(type =>
                             type.Has<SingletonAttribute>() ? "Singleton" :
