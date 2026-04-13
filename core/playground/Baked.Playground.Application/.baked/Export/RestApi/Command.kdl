@@ -1,0 +1,41 @@
+clear-command {
+  @controller-model id="Baked.Playground.CodingStyle.CommandPattern.ClearCommand" className="Playground_CodingStyle_CommandPattern_ClearCommand" groupName="Command" orphan=#false
+  execute {
+    @action-model id="Execute" name="Command" method="DELETE" route="command" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    executeParam {
+      @parameter-model id="executeParam" from="Query" type="string" name="executeParam" internalName="executeParam" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+
+command {
+  @controller-model id="Baked.Playground.CodingStyle.CommandPattern.Command" className="Playground_CodingStyle_CommandPattern_Command" groupName="Command" orphan=#false
+  transient {
+    @action-model id="Transient" name="Transient" method="POST" route="command/transient" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    body {
+      @parameter-model id="body" from="BodyOrForm" type="string" name="body" internalName="body" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+
+execute-command {
+  @controller-model id="Baked.Playground.CodingStyle.CommandPattern.ExecuteCommand" className="Playground_CodingStyle_CommandPattern_ExecuteCommand" groupName="Command" orphan=#false
+  execute {
+    @action-model id="Execute" name="Command" method="POST" route="command" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+
+get-command {
+  @controller-model id="Baked.Playground.CodingStyle.CommandPattern.GetCommand" className="Playground_CodingStyle_CommandPattern_GetCommand" groupName="Command" orphan=#false
+  execute {
+    @action-model id="Execute" name="Command" method="GET" route="command" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+
+update-command {
+  @controller-model id="Baked.Playground.CodingStyle.CommandPattern.UpdateCommand" className="Playground_CodingStyle_CommandPattern_UpdateCommand" groupName="Command" orphan=#false
+  execute {
+    @action-model id="Execute" name="Command" method="PATCH" route="command" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+

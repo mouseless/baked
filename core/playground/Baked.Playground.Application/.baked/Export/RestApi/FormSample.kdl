@@ -1,0 +1,38 @@
+form-sample @allow-anonymous {
+  @controller-model id="Baked.Playground.Theme.FormSample" className="Playground_Theme_FormSample" groupName="FormSample" orphan=#false
+  new-parent @allow-anonymous {
+    @action-model id="NewParent" name="Parents" method="POST" route="form-sample/parents" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    name {
+      @parameter-model id="name" from="BodyOrForm" type="string" name="name" internalName="name" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    surname {
+      @parameter-model id="surname" from="BodyOrForm" type="string" name="surname" internalName="surname" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  clear-parents @allow-anonymous {
+    @action-model id="ClearParents" name="Parents" method="DELETE" route="form-sample/parents" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  get-parents @allow-anonymous {
+    @action-model id="GetParents" name="Parents" method="GET" route="form-sample/parents" returnType="System.Collections.Generic.List<Baked.Playground.Orm.Parent>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    take {
+      @parameter-model id="take" from="Query" type="int?" name="take" internalName="take" isOptional=#true defaultValue=10 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    skip {
+      @parameter-model id="skip" from="Query" type="int?" name="skip" internalName="skip" isOptional=#true defaultValue=0 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    sort {
+      @parameter-model id="sort" from="Query" type="Baked.Sort?" name="sort" internalName="sort" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-type @allow-anonymous
+  memberwise-clone @allow-anonymous
+  finalize @allow-anonymous
+  to-string @allow-anonymous
+  equals @allow-anonymous {
+    obj {
+      @parameter-model id="obj" from="BodyOrForm" type="object" name="obj" internalName="obj" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-hash-code @allow-anonymous
+}
+

@@ -1,0 +1,25 @@
+authorization-class-samples @require-user {
+  @controller-model id="Baked.Playground.Authorization.AuthorizationClassSamples" className="Playground_Authorization_AuthorizationClassSamples" groupName="AuthorizationClassSamples" orphan=#false
+  class-claims @require-user {
+    @action-model id="ClassClaims" name="ClassClaims" method="POST" route="authorization-class-samples/class-claims" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  method-over-class-claims @require-user {
+    @action-model id="MethodOverClassClaims" name="MethodOverClassClaims" method="POST" route="authorization-class-samples/method-over-class-claims" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  validate @require-user {
+    expectedClaims {
+      @parameter-model id="expectedClaims" from="BodyOrForm" type="string[]" name="expectedClaims" internalName="expectedClaims" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-type @require-user
+  memberwise-clone @require-user
+  finalize @require-user
+  to-string @require-user
+  equals @require-user {
+    obj {
+      @parameter-model id="obj" from="BodyOrForm" type="object" name="obj" internalName="obj" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-hash-code @require-user
+}
+

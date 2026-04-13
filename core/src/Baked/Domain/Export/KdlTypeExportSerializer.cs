@@ -92,7 +92,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
     string GetPropertyName(string name) =>
         $"{name[0].ToString().ToLowerInvariant()}{name[1..]}";
 
-    KdlValue GetValue(object value) =>
+    protected virtual KdlValue GetValue(object value) =>
         value.GetType() switch
         {
             var type when type.IsAssignableTo(typeof(IDictionary)) => KdlNull.Instance,

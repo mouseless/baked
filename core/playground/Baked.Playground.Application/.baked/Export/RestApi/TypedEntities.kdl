@@ -1,0 +1,43 @@
+a-typed-entity {
+  @controller-model id="Baked.Playground.CodingStyle.EntitySubclass.ATypedEntity" className="Playground_CodingStyle_EntitySubclass_ATypedEntity" groupName="TypedEntities" orphan=#false
+  with {
+    @action-model id="With" name="With" method="POST" route="typed-entities/a" returnType="Baked.Playground.CodingStyle.EntitySubclass.ATypedEntity" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  operate-on-a {
+    @action-model id="OperateOnA" name="OperateOnA" method="POST" route="typed-entities/a/operate-on-a" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+
+b-typed-entity {
+  @controller-model id="Baked.Playground.CodingStyle.EntitySubclass.BTypedEntity" className="Playground_CodingStyle_EntitySubclass_BTypedEntity" groupName="TypedEntities" orphan=#false
+  with {
+    @action-model id="With" name="With" method="POST" route="typed-entities/b" returnType="Baked.Playground.CodingStyle.EntitySubclass.BTypedEntity" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  operate-on-b {
+    @action-model id="OperateOnB" name="OperateOnB" method="POST" route="typed-entities/b/operate-on-b" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+
+typed-entity {
+  @controller-model id="Baked.Playground.CodingStyle.EntitySubclass.TypedEntity" className="Playground_CodingStyle_EntitySubclass_TypedEntity" groupName="TypedEntities" orphan=#false
+  delete {
+    @action-model id="Delete" name="" method="DELETE" route="typed-entities/{id}/" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+
+typed-entities {
+  @controller-model id="Baked.Playground.CodingStyle.EntitySubclass.TypedEntities" className="Playground_CodingStyle_EntitySubclass_TypedEntities" groupName="TypedEntities" orphan=#false
+  by {
+    @action-model id="By" name="" method="GET" route="typed-entities" returnType="System.Collections.Generic.List<Baked.Playground.CodingStyle.EntitySubclass.TypedEntity>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  single-by-type {
+    @action-model id="SingleByType" name="SingleType" method="GET" route="typed-entities/single-type" returnType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntity" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    type {
+      @parameter-model id="type" from="Query" type="Baked.Playground.CodingStyle.EntitySubclass.TypedEntityType" name="type" internalName="type" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    throwNotFound {
+      @parameter-model id="throwNotFound" from="Query" type="bool" name="throwNotFound" internalName="throwNotFound" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+

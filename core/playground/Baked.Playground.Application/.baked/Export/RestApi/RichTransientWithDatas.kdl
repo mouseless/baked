@@ -1,0 +1,23 @@
+rich-transient-with-data {
+  @controller-model id="Baked.Playground.CodingStyle.RichTransient.RichTransientWithData" className="Playground_CodingStyle_RichTransient_RichTransientWithData" groupName="RichTransientWithDatas" orphan=#false
+  with {
+    @action-model id="With" name="With" method="GET" route="rich-transient-with-datas/{id}" returnType="Baked.Playground.CodingStyle.RichTransient.RichTransientWithData" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    id {
+      @parameter-model id="id" from="Route" type="Baked.Business.Id" name="id" internalName="id" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=1 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  method {
+    @action-model id="Method" name="Method" method="POST" route="rich-transient-with-datas/{id}/method" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    text {
+      @parameter-model id="text" from="BodyOrForm" type="string" name="text" internalName="text" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+
+rich-transient-extension {
+  @controller-model id="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtension" className="Playground_CodingStyle_LocatableExtension_RichTransientExtension" groupName="RichTransientWithDatas" orphan=#false
+  from-extension {
+    @action-model id="FromExtension" name="FromExtension" method="POST" route="rich-transient-with-datas/{id}/from-extension" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+

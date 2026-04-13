@@ -1,0 +1,25 @@
+authorization-samples {
+  @controller-model id="Baked.Playground.Authorization.AuthorizationSamples" className="Playground_Authorization_AuthorizationSamples" groupName="AuthorizationSamples" orphan=#false
+  anonymous @allow-anonymous {
+    @action-model id="Anonymous" name="Anonymous" method="POST" route="authorization-samples/anonymous" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  admin @require-user {
+    @action-model id="Admin" name="Admin" method="POST" route="authorization-samples/admin" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  user @require-user {
+    @action-model id="User" name="User" method="POST" route="authorization-samples/user" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  authenticated @require-user {
+    @action-model id="Authenticated" name="Authenticated" method="POST" route="authorization-samples/authenticated" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  base-claims {
+    @action-model id="BaseClaims" name="BaseClaims" method="POST" route="authorization-samples/base-claims" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  given-claims @require-user {
+    @action-model id="GivenClaims" name="GivenClaims" method="POST" route="authorization-samples/given-claims" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  given-and-base-claims @require-user {
+    @action-model id="GivenAndBaseClaims" name="GivenAndBaseClaims" method="POST" route="authorization-samples/given-and-base-claims" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+

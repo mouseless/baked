@@ -85,6 +85,18 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             );
         });
 
+        configurator.Domain.ConfigureAttributeExportCollection(exports =>
+        {
+            exports.RestApi(restApi =>
+            {
+                restApi.Include<ControllerModelAttribute>();
+                restApi.Include<ActionModelAttribute>();
+                restApi.Include<ParameterModelAttribute>();
+
+                restApi.TypeGroupName(type => type.Get<ControllerModelAttribute>().GroupName);
+            });
+        });
+
         configurator.RestApi.ConfigureApiModel(api =>
         {
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");

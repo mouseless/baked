@@ -1,0 +1,4 @@
+data {
+  @controller-model id="Baked.Playground.Business.Data" className="Playground_Business_Data" groupName="Data" orphan=#false
+}
+

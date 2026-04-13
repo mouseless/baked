@@ -1,0 +1,83 @@
+parent {
+  @controller-model id="Baked.Playground.Orm.Parent" className="Playground_Orm_Parent" groupName="Parents" orphan=#false
+  with {
+    @action-model id="With" name="With" method="POST" route="parents" returnType="Baked.Playground.Orm.Parent" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    name {
+      @parameter-model id="name" from="BodyOrForm" type="string" name="name" internalName="name" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    surname {
+      @parameter-model id="surname" from="BodyOrForm" type="string" name="surname" internalName="surname" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-children {
+    @action-model id="GetChildren" name="Children" method="GET" route="parents/{id}/children" returnType="System.Collections.Generic.List<Baked.Playground.Orm.Child>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  add-child {
+    @action-model id="AddChild" name="Children" method="POST" route="parents/{id}/children" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    name {
+      @parameter-model id="name" from="BodyOrForm" type="string" name="name" internalName="name" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  update {
+    @action-model id="Update" name="" method="PUT" route="parents/{id}/" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    name {
+      @parameter-model id="name" from="BodyOrForm" type="string" name="name" internalName="name" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    surname {
+      @parameter-model id="surname" from="BodyOrForm" type="string" name="surname" internalName="surname" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    description {
+      @parameter-model id="description" from="BodyOrForm" type="string" name="description" internalName="description" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  remove-child {
+    @action-model id="RemoveChild" name="Children" method="DELETE" route="parents/{id}/children/{childId}" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    child {
+      @parameter-model id="child" from="Route" type="Baked.Business.Id" name="childId" internalName="child" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=3 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  delete {
+    @action-model id="Delete" name="" method="DELETE" route="parents/{id}/" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+
+parents {
+  @controller-model id="Baked.Playground.Orm.Parents" className="Playground_Orm_Parents" groupName="Parents" orphan=#false
+  by {
+    @action-model id="By" name="" method="GET" route="parents" returnType="System.Collections.Generic.List<Baked.Playground.Orm.Parent>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    name {
+      @parameter-model id="name" from="Query" type="string" name="name" internalName="name" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    asc {
+      @parameter-model id="asc" from="Query" type="bool" name="asc" internalName="asc" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    desc {
+      @parameter-model id="desc" from="Query" type="bool" name="desc" internalName="desc" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    take {
+      @parameter-model id="take" from="Query" type="int?" name="take" internalName="take" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    skip {
+      @parameter-model id="skip" from="Query" type="int?" name="skip" internalName="skip" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  by-name {
+    @action-model id="ByName" name="Name" method="GET" route="parents/name" returnType="System.Collections.Generic.List<Baked.Playground.Orm.Parent>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    contains {
+      @parameter-model id="contains" from="Query" type="string" name="contains" internalName="contains" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    asc {
+      @parameter-model id="asc" from="Query" type="bool" name="asc" internalName="asc" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    desc {
+      @parameter-model id="desc" from="Query" type="bool" name="desc" internalName="desc" isOptional=#true defaultValue=#false isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    take {
+      @parameter-model id="take" from="Query" type="int?" name="take" internalName="take" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    skip {
+      @parameter-model id="skip" from="Query" type="int?" name="skip" internalName="skip" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+

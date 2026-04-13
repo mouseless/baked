@@ -1,0 +1,25 @@
+cache-samples @allow-anonymous {
+  @controller-model id="Baked.Playground.Caching.CacheSamples" className="Playground_Caching_CacheSamples" groupName="CacheSamples" orphan=#false
+  with @allow-anonymous {
+    parameter {
+      @parameter-model id="parameter" from="Query" type="Baked.Playground.Caching.CacheKey" name="parameter" internalName="parameter" isOptional=#false defaultValue="" isInvokeMethodParameter=#false isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-scoped @allow-anonymous {
+    @action-model id="GetScoped" name="Scoped" method="GET" route="cache-samples/scoped" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  get-application @allow-anonymous {
+    @action-model id="GetApplication" name="Application" method="GET" route="cache-samples/application" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  get-type @allow-anonymous
+  memberwise-clone @allow-anonymous
+  finalize @allow-anonymous
+  to-string @allow-anonymous
+  equals @allow-anonymous {
+    obj {
+      @parameter-model id="obj" from="BodyOrForm" type="object" name="obj" internalName="obj" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-hash-code @allow-anonymous
+}
+

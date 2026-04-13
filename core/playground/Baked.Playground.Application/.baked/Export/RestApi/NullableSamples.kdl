@@ -1,0 +1,208 @@
+nullable-samples {
+  @controller-model id="Baked.Playground.CodingStyle.UseNullableTypes.NullableSamples" className="Playground_CodingStyle_UseNullableTypes_NullableSamples" groupName="NullableSamples" orphan=#false
+  get-value-type {
+    @action-model id="GetValueType" name="ValueType" method="GET" route="nullable-samples/value-type" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    notNull {
+      @parameter-model id="notNull" from="Query" type="int" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="Query" type="int?" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optional {
+      @parameter-model id="optional" from="Query" type="int" name="optional" internalName="optional" isOptional=#true defaultValue=42 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="Query" type="int?" name="optionalNullable" internalName="optionalNullable" isOptional=#true defaultValue=42 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  value-type {
+    @action-model id="ValueType" name="ValueType" method="POST" route="nullable-samples/value-type" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    notNull {
+      @parameter-model id="notNull" from="BodyOrForm" type="int" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="BodyOrForm" type="int?" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optional {
+      @parameter-model id="optional" from="BodyOrForm" type="int" name="optional" internalName="optional" isOptional=#true defaultValue=42 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="BodyOrForm" type="int?" name="optionalNullable" internalName="optionalNullable" isOptional=#true defaultValue=42 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-enum {
+    @action-model id="GetEnum" name="Enum" method="GET" route="nullable-samples/enum" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    notNull {
+      @parameter-model id="notNull" from="Query" type="Baked.Playground.Orm.Enumeration" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="Query" type="Baked.Playground.Orm.Enumeration?" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optional {
+      @parameter-model id="optional" from="Query" type="Baked.Playground.Orm.Enumeration" name="optional" internalName="optional" isOptional=#true defaultValue="Member1" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="Query" type="Baked.Playground.Orm.Enumeration?" name="optionalNullable" internalName="optionalNullable" isOptional=#true defaultValue=1 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  enum {
+    @action-model id="Enum" name="Enum" method="POST" route="nullable-samples/enum" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    notNull {
+      @parameter-model id="notNull" from="BodyOrForm" type="Baked.Playground.Orm.Enumeration" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="BodyOrForm" type="Baked.Playground.Orm.Enumeration?" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optional {
+      @parameter-model id="optional" from="BodyOrForm" type="Baked.Playground.Orm.Enumeration" name="optional" internalName="optional" isOptional=#true defaultValue="Member1" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="BodyOrForm" type="Baked.Playground.Orm.Enumeration?" name="optionalNullable" internalName="optionalNullable" isOptional=#true defaultValue=1 isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-reference-type {
+    @action-model id="GetReferenceType" name="ReferenceType" method="GET" route="nullable-samples/reference-type" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    notNull {
+      @parameter-model id="notNull" from="Query" type="string" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="Query" type="string" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optional {
+      @parameter-model id="optional" from="Query" type="string" name="optional" internalName="optional" isOptional=#true defaultValue="default" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="Query" type="string" name="optionalNullable" internalName="optionalNullable" isOptional=#true defaultValue="default" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  reference-type {
+    @action-model id="ReferenceType" name="ReferenceType" method="POST" route="nullable-samples/reference-type" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    notNull {
+      @parameter-model id="notNull" from="BodyOrForm" type="string" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="BodyOrForm" type="string" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optional {
+      @parameter-model id="optional" from="BodyOrForm" type="string" name="optional" internalName="optional" isOptional=#true defaultValue="default" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="BodyOrForm" type="string" name="optionalNullable" internalName="optionalNullable" isOptional=#true defaultValue="default" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  record {
+    @action-model id="Record" name="Record" method="POST" route="nullable-samples/record" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    notNull {
+      @parameter-model id="notNull" from="BodyOrForm" type="Baked.Playground.Business.Record" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="BodyOrForm" type="Baked.Playground.Business.Record" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="BodyOrForm" type="Baked.Playground.Business.Record" name="optionalNullable" internalName="optionalNullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-entity {
+    @action-model id="GetEntity" name="Entity" method="GET" route="nullable-samples/entity" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    notNull {
+      @parameter-model id="notNull" from="Query" type="Baked.Business.Id" name="notNullId" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="Query" type="Baked.Business.Id?" name="nullableId" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="Query" type="Baked.Business.Id?" name="optionalNullableId" internalName="optionalNullable" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  entity {
+    @action-model id="Entity" name="Entity" method="POST" route="nullable-samples/entity" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    notNull {
+      @parameter-model id="notNull" from="BodyOrForm" type="Baked.Playground.Orm.Entity" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="BodyOrForm" type="Baked.Playground.Orm.Entity" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="BodyOrForm" type="Baked.Playground.Orm.Entity" name="optionalNullable" internalName="optionalNullable" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-entity-extension {
+    @action-model id="GetEntityExtension" name="EntityExtension" method="GET" route="nullable-samples/entity-extension" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    notNull {
+      @parameter-model id="notNull" from="Query" type="Baked.Business.Id" name="notNullId" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="Query" type="Baked.Business.Id?" name="nullableId" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="Query" type="Baked.Business.Id?" name="optionalNullableId" internalName="optionalNullable" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  entity-extension {
+    @action-model id="EntityExtension" name="EntityExtension" method="POST" route="nullable-samples/entity-extension" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    notNull {
+      @parameter-model id="notNull" from="BodyOrForm" type="Baked.Playground.CodingStyle.LocatableExtension.EntityExtension" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="BodyOrForm" type="Baked.Playground.CodingStyle.LocatableExtension.EntityExtension" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="BodyOrForm" type="Baked.Playground.CodingStyle.LocatableExtension.EntityExtension" name="optionalNullable" internalName="optionalNullable" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-rich-transient {
+    @action-model id="GetRichTransient" name="RichTransient" method="GET" route="nullable-samples/rich-transient" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    notNull {
+      @parameter-model id="notNull" from="Query" type="Baked.Business.Id" name="notNullId" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="Query" type="Baked.Business.Id?" name="nullableId" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="Query" type="Baked.Business.Id?" name="optionalNullableId" internalName="optionalNullable" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  rich-transient {
+    @action-model id="RichTransient" name="RichTransient" method="POST" route="nullable-samples/rich-transient" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    notNull {
+      @parameter-model id="notNull" from="BodyOrForm" type="Baked.Playground.CodingStyle.RichTransient.RichTransientWithData" name="notNull" internalName="notNull" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    nullable {
+      @parameter-model id="nullable" from="BodyOrForm" type="Baked.Playground.CodingStyle.RichTransient.RichTransientWithData" name="nullable" internalName="nullable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optionalNullable {
+      @parameter-model id="optionalNullable" from="BodyOrForm" type="Baked.Playground.CodingStyle.RichTransient.RichTransientWithData" name="optionalNullable" internalName="optionalNullable" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-value-type-parameters {
+    @action-model id="GetValueTypeParameters" name="ValueTypeParameters" method="GET" route="nullable-samples/value-type-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value?>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    single {
+      @parameter-model id="single" from="Query" type="Baked.Playground.CodingStyle.ValueType.Value?" name="single" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    enumerable {
+      @parameter-model id="enumerable" from="Query" type="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value?>" name="enumerable" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    array {
+      @parameter-model id="array" from="Query" type="Baked.Playground.CodingStyle.ValueType.Value?[]" name="array" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  value-type-parameters {
+    @action-model id="ValueTypeParameters" name="ValueTypeParameters" method="POST" route="nullable-samples/value-type-parameters" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value?>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    single {
+      @parameter-model id="single" from="BodyOrForm" type="Baked.Playground.CodingStyle.ValueType.Value?" name="single" internalName="single" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    enumerable {
+      @parameter-model id="enumerable" from="BodyOrForm" type="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value?>" name="enumerable" internalName="enumerable" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    array {
+      @parameter-model id="array" from="BodyOrForm" type="Baked.Playground.CodingStyle.ValueType.Value?[]" name="array" internalName="array" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  record-with-value-type {
+    @action-model id="RecordWithValueType" name="RecordWithValueType" method="POST" route="nullable-samples/record-with-value-type" returnType="System.Collections.Generic.IEnumerable<Baked.Playground.CodingStyle.ValueType.Value?>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    record {
+      @parameter-model id="record" from="BodyOrForm" type="Baked.Playground.Business.RecordWith<Baked.Playground.CodingStyle.ValueType.Value?>" name="record" internalName="record" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+

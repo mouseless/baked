@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
+using Baked.Authorization;
 using Baked.Business;
 using Baked.Lifetime;
-using Baked.Orm;
 
 namespace Baked.Playground.Override.Domain;
 
@@ -12,23 +12,6 @@ public class AttributeExportOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureAttributeExportCollection(exports =>
         {
-            configurator.Domain.UsingDomainModel(domain =>
-            {
-                exports.Build("Orm",
-                    export =>
-                    {
-                        export.Include<EntityAttribute>();
-                        export.Include<IdAttribute>();
-                        export.Include<LabelAttribute>();
-                        export.Include<QueryAttribute>();
-
-                        export.TypeGroupName(type =>
-                                type.TryGetLocatableType(domain, out var locatableType) ? locatableType.Name :
-                                type.Name
-                            );
-                    });
-            });
-
             exports.Build("Business",
                 export =>
                 {
@@ -46,6 +29,12 @@ public class AttributeExportOverrideFeature : IFeature
                         );
                 }
             );
+
+            exports.RestApi(restApi =>
+            {
+                restApi.Include<RequireUserAttribute>(_ => false);
+                restApi.Include<AllowAnonymousAttribute>();
+            });
         });
     }
 }

@@ -1,0 +1,4 @@
+class-with-multiple-generic-interfaces {
+  @controller-model id="Baked.Playground.Business.ClassWithMultipleGenericInterfaces" className="Playground_Business_ClassWithMultipleGenericInterfaces" groupName="ClassWithMultipleGenericInterfaces" orphan=#false
+}
+

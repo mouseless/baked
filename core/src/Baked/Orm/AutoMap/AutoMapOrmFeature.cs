@@ -38,6 +38,24 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
+        configurator.Domain.ConfigureAttributeExportCollection(exports =>
+        {
+            configurator.Domain.UsingDomainModel(domain =>
+            {
+                exports.AutoMap(export =>
+                {
+                    export.Include<EntityAttribute>();
+                    export.Include<IdAttribute>();
+                    export.Include<UniqueAttribute>();
+
+                    export.TypeGroupName(type =>
+                        type.TryGetLocatableType(domain, out var locatableType) ? locatableType.Name :
+                        type.Name
+                    );
+                });
+            });
+        });
+
         configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>

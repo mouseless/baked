@@ -1,0 +1,16 @@
+resource-samples {
+  @controller-model id="Baked.Playground.Core.ResourceSamples" className="Playground_Core_ResourceSamples" groupName="ResourceSamples" orphan=#false
+  read {
+    @action-model id="Read" name="Read" method="POST" route="resource-samples/read" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    subPath {
+      @parameter-model id="subPath" from="BodyOrForm" type="string" name="subPath" internalName="subPath" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  read-async {
+    @action-model id="ReadAsync" name="ReadAsync" method="POST" route="resource-samples/read-async" returnType="System.Threading.Tasks.Task<string>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    subPath {
+      @parameter-model id="subPath" from="BodyOrForm" type="string" name="subPath" internalName="subPath" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+

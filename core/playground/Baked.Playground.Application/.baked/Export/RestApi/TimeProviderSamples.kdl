@@ -1,0 +1,13 @@
+time-provider-samples {
+  @controller-model id="Baked.Playground.Core.TimeProviderSamples" className="Playground_Core_TimeProviderSamples" groupName="TimeProviderSamples" orphan=#false
+  get-now {
+    @action-model id="GetNow" name="Now" method="GET" route="time-provider-samples/now" returnType="System.DateTime" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  get-utc-now {
+    @action-model id="GetUtcNow" name="UtcNow" method="GET" route="time-provider-samples/utc-now" returnType="System.DateTimeOffset" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+  get-local-now {
+    @action-model id="GetLocalNow" name="LocalNow" method="GET" route="time-provider-samples/local-now" returnType="System.DateTimeOffset" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+

@@ -1,0 +1,22 @@
+rich-transient-with-custom-id-property {
+  @controller-model id="Baked.Playground.CodingStyle.RichTransient.RichTransientWithCustomIdProperty" className="Playground_CodingStyle_RichTransient_RichTransientWithCustomIdProperty" groupName="RichTransientWithCustomIdProperties" orphan=#false
+  with {
+    @action-model id="With" name="With" method="GET" route="rich-transient-with-custom-id-properties/{uid}" returnType="Baked.Playground.CodingStyle.RichTransient.RichTransientWithCustomIdProperty" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    uid {
+      @parameter-model id="uid" from="Route" type="Baked.Business.Id" name="uid" internalName="uid" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=1 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-test-custom-id-property-name {
+    @action-model id="GetTestCustomIdPropertyName" name="TestCustomIdPropertyName" method="GET" route="rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name" returnType="Baked.Playground.CodingStyle.RichTransient.RichTransientWithCustomIdProperty" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    other {
+      @parameter-model id="other" from="Query" type="Baked.Business.Id" name="otherUid" internalName="other" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  test-custom-id-property-name {
+    @action-model id="TestCustomIdPropertyName" name="TestCustomIdPropertyName" method="POST" route="rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name" returnType="Baked.Playground.CodingStyle.RichTransient.RichTransientWithCustomIdProperty" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    other {
+      @parameter-model id="other" from="BodyOrForm" type="Baked.Playground.CodingStyle.RichTransient.RichTransientWithCustomIdProperty" name="other" internalName="other" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+
