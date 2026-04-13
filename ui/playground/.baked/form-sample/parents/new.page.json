@@ -31,7 +31,6 @@
     "inputs": [
       {
         "name": "name",
-        "required": true,
         "component": {
           "type": "InputText",
           "schema": {

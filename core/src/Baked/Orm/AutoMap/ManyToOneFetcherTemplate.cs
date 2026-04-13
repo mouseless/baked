@@ -5,7 +5,7 @@ namespace Baked.Orm.AutoMap;
 
 public class ManyToOneFetcherTemplate : CodeTemplateBase
 {
-    public static string[] GlobalUsings =
+    public static readonly string[] GlobalUsings =
         [
             "Baked.Orm",
             "Baked.Runtime",
@@ -41,9 +41,9 @@ public class ManyToOneFetcherTemplate : CodeTemplateBase
         {
             public void AddServices(IServiceCollection services)
             {
-            {{ForEach(_entities, entity => $$"""
+        {{ForEach(_entities, entity => $$"""
                 services.AddSingleton<IManyToOneFetcher<{{entity.CSharpFriendlyFullName}}>, {{entity.Name}}ManyToOneFetcher>();
-            """)}}
+        """, indentation: 1)}}
             }
         }
     """;
@@ -55,9 +55,9 @@ public class ManyToOneFetcherTemplate : CodeTemplateBase
         {
             public IQueryable<{{entity.CSharpFriendlyFullName}}> Fetch(IQueryable<{{entity.CSharpFriendlyFullName}}> query)
             {
-            {{ForEach(entity.Properties.Where(p => p.PropertyType.TryGetMetadata(out var property) && property.Has<EntityAttribute>()), property => $$"""
+        {{ForEach(entity.GetEntityReferenceProperties(), property => $$"""
                 query = query.Fetch(e => e.{{property.Name}});
-            """)}}
+        """, indentation: 1)}}
 
                 return query;
             }

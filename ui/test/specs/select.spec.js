@@ -302,6 +302,7 @@ test.describe("Remove Float Label on Select", () => {
     await expect(component.locator(primevue.select.base)).toBeAttached();
     await component.click();
     await options.nth(1).click();
+    await page.waitForTimeout(100); // waits for animation to finish
 
     await expect(component.locator(primevue.select.label)).toHaveScreenshot();
   });

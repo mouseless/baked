@@ -18,6 +18,9 @@ method-samples {
   get-strings {
     @action-model id="GetStrings" name="Strings" method="GET" route="method-samples/strings" returnType="System.Collections.Generic.List<string>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
   }
+  get-data {
+    @action-model id="GetData" name="Data" method="GET" route="method-samples/data" returnType="Baked.Playground.Business.Data" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
   set-setting {
     @action-model id="SetSetting" name="Setting" method="PATCH" route="method-samples/setting" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
     value {
@@ -28,6 +31,15 @@ method-samples {
     @action-model id="AddString" name="Strings" method="POST" route="method-samples/strings" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
     string {
       @parameter-model id="string" from="BodyOrForm" type="string" name="string" internalName="string" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  parameters {
+    @action-model id="Parameters" name="Parameters" method="POST" route="method-samples/parameters" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true
+    required {
+      @parameter-model id="required" from="BodyOrForm" type="string" name="required" internalName="required" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+    optional {
+      @parameter-model id="optional" from="BodyOrForm" type="string" name="optional" internalName="optional" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
     }
   }
   void-async {

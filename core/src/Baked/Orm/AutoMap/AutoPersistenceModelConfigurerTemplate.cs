@@ -5,7 +5,7 @@ namespace Baked.Orm.AutoMap;
 
 public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
 {
-    public static string[] GlobalUsings =
+    public static readonly string[] GlobalUsings =
         [
             "Baked.Orm",
             "FluentNHibernate.Automapping",

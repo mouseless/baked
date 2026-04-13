@@ -36,8 +36,6 @@ entity-with-value-types @singleton
 
 nullable-samples @singleton
 
-route-sample @singleton
-
 entity-extensions @singleton
 
 rich-transient-async-extensions @singleton

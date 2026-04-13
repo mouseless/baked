@@ -3,19 +3,21 @@ using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.NamespaceAsRoute;
 
-public class UseNamespaceForBaseRouteConvention : IDomainModelConvention<MethodModelContext>
+public class UseNamespaceForBaseRouteConvention : IDomainModelConvention<TypeModelMetadataContext>
 {
-    public void Apply(MethodModelContext context)
+    public void Apply(TypeModelMetadataContext context)
     {
         if (!context.Type.TryGetNamespace(out var @namespace)) { return; }
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Type.TryGet<ControllerModelAttribute>(out var controller)) { return; }
 
         var baseRoute = @namespace.Split(".");
-
-        action.RouteParts.InsertRange(0, baseRoute);
-        foreach (var routeParameter in action.Parameters.Where(pm => pm.FromRoute))
+        foreach (var action in controller.Actions)
         {
-            routeParameter.RoutePosition += baseRoute.Length;
+            action.RouteParts.InsertRange(0, baseRoute);
+            foreach (var routeParameter in action.Parameters.Where(pm => pm.FromRoute))
+            {
+                routeParameter.RoutePosition += baseRoute.Length;
+            }
         }
     }
 }

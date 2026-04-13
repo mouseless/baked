@@ -17,15 +17,32 @@ public static class Actions
 
     public class Composables
     {
-        public LocalAction UseRedirectBack() =>
-            UseRedirect(options: la => la.Options = Inline(new { back = true }));
+        public LocalAction UseRedirectBack(
+            string? expected = null
+        ) => UseRedirect(
+            expected: expected,
+            options: la => la.Options = Inline(new { back = true })
+        );
 
-        public LocalAction UseRedirect(string route) =>
-            UseRedirect(options: la => la.Options = Inline(new { route }));
+        public LocalAction UseRedirect(string route,
+            string? expected = null
+        ) => UseRedirect(
+            expected: expected,
+            options: la => la.Options = Inline(new { route })
+        );
 
-        public LocalAction UseRedirect(
-            Action<LocalAction>? options = default
-        ) => Use("Redirect", options);
+        public LocalAction UseRedirect(Action<LocalAction>? options,
+            string? expected = null
+        ) => Use("Redirect", la =>
+            {
+                options.Apply(la);
+
+                if (expected is not null)
+                {
+                    la.Options += Inline(new { expected });
+                    la.Options += Context.Model(options: m => m.TargetProp = "actual");
+                }
+            });
 
         public LocalAction Use(string composable,
             Action<LocalAction>? options = default

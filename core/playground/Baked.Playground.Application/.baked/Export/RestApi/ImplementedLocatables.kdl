@@ -1,0 +1,10 @@
+implemented-locatable {
+  @controller-model id="Baked.Playground.CodingStyle.Locatable.ImplementedLocatable" className="Playground_CodingStyle_Locatable_ImplementedLocatable" groupName="ImplementedLocatables" orphan=#false
+  with {
+    @action-model id="With" name="With" method="GET" route="implemented-locatables/{id}" returnType="Baked.Playground.CodingStyle.Locatable.ImplementedLocatable" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+    id {
+      @parameter-model id="id" from="Route" type="Baked.Business.Id" name="id" internalName="id" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=1 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+}
+

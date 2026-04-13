@@ -7,7 +7,7 @@ namespace Baked.CodingStyle.Locatable;
 
 public class LocatableTemplate : CodeTemplateBase
 {
-    public static string[] GlobalUsings =
+    public static readonly string[] GlobalUsings =
         [
             "Baked.Business",
             "Baked.CodingStyle.Locatable",

@@ -27,11 +27,18 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public List<string> GetStrings() =>
         _strings;
 
+    public Data GetData() =>
+        new("data", 42);
+
     public void SetSetting(string value) =>
         _strings.Add(value);
 
     public void AddString(string @string) =>
         _strings.Add(@string);
+
+    public void Parameters(string required,
+        string? optional = default
+    ) => _logger.LogInformation($"{nameof(Parameters)} was called with (required: {required}, optional: {optional})");
 
     public async Task VoidAsync()
     {

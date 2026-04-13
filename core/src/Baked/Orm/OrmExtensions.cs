@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Model;
 using Baked.Orm;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,16 @@ public static class OrmExtensions
     {
         public void AddOrm(FeatureFunc<OrmConfigurator> configure) =>
             features.Add(configure(new()));
+    }
+
+    extension(TypeModelMembers members)
+    {
+        public IEnumerable<PropertyModel> GetEntityReferenceProperties() =>
+            members.Properties.Where(p =>
+                p.IsAutoProperty &&
+                p.PropertyType.TryGetMetadata(out var metadata) &&
+                metadata.Has<EntityAttribute>()
+            );
     }
 
     extension(object @object)

@@ -109,8 +109,8 @@ function setSelected(value) {
 }
 
 .p-popover-content {
-  .b-component--SelectButton.p-selectbutton {
-    @apply max-sm:flex-col;
+  .b-component--SelectButton .p-selectbutton {
+    @apply max-sm:flex max-sm:flex-col;
 
     .p-togglebutton {
       &:first-child {

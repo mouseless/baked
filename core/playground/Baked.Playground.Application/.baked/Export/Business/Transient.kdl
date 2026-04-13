@@ -73,6 +73,16 @@ rich-transient-with-data @transient {
   with @initializer
 }
 
+route-sample @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
+implemented-locatable @transient {
+  @locatable isAsync=#false
+  with @initializer
+}
+
 entity-extension @transient {
   @locatable queryType="Baked.Playground.CodingStyle.LocatableExtension.EntityExtensions" isAsync=#false
   with @initializer

@@ -7,6 +7,7 @@ public record PropertyModel(
     TypeModelReference PropertyTypeReference,
     bool IsPublic,
     bool IsVirtual,
+    bool IsAutoProperty,
     AttributeCollection CustomAttributes
 ) : IModel, ICustomAttributesModel, IDocumentedModel
 {

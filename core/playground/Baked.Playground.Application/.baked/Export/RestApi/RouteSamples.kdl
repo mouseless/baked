@@ -1,0 +1,7 @@
+route-sample {
+  @controller-model id="Baked.Playground.CodingStyle.NamespaceAsRoute.RouteSample" className="Playground_CodingStyle_NamespaceAsRoute_RouteSample" groupName="RouteSamples" orphan=#false
+  method {
+    @action-model id="Method" name="Method" method="POST" route="coding-style/namespace-as-route/route-samples/{id}/method" returnType="void" returnIsAsync=#false returnIsVoid=#true invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false
+  }
+}
+

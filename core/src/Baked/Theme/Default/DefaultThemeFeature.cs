@@ -159,7 +159,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: UiLayer.MinConventionOrder + 10
             );
             builder.Conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.SkipNullable().Is<int>(),
+                when: c =>
+                    c.Parameter.ParameterType.SkipNullable().Is<int>() ||
+                    c.Parameter.ParameterType.SkipNullable().Is<long>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );

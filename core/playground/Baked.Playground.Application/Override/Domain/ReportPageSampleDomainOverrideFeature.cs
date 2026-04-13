@@ -8,9 +8,9 @@ using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
 
-namespace Baked.Playground.Override.Ui;
+namespace Baked.Playground.Override.Domain;
 
-public class ReportPageSampleUiOverrideFeature : IFeature
+public class ReportPageSampleDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
