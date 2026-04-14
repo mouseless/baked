@@ -1,6 +1,6 @@
 ﻿namespace Baked.Business;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
 public class LocatableAttribute : Attribute
 {
     public Type? QueryType { get; set; }

@@ -7,6 +7,11 @@ public class TypeModelMetadata : TypeModelInheritance, ICustomAttributesModel
 {
     public AttributeCollection CustomAttributes { get; private set; } = default!;
 
+    AttributeTargets ICustomAttributesModel.Target =>
+            IsEnum ? AttributeTargets.Enum :
+            IsInterface ? AttributeTargets.Interface :
+            IsValueType ? AttributeTargets.Struct :
+            AttributeTargets.Class;
     AttributeCollection ICustomAttributesModel.CustomAttributes => CustomAttributes;
 
     public new class Factory : TypeModelInheritance.Factory
@@ -19,16 +24,7 @@ public class TypeModelMetadata : TypeModelInheritance, ICustomAttributesModel
 
             if (result is not TypeModelMetadata metadata) { return; }
 
-            metadata.CustomAttributes = new(result.Name, type.GetCustomAttributes(), GetTarget(result));
-        }
-
-        AttributeTargets GetTarget(TypeModel type)
-        {
-            return
-                type.IsEnum ? AttributeTargets.Enum :
-                type.IsInterface ? AttributeTargets.Interface :
-                type.IsValueType ? AttributeTargets.Struct :
-                AttributeTargets.Class;
+            metadata.CustomAttributes = new(result.Name, type.GetCustomAttributes());
         }
     }
 }

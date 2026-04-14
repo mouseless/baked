@@ -19,6 +19,10 @@ public class SetAttributeConvention<TModelContext>(
         }
     }
 
-    void Set(ICustomAttributesModel model, Attribute attribute) =>
+    void Set(ICustomAttributesModel model, Attribute attribute)
+    {
+        IAddRemoveAttributeConvention.ThrowIfNotTarget(model, attribute);
+
         ((IMutableAttributeCollection)model.CustomAttributes).Set(attribute);
+    }
 }

@@ -90,7 +90,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                     property.GetMethod?.IsPublic == true && property.GetMethod?.IsOriginallyPublic() == true,
                     property.GetMethod?.IsVirtual == true,
                     property.IsAutoProperty,
-                    new($"{type.Name}.{property.Name}", property.GetCustomAttributes(), AttributeTargets.Property)
+                    new($"{type.Name}.{property.Name}", property.GetCustomAttributes())
                 )
                 {
                     Documentation = XmlComments.Get(property)
@@ -108,7 +108,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                         methodsByName.Key,
                         builder.Options.DefaultOverloadSelector(overloads),
                         overloads,
-                        new($"{type.Name}.{methodsByName.Key}", methodsByName.SelectMany(m => m.GetCustomAttributes()), AttributeTargets.Constructor | AttributeTargets.Method)
+                        new($"{type.Name}.{methodsByName.Key}", methodsByName.SelectMany(m => m.GetCustomAttributes()))
                     ));
                 }
 
@@ -125,7 +125,9 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
 
                 var documentation = XmlComments.Get(methodInfo);
 
-                return new(
+                try
+                {
+                    return new(
                     methodInfo.IsPublic && methodInfo.IsOriginallyPublic(),
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
@@ -136,9 +138,14 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                     methodInfo.DeclaringType is not null ? builder.GetReference(methodInfo.DeclaringType) : null,
                     baseDefinition is not null ? BuildMethod(baseDefinition) : null
                 )
+                    {
+                        Documentation = documentation
+                    };
+                }
+                catch (Exception e)
                 {
-                    Documentation = documentation
-                };
+                    throw new(methodInfo.DeclaringType + "." + methodInfo.Name, e);
+                }
             }
 
             ModelCollection<ParameterModel> BuildParameters(MethodBase method, XmlNode? methodDocumentation)
@@ -153,7 +160,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                     builder.GetReference(parameter.ParameterType),
                     parameter.IsOptional,
                     parameter.DefaultValue,
-                    new($"{type.Name}.{method.Name}.{parameter.Name}", parameter.Member.GetCustomAttributes(), AttributeTargets.Parameter),
+                    new($"{type.Name}.{method.Name}.{parameter.Name}", parameter.Member.GetCustomAttributes()),
                     apply => apply(parameter)
                 )
                 {

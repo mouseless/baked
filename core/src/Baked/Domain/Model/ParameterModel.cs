@@ -15,6 +15,7 @@ public record ParameterModel(
     public TypeModel ParameterType => ParameterTypeReference.Model;
 
     string IModel.Id => Name;
+    AttributeTargets ICustomAttributesModel.Target => AttributeTargets.Parameter;
 
     public XmlNode? Documentation { get; init; }
 }
