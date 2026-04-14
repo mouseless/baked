@@ -14,7 +14,7 @@ import { AwaitLoading } from "#components";
 
 const { truncate } = useFormat();
 
-const { schema, data: raw } = defineProps({
+const { schema, data: rawData } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
@@ -22,10 +22,10 @@ const { schema, data: raw } = defineProps({
 const { maxLength, prop } = schema;
 
 const data = computed(() => {
-  if(!raw) { return null; }
-  if(prop) { return raw[prop]; }
+  if(!rawData) { return null; }
+  if(prop) { return rawData[prop]; }
 
-  return raw;
+  return rawData;
 });
 const lengthIsExceeded = computed(() => maxLength && data.value.length > maxLength);
 const text = computed(() => lengthIsExceeded.value ? truncate(data.value, maxLength) : data.value);

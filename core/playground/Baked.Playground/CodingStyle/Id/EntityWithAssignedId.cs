@@ -15,9 +15,3 @@ public class EntityWithAssignedId(IEntityContext<EntityWithAssignedId> _context)
         return _context.Insert(this);
     }
 }
-
-public class EntityWithAssignedIds(IQueryContext<EntityWithAssignedId> _context)
-{
-    public List<EntityWithAssignedId> By() =>
-        _context.By(c => true);
-}

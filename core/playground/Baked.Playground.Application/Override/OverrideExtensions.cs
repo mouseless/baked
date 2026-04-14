@@ -17,6 +17,7 @@ public static class OverrideExtensions
             features.Add(new Playground.Override.Domain.DocumentationSamplesDomainOverrideFeature());
             features.Add(new Playground.Override.Domain.EntityDomainOverrideFeature());
             features.Add(new Playground.Override.Domain.EntityWithAssignedIdDomainOverrideFeature());
+            features.Add(new Playground.Override.Domain.EntityWithAssignedGuidIdDomainOverrideFeature());
             features.Add(new Playground.Override.Domain.EntityWithAutoIncrementIdDomainOverrideFeature());
             features.Add(new Playground.Override.Domain.ExceptionSamplesDomainOverrideFeature());
             features.Add(new Playground.Override.Domain.ILocatableDomainOverrideFeature());
