@@ -7,20 +7,25 @@ public class AttributeCollection(string name)
 {
     readonly string _name = name;
     readonly Dictionary<Type, List<Attribute>> _attributes = [];
+    readonly AttributeTargets _target;
 
-    internal AttributeCollection(string name, IEnumerable<Attribute> attributes)
+    internal AttributeCollection(string name, IEnumerable<Attribute> attributes, AttributeTargets target)
         : this(name)
     {
         foreach (var attribute in attributes)
         {
             AddInner(attribute);
         }
+
+        _target = target;
     }
 
     public string Name => _name;
 
     void AddInner(Attribute attribute)
     {
+        ThrowIfNotTarget(attribute);
+
         var type = attribute.GetType();
         if (!_attributes.ContainsKey(type))
         {
@@ -158,6 +163,15 @@ public class AttributeCollection(string name)
         result = list;
 
         return true;
+    }
+
+    void ThrowIfNotTarget(Attribute attribute)
+    {
+        var usages = (AttributeUsageAttribute?)Attribute.GetCustomAttribute(attribute.GetType(), typeof(AttributeUsageAttribute));
+        var validOn = usages?.ValidOn ?? AttributeTargets.All;
+        if (validOn.HasFlag(_target)) { return; }
+
+        throw new InvalidOperationException($"'{attribute.GetType().Name}' does not have '{_target}' target");
     }
 
     void IMutableAttributeCollection.Set(Attribute attribute) =>

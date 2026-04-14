@@ -90,7 +90,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                     property.GetMethod?.IsPublic == true && property.GetMethod?.IsOriginallyPublic() == true,
                     property.GetMethod?.IsVirtual == true,
                     property.IsAutoProperty,
-                    new($"{type.Name}.{property.Name}", property.GetCustomAttributes())
+                    new($"{type.Name}.{property.Name}", property.GetCustomAttributes(), AttributeTargets.Property)
                 )
                 {
                     Documentation = XmlComments.Get(property)
@@ -108,7 +108,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                         methodsByName.Key,
                         builder.Options.DefaultOverloadSelector(overloads),
                         overloads,
-                        new($"{type.Name}.{methodsByName.Key}", methodsByName.SelectMany(m => m.GetCustomAttributes()))
+                        new($"{type.Name}.{methodsByName.Key}", methodsByName.SelectMany(m => m.GetCustomAttributes()), AttributeTargets.Constructor | AttributeTargets.Method)
                     ));
                 }
 
@@ -153,7 +153,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                     builder.GetReference(parameter.ParameterType),
                     parameter.IsOptional,
                     parameter.DefaultValue,
-                    new($"{type.Name}.{method.Name}.{parameter.Name}", parameter.Member.GetCustomAttributes()),
+                    new($"{type.Name}.{method.Name}.{parameter.Name}", parameter.Member.GetCustomAttributes(), AttributeTargets.Parameter),
                     apply => apply(parameter)
                 )
                 {

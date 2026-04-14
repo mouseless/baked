@@ -19,7 +19,16 @@ public class TypeModelMetadata : TypeModelInheritance, ICustomAttributesModel
 
             if (result is not TypeModelMetadata metadata) { return; }
 
-            metadata.CustomAttributes = new(result.Name, type.GetCustomAttributes());
+            metadata.CustomAttributes = new(result.Name, type.GetCustomAttributes(), GetTarget(result));
+        }
+
+        AttributeTargets GetTarget(TypeModel type)
+        {
+            return
+                type.IsEnum ? AttributeTargets.Enum :
+                type.IsInterface ? AttributeTargets.Interface :
+                type.IsValueType ? AttributeTargets.Struct :
+                AttributeTargets.Class;
         }
     }
 }
