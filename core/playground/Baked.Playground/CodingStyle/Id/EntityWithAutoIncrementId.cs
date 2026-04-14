@@ -18,9 +18,3 @@ public class EntityWithAutoIncrementId(IEntityContext<EntityWithAutoIncrementId>
     public EntityWithAutoIncrementId TestCustomIdPropertyName(EntityWithAutoIncrementId other) =>
         other;
 }
-
-public class EntityWithAutoIncrementIds(IQueryContext<EntityWithAutoIncrementId> _context)
-{
-    public List<EntityWithAutoIncrementId> By() =>
-        _context.By(c => true);
-}

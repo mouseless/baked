@@ -469,11 +469,14 @@ export default {
     return { name, required, default: default_, defaultSelfManaged, queryBound, component };
   },
 
-  anInputText({ label } = {}) {
+  anInputText({ label, targetProp } = {}) {
+    targetProp = $(targetProp, undefined);
+
     return {
       type: "InputText",
       schema: {
-        label
+        label,
+        targetProp
       }
     };
   },
@@ -814,13 +817,14 @@ export default {
     };
   },
 
-  aText({ value, data, maxLength } = {}) {
+  aText({ value, data, maxLength, prop } = {}) {
     value = $(value, "Test string");
     data = $(data, this.anInlineData(value));
+    prop = $(prop, undefined);
 
     return {
       type: "Text",
-      schema: { maxLength },
+      schema: { maxLength, prop },
       data
     };
   },
