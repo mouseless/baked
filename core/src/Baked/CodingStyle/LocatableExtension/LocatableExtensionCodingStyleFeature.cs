@@ -74,7 +74,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
         configurator.Domain.ConfigureAttributeDatas(datas =>
         {
-            datas.Create<LocatableExtensionAttribute>(extension =>
+            datas.Set<LocatableExtensionAttribute>(extension =>
             [
                 new(extension.LocatableType)
             ]);

@@ -69,7 +69,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
 
         configurator.Domain.ConfigureAttributeDatas(datas =>
         {
-            datas.Create<EntitySubclassAttribute>(subclass =>
+            datas.Set<EntitySubclassAttribute>(subclass =>
             [
                 new(subclass.EntityType),
                 new(subclass.Name)

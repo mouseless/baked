@@ -1,12 +1,20 @@
-entity-with-value-type @controller-model {
-  with @action-model {
-    value @parameter-model
+entity-with-value-type {
+  @controller-model id="Baked.Playground.CodingStyle.ValueType.EntityWithValueType" className="Playground_CodingStyle_ValueType_EntityWithValueType" groupName="EntityWithValueTypes" orphan=#false
+  with {
+    @action-model id="With" name="With" method="POST" returnType="Baked.Playground.CodingStyle.ValueType.EntityWithValueType" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true route="entity-with-value-types"
+    value {
+      @parameter-model id="value" from="BodyOrForm" type="Baked.Playground.CodingStyle.ValueType.Value" name="value" internalName="value" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
   }
 }
 
-entity-with-value-types @controller-model {
-  by @action-model {
-    value @parameter-model
+entity-with-value-types {
+  @controller-model id="Baked.Playground.CodingStyle.ValueType.EntityWithValueTypes" className="Playground_CodingStyle_ValueType_EntityWithValueTypes" groupName="EntityWithValueTypes" orphan=#false
+  by {
+    @action-model id="By" name="" method="GET" returnType="System.Collections.Generic.List<Baked.Playground.CodingStyle.ValueType.EntityWithValueType>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="entity-with-value-types"
+    value {
+      @parameter-model id="value" from="Query" type="Baked.Playground.CodingStyle.ValueType.Value?" name="value" internalName="value" isOptional=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
   }
 }
 

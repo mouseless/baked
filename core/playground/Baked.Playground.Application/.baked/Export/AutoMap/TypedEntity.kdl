@@ -1,5 +1,7 @@
 typed-entity @entity {
-  id @id
+  id {
+    @id routeName="id"
+  }
   type @unique
 }
 

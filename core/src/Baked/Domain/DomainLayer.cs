@@ -14,7 +14,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
     readonly DomainServiceCollection _domainServiceCollection = new();
-    readonly AttributeDataBuilderCollection _attributeDataBuilderCollection = new();
+    readonly AttributeDatas _attributeDatas = new();
     readonly AttributeExportCollection _attributeExportCollection = new();
 
     protected override PhaseContext GetContext(AddDomainTypes phase) =>
@@ -41,7 +41,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 
         return phase.CreateContextBuilder()
             .Add(_domainServiceCollection, domain)
-            .Add(_attributeDataBuilderCollection)
+            .Add(_attributeDatas)
             .Add(_attributeExportCollection)
             .OnDispose(() =>
             {
@@ -98,8 +98,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 
         foreach (var (key, set) in _attributeExportCollection)
         {
-            set.Builders = _attributeDataBuilderCollection;
-            var model = new AttributeExportSetBuilder(set).Build(domain);
+            var model = new AttributeExportSetBuilder(set, _attributeDatas).Build(domain);
             var contentGenerator = new AttributeExportFileContentGenerator(set.Serializer, set.ContentGroupName);
             var contents = contentGenerator.Generate(model);
             foreach (var (fileName, content) in contents)

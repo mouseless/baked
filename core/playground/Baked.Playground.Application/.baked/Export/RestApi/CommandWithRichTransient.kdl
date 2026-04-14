@@ -1,4 +1,7 @@
-command-with-rich-transient @controller-model {
-  execute @action-model
+command-with-rich-transient {
+  @controller-model id="Baked.Playground.CodingStyle.CommandPattern.CommandWithRichTransient" className="Playground_CodingStyle_CommandPattern_CommandWithRichTransient" groupName="CommandWithRichTransient" orphan=#false
+  execute {
+    @action-model id="Execute" name="CommandWithRichTransient" method="POST" returnType="Baked.Playground.CodingStyle.RichTransient.RichTransientWithData" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="command-with-rich-transient"
+  }
 }
 

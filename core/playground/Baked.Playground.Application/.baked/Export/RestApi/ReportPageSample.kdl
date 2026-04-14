@@ -1,12 +1,25 @@
-report-page-sample @controller-model {
-  get-wide @action-model
-  get-left @action-model
-  get-right @action-model
-  get-first @action-model {
-    count @parameter-model
+report-page-sample {
+  @controller-model id="Baked.Playground.Theme.ReportPageSample" className="Playground_Theme_ReportPageSample" groupName="ReportPageSample" orphan=#false
+  get-wide {
+    @action-model id="GetWide" name="Wide" method="GET" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="report-page-sample/wide"
   }
-  get-second @action-model {
-    count @parameter-model
+  get-left {
+    @action-model id="GetLeft" name="Left" method="GET" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="report-page-sample/left"
+  }
+  get-right {
+    @action-model id="GetRight" name="Right" method="GET" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="report-page-sample/right"
+  }
+  get-first {
+    @action-model id="GetFirst" name="First" method="GET" returnType="System.Threading.Tasks.Task<System.Collections.Generic.List<Baked.Playground.Theme.ReportRow>>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="report-page-sample/first"
+    count {
+      @parameter-model id="count" from="Query" type="Baked.Playground.Theme.CountOptions" name="count" internalName="count" isOptional=#true defaultValue="Default" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  get-second {
+    @action-model id="GetSecond" name="Second" method="GET" returnType="System.Threading.Tasks.Task<System.Collections.Generic.List<Baked.Playground.Theme.ReportRow>>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="report-page-sample/second"
+    count {
+      @parameter-model id="count" from="Query" type="Baked.Playground.Theme.CountOptions" name="count" internalName="count" isOptional=#true defaultValue="Default" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
   }
 }
 

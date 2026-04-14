@@ -6,5 +6,5 @@ public record AttributeProperty(string Name, object? Value)
 {
     public AttributeProperty(object? value,
         [CallerArgumentExpression("value")] string name = ""
-    ) : this(name, value) { }
+    ) : this(name[(name.LastIndexOf('.') + 1)..], value) { }
 }

@@ -1,2 +1,4 @@
-implemented-polymorphic @controller-model
+implemented-polymorphic {
+  @controller-model id="Baked.Playground.Business.ImplementedPolymorphic" className="Playground_Business_ImplementedPolymorphic" groupName="ImplementedPolymorphic" orphan=#false
+}
 

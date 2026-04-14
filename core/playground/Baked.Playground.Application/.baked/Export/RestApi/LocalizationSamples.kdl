@@ -1,7 +1,13 @@
-localization-samples @controller-model {
-  get-locale-string @action-model
-  get-parameterized @action-model {
-    param @parameter-model
+localization-samples {
+  @controller-model id="Baked.Playground.Localization.LocalizationSamples" className="Playground_Localization_LocalizationSamples" groupName="LocalizationSamples" orphan=#false
+  get-locale-string {
+    @action-model id="GetLocaleString" name="LocaleString" method="GET" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="localization-samples/locale-string"
+  }
+  get-parameterized {
+    @action-model id="GetParameterized" name="Parameterized" method="GET" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="localization-samples/parameterized"
+    param {
+      @parameter-model id="param" from="Query" type="string" name="param" internalName="param" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
   }
 }
 

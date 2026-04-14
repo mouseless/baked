@@ -1,11 +1,22 @@
-redirect-samples @controller-model {
-  form-post @action-model {
-    key @parameter-model
+redirect-samples {
+  @controller-model id="Baked.Playground.CodingStyle.UriReturnIsRedirect.RedirectSamples" className="Playground_CodingStyle_UriReturnIsRedirect_RedirectSamples" groupName="RedirectSamples" orphan=#false
+  form-post {
+    @action-model id="FormPost" name="FormPost" method="POST" returnType="RedirectResult" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#true useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="redirect-samples/form-post"
+    key {
+      @parameter-model id="key" from="BodyOrForm" type="string" name="key" internalName="key" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
   }
-  form-post-async @action-model {
-    key @parameter-model
+  form-post-async {
+    @action-model id="FormPostAsync" name="FormPostAsync" method="POST" returnType="Task<RedirectResult>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#true useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="redirect-samples/form-post-async"
+    key {
+      @parameter-model id="key" from="BodyOrForm" type="string" name="key" internalName="key" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
   }
-  callback @action-model
-  callback-async @action-model
+  callback {
+    @action-model id="Callback" name="Callback" method="GET" returnType="RedirectResult" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="redirect-samples/callback"
+  }
+  callback-async {
+    @action-model id="CallbackAsync" name="CallbackAsync" method="GET" returnType="Task<RedirectResult>" returnIsAsync=#true returnIsVoid=#false invocationIsAsync=#true useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="redirect-samples/callback-async"
+  }
 }
 

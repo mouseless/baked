@@ -1,7 +1,13 @@
-children @controller-model {
-  by @action-model
-  first-by @action-model {
-    fetchParents @parameter-model
+children {
+  @controller-model id="Baked.Playground.Orm.Children" className="Playground_Orm_Children" groupName="Children" orphan=#false
+  by {
+    @action-model id="By" name="" method="GET" returnType="System.Collections.Generic.List<Baked.Playground.Orm.Child>" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="children"
+  }
+  first-by {
+    @action-model id="FirstBy" name="First" method="GET" returnType="Baked.Playground.Orm.Child" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="children/first"
+    fetchParents {
+      @parameter-model id="fetchParents" from="Query" type="bool" name="fetchParents" internalName="fetchParents" isOptional=#true defaultValue=#true isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
   }
 }
 

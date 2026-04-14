@@ -1,2 +1,4 @@
-entity-extensions @controller-model
+entity-extensions {
+  @controller-model id="Baked.Playground.CodingStyle.LocatableExtension.EntityExtensions" className="Playground_CodingStyle_LocatableExtension_EntityExtensions" groupName="EntityExtensions" orphan=#false
+}
 

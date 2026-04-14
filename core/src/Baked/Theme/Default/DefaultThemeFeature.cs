@@ -26,28 +26,28 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.Domain.ConfigureAttributeDatas(datas =>
         {
-            datas.Create<ActionAttribute>(action =>
+            datas.Set<ActionAttribute>(action =>
             [
                 new(action.HideInLists),
                 new(action.RoutePathBack)
             ]);
-            datas.Create<DataAttribute>(data =>
+            datas.Set<DataAttribute>(data =>
             [
                 new(data.Prop),
                 new(data.Label),
                 new(data.Visible),
                 new(data.Order)
             ]);
-            datas.Create<ContextBasedComponentAttribute>(component =>
+            datas.Set<ContextBasedComponentAttribute>(component =>
             [
                 new(component.SchemaType)
             ]);
-            datas.Create<RouteAttribute>(route =>
+            datas.Set<RouteAttribute>(route =>
             [
                 new(route.Path),
                 new(route.Params)
             ]);
-            datas.Create<TabNameAttribute>(tab =>
+            datas.Set<TabNameAttribute>(tab =>
             [
                 new(tab.Value)
             ]);

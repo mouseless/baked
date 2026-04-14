@@ -51,18 +51,21 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.Domain.ConfigureAttributeDatas(datas =>
         {
-            datas.Create<IdAttribute>(id => [
+            datas.Set<IdAttribute>(id =>
+            [
                 new(id.RouteName),
                 new(id.Mapping),
             ]);
-            datas.Create<LocatableAttribute>(locatable => [
+            datas.Set<LocatableAttribute>(locatable =>
+            [
                 new(locatable.QueryType),
                 new(locatable.IsAsync)
             ]);
-            datas.Create<NamespaceAttribute>(@namespace => [
+            datas.Set<NamespaceAttribute>(@namespace =>
+            [
                 new(@namespace.Value)
             ]);
-            datas.Create<QueryAttribute>(query =>
+            datas.Set<QueryAttribute>(query =>
             [
                 new(query.LocatableType)
             ]);

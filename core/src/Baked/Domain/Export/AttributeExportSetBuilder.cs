@@ -1,10 +1,8 @@
 ﻿using Baked.Domain.Model;
 
-using static Baked.Domain.Export.AttributeExport;
-
 namespace Baked.Domain.Export;
 
-public class AttributeExportSetBuilder(AttributeExport _export)
+public class AttributeExportSetBuilder(AttributeExport _export, AttributeDatas _attributeDatas)
 {
     public AttributeExportSetModel Build(DomainModel domain)
     {
@@ -83,28 +81,28 @@ public class AttributeExportSetBuilder(AttributeExport _export)
         {
             if (filter.Type.AllowsMultiple() && model.TryGetAll(filter.Type, out var attributes))
             {
-                result.AddRange([.. attributes.Select(a => BuildAttribute(filter.Type, a, filter))]);
+                result.AddRange([.. attributes.Select(a => BuildAttribute(a, filter))]);
             }
             else if (model.TryGet(filter.Type, out var attribute))
             {
-                result.Add(BuildAttribute(filter.Type, attribute, filter));
+                result.Add(BuildAttribute(attribute, filter));
             }
         }
 
         return result;
     }
 
-    AttributeExportModel BuildAttribute<T>(Type type, T instance, IAttributeFilter filter) where T : Attribute
+    AttributeExportModel BuildAttribute(object instance, IAttributeFilter filter)
     {
-        var properties = _export.Builders.TryGet<T>(out var builder) ? builder.Invoke(instance) : [];
+        var properties = _attributeDatas.TryGet(instance.GetType(), out var builder) ? builder.Invoke((Attribute)instance) : [];
         foreach (var extension in filter.PropertyExtensions)
         {
-            properties.Add(extension(instance));
+            properties.Add(extension((Attribute)instance));
         }
 
-        var attributeMetadata = new AttributeExportModel(type.Name)
+        var attributeMetadata = new AttributeExportModel(instance.GetType().Name)
         {
-            Values = properties is null ? new() : properties.Where(p => !filter.RemoveProperty.All(r => r(p))).ToDictionary(p => p.Name, p => p.Value)
+            Values = properties.Where(p => !filter.RemoveProperty.Any(r => r(p))).ToDictionary(p => p.Name, p => p.Value)
         };
 
         return attributeMetadata;

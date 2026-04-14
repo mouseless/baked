@@ -1,11 +1,22 @@
-authentication-samples @controller-model {
-  authenticate @action-model
-  form-post-authenticate @action-model {
-    value @parameter-model
+authentication-samples {
+  @controller-model id="Baked.Playground.Authentication.AuthenticationSamples" className="Playground_Authentication_AuthenticationSamples" groupName="AuthenticationSamples" orphan=#false
+  authenticate {
+    @action-model id="Authenticate" name="Authenticate" method="POST" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="authentication-samples/authenticate"
   }
-  login @allow-anonymous @action-model {
-    username @allow-anonymous @parameter-model
+  form-post-authenticate {
+    @action-model id="FormPostAuthenticate" name="FormPostAuthenticate" method="POST" returnType="string" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#true useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="authentication-samples/form-post-authenticate"
+    value {
+      @parameter-model id="value" from="BodyOrForm" type="string" name="value" internalName="value" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
   }
-  refresh @require-user @action-model
+  login @allow-anonymous {
+    @action-model id="Login" name="Login" method="POST" returnType="Baked.Playground.Authentication.Token" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#true route="authentication-samples/login"
+    username @allow-anonymous {
+      @parameter-model id="username" from="BodyOrForm" type="string" name="username" internalName="username" isOptional=#false defaultValue="" isInvokeMethodParameter=#true isHardCoded=#false order=0 routePosition=0 additionalAttributes="System.Collections.Generic.List`1[System.String]" orphan=#false
+    }
+  }
+  refresh @require-user {
+    @action-model id="Refresh" name="Refresh" method="POST" returnType="Baked.Playground.Authentication.Token" returnIsAsync=#false returnIsVoid=#false invocationIsAsync=#false useForm=#false useRequestClassForBody=#true additionalAttributes="System.Collections.Generic.List`1[System.String]" order=0 orphan=#false hasBody=#false route="authentication-samples/refresh"
+  }
 }
 

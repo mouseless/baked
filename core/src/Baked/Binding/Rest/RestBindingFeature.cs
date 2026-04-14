@@ -18,7 +18,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
     {
         configurator.Domain.ConfigureAttributeDatas(datas =>
         {
-            datas.Create<ControllerModelAttribute>(controller =>
+            datas.Set<ControllerModelAttribute>(controller =>
             [
                 new(controller.Id),
                 new(controller.ClassName),
@@ -26,7 +26,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 new(controller.Action),
                 new(controller.Orphan)
             ]);
-            datas.Create<ActionModelAttribute>(action =>
+            datas.Set<ActionModelAttribute>(action =>
             [
                 new(action.Id),
                 new(action.Name),
@@ -42,11 +42,11 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 new(action.Orphan),
                 new(action.HasBody)
             ]);
-            datas.Create<MappedMethodAttribute>(mappedMethod => [
+            datas.Set<MappedMethodAttribute>(mappedMethod => [
                 new(mappedMethod.TypeFullName),
                 new(mappedMethod.MethodName),
             ]);
-            datas.Create<ParameterModelAttribute>(parameter =>
+            datas.Set<ParameterModelAttribute>(parameter =>
             [
                 new(parameter.Id),
                 new(parameter.From),
@@ -54,10 +54,10 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 new(parameter.Name),
                 new(parameter.InternalName),
                 new(parameter.IsOptional),
-                new(parameter. DefaultValue),
+                new(parameter.DefaultValue),
                 new(parameter.IsInvokeMethodParameter),
                 new(parameter.IsHardCoded),
-                new(parameter. Order),
+                new(parameter.Order),
                 new(parameter.RoutePosition),
                 new(parameter.AdditionalAttributes),
                 new(parameter.Orphan)

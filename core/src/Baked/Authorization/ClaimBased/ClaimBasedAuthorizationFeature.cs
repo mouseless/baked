@@ -29,7 +29,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 
         configurator.Domain.ConfigureAttributeDatas(datas =>
         {
-            datas.Create<RequireUserAttribute>(require =>
+            datas.Set<RequireUserAttribute>(require =>
             [
                 new(require.Override),
                 new(require.Claims)
@@ -40,7 +40,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         {
             exports.RestApi(restApi =>
             {
-                restApi.Include<RequireUserAttribute>().RemoveData();
+                restApi.Include<RequireUserAttribute>().ExcludeData();
                 restApi.Include<AllowAnonymousAttribute>();
             });
         });

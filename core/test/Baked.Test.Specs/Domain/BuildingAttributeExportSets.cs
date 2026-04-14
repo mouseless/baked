@@ -15,6 +15,27 @@ public class BuildingAttributeExportSets : TestSpec
 {
     public class NotExistingAttribute : Attribute;
 
+    AttributeDatas _builders = default!;
+
+    public override void SetUp()
+    {
+        base.SetUp();
+
+        _builders = new();
+        _builders.Set<LocatableAttribute>(locatable =>
+        [
+            new(locatable.QueryType),
+            new(locatable.IsAsync)
+        ]);
+    }
+
+    public override void TearDown()
+    {
+        base.TearDown();
+
+        _builders = default!;
+    }
+
     [Test]
     public void Attributes_are_included_based_on_usage()
     {
@@ -70,7 +91,7 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -82,20 +103,18 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
-        attributeExport.Include<EntityAttribute>();
-        attributeExport.Include<ControllerModelAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        attributeExport.Include<LocatableAttribute>();
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
         var typeExport = model.Types[typeof(Parent)];
         var attributes = typeExport.Attributes;
-        attributes.Count.ShouldBe(2);
-        attributes.ShouldContain(a => a.Type == nameof(EntityAttribute));
-        attributes.ShouldContain(a => a.Type == nameof(ControllerModelAttribute) &&
-            a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.Id) && $"{v.Value}" == "Baked.Playground.Orm.Parent") &&
-            a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.ClassName) && $"{v.Value}" == "Playground_Orm_Parent") &&
-            a.Values.Any(v => v.Key == nameof(ControllerModelAttribute.GroupName) && $"{v.Value}" == "Parents")
+        attributes.Count.ShouldBe(1);
+        attributes.ShouldContain(a =>
+            a.Type == nameof(LocatableAttribute) &&
+            $"{a.Values[nameof(LocatableAttribute.QueryType)]}".Equals("Baked.Playground.Orm.Parents") &&
+            $"{a.Values[nameof(LocatableAttribute.IsAsync)]}".Equals("false", StringComparison.InvariantCultureIgnoreCase)
         );
     }
 
@@ -105,7 +124,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<NamespaceAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -124,16 +143,15 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
-        attributeExport.Include<ControllerModelAttribute>()
-            .RemoveData(p => p.Name != nameof(ControllerModelAttribute.Id));
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        attributeExport.Include<LocatableAttribute>()
+            .ExcludeData(p => p.Name == nameof(LocatableAttribute.IsAsync));
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
         var typeExport = model.Types[typeof(Parent)];
         var attribute = typeExport.Attributes.First();
-        attribute.Values.Count.ShouldBe(1);
-        attribute.Values.First().Key.ShouldBe(nameof(ControllerModelAttribute.Id));
+        attribute.Values.Single().Key.ShouldBe(nameof(LocatableAttribute.QueryType));
     }
 
     [Test]
@@ -141,18 +159,17 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
-        attributeExport.Include<ControllerModelAttribute>()
-            .RemoveData(p => false);
-        attributeExport.Include<ControllerModelAttribute>()
-            .RemoveData(p => p.Name != nameof(ControllerModelAttribute.Id));
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        attributeExport.Include<LocatableAttribute>()
+            .ExcludeData(p => false);
+        attributeExport.Include<LocatableAttribute>()
+            .ExcludeData(p => p.Name != nameof(LocatableAttribute.QueryType));
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
         var typeExport = model.Types[typeof(Parent)];
         var attribute = typeExport.Attributes.First();
-        attribute.Values.Count.ShouldBe(1);
-        attribute.Values.First().Key.ShouldBe(nameof(ControllerModelAttribute.Id));
+        attribute.Values.Single().Key.ShouldBe(nameof(LocatableAttribute.QueryType));
     }
 
     [Test]
@@ -162,7 +179,7 @@ public class BuildingAttributeExportSets : TestSpec
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<SingletonAttribute>();
         attributeExport.TypeGroupName(_ => "GroupName");
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -175,7 +192,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<NotExistingAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -189,7 +206,7 @@ public class BuildingAttributeExportSets : TestSpec
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<ControllerModelAttribute>();
         attributeExport.Include<ActionModelAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -212,7 +229,7 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<ControllerModelAttribute>();
         attributeExport.Include<ActionModelAttribute>();
         attributeExport.Include<ParameterModelAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -230,7 +247,7 @@ public class BuildingAttributeExportSets : TestSpec
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<ControllerModelAttribute>();
         attributeExport.Include<InitializerAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -246,7 +263,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<ControllerModelAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -261,7 +278,7 @@ public class BuildingAttributeExportSets : TestSpec
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<TransientAttribute>();
         attributeExport.Include<InitializerAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -279,7 +296,7 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<IdAttribute>();
         attributeExport.Include<LabelAttribute>();
 
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -298,7 +315,7 @@ public class BuildingAttributeExportSets : TestSpec
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<EntityAttribute>();
         attributeExport.Include<IdAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -314,7 +331,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<EntityAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 

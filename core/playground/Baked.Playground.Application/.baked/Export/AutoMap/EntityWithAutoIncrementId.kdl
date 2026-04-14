@@ -1,4 +1,6 @@
 entity-with-auto-increment-id @entity {
-  primaryKey @id
+  primaryKey {
+    @id routeName="primaryKey" mapping="MappingOptions { UserType = Baked.CodingStyle.Id.IdIntUserType, IdentifierGenerator = NHibernate.Id.IdentityGenerator }"
+  }
 }
 
