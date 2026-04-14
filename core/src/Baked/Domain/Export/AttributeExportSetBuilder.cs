@@ -2,7 +2,7 @@
 
 namespace Baked.Domain.Export;
 
-public class AttributeExportSetBuilder(AttributeExport _export, AttributeDatas _attributeDatas)
+public class AttributeExportSetBuilder(AttributeExport _export, IAttributeDataBuilder _builder)
 {
     public AttributeExportSetModel Build(DomainModel domain)
     {
@@ -94,7 +94,7 @@ public class AttributeExportSetBuilder(AttributeExport _export, AttributeDatas _
 
     AttributeExportModel BuildAttribute(object instance, IAttributeFilter filter)
     {
-        var properties = _attributeDatas.TryGet(instance.GetType(), out var builder) ? builder.Invoke((Attribute)instance) : [];
+        var properties = _builder.Build(instance);
         foreach (var extension in filter.PropertyExtensions)
         {
             properties.Add(extension((Attribute)instance));

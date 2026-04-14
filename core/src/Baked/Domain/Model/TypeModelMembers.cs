@@ -125,9 +125,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
 
                 var documentation = XmlComments.Get(methodInfo);
 
-                try
-                {
-                    return new(
+                return new(
                     methodInfo.IsPublic && methodInfo.IsOriginallyPublic(),
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
@@ -138,14 +136,9 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                     methodInfo.DeclaringType is not null ? builder.GetReference(methodInfo.DeclaringType) : null,
                     baseDefinition is not null ? BuildMethod(baseDefinition) : null
                 )
-                    {
-                        Documentation = documentation
-                    };
-                }
-                catch (Exception e)
                 {
-                    throw new(methodInfo.DeclaringType + "." + methodInfo.Name, e);
-                }
+                    Documentation = documentation
+                };
             }
 
             ModelCollection<ParameterModel> BuildParameters(MethodBase method, XmlNode? methodDocumentation)

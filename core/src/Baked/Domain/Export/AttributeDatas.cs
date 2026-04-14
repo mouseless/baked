@@ -1,9 +1,8 @@
 ﻿using Baked.Business;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.Domain.Export;
 
-public class AttributeDatas
+public class AttributeDatas : IAttributeDataBuilder
 {
     Dictionary<Type, Func<Attribute, List<AttributeProperty>>> _dataBuilders = new();
 
@@ -12,17 +11,6 @@ public class AttributeDatas
         _dataBuilders[typeof(T)] = attr => data((T)attr);
     }
 
-    public bool TryGet<T>([NotNullWhen(true)] out Func<Attribute, List<AttributeProperty>>? builder)
-    {
-        builder = _dataBuilders.TryGetValue(typeof(T), out builder) ? builder : default;
-
-        return builder != null;
-    }
-
-    public bool TryGet(Type type, [NotNullWhen(true)] out Func<Attribute, List<AttributeProperty>>? builder)
-    {
-        builder = _dataBuilders.TryGetValue(type, out builder) ? builder : default;
-
-        return builder != null;
-    }
+    List<AttributeProperty> IAttributeDataBuilder.Build(object instance) =>
+        _dataBuilders.TryGetValue(instance.GetType(), out var builder) ? builder.Invoke((Attribute)instance) : [];
 }
