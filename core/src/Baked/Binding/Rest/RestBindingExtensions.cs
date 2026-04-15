@@ -1,7 +1,6 @@
 ﻿using Baked.Binding;
 using Baked.Binding.Rest;
 using Baked.Business;
-using Baked.Domain.Export;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -109,11 +108,5 @@ public static class RestBindingExtensions
 
             mediaType.Example = JsonNode.Parse(example);
         }
-    }
-
-    extension(AttributeExportCollection collection)
-    {
-        public void RestApi(Action<AttributeExport> configure) =>
-            collection.Build("RestApi", configure);
     }
 }

@@ -32,7 +32,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             """);
         });
 
-        configurator.Domain.ConfigureAttributeExportCollection(exports =>
+        configurator.Domain.ConfigureAttributeExportConfigurations(exports =>
         {
             configurator.Domain.UsingDomainModel(domain =>
             {

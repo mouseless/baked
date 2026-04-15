@@ -1,100 +1,39 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.Business;
+using Baked.Domain.Model;
 
 namespace Baked.Domain.Export;
 
-public partial record AttributeExport(string Name)
+public class AttributeExport<T> : IAttributeExport where T : Attribute
 {
-    Func<TypeModelMetadata, string> _typeGroupName = type => type.Name;
-    Dictionary<Type, IAttributeExport> _attributeFilters = new();
+    List<Func<T, ICustomAttributesModel, bool>> _filters = [];
 
-    public List<IAttributeExport> TypeExports { get; } = [];
-    public List<IAttributeExport> MethodExports { get; } = [];
-    public List<IAttributeExport> ParameterExports { get; } = [];
-    public List<IAttributeExport> PropertyExports { get; } = [];
-    public ITypeExportSerializer Serializer { get; set; } = new KdlTypeExportSerializer();
-    public Func<TypeAttributeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
+    internal List<Func<T, AttributeProperty>> PropertyExtensions { get; } = [];
+    internal List<Func<AttributeProperty, bool>> RemoveProperty { get; } = [];
 
-    public ExportAttribute<T> Include<T>() where T : Attribute
+    public AttributeExport<T> AddFilter(Func<T, ICustomAttributesModel, bool> condition)
     {
-        if (_attributeFilters.TryGetValue(typeof(T), out var filter))
-        {
-            return (ExportAttribute<T>)filter;
-        }
+        _filters.Add(condition);
 
-        _attributeFilters[typeof(T)] = filter = new ExportAttribute<T>();
-        var usage = GetUsage<T>();
-        if (
-            usage is null ||
-            usage.ValidOn.HasFlag(AttributeTargets.Class) ||
-            usage.ValidOn.HasFlag(AttributeTargets.Interface) ||
-            usage.ValidOn.HasFlag(AttributeTargets.Struct) ||
-            usage.ValidOn.HasFlag(AttributeTargets.Enum)
-        )
-        {
-            TypeExports.Add(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
-        {
-            MethodExports.Add(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
-        {
-            ParameterExports.Add(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
-        {
-            PropertyExports.Add(filter);
-        }
-
-        return (ExportAttribute<T>)filter;
+        return this;
     }
 
-    public void Exclude<T>() where T : Attribute
+    public void AddPropertyExtension(Func<T, AttributeProperty> property) =>
+        PropertyExtensions.Add(property);
+
+    public void ExcludeProperty(
+        Func<AttributeProperty, bool>? filter = default
+    ) => RemoveProperty.Add(filter ?? (_ => true));
+
+    Type IAttributeExport.Type => typeof(T);
+    List<Func<Attribute, AttributeProperty>> IAttributeExport.PropertyExtensions =>
+         [.. PropertyExtensions.Select(extension => (Func<Attribute, AttributeProperty>)(attr => extension((T)attr)))];
+    List<Func<AttributeProperty, bool>> IAttributeExport.RemoveProperty =>
+        RemoveProperty;
+
+    bool IAttributeExport.AppliesTo(Attribute instance, ICustomAttributesModel model)
     {
-        if (!_attributeFilters.TryGetValue(typeof(T), out var filter))
-        {
-            return;
-        }
+        if (!_filters.Any()) { return true; }
 
-        _attributeFilters.Remove(typeof(T));
-        var usage = GetUsage<T>();
-
-        if (
-            usage is null ||
-            usage.ValidOn.HasFlag(AttributeTargets.Class) ||
-            usage.ValidOn.HasFlag(AttributeTargets.Interface) ||
-            usage.ValidOn.HasFlag(AttributeTargets.Struct) ||
-            usage.ValidOn.HasFlag(AttributeTargets.Enum)
-        )
-        {
-            TypeExports.Remove(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
-        {
-            MethodExports.Remove(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
-        {
-            ParameterExports.Remove(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
-        {
-            PropertyExports.Remove(filter);
-        }
+        return _filters.Any(c => c((T)instance, model));
     }
-
-    public void TypeGroupName(Func<TypeModelMetadata, string> typeGroupName) =>
-        _typeGroupName = typeGroupName;
-
-    internal string GetTypeGroupName(TypeModelMetadata type) =>
-        _typeGroupName(type);
-
-    AttributeUsageAttribute? GetUsage<T>() =>
-        (AttributeUsageAttribute?)Attribute.GetCustomAttribute(typeof(T), typeof(AttributeUsageAttribute));
 }

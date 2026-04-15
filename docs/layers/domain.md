@@ -12,11 +12,12 @@ app.Layers.AddDomain();
 
 This layer provides `IDomainTypeCollection` and `DomainModelBuilderOptions`
 configuration targets for building `DomainModel`, `AttributeDatas` and 
-`AttributeExportCollection` for exporting attribute metadata in `Generate` mode. 
-It also provides `DomainServiceCollection` configuration target for features to 
-add `DomainServiceDescriptor` for domain types which then be used to generate an
-`IServiceAdder` implementation. The generated `IServiceAdder` is then used in 
-`Start` mode for auto registering domain types to service collection.
+`AttributeExportConfigurations` for exporting attribute metadata in `Generate` 
+mode.It also provides `DomainServiceCollection` configuration target for 
+features to add `DomainServiceDescriptor` for domain types which then be used to 
+generate an `IServiceAdder` implementation. The generated `IServiceAdder` is 
+then used in `Start` mode for auto registering domain types to service 
+collection.
 
 ### `IDomainTypeCollection`
 
@@ -75,7 +76,7 @@ attribute data of matching types and their members. To configure it in a
 feature;
 
 ```csharp
-configurator.Domain.ConfigureAttributeExportCollection(exports =>
+configurator.Domain.ConfigureAttributeExportConfigurations(exports =>
 {
     // configure exports to output desired attribute export files
     ...

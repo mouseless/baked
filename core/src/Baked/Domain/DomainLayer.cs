@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.CodeGeneration;
 using Baked.Domain.Configuration;
 using Baked.Domain.Export;
 
@@ -15,7 +14,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
     readonly DomainModelBuilderOptions _builderOptions = new();
     readonly DomainServiceCollection _domainServiceCollection = new();
     readonly AttributeDatas _attributeDatas = new();
-    readonly AttributeExportCollection _attributeExportCollection = new();
+    readonly AttributeExportConfigurations _attributeExportConfigurations = new();
 
     protected override PhaseContext GetContext(AddDomainTypes phase) =>
         phase.CreateContextBuilder()
@@ -42,7 +41,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         return phase.CreateContextBuilder()
             .Add(_domainServiceCollection, domain)
             .Add(_attributeDatas)
-            .Add(_attributeExportCollection)
+            .Add(_attributeExportConfigurations)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
@@ -50,7 +49,18 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
                     compilerOptions => compilerOptions.WithUsings(_domainServiceCollection.Usings)
                 );
 
-                GenerateMetadataFiles();
+                var generatedFiles = Context.GetGeneratedFileCollection();
+
+                foreach (var (key, set) in _attributeExportConfigurations)
+                {
+                    var model = new AttributeExportSetBuilder(set, _attributeDatas).Build(domain);
+                    var contentGenerator = new AttributeExportFileContentGenerator(set.Serializer, set.ContentGroupName);
+                    var contents = contentGenerator.Generate(model);
+                    foreach (var (fileName, content) in contents)
+                    {
+                        generatedFiles.Add($"{fileName}", content, extension: "kdl", outdir: Path.Join("Export", $"{key}"));
+                    }
+                }
             })
             .Build();
     }
@@ -88,23 +98,6 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 
             Context.Add(model);
             builder.PostBuild(model);
-        }
-    }
-
-    void GenerateMetadataFiles()
-    {
-        var domain = Context.GetDomainModel();
-        var files = Context.Get<IGeneratedFileCollection>();
-
-        foreach (var (key, set) in _attributeExportCollection)
-        {
-            var model = new AttributeExportSetBuilder(set, _attributeDatas).Build(domain);
-            var contentGenerator = new AttributeExportFileContentGenerator(set.Serializer, set.ContentGroupName);
-            var contents = contentGenerator.Generate(model);
-            foreach (var (fileName, content) in contents)
-            {
-                files.Add($"{fileName}", content, extension: "kdl", outdir: Path.Join("Export", $"{key}"));
-            }
         }
     }
 }

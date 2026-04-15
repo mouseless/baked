@@ -55,6 +55,7 @@ public class GeneratingAttributeExportFiles : TestSpec
             name: "SampleType",
             attributes:
             [
+                new(nameof(EntityAttribute)),
                 new(nameof(FakeAttribute),
                     ("CamelCase", "CamelCase"),
                     ("String", "Post"),

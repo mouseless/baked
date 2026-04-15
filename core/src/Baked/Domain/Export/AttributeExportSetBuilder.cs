@@ -2,7 +2,7 @@
 
 namespace Baked.Domain.Export;
 
-public class AttributeExportSetBuilder(AttributeExport _export, IAttributeDataBuilder _builder)
+public class AttributeExportSetBuilder(AttributeExportConfiguration _export, IAttributeDataBuilder _builder)
 {
     public AttributeExportSetModel Build(DomainModel domain)
     {

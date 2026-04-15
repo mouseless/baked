@@ -12,9 +12,9 @@ public static class AutoMapOrmExtensions
             new();
     }
 
-    extension(AttributeExportCollection collection)
+    extension(AttributeExportConfigurations collection)
     {
-        public void AutoMap(Action<AttributeExport> configure) =>
+        public void AutoMap(Action<AttributeExportConfiguration> configure) =>
             collection.Build("AutoMap", configure);
     }
 }
