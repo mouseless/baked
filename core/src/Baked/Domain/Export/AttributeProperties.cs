@@ -2,13 +2,13 @@
 
 public class AttributeProperties : IAttributePropertyBuilder
 {
-    Dictionary<Type, Func<Attribute, List<AttributeProperty>>> _dataBuilders = new();
+    Dictionary<Type, Func<Attribute, List<AttributeProperty>>> _builders = new();
 
     public void Set<T>(Func<T, List<AttributeProperty>> data) where T : Attribute
     {
-        _dataBuilders[typeof(T)] = attr => data((T)attr);
+        _builders[typeof(T)] = attr => data((T)attr);
     }
 
     List<AttributeProperty> IAttributePropertyBuilder.Build(object instance) =>
-        _dataBuilders.TryGetValue(instance.GetType(), out var builder) ? builder.Invoke((Attribute)instance) : [];
+        _builders.TryGetValue(instance.GetType(), out var builder) ? builder.Invoke((Attribute)instance) : [];
 }

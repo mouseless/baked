@@ -55,20 +55,20 @@ configurator.Domain.ConfigureDomainServiceCollection((services, domain) =>
 });
 ```
 
-### `AttributeDatas`
+### `AttributeProperties`
 
 This target is provided in `GenerateCode` phase and it is used to configure
-exported datas for attributes;
+exported properties for attributes;
 
 ```csharp
-configurator.Domain.ConfigureAttributeDatas(datas =>
+configurator.Domain.ConfigureAttributeProperties(properties =>
 {
-    // configure datas to output desired attribute properties
+    // configure to output desired attribute properties
     ...
 });
 ```
 
-### `ExportCollection`
+### `ExportConfigurations`
 
 This target is provided in `GenerateCode` phase and it is used to export 
 attribute data of matching types and their members. To configure it in a 
