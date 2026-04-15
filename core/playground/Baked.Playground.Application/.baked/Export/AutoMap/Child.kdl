@@ -4,3 +4,7 @@ child @entity {
   }
 }
 
+children {
+  @query locatableType="Baked.Playground.Orm.Child"
+}
+

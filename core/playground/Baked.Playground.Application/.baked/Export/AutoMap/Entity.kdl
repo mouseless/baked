@@ -6,3 +6,7 @@ entity @entity {
   enum @unique
 }
 
+entities {
+  @query locatableType="Baked.Playground.Orm.Entity"
+}
+

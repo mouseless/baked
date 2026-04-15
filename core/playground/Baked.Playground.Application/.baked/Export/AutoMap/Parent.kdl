@@ -4,3 +4,7 @@ parent @entity {
   }
 }
 
+parents {
+  @query locatableType="Baked.Playground.Orm.Parent"
+}
+

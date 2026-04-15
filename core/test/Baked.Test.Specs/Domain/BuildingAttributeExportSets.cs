@@ -44,14 +44,14 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<ComponentDescriptorBuilderAttribute<Text>>();
 
         attributeExport.Name.ShouldBe("Test");
-        attributeExport.TypeFilters.ShouldContain<EntityAttribute>();
-        attributeExport.TypeFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
-        attributeExport.MethodFilters.ShouldNotContain<EntityAttribute>();
-        attributeExport.MethodFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
-        attributeExport.ParameterFilters.ShouldNotContain<EntityAttribute>();
-        attributeExport.ParameterFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
-        attributeExport.PropertyFilters.ShouldNotContain<EntityAttribute>();
-        attributeExport.PropertyFilters.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.TypeExports.ShouldContain<EntityAttribute>();
+        attributeExport.TypeExports.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.MethodExports.ShouldNotContain<EntityAttribute>();
+        attributeExport.MethodExports.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.ParameterExports.ShouldNotContain<EntityAttribute>();
+        attributeExport.ParameterExports.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.PropertyExports.ShouldNotContain<EntityAttribute>();
+        attributeExport.PropertyExports.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
     }
 
     [Test]
@@ -61,7 +61,7 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<EntityAttribute>();
         attributeExport.Include<EntityAttribute>();
 
-        attributeExport.TypeFilters.Count.ShouldBe(1);
+        attributeExport.TypeExports.Count.ShouldBe(1);
     }
 
     [Test]
@@ -71,7 +71,7 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<EntityAttribute>();
         attributeExport.Exclude<EntityAttribute>();
 
-        attributeExport.TypeFilters.Count.ShouldBe(0);
+        attributeExport.TypeExports.Count.ShouldBe(0);
     }
 
     [Test]
@@ -80,10 +80,10 @@ public class BuildingAttributeExportSets : TestSpec
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<CustomAttribute>();
 
-        attributeExport.TypeFilters.ShouldContain<CustomAttribute>();
-        attributeExport.MethodFilters.ShouldContain<CustomAttribute>();
-        attributeExport.ParameterFilters.ShouldContain<CustomAttribute>();
-        attributeExport.PropertyFilters.ShouldContain<CustomAttribute>();
+        attributeExport.TypeExports.ShouldContain<CustomAttribute>();
+        attributeExport.MethodExports.ShouldContain<CustomAttribute>();
+        attributeExport.ParameterExports.ShouldContain<CustomAttribute>();
+        attributeExport.PropertyExports.ShouldContain<CustomAttribute>();
     }
 
     [Test]
@@ -119,6 +119,20 @@ public class BuildingAttributeExportSets : TestSpec
     }
 
     [Test]
+    public void Included_attribute_can_be_filtered()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var attributeExport = new AttributeExport("Test");
+        attributeExport.Include<LocatableAttribute>()
+            .AddFilter((locatable, _) => locatable.IsAsync);
+        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+
+        var model = builder.Build(domain);
+
+        model.Types.Any(t => t.Name == nameof(Parent));
+    }
+
+    [Test]
     public void Type_filters_applies_to_class_interface_struct_and_enum()
     {
         var domain = GiveMe.TheDomainModel();
@@ -144,7 +158,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<LocatableAttribute>()
-            .ExcludeData(p => p.Name == nameof(LocatableAttribute.IsAsync));
+            .ExcludeProperty(p => p.Name == nameof(LocatableAttribute.IsAsync));
         var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -160,9 +174,9 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new AttributeExport("Test");
         attributeExport.Include<LocatableAttribute>()
-            .ExcludeData(p => false);
+            .ExcludeProperty(p => false);
         attributeExport.Include<LocatableAttribute>()
-            .ExcludeData(p => p.Name != nameof(LocatableAttribute.QueryType));
+            .ExcludeProperty(p => p.Name != nameof(LocatableAttribute.QueryType));
         var builder = new AttributeExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);

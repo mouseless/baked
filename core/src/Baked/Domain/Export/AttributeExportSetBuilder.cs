@@ -22,7 +22,7 @@ public class AttributeExportSetBuilder(AttributeExport _export, IAttributeDataBu
 
     TypeAttributeExportModel? BuildMetadata(TypeModelMetadata type)
     {
-        var attributes = BuildAttributes(type, _export.TypeFilters);
+        var attributes = BuildAttributes(type, _export.TypeExports);
         if (!attributes.Any()) { return default; }
 
         var typeMetadataModel = new TypeAttributeExportModel(((IModel)type).Id, type.Name);
@@ -36,7 +36,7 @@ public class AttributeExportSetBuilder(AttributeExport _export, IAttributeDataBu
     {
         foreach (var method in type.Methods)
         {
-            var attributes = BuildAttributes(method, _export.MethodFilters);
+            var attributes = BuildAttributes(method, _export.MethodExports);
             if (!attributes.Any()) { continue; }
 
             var methodMetadata = new MethodAttributeExportModel(method.Name, attributes)
@@ -49,7 +49,7 @@ public class AttributeExportSetBuilder(AttributeExport _export, IAttributeDataBu
 
         foreach (var property in type.Properties)
         {
-            var attributes = BuildAttributes(property, _export.PropertyFilters);
+            var attributes = BuildAttributes(property, _export.PropertyExports);
             if (!attributes.Any()) { continue; }
 
             var propertyMetadata = new PropertyAttributeExportModel(property.Name, attributes);
@@ -64,7 +64,7 @@ public class AttributeExportSetBuilder(AttributeExport _export, IAttributeDataBu
         var parameters = new List<ParameterAttributeExportModel>();
         foreach (var parameter in method.DefaultOverload.Parameters)
         {
-            var attributes = BuildAttributes(parameter, _export.ParameterFilters);
+            var attributes = BuildAttributes(parameter, _export.ParameterExports);
             if (!attributes.Any()) { continue; }
 
             var parameterMetadata = new ParameterAttributeExportModel(parameter.Name, attributes);
@@ -74,35 +74,36 @@ public class AttributeExportSetBuilder(AttributeExport _export, IAttributeDataBu
         return parameters;
     }
 
-    List<AttributeExportModel> BuildAttributes(ICustomAttributesModel model, List<IAttributeFilter> filters)
+    List<AttributeExportModel> BuildAttributes(ICustomAttributesModel model, List<IAttributeExport> attributeExports)
     {
         var result = new List<AttributeExportModel>();
-        foreach (var filter in filters)
+
+        foreach (var attributeExport in attributeExports)
         {
-            if (filter.Type.AllowsMultiple() && model.TryGetAll(filter.Type, out var attributes))
+            if (attributeExport.Type.AllowsMultiple() && model.TryGetAll(attributeExport.Type, out var attributes))
             {
-                result.AddRange([.. attributes.Select(a => BuildAttribute(a, filter))]);
+                result.AddRange(attributes.Where(a => attributeExport.AppliesTo(a, model)).Select(a => BuildAttribute(a, attributeExport)));
             }
-            else if (model.TryGet(filter.Type, out var attribute))
+            else if (model.TryGet(attributeExport.Type, out var attribute) && attributeExport.AppliesTo(attribute, model))
             {
-                result.Add(BuildAttribute(attribute, filter));
+                result.Add(BuildAttribute(attribute, attributeExport));
             }
         }
 
         return result;
     }
 
-    AttributeExportModel BuildAttribute(object instance, IAttributeFilter filter)
+    AttributeExportModel BuildAttribute(object instance, IAttributeExport attributeExport)
     {
         var properties = _builder.Build(instance);
-        foreach (var extension in filter.PropertyExtensions)
+        foreach (var extension in attributeExport.PropertyExtensions)
         {
             properties.Add(extension((Attribute)instance));
         }
 
         var attributeMetadata = new AttributeExportModel(instance.GetType().Name)
         {
-            Values = properties.Where(p => !filter.RemoveProperty.Any(r => r(p))).ToDictionary(p => p.Name, p => p.Value)
+            Values = properties.Where(p => !attributeExport.RemoveProperty.Any(r => r(p))).ToDictionary(p => p.Name, p => p.Value)
         };
 
         return attributeMetadata;

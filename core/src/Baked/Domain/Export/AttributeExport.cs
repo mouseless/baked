@@ -5,23 +5,23 @@ namespace Baked.Domain.Export;
 public partial record AttributeExport(string Name)
 {
     Func<TypeModelMetadata, string> _typeGroupName = type => type.Name;
-    Dictionary<Type, IAttributeFilter> _attributeFilters = new();
+    Dictionary<Type, IAttributeExport> _attributeFilters = new();
 
-    public List<IAttributeFilter> TypeFilters { get; } = [];
-    public List<IAttributeFilter> MethodFilters { get; } = [];
-    public List<IAttributeFilter> ParameterFilters { get; } = [];
-    public List<IAttributeFilter> PropertyFilters { get; } = [];
+    public List<IAttributeExport> TypeExports { get; } = [];
+    public List<IAttributeExport> MethodExports { get; } = [];
+    public List<IAttributeExport> ParameterExports { get; } = [];
+    public List<IAttributeExport> PropertyExports { get; } = [];
     public ITypeExportSerializer Serializer { get; set; } = new KdlTypeExportSerializer();
     public Func<TypeAttributeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
 
-    public AttributeFilter<T> Include<T>() where T : Attribute
+    public ExportAttribute<T> Include<T>() where T : Attribute
     {
         if (_attributeFilters.TryGetValue(typeof(T), out var filter))
         {
-            return (AttributeFilter<T>)filter;
+            return (ExportAttribute<T>)filter;
         }
 
-        _attributeFilters[typeof(T)] = filter = new AttributeFilter<T>();
+        _attributeFilters[typeof(T)] = filter = new ExportAttribute<T>();
         var usage = GetUsage<T>();
         if (
             usage is null ||
@@ -31,25 +31,25 @@ public partial record AttributeExport(string Name)
             usage.ValidOn.HasFlag(AttributeTargets.Enum)
         )
         {
-            TypeFilters.Add(filter);
+            TypeExports.Add(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
         {
-            MethodFilters.Add(filter);
+            MethodExports.Add(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
         {
-            ParameterFilters.Add(filter);
+            ParameterExports.Add(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
         {
-            PropertyFilters.Add(filter);
+            PropertyExports.Add(filter);
         }
 
-        return (AttributeFilter<T>)filter;
+        return (ExportAttribute<T>)filter;
     }
 
     public void Exclude<T>() where T : Attribute
@@ -70,22 +70,22 @@ public partial record AttributeExport(string Name)
             usage.ValidOn.HasFlag(AttributeTargets.Enum)
         )
         {
-            TypeFilters.Remove(filter);
+            TypeExports.Remove(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
         {
-            MethodFilters.Remove(filter);
+            MethodExports.Remove(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
         {
-            ParameterFilters.Remove(filter);
+            ParameterExports.Remove(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
         {
-            PropertyFilters.Remove(filter);
+            PropertyExports.Remove(filter);
         }
     }
 

@@ -46,7 +46,7 @@ public static class DomainModelExtensions
         }
     }
 
-    extension(List<IAttributeFilter> filters)
+    extension(List<IAttributeExport> filters)
     {
         public void ShouldContain<T>() where T : Attribute
         {

@@ -2,7 +2,8 @@
 
 namespace Baked.Domain.Export;
 
-public record TypeAttributeExportModel(string Id, string Name) : IModel
+public record TypeAttributeExportModel(string Id, string Name)
+    : IModel
 {
     public string GroupName { get; set; } = Name;
     public List<AttributeExportModel> Attributes { get; init; } = [];

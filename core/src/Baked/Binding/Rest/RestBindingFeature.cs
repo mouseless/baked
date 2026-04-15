@@ -70,7 +70,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             {
                 restApi.Include<ControllerModelAttribute>();
                 restApi.Include<ActionModelAttribute>()
-                    .AddData(action => new(Name: "Route", Value: action.GetRoute()));
+                    .AddPropertyExtension(action => new(Name: "Route", Value: action.GetRoute()));
                 restApi.Include<ParameterModelAttribute>();
 
                 restApi.TypeGroupName(type => type.Get<ControllerModelAttribute>().GroupName);

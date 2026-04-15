@@ -175,6 +175,16 @@ public static class DomainExtensions
             model.TryGet<TAttribute>(out var attribute).ShouldBeTrue();
             matcher(attribute).ShouldBeTrue();
         }
+
+        public void ThrowIfNotTarget(Attribute attribute)
+        {
+            var usages = (AttributeUsageAttribute?)Attribute.GetCustomAttribute(attribute.GetType(), typeof(AttributeUsageAttribute));
+            var validOn = usages?.ValidOn ?? AttributeTargets.All;
+
+            if (validOn.HasFlag(model.Target)) { return; }
+
+            throw new InvalidOperationException($"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'");
+        }
     }
 
     extension(ParameterModel parameter)

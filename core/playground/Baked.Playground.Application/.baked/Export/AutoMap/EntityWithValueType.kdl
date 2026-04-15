@@ -4,3 +4,7 @@ entity-with-value-type @entity {
   }
 }
 
+entity-with-value-types {
+  @query locatableType="Baked.Playground.CodingStyle.ValueType.EntityWithValueType"
+}
+

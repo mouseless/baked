@@ -40,7 +40,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         {
             exports.RestApi(restApi =>
             {
-                restApi.Include<RequireUserAttribute>().ExcludeData();
+                restApi.Include<RequireUserAttribute>().ExcludeProperty();
                 restApi.Include<AllowAnonymousAttribute>();
             });
         });
