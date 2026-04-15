@@ -3,7 +3,6 @@ using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -42,7 +41,8 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 new(action.Orphan),
                 new(action.HasBody)
             ]);
-            datas.Set<MappedMethodAttribute>(mappedMethod => [
+            datas.Set<MappedMethodAttribute>(mappedMethod =>
+            [
                 new(mappedMethod.TypeFullName),
                 new(mappedMethod.MethodName),
             ]);
@@ -146,18 +146,6 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
                 action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")")
             );
-        });
-
-        configurator.Domain.ConfigureAttributeExportCollection(exports =>
-        {
-            exports.RestApi(restApi =>
-            {
-                restApi.Include<ControllerModelAttribute>();
-                restApi.Include<ActionModelAttribute>();
-                restApi.Include<ParameterModelAttribute>();
-
-                restApi.TypeGroupName(type => type.Get<ControllerModelAttribute>().GroupName);
-            });
         });
 
         configurator.RestApi.ConfigureApiModel(api =>

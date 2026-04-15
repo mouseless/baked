@@ -2,7 +2,7 @@
 
 [AttributeUsage(AttributeTargets.Class)]
 public class LocatableExtensionAttribute(Type locatableType)
-    : Attribute()
+    : Attribute
 {
     public Type LocatableType { get; } = locatableType;
 }

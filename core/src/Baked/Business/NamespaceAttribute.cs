@@ -2,7 +2,7 @@
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Interface | AttributeTargets.Struct)]
 public class NamespaceAttribute(string value)
-    : Attribute()
+    : Attribute
 {
     public string Value { get; } = value;
 }
