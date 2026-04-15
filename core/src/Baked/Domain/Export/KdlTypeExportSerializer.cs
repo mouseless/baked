@@ -55,7 +55,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
     {
         foreach (var attribute in attributes)
         {
-            if (attribute.Values is null || !attribute.Values.Any())
+            if (!attribute.Values.Any())
             {
                 root.Arguments.Add(new KdlString(GetAttributeName(attribute.Type), KdlStringType.Identifier));
             }
@@ -68,6 +68,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
 
                     var kdlValue = GetValue(value);
                     if (kdlValue is KdlNull) { continue; }
+                    if (kdlValue is KdlBoolean kdlBool && !kdlBool.Value) { continue; }
 
                     childNode.AddProperty(GetPropertyName(key), kdlValue);
                 }
@@ -92,7 +93,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
     string GetPropertyName(string name) =>
         $"{name[0].ToString().ToLowerInvariant()}{name[1..]}";
 
-    protected virtual KdlValue GetValue(object value) =>
+    KdlValue GetValue(object value) =>
         value.GetType() switch
         {
             var type when type.IsAssignableTo(typeof(IDictionary)) => KdlNull.Instance,

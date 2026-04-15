@@ -37,8 +37,7 @@ public class GeneratingAttributeExportFiles : TestSpec
     {
         var expected = """
         sample-type @entity {
-          @locatable isAsync=#false
-          @fake camelCase="CamelCase" string="Post" array="System.String[]" bool=#false int=1
+          @fake camelCase="CamelCase" string="Post" array="System.String[]" boolTrue=#true int=1
           name @label {
             @data prop="Name"
           }
@@ -56,15 +55,15 @@ public class GeneratingAttributeExportFiles : TestSpec
             name: "SampleType",
             attributes:
             [
-                new(nameof(EntityAttribute)),
-                new(nameof(LocatableAttribute), new(nameof(LocatableAttribute.QueryType), null), new(nameof(LocatableAttribute.IsAsync), false)),
                 new(nameof(FakeAttribute),
                     ("CamelCase", "CamelCase"),
                     ("String", "Post"),
                     ("Array", new[] { "sample-types", "id" }),
                     ("Dictionary", new Dictionary<string, object>{ {"id", new { } } }),
-                    ("Bool", false),
-                    ("Int", 1)
+                    ("BoolTrue", true),
+                    ("BoolFalse", false),
+                    ("Int", 1),
+                    ("ValueNull", null)
                 )
             ],
             methods:
