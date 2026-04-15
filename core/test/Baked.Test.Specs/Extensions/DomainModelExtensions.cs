@@ -1,3 +1,4 @@
+using Baked.Domain.Export;
 using Baked.Domain.Model;
 using Baked.Testing;
 
@@ -42,6 +43,19 @@ public static class DomainModelExtensions
             }
 
             return result;
+        }
+    }
+
+    extension(List<IAttributeExport> filters)
+    {
+        public void ShouldContain<T>() where T : Attribute
+        {
+            filters.ShouldContain(f => f.Type == typeof(T));
+        }
+
+        public void ShouldNotContain<T>() where T : Attribute
+        {
+            filters.ShouldNotContain(f => f.Type == typeof(T));
         }
     }
 }

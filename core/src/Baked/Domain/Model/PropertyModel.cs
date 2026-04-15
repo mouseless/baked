@@ -14,6 +14,7 @@ public record PropertyModel(
     public TypeModel PropertyType => PropertyTypeReference.Model;
 
     string IModel.Id { get; } = Name;
+    AttributeTargets ICustomAttributesModel.Target => AttributeTargets.Property;
 
     public XmlNode? Documentation { get; set; }
 }

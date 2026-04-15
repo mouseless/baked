@@ -7,6 +7,11 @@ public class TypeModelMetadata : TypeModelInheritance, ICustomAttributesModel
 {
     public AttributeCollection CustomAttributes { get; private set; } = default!;
 
+    AttributeTargets ICustomAttributesModel.Target =>
+        IsEnum ? AttributeTargets.Enum :
+        IsInterface ? AttributeTargets.Interface :
+        IsValueType ? AttributeTargets.Struct :
+        AttributeTargets.Class;
     AttributeCollection ICustomAttributesModel.CustomAttributes => CustomAttributes;
 
     public new class Factory : TypeModelInheritance.Factory

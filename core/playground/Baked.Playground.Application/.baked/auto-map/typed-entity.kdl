@@ -1,0 +1,7 @@
+typed-entity @entity {
+  id @id
+  type @unique
+}
+
+typed-entities @query
+

@@ -1,5 +1,8 @@
 ﻿using Baked.Architecture;
+using Baked.CodeGeneration;
 using Baked.Domain.Configuration;
+using Baked.Domain.Export;
+using Humanizer;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 using static Baked.Domain.DomainLayer;
@@ -12,6 +15,8 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
     readonly DomainServiceCollection _domainServiceCollection = new();
+    readonly AttributeProperties _attributeProperties = new();
+    readonly ExportConfigurations _attributeExportConfigurations = new();
 
     protected override PhaseContext GetContext(AddDomainTypes phase) =>
         phase.CreateContextBuilder()
@@ -37,12 +42,27 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 
         return phase.CreateContextBuilder()
             .Add(_domainServiceCollection, domain)
+            .Add(_attributeProperties)
+            .Add(_attributeExportConfigurations)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
                     assembly => assembly.AddCodes(new ServiceAdderTemplate(_domainServiceCollection)),
                     compilerOptions => compilerOptions.WithUsings(_domainServiceCollection.Usings)
                 );
+
+                var generatedFiles = Context.Get<IGeneratedFileCollection>();
+
+                foreach (var (key, set) in _attributeExportConfigurations)
+                {
+                    var model = new ExportSetBuilder(set, _attributeProperties).Build(domain);
+                    var contentGenerator = new FileContentGenerator(set.Serializer, set.ContentGroupName);
+                    var contents = contentGenerator.Generate(model);
+                    foreach (var (fileName, content) in contents)
+                    {
+                        generatedFiles.Add($"{fileName.Kebaberize()}", content, extension: "kdl", outdir: Path.Join("Export", $"{key.Kebaberize()}"));
+                    }
+                }
             })
             .Build();
     }

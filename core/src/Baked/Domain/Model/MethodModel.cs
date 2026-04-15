@@ -11,6 +11,7 @@ public record MethodModel(
 ) : IModel, ICustomAttributesModel, IDocumentedModel
 {
     string IModel.Id => Name;
+    AttributeTargets ICustomAttributesModel.Target => AttributeTargets.Method;
 
     public XmlNode? Documentation => DefaultOverload.Documentation;
 }

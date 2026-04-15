@@ -19,6 +19,7 @@
   <ItemGroup>
     <PackageReference Include="FluentNHibernate" />
     <PackageReference Include="Humanizer.Core" />
+    <PackageReference Include="KdlSharp" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />

@@ -1,4 +1,4 @@
 ﻿namespace Baked.Business;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
 public class ServiceAttribute : Attribute;

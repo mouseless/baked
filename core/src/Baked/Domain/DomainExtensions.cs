@@ -2,6 +2,7 @@
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
+using Baked.Domain.Export;
 using Baked.Domain.Model;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,12 @@ public static class DomainExtensions
             ConfigureDomainServiceCollection((services, _) => configuration(services));
 
         public void ConfigureDomainServiceCollection(Action<DomainServiceCollection, DomainModel> configuration) =>
+            _configurator.Configure(configuration);
+
+        public void ConfigureAttributeProperties(Action<AttributeProperties> configuration) =>
+           _configurator.Configure(configuration);
+
+        public void ConfigureExportConfigurations(Action<ExportConfigurations> configuration) =>
             _configurator.Configure(configuration);
 
         public void UsingDomainModel(Action<DomainModel> configuration) =>
@@ -191,6 +198,16 @@ public static class DomainExtensions
             attribute
                 .GetType()
                 .AllowsMultiple();
+
+        public void ThrowIfNotTarget(ICustomAttributesModel model)
+        {
+            var usages = (AttributeUsageAttribute?)Attribute.GetCustomAttribute(attribute.GetType(), typeof(AttributeUsageAttribute));
+            var validOn = usages?.ValidOn ?? AttributeTargets.All;
+
+            if (validOn.HasFlag(model.Target)) { return; }
+
+            throw new InvalidOperationException($"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'");
+        }
     }
 
     extension(MemberInfo? memberInfo)

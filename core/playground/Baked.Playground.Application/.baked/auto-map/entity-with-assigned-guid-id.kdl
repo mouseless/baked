@@ -1,0 +1,6 @@
+entity-with-assigned-guid-id @entity {
+  id {
+    @id mapping="MappingOptions { UserType = Baked.CodingStyle.Id.IdGuidUserType, IdentifierGenerator = NHibernate.Id.Assigned }"
+  }
+}
+

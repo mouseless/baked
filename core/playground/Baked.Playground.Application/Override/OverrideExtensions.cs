@@ -9,6 +9,7 @@ public static class OverrideExtensions
         public void AddOverrides()
         {
             features.Add(new Playground.Override.DataAccess.MappingsDataAccessOverrideFeature());
+            features.Add(new Playground.Override.Domain.AttributeExportOverrideFeature());
             features.Add(new Playground.Override.Domain.AuthenticationSamplesDomainOverrideFeature());
             features.Add(new Playground.Override.Domain.CacheSamplesDomainOverrideFeature());
             features.Add(new Playground.Override.Domain.ChildDomainOverrideFeature());
