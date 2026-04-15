@@ -2,7 +2,7 @@
 
 namespace Baked.Domain.Export;
 
-public class ExportFileContentGenerator(ITypeExportSerializer _serializer, Func<TypeExportModel, string> _contentGroupName)
+public class FileContentGenerator(ITypeExportSerializer _serializer, Func<TypeExportModel, string> _contentGroupName)
 {
     public Dictionary<string, string> Generate(ExportSetModel model)
     {
