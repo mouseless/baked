@@ -21,15 +21,17 @@ public class ConfiguringEntityIds : TestSpec
         classMapping.Identifier.ShouldBeOfType<SimpleValue>().IdentifierGeneratorStrategy.ShouldContain(nameof(IdGuidGenerator));
     }
 
-    [Test]
-    public void Uses_values_from_id_attribute_to_configure_id_mapping()
+    [TestCase(typeof(EntityWithAutoIncrementId), nameof(IdIntUserType), nameof(NHibernate.Id.IdentityGenerator))]
+    [TestCase(typeof(EntityWithAssignedId), nameof(IdStringUserType), nameof(NHibernate.Id.Assigned))]
+    [TestCase(typeof(EntityWithAssignedGuidId), nameof(IdGuidUserType), nameof(NHibernate.Id.Assigned))]
+    public void Uses_values_from_id_attribute_to_configure_id_mapping(Type entityType, string expectedTypeName, string expectedIdGeneratorStrategy)
     {
         var configuration = GiveMe.The<NHConfiguration>();
 
-        var classMapping = configuration.GetClassMapping(typeof(EntityWithAutoIncrementId));
+        var classMapping = configuration.GetClassMapping(entityType);
 
-        classMapping.Identifier.Type.Name.ShouldBe(nameof(IdIntUserType));
-        classMapping.Identifier.ShouldBeOfType<SimpleValue>().IdentifierGeneratorStrategy.ShouldContain(nameof(NHibernate.Id.IdentityGenerator));
+        classMapping.Identifier.Type.Name.ShouldBe(expectedTypeName);
+        classMapping.Identifier.ShouldBeOfType<SimpleValue>().IdentifierGeneratorStrategy.ShouldContain(expectedIdGeneratorStrategy);
     }
 
     [Test]
@@ -84,5 +86,16 @@ public class ConfiguringEntityIds : TestSpec
 
         actual1.Id.ToString().ShouldBe("1");
         actual2.Id.ToString().ShouldBe("string");
+    }
+
+    [Test]
+    public void Assigned_guid_id_sets_id_to_given_value()
+    {
+        var newEntityWithAssignedId = GiveMe.The<Func<EntityWithAssignedGuidId>>();
+        var id = Id.NewId();
+
+        var actual = newEntityWithAssignedId().With(id);
+
+        actual.Id.ShouldBe(id);
     }
 }

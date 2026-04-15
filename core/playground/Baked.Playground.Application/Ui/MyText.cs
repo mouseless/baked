@@ -6,7 +6,11 @@ public record MyText : Text, IComponentOverride<Text>
 {
     Text IComponentOverride<Text>.Base
     {
-        set => MaxLength = value.MaxLength;
+        set
+        {
+            MaxLength = value.MaxLength;
+            Prop = value.Prop;
+        }
     }
 
     public string? SomethingExtra { get; set; }

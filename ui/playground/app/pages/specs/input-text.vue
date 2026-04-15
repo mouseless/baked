@@ -23,6 +23,14 @@ const variants = [
       label: "Spec: This is a very very very very long label"
     }),
     model: ref()
+  },
+  {
+    name: "Target Prop",
+    descriptor: giveMe.anInputText({
+      label: "Id",
+      targetProp: "id"
+    }),
+    model: ref()
   }
 ];
 </script>

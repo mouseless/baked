@@ -23,6 +23,16 @@ const variants = [
   {
     name: "No Data",
     descriptor: giveMe.aText({ data: null })
+  },
+  {
+    name: "Prop",
+    descriptor: giveMe.aText({
+      prop: "name",
+      data: giveMe.anInlineData({
+        id: 1,
+        name: "Text from object"
+      })
+    })
   }
 ];
 </script>
