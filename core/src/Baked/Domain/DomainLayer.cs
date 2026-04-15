@@ -2,6 +2,7 @@
 using Baked.CodeGeneration;
 using Baked.Domain.Configuration;
 using Baked.Domain.Export;
+using Humanizer;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 using static Baked.Domain.DomainLayer;
@@ -59,7 +60,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
                     var contents = contentGenerator.Generate(model);
                     foreach (var (fileName, content) in contents)
                     {
-                        generatedFiles.Add($"{fileName}", content, extension: "kdl", outdir: Path.Join("Export", $"{key}"));
+                        generatedFiles.Add($"{fileName.Kebaberize()}", content, extension: "kdl", outdir: Path.Join("Export", $"{key.Kebaberize()}"));
                     }
                 }
             })
