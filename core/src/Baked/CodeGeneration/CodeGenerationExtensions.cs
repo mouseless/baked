@@ -39,9 +39,6 @@ public static class CodeGenerationExtensions
         public IGeneratedAssemblyCollection GetGeneratedAssemblyCollection() =>
             context.Get<IGeneratedAssemblyCollection>();
 
-        public IGeneratedFileCollection GetGeneratedFileCollection() =>
-            context.Get<IGeneratedFileCollection>();
-
         public GeneratedContext GetGeneratedContext() =>
             context.Get<GeneratedContext>();
 

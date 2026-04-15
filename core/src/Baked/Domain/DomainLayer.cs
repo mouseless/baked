@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.CodeGeneration;
 using Baked.Domain.Configuration;
 using Baked.Domain.Export;
 
@@ -49,7 +50,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
                     compilerOptions => compilerOptions.WithUsings(_domainServiceCollection.Usings)
                 );
 
-                var generatedFiles = Context.GetGeneratedFileCollection();
+                var generatedFiles = Context.Get<IGeneratedFileCollection>();
 
                 foreach (var (key, set) in _attributeExportConfigurations)
                 {

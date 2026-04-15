@@ -51,7 +51,7 @@
     
   <Target Name="CopyExportFiles" AfterTargets="AfterBuild" Condition="$(CopyExportFiles)">
     <PropertyGroup>
-      <ExportFilesDir>$(ProjectDir)\.baked\Export</ExportFilesDir>
+      <ExportFilesDir>$(ProjectDir)\.baked</ExportFilesDir>
     </PropertyGroup>
 
     <MakeDir Directories="$(ExportFilesDir)" Condition="!Exists($(ExportFilesDir))"/>
