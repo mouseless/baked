@@ -1,4 +1,0 @@
-transient-generic-usage {
-  @controller-model id="Baked.Playground.Lifetime.TransientGenericUsage" className="Playground_Lifetime_TransientGenericUsage" groupName="TransientGenericUsage" orphan=#false
-}
-

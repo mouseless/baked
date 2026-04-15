@@ -1,4 +1,0 @@
-scoped-context {
-  @controller-model id="Baked.Playground.Lifetime.ScopedContext" className="Playground_Lifetime_ScopedContext" groupName="ScopedContext" orphan=#false
-}
-

@@ -1,4 +1,0 @@
-rich-transient-parent {
-  @controller-model id="Baked.Playground.CodingStyle.RichTransient.RichTransientParent" className="Playground_CodingStyle_RichTransient_RichTransientParent" groupName="RichTransientParents" orphan=#false
-}
-

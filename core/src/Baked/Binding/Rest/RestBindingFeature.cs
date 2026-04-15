@@ -64,19 +64,6 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             ]);
         });
 
-        configurator.Domain.ConfigureAttributeExportCollection(exports =>
-        {
-            exports.RestApi(restApi =>
-            {
-                restApi.Include<ControllerModelAttribute>();
-                restApi.Include<ActionModelAttribute>()
-                    .AddPropertyExtension(action => new(Name: "Route", Value: action.GetRoute()));
-                restApi.Include<ParameterModelAttribute>();
-
-                restApi.TypeGroupName(type => type.Get<ControllerModelAttribute>().GroupName);
-            });
-        });
-
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // domain attribute indices

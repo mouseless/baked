@@ -10,6 +10,15 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.Domain.ConfigureAttributeDatas(datas =>
+        {
+            datas.Set<RequireUserAttribute>(require =>
+            [
+                new(require.Override),
+                new(require.Claims)
+            ]);
+        });
+
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetMethodAttribute(
@@ -25,24 +34,6 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             builder.Conventions.Add(new RequireUserIsAuthorizeConvention());
             builder.Conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims));
             builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
-        });
-
-        configurator.Domain.ConfigureAttributeDatas(datas =>
-        {
-            datas.Set<RequireUserAttribute>(require =>
-            [
-                new(require.Override),
-                new(require.Claims)
-            ]);
-        });
-
-        configurator.Domain.ConfigureAttributeExportCollection(exports =>
-        {
-            exports.RestApi(restApi =>
-            {
-                restApi.Include<RequireUserAttribute>().ExcludeProperty();
-                restApi.Include<AllowAnonymousAttribute>();
-            });
         });
 
         configurator.Runtime.ConfigureServiceCollection(services =>
