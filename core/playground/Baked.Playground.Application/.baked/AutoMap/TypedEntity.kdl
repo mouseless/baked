@@ -1,7 +1,5 @@
 typed-entity @entity {
-  id {
-    @id
-  }
+  id @id
   type @unique
 }
 

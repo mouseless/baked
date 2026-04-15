@@ -4,5 +4,5 @@ public interface ITypeExportSerializer
 {
     string FileExtension { get; }
 
-    string Serialize(TypeAttributeExportModel model);
+    string Serialize(TypeExportModel model);
 }

@@ -39,7 +39,7 @@ public class BuildingAttributeExportSets : TestSpec
     [Test]
     public void Attributes_are_included_based_on_usage()
     {
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<EntityAttribute>();
         attributeExport.Include<ComponentDescriptorBuilderAttribute<Text>>();
 
@@ -57,7 +57,7 @@ public class BuildingAttributeExportSets : TestSpec
     [Test]
     public void Does_not_add_attribute_more_then_once()
     {
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<EntityAttribute>();
         attributeExport.Include<EntityAttribute>();
 
@@ -67,7 +67,7 @@ public class BuildingAttributeExportSets : TestSpec
     [Test]
     public void Attribute_can_be_removed()
     {
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<EntityAttribute>();
         attributeExport.Exclude<EntityAttribute>();
 
@@ -77,7 +77,7 @@ public class BuildingAttributeExportSets : TestSpec
     [Test]
     public void Adds_attribute_to_all_filters_when_usage_is_null()
     {
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<CustomAttribute>();
 
         attributeExport.TypeExports.ShouldContain<CustomAttribute>();
@@ -90,8 +90,8 @@ public class BuildingAttributeExportSets : TestSpec
     public void Builds_empty_set_when_no_attributes_are_included()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var attributeExport = new ExportConfiguration("Test");
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -102,9 +102,9 @@ public class BuildingAttributeExportSets : TestSpec
     public void Includes_given_attributes_data_for_types()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<LocatableAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -122,10 +122,10 @@ public class BuildingAttributeExportSets : TestSpec
     public void Included_attribute_can_be_filtered()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<LocatableAttribute>()
             .AddFilter((locatable, _) => locatable.IsAsync);
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -136,9 +136,9 @@ public class BuildingAttributeExportSets : TestSpec
     public void Type_filters_applies_to_class_interface_struct_and_enum()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<NamespaceAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -156,10 +156,10 @@ public class BuildingAttributeExportSets : TestSpec
     public void Attribute_values_can_be_removed()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<LocatableAttribute>()
             .ExcludeProperty(p => p.Name == nameof(LocatableAttribute.IsAsync));
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -172,12 +172,12 @@ public class BuildingAttributeExportSets : TestSpec
     public void Adding_multiple_filters_requires_all_to_return_true()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<LocatableAttribute>()
             .ExcludeProperty(p => false);
         attributeExport.Include<LocatableAttribute>()
             .ExcludeProperty(p => p.Name != nameof(LocatableAttribute.QueryType));
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -190,10 +190,10 @@ public class BuildingAttributeExportSets : TestSpec
     public void Group_name_can_be_configured()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<SingletonAttribute>();
         attributeExport.TypeGroupName(_ => "GroupName");
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -204,9 +204,9 @@ public class BuildingAttributeExportSets : TestSpec
     public void Types_having_no_matching_attributes_are_excluded()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<NotExistingAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -217,10 +217,10 @@ public class BuildingAttributeExportSets : TestSpec
     public void Metadata_can_include_methods()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<ControllerModelAttribute>();
         attributeExport.Include<ActionModelAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -239,11 +239,11 @@ public class BuildingAttributeExportSets : TestSpec
     public void Methods_can_have_parameters()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<ControllerModelAttribute>();
         attributeExport.Include<ActionModelAttribute>();
         attributeExport.Include<ParameterModelAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -258,10 +258,10 @@ public class BuildingAttributeExportSets : TestSpec
     public void Excludes_methods_not_having_given_attribute()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<ControllerModelAttribute>();
         attributeExport.Include<InitializerAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -275,9 +275,9 @@ public class BuildingAttributeExportSets : TestSpec
     public void Does_not_include_methods_when_not_configued()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<ControllerModelAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -289,10 +289,10 @@ public class BuildingAttributeExportSets : TestSpec
     public void Does_not_include_parameters_when_not_configured()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<TransientAttribute>();
         attributeExport.Include<InitializerAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -305,12 +305,12 @@ public class BuildingAttributeExportSets : TestSpec
     public void Metadata_can_includes_properties()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<EntityAttribute>();
         attributeExport.Include<IdAttribute>();
         attributeExport.Include<LabelAttribute>();
 
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -326,10 +326,10 @@ public class BuildingAttributeExportSets : TestSpec
     public void Properties_can_be_excluded()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<EntityAttribute>();
         attributeExport.Include<IdAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
@@ -343,9 +343,9 @@ public class BuildingAttributeExportSets : TestSpec
     public void Does_not_include_properties_when_not_configued()
     {
         var domain = GiveMe.TheDomainModel();
-        var attributeExport = new AttributeExportConfiguration("Test");
+        var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<EntityAttribute>();
-        var builder = new AttributeExportSetBuilder(attributeExport, _builders);
+        var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 

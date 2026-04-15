@@ -8,13 +8,13 @@ namespace Baked.Test.Domain;
 
 public class GeneratingAttributeExportFiles : TestSpec
 {
-    static TypeAttributeExportModel ATypeExportModel(
+    static TypeExportModel ATypeExportModel(
         string? id = default,
         string? name = default,
         string? groupName = default,
         List<AttributeExportModel>? attributes = default,
-        List<MethodAttributeExportModel>? methods = default,
-        List<PropertyAttributeExportModel>? properties = default
+        List<MethodExportModel>? methods = default,
+        List<PropertyExportModel>? properties = default
     )
     {
         name ??= "Test";
@@ -84,8 +84,32 @@ public class GeneratingAttributeExportFiles : TestSpec
                 new("Surname", [new(nameof(LabelAttribute))])
             ]
         );
-        var exportSet = new AttributeExportSetModel(new(new[] { typeExport }));
-        var contentGenerator = new AttributeExportFileContentGenerator(new KdlTypeExportSerializer(), type => type.GroupName);
+        var exportSet = new ExportSetModel(new(new[] { typeExport }));
+        var contentGenerator = new ExportFileContentGenerator(new KdlTypeExportSerializer(), type => type.GroupName);
+
+        var actual = contentGenerator.Generate(exportSet);
+
+        actual["SampleType"].Trim().ShouldBe(expected.Trim());
+    }
+
+    [Test]
+    public void Attribute_with_no_renderable_values_are_added_as_argument()
+    {
+        var expected = """
+        sample-type @fake
+        """;
+
+        var typeExport = ATypeExportModel(
+            id: "Baked.Test.Domain.SampleType",
+            name: "SampleType",
+            attributes:
+            [
+                new(nameof(FakeAttribute), ("ValueNull", null))
+            ]
+        );
+
+        var exportSet = new ExportSetModel(new(new[] { typeExport }));
+        var contentGenerator = new ExportFileContentGenerator(new KdlTypeExportSerializer(), type => type.GroupName);
 
         var actual = contentGenerator.Generate(exportSet);
 
@@ -119,8 +143,8 @@ public class GeneratingAttributeExportFiles : TestSpec
            attributes: [new(nameof(EntityAttribute))]
        );
 
-        var exportSet = new AttributeExportSetModel(new(new[] { typeExportA, typeExportB, typeExportC }));
-        var contentGenerator = new AttributeExportFileContentGenerator(new KdlTypeExportSerializer(), type => type.GroupName);
+        var exportSet = new ExportSetModel(new(new[] { typeExportA, typeExportB, typeExportC }));
+        var contentGenerator = new ExportFileContentGenerator(new KdlTypeExportSerializer(), type => type.GroupName);
 
         var actual = contentGenerator.Generate(exportSet);
 

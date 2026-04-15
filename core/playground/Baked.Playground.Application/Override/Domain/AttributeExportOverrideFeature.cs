@@ -8,7 +8,7 @@ public class AttributeExportOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureAttributeExportConfigurations(exports =>
+        configurator.Domain.ConfigureExportConfigurations(exports =>
         {
             configurator.Domain.UsingDomainModel(domain =>
             {

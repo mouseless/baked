@@ -9,7 +9,7 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
 {
     public string FileExtension => "kdl";
 
-    public string Serialize(TypeAttributeExportModel model)
+    public string Serialize(TypeExportModel model)
     {
         var root = new KdlNode(GetTypeName(model.Name));
         AddAttributeNodes(root, model.Attributes);
@@ -73,7 +73,14 @@ public class KdlTypeExportSerializer : ITypeExportSerializer
                     childNode.AddProperty(GetPropertyName(key), kdlValue);
                 }
 
-                root.AddChild(childNode);
+                if (!childNode.Properties.Any())
+                {
+                    root.Arguments.Add(new KdlString(GetAttributeName(attribute.Type), KdlStringType.Identifier));
+                }
+                else
+                {
+                    root.AddChild(childNode);
+                }
             }
         }
     }

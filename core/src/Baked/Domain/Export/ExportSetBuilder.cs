@@ -2,11 +2,11 @@
 
 namespace Baked.Domain.Export;
 
-public class AttributeExportSetBuilder(AttributeExportConfiguration _export, IAttributeDataBuilder _builder)
+public class ExportSetBuilder(ExportConfiguration _export, IAttributeDataBuilder _builder)
 {
-    public AttributeExportSetModel Build(DomainModel domain)
+    public ExportSetModel Build(DomainModel domain)
     {
-        var types = new List<TypeAttributeExportModel>();
+        var types = new List<TypeExportModel>();
         foreach (var type in domain.Types)
         {
             if (!type.TryGetMetadata(out var metadata)) { continue; }
@@ -20,26 +20,26 @@ public class AttributeExportSetBuilder(AttributeExportConfiguration _export, IAt
         return new(new(types));
     }
 
-    TypeAttributeExportModel? BuildMetadata(TypeModelMetadata type)
+    TypeExportModel? BuildMetadata(TypeModelMetadata type)
     {
         var attributes = BuildAttributes(type, _export.TypeExports);
         if (!attributes.Any()) { return default; }
 
-        var typeMetadataModel = new TypeAttributeExportModel(((IModel)type).Id, type.Name);
+        var typeMetadataModel = new TypeExportModel(((IModel)type).Id, type.Name);
         typeMetadataModel.Attributes.AddRange(attributes);
         typeMetadataModel.GroupName = _export.GetTypeGroupName(type);
 
         return type.TryGetMembers(out var members) ? BuildMembers(typeMetadataModel, members) : typeMetadataModel;
     }
 
-    TypeAttributeExportModel BuildMembers(TypeAttributeExportModel metadata, TypeModelMembers type)
+    TypeExportModel BuildMembers(TypeExportModel metadata, TypeModelMembers type)
     {
         foreach (var method in type.Methods)
         {
             var attributes = BuildAttributes(method, _export.MethodExports);
             if (!attributes.Any()) { continue; }
 
-            var methodMetadata = new MethodAttributeExportModel(method.Name, attributes)
+            var methodMetadata = new MethodExportModel(method.Name, attributes)
             {
                 Parameters = BuildParameters(method)
             };
@@ -52,22 +52,22 @@ public class AttributeExportSetBuilder(AttributeExportConfiguration _export, IAt
             var attributes = BuildAttributes(property, _export.PropertyExports);
             if (!attributes.Any()) { continue; }
 
-            var propertyMetadata = new PropertyAttributeExportModel(property.Name, attributes);
+            var propertyMetadata = new PropertyExportModel(property.Name, attributes);
             metadata.Properties.Add(propertyMetadata);
         }
 
         return metadata;
     }
 
-    List<ParameterAttributeExportModel> BuildParameters(MethodModel method)
+    List<ParameterExportModel> BuildParameters(MethodModel method)
     {
-        var parameters = new List<ParameterAttributeExportModel>();
+        var parameters = new List<ParameterExportModel>();
         foreach (var parameter in method.DefaultOverload.Parameters)
         {
             var attributes = BuildAttributes(parameter, _export.ParameterExports);
             if (!attributes.Any()) { continue; }
 
-            var parameterMetadata = new ParameterAttributeExportModel(parameter.Name, attributes);
+            var parameterMetadata = new ParameterExportModel(parameter.Name, attributes);
             parameters.Add(parameterMetadata);
         }
 

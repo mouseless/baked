@@ -2,7 +2,7 @@
 
 namespace Baked.Domain.Export;
 
-public record AttributeExportConfiguration(string Name)
+public record ExportConfiguration(string Name)
 {
     Func<TypeModelMetadata, string> _typeGroupName = type => type.Name;
     Dictionary<Type, IAttributeExport> _attributeFilters = new();
@@ -12,7 +12,7 @@ public record AttributeExportConfiguration(string Name)
     public List<IAttributeExport> ParameterExports { get; } = [];
     public List<IAttributeExport> PropertyExports { get; } = [];
     public ITypeExportSerializer Serializer { get; set; } = new KdlTypeExportSerializer();
-    public Func<TypeAttributeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
+    public Func<TypeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
 
     public AttributeExport<T> Include<T>() where T : Attribute
     {

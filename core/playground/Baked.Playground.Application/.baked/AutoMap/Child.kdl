@@ -1,7 +1,5 @@
 child @entity {
-  id {
-    @id
-  }
+  id @id
 }
 
 children @query

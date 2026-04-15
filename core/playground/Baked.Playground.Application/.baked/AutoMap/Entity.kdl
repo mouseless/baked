@@ -1,7 +1,5 @@
 entity @entity {
-  id {
-    @id
-  }
+  id @id
   unique @unique
   enum @unique
 }
