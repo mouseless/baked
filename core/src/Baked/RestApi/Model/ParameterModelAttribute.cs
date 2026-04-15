@@ -4,7 +4,7 @@
 public class ParameterModelAttribute(
     ParameterModelFrom @from = ParameterModelFrom.BodyOrForm,
     string[]? additionalAttributes = default
-) : Attribute()
+) : Attribute
 {
     public const string TargetParameterName = "target";
 
