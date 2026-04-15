@@ -5,7 +5,5 @@ typed-entity @entity {
   type @unique
 }
 
-typed-entities {
-  @query locatableType="Baked.Playground.CodingStyle.EntitySubclass.TypedEntity"
-}
+typed-entities @query
 

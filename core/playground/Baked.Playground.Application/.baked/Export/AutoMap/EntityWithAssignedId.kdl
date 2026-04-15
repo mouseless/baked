@@ -4,7 +4,3 @@ entity-with-assigned-id @entity {
   }
 }
 
-entity-with-assigned-ids {
-  @query locatableType="Baked.Playground.CodingStyle.Id.EntityWithAssignedId"
-}
-

@@ -32,26 +32,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             """);
         });
 
-        configurator.Domain.ConfigureAttributeExportConfigurations(exports =>
-        {
-            configurator.Domain.UsingDomainModel(domain =>
-            {
-                exports.AutoMap(export =>
-                {
-                    export.Include<EntityAttribute>();
-                    export.Include<IdAttribute>();
-                    export.Include<UniqueAttribute>();
-                    export.Include<QueryAttribute>()
-                        .AddFilter((query, _) => domain.Types[query.LocatableType].GetMetadata().Has<EntityAttribute>());
-
-                    export.TypeGroupName(type =>
-                        type.TryGetLocatableType(domain, out var locatableType) ? locatableType.Name :
-                        type.Name
-                    );
-                });
-            });
-        });
-
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add(typeof(EntityAttribute));
