@@ -1,5 +1,4 @@
-﻿using Baked.Business;
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 
 namespace Baked.Domain.Export;
 
@@ -7,7 +6,7 @@ public class AttributeExport<T> : IAttributeExport where T : Attribute
 {
     List<Func<T, ICustomAttributesModel, bool>> _filters = [];
 
-    internal List<Func<T, AttributeProperty>> PropertyExtensions { get; } = [];
+    internal List<Func<T, AttributeProperty>> Properties { get; } = [];
     internal List<Func<AttributeProperty, bool>> RemoveProperty { get; } = [];
 
     public AttributeExport<T> AddFilter(Func<T, ICustomAttributesModel, bool> condition)
@@ -17,16 +16,16 @@ public class AttributeExport<T> : IAttributeExport where T : Attribute
         return this;
     }
 
-    public void AddPropertyExtension(Func<T, AttributeProperty> property) =>
-        PropertyExtensions.Add(property);
+    public void AddProperty(Func<T, AttributeProperty> property) =>
+        Properties.Add(property);
 
     public void ExcludeProperty(
         Func<AttributeProperty, bool>? filter = default
     ) => RemoveProperty.Add(filter ?? (_ => true));
 
     Type IAttributeExport.Type => typeof(T);
-    List<Func<Attribute, AttributeProperty>> IAttributeExport.PropertyExtensions =>
-         [.. PropertyExtensions.Select(extension => (Func<Attribute, AttributeProperty>)(attr => extension((T)attr)))];
+    List<Func<Attribute, AttributeProperty>> IAttributeExport.Properties =>
+         [.. Properties.Select(property => (Func<Attribute, AttributeProperty>)(attr => property((T)attr)))];
     List<Func<AttributeProperty, bool>> IAttributeExport.RemoveProperty =>
         RemoveProperty;
 

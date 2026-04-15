@@ -7,10 +7,10 @@ public record ExportConfiguration(string Name)
     Func<TypeModelMetadata, string> _typeGroupName = type => type.Name;
     Dictionary<Type, IAttributeExport> _attributeFilters = new();
 
-    public List<IAttributeExport> TypeExports { get; } = [];
-    public List<IAttributeExport> MethodExports { get; } = [];
-    public List<IAttributeExport> ParameterExports { get; } = [];
-    public List<IAttributeExport> PropertyExports { get; } = [];
+    public List<IAttributeExport> Type { get; } = [];
+    public List<IAttributeExport> Property { get; } = [];
+    public List<IAttributeExport> Method { get; } = [];
+    public List<IAttributeExport> Parameter { get; } = [];
     public ITypeExportSerializer Serializer { get; set; } = new KdlTypeExportSerializer();
     public Func<TypeExportModel, string> ContentGroupName { get; set; } = type => type.GroupName;
 
@@ -31,22 +31,22 @@ public record ExportConfiguration(string Name)
             usage.ValidOn.HasFlag(AttributeTargets.Enum)
         )
         {
-            TypeExports.Add(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
-        {
-            MethodExports.Add(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
-        {
-            ParameterExports.Add(filter);
+            Type.Add(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
         {
-            PropertyExports.Add(filter);
+            Property.Add(filter);
+        }
+
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
+        {
+            Method.Add(filter);
+        }
+
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
+        {
+            Parameter.Add(filter);
         }
 
         return (AttributeExport<T>)filter;
@@ -70,22 +70,22 @@ public record ExportConfiguration(string Name)
             usage.ValidOn.HasFlag(AttributeTargets.Enum)
         )
         {
-            TypeExports.Remove(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
-        {
-            MethodExports.Remove(filter);
-        }
-
-        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
-        {
-            ParameterExports.Remove(filter);
+            Type.Remove(filter);
         }
 
         if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Property))
         {
-            PropertyExports.Remove(filter);
+            Property.Remove(filter);
+        }
+
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Method))
+        {
+            Method.Remove(filter);
+        }
+
+        if (usage is null || usage.ValidOn.HasFlag(AttributeTargets.Parameter))
+        {
+            Parameter.Remove(filter);
         }
     }
 

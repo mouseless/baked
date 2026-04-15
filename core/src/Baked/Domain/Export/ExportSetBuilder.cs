@@ -2,7 +2,7 @@
 
 namespace Baked.Domain.Export;
 
-public class ExportSetBuilder(ExportConfiguration _export, IAttributeDataBuilder _builder)
+public class ExportSetBuilder(ExportConfiguration _export, IAttributePropertyBuilder _builder)
 {
     public ExportSetModel Build(DomainModel domain)
     {
@@ -22,7 +22,7 @@ public class ExportSetBuilder(ExportConfiguration _export, IAttributeDataBuilder
 
     TypeExportModel? BuildMetadata(TypeModelMetadata type)
     {
-        var attributes = BuildAttributes(type, _export.TypeExports);
+        var attributes = BuildAttributes(type, _export.Type);
         if (!attributes.Any()) { return default; }
 
         var typeMetadataModel = new TypeExportModel(((IModel)type).Id, type.Name);
@@ -36,7 +36,7 @@ public class ExportSetBuilder(ExportConfiguration _export, IAttributeDataBuilder
     {
         foreach (var method in type.Methods)
         {
-            var attributes = BuildAttributes(method, _export.MethodExports);
+            var attributes = BuildAttributes(method, _export.Method);
             if (!attributes.Any()) { continue; }
 
             var methodMetadata = new MethodExportModel(method.Name, attributes)
@@ -49,7 +49,7 @@ public class ExportSetBuilder(ExportConfiguration _export, IAttributeDataBuilder
 
         foreach (var property in type.Properties)
         {
-            var attributes = BuildAttributes(property, _export.PropertyExports);
+            var attributes = BuildAttributes(property, _export.Property);
             if (!attributes.Any()) { continue; }
 
             var propertyMetadata = new PropertyExportModel(property.Name, attributes);
@@ -64,7 +64,7 @@ public class ExportSetBuilder(ExportConfiguration _export, IAttributeDataBuilder
         var parameters = new List<ParameterExportModel>();
         foreach (var parameter in method.DefaultOverload.Parameters)
         {
-            var attributes = BuildAttributes(parameter, _export.ParameterExports);
+            var attributes = BuildAttributes(parameter, _export.Parameter);
             if (!attributes.Any()) { continue; }
 
             var parameterMetadata = new ParameterExportModel(parameter.Name, attributes);
@@ -96,9 +96,9 @@ public class ExportSetBuilder(ExportConfiguration _export, IAttributeDataBuilder
     AttributeExportModel BuildAttribute(object instance, IAttributeExport attributeExport)
     {
         var properties = _builder.Build(instance);
-        foreach (var extension in attributeExport.PropertyExtensions)
+        foreach (var property in attributeExport.Properties)
         {
-            properties.Add(extension((Attribute)instance));
+            properties.Add(property((Attribute)instance));
         }
 
         var attributeMetadata = new AttributeExportModel(instance.GetType().Name)

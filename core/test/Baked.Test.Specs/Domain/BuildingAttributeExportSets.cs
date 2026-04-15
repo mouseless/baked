@@ -15,7 +15,7 @@ public class BuildingAttributeExportSets : TestSpec
 {
     public class NotExistingAttribute : Attribute;
 
-    AttributeDatas _builders = default!;
+    AttributeProperties _builders = default!;
 
     public override void SetUp()
     {
@@ -44,14 +44,14 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<ComponentDescriptorBuilderAttribute<Text>>();
 
         attributeExport.Name.ShouldBe("Test");
-        attributeExport.TypeExports.ShouldContain<EntityAttribute>();
-        attributeExport.TypeExports.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
-        attributeExport.MethodExports.ShouldNotContain<EntityAttribute>();
-        attributeExport.MethodExports.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
-        attributeExport.ParameterExports.ShouldNotContain<EntityAttribute>();
-        attributeExport.ParameterExports.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
-        attributeExport.PropertyExports.ShouldNotContain<EntityAttribute>();
-        attributeExport.PropertyExports.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.Type.ShouldContain<EntityAttribute>();
+        attributeExport.Type.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.Method.ShouldNotContain<EntityAttribute>();
+        attributeExport.Method.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.Parameter.ShouldNotContain<EntityAttribute>();
+        attributeExport.Parameter.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
+        attributeExport.Property.ShouldNotContain<EntityAttribute>();
+        attributeExport.Property.ShouldContain<ComponentDescriptorBuilderAttribute<Text>>();
     }
 
     [Test]
@@ -61,7 +61,7 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<EntityAttribute>();
         attributeExport.Include<EntityAttribute>();
 
-        attributeExport.TypeExports.Count.ShouldBe(1);
+        attributeExport.Type.Count.ShouldBe(1);
     }
 
     [Test]
@@ -71,7 +71,7 @@ public class BuildingAttributeExportSets : TestSpec
         attributeExport.Include<EntityAttribute>();
         attributeExport.Exclude<EntityAttribute>();
 
-        attributeExport.TypeExports.Count.ShouldBe(0);
+        attributeExport.Type.Count.ShouldBe(0);
     }
 
     [Test]
@@ -80,10 +80,10 @@ public class BuildingAttributeExportSets : TestSpec
         var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<CustomAttribute>();
 
-        attributeExport.TypeExports.ShouldContain<CustomAttribute>();
-        attributeExport.MethodExports.ShouldContain<CustomAttribute>();
-        attributeExport.ParameterExports.ShouldContain<CustomAttribute>();
-        attributeExport.PropertyExports.ShouldContain<CustomAttribute>();
+        attributeExport.Type.ShouldContain<CustomAttribute>();
+        attributeExport.Method.ShouldContain<CustomAttribute>();
+        attributeExport.Parameter.ShouldContain<CustomAttribute>();
+        attributeExport.Property.ShouldContain<CustomAttribute>();
     }
 
     [Test]

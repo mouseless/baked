@@ -31,7 +31,7 @@ public static class DomainExtensions
         public void ConfigureDomainServiceCollection(Action<DomainServiceCollection, DomainModel> configuration) =>
             _configurator.Configure(configuration);
 
-        public void ConfigureAttributeDatas(Action<AttributeDatas> configuration) =>
+        public void ConfigureAttributeProperties(Action<AttributeProperties> configuration) =>
            _configurator.Configure(configuration);
 
         public void ConfigureExportConfigurations(Action<ExportConfigurations> configuration) =>

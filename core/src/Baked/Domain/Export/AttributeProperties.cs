@@ -1,8 +1,6 @@
-﻿using Baked.Business;
+﻿namespace Baked.Domain.Export;
 
-namespace Baked.Domain.Export;
-
-public class AttributeDatas : IAttributeDataBuilder
+public class AttributeProperties : IAttributePropertyBuilder
 {
     Dictionary<Type, Func<Attribute, List<AttributeProperty>>> _dataBuilders = new();
 
@@ -11,6 +9,6 @@ public class AttributeDatas : IAttributeDataBuilder
         _dataBuilders[typeof(T)] = attr => data((T)attr);
     }
 
-    List<AttributeProperty> IAttributeDataBuilder.Build(object instance) =>
+    List<AttributeProperty> IAttributePropertyBuilder.Build(object instance) =>
         _dataBuilders.TryGetValue(instance.GetType(), out var builder) ? builder.Invoke((Attribute)instance) : [];
 }

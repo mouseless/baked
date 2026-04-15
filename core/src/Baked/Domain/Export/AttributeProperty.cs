@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Baked.Business;
+namespace Baked.Domain.Export;
 
 public record AttributeProperty(string Name, object? Value)
 {

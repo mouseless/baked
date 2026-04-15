@@ -10,15 +10,6 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureAttributeDatas(datas =>
-        {
-            datas.Set<RequireUserAttribute>(require =>
-            [
-                new(require.Override),
-                new(require.Claims)
-            ]);
-        });
-
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetMethodAttribute(

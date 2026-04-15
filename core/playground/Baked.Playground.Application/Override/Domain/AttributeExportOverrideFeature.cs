@@ -17,17 +17,17 @@ public class AttributeExportOverrideFeature : IFeature
                     {
                         export.Include<EntityAttribute>();
                         export.Include<IdAttribute>()
-                            .ExcludeProperty(p => p.Name == nameof(IdAttribute.RouteName));
+                            .AddProperty(id => new(id.Mapping));
                         export.Include<UniqueAttribute>();
                         export.Include<QueryAttribute>()
-                            .AddFilter((query, _) => domain.Types[query.LocatableType].GetMetadata().Has<EntityAttribute>())
-                            .ExcludeProperty();
+                            .AddFilter((query, _) => domain.Types[query.LocatableType].GetMetadata().Has<EntityAttribute>());
 
                         export.TypeGroupName(type =>
                             type.TryGetLocatableType(domain, out var locatableType) ? locatableType.Name :
                             type.Name
                         );
-                    });
+                    }
+                );
             });
         });
     }

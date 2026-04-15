@@ -49,28 +49,6 @@ public class DomainAssembliesBusinessFeature(
             """);
         });
 
-        configurator.Domain.ConfigureAttributeDatas(datas =>
-        {
-            datas.Set<IdAttribute>(id =>
-            [
-                new(id.RouteName),
-                new(id.Mapping),
-            ]);
-            datas.Set<LocatableAttribute>(locatable =>
-            [
-                new(locatable.QueryType),
-                new(locatable.IsAsync)
-            ]);
-            datas.Set<NamespaceAttribute>(@namespace =>
-            [
-                new(@namespace.Value)
-            ]);
-            datas.Set<QueryAttribute>(query =>
-            [
-                new(query.LocatableType)
-            ]);
-        });
-
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;

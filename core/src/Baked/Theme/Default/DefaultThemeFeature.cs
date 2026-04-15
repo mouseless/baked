@@ -24,35 +24,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 {
     public virtual void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureAttributeDatas(datas =>
-        {
-            datas.Set<ActionAttribute>(action =>
-            [
-                new(action.HideInLists),
-                new(action.RoutePathBack)
-            ]);
-            datas.Set<DataAttribute>(data =>
-            [
-                new(data.Prop),
-                new(data.Label),
-                new(data.Visible),
-                new(data.Order)
-            ]);
-            datas.Set<ContextBasedComponentAttribute>(component =>
-            [
-                new(component.SchemaType)
-            ]);
-            datas.Set<RouteAttribute>(route =>
-            [
-                new(route.Path),
-                new(route.Params)
-            ]);
-            datas.Set<TabNameAttribute>(tab =>
-            [
-                new(tab.Value)
-            ]);
-        });
-
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // Type defaults

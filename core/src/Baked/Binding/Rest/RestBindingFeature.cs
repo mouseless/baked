@@ -15,55 +15,6 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureAttributeDatas(datas =>
-        {
-            datas.Set<ControllerModelAttribute>(controller =>
-            [
-                new(controller.Id),
-                new(controller.ClassName),
-                new(controller.GroupName),
-                new(controller.Action),
-                new(controller.Orphan)
-            ]);
-            datas.Set<ActionModelAttribute>(action =>
-            [
-                new(action.Id),
-                new(action.Name),
-                new(action.Method),
-                new(action.ReturnType),
-                new(action.ReturnIsAsync),
-                new(action.ReturnIsVoid),
-                new(action.InvocationIsAsync),
-                new(action.UseForm),
-                new(action.UseRequestClassForBody),
-                new(action.AdditionalAttributes),
-                new(action.Order),
-                new(action.Orphan),
-                new(action.HasBody)
-            ]);
-            datas.Set<MappedMethodAttribute>(mappedMethod =>
-            [
-                new(mappedMethod.TypeFullName),
-                new(mappedMethod.MethodName),
-            ]);
-            datas.Set<ParameterModelAttribute>(parameter =>
-            [
-                new(parameter.Id),
-                new(parameter.From),
-                new(parameter.Type),
-                new(parameter.Name),
-                new(parameter.InternalName),
-                new(parameter.IsOptional),
-                new(parameter.DefaultValue),
-                new(parameter.IsInvokeMethodParameter),
-                new(parameter.IsHardCoded),
-                new(parameter.Order),
-                new(parameter.RoutePosition),
-                new(parameter.AdditionalAttributes),
-                new(parameter.Orphan)
-            ]);
-        });
-
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             // domain attribute indices
