@@ -21,7 +21,7 @@ public class SetAttributeConvention<TModelContext>(
 
     void Set(ICustomAttributesModel model, Attribute attribute)
     {
-        model.ThrowIfNotTarget(attribute);
+        attribute.ThrowIfNotTarget(model);
 
         ((IMutableAttributeCollection)model.CustomAttributes).Set(attribute);
     }

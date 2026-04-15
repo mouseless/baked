@@ -1,6 +1,6 @@
 child @entity {
   id {
-    @id routeName="id"
+    @id
   }
 }
 

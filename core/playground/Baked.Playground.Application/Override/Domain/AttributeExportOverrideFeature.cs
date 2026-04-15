@@ -16,11 +16,12 @@ public class AttributeExportOverrideFeature : IFeature
                     export =>
                     {
                         export.Include<EntityAttribute>();
-                        export.Include<IdAttribute>();
+                        export.Include<IdAttribute>()
+                            .ExcludeProperty(p => p.Name == nameof(IdAttribute.RouteName));
                         export.Include<UniqueAttribute>();
                         export.Include<QueryAttribute>()
                             .AddFilter((query, _) => domain.Types[query.LocatableType].GetMetadata().Has<EntityAttribute>())
-                            .ExcludeProperty(_ => true);
+                            .ExcludeProperty();
 
                         export.TypeGroupName(type =>
                             type.TryGetLocatableType(domain, out var locatableType) ? locatableType.Name :

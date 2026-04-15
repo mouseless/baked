@@ -20,7 +20,7 @@ public class AddAttributeConvention<TModelContext>(
 
     void Add(ICustomAttributesModel model, Attribute attribute)
     {
-        model.ThrowIfNotTarget(attribute);
+        attribute.ThrowIfNotTarget(model);
 
         ((IMutableAttributeCollection)model.CustomAttributes).Add(attribute);
     }

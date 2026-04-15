@@ -1,6 +1,6 @@
 entity @entity {
   id {
-    @id routeName="id"
+    @id
   }
   unique @unique
   enum @unique
