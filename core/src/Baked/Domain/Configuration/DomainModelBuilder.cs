@@ -109,9 +109,16 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         if (convention is IDomainModelConvention<TypeModelMetadataContext> typeMetadataConvention)
         {
-            foreach (var type in model.Types.OfType<TypeModelMetadata>())
+            try
             {
-                typeMetadataConvention.Apply(new() { Domain = model, Type = type });
+                foreach (var type in model.Types.OfType<TypeModelMetadata>())
+                {
+                    typeMetadataConvention.Apply(new() { Domain = model, Type = type });
+                }
+            }
+            catch
+            {
+                // TODO will be implemented
             }
         }
 

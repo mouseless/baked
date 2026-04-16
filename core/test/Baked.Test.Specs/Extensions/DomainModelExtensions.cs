@@ -1,3 +1,5 @@
+using Baked.Domain;
+using Baked.Domain.Configuration;
 using Baked.Domain.Export;
 using Baked.Domain.Model;
 using Baked.Testing;
@@ -43,6 +45,32 @@ public static class DomainModelExtensions
             }
 
             return result;
+        }
+
+        public DomainModelBuilder ADomainModelBuilder(
+            Action<DomainModelBuilderOptions>? options = default
+        )
+        {
+            var optionsInstance = new DomainModelBuilderOptions();
+            optionsInstance.BuildLevels.Add(BuildLevels.Metadata);
+
+            if (options is not null)
+            {
+                options(optionsInstance);
+            }
+
+            return new DomainModelBuilder(optionsInstance);
+        }
+    }
+
+    extension(DomainModelBuilder builder)
+    {
+        public DomainModel Build(IEnumerable<Type> types)
+        {
+            var collection = new DomainTypeCollection();
+            collection.AddRange(types);
+
+            return builder.Build(collection);
         }
     }
 
