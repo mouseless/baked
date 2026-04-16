@@ -129,7 +129,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
                                                         .SelectMany(t => t.Properties.Select(p => (t, p)))
             )
             {
-                propertyConvention.Apply(new() { Domain = model, Type = type.GetMembers(), Property = property });
+                propertyConvention.Apply(new() { Domain = model, Type = type, Property = property });
             }
 
         }
