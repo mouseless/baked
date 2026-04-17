@@ -4,7 +4,7 @@ namespace Baked.Domain.Configuration;
 
 public class DomainModelConventionContexts
 {
-    public record Context<TModel>(IEnumerable<TModel> Models, DomainModelBuilderDiagnostics Diagnostics)
+    record Context<TModel>(IEnumerable<TModel> Models, DomainModelBuilderDiagnostics Diagnostics)
     {
         public void Apply(IDomainModelConvention<TModel> convention)
         {
