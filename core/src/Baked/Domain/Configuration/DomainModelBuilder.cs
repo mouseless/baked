@@ -10,7 +10,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
     public DomainModelBuilderOptions Options => _options;
 
-    public DomainModel Build(IDomainTypeCollection types)
+    public DomainModelPostBuilder StartBuild(IDomainTypeCollection types)
     {
         foreach (var type in types)
         {
@@ -34,15 +34,8 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         }
         while (!_buildQueue.IsEmpty);
 
-        return new(new(_references.Select(t => t.Model)));
+        return new(_options, new(new(_references.Select(t => t.Model))));
 
-    }
-
-    public void PostBuild(DomainModel result)
-    {
-        ApplyConventionsOfAttributesThatRequireIndex(result);
-        BuildIndices(result);
-        ApplyRestOfTheConventions(result);
     }
 
     TypeModel.Factory GetFactory(Type t)
@@ -63,143 +56,5 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         }
 
         return _buildQueue.Enqueue(type);
-    }
-
-    void ApplyConventionsOfAttributesThatRequireIndex(DomainModel model)
-    {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).OfType<IAddRemoveAttributeConvention>().Where(c => c.AttributeRequiresIndex))
-        {
-            Apply(model, convention);
-        }
-    }
-
-    void ApplyRestOfTheConventions(DomainModel model)
-    {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).Where(c => c is not IAddRemoveAttributeConvention || (c is IAddRemoveAttributeConvention addRemove && !addRemove.AttributeRequiresIndex)))
-        {
-            Apply(model, convention);
-        }
-    }
-
-    void Apply(DomainModel model, IDomainModelConvention convention)
-    {
-        if (convention is IDomainModelConvention<TypeModelContext> typeConvention)
-        {
-            foreach (var type in model.Types)
-            {
-                typeConvention.Apply(new() { Domain = model, Type = type });
-            }
-        }
-
-        if (convention is IDomainModelConvention<TypeModelGenericsContext> typeGenericsConvention)
-        {
-            foreach (var type in model.Types.OfType<TypeModelGenerics>())
-            {
-                typeGenericsConvention.Apply(new() { Domain = model, Type = type });
-            }
-        }
-
-        if (convention is IDomainModelConvention<TypeModelInheritanceContext> typeInheritanceConvention)
-        {
-            foreach (var type in model.Types.OfType<TypeModelInheritance>())
-            {
-                typeInheritanceConvention.Apply(new() { Domain = model, Type = type });
-            }
-        }
-
-        if (convention is IDomainModelConvention<TypeModelMetadataContext> typeMetadataConvention)
-        {
-            try
-            {
-                foreach (var type in model.Types.OfType<TypeModelMetadata>())
-                {
-                    typeMetadataConvention.Apply(new() { Domain = model, Type = type });
-                }
-            }
-            catch
-            {
-                // TODO will be implemented
-            }
-        }
-
-        if (convention is IDomainModelConvention<TypeModelMembersContext> typeMembersConvention)
-        {
-            foreach (var type in model.Types.OfType<TypeModelMembers>())
-            {
-                typeMembersConvention.Apply(new() { Domain = model, Type = type });
-            }
-        }
-
-        if (convention is IDomainModelConvention<PropertyModelContext> propertyConvention)
-        {
-            foreach (var (type, property) in model.Types.OfType<TypeModelMembers>()
-                                                        .SelectMany(t => t.Properties.Select(p => (t, p)))
-            )
-            {
-                propertyConvention.Apply(new() { Domain = model, Type = type, Property = property });
-            }
-
-        }
-
-        if (convention is IDomainModelConvention<MethodModelContext> methodConvention)
-        {
-            foreach (var (type, method) in model.Types.OfType<TypeModelMembers>()
-                                                      .SelectMany(t => t.Methods.Select(m => (t, m)))
-            )
-            {
-                methodConvention.Apply(new() { Domain = model, Type = type, Method = method });
-            }
-        }
-
-        if (convention is IDomainModelConvention<ParameterModelContext> parameterConvention)
-        {
-            foreach (var (type, method, overload, parameter) in model.Types.OfType<TypeModelMembers>()
-                                                                           .SelectMany(t => t.Methods.Select(m => (t, m)))
-                                                                           .SelectMany(x => x.m.Overloads.Select(o => (x.t, x.m, o)))
-                                                                           .SelectMany(x => x.o.Parameters.Select(p => (x.t, x.m, x.o, p)))
-            )
-            {
-                parameterConvention.Apply(new() { Domain = model, Type = type, Method = method, MethodOverload = overload, Parameter = parameter });
-            }
-        }
-    }
-
-    void BuildIndices(DomainModel model)
-    {
-        foreach (var index in _options.Index.Type)
-        {
-            model.Types.AddIndex(index);
-        }
-
-        foreach (var index in _options.Index.Property)
-        {
-            foreach (var properties in model.Types.Where(t => t.HasMembers())
-                                                  .Select(m => m.GetMembers().Properties)
-            )
-            {
-                properties.AddIndex(index);
-            }
-        }
-
-        foreach (var index in _options.Index.Method)
-        {
-            foreach (var methods in model.Types.Where(t => t.HasMembers())
-                                               .Select(m => m.GetMembers().Methods)
-            )
-            {
-                methods.AddIndex(index);
-            }
-        }
-
-        foreach (var index in _options.Index.Parameter)
-        {
-            foreach (var overload in model.Types.Where(t => t.HasMembers())
-                                                .SelectMany(t => t.GetMembers().Methods)
-                                                .SelectMany(m => m.Overloads)
-            )
-            {
-                overload.Parameters.AddIndex(index);
-            }
-        }
     }
 }

@@ -53,6 +53,7 @@ public static class DomainModelExtensions
         {
             var optionsInstance = new DomainModelBuilderOptions();
             optionsInstance.BuildLevels.Add(BuildLevels.Metadata);
+            optionsInstance.OnComplete(_ => { });
 
             if (options is not null)
             {
@@ -65,12 +66,12 @@ public static class DomainModelExtensions
 
     extension(DomainModelBuilder builder)
     {
-        public DomainModel Build(IEnumerable<Type> types)
+        public DomainModelPostBuilder StartBuild(IEnumerable<Type> types)
         {
             var collection = new DomainTypeCollection();
             collection.AddRange(types);
 
-            return builder.Build(collection);
+            return builder.StartBuild(collection);
         }
     }
 
