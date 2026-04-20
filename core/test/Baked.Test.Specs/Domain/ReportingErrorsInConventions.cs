@@ -46,7 +46,7 @@ public class ReportingErrorsInConventions : TestSpec
                 when: c => c.Type.Is<string>(),
                 attribute: () => throw new("test")
             );
-            builder.OnComplete(e => errors.AddRange(e.Errors));
+            builder.Diagnostics.OnComplete(e => errors.AddRange(e.Errors));
         });
 
         builder
@@ -71,7 +71,7 @@ public class ReportingErrorsInConventions : TestSpec
                 when: c => c.Type.Is<int>(),
                 attribute: () => throw new("int error")
             );
-            builder.OnComplete(e => errors.AddRange(e.Errors));
+            builder.Diagnostics.OnComplete(e => errors.AddRange(e.Errors));
         });
 
         builder
@@ -93,7 +93,7 @@ public class ReportingErrorsInConventions : TestSpec
                 when: c => c.Type.Is<string>() || c.Type.Is<int>(),
                 attribute: c => throw new($"{c.Type.Name} error")
             );
-            builder.OnComplete(e => errors.AddRange(e.Errors));
+            builder.Diagnostics.OnComplete(e => errors.AddRange(e.Errors));
         });
 
         builder
@@ -140,7 +140,7 @@ public class ReportingErrorsInConventions : TestSpec
             builder.BindingFlags.Property = BindingFlags.Instance | BindingFlags.Public;
             builder.BindingFlags.Method = BindingFlags.Instance | BindingFlags.Public;
             builder.Conventions.Add(new StubConvention());
-            builder.OnComplete(e => errors.AddRange(e.Errors));
+            builder.Diagnostics.OnComplete(e => errors.AddRange(e.Errors));
         });
 
         builder

@@ -1,30 +1,17 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.CodeGeneration;
+using Baked.Domain.Model;
 using System.Reflection;
 
 namespace Baked.Domain.Configuration;
 
 public class DomainModelBuilderOptions
 {
-    Action<DomainModelBuilderDiagnostics> _buildCompleteHandler =
-        diagnostics =>
-        {
-            if (diagnostics.Errors.Any())
-            {
-                Environment.Exit(-1);
-            }
-        };
-
     public ICollection<TypeBuildLevelFilter> BuildLevels { get; set; } = [];
     public BindingFlagOptions BindingFlags { get; } = new();
     public IDomainModelConventionCollection Conventions { get; set; } = new DomainModelConventionCollection();
     public DomainIndexOptions Index { get; set; } = new();
     public Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> DefaultOverloadSelector { get; set; } = overloads => overloads.First();
-
-    public void OnComplete(Action<DomainModelBuilderDiagnostics> handler) =>
-        _buildCompleteHandler = handler;
-
-    internal void HandleBuildComplete(DomainModelBuilderDiagnostics diagnostics) =>
-        _buildCompleteHandler(diagnostics);
+    public GenerationDiagnostics Diagnostics = new();
 
     public class BindingFlagOptions
     {

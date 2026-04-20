@@ -575,6 +575,10 @@ public static class DomainExtensions
         public bool TryGetMembers([NotNullWhen(true)] out TypeModelMembers? result) =>
             type.TryGetInfo(out result);
 
+        // WARNING
+        //
+        // Do NOT remove this warning disable section unintentionally.
+        // Without this, GitHub Actions fails on dotnet format
 #pragma warning disable IDE0051
         bool HasInfo<TInfo>() where TInfo : TypeModel =>
             type is TInfo;

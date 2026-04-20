@@ -10,7 +10,7 @@ public class DomainModelPostBuilder(DomainModelBuilderOptions options, DomainMod
 
     public void EndBuild()
     {
-        var contexts = new DomainModelConventionContexts(Model);
+        var contexts = new DomainModelConventionContexts(Model, _options.Diagnostics);
         var conventionsRequiringIndex = new List<IDomainModelConvention>();
         var restOfTheConventions = new List<IDomainModelConvention>();
 
@@ -38,7 +38,7 @@ public class DomainModelPostBuilder(DomainModelBuilderOptions options, DomainMod
             contexts.Apply(convention);
         }
 
-        _options.HandleBuildComplete(contexts.Diagnostics);
+        _options.Diagnostics.Complete();
     }
 
     void BuildIndices()

@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.CodeGeneration;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -8,6 +9,8 @@ using Baked.Testing;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Baked.Ui.Configuration;
+using System.Collections.Immutable;
 
 using static Baked.Ui.Datas;
 
@@ -1001,8 +1004,51 @@ public static class ThemeExtensions
             enumerable.Where(c => c is not IComponentContextFilter when || when.AppliesTo(context));
     }
 
+    extension(PageDescriptors pages)
+    {
+        public void AddPages(IEnumerable<Route> routes, DomainModel domain, NewLocaleKey l,
+            Action<GenerationDiagnostics>? onComplete = default,
+            bool? debugComponentPaths = default
+        )
+        {
+            var diagnostics = new GenerationDiagnostics(onComplete);
+            var sitemap = routes.ToImmutableList();
+            foreach (var route in routes)
+            {
+                diagnostics.Diagnose(() =>
+                {
+                    var page = route.BuildPage(new()
+                    {
+                        Route = route,
+                        Sitemap = sitemap,
+                        Domain = domain,
+                        NewLocaleKey = l
+                    });
+                    if (page is null) { return; }
+
+                    pages.Add(page);
+
+                });
+            }
+
+            if (debugComponentPaths == true)
+            {
+                Console.WriteLine("Component Paths:");
+                Console.WriteLine("---");
+                Console.WriteLine($"{ComponentPath.GetPaths().Join(Environment.NewLine)}");
+            }
+
+            diagnostics.Complete();
+        }
+    }
+
     extension<TSchema>(DescriptorBuilderAttribute<TSchema> attribute)
     {
+        // WARNING
+        //
+        // Do NOT remove this warning disable section unintentionally.
+        // Without this, GitHub Actions fails on dotnet format
+#pragma warning disable IDE0051
         // NOTE
         //
         // This is refactored to remove duplication in below conventions but
@@ -1011,7 +1057,6 @@ public static class ThemeExtensions
         //
         // Filter is applied within the function because it is the only
         // way to access to the component context.
-#pragma warning disable IDE0051
         void WrapBuilder(
             Func<ComponentContext, bool> when,
             Action<TSchema, ComponentContext> apply
@@ -1043,9 +1088,9 @@ public static class ThemeExtensions
             return
             [
                 .. builders
-            .WhereAppliesTo(context)
-            .Cast<IComponentContextBasedBuilder<TSchema>>()
-            .Select(b => b.Build(context))
+                    .WhereAppliesTo(context)
+                    .Cast<IComponentContextBasedBuilder<TSchema>>()
+                    .Select(b => b.Build(context))
             ];
         }
 
@@ -1110,6 +1155,10 @@ public static class ThemeExtensions
         }
     }
 
+    // WARNING
+    //
+    // Do NOT remove this warning disable section unintentionally.
+    // Without this, GitHub Actions fails on dotnet format
 #pragma warning disable IDE0051
     static bool WarnForMissingComponent => Environment.GetCommandLineArgs().Contains("--warn-for-missing-component");
 #pragma warning restore IDE0051

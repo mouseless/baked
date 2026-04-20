@@ -147,9 +147,9 @@ public class AddingPhases : ArchitectureSpec
     [Test]
     public void Gives_error_when_dependency_is_not_the_exact_type()
     {
-        IPhase phase = new StringDependentAddsInt(_expectedString: GiveMe.AString(), _artifact: GiveMe.AnInt());
+        IPhase phase = new StringDependentAddsInt(_expectedString: GiveMe.AString(), _artifact: GiveMe.AnInteger());
         var app = GiveMe.AnApplication(
-            startContext: GiveMe.AnApplicationContext(content: GiveMe.AnInt()),
+            startContext: GiveMe.AnApplicationContext(content: GiveMe.AnInteger()),
             phase: phase
         );
 
