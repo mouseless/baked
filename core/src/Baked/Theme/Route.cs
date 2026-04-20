@@ -1,4 +1,5 @@
-﻿using Baked.Ui;
+﻿using Baked.CodeGeneration;
+using Baked.Ui;
 
 namespace Baked.Theme;
 
@@ -22,5 +23,8 @@ public record Route(
     public string? SideMenuTitle { get; set; } = Title;
 
     public IComponentDescriptor? BuildPage(PageContext context) =>
-        Page(new())?.Invoke(context);
+        Diagnostics.Diagnose(() =>
+        {
+            return Page(new())?.Invoke(context);
+        });
 }

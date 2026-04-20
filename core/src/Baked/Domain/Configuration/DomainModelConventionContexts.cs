@@ -5,7 +5,7 @@ namespace Baked.Domain.Configuration;
 
 public class DomainModelConventionContexts
 {
-    record Context<TModel>(IEnumerable<TModel> Models, GenerationDiagnostics Diagnostics)
+    record Context<TModel>(IEnumerable<TModel> Models)
     {
         public void Apply(IDomainModelConvention<TModel> convention)
         {
@@ -28,60 +28,48 @@ public class DomainModelConventionContexts
     readonly Context<MethodModelContext> _method;
     readonly Context<ParameterModelContext> _parameter;
 
-    public GenerationDiagnostics _diagnostics;
-
-    public DomainModelConventionContexts(DomainModel result, GenerationDiagnostics diagnostics)
+    public DomainModelConventionContexts(DomainModel result)
     {
-        _diagnostics = diagnostics;
-
         _basics = new(
             result.Types
-                .Select(t => new TypeModelContext { Domain = result, Type = t }),
-            _diagnostics
+                .Select(t => new TypeModelContext { Domain = result, Type = t })
         );
         _generics = new(
             result.Types
                 .OfType<TypeModelGenerics>()
-                .Select(t => new TypeModelGenericsContext { Domain = result, Type = t }),
-            _diagnostics
+                .Select(t => new TypeModelGenericsContext { Domain = result, Type = t })
         );
         _inheritance = new(
             result.Types
                 .OfType<TypeModelInheritance>()
-                .Select(t => new TypeModelInheritanceContext { Domain = result, Type = t }),
-            _diagnostics
+                .Select(t => new TypeModelInheritanceContext { Domain = result, Type = t })
         );
         _metadata = new(
             result.Types
                 .OfType<TypeModelMetadata>()
-                .Select(t => new TypeModelMetadataContext { Domain = result, Type = t }),
-            _diagnostics
+                .Select(t => new TypeModelMetadataContext { Domain = result, Type = t })
         );
         _members = new(
             result.Types
                 .OfType<TypeModelMembers>()
-                .Select(t => new TypeModelMembersContext { Domain = result, Type = t }),
-            _diagnostics
+                .Select(t => new TypeModelMembersContext { Domain = result, Type = t })
         );
         _property = new(
             result.Types
                 .OfType<TypeModelMembers>()
-                .SelectMany(t => t.Properties.Select(p => new PropertyModelContext { Domain = result, Type = t, Property = p })),
-            _diagnostics
+                .SelectMany(t => t.Properties.Select(p => new PropertyModelContext { Domain = result, Type = t, Property = p }))
         );
         _method = new(
             result.Types
                 .OfType<TypeModelMembers>()
-                .SelectMany(t => t.Methods.Select(m => new MethodModelContext { Domain = result, Type = t, Method = m })),
-            _diagnostics
+                .SelectMany(t => t.Methods.Select(m => new MethodModelContext { Domain = result, Type = t, Method = m }))
         );
         _parameter = new(
             result.Types
                 .OfType<TypeModelMembers>()
                 .SelectMany(t => t.Methods.Select(m => (t, m)))
                 .SelectMany(tm => tm.m.Overloads.Select(o => (tm.t, tm.m, o)))
-                .SelectMany(tmo => tmo.o.Parameters.Select(p => new ParameterModelContext { Domain = result, Type = tmo.t, Method = tmo.m, MethodOverload = tmo.o, Parameter = p })),
-            _diagnostics
+                .SelectMany(tmo => tmo.o.Parameters.Select(p => new ParameterModelContext { Domain = result, Type = tmo.t, Method = tmo.m, MethodOverload = tmo.o, Parameter = p }))
         );
     }
 

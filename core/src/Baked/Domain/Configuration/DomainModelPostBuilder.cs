@@ -1,3 +1,4 @@
+using Baked.CodeGeneration;
 using Baked.Domain.Model;
 
 namespace Baked.Domain.Configuration;
@@ -10,35 +11,36 @@ public class DomainModelPostBuilder(DomainModelBuilderOptions options, DomainMod
 
     public void EndBuild()
     {
-        var contexts = new DomainModelConventionContexts(Model, _options.Diagnostics);
-        var conventionsRequiringIndex = new List<IDomainModelConvention>();
-        var restOfTheConventions = new List<IDomainModelConvention>();
-
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention))
+        using (Diagnostics.Start(nameof(DomainModelPostBuilder), onDispose: _options.OnComplete))
         {
-            if (convention is IAddRemoveAttributeConvention addRemove && addRemove.AttributeRequiresIndex)
+            var contexts = new DomainModelConventionContexts(Model);
+            var conventionsRequiringIndex = new List<IDomainModelConvention>();
+            var restOfTheConventions = new List<IDomainModelConvention>();
+
+            foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention))
             {
-                conventionsRequiringIndex.Add(convention);
+                if (convention is IAddRemoveAttributeConvention addRemove && addRemove.AttributeRequiresIndex)
+                {
+                    conventionsRequiringIndex.Add(convention);
+                }
+                else
+                {
+                    restOfTheConventions.Add(convention);
+                }
             }
-            else
+
+            foreach (var convention in conventionsRequiringIndex)
             {
-                restOfTheConventions.Add(convention);
+                contexts.Apply(convention);
+            }
+
+            BuildIndices();
+
+            foreach (var convention in restOfTheConventions)
+            {
+                contexts.Apply(convention);
             }
         }
-
-        foreach (var convention in conventionsRequiringIndex)
-        {
-            contexts.Apply(convention);
-        }
-
-        BuildIndices();
-
-        foreach (var convention in restOfTheConventions)
-        {
-            contexts.Apply(convention);
-        }
-
-        _options.Diagnostics.Complete();
     }
 
     void BuildIndices()

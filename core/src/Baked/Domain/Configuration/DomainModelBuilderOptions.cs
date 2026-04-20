@@ -11,7 +11,7 @@ public class DomainModelBuilderOptions
     public IDomainModelConventionCollection Conventions { get; set; } = new DomainModelConventionCollection();
     public DomainIndexOptions Index { get; set; } = new();
     public Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> DefaultOverloadSelector { get; set; } = overloads => overloads.First();
-    public GenerationDiagnostics Diagnostics = new();
+    public Action<DiagnosticsResult>? OnComplete { get; set; }
 
     public class BindingFlagOptions
     {

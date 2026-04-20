@@ -1,3 +1,4 @@
+using Baked.CodeGeneration;
 using Baked.Testing;
 using Baked.Theme;
 
@@ -21,7 +22,9 @@ public static class ThemeExtensions
 
             if (buildFails)
             {
-                result.Page = p => p.Described(_ => _ => throw new(buildFailMessage));
+                result.Page = p => p.Described(_ =>
+                    _ => { Diagnostics.ReportError(buildFailMessage); return default; }
+                );
             }
 
             return result;

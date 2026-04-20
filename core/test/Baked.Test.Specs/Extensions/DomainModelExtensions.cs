@@ -53,7 +53,7 @@ public static class DomainModelExtensions
         {
             var optionsInstance = new DomainModelBuilderOptions();
             optionsInstance.BuildLevels.Add(BuildLevels.Metadata);
-            optionsInstance.Diagnostics.OnComplete(_ => { });
+            optionsInstance.OnComplete = _ => { };
 
             if (options is not null)
             {

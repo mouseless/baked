@@ -102,6 +102,7 @@ dotnet_code_quality_unused_parameters = all:suggestion
 
 # Code Analyzer
 dotnet_diagnostic.CA1860.severity = none
+dotnet_diagnostic.CA1816.severity = silent # Dispose methods should call SuppressFinalize
 
 # Coding Styles
 dotnet_diagnostic.IDE0001.severity = error # System.IO.FileInfo file;
