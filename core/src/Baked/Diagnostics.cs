@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Baked.CodeGeneration;
+namespace Baked;
 
 public class Diagnostics : IDisposable
 {
@@ -57,25 +57,40 @@ public class Diagnostics : IDisposable
         catch (DiagnosticsException ex)
         {
             Current._errors.Add(ex);
-            Report(ex.Message, level: "error");
+            Report(ex.Message, level: $"error", code: ex.Code);
 
             return default;
         }
     }
 
     [DoesNotReturn]
-    public static void ReportError(string message) =>
-        throw new DiagnosticsException(message);
+    public static void ReportError(DiagnosticsCode code, string message) =>
+        throw new DiagnosticsException(code, message);
 
-    public static void ReportWarning(string message) =>
-        Report(message, level: "warning");
+    public static void ReportWarning(DiagnosticsCode code, string message) =>
+        Report(message, level: $"warning", code: code);
 
     public static void ReportInfo(string message) =>
         Report(message, level: "info");
 
     public static void Report(string message,
-        string level = "info"
-    ) => Current._messages.Add($"{level}: {message}");
+        string level = "info",
+        DiagnosticsCode? code = default
+    )
+    {
+        if (code is null)
+        {
+            Current._messages.Add($"{level}: {message}");
+        }
+        else if (code.Value.Key is null)
+        {
+            Current._messages.Add($"{level} C{code.Value.Number:D4}: {message}");
+        }
+        else
+        {
+            Current._messages.Add($"{level} B{code.Value.Number:D4}: {message} (See: https://baked.mouseless.codes/errors#{code.Value.Key})");
+        }
+    }
 
     Action<DiagnosticsResult> _dispose;
     bool _disposed;

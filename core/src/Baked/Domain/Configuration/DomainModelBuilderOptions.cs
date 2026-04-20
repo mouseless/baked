@@ -1,5 +1,4 @@
-﻿using Baked.CodeGeneration;
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 using System.Reflection;
 
 namespace Baked.Domain.Configuration;

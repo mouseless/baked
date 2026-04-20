@@ -1,5 +1,5 @@
-using Baked.CodeGeneration;
 using Baked.Domain.Configuration;
+using Baked.Testing;
 using System.Reflection;
 
 namespace Baked.Test.Domain;
@@ -17,7 +17,7 @@ public class ReportingErrorsInConventions : TestSpec
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
-                attribute: () => { Diagnostics.ReportError("test"); return default; }
+                attribute: () => { Diagnostics.ReportError(GiveMe.ADiagnosticsCode(), GiveMe.AString()); return default; }
             );
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
@@ -45,7 +45,7 @@ public class ReportingErrorsInConventions : TestSpec
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
-                attribute: () => { Diagnostics.ReportError("test"); return default; }
+                attribute: () => { Diagnostics.ReportError(GiveMe.ADiagnosticsCode(), "test"); return default; }
             );
             builder.OnComplete = e => errors.AddRange(e.Errors);
         });
@@ -66,11 +66,11 @@ public class ReportingErrorsInConventions : TestSpec
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
-                attribute: () => { Diagnostics.ReportError("string error"); return default; }
+                attribute: () => { Diagnostics.ReportError(GiveMe.ADiagnosticsCode(), "string error"); return default; }
             );
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<int>(),
-                attribute: () => { Diagnostics.ReportError("int error"); return default; }
+                attribute: () => { Diagnostics.ReportError(GiveMe.ADiagnosticsCode(), "int error"); return default; }
             );
             builder.OnComplete = e => errors.AddRange(e.Errors);
         });
@@ -92,7 +92,7 @@ public class ReportingErrorsInConventions : TestSpec
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>() || c.Type.Is<int>(),
-                attribute: c => { Diagnostics.ReportError($"{c.Type.Name} error"); return default; }
+                attribute: c => { Diagnostics.ReportError(GiveMe.ADiagnosticsCode(), $"{c.Type.Name} error"); return default; }
             );
             builder.OnComplete = e => errors.AddRange(e.Errors);
         });
@@ -106,7 +106,7 @@ public class ReportingErrorsInConventions : TestSpec
         errors.ShouldContain(e => e.Message == "Int32 error");
     }
 
-    class StubConvention :
+    class StubConvention(Stubber giveMe) :
         IDomainModelConvention<TypeModelContext>,
         IDomainModelConvention<TypeModelGenericsContext>,
         IDomainModelConvention<TypeModelInheritanceContext>,
@@ -116,14 +116,14 @@ public class ReportingErrorsInConventions : TestSpec
         IDomainModelConvention<MethodModelContext>,
         IDomainModelConvention<ParameterModelContext>
     {
-        public void Apply(TypeModelContext model) => Diagnostics.ReportError("basics");
-        public void Apply(TypeModelGenericsContext model) => Diagnostics.ReportError("generics");
-        public void Apply(TypeModelInheritanceContext model) => Diagnostics.ReportError("inheritance");
-        public void Apply(TypeModelMetadataContext model) => Diagnostics.ReportError("metadata");
-        public void Apply(TypeModelMembersContext model) => Diagnostics.ReportError("members");
-        public void Apply(PropertyModelContext model) => Diagnostics.ReportError("property");
-        public void Apply(MethodModelContext model) => Diagnostics.ReportError("method");
-        public void Apply(ParameterModelContext model) => Diagnostics.ReportError("parameter");
+        public void Apply(TypeModelContext model) => Diagnostics.ReportError(giveMe.ADiagnosticsCode(), "basics");
+        public void Apply(TypeModelGenericsContext model) => Diagnostics.ReportError(giveMe.ADiagnosticsCode(), "generics");
+        public void Apply(TypeModelInheritanceContext model) => Diagnostics.ReportError(giveMe.ADiagnosticsCode(), "inheritance");
+        public void Apply(TypeModelMetadataContext model) => Diagnostics.ReportError(giveMe.ADiagnosticsCode(), "metadata");
+        public void Apply(TypeModelMembersContext model) => Diagnostics.ReportError(giveMe.ADiagnosticsCode(), "members");
+        public void Apply(PropertyModelContext model) => Diagnostics.ReportError(giveMe.ADiagnosticsCode(), "property");
+        public void Apply(MethodModelContext model) => Diagnostics.ReportError(giveMe.ADiagnosticsCode(), "method");
+        public void Apply(ParameterModelContext model) => Diagnostics.ReportError(giveMe.ADiagnosticsCode(), "parameter");
     }
 
     [Test]
@@ -140,7 +140,7 @@ public class ReportingErrorsInConventions : TestSpec
             builder.BuildLevels.Add(BuildLevels.Basics);
             builder.BindingFlags.Property = BindingFlags.Instance | BindingFlags.Public;
             builder.BindingFlags.Method = BindingFlags.Instance | BindingFlags.Public;
-            builder.Conventions.Add(new StubConvention());
+            builder.Conventions.Add(new StubConvention(GiveMe));
             builder.OnComplete = e => errors.AddRange(e.Errors);
         });
 

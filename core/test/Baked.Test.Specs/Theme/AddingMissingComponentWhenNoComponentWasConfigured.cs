@@ -1,5 +1,4 @@
-﻿using Baked.CodeGeneration;
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 using Baked.Playground.Business;
 using Baked.Playground.Theme;
 using Baked.Ui;
@@ -32,7 +31,11 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
             type.GetRequiredComponent(componentContext);
         }
 
-        result?.Messages.ShouldContain("error: `TestPage` doesn't have any component descriptor at path `/page/with-no-config`");
+        result?.Messages.ShouldContain(
+            "error B0100:" +
+            " `TestPage` doesn't have any component descriptor at path `/page/with-no-config`" +
+            " (See: https://baked.mouseless.codes/errors#missing-required-component)"
+        );
     }
 
     [Test]

@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.CodeGeneration;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -22,6 +21,17 @@ public static class ThemeExtensions
     {
         public void AddTheme(FeatureFunc<ThemeConfigurator> configure) =>
             features.Add(configure(new()));
+    }
+
+    extension(DiagnosticsCode)
+    {
+        public static DiagnosticsCode MissingRequiredComponent => new(100, "missing-required-component");
+        public static DiagnosticsCode MissingRequiredComponentOfType => new(101, "missing-required-component-of-type");
+        public static DiagnosticsCode MissingRequiredSchema => new(102, "missing-required-schema");
+        public static DiagnosticsCode RequiresLocateAction => new(103, "requires-locate-action");
+        public static DiagnosticsCode RequiresMembers => new(104, "requires-members");
+        public static DiagnosticsCode RequiresMetadata => new(105, "requires-metadata");
+        public static DiagnosticsCode MethodRequired => new(106, "method-required");
     }
 
     extension<T>(Action<T>? action)
@@ -62,7 +72,13 @@ public static class ThemeExtensions
                 when: c => c.Type.Is<TEntity>(),
                 schema: (c, cc) =>
                 {
-                    if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate)) { Diagnostics.ReportError($"`{c.Type.Name}` should have `Locate` action added"); }
+                    if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate))
+                    {
+                        Diagnostics.ReportError(
+                            DiagnosticsCode.RequiresLocateAction,
+                            $"`{c.Type.Name}` should have `Locate` action added"
+                        );
+                    }
 
                     return Remote(locate.GetRoute(), o => o.Params = Computed.UseRoute("params"));
                 }
@@ -933,12 +949,18 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMembers(out var members))
                 {
-                    Diagnostics.ReportError($"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model");
+                    Diagnostics.ReportError(
+                        DiagnosticsCode.RequiresMembers,
+                        $"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model"
+                    );
                 }
 
                 if (!members.Methods.TryGetValue(methodName, out var method))
                 {
-                    Diagnostics.ReportError($"{typeof(TDomainType).Name} does not have a method named '{methodName}'");
+                    Diagnostics.ReportError(
+                        DiagnosticsCode.MethodRequired,
+                        $"{typeof(TDomainType).Name} does not have a method named '{methodName}'"
+                    );
                 }
 
                 return method.GetRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name, method.Name));
@@ -951,7 +973,10 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata))
                 {
-                    Diagnostics.ReportError($"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model");
+                    Diagnostics.ReportError(
+                        DiagnosticsCode.RequiresMetadata,
+                        $"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"
+                    );
                 }
 
                 return metadata.GetRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name));
@@ -1096,7 +1121,10 @@ public static class ThemeExtensions
             var result = metadata.GetSchema<TSchema>(context);
             if (result is null)
             {
-                Diagnostics.ReportError($"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`");
+                Diagnostics.ReportError(
+                    DiagnosticsCode.MissingRequiredSchema,
+                    $"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`"
+                );
             }
 
             return result;
@@ -1117,26 +1145,34 @@ public static class ThemeExtensions
 
         public ComponentDescriptor<T> GetRequiredComponent<T>(ComponentContext context) where T : IComponentSchema
         {
-            var result = metadata.GetRequiredComponent(context, componentType: typeof(T)) as ComponentDescriptor<T>;
+            var result = metadata.GetRequiredComponent(context, componentType: typeof(T), omitWarningMessage: true) as ComponentDescriptor<T>;
             if (result is null)
             {
-                Diagnostics.ReportError($"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`");
+                Diagnostics.ReportError(
+                    DiagnosticsCode.MissingRequiredComponentOfType,
+                    $"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`"
+                );
             }
 
             return result;
         }
 
         public IComponentDescriptor GetRequiredComponent(ComponentContext context,
-            Type? componentType = default
+            Type? componentType = default,
+            bool omitWarningMessage = false
         )
         {
             var result = metadata.GetComponent(context, componentType: componentType);
             if (result is not null) { return result; }
 
-            Diagnostics.Report(
-                $"`{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`",
-                level: WarnForMissingComponent ? "warning" : "error"
-            );
+            if (!omitWarningMessage)
+            {
+                Diagnostics.Report(
+                    $"`{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`",
+                    level: WarnForMissingComponent ? "warning" : "error",
+                    code: DiagnosticsCode.MissingRequiredComponent
+                );
+            }
 
             return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);
         }

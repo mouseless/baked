@@ -20,5 +20,8 @@ public static class BakeExtensions
 
             return new(banner, () => new(startContext, generateContext), runflags);
         }
+
+        public DiagnosticsCode ADiagnosticsCode() =>
+            new(999);
     }
 }

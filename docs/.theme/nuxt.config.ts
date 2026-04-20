@@ -116,7 +116,7 @@ export default defineNuxtConfig({
   ],
   nitro: {
     prerender: {
-      routes: ["/not-found"]
+      routes: ["/errors", "/not-found"]
     }
   },
   runtimeConfig: {
