@@ -16,6 +16,15 @@ public static class BusinessExtensions
             features.Add(configure(new()));
     }
 
+    extension(DiagnosticsCode)
+    {
+        public static DiagnosticsCode TypeWithAttribute => new(000, "type-with-attribute");
+        public static DiagnosticsCode PropertyWithAttribute => new(001, "property-with-attribute");
+        public static DiagnosticsCode MethodWithAttribute => new(002, "method-with-attribute");
+        public static DiagnosticsCode ParameterWithAttribute => new(003, "parameter-with-attribute");
+        public static DiagnosticsCode RequiresElementType => new(004, "requires-element-type");
+    }
+
 #pragma warning disable IDE0052
     static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 2, [typeof(IServiceCollection)]) ??
         throw new("AddTransientWithFactory<TService, TImplementation> should have existed");
@@ -104,6 +113,7 @@ public static class BusinessExtensions
         {
             if (!type.TryGetIdInfo(out var result))
             {
+                // TODO report error
                 throw new InvalidOperationException($"`{type.Name}` does not have `IdentifierInfo`");
             }
 
@@ -127,6 +137,7 @@ public static class BusinessExtensions
         public TypeModel SkipNullable()
         {
             if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
+            // TODO report error
             if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
             if (type.IsGenericTypeDefinition) { return type; }
 
@@ -143,9 +154,19 @@ public static class BusinessExtensions
     {
         public PropertyModel FirstProperty<TAttribute>(
             Func<PropertyModel, bool>? filter = default
-        ) where TAttribute : Attribute =>
-            members.FirstPropertyOrDefault<TAttribute>(filter: filter) ??
-            throw new($"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`");
+        ) where TAttribute : Attribute
+        {
+            var result = members.FirstPropertyOrDefault<TAttribute>(filter: filter);
+            if (result is null)
+            {
+                Diagnostics.ReportError(
+                    DiagnosticsCode.PropertyWithAttribute,
+                    $"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`"
+                );
+            }
+
+            return result;
+        }
 
         public PropertyModel? FirstPropertyOrDefault<TAttribute>(
             Func<PropertyModel, bool>? filter = default
@@ -154,9 +175,19 @@ public static class BusinessExtensions
 
         public MethodModel FirstMethod<TAttribute>(
             Func<MethodModel, bool>? filter = default
-        ) where TAttribute : Attribute =>
-            members.FirstMethodOrDefault<TAttribute>(filter: filter) ??
-            throw new($"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`");
+        ) where TAttribute : Attribute
+        {
+            var result = members.FirstMethodOrDefault<TAttribute>(filter: filter);
+            if (result is null)
+            {
+                Diagnostics.ReportError(
+                    DiagnosticsCode.MethodWithAttribute,
+                    $"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`"
+                );
+            }
+
+            return result;
+        }
 
         public MethodModel? FirstMethodOrDefault<TAttribute>(
             Func<MethodModel, bool>? filter = default
@@ -168,9 +199,19 @@ public static class BusinessExtensions
     {
         public ParameterModel FirstParameter<TAttribute>(
             Func<ParameterModel, bool>? filter = default
-        ) where TAttribute : Attribute =>
-            method.FirstParameterOrDefault<TAttribute>(filter: filter) ??
-            throw new($"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`");
+        ) where TAttribute : Attribute
+        {
+            var result = method.FirstParameterOrDefault<TAttribute>(filter: filter);
+            if (result is null)
+            {
+                Diagnostics.ReportError(
+                    DiagnosticsCode.ParameterWithAttribute,
+                    $"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`"
+                );
+            }
+
+            return result;
+        }
 
         public ParameterModel? FirstParameterOrDefault<TAttribute>(
             Func<ParameterModel, bool>? filter = default

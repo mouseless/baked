@@ -22,7 +22,11 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
     {
         var services = Context.GetServiceCollection();
         services.AddHttpContextAccessor();
-        services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
+        services.AddSingleton<Func<ClaimsPrincipal>>(sp =>
+            () =>
+                sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ??
+                throw new("HttpContext.User is required")
+        );
         services.AddSingleton<IServiceProviderAccessor, RequestServicesServiceProviderAccessor>();
 
         return phase.CreateContextBuilder()

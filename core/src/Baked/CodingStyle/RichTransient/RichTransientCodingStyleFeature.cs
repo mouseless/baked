@@ -45,9 +45,15 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 {
                     if (!c.Type.TryGetMembers(out var members)) { return; }
 
-                    var initializer =
-                        members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>()) ??
-                        throw new($"`{c.Type.Name}` should have had an initializer");
+                    var initializer = members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>());
+                    if (initializer is null)
+                    {
+                        Diagnostics.ReportError(
+                            DiagnosticsCode.MethodWithAttribute,
+                            $"`{c.Type.Name}` should have had method with `InitializerAttribute`."
+                        );
+                    }
+
                     locatable.IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
                 },
                 order: 10

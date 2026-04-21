@@ -20,6 +20,12 @@ public static class RestBindingExtensions
             new();
     }
 
+    extension(DiagnosticsCode)
+    {
+        public static DiagnosticsCode RequiresInitializerAction => new(200, "requires-initializer-action");
+        public static DiagnosticsCode RequiresController => new(201, "requires-controller");
+    }
+
     extension(TypeModel type)
     {
         public bool TryGetInitializerActionModel([NotNullWhen(true)] out ActionModelAttribute? action)
@@ -36,7 +42,13 @@ public static class RestBindingExtensions
 
         public ActionModelAttribute GetInitializerActionModel()
         {
-            if (!type.TryGetInitializerActionModel(out var result)) { throw new($"{type.Name} does not have action model"); }
+            if (!type.TryGetInitializerActionModel(out var result))
+            {
+                Diagnostics.ReportError(
+                    DiagnosticsCode.RequiresInitializerAction,
+                    $"{type.Name} does not have an initializer that has an action model"
+                );
+            }
 
             return result;
         }
@@ -51,7 +63,13 @@ public static class RestBindingExtensions
 
         public ControllerModelAttribute GetControllerModel()
         {
-            if (!type.TryGetControllerModel(out var result)) { throw new($"{type.Name} does not have controller"); }
+            if (!type.TryGetControllerModel(out var result))
+            {
+                Diagnostics.ReportError(
+                    DiagnosticsCode.RequiresController,
+                    $"{type.Name} does not have controller"
+                );
+            }
 
             return result;
         }

@@ -32,6 +32,8 @@ public static class ThemeExtensions
         public static DiagnosticsCode RequiresMembers => new(104, "requires-members");
         public static DiagnosticsCode RequiresMetadata => new(105, "requires-metadata");
         public static DiagnosticsCode MethodRequired => new(106, "method-required");
+        public static DiagnosticsCode MissingItem => new(107, "missing-item");
+        public static DiagnosticsCode InvalidState => new(108, "invalid-state");
     }
 
     extension<T>(Action<T>? action)

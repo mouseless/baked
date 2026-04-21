@@ -206,6 +206,7 @@ public static class DomainExtensions
 
             if (validOn.HasFlag(model.Target)) { return; }
 
+            // TODO report error
             throw new InvalidOperationException($"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'");
         }
     }

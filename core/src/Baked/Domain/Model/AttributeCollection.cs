@@ -39,6 +39,7 @@ public class AttributeCollection(string name)
     {
         if (attribute.AllowsMultiple())
         {
+            // TODO report error
             throw new InvalidOperationException($"`{attribute.GetType().Name}` cannot be set for `{_name}` because it allows multiple. Please use `Add` for this attribute.");
         }
 
@@ -49,6 +50,7 @@ public class AttributeCollection(string name)
     {
         if (!attribute.AllowsMultiple())
         {
+            // TODO report error
             throw new InvalidOperationException($"`{attribute.GetType().Name}` cannot be added to `{_name}` because it doesn't allow multiple. Please use `Set` for this attribute.");
         }
 
@@ -75,9 +77,11 @@ public class AttributeCollection(string name)
     {
         if (type.AllowsMultiple())
         {
+            // TODO report error
             throw new InvalidOperationException($"Cannot use `Get` for `{type.Name}` in `{_name}` because it allows multiple. Please use `GetAll` for this attribute.");
         }
 
+        // TODO report error
         return _attributes[type].Single();
     }
 
@@ -99,6 +103,7 @@ public class AttributeCollection(string name)
     {
         if (type.AllowsMultiple())
         {
+            // TODO report error
             throw new InvalidOperationException($"Cannot use `TryGet` for `{type.Name}` in `{_name}` because it allows multiple. Please use `TryGetAll` for this attribute.");
         }
 
@@ -109,6 +114,7 @@ public class AttributeCollection(string name)
             return false;
         }
 
+        // TODO report error
         result = list.SingleOrDefault();
 
         return result is not null;
@@ -121,9 +127,11 @@ public class AttributeCollection(string name)
     {
         if (!type.AllowsMultiple())
         {
+            // TODO report error
             throw new InvalidOperationException($"Cannot use `GetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple. Please use `Get` for this attribute.");
         }
 
+        // TODO report error
         return _attributes[type].AsReadOnly();
     }
 
@@ -145,6 +153,7 @@ public class AttributeCollection(string name)
     {
         if (!type.AllowsMultiple())
         {
+            // TODO report error
             throw new InvalidOperationException($"Cannot use `TryGetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple. Please use `TryGet` for this attribute.");
         }
 
