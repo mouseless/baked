@@ -147,11 +147,16 @@
         >
           <template #footer>
             <AwaitLoading :skeleton="{ class: 'min-h-5' }">
-              <Bake
+              <ProvideParentContext
                 v-if="data"
-                :name="`rows/footer/${column.key}`"
-                :descriptor="column.component"
-              />
+                :data
+                data-key="footer"
+              >
+                <Bake
+                  :name="`rows/footer/${column.key}`"
+                  :descriptor="column.component"
+                />
+              </ProvideParentContext>
               <span v-else>-</span>
             </AwaitLoading>
           </template>

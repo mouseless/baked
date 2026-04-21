@@ -53,7 +53,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                         members.FirstProperty<IdAttribute>();
                     var labelData = labelProperty.Get<DataAttribute>();
 
-                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
+                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "footer" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}.{labelData.Prop}");
                 }
             );
@@ -62,7 +62,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 {
                     var data = c.Property.Get<DataAttribute>();
 
-                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
+                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "footer" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
                 },
                 order: UiLayer.MaxConventionOrder - 10

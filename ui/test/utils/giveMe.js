@@ -231,7 +231,7 @@ export default {
     component = $(component,
       this.anExpected({
         data: footer ?
-          this.aContextData({ key: "parent", prop: `data.${key}` }) :
+          this.aContextData({ key: "parent", prop: `footer.${key}` }) :
           this.aContextData({ key: "parent", prop: `row.${key}` })
       })
     );
