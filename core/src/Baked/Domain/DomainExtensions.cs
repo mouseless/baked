@@ -52,6 +52,12 @@ public static class DomainExtensions
             layers.Add(new DomainLayer());
     }
 
+    extension(DiagnosticsCode)
+    {
+        public static DiagnosticsCode AttributeTargetMismatch => new(301, "attribute-target-mismatch");
+        public static DiagnosticsCode AttributeDoesNotAllow => new(302, "attribute-does-not-allow");
+    }
+
     extension(ApplicationContext application)
     {
         public IDomainTypeCollection GetDomainTypes() =>
@@ -206,8 +212,10 @@ public static class DomainExtensions
 
             if (validOn.HasFlag(model.Target)) { return; }
 
-            // TODO report error
-            throw new InvalidOperationException($"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'");
+            Diagnostics.ReportError(
+                DiagnosticsCode.AttributeTargetMismatch,
+                $"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'"
+            );
         }
     }
 

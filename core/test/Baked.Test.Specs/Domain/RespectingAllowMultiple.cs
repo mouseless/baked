@@ -28,7 +28,7 @@ public class RespectingAllowMultiple : TestSpec
 
         var action = () => ((IMutableAttributeCollection)attributes).Add(new SingleAttribute());
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
     }
 
     [Test]
@@ -48,7 +48,7 @@ public class RespectingAllowMultiple : TestSpec
 
         var action = () => ((IMutableAttributeCollection)attributes).Set(new MultipleAttribute());
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
     }
 
     [Test]

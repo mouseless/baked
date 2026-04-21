@@ -188,7 +188,7 @@ public static class DomainComponents
         if (!parameter.ParameterType.TryGetMetadata(out var metadata))
         {
             Diagnostics.ReportError(
-                DiagnosticsCode.RequiresMetadata,
+                DiagnosticsCode.RequiresBuildLevel,
                 $"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"
             );
         }
@@ -212,7 +212,7 @@ public static class DomainComponents
         if (!parameter.ParameterType.TryGetMetadata(out var metadata))
         {
             Diagnostics.ReportError(
-                DiagnosticsCode.RequiresMetadata,
+                DiagnosticsCode.RequiresBuildLevel,
                 $"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"
             );
         }

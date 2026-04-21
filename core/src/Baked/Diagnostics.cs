@@ -57,7 +57,18 @@ public class Diagnostics : IDisposable
         catch (DiagnosticsException ex)
         {
             Current._errors.Add(ex);
-            Report(ex.Message, level: $"error", code: ex.Code);
+            Report(ex.Message, level: "error", code: ex.Code);
+
+            return default;
+        }
+        catch (Exception ex)
+        {
+            Current._errors.Add(ex);
+            Report(ex.Message, level: "error", code: DiagnosticsCode.Unknown);
+            if (ex.StackTrace is not null)
+            {
+                Report(ex.StackTrace, level: "info");
+            }
 
             return default;
         }
@@ -68,7 +79,7 @@ public class Diagnostics : IDisposable
         throw new DiagnosticsException(code, message);
 
     public static void ReportWarning(DiagnosticsCode code, string message) =>
-        Report(message, level: $"warning", code: code);
+        Report(message, level: "warning", code: code);
 
     public static void ReportInfo(string message) =>
         Report(message, level: "info");

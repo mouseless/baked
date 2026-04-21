@@ -32,7 +32,7 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
         }
 
         result?.Messages.ShouldContain(
-            "error B0100:" +
+            "error B0101:" +
             " `TestPage` doesn't have any component descriptor at path `/page/with-no-config`" +
             " (See: https://baked.mouseless.codes/errors#missing-required-component)"
         );

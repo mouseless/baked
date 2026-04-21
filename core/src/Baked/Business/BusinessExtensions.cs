@@ -18,11 +18,12 @@ public static class BusinessExtensions
 
     extension(DiagnosticsCode)
     {
-        public static DiagnosticsCode TypeWithAttribute => new(000, "type-with-attribute");
-        public static DiagnosticsCode PropertyWithAttribute => new(001, "property-with-attribute");
-        public static DiagnosticsCode MethodWithAttribute => new(002, "method-with-attribute");
-        public static DiagnosticsCode ParameterWithAttribute => new(003, "parameter-with-attribute");
-        public static DiagnosticsCode RequiresElementType => new(004, "requires-element-type");
+        public static DiagnosticsCode TypeWithAttribute => new(001, "type-with-attribute");
+        public static DiagnosticsCode RequiresBuildLevel => new(002, "requires-build-level");
+        public static DiagnosticsCode PropertyWithAttribute => new(003, "property-with-attribute");
+        public static DiagnosticsCode MethodWithAttribute => new(004, "method-with-attribute");
+        public static DiagnosticsCode ParameterWithAttribute => new(005, "parameter-with-attribute");
+        public static DiagnosticsCode RequiresElementType => new(006, "requires-element-type");
     }
 
 #pragma warning disable IDE0052
@@ -111,13 +112,9 @@ public static class BusinessExtensions
 
         public IdInfo GetIdInfo()
         {
-            if (!type.TryGetIdInfo(out var result))
-            {
-                // TODO report error
-                throw new InvalidOperationException($"`{type.Name}` does not have `IdentifierInfo`");
-            }
+            var idProperty = type.GetMembers().FirstProperty<IdAttribute>();
 
-            return result;
+            return new(idProperty);
         }
 
         public bool TryGetIdInfo([NotNullWhen(true)] out IdInfo? idInfo)
@@ -129,7 +126,7 @@ public static class BusinessExtensions
             var idProperty = members.FirstPropertyOrDefault<IdAttribute>();
             if (idProperty is null) { return false; }
 
-            idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
+            idInfo = new(idProperty);
 
             return true;
         }
@@ -137,8 +134,14 @@ public static class BusinessExtensions
         public TypeModel SkipNullable()
         {
             if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
-            // TODO report error
-            if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
+            if (!type.TryGetGenerics(out var generics))
+            {
+                Diagnostics.ReportError(
+                    DiagnosticsCode.RequiresBuildLevel,
+                    $"{type.Name} doesn't provide generics information to skip nullable"
+                );
+            }
+
             if (type.IsGenericTypeDefinition) { return type; }
 
             return generics.GenericTypeArguments.First().Model;

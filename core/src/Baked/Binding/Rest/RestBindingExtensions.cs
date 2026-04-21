@@ -22,8 +22,8 @@ public static class RestBindingExtensions
 
     extension(DiagnosticsCode)
     {
-        public static DiagnosticsCode RequiresInitializerAction => new(200, "requires-initializer-action");
-        public static DiagnosticsCode RequiresController => new(201, "requires-controller");
+        public static DiagnosticsCode RequiresInitializerAction => new(201, "requires-initializer-action");
+        public static DiagnosticsCode RequiresController => new(202, "requires-controller");
     }
 
     extension(TypeModel type)

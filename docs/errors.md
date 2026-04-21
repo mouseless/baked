@@ -2,6 +2,42 @@
 
 On this page you can find the list of erros defined in baked.
 
+## `attribute-does-not-allow`
+
+This error occurs when you use `Set` or `Get` for an attribute that allows
+multiple instances, or `Add` or `GetAll`  an attribute that doesn't.
+
+Baked respects standard `AllowMultiple=true/false` setting of an attribute when
+adding/setting to a domain member. You're expected to `Set` or `Get` an
+attribute that doesn't allow multiple, and `Add` or `GetAll` attributes that
+allow multiple.
+
+Please check your convention and see if it is the correct one. E.g., use
+`SetTypeAttribute(...)` instead of `AddTypeAttribute(...)` for a single instance
+attribute.
+
+> [!NOTE]
+>
+> Most of the attributes are single instance. This is because `AllowMultiple`
+> property sets to `false` by default. If you have a custom attribute that needs
+> to be added multiple times, make sure it has `[AttributeUsage(AllowMultiple =
+> true)]` on it.
+
+## `attribute-target-mismatch`
+
+This error occurs when an attribute is trying to be added/set to a domain member
+in a convention but the attribute doesn't list the target member type in its
+attribute target list.
+
+Assume you have an attribute that has `AttributeUsage(AttributeTargets.Method)`
+but you are trying to add/set it to a property or a class, the convention will
+report this error.
+
+To fix, add the target member type to the target list of the attribute. If the
+attribute is not in your codebase, it means you'll have to create a similar
+custom attribute with a proper target list and use this new attribute instead of
+the one you're trying to add/set.
+
 ## `invalid-state`
 
 This error occurs when a convention filters out a condition but still encounters
@@ -87,6 +123,16 @@ attribute is `LabelAttribute`, it will be added to a property that is named as
 `Name`. Other option is to add it to an existing property using a domain
 override.
 
+## `requires-build-level`
+
+The indicated type should have been build at given build level (see
+`BuildLevels`) in `DomainLayer`.
+
+When building the domain model, baked assigns a build level to each type to
+filter out unnecessary reflection metadata in the domain model. Domain objects
+are usually at `Members` level, and by default any type is built to at least
+`Metadata` level.
+
 ## `requires-controller`
 
 It means that the indicated type is required to be a controller.
@@ -125,15 +171,6 @@ Indicated type requires a `Locate` action for this operation. You may add a
 locate action using `AddLocateAction`. This is required when you add remote data
 using `AddEntityRemoteData`.
 
-## `requires-members`
-
-The indicated type should have been build at `BuildLevels.Members` level in
-`DomainLayer`.
-
-## `requires-metadata`
-
-The indicated type should have been build at `BuildLevels.Metadata` level in
-`DomainLayer`.
 
 ## `type-with-attribute`
 
@@ -141,3 +178,9 @@ It indicates that the type is required to have the given attribute.
 
 To fix this, either add the given attribute to the type or remove the convention
 that causes this requirement.
+
+## `unknown`
+
+This indicates that reported error is not an diagnostics error, but some other
+exception. These errors include a stack trace in the output to allow further
+inspection.

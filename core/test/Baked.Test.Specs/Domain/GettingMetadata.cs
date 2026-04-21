@@ -35,16 +35,16 @@ public class GettingMetadata : TestSpec
         var attributes = GiveMe.AnAttributeCollection();
 
         var action = () => { attributes.Get<MultipleAttribute>(); };
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
 
         action = () => { attributes.Get(typeof(MultipleAttribute)); };
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
 
         action = () => { attributes.TryGet<MultipleAttribute>(out var _); };
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
 
         action = () => { attributes.TryGet(typeof(MultipleAttribute), out var _); };
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
     }
 
     [Test]
@@ -76,15 +76,15 @@ public class GettingMetadata : TestSpec
         var attributes = GiveMe.AnAttributeCollection();
 
         var action = () => { attributes.GetAll<SingleAttribute>(); };
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
 
         action = () => { attributes.GetAll(typeof(SingleAttribute)); };
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
 
         action = () => { attributes.TryGetAll<SingleAttribute>(out var _); };
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
 
         action = () => { attributes.TryGetAll(typeof(SingleAttribute), out var _); };
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrow<DiagnosticsException>();
     }
 }

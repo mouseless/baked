@@ -9,4 +9,6 @@ public readonly record struct DiagnosticsCode(int Number)
     {
         Key = key;
     }
+
+    public static DiagnosticsCode Unknown => new(9999, "fatal");
 }

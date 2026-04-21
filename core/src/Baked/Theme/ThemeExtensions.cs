@@ -25,15 +25,13 @@ public static class ThemeExtensions
 
     extension(DiagnosticsCode)
     {
-        public static DiagnosticsCode MissingRequiredComponent => new(100, "missing-required-component");
-        public static DiagnosticsCode MissingRequiredComponentOfType => new(101, "missing-required-component-of-type");
-        public static DiagnosticsCode MissingRequiredSchema => new(102, "missing-required-schema");
-        public static DiagnosticsCode RequiresLocateAction => new(103, "requires-locate-action");
-        public static DiagnosticsCode RequiresMembers => new(104, "requires-members");
-        public static DiagnosticsCode RequiresMetadata => new(105, "requires-metadata");
-        public static DiagnosticsCode MethodRequired => new(106, "method-required");
-        public static DiagnosticsCode MissingItem => new(107, "missing-item");
-        public static DiagnosticsCode InvalidState => new(108, "invalid-state");
+        public static DiagnosticsCode MissingRequiredComponent => new(101, "missing-required-component");
+        public static DiagnosticsCode MissingRequiredComponentOfType => new(102, "missing-required-component-of-type");
+        public static DiagnosticsCode MissingRequiredSchema => new(103, "missing-required-schema");
+        public static DiagnosticsCode RequiresLocateAction => new(104, "requires-locate-action");
+        public static DiagnosticsCode MethodRequired => new(105, "method-required");
+        public static DiagnosticsCode MissingItem => new(106, "missing-item");
+        public static DiagnosticsCode InvalidState => new(107, "invalid-state");
     }
 
     extension<T>(Action<T>? action)
@@ -952,7 +950,7 @@ public static class ThemeExtensions
                 if (!domain.Types[typeof(TDomainType)].TryGetMembers(out var members))
                 {
                     Diagnostics.ReportError(
-                        DiagnosticsCode.RequiresMembers,
+                        DiagnosticsCode.RequiresBuildLevel,
                         $"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model"
                     );
                 }
@@ -976,7 +974,7 @@ public static class ThemeExtensions
                 if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata))
                 {
                     Diagnostics.ReportError(
-                        DiagnosticsCode.RequiresMetadata,
+                        DiagnosticsCode.RequiresBuildLevel,
                         $"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"
                     );
                 }
