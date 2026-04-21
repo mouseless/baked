@@ -171,7 +171,6 @@ Indicated type requires a `Locate` action for this operation. You may add a
 locate action using `AddLocateAction`. This is required when you add remote data
 using `AddEntityRemoteData`.
 
-
 ## `type-with-attribute`
 
 It indicates that the type is required to have the given attribute.

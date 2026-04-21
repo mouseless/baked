@@ -2,6 +2,8 @@ namespace Baked;
 
 public readonly record struct DiagnosticsCode(int Number)
 {
+    public static DiagnosticsCode Unknown => new(9999, "fatal");
+
     internal string? Key { get; }
 
     internal DiagnosticsCode(int number, string key)
@@ -9,6 +11,4 @@ public readonly record struct DiagnosticsCode(int Number)
     {
         Key = key;
     }
-
-    public static DiagnosticsCode Unknown => new(9999, "fatal");
 }
