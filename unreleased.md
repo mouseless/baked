@@ -4,6 +4,8 @@
 
 - Introducing model metadata generation: `DomainLayer` can now output attribute
   export files for each specified attribute type combination in domain model
+  - `RestBindingFeature` now exports API metadata into `.baked/api` folder in
+    application project
 - Introducing diagnostics: Baked now has `Diagnostics` class to improve error
   and warning messages during `Generate` phase
   - `Generate` task now doesn't break as soon as it encounters an exception,
