@@ -21,7 +21,10 @@ public class DotnetLocalizationFeature(CultureInfo _language,
                 return;
             }
 
-            var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' should have existed"), "../../../../Locales");
+            var localeDir = Path.Combine(
+                Assembly.GetEntryAssembly()?.Location ??
+                throw new("'EntryAssembly' should have existed"), "../../../../Locales"
+            );
 
             configurator.Ui.UsingLocaleTemplate(localeTemplate =>
             {
@@ -40,10 +43,12 @@ public class DotnetLocalizationFeature(CultureInfo _language,
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddLocalization(option => option.ResourcesPath = "Locales");
-            var entryAssembly = (configurator.IsNfr ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
-                ?? throw new("'EntryAssembly' should have existed");
-            var entryAssemblyName = entryAssembly.GetName().Name
-                ?? throw new("'EntryAssembly' should have a name");
+            var entryAssembly =
+                (configurator.IsNfr ? Nfr.EntryAssembly : Assembly.GetEntryAssembly()) ??
+                throw new("'EntryAssembly' should have existed");
+            var entryAssemblyName =
+                entryAssembly.GetName().Name ??
+                throw new("'EntryAssembly' should have a name");
 
             services.AddSingleton(sp => sp.GetRequiredService<IStringLocalizerFactory>().Create("locale", entryAssemblyName));
         });

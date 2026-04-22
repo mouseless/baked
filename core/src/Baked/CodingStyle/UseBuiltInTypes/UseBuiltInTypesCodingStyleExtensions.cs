@@ -32,7 +32,12 @@ public static class UseBuiltInTypesCodingStyleExtensions
 
         public TypeModel GetElementType()
         {
-            if (!type.TryGetElementType(out var result)) { throw new($"{type.Name} does not have an element type"); }
+            if (!type.TryGetElementType(out var result))
+            {
+                throw DiagnosticsCode.RequiresElementType.Exception(
+                    $"{type.Name} does not have an element type"
+                );
+            }
 
             return result;
         }

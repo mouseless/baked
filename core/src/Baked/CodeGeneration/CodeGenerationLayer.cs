@@ -21,7 +21,8 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             environment = string.IsNullOrEmpty(environment) ? "Development" : environment;
 
             return Path.Combine(
-                Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new("'EntryAssembly' should have existed with valid location"),
+                Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ??
+                throw new("'EntryAssembly' should have existed with valid location"),
                 environment
             );
         }

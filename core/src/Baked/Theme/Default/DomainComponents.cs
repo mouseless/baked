@@ -185,7 +185,12 @@ public static class DomainComponents
         context = context.Drill(nameof(Select));
         var (_, l) = context;
 
-        if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
+        if (!parameter.ParameterType.TryGetMetadata(out var metadata))
+        {
+            throw DiagnosticsCode.RequiresBuildLevel.Exception(
+                $"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"
+            );
+        }
 
         var data = metadata.GetRequiredSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
@@ -203,7 +208,12 @@ public static class DomainComponents
         context = context.Drill(nameof(SelectButton));
         var (_, l) = context;
 
-        if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
+        if (!parameter.ParameterType.TryGetMetadata(out var metadata))
+        {
+            throw DiagnosticsCode.RequiresBuildLevel.Exception(
+                $"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"
+            );
+        }
 
         var data = metadata.GetRequiredSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
@@ -366,9 +376,14 @@ public static class DomainComponents
     ) where TData : IData
     {
         context = context.Drill(nameof(Fieldset));
-        var label = type.Properties.Having<LabelAttribute>().FirstOrDefault() ??
-            throw new($"`{type.Name}` should have a label property to render as a `{nameof(Fieldset)}`");
-        if (!label.TryGet<DataAttribute>(out var labelData)) { throw new($"`{label.Name}` should have a `{nameof(DataAttribute)}`"); }
+
+        var label = type.FirstProperty<LabelAttribute>();
+        if (!label.TryGet<DataAttribute>(out var labelData))
+        {
+            throw DiagnosticsCode.PropertyWithAttribute.Exception(
+                $"`{label.Name}` should have a `{nameof(DataAttribute)}`"
+            );
+        }
 
         var data = type.GetSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
@@ -418,7 +433,9 @@ public static class DomainComponents
 
         if (!type.TryGet<RouteAttribute>(out var pageAttribute))
         {
-            throw new($"`{nameof(RouteAttribute)}` is not found on type (`{type.Name}`) to render as `{nameof(NavLink)}`");
+            throw DiagnosticsCode.TypeWithAttribute.Exception(
+                $"`{nameof(RouteAttribute)}` is not found on type (`{type.Name}`) to render as `{nameof(NavLink)}`"
+            );
         }
 
         return B.NavLink(pageAttribute.Path, options: options);

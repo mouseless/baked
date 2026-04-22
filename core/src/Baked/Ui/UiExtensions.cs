@@ -85,7 +85,10 @@ public static class UiExtensions
     {
         public void Move(string name, int index)
         {
-            var input = inputs.Find(i => i.Name == name) ?? throw new($"{name} not found");
+            var input =
+                inputs.Find(i => i.Name == name) ??
+                throw DiagnosticsCode.MissingItem.Exception($"{name} not found in input list");
+
             inputs.Remove(input);
             inputs.Insert(index, input);
         }

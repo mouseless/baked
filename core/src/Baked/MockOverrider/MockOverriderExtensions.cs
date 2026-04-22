@@ -36,6 +36,10 @@ public static class MockOverriderExtensions
 
     extension(IServiceProvider serviceProvider)
     {
+        // WARNING
+        //
+        // Do NOT remove this warning disable section unintentionally.
+        // Without this, GitHub Actions fails on dotnet format
 #pragma warning disable IDE0051
         T OverrideMocksAndGetRequiredService<T>(params IEnumerable<object?> mockOverrides) where T : notnull =>
             (T)serviceProvider.OverrideMocksAndGetRequiredService(typeof(T), mockOverrides);

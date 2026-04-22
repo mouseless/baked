@@ -48,7 +48,7 @@
     </ItemGroup>
     <Copy SourceFiles="@(GeneratedFiles)" DestinationFolder="$(PublishDir)\$(ASPNETCORE_ENVIRONMENT)" SkipUnchangedFiles="true" />
   </Target>
-    
+
   <Target Name="CopyExportFiles" AfterTargets="AfterBuild" Condition="$(CopyExportFiles)">
     <PropertyGroup>
       <ExportFilesDir>$(ProjectDir)\.baked</ExportFilesDir>
@@ -68,6 +68,6 @@
 
     <Delete Files="@(ExportDestinationFiles)" Condition="!Exists('%(FullPath.Replace($(ExportFilesDir), $(ExportSourceFolder)))')" />
     <Copy SourceFiles="@(ExportFiles)" DestinationFolder="$(ExportFilesDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="Exists($(ExportFilesDir))" />
-  </Target>  
+  </Target>
 
 </Project>

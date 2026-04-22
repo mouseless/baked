@@ -22,5 +22,8 @@ public record Route(
     public string? SideMenuTitle { get; set; } = Title;
 
     public IComponentDescriptor? BuildPage(PageContext context) =>
-        Page(new())?.Invoke(context);
+        Diagnostics.Diagnose(() =>
+        {
+            return Page(new())?.Invoke(context);
+        });
 }

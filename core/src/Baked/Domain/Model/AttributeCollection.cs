@@ -39,7 +39,10 @@ public class AttributeCollection(string name)
     {
         if (attribute.AllowsMultiple())
         {
-            throw new InvalidOperationException($"`{attribute.GetType().Name}` cannot be set for `{_name}` because it allows multiple. Please use `Add` for this attribute.");
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
+                $"`{attribute.GetType().Name}` cannot be set for `{_name}` because it allows multiple."
+                + "Please use `Add` for this attribute."
+            );
         }
 
         AddInner(attribute);
@@ -49,7 +52,10 @@ public class AttributeCollection(string name)
     {
         if (!attribute.AllowsMultiple())
         {
-            throw new InvalidOperationException($"`{attribute.GetType().Name}` cannot be added to `{_name}` because it doesn't allow multiple. Please use `Set` for this attribute.");
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
+                $"`{attribute.GetType().Name}` cannot be added to `{_name}` because it doesn't allow multiple." +
+                " Please use `Set` for this attribute."
+            );
         }
 
         AddInner(attribute);
@@ -75,7 +81,10 @@ public class AttributeCollection(string name)
     {
         if (type.AllowsMultiple())
         {
-            throw new InvalidOperationException($"Cannot use `Get` for `{type.Name}` in `{_name}` because it allows multiple. Please use `GetAll` for this attribute.");
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
+                $"Cannot use `Get` for `{type.Name}` in `{_name}` because it allows multiple." +
+                " Please use `GetAll` for this attribute."
+            );
         }
 
         return _attributes[type].Single();
@@ -99,7 +108,10 @@ public class AttributeCollection(string name)
     {
         if (type.AllowsMultiple())
         {
-            throw new InvalidOperationException($"Cannot use `TryGet` for `{type.Name}` in `{_name}` because it allows multiple. Please use `TryGetAll` for this attribute.");
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
+                $"Cannot use `TryGet` for `{type.Name}` in `{_name}` because it allows multiple." +
+                " Please use `TryGetAll` for this attribute."
+            );
         }
 
         if (!_attributes.TryGetValue(type, out var list))
@@ -121,7 +133,10 @@ public class AttributeCollection(string name)
     {
         if (!type.AllowsMultiple())
         {
-            throw new InvalidOperationException($"Cannot use `GetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple. Please use `Get` for this attribute.");
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
+                $"Cannot use `GetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple." +
+                " Please use `Get` for this attribute."
+            );
         }
 
         return _attributes[type].AsReadOnly();
@@ -145,7 +160,10 @@ public class AttributeCollection(string name)
     {
         if (!type.AllowsMultiple())
         {
-            throw new InvalidOperationException($"Cannot use `TryGetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple. Please use `TryGet` for this attribute.");
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
+                $"Cannot use `TryGetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple." +
+                " Please use `TryGet` for this attribute."
+            );
         }
 
         if (!_attributes.TryGetValue(type, out var list))

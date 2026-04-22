@@ -16,6 +16,16 @@ public static class BusinessExtensions
             features.Add(configure(new()));
     }
 
+    extension(DiagnosticsCode)
+    {
+        public static DiagnosticsCode TypeWithAttribute => new(001, "type-with-attribute");
+        public static DiagnosticsCode RequiresBuildLevel => new(002, "requires-build-level");
+        public static DiagnosticsCode PropertyWithAttribute => new(003, "property-with-attribute");
+        public static DiagnosticsCode MethodWithAttribute => new(004, "method-with-attribute");
+        public static DiagnosticsCode ParameterWithAttribute => new(005, "parameter-with-attribute");
+        public static DiagnosticsCode RequiresElementType => new(006, "requires-element-type");
+    }
+
 #pragma warning disable IDE0052
     static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 2, [typeof(IServiceCollection)]) ??
         throw new("AddTransientWithFactory<TService, TImplementation> should have existed");
@@ -102,12 +112,9 @@ public static class BusinessExtensions
 
         public IdInfo GetIdInfo()
         {
-            if (!type.TryGetIdInfo(out var result))
-            {
-                throw new InvalidOperationException($"`{type.Name}` does not have `IdentifierInfo`");
-            }
+            var idProperty = type.GetMembers().FirstProperty<IdAttribute>();
 
-            return result;
+            return new(idProperty);
         }
 
         public bool TryGetIdInfo([NotNullWhen(true)] out IdInfo? idInfo)
@@ -119,7 +126,7 @@ public static class BusinessExtensions
             var idProperty = members.FirstPropertyOrDefault<IdAttribute>();
             if (idProperty is null) { return false; }
 
-            idInfo = new(idProperty.PropertyType.CSharpFriendlyFullName, idProperty.Name, idProperty.Get<IdAttribute>().RouteName);
+            idInfo = new(idProperty);
 
             return true;
         }
@@ -127,7 +134,11 @@ public static class BusinessExtensions
         public TypeModel SkipNullable()
         {
             if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
-            if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
+            if (!type.TryGetGenerics(out var generics))
+            {
+                throw DiagnosticsCode.RequiresBuildLevel.Exception($"{type.Name} doesn't provide generics information to skip nullable");
+            }
+
             if (type.IsGenericTypeDefinition) { return type; }
 
             return generics.GenericTypeArguments.First().Model;
@@ -145,7 +156,9 @@ public static class BusinessExtensions
             Func<PropertyModel, bool>? filter = default
         ) where TAttribute : Attribute =>
             members.FirstPropertyOrDefault<TAttribute>(filter: filter) ??
-            throw new($"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`");
+            throw DiagnosticsCode.PropertyWithAttribute.Exception(
+                $"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`"
+            );
 
         public PropertyModel? FirstPropertyOrDefault<TAttribute>(
             Func<PropertyModel, bool>? filter = default
@@ -156,7 +169,9 @@ public static class BusinessExtensions
             Func<MethodModel, bool>? filter = default
         ) where TAttribute : Attribute =>
             members.FirstMethodOrDefault<TAttribute>(filter: filter) ??
-            throw new($"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`");
+            throw DiagnosticsCode.MethodWithAttribute.Exception(
+                $"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`"
+            );
 
         public MethodModel? FirstMethodOrDefault<TAttribute>(
             Func<MethodModel, bool>? filter = default
@@ -170,7 +185,9 @@ public static class BusinessExtensions
             Func<ParameterModel, bool>? filter = default
         ) where TAttribute : Attribute =>
             method.FirstParameterOrDefault<TAttribute>(filter: filter) ??
-            throw new($"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`");
+            throw DiagnosticsCode.ParameterWithAttribute.Exception(
+                $"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`"
+            );
 
         public ParameterModel? FirstParameterOrDefault<TAttribute>(
             Func<ParameterModel, bool>? filter = default

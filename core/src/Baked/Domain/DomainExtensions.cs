@@ -52,6 +52,12 @@ public static class DomainExtensions
             layers.Add(new DomainLayer());
     }
 
+    extension(DiagnosticsCode)
+    {
+        public static DiagnosticsCode AttributeTargetMismatch => new(301, "attribute-target-mismatch");
+        public static DiagnosticsCode AttributeDoesNotAllow => new(302, "attribute-does-not-allow");
+    }
+
     extension(ApplicationContext application)
     {
         public IDomainTypeCollection GetDomainTypes() =>
@@ -203,10 +209,11 @@ public static class DomainExtensions
         {
             var usages = (AttributeUsageAttribute?)Attribute.GetCustomAttribute(attribute.GetType(), typeof(AttributeUsageAttribute));
             var validOn = usages?.ValidOn ?? AttributeTargets.All;
-
             if (validOn.HasFlag(model.Target)) { return; }
 
-            throw new InvalidOperationException($"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'");
+            throw DiagnosticsCode.AttributeTargetMismatch.Exception(
+                $"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'"
+            );
         }
     }
 
@@ -575,6 +582,10 @@ public static class DomainExtensions
         public bool TryGetMembers([NotNullWhen(true)] out TypeModelMembers? result) =>
             type.TryGetInfo(out result);
 
+        // WARNING
+        //
+        // Do NOT remove this warning disable section unintentionally.
+        // Without this, GitHub Actions fails on dotnet format
 #pragma warning disable IDE0051
         bool HasInfo<TInfo>() where TInfo : TypeModel =>
             type is TInfo;

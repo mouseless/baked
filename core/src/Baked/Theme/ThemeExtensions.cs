@@ -8,6 +8,8 @@ using Baked.Testing;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Baked.Ui.Configuration;
+using System.Collections.Immutable;
 
 using static Baked.Ui.Datas;
 
@@ -19,6 +21,17 @@ public static class ThemeExtensions
     {
         public void AddTheme(FeatureFunc<ThemeConfigurator> configure) =>
             features.Add(configure(new()));
+    }
+
+    extension(DiagnosticsCode)
+    {
+        public static DiagnosticsCode MissingRequiredComponent => new(101, "missing-required-component");
+        public static DiagnosticsCode MissingRequiredComponentOfType => new(102, "missing-required-component-of-type");
+        public static DiagnosticsCode MissingRequiredSchema => new(103, "missing-required-schema");
+        public static DiagnosticsCode RequiresLocateAction => new(104, "requires-locate-action");
+        public static DiagnosticsCode MethodRequired => new(105, "method-required");
+        public static DiagnosticsCode MissingItem => new(106, "missing-item");
+        public static DiagnosticsCode InvalidState => new(107, "invalid-state");
     }
 
     extension<T>(Action<T>? action)
@@ -59,7 +72,12 @@ public static class ThemeExtensions
                 when: c => c.Type.Is<TEntity>(),
                 schema: (c, cc) =>
                 {
-                    if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate)) { throw new($"`{c.Type.Name}` should have `Locate` action added"); }
+                    if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate))
+                    {
+                        throw DiagnosticsCode.RequiresLocateAction.Exception(
+                            $"`{c.Type.Name}` should have `Locate` action added"
+                        );
+                    }
 
                     return Remote(locate.GetRoute(), o => o.Params = Computed.UseRoute("params"));
                 }
@@ -930,12 +948,16 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMembers(out var members))
                 {
-                    throw new($"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model");
+                    throw DiagnosticsCode.RequiresBuildLevel.Exception(
+                        $"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model"
+                    );
                 }
 
                 if (!members.Methods.TryGetValue(methodName, out var method))
                 {
-                    throw new($"{typeof(TDomainType).Name} does not have a method named '{methodName}'");
+                    throw DiagnosticsCode.MethodRequired.Exception(
+                        $"{typeof(TDomainType).Name} does not have a method named '{methodName}'"
+                    );
                 }
 
                 return method.GetRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name, method.Name));
@@ -946,7 +968,12 @@ public static class ThemeExtensions
             {
                 var (domain, l) = context;
 
-                if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata)) { throw new($"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"); }
+                if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata))
+                {
+                    throw DiagnosticsCode.RequiresBuildLevel.Exception(
+                        $"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"
+                    );
+                }
 
                 return metadata.GetRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name));
             };
@@ -1001,8 +1028,45 @@ public static class ThemeExtensions
             enumerable.Where(c => c is not IComponentContextFilter when || when.AppliesTo(context));
     }
 
+    extension(PageDescriptors pages)
+    {
+        public void AddPages(IEnumerable<Route> routes, DomainModel domain, NewLocaleKey l,
+            Action<DiagnosticsResult>? onComplete = default,
+            bool? debugComponentPaths = default
+        )
+        {
+            using (Diagnostics.Start(nameof(PageDescriptors), onDispose: onComplete))
+            {
+                var sitemap = routes.ToImmutableList();
+                foreach (var route in routes)
+                {
+                    var page = route.BuildPage(new()
+                    {
+                        Route = route,
+                        Sitemap = sitemap,
+                        Domain = domain,
+                        NewLocaleKey = l
+                    });
+                    if (page is null) { continue; }
+
+                    pages.Add(page);
+                }
+
+                if (debugComponentPaths == true)
+                {
+                    Diagnostics.ReportInfo(ComponentPath.GetPathsAsTree());
+                }
+            }
+        }
+    }
+
     extension<TSchema>(DescriptorBuilderAttribute<TSchema> attribute)
     {
+        // WARNING
+        //
+        // Do NOT remove this warning disable section unintentionally.
+        // Without this, GitHub Actions fails on dotnet format
+#pragma warning disable IDE0051
         // NOTE
         //
         // This is refactored to remove duplication in below conventions but
@@ -1011,7 +1075,6 @@ public static class ThemeExtensions
         //
         // Filter is applied within the function because it is the only
         // way to access to the component context.
-#pragma warning disable IDE0051
         void WrapBuilder(
             Func<ComponentContext, bool> when,
             Action<TSchema, ComponentContext> apply
@@ -1043,15 +1106,17 @@ public static class ThemeExtensions
             return
             [
                 .. builders
-            .WhereAppliesTo(context)
-            .Cast<IComponentContextBasedBuilder<TSchema>>()
-            .Select(b => b.Build(context))
+                    .WhereAppliesTo(context)
+                    .Cast<IComponentContextBasedBuilder<TSchema>>()
+                    .Select(b => b.Build(context))
             ];
         }
 
         public TSchema GetRequiredSchema<TSchema>(ComponentContext context) =>
             metadata.GetSchema<TSchema>(context) ??
-            throw new($"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`");
+            throw DiagnosticsCode.MissingRequiredSchema.Exception(
+                $"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`"
+            );
 
         public TSchema? GetSchema<TSchema>(ComponentContext context)
         {
@@ -1067,18 +1132,29 @@ public static class ThemeExtensions
         }
 
         public ComponentDescriptor<T> GetRequiredComponent<T>(ComponentContext context) where T : IComponentSchema =>
-            metadata.GetRequiredComponent(context, componentType: typeof(T)) as ComponentDescriptor<T> ??
-            throw new($"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`");
+            metadata.GetRequiredComponent(context, componentType: typeof(T), omitWarningMessage: true) as ComponentDescriptor<T> ??
+            throw DiagnosticsCode.MissingRequiredComponentOfType.Exception(
+                $"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`"
+            );
 
         public IComponentDescriptor GetRequiredComponent(ComponentContext context,
-            Type? componentType = default
+            Type? componentType = default,
+            bool omitWarningMessage = false
         )
         {
             var result = metadata.GetComponent(context, componentType: componentType);
             if (result is not null) { return result; }
 
-            var level = WarnForMissingComponent ? "warning" : "error";
-            Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`");
+            if (!omitWarningMessage)
+            {
+                var message =
+                    $"`{metadata.CustomAttributes.Name}` doesn't have any component descriptor" +
+                    $"{(componentType is null ? string.Empty : $" of type {componentType.Name}")}" +
+                    $" at path `{context.Path}`";
+
+                if (WarnForMissingComponent) { Diagnostics.ReportWarning(DiagnosticsCode.MissingRequiredComponent, message); }
+                else { Diagnostics.ReportError(DiagnosticsCode.MissingRequiredComponent, message); }
+            }
 
             return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);
         }
@@ -1110,6 +1186,10 @@ public static class ThemeExtensions
         }
     }
 
+    // WARNING
+    //
+    // Do NOT remove this warning disable section unintentionally.
+    // Without this, GitHub Actions fails on dotnet format
 #pragma warning disable IDE0051
     static bool WarnForMissingComponent => Environment.GetCommandLineArgs().Contains("--warn-for-missing-component");
 #pragma warning restore IDE0051

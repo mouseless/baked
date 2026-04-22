@@ -116,9 +116,9 @@ public class RespectingAttributeUsage : TestSpec
         addAll.ShouldNotThrow();
         addClass.ShouldNotThrow();
 
-        addMethod.ShouldThrow<InvalidOperationException>();
-        addParameter.ShouldThrow<InvalidOperationException>();
-        addProperty.ShouldThrow<InvalidOperationException>();
+        addMethod.ShouldThrow<DiagnosticsException>();
+        addParameter.ShouldThrow<DiagnosticsException>();
+        addProperty.ShouldThrow<DiagnosticsException>();
     }
 
     [Test]
@@ -136,8 +136,8 @@ public class RespectingAttributeUsage : TestSpec
         addAll.ShouldNotThrow();
         addClass.ShouldNotThrow();
 
-        addMethod.ShouldThrow<InvalidOperationException>();
-        addParameter.ShouldThrow<InvalidOperationException>();
-        addProperty.ShouldThrow<InvalidOperationException>();
+        addMethod.ShouldThrow<DiagnosticsException>();
+        addParameter.ShouldThrow<DiagnosticsException>();
+        addProperty.ShouldThrow<DiagnosticsException>();
     }
 }

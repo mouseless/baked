@@ -18,7 +18,7 @@ build:
 	@(cd core && dotnet build -v d /p:GenerateArgs="--warn-for-missing-component")
 	@(cd ui && npm run build)
 test:
-	@(cd core && dotnet test --output Detailed)
+	@(cd core && dotnet test)
 	@(cd ui && BUILD_SILENT=1 npm run test -- $(NPMARGS))
 coverage:
 	@( \

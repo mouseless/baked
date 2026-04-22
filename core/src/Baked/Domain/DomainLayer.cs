@@ -95,11 +95,9 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
     {
         protected override void Initialize(IDomainTypeCollection domainTypes)
         {
-            var builder = new DomainModelBuilder(_builderOptions);
-            var model = builder.Build(domainTypes);
-
-            Context.Add(model);
-            builder.PostBuild(model);
+            var builder = new DomainModelBuilder(_builderOptions).StartBuild(domainTypes);
+            Context.Add(builder.Model);
+            builder.EndBuild();
         }
     }
 }

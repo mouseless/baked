@@ -7,29 +7,10 @@ namespace Baked.Test.Theme;
 
 public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
 {
-    TextWriter _realOut = default!;
-    TextWriter _fakeOut = default!;
-
-    public override void SetUp()
-    {
-        base.SetUp();
-
-        _realOut = Console.Out;
-        Console.SetOut(_fakeOut = new StringWriter());
-    }
-
-    public override void TearDown()
-    {
-        base.TearDown();
-
-        Console.SetOut(_realOut);
-    }
-
-    string ConsoleOutput => _fakeOut?.ToString() ?? string.Empty;
-
     [Test]
     public void When_no_component_is_found__it_returns_MissingComponent()
     {
+        using var _ = Diagnostics.Start("test", _ => { });
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
 
@@ -39,21 +20,28 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
     }
 
     [Test]
-    public void When_used__MissingComponent_leaves_an_error_log_in_build_output()
+    public void When_used__MissingComponent_leaves_an_error_log_in_diagnostics_messages()
     {
-        var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
-        var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
+        DiagnosticsResult? result = default;
+        using (Diagnostics.Start("test", dr => result = dr))
+        {
+            var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
+            var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
 
-        type.GetRequiredComponent(componentContext);
+            type.GetRequiredComponent(componentContext);
+        }
 
-        ConsoleOutput.ShouldContainWithoutWhitespace("""
-        error: `TestPage` doesn't have any component descriptor at path `/page/with-no-config`
-        """);
+        result?.Messages.ShouldContain(
+            "error B0101:" +
+            " `TestPage` doesn't have any component descriptor at path `/page/with-no-config`" +
+            " (See: https://baked.mouseless.codes/errors#missing-required-component)"
+        );
     }
 
     [Test]
     public void MissingComponent_contains_component_path_to_build_a_sample_config_code()
     {
+        using var _ = Diagnostics.Start("test", _ => { });
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
 
@@ -66,6 +54,7 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
     [Test]
     public void When_used_in_a_type__MissingComponent_contains_type_info()
     {
+        using var _ = Diagnostics.Start("test", _ => { });
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
 
@@ -79,6 +68,7 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
     [Test]
     public void When_used_in_a_property__MissingComponent_contains_property_info()
     {
+        using var _ = Diagnostics.Start("test", _ => { });
         var type = GiveMe.TheTypeModel<Record>().GetMembers();
         var property = type.Properties[nameof(Record.Text)];
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
@@ -93,6 +83,7 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
     [Test]
     public void When_used_in_a_method__MissingComponent_contains_method_info()
     {
+        using var _ = Diagnostics.Start("test", _ => { });
         var type = GiveMe.TheTypeModel<TestPage>().GetMembers();
         var method = type.Methods[nameof(TestPage.GetData)];
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
@@ -107,6 +98,7 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
     [Test]
     public void When_used_in_a_parameter__MissingComponent_contains_parameter_info()
     {
+        using var _ = Diagnostics.Start("test", _ => { });
         var type = GiveMe.TheTypeModel<TestPage>().GetMembers();
         var method = type.Methods[nameof(TestPage.GetData)];
         var parameter = method.DefaultOverload.Parameters["panel"];

@@ -5,7 +5,6 @@ using Baked.RestApi.Model;
 using Baked.Runtime;
 using Baked.Ui;
 using Humanizer;
-using System.Collections.Immutable;
 
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
@@ -274,30 +273,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             {
                 configurator.Ui.UsingLocalization(l =>
                 {
-                    var sitemap = _routes.ToImmutableList();
-                    foreach (var route in _routes)
-                    {
-                        var page = route.BuildPage(new()
-                        {
-                            Route = route,
-                            Sitemap = sitemap,
-                            Domain = domain,
-                            NewLocaleKey = l
-                        });
-
-                        if (page is null) { continue; }
-
-                        pages.Add(page);
-                    }
+                    pages.AddPages(_routes, domain, l,
+                        debugComponentPaths: _debugComponentPaths?.GetValue()
+                    );
                 });
             });
-
-            if (_debugComponentPaths?.GetValue() == true)
-            {
-                Console.WriteLine("Component Paths:");
-                Console.WriteLine("---");
-                Console.WriteLine($"{ComponentPath.GetPaths().Join(Environment.NewLine)}");
-            }
         });
     }
 }

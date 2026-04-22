@@ -27,7 +27,9 @@ public class PrintingBanner : ArchitectureSpec
     string ConsoleOutput => _fakeOut?.ToString() ?? string.Empty;
 
     // Version is shortened to Ver to keep banner width fixed
-    string VersionString => FileVersionInfo.GetVersionInfo(typeof(IBanner).Assembly.Location).FileVersion?[..^2] ?? throw new("Version not found");
+    string VersionString =>
+        FileVersionInfo.GetVersionInfo(typeof(IBanner).Assembly.Location).FileVersion?[..^2] ??
+        throw new("Version not found");
 
     [Test]
     public void It_prints_banner_prior_to_build()

@@ -11,12 +11,12 @@ public class CacheSamplesDomainOverrideFeature : IFeature
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+                when: c => c.Type.Is<CacheSamples>(),
                 component: tp =>
                 {
                     tp.Schema.Tabs[0].Contents[0].Narrow = true;
                     tp.Schema.Tabs[0].Contents[1].Narrow = true;
-                },
-                when: c => c.Type.Is<CacheSamples>()
+                }
             );
         });
     }
