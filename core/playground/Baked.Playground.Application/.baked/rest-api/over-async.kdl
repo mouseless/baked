@@ -1,5 +1,4 @@
-sync-over-async {
-  @controller-model groupName="OverAsync"
+sync-over-async @controller-model {
   execute {
     @action-model method="POST" route="over-async"
   }

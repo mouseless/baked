@@ -1,5 +1,4 @@
-resource-samples {
-  @controller-model groupName="ResourceSamples"
+resource-samples @controller-model {
   read {
     @action-model method="POST" route="resource-samples/read"
     subPath {

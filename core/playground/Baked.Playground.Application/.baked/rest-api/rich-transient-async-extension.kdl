@@ -1,7 +1,0 @@
-rich-transient-async-extension {
-  @controller-model groupName="RichTransientAsyncs"
-  from-extension {
-    @action-model method="POST" route="rich-transient-asyncs/{id}/from-extension"
-  }
-}
-

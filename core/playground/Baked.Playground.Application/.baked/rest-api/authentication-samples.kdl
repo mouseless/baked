@@ -1,5 +1,4 @@
-authentication-samples {
-  @controller-model groupName="AuthenticationSamples"
+authentication-samples @controller-model {
   authenticate {
     @action-model method="POST" route="authentication-samples/authenticate"
   }

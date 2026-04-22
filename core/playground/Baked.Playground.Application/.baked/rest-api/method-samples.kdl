@@ -1,5 +1,4 @@
-method-samples {
-  @controller-model groupName="MethodSamples"
+method-samples @controller-model {
   execute {
     @action-model method="POST" route="method-samples"
   }

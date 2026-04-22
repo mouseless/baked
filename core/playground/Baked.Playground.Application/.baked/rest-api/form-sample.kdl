@@ -1,5 +1,4 @@
-form-sample {
-  @controller-model groupName="FormSample"
+form-sample @controller-model {
   new-parent {
     @action-model method="POST" route="form-sample/parents"
     surname {

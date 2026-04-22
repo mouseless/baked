@@ -1,5 +1,4 @@
-test-page {
-  @controller-model groupName="TestPage"
+test-page @controller-model {
   get-data {
     @action-model method="GET" route="test-page/data"
     panel {

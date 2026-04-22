@@ -1,5 +1,4 @@
-dependent-class {
-  @controller-model groupName="DependentClass"
+dependent-class @controller-model {
   method {
     @action-model method="POST" route="dependent-class/method"
   }

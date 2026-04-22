@@ -1,5 +1,4 @@
-rich-transient-no-data {
-  @controller-model groupName="RichTransientNoDatas"
+rich-transient-no-data @controller-model {
   method {
     @action-model method="POST" route="rich-transient-no-datas/{id}/method"
     text {

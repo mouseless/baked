@@ -1,5 +1,4 @@
-report-page-sample {
-  @controller-model groupName="ReportPageSample"
+report-page-sample @controller-model {
   get-wide {
     @action-model method="GET" route="report-page-sample/wide"
   }

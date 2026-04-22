@@ -1,5 +1,4 @@
-authorization-samples {
-  @controller-model groupName="AuthorizationSamples"
+authorization-samples @controller-model {
   anonymous {
     @action-model method="POST" route="authorization-samples/anonymous"
   }

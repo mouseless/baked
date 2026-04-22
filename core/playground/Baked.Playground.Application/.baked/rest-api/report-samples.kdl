@@ -1,5 +1,4 @@
-report-samples {
-  @controller-model groupName="ReportSamples"
+report-samples @controller-model {
   get-entity {
     @action-model method="GET" route="report-samples/entity"
     string {

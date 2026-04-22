@@ -1,5 +1,4 @@
-implemented-locatable {
-  @controller-model groupName="ImplementedLocatables"
+implemented-locatable @controller-model {
   with {
     @action-model method="GET" route="implemented-locatables/{id}"
     id {

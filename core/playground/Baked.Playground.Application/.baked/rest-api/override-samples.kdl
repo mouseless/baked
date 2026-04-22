@@ -1,5 +1,4 @@
-override-samples {
-  @controller-model groupName="OverrideSamples"
+override-samples @controller-model {
   update-route {
     @action-model method="POST" route="override-samples/override/update-route"
   }

@@ -1,0 +1,9 @@
+child @controller-model {
+  update {
+    @action-model method="PUT" route="children/{id}/"
+    name @parameter-model
+    parent @parameter-model
+    parentWrapper @parameter-model
+  }
+}
+

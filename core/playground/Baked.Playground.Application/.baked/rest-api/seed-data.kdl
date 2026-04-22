@@ -1,5 +1,4 @@
-seed-data {
-  @controller-model groupName="SeedData"
+seed-data @controller-model {
   execute {
     @action-model method="POST" route="seed-data"
   }

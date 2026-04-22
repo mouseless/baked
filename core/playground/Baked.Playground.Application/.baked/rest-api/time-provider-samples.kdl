@@ -1,5 +1,4 @@
-time-provider-samples {
-  @controller-model groupName="TimeProviderSamples"
+time-provider-samples @controller-model {
   get-now {
     @action-model method="GET" route="time-provider-samples/now"
   }

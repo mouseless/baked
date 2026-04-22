@@ -1,5 +1,4 @@
-documentation-samples {
-  @controller-model groupName="DocumentationSamples"
+documentation-samples @controller-model {
   execute {
     @action-model method="POST" route="documentation-samples"
     parameter {
@@ -8,8 +7,7 @@ documentation-samples {
   }
 }
 
-documentation-samples {
-  @controller-model groupName="DocumentationSamples"
+documentation-samples @controller-model {
   method {
     @action-model method="POST" route="documentation-samples/method"
     parameter1 {

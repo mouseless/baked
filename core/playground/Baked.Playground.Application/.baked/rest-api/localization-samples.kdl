@@ -1,5 +1,4 @@
-localization-samples {
-  @controller-model groupName="LocalizationSamples"
+localization-samples @controller-model {
   get-locale-string {
     @action-model method="GET" route="localization-samples/locale-string"
   }

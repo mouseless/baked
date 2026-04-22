@@ -1,5 +1,4 @@
-entity-with-auto-increment-id {
-  @controller-model groupName="EntityWithAutoIncrementIds"
+entity-with-auto-increment-id @controller-model {
   with {
     @action-model method="POST" route="entity-with-auto-increment-ids"
   }

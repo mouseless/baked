@@ -1,5 +1,4 @@
-internal-samples {
-  @controller-model groupName="InternalSamples"
+internal-samples @controller-model {
   internal-request {
     @action-model method="POST" route="internal-samples/internal-request"
     path {

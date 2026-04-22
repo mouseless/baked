@@ -89,10 +89,6 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
         configurator.Domain.ConfigureAttributeProperties(properties =>
         {
-            properties.Set<ControllerModelAttribute>(controller =>
-            [
-                new(controller.GroupName)
-            ]);
             properties.Set<ActionModelAttribute>(action =>
             [
                 new(action.Method),
@@ -120,7 +116,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                         export.Include<ParameterModelAttribute>();
 
                         export.TypeGroupName(type =>
-                            type.TryGetLocatableType(domain, out var locatableType) ? locatableType.Name :
+                            type.TryGetControllerModel(out var controller) ? controller.GroupName :
                             type.Name
                         );
                     }

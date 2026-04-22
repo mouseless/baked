@@ -1,5 +1,4 @@
-exception-samples {
-  @controller-model groupName="ExceptionSamples"
+exception-samples @controller-model {
   throw {
     @action-model method="POST" route="exception-samples/throw"
     handled {

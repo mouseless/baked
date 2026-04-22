@@ -1,5 +1,4 @@
-cache-samples {
-  @controller-model groupName="CacheSamples"
+cache-samples @controller-model {
   get-scoped {
     @action-model method="GET" route="cache-samples/scoped"
   }

@@ -1,0 +1,18 @@
+create-bulk-command @controller-model {
+  execute {
+    @action-model method="PATCH" route="bulk-command" no-wrap=#true
+    descriptors {
+      @parameter-model required=#true
+    }
+  }
+}
+
+sync-bulk-command @controller-model {
+  execute {
+    @action-model method="PUT" route="bulk-command" no-wrap=#true
+    descriptors {
+      @parameter-model required=#true
+    }
+  }
+}
+

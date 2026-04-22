@@ -1,5 +1,4 @@
-entity {
-  @controller-model groupName="Entities"
+entity @controller-model {
   with {
     @action-model method="POST" route="entities"
     guid @parameter-model
@@ -40,8 +39,7 @@ entity {
   }
 }
 
-entities {
-  @controller-model groupName="Entities"
+entities @controller-model {
   by {
     @action-model method="GET" route="entities"
     guid {
@@ -89,6 +87,30 @@ entities {
   }
   count-by-date {
     @action-model method="POST" route="entities/count-date"
+  }
+}
+
+entity-extension @controller-model {
+  increment-int-32 {
+    @action-model method="POST" route="entities/{id}/increment-int32"
+  }
+  increment-by {
+    @action-model method="POST" route="entities/{id}/increment-by"
+    other {
+      @parameter-model required=#true
+    }
+  }
+  increment-by-all {
+    @action-model method="POST" route="entities/{id}/increment-by-all"
+    extensions {
+      @parameter-model required=#true
+    }
+    moreExtensions {
+      @parameter-model required=#true
+    }
+    evenMoreExtensions {
+      @parameter-model required=#true
+    }
   }
 }
 

@@ -1,5 +1,4 @@
-command-with-rich-transient {
-  @controller-model groupName="CommandWithRichTransient"
+command-with-rich-transient @controller-model {
   execute {
     @action-model method="POST" route="command-with-rich-transient"
   }

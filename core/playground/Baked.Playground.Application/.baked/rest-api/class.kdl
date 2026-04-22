@@ -1,5 +1,4 @@
-class {
-  @controller-model groupName="Class"
+class @controller-model {
   method {
     @action-model method="POST" route="class/method"
   }

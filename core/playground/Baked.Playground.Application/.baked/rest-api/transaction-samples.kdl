@@ -1,5 +1,4 @@
-transaction-samples {
-  @controller-model groupName="TransactionSamples"
+transaction-samples @controller-model {
   commit-action {
     @action-model method="POST" route="transaction-samples/commit-action"
   }

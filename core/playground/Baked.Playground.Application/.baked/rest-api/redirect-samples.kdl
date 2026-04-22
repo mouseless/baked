@@ -1,5 +1,4 @@
-redirect-samples {
-  @controller-model groupName="RedirectSamples"
+redirect-samples @controller-model {
   form-post {
     @action-model method="POST" route="redirect-samples/form-post" form=#true
     key {

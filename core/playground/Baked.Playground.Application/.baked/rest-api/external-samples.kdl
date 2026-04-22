@@ -1,5 +1,4 @@
-external-samples {
-  @controller-model groupName="ExternalSamples"
+external-samples @controller-model {
   get-pull-requests {
     @action-model method="GET" route="external-samples/pull-requests"
   }

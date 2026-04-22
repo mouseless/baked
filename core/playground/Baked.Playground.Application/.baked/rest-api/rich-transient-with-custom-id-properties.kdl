@@ -1,5 +1,4 @@
-rich-transient-with-custom-id-property {
-  @controller-model groupName="RichTransientWithCustomIdProperties"
+rich-transient-with-custom-id-property @controller-model {
   with {
     @action-model method="GET" route="rich-transient-with-custom-id-properties/{uid}"
     uid {

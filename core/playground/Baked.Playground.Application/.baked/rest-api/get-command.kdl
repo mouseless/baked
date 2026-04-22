@@ -1,7 +1,0 @@
-get-command {
-  @controller-model groupName="Command"
-  execute {
-    @action-model method="GET" route="command"
-  }
-}
-

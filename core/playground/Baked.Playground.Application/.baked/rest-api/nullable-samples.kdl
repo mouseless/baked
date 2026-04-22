@@ -1,5 +1,4 @@
-nullable-samples {
-  @controller-model groupName="NullableSamples"
+nullable-samples @controller-model {
   get-value-type {
     @action-model method="GET" route="nullable-samples/value-type"
     notNull {

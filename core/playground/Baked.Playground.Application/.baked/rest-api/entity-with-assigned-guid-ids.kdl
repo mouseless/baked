@@ -1,5 +1,4 @@
-entity-with-assigned-guid-id {
-  @controller-model groupName="EntityWithAssignedGuidIds"
+entity-with-assigned-guid-id @controller-model {
   with {
     @action-model method="GET" route="entity-with-assigned-guid-ids/{id}"
     id {

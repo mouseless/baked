@@ -1,5 +1,4 @@
-parent {
-  @controller-model groupName="Parents"
+parent @controller-model {
   with {
     @action-model method="POST" route="parents"
     name {
@@ -35,8 +34,7 @@ parent {
   }
 }
 
-parents {
-  @controller-model groupName="Parents"
+parents @controller-model {
   by {
     @action-model method="GET" route="parents"
     name {

@@ -1,5 +1,4 @@
-route-parameters-sample {
-  @controller-model groupName="RouteParametersSamples"
+route-parameters-sample @controller-model {
   with {
     @action-model method="GET" route="route-parameters-samples/{id}"
     id {
