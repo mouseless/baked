@@ -1,6 +1,6 @@
 clear-command @controller-model {
   execute {
-    @action-model method="DELETE" route="command"
+    @action-model method="DELETE" route="/command"
     executeParam {
       @parameter-model required=#true in="query"
     }
@@ -9,7 +9,7 @@ clear-command @controller-model {
 
 command @controller-model {
   transient {
-    @action-model method="POST" route="command/transient"
+    @action-model method="POST" route="/command/transient"
     body {
       @parameter-model required=#true
     }
@@ -18,19 +18,19 @@ command @controller-model {
 
 execute-command @controller-model {
   execute {
-    @action-model method="POST" route="command"
+    @action-model method="POST" route="/command"
   }
 }
 
 get-command @controller-model {
   execute {
-    @action-model method="GET" route="command"
+    @action-model method="GET" route="/command"
   }
 }
 
 update-command @controller-model {
   execute {
-    @action-model method="PATCH" route="command"
+    @action-model method="PATCH" route="/command"
   }
 }
 

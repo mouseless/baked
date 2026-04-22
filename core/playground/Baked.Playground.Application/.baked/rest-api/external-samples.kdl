@@ -1,6 +1,6 @@
 external-samples @controller-model {
   get-pull-requests {
-    @action-model method="GET" route="external-samples/pull-requests"
+    @action-model method="GET" route="/external-samples/pull-requests"
   }
 }
 

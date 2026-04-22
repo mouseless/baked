@@ -1,12 +1,12 @@
 report-samples @controller-model {
   get-entity {
-    @action-model method="GET" route="report-samples/entity"
+    @action-model method="GET" route="/report-samples/entity"
     string {
       @parameter-model required=#true in="query"
     }
   }
   get-non-existing {
-    @action-model method="GET" route="report-samples/non-existing"
+    @action-model method="GET" route="/report-samples/non-existing"
   }
 }
 

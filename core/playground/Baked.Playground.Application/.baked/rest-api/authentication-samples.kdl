@@ -1,21 +1,21 @@
 authentication-samples @controller-model {
   authenticate {
-    @action-model method="POST" route="authentication-samples/authenticate"
+    @action-model method="POST" route="/authentication-samples/authenticate"
   }
   form-post-authenticate {
-    @action-model method="POST" route="authentication-samples/form-post-authenticate" form=#true
+    @action-model method="POST" route="/authentication-samples/form-post-authenticate" form=#true
     value {
       @parameter-model required=#true
     }
   }
   login {
-    @action-model method="POST" route="authentication-samples/login"
+    @action-model method="POST" route="/authentication-samples/login"
     username {
       @parameter-model required=#true
     }
   }
   refresh {
-    @action-model method="POST" route="authentication-samples/refresh"
+    @action-model method="POST" route="/authentication-samples/refresh"
   }
 }
 

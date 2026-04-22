@@ -1,18 +1,18 @@
 rich-transient-with-custom-id-property @controller-model {
   with {
-    @action-model method="GET" route="rich-transient-with-custom-id-properties/{uid}"
+    @action-model method="GET" route="/rich-transient-with-custom-id-properties/{uid}"
     uid {
       @parameter-model required=#true in="route"
     }
   }
   get-test-custom-id-property-name {
-    @action-model method="GET" route="rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name"
+    @action-model method="GET" route="/rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name"
     other {
       @parameter-model required=#true in="query"
     }
   }
   test-custom-id-property-name {
-    @action-model method="POST" route="rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name"
+    @action-model method="POST" route="/rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name"
     other {
       @parameter-model required=#true
     }

@@ -1,6 +1,6 @@
 nested-type-in-api @controller-model {
   execute {
-    @action-model method="POST" route="nested-type-in-api"
+    @action-model method="POST" route="/nested-type-in-api"
     input {
       @parameter-model required=#true
     }

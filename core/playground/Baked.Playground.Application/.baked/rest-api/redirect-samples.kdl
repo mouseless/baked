@@ -1,21 +1,21 @@
 redirect-samples @controller-model {
   form-post {
-    @action-model method="POST" route="redirect-samples/form-post" form=#true
+    @action-model method="POST" route="/redirect-samples/form-post" form=#true
     key {
       @parameter-model required=#true
     }
   }
   form-post-async {
-    @action-model method="POST" route="redirect-samples/form-post-async" form=#true
+    @action-model method="POST" route="/redirect-samples/form-post-async" form=#true
     key {
       @parameter-model required=#true
     }
   }
   callback {
-    @action-model method="GET" route="redirect-samples/callback"
+    @action-model method="GET" route="/redirect-samples/callback"
   }
   callback-async {
-    @action-model method="GET" route="redirect-samples/callback-async"
+    @action-model method="GET" route="/redirect-samples/callback-async"
   }
 }
 

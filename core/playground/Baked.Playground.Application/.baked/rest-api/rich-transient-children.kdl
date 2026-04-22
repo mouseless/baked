@@ -1,6 +1,6 @@
 rich-transient-child @controller-model {
   with {
-    @action-model method="GET" route="rich-transient-children/{id}"
+    @action-model method="GET" route="/rich-transient-children/{id}"
     id {
       @parameter-model required=#true in="route"
     }

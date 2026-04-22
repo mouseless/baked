@@ -1,6 +1,6 @@
 entity @controller-model {
   with {
-    @action-model method="POST" route="entities"
+    @action-model method="POST" route="/entities"
     guid @parameter-model
     string @parameter-model
     stringData @parameter-model
@@ -12,7 +12,7 @@ entity @controller-model {
     dateTime @parameter-model
   }
   update {
-    @action-model method="PUT" route="entities/{id}/"
+    @action-model method="PUT" route="/entities/{id}/"
     guid @parameter-model
     string @parameter-model
     stringData @parameter-model
@@ -26,22 +26,22 @@ entity @controller-model {
     throwError @parameter-model
   }
   update-string {
-    @action-model method="PATCH" route="entities/{id}/string"
+    @action-model method="PATCH" route="/entities/{id}/string"
     string @parameter-model
   }
   lock-and-increment-int-32 {
-    @action-model method="POST" route="entities/{id}/lock-and-increment-int32"
+    @action-model method="POST" route="/entities/{id}/lock-and-increment-int32"
     offset @parameter-model
     delayInSeconds @parameter-model
   }
   delete {
-    @action-model method="DELETE" route="entities/{id}/"
+    @action-model method="DELETE" route="/entities/{id}/"
   }
 }
 
 entities @controller-model {
   by {
-    @action-model method="GET" route="entities"
+    @action-model method="GET" route="/entities"
     guid {
       @parameter-model in="query"
     }
@@ -74,7 +74,7 @@ entities @controller-model {
     }
   }
   first-by-string {
-    @action-model method="GET" route="entities/first-string"
+    @action-model method="GET" route="/entities/first-string"
     startsWith {
       @parameter-model required=#true in="query"
     }
@@ -86,22 +86,22 @@ entities @controller-model {
     }
   }
   count-by-date {
-    @action-model method="POST" route="entities/count-date"
+    @action-model method="POST" route="/entities/count-date"
   }
 }
 
 entity-extension @controller-model {
   increment-int-32 {
-    @action-model method="POST" route="entities/{id}/increment-int32"
+    @action-model method="POST" route="/entities/{id}/increment-int32"
   }
   increment-by {
-    @action-model method="POST" route="entities/{id}/increment-by"
+    @action-model method="POST" route="/entities/{id}/increment-by"
     other {
       @parameter-model required=#true
     }
   }
   increment-by-all {
-    @action-model method="POST" route="entities/{id}/increment-by-all"
+    @action-model method="POST" route="/entities/{id}/increment-by-all"
     extensions {
       @parameter-model required=#true
     }

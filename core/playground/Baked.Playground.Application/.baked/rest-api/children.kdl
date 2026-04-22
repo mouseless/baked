@@ -1,9 +1,9 @@
 children @controller-model {
   by {
-    @action-model method="GET" route="children"
+    @action-model method="GET" route="/children"
   }
   first-by {
-    @action-model method="GET" route="children/first"
+    @action-model method="GET" route="/children/first"
     fetchParents {
       @parameter-model in="query"
     }

@@ -1,6 +1,6 @@
 command-with-rich-transient @controller-model {
   execute {
-    @action-model method="POST" route="command-with-rich-transient"
+    @action-model method="POST" route="/command-with-rich-transient"
   }
 }
 

@@ -1,6 +1,6 @@
 entity-with-value-type @controller-model {
   with {
-    @action-model method="POST" route="entity-with-value-types"
+    @action-model method="POST" route="/entity-with-value-types"
     value {
       @parameter-model required=#true
     }
@@ -9,7 +9,7 @@ entity-with-value-type @controller-model {
 
 entity-with-value-types @controller-model {
   by {
-    @action-model method="GET" route="entity-with-value-types"
+    @action-model method="GET" route="/entity-with-value-types"
     value {
       @parameter-model in="query"
     }

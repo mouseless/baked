@@ -1,6 +1,6 @@
 parent @controller-model {
   with {
-    @action-model method="POST" route="parents"
+    @action-model method="POST" route="/parents"
     name {
       @parameter-model required=#true
     }
@@ -9,34 +9,34 @@ parent @controller-model {
     }
   }
   get-children {
-    @action-model method="GET" route="parents/{id}/children"
+    @action-model method="GET" route="/parents/{id}/children"
   }
   add-child {
-    @action-model method="POST" route="parents/{id}/children"
+    @action-model method="POST" route="/parents/{id}/children"
     name {
       @parameter-model required=#true
     }
   }
   update {
-    @action-model method="PUT" route="parents/{id}/"
+    @action-model method="PUT" route="/parents/{id}/"
     name @parameter-model
     surname @parameter-model
     description @parameter-model
   }
   remove-child {
-    @action-model method="DELETE" route="parents/{id}/children/{childId}"
+    @action-model method="DELETE" route="/parents/{id}/children/{childId}"
     child {
       @parameter-model required=#true in="route"
     }
   }
   delete {
-    @action-model method="DELETE" route="parents/{id}/"
+    @action-model method="DELETE" route="/parents/{id}/"
   }
 }
 
 parents @controller-model {
   by {
-    @action-model method="GET" route="parents"
+    @action-model method="GET" route="/parents"
     name {
       @parameter-model in="query"
     }
@@ -54,7 +54,7 @@ parents @controller-model {
     }
   }
   by-name {
-    @action-model method="GET" route="parents/name"
+    @action-model method="GET" route="/parents/name"
     contains {
       @parameter-model required=#true in="query"
     }

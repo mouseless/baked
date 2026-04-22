@@ -1,15 +1,15 @@
 entity-with-auto-increment-id @controller-model {
   with {
-    @action-model method="POST" route="entity-with-auto-increment-ids"
+    @action-model method="POST" route="/entity-with-auto-increment-ids"
   }
   get-test-custom-id-property-name {
-    @action-model method="GET" route="entity-with-auto-increment-ids/{primaryKey}/test-custom-id-property-name"
+    @action-model method="GET" route="/entity-with-auto-increment-ids/{primaryKey}/test-custom-id-property-name"
     other {
       @parameter-model required=#true in="query"
     }
   }
   test-custom-id-property-name {
-    @action-model method="POST" route="entity-with-auto-increment-ids/{primaryKey}/test-custom-id-property-name"
+    @action-model method="POST" route="/entity-with-auto-increment-ids/{primaryKey}/test-custom-id-property-name"
     other {
       @parameter-model required=#true
     }

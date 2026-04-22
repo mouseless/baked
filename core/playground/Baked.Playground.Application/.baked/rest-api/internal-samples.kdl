@@ -1,6 +1,6 @@
 internal-samples @controller-model {
   internal-request {
-    @action-model method="POST" route="internal-samples/internal-request"
+    @action-model method="POST" route="/internal-samples/internal-request"
     path {
       @parameter-model required=#true
     }

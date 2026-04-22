@@ -1,12 +1,12 @@
 rich-transient-with-data @controller-model {
   with {
-    @action-model method="GET" route="rich-transient-with-datas/{id}"
+    @action-model method="GET" route="/rich-transient-with-datas/{id}"
     id {
       @parameter-model required=#true in="route"
     }
   }
   method {
-    @action-model method="POST" route="rich-transient-with-datas/{id}/method"
+    @action-model method="POST" route="/rich-transient-with-datas/{id}/method"
     text {
       @parameter-model required=#true
     }
@@ -15,7 +15,7 @@ rich-transient-with-data @controller-model {
 
 rich-transient-extension @controller-model {
   from-extension {
-    @action-model method="POST" route="rich-transient-with-datas/{id}/from-extension"
+    @action-model method="POST" route="/rich-transient-with-datas/{id}/from-extension"
   }
 }
 

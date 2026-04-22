@@ -1,6 +1,6 @@
 rich-transient-async @controller-model {
   with {
-    @action-model method="GET" route="rich-transient-asyncs/{id}"
+    @action-model method="GET" route="/rich-transient-asyncs/{id}"
     id {
       @parameter-model required=#true in="route"
     }
@@ -9,7 +9,7 @@ rich-transient-async @controller-model {
 
 rich-transient-async-extension @controller-model {
   from-extension {
-    @action-model method="POST" route="rich-transient-asyncs/{id}/from-extension"
+    @action-model method="POST" route="/rich-transient-asyncs/{id}/from-extension"
   }
 }
 

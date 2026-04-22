@@ -1,6 +1,6 @@
 entity-with-assigned-id @controller-model {
   with {
-    @action-model method="GET" route="entity-with-assigned-ids/{id}"
+    @action-model method="GET" route="/entity-with-assigned-ids/{id}"
     id {
       @parameter-model required=#true in="route"
     }

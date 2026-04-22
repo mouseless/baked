@@ -1,6 +1,6 @@
 route-sample @controller-model {
   method {
-    @action-model method="POST" route="coding-style/namespace-as-route/route-samples/{id}/method"
+    @action-model method="POST" route="/coding-style/namespace-as-route/route-samples/{id}/method"
   }
 }
 

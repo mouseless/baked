@@ -1,33 +1,33 @@
 a-typed-entity @controller-model {
   with {
-    @action-model method="POST" route="typed-entities/a"
+    @action-model method="POST" route="/typed-entities/a"
   }
   operate-on-a {
-    @action-model method="POST" route="typed-entities/a/operate-on-a"
+    @action-model method="POST" route="/typed-entities/a/operate-on-a"
   }
 }
 
 b-typed-entity @controller-model {
   with {
-    @action-model method="POST" route="typed-entities/b"
+    @action-model method="POST" route="/typed-entities/b"
   }
   operate-on-b {
-    @action-model method="POST" route="typed-entities/b/operate-on-b"
+    @action-model method="POST" route="/typed-entities/b/operate-on-b"
   }
 }
 
 typed-entity @controller-model {
   delete {
-    @action-model method="DELETE" route="typed-entities/{id}/"
+    @action-model method="DELETE" route="/typed-entities/{id}/"
   }
 }
 
 typed-entities @controller-model {
   by {
-    @action-model method="GET" route="typed-entities"
+    @action-model method="GET" route="/typed-entities"
   }
   single-by-type {
-    @action-model method="GET" route="typed-entities/single-type"
+    @action-model method="GET" route="/typed-entities/single-type"
     type {
       @parameter-model required=#true in="query"
     }

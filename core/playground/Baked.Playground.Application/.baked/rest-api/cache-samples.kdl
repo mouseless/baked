@@ -1,9 +1,9 @@
 cache-samples @controller-model {
   get-scoped {
-    @action-model method="GET" route="cache-samples/scoped"
+    @action-model method="GET" route="/cache-samples/scoped"
   }
   get-application {
-    @action-model method="GET" route="cache-samples/application"
+    @action-model method="GET" route="/cache-samples/application"
   }
 }
 

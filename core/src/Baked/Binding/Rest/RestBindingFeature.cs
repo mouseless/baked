@@ -92,7 +92,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             properties.Set<ActionModelAttribute>(action =>
             [
                 new(action.Method),
-                new("route", Value: action.GetRoute()),
+                new("route", Value: $"/{action.GetRoute()}"),
                 new("form", Value: action.UseForm),
                 new("no-wrap", Value: !action.UseRequestClassForBody)
             ]);

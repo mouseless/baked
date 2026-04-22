@@ -1,12 +1,12 @@
 route-parameters-sample @controller-model {
   with {
-    @action-model method="GET" route="route-parameters-samples/{id}"
+    @action-model method="GET" route="/route-parameters-samples/{id}"
     id {
       @parameter-model required=#true in="route"
     }
   }
   get-items {
-    @action-model method="GET" route="route-parameters-samples/{id}/items"
+    @action-model method="GET" route="/route-parameters-samples/{id}/items"
   }
 }
 

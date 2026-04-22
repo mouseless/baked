@@ -1,55 +1,55 @@
 method-samples @controller-model {
   execute {
-    @action-model method="POST" route="method-samples"
+    @action-model method="POST" route="/method-samples"
   }
   update {
-    @action-model method="PUT" route="method-samples"
+    @action-model method="PUT" route="/method-samples"
   }
   update-string {
-    @action-model method="PATCH" route="method-samples/string"
+    @action-model method="PATCH" route="/method-samples/string"
   }
   delete {
-    @action-model method="DELETE" route="method-samples"
+    @action-model method="DELETE" route="/method-samples"
   }
   void {
-    @action-model method="POST" route="method-samples/void"
+    @action-model method="POST" route="/method-samples/void"
   }
   get-strings {
-    @action-model method="GET" route="method-samples/strings"
+    @action-model method="GET" route="/method-samples/strings"
   }
   get-data {
-    @action-model method="GET" route="method-samples/data"
+    @action-model method="GET" route="/method-samples/data"
   }
   set-setting {
-    @action-model method="PATCH" route="method-samples/setting"
+    @action-model method="PATCH" route="/method-samples/setting"
     value {
       @parameter-model required=#true
     }
   }
   add-string {
-    @action-model method="POST" route="method-samples/strings"
+    @action-model method="POST" route="/method-samples/strings"
     string {
       @parameter-model required=#true
     }
   }
   parameters {
-    @action-model method="POST" route="method-samples/parameters"
+    @action-model method="POST" route="/method-samples/parameters"
     required {
       @parameter-model required=#true
     }
     optional @parameter-model
   }
   void-async {
-    @action-model method="POST" route="method-samples/void-async"
+    @action-model method="POST" route="/method-samples/void-async"
   }
   get-async {
-    @action-model method="GET" route="method-samples/async"
+    @action-model method="GET" route="/method-samples/async"
     ms {
       @parameter-model required=#true in="query"
     }
   }
   request-class {
-    @action-model method="POST" route="method-samples/request-class"
+    @action-model method="POST" route="/method-samples/request-class"
     text {
       @parameter-model required=#true
     }
@@ -58,19 +58,19 @@ method-samples @controller-model {
     }
   }
   object {
-    @action-model method="POST" route="method-samples/object" no-wrap=#true
+    @action-model method="POST" route="/method-samples/object" no-wrap=#true
     object {
       @parameter-model required=#true
     }
   }
   object-async {
-    @action-model method="POST" route="method-samples/object-async" no-wrap=#true
+    @action-model method="POST" route="/method-samples/object-async" no-wrap=#true
     object {
       @parameter-model required=#true
     }
   }
   multiple-objects {
-    @action-model method="POST" route="method-samples/multiple-objects"
+    @action-model method="POST" route="/method-samples/multiple-objects"
     object1 {
       @parameter-model required=#true
     }
@@ -79,7 +79,7 @@ method-samples @controller-model {
     }
   }
   primitive-parameters {
-    @action-model method="POST" route="method-samples/primitive-parameters"
+    @action-model method="POST" route="/method-samples/primitive-parameters"
     string {
       @parameter-model required=#true
     }
@@ -91,7 +91,7 @@ method-samples @controller-model {
     }
   }
   primitive-list-parameters {
-    @action-model method="POST" route="method-samples/primitive-list-parameters"
+    @action-model method="POST" route="/method-samples/primitive-list-parameters"
     strings {
       @parameter-model required=#true
     }
@@ -103,19 +103,19 @@ method-samples @controller-model {
     }
   }
   record-parameters {
-    @action-model method="POST" route="method-samples/record-parameters"
+    @action-model method="POST" route="/method-samples/record-parameters"
     record {
       @parameter-model required=#true
     }
   }
   record-list-parameters {
-    @action-model method="POST" route="method-samples/record-list-parameters"
+    @action-model method="POST" route="/method-samples/record-list-parameters"
     records {
       @parameter-model required=#true
     }
   }
   get-value-type-parameters {
-    @action-model method="GET" route="method-samples/value-type-parameters"
+    @action-model method="GET" route="/method-samples/value-type-parameters"
     single {
       @parameter-model required=#true in="query"
     }
@@ -127,7 +127,7 @@ method-samples @controller-model {
     }
   }
   value-type-parameters {
-    @action-model method="POST" route="method-samples/value-type-parameters"
+    @action-model method="POST" route="/method-samples/value-type-parameters"
     single {
       @parameter-model required=#true
     }
@@ -139,13 +139,13 @@ method-samples @controller-model {
     }
   }
   record-with-value-type {
-    @action-model method="POST" route="method-samples/record-with-value-type"
+    @action-model method="POST" route="/method-samples/record-with-value-type"
     record {
       @parameter-model required=#true
     }
   }
   get-entity-parameters {
-    @action-model method="GET" route="method-samples/entity-parameters"
+    @action-model method="GET" route="/method-samples/entity-parameters"
     single {
       @parameter-model required=#true in="query"
     }
@@ -157,7 +157,7 @@ method-samples @controller-model {
     }
   }
   entity-parameters {
-    @action-model method="POST" route="method-samples/entity-parameters"
+    @action-model method="POST" route="/method-samples/entity-parameters"
     single {
       @parameter-model required=#true
     }
@@ -169,13 +169,13 @@ method-samples @controller-model {
     }
   }
   record-with-entity {
-    @action-model method="POST" route="method-samples/record-with-entity"
+    @action-model method="POST" route="/method-samples/record-with-entity"
     record {
       @parameter-model required=#true
     }
   }
   get-transient-parameters {
-    @action-model method="GET" route="method-samples/transient-parameters"
+    @action-model method="GET" route="/method-samples/transient-parameters"
     single {
       @parameter-model required=#true in="query"
     }
@@ -187,7 +187,7 @@ method-samples @controller-model {
     }
   }
   transient-parameters {
-    @action-model method="POST" route="method-samples/transient-parameters"
+    @action-model method="POST" route="/method-samples/transient-parameters"
     single {
       @parameter-model required=#true
     }
@@ -199,13 +199,13 @@ method-samples @controller-model {
     }
   }
   record-with-rich-transient {
-    @action-model method="POST" route="method-samples/record-with-rich-transient"
+    @action-model method="POST" route="/method-samples/record-with-rich-transient"
     record {
       @parameter-model required=#true
     }
   }
   get-transient-async-parameters {
-    @action-model method="GET" route="method-samples/transient-async-parameters"
+    @action-model method="GET" route="/method-samples/transient-async-parameters"
     single {
       @parameter-model required=#true in="query"
     }
@@ -217,7 +217,7 @@ method-samples @controller-model {
     }
   }
   transient-async-parameters {
-    @action-model method="POST" route="method-samples/transient-async-parameters"
+    @action-model method="POST" route="/method-samples/transient-async-parameters"
     single {
       @parameter-model required=#true
     }
@@ -229,7 +229,7 @@ method-samples @controller-model {
     }
   }
   record-with-rich-transient-async {
-    @action-model method="POST" route="method-samples/record-with-rich-transient-async"
+    @action-model method="POST" route="/method-samples/record-with-rich-transient-async"
     record {
       @parameter-model required=#true
     }

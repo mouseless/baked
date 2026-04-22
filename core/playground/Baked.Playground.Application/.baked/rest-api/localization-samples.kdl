@@ -1,9 +1,9 @@
 localization-samples @controller-model {
   get-locale-string {
-    @action-model method="GET" route="localization-samples/locale-string"
+    @action-model method="GET" route="/localization-samples/locale-string"
   }
   get-parameterized {
-    @action-model method="GET" route="localization-samples/parameterized"
+    @action-model method="GET" route="/localization-samples/parameterized"
     param {
       @parameter-model required=#true in="query"
     }

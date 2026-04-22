@@ -1,6 +1,6 @@
 rich-transient-no-data @controller-model {
   method {
-    @action-model method="POST" route="rich-transient-no-datas/{id}/method"
+    @action-model method="POST" route="/rich-transient-no-datas/{id}/method"
     text {
       @parameter-model required=#true
     }

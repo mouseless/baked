@@ -1,6 +1,6 @@
 nullable-samples @controller-model {
   get-value-type {
-    @action-model method="GET" route="nullable-samples/value-type"
+    @action-model method="GET" route="/nullable-samples/value-type"
     notNull {
       @parameter-model required=#true in="query"
     }
@@ -15,7 +15,7 @@ nullable-samples @controller-model {
     }
   }
   value-type {
-    @action-model method="POST" route="nullable-samples/value-type"
+    @action-model method="POST" route="/nullable-samples/value-type"
     notNull {
       @parameter-model required=#true
     }
@@ -26,7 +26,7 @@ nullable-samples @controller-model {
     optionalNullable @parameter-model
   }
   get-enum {
-    @action-model method="GET" route="nullable-samples/enum"
+    @action-model method="GET" route="/nullable-samples/enum"
     notNull {
       @parameter-model required=#true in="query"
     }
@@ -41,7 +41,7 @@ nullable-samples @controller-model {
     }
   }
   enum {
-    @action-model method="POST" route="nullable-samples/enum"
+    @action-model method="POST" route="/nullable-samples/enum"
     notNull {
       @parameter-model required=#true
     }
@@ -52,7 +52,7 @@ nullable-samples @controller-model {
     optionalNullable @parameter-model
   }
   get-reference-type {
-    @action-model method="GET" route="nullable-samples/reference-type"
+    @action-model method="GET" route="/nullable-samples/reference-type"
     notNull {
       @parameter-model required=#true in="query"
     }
@@ -67,7 +67,7 @@ nullable-samples @controller-model {
     }
   }
   reference-type {
-    @action-model method="POST" route="nullable-samples/reference-type"
+    @action-model method="POST" route="/nullable-samples/reference-type"
     notNull {
       @parameter-model required=#true
     }
@@ -78,7 +78,7 @@ nullable-samples @controller-model {
     optionalNullable @parameter-model
   }
   record {
-    @action-model method="POST" route="nullable-samples/record"
+    @action-model method="POST" route="/nullable-samples/record"
     notNull {
       @parameter-model required=#true
     }
@@ -90,7 +90,7 @@ nullable-samples @controller-model {
     }
   }
   get-entity {
-    @action-model method="GET" route="nullable-samples/entity"
+    @action-model method="GET" route="/nullable-samples/entity"
     notNull {
       @parameter-model required=#true in="query"
     }
@@ -102,7 +102,7 @@ nullable-samples @controller-model {
     }
   }
   entity {
-    @action-model method="POST" route="nullable-samples/entity"
+    @action-model method="POST" route="/nullable-samples/entity"
     notNull {
       @parameter-model required=#true
     }
@@ -112,7 +112,7 @@ nullable-samples @controller-model {
     optionalNullable @parameter-model
   }
   get-entity-extension {
-    @action-model method="GET" route="nullable-samples/entity-extension"
+    @action-model method="GET" route="/nullable-samples/entity-extension"
     notNull {
       @parameter-model required=#true in="query"
     }
@@ -124,7 +124,7 @@ nullable-samples @controller-model {
     }
   }
   entity-extension {
-    @action-model method="POST" route="nullable-samples/entity-extension"
+    @action-model method="POST" route="/nullable-samples/entity-extension"
     notNull {
       @parameter-model required=#true
     }
@@ -134,7 +134,7 @@ nullable-samples @controller-model {
     optionalNullable @parameter-model
   }
   get-rich-transient {
-    @action-model method="GET" route="nullable-samples/rich-transient"
+    @action-model method="GET" route="/nullable-samples/rich-transient"
     notNull {
       @parameter-model required=#true in="query"
     }
@@ -146,7 +146,7 @@ nullable-samples @controller-model {
     }
   }
   rich-transient {
-    @action-model method="POST" route="nullable-samples/rich-transient"
+    @action-model method="POST" route="/nullable-samples/rich-transient"
     notNull {
       @parameter-model required=#true
     }
@@ -156,7 +156,7 @@ nullable-samples @controller-model {
     optionalNullable @parameter-model
   }
   get-value-type-parameters {
-    @action-model method="GET" route="nullable-samples/value-type-parameters"
+    @action-model method="GET" route="/nullable-samples/value-type-parameters"
     single {
       @parameter-model required=#true in="query"
     }
@@ -168,7 +168,7 @@ nullable-samples @controller-model {
     }
   }
   value-type-parameters {
-    @action-model method="POST" route="nullable-samples/value-type-parameters"
+    @action-model method="POST" route="/nullable-samples/value-type-parameters"
     single {
       @parameter-model required=#true
     }
@@ -180,7 +180,7 @@ nullable-samples @controller-model {
     }
   }
   record-with-value-type {
-    @action-model method="POST" route="nullable-samples/record-with-value-type"
+    @action-model method="POST" route="/nullable-samples/record-with-value-type"
     record {
       @parameter-model required=#true
     }
