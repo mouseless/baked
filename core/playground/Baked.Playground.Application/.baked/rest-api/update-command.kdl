@@ -1,0 +1,7 @@
+update-command {
+  @controller-model groupName="Command"
+  execute {
+    @action-model method="PATCH" route="command"
+  }
+}
+

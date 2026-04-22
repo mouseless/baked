@@ -1,0 +1,22 @@
+authentication-samples {
+  @controller-model groupName="AuthenticationSamples"
+  authenticate {
+    @action-model method="POST" route="authentication-samples/authenticate"
+  }
+  form-post-authenticate {
+    @action-model method="POST" route="authentication-samples/form-post-authenticate" form=#true
+    value {
+      @parameter-model required=#true
+    }
+  }
+  login {
+    @action-model method="POST" route="authentication-samples/login"
+    username {
+      @parameter-model required=#true
+    }
+  }
+  refresh {
+    @action-model method="POST" route="authentication-samples/refresh"
+  }
+}
+

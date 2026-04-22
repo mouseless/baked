@@ -1,0 +1,10 @@
+entity-with-assigned-guid-id {
+  @controller-model groupName="EntityWithAssignedGuidIds"
+  with {
+    @action-model method="GET" route="entity-with-assigned-guid-ids/{id}"
+    id {
+      @parameter-model required=#true in="route"
+    }
+  }
+}
+

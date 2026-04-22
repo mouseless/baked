@@ -1,0 +1,10 @@
+cache-samples {
+  @controller-model groupName="CacheSamples"
+  get-scoped {
+    @action-model method="GET" route="cache-samples/scoped"
+  }
+  get-application {
+    @action-model method="GET" route="cache-samples/application"
+  }
+}
+

@@ -1,0 +1,7 @@
+dependent-class {
+  @controller-model groupName="DependentClass"
+  method {
+    @action-model method="POST" route="dependent-class/method"
+  }
+}
+

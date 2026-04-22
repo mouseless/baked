@@ -1,0 +1,16 @@
+rich-transient-with-data {
+  @controller-model groupName="RichTransientWithDatas"
+  with {
+    @action-model method="GET" route="rich-transient-with-datas/{id}"
+    id {
+      @parameter-model required=#true in="route"
+    }
+  }
+  method {
+    @action-model method="POST" route="rich-transient-with-datas/{id}/method"
+    text {
+      @parameter-model required=#true
+    }
+  }
+}
+

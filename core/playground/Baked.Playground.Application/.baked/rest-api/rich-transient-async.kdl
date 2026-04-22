@@ -1,0 +1,10 @@
+rich-transient-async {
+  @controller-model groupName="RichTransientAsyncs"
+  with {
+    @action-model method="GET" route="rich-transient-asyncs/{id}"
+    id {
+      @parameter-model required=#true in="route"
+    }
+  }
+}
+

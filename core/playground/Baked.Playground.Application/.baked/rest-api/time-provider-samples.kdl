@@ -1,0 +1,13 @@
+time-provider-samples {
+  @controller-model groupName="TimeProviderSamples"
+  get-now {
+    @action-model method="GET" route="time-provider-samples/now"
+  }
+  get-utc-now {
+    @action-model method="GET" route="time-provider-samples/utc-now"
+  }
+  get-local-now {
+    @action-model method="GET" route="time-provider-samples/local-now"
+  }
+}
+

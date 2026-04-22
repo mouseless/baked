@@ -1,0 +1,10 @@
+authorization-class-samples {
+  @controller-model groupName="AuthorizationClassSamples"
+  class-claims {
+    @action-model method="POST" route="authorization-class-samples/class-claims"
+  }
+  method-over-class-claims {
+    @action-model method="POST" route="authorization-class-samples/method-over-class-claims"
+  }
+}
+

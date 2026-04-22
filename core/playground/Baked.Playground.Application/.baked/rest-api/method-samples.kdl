@@ -1,0 +1,239 @@
+method-samples {
+  @controller-model groupName="MethodSamples"
+  execute {
+    @action-model method="POST" route="method-samples"
+  }
+  update {
+    @action-model method="PUT" route="method-samples"
+  }
+  update-string {
+    @action-model method="PATCH" route="method-samples/string"
+  }
+  delete {
+    @action-model method="DELETE" route="method-samples"
+  }
+  void {
+    @action-model method="POST" route="method-samples/void"
+  }
+  get-strings {
+    @action-model method="GET" route="method-samples/strings"
+  }
+  get-data {
+    @action-model method="GET" route="method-samples/data"
+  }
+  set-setting {
+    @action-model method="PATCH" route="method-samples/setting"
+    value {
+      @parameter-model required=#true
+    }
+  }
+  add-string {
+    @action-model method="POST" route="method-samples/strings"
+    string {
+      @parameter-model required=#true
+    }
+  }
+  parameters {
+    @action-model method="POST" route="method-samples/parameters"
+    required {
+      @parameter-model required=#true
+    }
+    optional @parameter-model
+  }
+  void-async {
+    @action-model method="POST" route="method-samples/void-async"
+  }
+  get-async {
+    @action-model method="GET" route="method-samples/async"
+    ms {
+      @parameter-model required=#true in="query"
+    }
+  }
+  request-class {
+    @action-model method="POST" route="method-samples/request-class"
+    text {
+      @parameter-model required=#true
+    }
+    numeric {
+      @parameter-model required=#true
+    }
+  }
+  object {
+    @action-model method="POST" route="method-samples/object" no-wrap=#true
+    object {
+      @parameter-model required=#true
+    }
+  }
+  object-async {
+    @action-model method="POST" route="method-samples/object-async" no-wrap=#true
+    object {
+      @parameter-model required=#true
+    }
+  }
+  multiple-objects {
+    @action-model method="POST" route="method-samples/multiple-objects"
+    object1 {
+      @parameter-model required=#true
+    }
+    object2 {
+      @parameter-model required=#true
+    }
+  }
+  primitive-parameters {
+    @action-model method="POST" route="method-samples/primitive-parameters"
+    string {
+      @parameter-model required=#true
+    }
+    int {
+      @parameter-model required=#true
+    }
+    dateTime {
+      @parameter-model required=#true
+    }
+  }
+  primitive-list-parameters {
+    @action-model method="POST" route="method-samples/primitive-list-parameters"
+    strings {
+      @parameter-model required=#true
+    }
+    ints {
+      @parameter-model required=#true
+    }
+    dateTimes {
+      @parameter-model required=#true
+    }
+  }
+  record-parameters {
+    @action-model method="POST" route="method-samples/record-parameters"
+    record {
+      @parameter-model required=#true
+    }
+  }
+  record-list-parameters {
+    @action-model method="POST" route="method-samples/record-list-parameters"
+    records {
+      @parameter-model required=#true
+    }
+  }
+  get-value-type-parameters {
+    @action-model method="GET" route="method-samples/value-type-parameters"
+    single {
+      @parameter-model required=#true in="query"
+    }
+    enumerable {
+      @parameter-model required=#true in="query"
+    }
+    array {
+      @parameter-model required=#true in="query"
+    }
+  }
+  value-type-parameters {
+    @action-model method="POST" route="method-samples/value-type-parameters"
+    single {
+      @parameter-model required=#true
+    }
+    enumerable {
+      @parameter-model required=#true
+    }
+    array {
+      @parameter-model required=#true
+    }
+  }
+  record-with-value-type {
+    @action-model method="POST" route="method-samples/record-with-value-type"
+    record {
+      @parameter-model required=#true
+    }
+  }
+  get-entity-parameters {
+    @action-model method="GET" route="method-samples/entity-parameters"
+    single {
+      @parameter-model required=#true in="query"
+    }
+    enumerable {
+      @parameter-model required=#true in="query"
+    }
+    array {
+      @parameter-model required=#true in="query"
+    }
+  }
+  entity-parameters {
+    @action-model method="POST" route="method-samples/entity-parameters"
+    single {
+      @parameter-model required=#true
+    }
+    enumerable {
+      @parameter-model required=#true
+    }
+    array {
+      @parameter-model required=#true
+    }
+  }
+  record-with-entity {
+    @action-model method="POST" route="method-samples/record-with-entity"
+    record {
+      @parameter-model required=#true
+    }
+  }
+  get-transient-parameters {
+    @action-model method="GET" route="method-samples/transient-parameters"
+    single {
+      @parameter-model required=#true in="query"
+    }
+    enumerable {
+      @parameter-model required=#true in="query"
+    }
+    array {
+      @parameter-model required=#true in="query"
+    }
+  }
+  transient-parameters {
+    @action-model method="POST" route="method-samples/transient-parameters"
+    single {
+      @parameter-model required=#true
+    }
+    enumerable {
+      @parameter-model required=#true
+    }
+    array {
+      @parameter-model required=#true
+    }
+  }
+  record-with-rich-transient {
+    @action-model method="POST" route="method-samples/record-with-rich-transient"
+    record {
+      @parameter-model required=#true
+    }
+  }
+  get-transient-async-parameters {
+    @action-model method="GET" route="method-samples/transient-async-parameters"
+    single {
+      @parameter-model required=#true in="query"
+    }
+    enumerable {
+      @parameter-model required=#true in="query"
+    }
+    array {
+      @parameter-model required=#true in="query"
+    }
+  }
+  transient-async-parameters {
+    @action-model method="POST" route="method-samples/transient-async-parameters"
+    single {
+      @parameter-model required=#true
+    }
+    enumerable {
+      @parameter-model required=#true
+    }
+    array {
+      @parameter-model required=#true
+    }
+  }
+  record-with-rich-transient-async {
+    @action-model method="POST" route="method-samples/record-with-rich-transient-async"
+    record {
+      @parameter-model required=#true
+    }
+  }
+}
+

@@ -1,0 +1,13 @@
+localization-samples {
+  @controller-model groupName="LocalizationSamples"
+  get-locale-string {
+    @action-model method="GET" route="localization-samples/locale-string"
+  }
+  get-parameterized {
+    @action-model method="GET" route="localization-samples/parameterized"
+    param {
+      @parameter-model required=#true in="query"
+    }
+  }
+}
+

@@ -1,0 +1,19 @@
+override-samples {
+  @controller-model groupName="OverrideSamples"
+  update-route {
+    @action-model method="POST" route="override-samples/override/update-route"
+  }
+  parameter {
+    @action-model method="POST" route="override-samples/parameter/{id}"
+    parameter {
+      @parameter-model required=#true in="route"
+    }
+  }
+  request-class {
+    @action-model method="POST" route="override-samples/request-class" no-wrap=#true
+    record {
+      @parameter-model required=#true
+    }
+  }
+}
+

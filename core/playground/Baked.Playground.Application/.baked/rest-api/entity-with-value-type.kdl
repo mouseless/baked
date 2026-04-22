@@ -1,0 +1,20 @@
+entity-with-value-type {
+  @controller-model groupName="EntityWithValueTypes"
+  with {
+    @action-model method="POST" route="entity-with-value-types"
+    value {
+      @parameter-model required=#true
+    }
+  }
+}
+
+entity-with-value-types {
+  @controller-model groupName="EntityWithValueTypes"
+  by {
+    @action-model method="GET" route="entity-with-value-types"
+    value {
+      @parameter-model in="query"
+    }
+  }
+}
+

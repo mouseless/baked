@@ -1,0 +1,26 @@
+form-sample {
+  @controller-model groupName="FormSample"
+  new-parent {
+    @action-model method="POST" route="form-sample/parents"
+    surname {
+      @parameter-model required=#true
+    }
+    name @parameter-model
+  }
+  clear-parents {
+    @action-model method="DELETE" route="form-sample/parents"
+  }
+  get-parents {
+    @action-model method="GET" route="form-sample/parents"
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+    sort {
+      @parameter-model in="query"
+    }
+  }
+}
+

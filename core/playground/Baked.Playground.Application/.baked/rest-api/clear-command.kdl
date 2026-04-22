@@ -1,0 +1,10 @@
+clear-command {
+  @controller-model groupName="Command"
+  execute {
+    @action-model method="DELETE" route="command"
+    executeParam {
+      @parameter-model required=#true in="query"
+    }
+  }
+}
+

@@ -1,0 +1,94 @@
+entity {
+  @controller-model groupName="Entities"
+  with {
+    @action-model method="POST" route="entities"
+    guid @parameter-model
+    string @parameter-model
+    stringData @parameter-model
+    int32 @parameter-model
+    unique @parameter-model
+    uri @parameter-model
+    dynamic @parameter-model
+    enum @parameter-model
+    dateTime @parameter-model
+  }
+  update {
+    @action-model method="PUT" route="entities/{id}/"
+    guid @parameter-model
+    string @parameter-model
+    stringData @parameter-model
+    int32 @parameter-model
+    unique @parameter-model
+    uri @parameter-model
+    dynamic @parameter-model
+    enum @parameter-model
+    dateTime @parameter-model
+    useTransaction @parameter-model
+    throwError @parameter-model
+  }
+  update-string {
+    @action-model method="PATCH" route="entities/{id}/string"
+    string @parameter-model
+  }
+  lock-and-increment-int-32 {
+    @action-model method="POST" route="entities/{id}/lock-and-increment-int32"
+    offset @parameter-model
+    delayInSeconds @parameter-model
+  }
+  delete {
+    @action-model method="DELETE" route="entities/{id}/"
+  }
+}
+
+entities {
+  @controller-model groupName="Entities"
+  by {
+    @action-model method="GET" route="entities"
+    guid {
+      @parameter-model in="query"
+    }
+    string {
+      @parameter-model in="query"
+    }
+    stringData {
+      @parameter-model in="query"
+    }
+    int32 {
+      @parameter-model in="query"
+    }
+    unique {
+      @parameter-model in="query"
+    }
+    uri {
+      @parameter-model in="query"
+    }
+    enum {
+      @parameter-model in="query"
+    }
+    dateTime {
+      @parameter-model in="query"
+    }
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+  }
+  first-by-string {
+    @action-model method="GET" route="entities/first-string"
+    startsWith {
+      @parameter-model required=#true in="query"
+    }
+    asc {
+      @parameter-model in="query"
+    }
+    desc {
+      @parameter-model in="query"
+    }
+  }
+  count-by-date {
+    @action-model method="POST" route="entities/count-date"
+  }
+}
+

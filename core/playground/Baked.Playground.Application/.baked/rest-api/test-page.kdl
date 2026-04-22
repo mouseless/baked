@@ -1,0 +1,10 @@
+test-page {
+  @controller-model groupName="TestPage"
+  get-data {
+    @action-model method="GET" route="test-page/data"
+    panel {
+      @parameter-model required=#true in="query"
+    }
+  }
+}
+

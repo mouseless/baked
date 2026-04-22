@@ -3,6 +3,7 @@ using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
+using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -84,6 +85,47 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
                 action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")")
             );
+        });
+
+        configurator.Domain.ConfigureAttributeProperties(properties =>
+        {
+            properties.Set<ControllerModelAttribute>(controller =>
+            [
+                new(controller.GroupName)
+            ]);
+            properties.Set<ActionModelAttribute>(action =>
+            [
+                new(action.Method),
+                new("route", Value: action.GetRoute()),
+                new("form", Value: action.UseForm),
+                new("no-wrap", Value: !action.UseRequestClassForBody)
+            ]);
+            properties.Set<ParameterModelAttribute>(parameter =>
+            [
+                new("required", !parameter.IsOptional),
+                new("in", Value: parameter.FromBodyOrForm ? null : $"{parameter.From}".Kebaberize())
+            ]);
+        });
+
+        configurator.Domain.ConfigureExportConfigurations(exports =>
+        {
+            configurator.Domain.UsingDomainModel(domain =>
+            {
+                exports.Build("RestApi",
+                    export =>
+                    {
+                        export.Include<ControllerModelAttribute>()
+                            .AddFilter(controller => controller.Actions.Any());
+                        export.Include<ActionModelAttribute>();
+                        export.Include<ParameterModelAttribute>();
+
+                        export.TypeGroupName(type =>
+                            type.TryGetLocatableType(domain, out var locatableType) ? locatableType.Name :
+                            type.Name
+                        );
+                    }
+                );
+            });
         });
 
         configurator.RestApi.ConfigureApiModel(api =>

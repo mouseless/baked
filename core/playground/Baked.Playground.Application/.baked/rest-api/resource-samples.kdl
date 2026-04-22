@@ -1,0 +1,16 @@
+resource-samples {
+  @controller-model groupName="ResourceSamples"
+  read {
+    @action-model method="POST" route="resource-samples/read"
+    subPath {
+      @parameter-model required=#true
+    }
+  }
+  read-async {
+    @action-model method="POST" route="resource-samples/read-async"
+    subPath {
+      @parameter-model required=#true
+    }
+  }
+}
+

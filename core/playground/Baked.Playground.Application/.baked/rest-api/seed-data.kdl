@@ -1,0 +1,7 @@
+seed-data {
+  @controller-model groupName="SeedData"
+  execute {
+    @action-model method="POST" route="seed-data"
+  }
+}
+

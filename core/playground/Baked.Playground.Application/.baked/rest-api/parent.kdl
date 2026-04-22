@@ -1,0 +1,77 @@
+parent {
+  @controller-model groupName="Parents"
+  with {
+    @action-model method="POST" route="parents"
+    name {
+      @parameter-model required=#true
+    }
+    surname {
+      @parameter-model required=#true
+    }
+  }
+  get-children {
+    @action-model method="GET" route="parents/{id}/children"
+  }
+  add-child {
+    @action-model method="POST" route="parents/{id}/children"
+    name {
+      @parameter-model required=#true
+    }
+  }
+  update {
+    @action-model method="PUT" route="parents/{id}/"
+    name @parameter-model
+    surname @parameter-model
+    description @parameter-model
+  }
+  remove-child {
+    @action-model method="DELETE" route="parents/{id}/children/{childId}"
+    child {
+      @parameter-model required=#true in="route"
+    }
+  }
+  delete {
+    @action-model method="DELETE" route="parents/{id}/"
+  }
+}
+
+parents {
+  @controller-model groupName="Parents"
+  by {
+    @action-model method="GET" route="parents"
+    name {
+      @parameter-model in="query"
+    }
+    asc {
+      @parameter-model in="query"
+    }
+    desc {
+      @parameter-model in="query"
+    }
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+  }
+  by-name {
+    @action-model method="GET" route="parents/name"
+    contains {
+      @parameter-model required=#true in="query"
+    }
+    asc {
+      @parameter-model in="query"
+    }
+    desc {
+      @parameter-model in="query"
+    }
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+  }
+}
+

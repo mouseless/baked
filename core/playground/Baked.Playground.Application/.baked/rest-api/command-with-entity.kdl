@@ -1,0 +1,7 @@
+command-with-entity {
+  @controller-model groupName="CommandWithEntity"
+  execute {
+    @action-model method="POST" route="command-with-entity"
+  }
+}
+

@@ -1,0 +1,7 @@
+route-sample {
+  @controller-model groupName="RouteSamples"
+  method {
+    @action-model method="POST" route="coding-style/namespace-as-route/route-samples/{id}/method"
+  }
+}
+

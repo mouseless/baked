@@ -1,0 +1,16 @@
+class {
+  @controller-model groupName="Class"
+  method {
+    @action-model method="POST" route="class/method"
+  }
+  abstract-method {
+    @action-model method="POST" route="class/abstract-method"
+  }
+  interface-method {
+    @action-model method="POST" route="class/interface-method"
+  }
+  virtual-method {
+    @action-model method="POST" route="class/virtual-method"
+  }
+}
+

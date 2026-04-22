@@ -1,0 +1,10 @@
+sync-bulk-command {
+  @controller-model groupName="BulkCommand"
+  execute {
+    @action-model method="PUT" route="bulk-command" no-wrap=#true
+    descriptors {
+      @parameter-model required=#true
+    }
+  }
+}
+

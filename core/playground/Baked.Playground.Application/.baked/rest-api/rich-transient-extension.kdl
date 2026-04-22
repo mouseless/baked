@@ -1,0 +1,7 @@
+rich-transient-extension {
+  @controller-model groupName="RichTransientWithDatas"
+  from-extension {
+    @action-model method="POST" route="rich-transient-with-datas/{id}/from-extension"
+  }
+}
+

@@ -1,0 +1,10 @@
+exception-samples {
+  @controller-model groupName="ExceptionSamples"
+  throw {
+    @action-model method="POST" route="exception-samples/throw"
+    handled {
+      @parameter-model required=#true in="query"
+    }
+  }
+}
+

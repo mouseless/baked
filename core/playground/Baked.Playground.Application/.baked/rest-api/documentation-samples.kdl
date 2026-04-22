@@ -1,0 +1,47 @@
+documentation-samples {
+  @controller-model groupName="DocumentationSamples"
+  execute {
+    @action-model method="POST" route="documentation-samples"
+    parameter {
+      @parameter-model required=#true
+    }
+  }
+}
+
+documentation-samples {
+  @controller-model groupName="DocumentationSamples"
+  method {
+    @action-model method="POST" route="documentation-samples/method"
+    parameter1 {
+      @parameter-model required=#true
+    }
+    parameter2 {
+      @parameter-model required=#true
+    }
+  }
+  parameterless-method {
+    @action-model method="POST" route="documentation-samples/parameterless-method"
+  }
+  array-and-generic-parameters {
+    @action-model method="POST" route="documentation-samples/array-and-generic-parameters"
+    enumerable {
+      @parameter-model required=#true
+    }
+    array {
+      @parameter-model required=#true
+    }
+    dictionary {
+      @parameter-model required=#true
+    }
+  }
+  route {
+    @action-model method="POST" route="documentation-samples/route/{route}"
+    route {
+      @parameter-model required=#true in="route"
+    }
+  }
+  multiline {
+    @action-model method="POST" route="documentation-samples/multiline"
+  }
+}
+

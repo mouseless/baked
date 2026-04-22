@@ -1,0 +1,10 @@
+implemented-locatable {
+  @controller-model groupName="ImplementedLocatables"
+  with {
+    @action-model method="GET" route="implemented-locatables/{id}"
+    id {
+      @parameter-model required=#true in="route"
+    }
+  }
+}
+

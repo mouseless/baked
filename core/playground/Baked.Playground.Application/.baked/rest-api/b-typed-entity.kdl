@@ -1,0 +1,10 @@
+b-typed-entity {
+  @controller-model groupName="TypedEntities"
+  with {
+    @action-model method="POST" route="typed-entities/b"
+  }
+  operate-on-b {
+    @action-model method="POST" route="typed-entities/b/operate-on-b"
+  }
+}
+

@@ -1,0 +1,14 @@
+internal-samples {
+  @controller-model groupName="InternalSamples"
+  internal-request {
+    @action-model method="POST" route="internal-samples/internal-request"
+    path {
+      @parameter-model required=#true
+    }
+    method {
+      @parameter-model required=#true
+    }
+    content @parameter-model
+  }
+}
+

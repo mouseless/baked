@@ -1,0 +1,10 @@
+command {
+  @controller-model groupName="Command"
+  transient {
+    @action-model method="POST" route="command/transient"
+    body {
+      @parameter-model required=#true
+    }
+  }
+}
+

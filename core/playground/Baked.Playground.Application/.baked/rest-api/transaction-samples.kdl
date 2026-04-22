@@ -1,0 +1,25 @@
+transaction-samples {
+  @controller-model groupName="TransactionSamples"
+  commit-action {
+    @action-model method="POST" route="transaction-samples/commit-action"
+  }
+  commit-func {
+    @action-model method="POST" route="transaction-samples/commit-func"
+  }
+  commit-nullable {
+    @action-model method="POST" route="transaction-samples/commit-nullable"
+    entity {
+      @parameter-model required=#true
+    }
+    string {
+      @parameter-model required=#true
+    }
+  }
+  rollback {
+    @action-model method="POST" route="transaction-samples/rollback"
+    string {
+      @parameter-model required=#true
+    }
+  }
+}
+

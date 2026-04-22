@@ -1,0 +1,25 @@
+report-page-sample {
+  @controller-model groupName="ReportPageSample"
+  get-wide {
+    @action-model method="GET" route="report-page-sample/wide"
+  }
+  get-left {
+    @action-model method="GET" route="report-page-sample/left"
+  }
+  get-right {
+    @action-model method="GET" route="report-page-sample/right"
+  }
+  get-first {
+    @action-model method="GET" route="report-page-sample/first"
+    count {
+      @parameter-model in="query"
+    }
+  }
+  get-second {
+    @action-model method="GET" route="report-page-sample/second"
+    count {
+      @parameter-model in="query"
+    }
+  }
+}
+

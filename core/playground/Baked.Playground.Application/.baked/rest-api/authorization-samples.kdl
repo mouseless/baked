@@ -1,0 +1,25 @@
+authorization-samples {
+  @controller-model groupName="AuthorizationSamples"
+  anonymous {
+    @action-model method="POST" route="authorization-samples/anonymous"
+  }
+  admin {
+    @action-model method="POST" route="authorization-samples/admin"
+  }
+  user {
+    @action-model method="POST" route="authorization-samples/user"
+  }
+  authenticated {
+    @action-model method="POST" route="authorization-samples/authenticated"
+  }
+  base-claims {
+    @action-model method="POST" route="authorization-samples/base-claims"
+  }
+  given-claims {
+    @action-model method="POST" route="authorization-samples/given-claims"
+  }
+  given-and-base-claims {
+    @action-model method="POST" route="authorization-samples/given-and-base-claims"
+  }
+}
+
