@@ -39,8 +39,7 @@ public class AttributeCollection(string name)
     {
         if (attribute.AllowsMultiple())
         {
-            Diagnostics.ReportError(
-                DiagnosticsCode.AttributeDoesNotAllow,
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
                 $"`{attribute.GetType().Name}` cannot be set for `{_name}` because it allows multiple."
                 + "Please use `Add` for this attribute."
             );
@@ -53,8 +52,7 @@ public class AttributeCollection(string name)
     {
         if (!attribute.AllowsMultiple())
         {
-            Diagnostics.ReportError(
-                DiagnosticsCode.AttributeDoesNotAllow,
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
                 $"`{attribute.GetType().Name}` cannot be added to `{_name}` because it doesn't allow multiple." +
                 " Please use `Set` for this attribute."
             );
@@ -83,8 +81,7 @@ public class AttributeCollection(string name)
     {
         if (type.AllowsMultiple())
         {
-            Diagnostics.ReportError(
-                DiagnosticsCode.AttributeDoesNotAllow,
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
                 $"Cannot use `Get` for `{type.Name}` in `{_name}` because it allows multiple." +
                 " Please use `GetAll` for this attribute."
             );
@@ -111,8 +108,7 @@ public class AttributeCollection(string name)
     {
         if (type.AllowsMultiple())
         {
-            Diagnostics.ReportError(
-                DiagnosticsCode.AttributeDoesNotAllow,
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
                 $"Cannot use `TryGet` for `{type.Name}` in `{_name}` because it allows multiple." +
                 " Please use `TryGetAll` for this attribute."
             );
@@ -137,8 +133,7 @@ public class AttributeCollection(string name)
     {
         if (!type.AllowsMultiple())
         {
-            Diagnostics.ReportError(
-                DiagnosticsCode.AttributeDoesNotAllow,
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
                 $"Cannot use `GetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple." +
                 " Please use `Get` for this attribute."
             );
@@ -165,8 +160,7 @@ public class AttributeCollection(string name)
     {
         if (!type.AllowsMultiple())
         {
-            Diagnostics.ReportError(
-                DiagnosticsCode.AttributeDoesNotAllow,
+            throw DiagnosticsCode.AttributeDoesNotAllow.Exception(
                 $"Cannot use `TryGetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple." +
                 " Please use `TryGet` for this attribute."
             );

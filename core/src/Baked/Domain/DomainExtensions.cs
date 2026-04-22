@@ -209,11 +209,9 @@ public static class DomainExtensions
         {
             var usages = (AttributeUsageAttribute?)Attribute.GetCustomAttribute(attribute.GetType(), typeof(AttributeUsageAttribute));
             var validOn = usages?.ValidOn ?? AttributeTargets.All;
-
             if (validOn.HasFlag(model.Target)) { return; }
 
-            Diagnostics.ReportError(
-                DiagnosticsCode.AttributeTargetMismatch,
+            throw DiagnosticsCode.AttributeTargetMismatch.Exception(
                 $"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'"
             );
         }

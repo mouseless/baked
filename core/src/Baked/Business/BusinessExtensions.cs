@@ -136,10 +136,7 @@ public static class BusinessExtensions
             if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
             if (!type.TryGetGenerics(out var generics))
             {
-                Diagnostics.ReportError(
-                    DiagnosticsCode.RequiresBuildLevel,
-                    $"{type.Name} doesn't provide generics information to skip nullable"
-                );
+                throw DiagnosticsCode.RequiresBuildLevel.Exception($"{type.Name} doesn't provide generics information to skip nullable");
             }
 
             if (type.IsGenericTypeDefinition) { return type; }
@@ -157,19 +154,11 @@ public static class BusinessExtensions
     {
         public PropertyModel FirstProperty<TAttribute>(
             Func<PropertyModel, bool>? filter = default
-        ) where TAttribute : Attribute
-        {
-            var result = members.FirstPropertyOrDefault<TAttribute>(filter: filter);
-            if (result is null)
-            {
-                Diagnostics.ReportError(
-                    DiagnosticsCode.PropertyWithAttribute,
-                    $"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`"
-                );
-            }
-
-            return result;
-        }
+        ) where TAttribute : Attribute =>
+            members.FirstPropertyOrDefault<TAttribute>(filter: filter) ??
+            throw DiagnosticsCode.PropertyWithAttribute.Exception(
+                $"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`"
+            );
 
         public PropertyModel? FirstPropertyOrDefault<TAttribute>(
             Func<PropertyModel, bool>? filter = default
@@ -178,19 +167,11 @@ public static class BusinessExtensions
 
         public MethodModel FirstMethod<TAttribute>(
             Func<MethodModel, bool>? filter = default
-        ) where TAttribute : Attribute
-        {
-            var result = members.FirstMethodOrDefault<TAttribute>(filter: filter);
-            if (result is null)
-            {
-                Diagnostics.ReportError(
-                    DiagnosticsCode.MethodWithAttribute,
-                    $"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`"
-                );
-            }
-
-            return result;
-        }
+        ) where TAttribute : Attribute =>
+            members.FirstMethodOrDefault<TAttribute>(filter: filter) ??
+            throw DiagnosticsCode.MethodWithAttribute.Exception(
+                $"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`"
+            );
 
         public MethodModel? FirstMethodOrDefault<TAttribute>(
             Func<MethodModel, bool>? filter = default
@@ -202,19 +183,11 @@ public static class BusinessExtensions
     {
         public ParameterModel FirstParameter<TAttribute>(
             Func<ParameterModel, bool>? filter = default
-        ) where TAttribute : Attribute
-        {
-            var result = method.FirstParameterOrDefault<TAttribute>(filter: filter);
-            if (result is null)
-            {
-                Diagnostics.ReportError(
-                    DiagnosticsCode.ParameterWithAttribute,
-                    $"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`"
-                );
-            }
-
-            return result;
-        }
+        ) where TAttribute : Attribute =>
+            method.FirstParameterOrDefault<TAttribute>(filter: filter) ??
+            throw DiagnosticsCode.ParameterWithAttribute.Exception(
+                $"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`"
+            );
 
         public ParameterModel? FirstParameterOrDefault<TAttribute>(
             Func<ParameterModel, bool>? filter = default

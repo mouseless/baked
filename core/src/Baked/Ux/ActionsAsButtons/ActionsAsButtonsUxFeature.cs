@@ -66,14 +66,11 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.StartsWith(nameof(Page), "*", "*", nameof(FormPage)),
                 schema: (ra, c) =>
                 {
-                    var routeBack = c.Method.Get<ActionAttribute>().RoutePathBack;
-                    if (routeBack is null)
-                    {
-                        Diagnostics.ReportError(
-                            DiagnosticsCode.InvalidState,
+                    var routeBack =
+                        c.Method.Get<ActionAttribute>().RoutePathBack ??
+                        throw DiagnosticsCode.InvalidState.Exception(
                             $"`{nameof(ActionAttribute.RoutePathBack)}` can't be null here"
                         );
-                    }
 
                     ra.PostAction = Local.UseRedirect(routeBack);
                 }

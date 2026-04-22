@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Baked;
 
 public class Diagnostics : IDisposable
@@ -57,26 +55,25 @@ public class Diagnostics : IDisposable
         catch (DiagnosticsException ex)
         {
             Current._errors.Add(ex);
-            Report(ex.Message, level: "error", code: ex.Code);
+            ReportError(ex.Code, ex.Message);
 
             return default;
         }
         catch (Exception ex)
         {
             Current._errors.Add(ex);
-            Report(ex.Message, level: "error", code: DiagnosticsCode.Unknown);
+            ReportError(DiagnosticsCode.Unknown, ex.Message);
             if (ex.StackTrace is not null)
             {
-                Report(ex.StackTrace, level: "info");
+                ReportInfo(ex.StackTrace);
             }
 
             return default;
         }
     }
 
-    [DoesNotReturn]
     public static void ReportError(DiagnosticsCode code, string message) =>
-        throw new DiagnosticsException(code, message);
+        Report(message, level: "error", code: code);
 
     public static void ReportWarning(DiagnosticsCode code, string message) =>
         Report(message, level: "warning", code: code);
@@ -84,7 +81,7 @@ public class Diagnostics : IDisposable
     public static void ReportInfo(string message) =>
         Report(message, level: "info");
 
-    public static void Report(string message,
+    static void Report(string message,
         string level = "info",
         DiagnosticsCode? code = default
     )

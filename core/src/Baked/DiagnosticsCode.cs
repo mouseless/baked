@@ -11,4 +11,7 @@ public readonly record struct DiagnosticsCode(int Number)
     {
         Key = key;
     }
+
+    public DiagnosticsException Exception(string message) =>
+        new(this, message);
 }

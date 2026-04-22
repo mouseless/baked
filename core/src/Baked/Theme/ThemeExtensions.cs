@@ -74,8 +74,7 @@ public static class ThemeExtensions
                 {
                     if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate))
                     {
-                        Diagnostics.ReportError(
-                            DiagnosticsCode.RequiresLocateAction,
+                        throw DiagnosticsCode.RequiresLocateAction.Exception(
                             $"`{c.Type.Name}` should have `Locate` action added"
                         );
                     }
@@ -949,16 +948,14 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMembers(out var members))
                 {
-                    Diagnostics.ReportError(
-                        DiagnosticsCode.RequiresBuildLevel,
+                    throw DiagnosticsCode.RequiresBuildLevel.Exception(
                         $"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model"
                     );
                 }
 
                 if (!members.Methods.TryGetValue(methodName, out var method))
                 {
-                    Diagnostics.ReportError(
-                        DiagnosticsCode.MethodRequired,
+                    throw DiagnosticsCode.MethodRequired.Exception(
                         $"{typeof(TDomainType).Name} does not have a method named '{methodName}'"
                     );
                 }
@@ -973,8 +970,7 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata))
                 {
-                    Diagnostics.ReportError(
-                        DiagnosticsCode.RequiresBuildLevel,
+                    throw DiagnosticsCode.RequiresBuildLevel.Exception(
                         $"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"
                     );
                 }
@@ -1116,19 +1112,11 @@ public static class ThemeExtensions
             ];
         }
 
-        public TSchema GetRequiredSchema<TSchema>(ComponentContext context)
-        {
-            var result = metadata.GetSchema<TSchema>(context);
-            if (result is null)
-            {
-                Diagnostics.ReportError(
-                    DiagnosticsCode.MissingRequiredSchema,
-                    $"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`"
-                );
-            }
-
-            return result;
-        }
+        public TSchema GetRequiredSchema<TSchema>(ComponentContext context) =>
+            metadata.GetSchema<TSchema>(context) ??
+            throw DiagnosticsCode.MissingRequiredSchema.Exception(
+                $"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`"
+            );
 
         public TSchema? GetSchema<TSchema>(ComponentContext context)
         {
@@ -1143,19 +1131,11 @@ public static class ThemeExtensions
             return builder.Build(context);
         }
 
-        public ComponentDescriptor<T> GetRequiredComponent<T>(ComponentContext context) where T : IComponentSchema
-        {
-            var result = metadata.GetRequiredComponent(context, componentType: typeof(T), omitWarningMessage: true) as ComponentDescriptor<T>;
-            if (result is null)
-            {
-                Diagnostics.ReportError(
-                    DiagnosticsCode.MissingRequiredComponentOfType,
-                    $"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`"
-                );
-            }
-
-            return result;
-        }
+        public ComponentDescriptor<T> GetRequiredComponent<T>(ComponentContext context) where T : IComponentSchema =>
+            metadata.GetRequiredComponent(context, componentType: typeof(T), omitWarningMessage: true) as ComponentDescriptor<T> ??
+            throw DiagnosticsCode.MissingRequiredComponentOfType.Exception(
+                $"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`"
+            );
 
         public IComponentDescriptor GetRequiredComponent(ComponentContext context,
             Type? componentType = default,
@@ -1167,11 +1147,13 @@ public static class ThemeExtensions
 
             if (!omitWarningMessage)
             {
-                Diagnostics.Report(
-                    $"`{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`",
-                    level: WarnForMissingComponent ? "warning" : "error",
-                    code: DiagnosticsCode.MissingRequiredComponent
-                );
+                var message =
+                    $"`{metadata.CustomAttributes.Name}` doesn't have any component descriptor" +
+                    $"{(componentType is null ? string.Empty : $" of type {componentType.Name}")}" +
+                    $" at path `{context.Path}`";
+
+                if (WarnForMissingComponent) { Diagnostics.ReportWarning(DiagnosticsCode.MissingRequiredComponent, message); }
+                else { Diagnostics.ReportError(DiagnosticsCode.MissingRequiredComponent, message); }
             }
 
             return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);

@@ -44,8 +44,7 @@ public static class RestBindingExtensions
         {
             if (!type.TryGetInitializerActionModel(out var result))
             {
-                Diagnostics.ReportError(
-                    DiagnosticsCode.RequiresInitializerAction,
+                throw DiagnosticsCode.RequiresInitializerAction.Exception(
                     $"{type.Name} does not have an initializer that has an action model"
                 );
             }
@@ -65,8 +64,7 @@ public static class RestBindingExtensions
         {
             if (!type.TryGetControllerModel(out var result))
             {
-                Diagnostics.ReportError(
-                    DiagnosticsCode.RequiresController,
+                throw DiagnosticsCode.RequiresController.Exception(
                     $"{type.Name} does not have controller"
                 );
             }
