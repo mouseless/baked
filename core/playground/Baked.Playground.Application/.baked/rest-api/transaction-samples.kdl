@@ -1,0 +1,24 @@
+transaction-samples @controller-model {
+  commit-action {
+    @action-model route="POST /transaction-samples/commit-action" required-claims="BaseA, BaseB"
+  }
+  commit-func {
+    @action-model route="POST /transaction-samples/commit-func" required-claims="BaseA, BaseB"
+  }
+  commit-nullable {
+    @action-model route="POST /transaction-samples/commit-nullable" required-claims="BaseA, BaseB"
+    entity {
+      @parameter-model required=#true
+    }
+    string {
+      @parameter-model required=#true
+    }
+  }
+  rollback {
+    @action-model route="POST /transaction-samples/rollback" required-claims="BaseA, BaseB"
+    string {
+      @parameter-model required=#true
+    }
+  }
+}
+

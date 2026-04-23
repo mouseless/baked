@@ -1,0 +1,22 @@
+child {
+  @controller-model locate-route="GET /children/{id}"
+  update {
+    @action-model route="PUT /children/{id}/" required-claims="BaseA, BaseB"
+    name @parameter-model
+    parent @parameter-model
+    parentWrapper @parameter-model
+  }
+}
+
+children @controller-model {
+  by {
+    @action-model route="GET /children" required-claims="BaseA, BaseB"
+  }
+  first-by {
+    @action-model route="GET /children/first" required-claims="BaseA, BaseB"
+    fetchParents {
+      @parameter-model in="query"
+    }
+  }
+}
+

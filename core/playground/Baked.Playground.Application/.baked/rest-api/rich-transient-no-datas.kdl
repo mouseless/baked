@@ -1,0 +1,9 @@
+rich-transient-no-data @controller-model {
+  method {
+    @action-model route="POST /rich-transient-no-datas/{id}/method" required-claims="BaseA, BaseB"
+    text {
+      @parameter-model required=#true
+    }
+  }
+}
+

@@ -1,0 +1,9 @@
+entity-with-assigned-guid-id @controller-model {
+  with {
+    @action-model route="GET /entity-with-assigned-guid-ids/{id}" required-claims="BaseA, BaseB"
+    id {
+      @parameter-model required=#true in="route"
+    }
+  }
+}
+

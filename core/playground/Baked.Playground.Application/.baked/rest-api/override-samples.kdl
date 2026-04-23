@@ -1,0 +1,18 @@
+override-samples @controller-model {
+  update-route {
+    @action-model route="POST /override-samples/override/update-route" required-claims="BaseA, BaseB"
+  }
+  parameter {
+    @action-model route="POST /override-samples/parameter/{id}" required-claims="BaseA, BaseB"
+    parameter {
+      @parameter-model required=#true in="route"
+    }
+  }
+  request-class {
+    @action-model route="POST /override-samples/request-class" no-wrap=#true required-claims="BaseA, BaseB"
+    record {
+      @parameter-model required=#true
+    }
+  }
+}
+

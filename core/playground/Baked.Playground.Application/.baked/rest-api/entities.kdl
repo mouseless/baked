@@ -1,0 +1,117 @@
+entity {
+  @controller-model locate-route="GET /entities/{id}"
+  with {
+    @action-model route="POST /entities" required-claims="BaseA, BaseB"
+    guid @parameter-model
+    string @parameter-model
+    stringData @parameter-model
+    int32 @parameter-model
+    unique @parameter-model
+    uri @parameter-model
+    dynamic @parameter-model
+    enum @parameter-model
+    dateTime @parameter-model
+  }
+  update {
+    @action-model route="PUT /entities/{id}/" required-claims="BaseA, BaseB"
+    guid @parameter-model
+    string @parameter-model
+    stringData @parameter-model
+    int32 @parameter-model
+    unique @parameter-model
+    uri @parameter-model
+    dynamic @parameter-model
+    enum @parameter-model
+    dateTime @parameter-model
+    useTransaction @parameter-model
+    throwError @parameter-model
+  }
+  update-string {
+    @action-model route="PATCH /entities/{id}/string" required-claims="BaseA, BaseB"
+    string @parameter-model
+  }
+  lock-and-increment-int-32 {
+    @action-model route="POST /entities/{id}/lock-and-increment-int32" required-claims="BaseA, BaseB"
+    offset @parameter-model
+    delayInSeconds @parameter-model
+  }
+  delete {
+    @action-model route="DELETE /entities/{id}/" required-claims="BaseA, BaseB"
+  }
+}
+
+entities @controller-model {
+  by {
+    @action-model route="GET /entities" required-claims="BaseA, BaseB"
+    guid {
+      @parameter-model in="query"
+    }
+    string {
+      @parameter-model in="query"
+    }
+    stringData {
+      @parameter-model in="query"
+    }
+    int32 {
+      @parameter-model in="query"
+    }
+    unique {
+      @parameter-model in="query"
+    }
+    uri {
+      @parameter-model in="query"
+    }
+    enum {
+      @parameter-model in="query"
+    }
+    dateTime {
+      @parameter-model in="query"
+    }
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+  }
+  first-by-string {
+    @action-model route="GET /entities/first-string" required-claims="BaseA, BaseB"
+    startsWith {
+      @parameter-model required=#true in="query"
+    }
+    asc {
+      @parameter-model in="query"
+    }
+    desc {
+      @parameter-model in="query"
+    }
+  }
+  count-by-date {
+    @action-model route="POST /entities/count-date" required-claims="BaseA, BaseB"
+  }
+}
+
+entity-extension @controller-model {
+  increment-int-32 {
+    @action-model route="POST /entities/{id}/increment-int32" required-claims="BaseA, BaseB"
+  }
+  increment-by {
+    @action-model route="POST /entities/{id}/increment-by" required-claims="BaseA, BaseB"
+    other {
+      @parameter-model required=#true
+    }
+  }
+  increment-by-all {
+    @action-model route="POST /entities/{id}/increment-by-all" required-claims="BaseA, BaseB"
+    extensions {
+      @parameter-model required=#true
+    }
+    moreExtensions {
+      @parameter-model required=#true
+    }
+    evenMoreExtensions {
+      @parameter-model required=#true
+    }
+  }
+}
+

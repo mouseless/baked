@@ -1,0 +1,9 @@
+rich-transient-child @controller-model {
+  with {
+    @action-model route="GET /rich-transient-children/{id}" required-claims="BaseA, BaseB"
+    id {
+      @parameter-model required=#true in="route"
+    }
+  }
+}
+

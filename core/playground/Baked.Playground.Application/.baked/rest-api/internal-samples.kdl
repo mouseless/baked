@@ -1,0 +1,13 @@
+internal-samples @controller-model {
+  internal-request {
+    @action-model route="POST /internal-samples/internal-request" required-claims="BaseA, BaseB"
+    path {
+      @parameter-model required=#true
+    }
+    method {
+      @parameter-model required=#true
+    }
+    content @parameter-model
+  }
+}
+

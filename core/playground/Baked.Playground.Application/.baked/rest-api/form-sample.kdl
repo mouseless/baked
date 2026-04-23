@@ -1,0 +1,25 @@
+form-sample @controller-model {
+  new-parent {
+    @action-model route="POST /form-sample/parents" anonymous=#true
+    surname {
+      @parameter-model required=#true
+    }
+    name @parameter-model
+  }
+  clear-parents {
+    @action-model route="DELETE /form-sample/parents" anonymous=#true
+  }
+  get-parents {
+    @action-model route="GET /form-sample/parents" anonymous=#true
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+    sort {
+      @parameter-model in="query"
+    }
+  }
+}
+

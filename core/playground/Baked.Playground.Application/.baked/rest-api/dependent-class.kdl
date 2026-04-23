@@ -1,0 +1,6 @@
+dependent-class @controller-model {
+  method {
+    @action-model route="POST /dependent-class/method" required-claims="BaseA, BaseB"
+  }
+}
+

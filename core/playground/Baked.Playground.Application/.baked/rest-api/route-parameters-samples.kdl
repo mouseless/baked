@@ -1,0 +1,12 @@
+route-parameters-sample @controller-model {
+  with {
+    @action-model route="GET /route-parameters-samples/{id}" anonymous=#true
+    id {
+      @parameter-model required=#true in="route"
+    }
+  }
+  get-items {
+    @action-model route="GET /route-parameters-samples/{id}/items" anonymous=#true
+  }
+}
+

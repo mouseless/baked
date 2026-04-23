@@ -1,0 +1,21 @@
+rich-transient-with-custom-id-property @controller-model {
+  with {
+    @action-model route="GET /rich-transient-with-custom-id-properties/{uid}" required-claims="BaseA, BaseB"
+    uid {
+      @parameter-model required=#true in="route"
+    }
+  }
+  get-test-custom-id-property-name {
+    @action-model route="GET /rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name" required-claims="BaseA, BaseB"
+    other {
+      @parameter-model required=#true in="query"
+    }
+  }
+  test-custom-id-property-name {
+    @action-model route="POST /rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name" required-claims="BaseA, BaseB"
+    other {
+      @parameter-model required=#true
+    }
+  }
+}
+

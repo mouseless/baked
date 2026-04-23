@@ -1,0 +1,76 @@
+parent {
+  @controller-model locate-route="GET /parents/{id}"
+  with {
+    @action-model route="POST /parents" required-claims="BaseA, BaseB"
+    name {
+      @parameter-model required=#true
+    }
+    surname {
+      @parameter-model required=#true
+    }
+  }
+  get-children {
+    @action-model route="GET /parents/{id}/children" required-claims="BaseA, BaseB"
+  }
+  add-child {
+    @action-model route="POST /parents/{id}/children" required-claims="BaseA, BaseB"
+    name {
+      @parameter-model required=#true
+    }
+  }
+  update {
+    @action-model route="PUT /parents/{id}/" required-claims="BaseA, BaseB"
+    name @parameter-model
+    surname @parameter-model
+    description @parameter-model
+  }
+  remove-child {
+    @action-model route="DELETE /parents/{id}/children/{childId}" required-claims="BaseA, BaseB"
+    child {
+      @parameter-model required=#true in="route"
+    }
+  }
+  delete {
+    @action-model route="DELETE /parents/{id}/" required-claims="BaseA, BaseB"
+  }
+}
+
+parents @controller-model {
+  by {
+    @action-model route="GET /parents" required-claims="BaseA, BaseB"
+    name {
+      @parameter-model in="query"
+    }
+    asc {
+      @parameter-model in="query"
+    }
+    desc {
+      @parameter-model in="query"
+    }
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+  }
+  by-name {
+    @action-model route="GET /parents/name" required-claims="BaseA, BaseB"
+    contains {
+      @parameter-model required=#true in="query"
+    }
+    asc {
+      @parameter-model in="query"
+    }
+    desc {
+      @parameter-model in="query"
+    }
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+  }
+}
+

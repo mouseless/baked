@@ -1,0 +1,12 @@
+time-provider-samples @controller-model {
+  get-now {
+    @action-model route="GET /time-provider-samples/now" required-claims="BaseA, BaseB"
+  }
+  get-utc-now {
+    @action-model route="GET /time-provider-samples/utc-now" required-claims="BaseA, BaseB"
+  }
+  get-local-now {
+    @action-model route="GET /time-provider-samples/local-now" required-claims="BaseA, BaseB"
+  }
+}
+

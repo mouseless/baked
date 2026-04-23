@@ -1,0 +1,9 @@
+test-page @controller-model {
+  get-data {
+    @action-model route="GET /test-page/data" required-claims="BaseA, BaseB"
+    panel {
+      @parameter-model required=#true in="query"
+    }
+  }
+}
+

@@ -1,0 +1,12 @@
+localization-samples @controller-model {
+  get-locale-string {
+    @action-model route="GET /localization-samples/locale-string" required-claims="BaseA, BaseB"
+  }
+  get-parameterized {
+    @action-model route="GET /localization-samples/parameterized" required-claims="BaseA, BaseB"
+    param {
+      @parameter-model required=#true in="query"
+    }
+  }
+}
+

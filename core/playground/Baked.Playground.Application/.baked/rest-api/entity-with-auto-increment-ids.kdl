@@ -1,0 +1,18 @@
+entity-with-auto-increment-id @controller-model {
+  with {
+    @action-model route="POST /entity-with-auto-increment-ids" required-claims="BaseA, BaseB"
+  }
+  get-test-custom-id-property-name {
+    @action-model route="GET /entity-with-auto-increment-ids/{primaryKey}/test-custom-id-property-name" required-claims="BaseA, BaseB"
+    other {
+      @parameter-model required=#true in="query"
+    }
+  }
+  test-custom-id-property-name {
+    @action-model route="POST /entity-with-auto-increment-ids/{primaryKey}/test-custom-id-property-name" required-claims="BaseA, BaseB"
+    other {
+      @parameter-model required=#true
+    }
+  }
+}
+

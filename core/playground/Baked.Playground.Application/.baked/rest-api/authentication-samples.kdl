@@ -1,0 +1,21 @@
+authentication-samples @controller-model {
+  authenticate {
+    @action-model route="POST /authentication-samples/authenticate" required-claims="BaseA, BaseB"
+  }
+  form-post-authenticate {
+    @action-model route="POST /authentication-samples/form-post-authenticate" form=#true required-claims="BaseA, BaseB"
+    value {
+      @parameter-model required=#true
+    }
+  }
+  login {
+    @action-model route="POST /authentication-samples/login" anonymous=#true
+    username {
+      @parameter-model required=#true
+    }
+  }
+  refresh {
+    @action-model route="POST /authentication-samples/refresh" required-claims="Refresh"
+  }
+}
+

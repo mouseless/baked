@@ -1,0 +1,6 @@
+seed-data @controller-model {
+  execute {
+    @action-model route="POST /seed-data" required-claims="BaseA, BaseB"
+  }
+}
+

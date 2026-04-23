@@ -1,0 +1,21 @@
+rich-transient-with-data @controller-model {
+  with {
+    @action-model route="GET /rich-transient-with-datas/{id}" required-claims="BaseA, BaseB"
+    id {
+      @parameter-model required=#true in="route"
+    }
+  }
+  method {
+    @action-model route="POST /rich-transient-with-datas/{id}/method" required-claims="BaseA, BaseB"
+    text {
+      @parameter-model required=#true
+    }
+  }
+}
+
+rich-transient-extension @controller-model {
+  from-extension {
+    @action-model route="POST /rich-transient-with-datas/{id}/from-extension" required-claims="BaseA, BaseB"
+  }
+}
+

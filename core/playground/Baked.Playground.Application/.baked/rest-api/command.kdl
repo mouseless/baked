@@ -1,0 +1,36 @@
+clear-command @controller-model {
+  execute {
+    @action-model route="DELETE /command" required-claims="BaseA, BaseB"
+    executeParam {
+      @parameter-model required=#true in="query"
+    }
+  }
+}
+
+command @controller-model {
+  transient {
+    @action-model route="POST /command/transient" required-claims="BaseA, BaseB"
+    body {
+      @parameter-model required=#true
+    }
+  }
+}
+
+execute-command @controller-model {
+  execute {
+    @action-model route="POST /command" required-claims="BaseA, BaseB"
+  }
+}
+
+get-command @controller-model {
+  execute {
+    @action-model route="GET /command" required-claims="BaseA, BaseB"
+  }
+}
+
+update-command @controller-model {
+  execute {
+    @action-model route="PATCH /command" required-claims="BaseA, BaseB"
+  }
+}
+

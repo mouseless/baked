@@ -38,7 +38,6 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 order: 30
             );
 
-            builder.Conventions.Add(new EntityUnderPluralGroupConvention());
             builder.Conventions.Add(new EntityInitializerIsPostResourceConvention());
         });
 

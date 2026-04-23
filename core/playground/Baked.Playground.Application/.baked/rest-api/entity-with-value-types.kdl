@@ -1,0 +1,18 @@
+entity-with-value-type @controller-model {
+  with {
+    @action-model route="POST /entity-with-value-types" required-claims="BaseA, BaseB"
+    value {
+      @parameter-model required=#true
+    }
+  }
+}
+
+entity-with-value-types @controller-model {
+  by {
+    @action-model route="GET /entity-with-value-types" required-claims="BaseA, BaseB"
+    value {
+      @parameter-model in="query"
+    }
+  }
+}
+
