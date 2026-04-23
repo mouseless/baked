@@ -102,29 +102,6 @@ export default {
     return result;
   },
 
-  aConditional({ testId, fallback, conditions, data } = {}) {
-    testId = $(testId, "test");
-    fallback = $(fallback, this.anExpected(testId));
-    conditions = $(conditions, []);
-
-    return {
-      type: "Conditional",
-      schema: {
-        fallback,
-        conditions
-      },
-      data
-    };
-  },
-
-  aConditionalCondition({ prop, value, testId, component } = {}) {
-    prop = $(prop, "testProp");
-    value = $(value, "test-value");
-    component = $(component, this.anExpected({ testId }));
-
-    return { prop, value, component };
-  },
-
   aConstraint({ is, isNot, composable, options }) {
     if(composable) {
       return {

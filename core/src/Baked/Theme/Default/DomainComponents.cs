@@ -299,22 +299,6 @@ public static class DomainComponents
         );
     }
 
-    public static ComponentDescriptor<Conditional> PropertyConditional(PropertyModel property, ComponentContext context,
-        Action<Conditional>? options = default
-    )
-    {
-        context = context.Drill(nameof(Conditional));
-
-        return B.Conditional(
-            options: c =>
-            {
-                c.Fallback = property.GetRequiredComponent(context.Drill(nameof(Conditional.Fallback)));
-
-                options.Apply(c);
-            }
-        );
-    }
-
     public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
         Action<Button>? options = default
     )

@@ -15,14 +15,6 @@ public static class Components
         Action<Composite>? options = default
     ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<Conditional> Conditional(
-        Action<Conditional>? options = default
-    ) => new(options.Apply(new()));
-
-    public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component,
-        Action<Conditional.Condition>? options = default
-    ) => options.Apply(new(prop, value, component));
-
     public static Content Content(IComponentDescriptor component, string key,
         Action<Content>? options = default
     ) => options.Apply(new(component, key));
@@ -39,14 +31,6 @@ public static class Components
         Action<DataTable>? options = default,
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
-
-    public static DataTable.Column DataTableColumn(string key, IComponentDescriptor component,
-        Action<DataTable.Column>? options = default
-    ) => DataTableColumn(key, options: s =>
-    {
-        s.Component = Conditional(options: s => s.Fallback = component);
-        options.Apply(s);
-    });
 
     public static DataTable.Column DataTableColumn(string key,
         Action<DataTable.Column>? options = default
