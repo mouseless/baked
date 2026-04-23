@@ -4,36 +4,36 @@ entity {
     @action-model route="POST /entities" required-claims="BaseA, BaseB"
     guid @parameter-model
     string @parameter-model
-    stringData @parameter-model
+    string-data @parameter-model
     int32 @parameter-model
     unique @parameter-model
     uri @parameter-model
     dynamic @parameter-model
     enum @parameter-model
-    dateTime @parameter-model
+    date-time @parameter-model
   }
   update {
     @action-model route="PUT /entities/{id}/" required-claims="BaseA, BaseB"
     guid @parameter-model
     string @parameter-model
-    stringData @parameter-model
+    string-data @parameter-model
     int32 @parameter-model
     unique @parameter-model
     uri @parameter-model
     dynamic @parameter-model
     enum @parameter-model
-    dateTime @parameter-model
-    useTransaction @parameter-model
-    throwError @parameter-model
+    date-time @parameter-model
+    use-transaction @parameter-model
+    throw-error @parameter-model
   }
   update-string {
     @action-model route="PATCH /entities/{id}/string" required-claims="BaseA, BaseB"
     string @parameter-model
   }
-  lock-and-increment-int-32 {
+  lock-and-increment-int32 {
     @action-model route="POST /entities/{id}/lock-and-increment-int32" required-claims="BaseA, BaseB"
     offset @parameter-model
-    delayInSeconds @parameter-model
+    delay-in-seconds @parameter-model
   }
   delete {
     @action-model route="DELETE /entities/{id}/" required-claims="BaseA, BaseB"
@@ -49,7 +49,7 @@ entities @controller-model {
     string {
       @parameter-model in="query"
     }
-    stringData {
+    string-data {
       @parameter-model in="query"
     }
     int32 {
@@ -64,7 +64,7 @@ entities @controller-model {
     enum {
       @parameter-model in="query"
     }
-    dateTime {
+    date-time {
       @parameter-model in="query"
     }
     take {
@@ -76,7 +76,7 @@ entities @controller-model {
   }
   first-by-string {
     @action-model route="GET /entities/first-string" required-claims="BaseA, BaseB"
-    startsWith {
+    starts-with {
       @parameter-model required=#true in="query"
     }
     asc {
@@ -92,7 +92,7 @@ entities @controller-model {
 }
 
 entity-extension @controller-model {
-  increment-int-32 {
+  increment-int32 {
     @action-model route="POST /entities/{id}/increment-int32" required-claims="BaseA, BaseB"
   }
   increment-by {
@@ -106,10 +106,10 @@ entity-extension @controller-model {
     extensions {
       @parameter-model required=#true
     }
-    moreExtensions {
+    more-extensions {
       @parameter-model required=#true
     }
-    evenMoreExtensions {
+    even-more-extensions {
       @parameter-model required=#true
     }
   }

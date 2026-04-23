@@ -1,6 +1,7 @@
 entity-with-assigned-id @entity {
-  id {
+  id @column {
     @id type="string"
   }
+  foreign @column @foreign-key
 }
 

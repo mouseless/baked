@@ -1,6 +1,9 @@
 parent @entity {
-  id {
+  id @column {
     @id type="guid" generator="id-guid"
   }
+  name @column
+  surname @column
+  description @column
 }
 

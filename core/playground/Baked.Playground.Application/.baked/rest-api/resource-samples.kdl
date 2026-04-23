@@ -1,13 +1,13 @@
 resource-samples @controller-model {
   read {
     @action-model route="POST /resource-samples/read" required-claims="BaseA, BaseB"
-    subPath {
+    sub-path {
       @parameter-model required=#true
     }
   }
   read-async {
     @action-model route="POST /resource-samples/read-async" required-claims="BaseA, BaseB"
-    subPath {
+    sub-path {
       @parameter-model required=#true
     }
   }

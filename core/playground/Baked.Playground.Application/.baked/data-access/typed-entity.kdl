@@ -1,7 +1,7 @@
 typed-entity @entity {
-  id {
+  id @column {
     @id type="guid" generator="id-guid"
   }
-  type @unique
+  type @column @unique
 }
 

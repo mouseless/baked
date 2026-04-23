@@ -1,5 +1,5 @@
 entity-with-assigned-guid-id @entity {
-  id {
+  id @column {
     @id type="guid"
   }
 }

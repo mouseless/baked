@@ -1,6 +1,9 @@
 child @entity {
-  id {
+  id @column {
     @id type="guid" generator="id-guid"
   }
+  parent @column @foreign-key
+  name @column
+  internal-parent @column @foreign-key
 }
 

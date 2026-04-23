@@ -86,7 +86,7 @@ method-samples @controller-model {
     int {
       @parameter-model required=#true
     }
-    dateTime {
+    date-time {
       @parameter-model required=#true
     }
   }
@@ -98,7 +98,7 @@ method-samples @controller-model {
     ints {
       @parameter-model required=#true
     }
-    dateTimes {
+    date-times {
       @parameter-model required=#true
     }
   }
