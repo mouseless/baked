@@ -8,6 +8,8 @@
     in application project
   - `AutoMapOrmFeature` now exports entity metadata into `.baked/data-access`
     folder in application project
+    - `ColumnAttribute` and `ForeignKeyAttribute` classes are added to have a
+      more clear data access metadata contents
 - __Diagnostics:__ Baked now has `Diagnostics` class to improve error and
   warning messages during `Generate` phase
   - `Generate` task now doesn't break as soon as it encounters an exception,
