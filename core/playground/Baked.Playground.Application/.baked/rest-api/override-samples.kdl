@@ -9,7 +9,7 @@ override-samples @controller-model {
     }
   }
   request-class {
-    @action-model route="POST /override-samples/request-class" no-wrap=#true required-claims="BaseA, BaseB"
+    @action-model route="POST /override-samples/request-class" flat-request-body=#true required-claims="BaseA, BaseB"
     record {
       @parameter-model required=#true
     }

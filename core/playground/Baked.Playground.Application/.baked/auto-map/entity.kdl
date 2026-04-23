@@ -1,8 +1,0 @@
-entity @entity {
-  id @id
-  unique @unique
-  enum @unique
-}
-
-entities @query
-

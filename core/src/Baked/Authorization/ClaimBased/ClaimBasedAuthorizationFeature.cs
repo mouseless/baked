@@ -30,28 +30,20 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 
         configurator.Domain.ConfigureExportConfigurations(exports =>
         {
-            exports.Build("RestApi",
-                export =>
+            exports.Build("RestApi", export => export
+                .Include<ActionModelAttribute>()
+                .AddProperty(action => new("anonymous", Value: action.AdditionalAttributes.Any(a => a.Contains("AllowAnonymous"))))
+                .AddProperty(action =>
                 {
-                    export
-                        .Include<ActionModelAttribute>()
-                        .AddProperty(action => new("anonymous", Value: action.AdditionalAttributes.Any(a => a.Contains("AllowAnonymous"))))
+                    const string before = "Authorize(Policy = \"";
+                    const string after = "\")";
+                    var claims = action.AdditionalAttributes
+                        .Where(a => a.StartsWith(before) && a.EndsWith(after))
+                        .Select(a => a[before.Length..^after.Length])
                     ;
-                    export
-                        .Include<ActionModelAttribute>()
-                        .AddProperty(action =>
-                        {
-                            const string before = "Authorize(Policy = \"";
-                            const string after = "\")";
-                            var claims = action.AdditionalAttributes
-                                .Where(a => a.StartsWith(before) && a.EndsWith(after))
-                                .Select(a => a[before.Length..^after.Length])
-                            ;
 
-                            return new("required-claims", Value: claims.Any() ? claims.Join(", ") : null);
-                        })
-                    ;
-                }
+                    return new("required-claims", Value: claims.Any() ? claims.Join(", ") : null);
+                })
             );
         });
 

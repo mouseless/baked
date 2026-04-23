@@ -1,0 +1,15 @@
+entity @entity {
+  id @column {
+    @id type="guid" generator="id-guid"
+  }
+  guid @column
+  string @column
+  string-data @column
+  int32 @column
+  unique @column @unique
+  uri @column
+  dynamic @column
+  enum @column @unique
+  date-time @column
+}
+

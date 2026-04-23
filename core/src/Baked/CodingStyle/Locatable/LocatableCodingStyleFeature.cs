@@ -24,23 +24,18 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.Domain.ConfigureExportConfigurations(exports =>
         {
-            exports.Build("RestApi",
-                export =>
+            exports.Build("RestApi", export => export
+                .Include<ControllerModelAttribute>()
+                .AddProperty(controller =>
                 {
-                    export
-                        .Include<ControllerModelAttribute>()
-                        .AddProperty(controller =>
-                        {
-                            string? value = null;
-                            if (controller.Action.TryGetValue("Locate", out var locate))
-                            {
-                                value = $"{locate.Method} /{locate.GetRoute()}";
-                            }
+                    string? value = null;
+                    if (controller.Action.TryGetValue("Locate", out var locate))
+                    {
+                        value = $"{locate.Method} /{locate.GetRoute()}";
+                    }
 
-                            return new("locate-route", Value: value);
-                        })
-                    ;
-                }
+                    return new("locate-route", Value: value);
+                })
             );
         });
 

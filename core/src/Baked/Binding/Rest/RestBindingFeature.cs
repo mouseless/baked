@@ -93,7 +93,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             [
                 new("route", Value: $"{action.Method} /{action.GetRoute()}"),
                 new("form", Value: action.UseForm),
-                new("no-wrap", Value: !action.UseRequestClassForBody)
+                new("flat-request-body", Value: !action.UseRequestClassForBody)
             ]);
             properties.Set<ParameterModelAttribute>(parameter =>
             [
@@ -104,22 +104,17 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
         configurator.Domain.ConfigureExportConfigurations(exports =>
         {
-            configurator.Domain.UsingDomainModel(domain =>
+            exports.Build("RestApi", export =>
             {
-                exports.Build("RestApi",
-                    export =>
-                    {
-                        export
-                            .Include<ControllerModelAttribute>()
-                            .AddFilter(controller => controller.Actions.Any())
-                        ;
-                        export.Include<ActionModelAttribute>();
-                        export.Include<ParameterModelAttribute>();
-                        export.TypeGroupName(type =>
-                            type.TryGetControllerModel(out var controller) ? controller.GroupName :
-                            type.Name
-                        );
-                    }
+                export
+                    .Include<ControllerModelAttribute>()
+                    .AddFilter(controller => controller.Actions.Any())
+                ;
+                export.Include<ActionModelAttribute>();
+                export.Include<ParameterModelAttribute>();
+                export.TypeGroupName(type =>
+                    type.TryGetControllerModel(out var controller) ? controller.GroupName :
+                    type.Name
                 );
             });
         });

@@ -1,0 +1,7 @@
+typed-entity @entity {
+  id @column {
+    @id type="guid" generator="id-guid"
+  }
+  type @column @unique
+}
+

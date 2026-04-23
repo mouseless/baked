@@ -58,13 +58,13 @@ method-samples @controller-model {
     }
   }
   object {
-    @action-model route="POST /method-samples/object" no-wrap=#true required-claims="BaseA, BaseB"
+    @action-model route="POST /method-samples/object" flat-request-body=#true required-claims="BaseA, BaseB"
     object {
       @parameter-model required=#true
     }
   }
   object-async {
-    @action-model route="POST /method-samples/object-async" no-wrap=#true required-claims="BaseA, BaseB"
+    @action-model route="POST /method-samples/object-async" flat-request-body=#true required-claims="BaseA, BaseB"
     object {
       @parameter-model required=#true
     }
@@ -86,7 +86,7 @@ method-samples @controller-model {
     int {
       @parameter-model required=#true
     }
-    dateTime {
+    date-time {
       @parameter-model required=#true
     }
   }
@@ -98,7 +98,7 @@ method-samples @controller-model {
     ints {
       @parameter-model required=#true
     }
-    dateTimes {
+    date-times {
       @parameter-model required=#true
     }
   }

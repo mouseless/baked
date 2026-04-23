@@ -5,6 +5,7 @@ using Baked.RestApi;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
+using NHibernate.Id;
 
 namespace Baked.CodingStyle.Id;
 
@@ -22,6 +23,31 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c => c.Property.PropertyType.Is<Business.Id>(),
                 attribute: c => new IdAttribute(c.Property.Name.Camelize()),
                 order: int.MinValue + 10
+            );
+        });
+
+        configurator.Domain.ConfigureExportConfigurations(exports =>
+        {
+            exports.Build("DataAccess", export => export
+                .Include<IdAttribute>()
+                .AddProperty(id =>
+                {
+                    var type = id.GetMapping().UserType.Name.Kebaberize();
+                    if (type.StartsWith("id-")) { type = type[3..]; }
+                    if (type.EndsWith("-user-type")) { type = type[..^10]; }
+
+                    return new(type);
+                })
+                .AddProperty(id =>
+                {
+                    var generatorType = id.GetMapping().IdentifierGenerator;
+                    var generator = generatorType is not null && generatorType != typeof(Assigned)
+                        ? generatorType.Name.Kebaberize()
+                        : null;
+                    if (generator?.EndsWith("-generator") == true) { generator = generator[..^10]; }
+
+                    return new(generator);
+                })
             );
         });
 

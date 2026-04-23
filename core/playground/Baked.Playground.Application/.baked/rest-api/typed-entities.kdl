@@ -31,7 +31,7 @@ typed-entities @controller-model {
     type {
       @parameter-model required=#true in="query"
     }
-    throwNotFound {
+    throw-not-found {
       @parameter-model in="query"
     }
   }

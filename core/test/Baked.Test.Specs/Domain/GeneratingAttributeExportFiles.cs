@@ -37,13 +37,13 @@ public class GeneratingAttributeExportFiles : TestSpec
     {
         var expected = """
         sample-type @entity {
-          @fake camelCase="CamelCase" string="Post" array="System.String[]" boolTrue=#true int=1
+          @fake camel-case="CamelCase" string="Post" array="System.String[]" bool-true=#true int=1
           name @label {
             @data prop="Name"
           }
           surname @label
           method-name @initializer {
-            @action-model method="Post" routeParts="System.String[]"
+            @action-model method="Post" route-parts="System.String[]"
             id {
               @parameter-model from="Route"
             }

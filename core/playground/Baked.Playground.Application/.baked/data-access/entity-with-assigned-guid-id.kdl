@@ -1,0 +1,6 @@
+entity-with-assigned-guid-id @entity {
+  id @column {
+    @id type="guid"
+  }
+}
+

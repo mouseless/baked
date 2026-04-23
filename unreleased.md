@@ -6,6 +6,10 @@
   each specified attribute type combination in domain model
   - `RestBindingFeature` now exports API metadata into `.baked/rest-api` folder
     in application project
+  - `AutoMapOrmFeature` now exports entity metadata into `.baked/data-access`
+    folder in application project
+    - `ColumnAttribute` and `ForeignKeyAttribute` classes are added to have a
+      more clear data access metadata contents
 - __Diagnostics:__ Baked now has `Diagnostics` class to improve error and
   warning messages during `Generate` phase
   - `Generate` task now doesn't break as soon as it encounters an exception,
@@ -18,6 +22,7 @@
 - `Conditional` component and its helper methods are removed
   - It's recommended to implement a custom component per use case, when there is
     a need to switch between components based on its data
+  - One of the `DataTableColumn()` overloads was using `Conditional`, removed
 
 ## Improvements
 

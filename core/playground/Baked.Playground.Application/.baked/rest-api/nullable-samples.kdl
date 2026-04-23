@@ -1,7 +1,7 @@
 nullable-samples @controller-model {
   get-value-type {
     @action-model route="GET /nullable-samples/value-type" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true in="query"
     }
     nullable {
@@ -10,24 +10,24 @@ nullable-samples @controller-model {
     optional {
       @parameter-model in="query"
     }
-    optionalNullable {
+    optional-nullable {
       @parameter-model in="query"
     }
   }
   value-type {
     @action-model route="POST /nullable-samples/value-type" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true
     }
     nullable {
       @parameter-model required=#true
     }
     optional @parameter-model
-    optionalNullable @parameter-model
+    optional-nullable @parameter-model
   }
   get-enum {
     @action-model route="GET /nullable-samples/enum" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true in="query"
     }
     nullable {
@@ -36,24 +36,24 @@ nullable-samples @controller-model {
     optional {
       @parameter-model in="query"
     }
-    optionalNullable {
+    optional-nullable {
       @parameter-model in="query"
     }
   }
   enum {
     @action-model route="POST /nullable-samples/enum" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true
     }
     nullable {
       @parameter-model required=#true
     }
     optional @parameter-model
-    optionalNullable @parameter-model
+    optional-nullable @parameter-model
   }
   get-reference-type {
     @action-model route="GET /nullable-samples/reference-type" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true in="query"
     }
     nullable {
@@ -62,98 +62,98 @@ nullable-samples @controller-model {
     optional {
       @parameter-model in="query"
     }
-    optionalNullable {
+    optional-nullable {
       @parameter-model in="query"
     }
   }
   reference-type {
     @action-model route="POST /nullable-samples/reference-type" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true
     }
     nullable {
       @parameter-model required=#true
     }
     optional @parameter-model
-    optionalNullable @parameter-model
+    optional-nullable @parameter-model
   }
   record {
     @action-model route="POST /nullable-samples/record" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true
     }
     nullable {
       @parameter-model required=#true
     }
-    optionalNullable {
+    optional-nullable {
       @parameter-model required=#true
     }
   }
   get-entity {
     @action-model route="GET /nullable-samples/entity" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true in="query"
     }
     nullable {
       @parameter-model required=#true in="query"
     }
-    optionalNullable {
+    optional-nullable {
       @parameter-model in="query"
     }
   }
   entity {
     @action-model route="POST /nullable-samples/entity" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true
     }
     nullable {
       @parameter-model required=#true
     }
-    optionalNullable @parameter-model
+    optional-nullable @parameter-model
   }
   get-entity-extension {
     @action-model route="GET /nullable-samples/entity-extension" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true in="query"
     }
     nullable {
       @parameter-model required=#true in="query"
     }
-    optionalNullable {
+    optional-nullable {
       @parameter-model in="query"
     }
   }
   entity-extension {
     @action-model route="POST /nullable-samples/entity-extension" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true
     }
     nullable {
       @parameter-model required=#true
     }
-    optionalNullable @parameter-model
+    optional-nullable @parameter-model
   }
   get-rich-transient {
     @action-model route="GET /nullable-samples/rich-transient" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true in="query"
     }
     nullable {
       @parameter-model required=#true in="query"
     }
-    optionalNullable {
+    optional-nullable {
       @parameter-model in="query"
     }
   }
   rich-transient {
     @action-model route="POST /nullable-samples/rich-transient" required-claims="BaseA, BaseB"
-    notNull {
+    not-null {
       @parameter-model required=#true
     }
     nullable {
       @parameter-model required=#true
     }
-    optionalNullable @parameter-model
+    optional-nullable @parameter-model
   }
   get-value-type-parameters {
     @action-model route="GET /nullable-samples/value-type-parameters" required-claims="BaseA, BaseB"

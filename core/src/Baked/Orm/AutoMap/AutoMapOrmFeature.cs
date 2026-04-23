@@ -36,6 +36,33 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             builder.Index.Type.Add(typeof(EntityAttribute));
             builder.Index.Property.Add(typeof(UniqueAttribute));
+
+            builder.Conventions.SetPropertyAttribute(
+                when: c =>
+                    c.Type.Has<EntityAttribute>() &&
+                    c.Property.IsAutoProperty,
+                attribute: () => new ColumnAttribute()
+            );
+            builder.Conventions.SetPropertyAttribute(
+                when: c =>
+                    c.Type.Has<EntityAttribute>() &&
+                    c.Property.Has<ColumnAttribute>() &&
+                    c.Property.PropertyType.TryGetMetadata(out var metadata) &&
+                    metadata.Has<EntityAttribute>(),
+                attribute: () => new ForeignKeyAttribute()
+            );
+        });
+
+        configurator.Domain.ConfigureExportConfigurations(exports =>
+        {
+            exports.Build("DataAccess", export =>
+            {
+                export.Include<EntityAttribute>();
+                export.Include<IdAttribute>();
+                export.Include<ColumnAttribute>();
+                export.Include<ForeignKeyAttribute>();
+                export.Include<UniqueAttribute>();
+            });
         });
 
         configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
