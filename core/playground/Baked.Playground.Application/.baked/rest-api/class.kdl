@@ -1,15 +1,15 @@
 class @controller-model {
   method {
-    @action-model method="POST" route="/class/method"
+    @action-model route="POST /class/method" required-claims="BaseA, BaseB"
   }
   abstract-method {
-    @action-model method="POST" route="/class/abstract-method"
+    @action-model route="POST /class/abstract-method" required-claims="BaseA, BaseB"
   }
   interface-method {
-    @action-model method="POST" route="/class/interface-method"
+    @action-model route="POST /class/interface-method" required-claims="BaseA, BaseB"
   }
   virtual-method {
-    @action-model method="POST" route="/class/virtual-method"
+    @action-model route="POST /class/virtual-method" required-claims="BaseA, BaseB"
   }
 }
 

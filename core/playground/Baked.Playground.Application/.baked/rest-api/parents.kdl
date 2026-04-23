@@ -1,6 +1,7 @@
-parent @controller-model {
+parent {
+  @controller-model locate-route="GET /parents/{id}"
   with {
-    @action-model method="POST" route="/parents"
+    @action-model route="POST /parents" required-claims="BaseA, BaseB"
     name {
       @parameter-model required=#true
     }
@@ -9,34 +10,34 @@ parent @controller-model {
     }
   }
   get-children {
-    @action-model method="GET" route="/parents/{id}/children"
+    @action-model route="GET /parents/{id}/children" required-claims="BaseA, BaseB"
   }
   add-child {
-    @action-model method="POST" route="/parents/{id}/children"
+    @action-model route="POST /parents/{id}/children" required-claims="BaseA, BaseB"
     name {
       @parameter-model required=#true
     }
   }
   update {
-    @action-model method="PUT" route="/parents/{id}/"
+    @action-model route="PUT /parents/{id}/" required-claims="BaseA, BaseB"
     name @parameter-model
     surname @parameter-model
     description @parameter-model
   }
   remove-child {
-    @action-model method="DELETE" route="/parents/{id}/children/{childId}"
+    @action-model route="DELETE /parents/{id}/children/{childId}" required-claims="BaseA, BaseB"
     child {
       @parameter-model required=#true in="route"
     }
   }
   delete {
-    @action-model method="DELETE" route="/parents/{id}/"
+    @action-model route="DELETE /parents/{id}/" required-claims="BaseA, BaseB"
   }
 }
 
 parents @controller-model {
   by {
-    @action-model method="GET" route="/parents"
+    @action-model route="GET /parents" required-claims="BaseA, BaseB"
     name {
       @parameter-model in="query"
     }
@@ -54,7 +55,7 @@ parents @controller-model {
     }
   }
   by-name {
-    @action-model method="GET" route="/parents/name"
+    @action-model route="GET /parents/name" required-claims="BaseA, BaseB"
     contains {
       @parameter-model required=#true in="query"
     }

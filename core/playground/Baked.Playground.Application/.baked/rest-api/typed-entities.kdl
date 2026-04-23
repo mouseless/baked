@@ -1,33 +1,33 @@
 a-typed-entity @controller-model {
   with {
-    @action-model method="POST" route="/typed-entities/a"
+    @action-model route="POST /typed-entities/a" required-claims="BaseA, BaseB"
   }
   operate-on-a {
-    @action-model method="POST" route="/typed-entities/a/operate-on-a"
+    @action-model route="POST /typed-entities/a/operate-on-a" required-claims="BaseA, BaseB"
   }
 }
 
 b-typed-entity @controller-model {
   with {
-    @action-model method="POST" route="/typed-entities/b"
+    @action-model route="POST /typed-entities/b" required-claims="BaseA, BaseB"
   }
   operate-on-b {
-    @action-model method="POST" route="/typed-entities/b/operate-on-b"
+    @action-model route="POST /typed-entities/b/operate-on-b" required-claims="BaseA, BaseB"
   }
 }
 
 typed-entity @controller-model {
   delete {
-    @action-model method="DELETE" route="/typed-entities/{id}/"
+    @action-model route="DELETE /typed-entities/{id}/" required-claims="BaseA, BaseB"
   }
 }
 
 typed-entities @controller-model {
   by {
-    @action-model method="GET" route="/typed-entities"
+    @action-model route="GET /typed-entities" required-claims="BaseA, BaseB"
   }
   single-by-type {
-    @action-model method="GET" route="/typed-entities/single-type"
+    @action-model route="GET /typed-entities/single-type" required-claims="BaseA, BaseB"
     type {
       @parameter-model required=#true in="query"
     }

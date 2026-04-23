@@ -1,6 +1,6 @@
 create-bulk-command @controller-model {
   execute {
-    @action-model method="PATCH" route="/bulk-command" no-wrap=#true
+    @action-model route="PATCH /bulk-command" no-wrap=#true required-claims="BaseA, BaseB"
     descriptors {
       @parameter-model required=#true
     }
@@ -9,7 +9,7 @@ create-bulk-command @controller-model {
 
 sync-bulk-command @controller-model {
   execute {
-    @action-model method="PUT" route="/bulk-command" no-wrap=#true
+    @action-model route="PUT /bulk-command" no-wrap=#true required-claims="BaseA, BaseB"
     descriptors {
       @parameter-model required=#true
     }

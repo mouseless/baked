@@ -1,6 +1,6 @@
 implemented-locatable @controller-model {
   with {
-    @action-model method="GET" route="/implemented-locatables/{id}"
+    @action-model route="GET /implemented-locatables/{id}" required-claims="BaseA, BaseB"
     id {
       @parameter-model required=#true in="route"
     }

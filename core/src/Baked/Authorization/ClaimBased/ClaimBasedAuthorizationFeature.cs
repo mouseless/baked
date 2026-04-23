@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,33 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             builder.Conventions.Add(new RequireUserIsAuthorizeConvention());
             builder.Conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims));
             builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
+        });
+
+        configurator.Domain.ConfigureExportConfigurations(exports =>
+        {
+            exports.Build("RestApi",
+                export =>
+                {
+                    export
+                        .Include<ActionModelAttribute>()
+                        .AddProperty(action => new("anonymous", Value: action.AdditionalAttributes.Any(a => a.Contains("AllowAnonymous"))))
+                    ;
+                    export
+                        .Include<ActionModelAttribute>()
+                        .AddProperty(action =>
+                        {
+                            const string before = "Authorize(Policy = \"";
+                            const string after = "\")";
+                            var claims = action.AdditionalAttributes
+                                .Where(a => a.StartsWith(before) && a.EndsWith(after))
+                                .Select(a => a[before.Length..^after.Length])
+                            ;
+
+                            return new("required-claims", Value: claims.Any() ? claims.Join(", ") : null);
+                        })
+                    ;
+                }
+            );
         });
 
         configurator.Runtime.ConfigureServiceCollection(services =>

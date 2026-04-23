@@ -91,8 +91,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
         {
             properties.Set<ActionModelAttribute>(action =>
             [
-                new(action.Method),
-                new("route", Value: $"/{action.GetRoute()}"),
+                new("route", Value: $"{action.Method} /{action.GetRoute()}"),
                 new("form", Value: action.UseForm),
                 new("no-wrap", Value: !action.UseRequestClassForBody)
             ]);
@@ -110,11 +109,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 exports.Build("RestApi",
                     export =>
                     {
-                        export.Include<ControllerModelAttribute>()
-                            .AddFilter(controller => controller.Actions.Any());
+                        export
+                            .Include<ControllerModelAttribute>()
+                            .AddFilter(controller => controller.Actions.Any())
+                        ;
                         export.Include<ActionModelAttribute>();
                         export.Include<ParameterModelAttribute>();
-
                         export.TypeGroupName(type =>
                             type.TryGetControllerModel(out var controller) ? controller.GroupName :
                             type.Name

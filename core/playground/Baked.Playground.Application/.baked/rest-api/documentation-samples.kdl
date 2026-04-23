@@ -1,6 +1,6 @@
 documentation-samples @controller-model {
   execute {
-    @action-model method="POST" route="/documentation-samples"
+    @action-model route="POST /documentation-samples" required-claims="BaseA, BaseB"
     parameter {
       @parameter-model required=#true
     }
@@ -9,7 +9,7 @@ documentation-samples @controller-model {
 
 documentation-samples @controller-model {
   method {
-    @action-model method="POST" route="/documentation-samples/method"
+    @action-model route="POST /documentation-samples/method" required-claims="BaseA, BaseB"
     parameter1 {
       @parameter-model required=#true
     }
@@ -18,10 +18,10 @@ documentation-samples @controller-model {
     }
   }
   parameterless-method {
-    @action-model method="POST" route="/documentation-samples/parameterless-method"
+    @action-model route="POST /documentation-samples/parameterless-method" required-claims="BaseA, BaseB"
   }
   array-and-generic-parameters {
-    @action-model method="POST" route="/documentation-samples/array-and-generic-parameters"
+    @action-model route="POST /documentation-samples/array-and-generic-parameters" required-claims="BaseA, BaseB"
     enumerable {
       @parameter-model required=#true
     }
@@ -33,13 +33,13 @@ documentation-samples @controller-model {
     }
   }
   route {
-    @action-model method="POST" route="/documentation-samples/route/{route}"
+    @action-model route="POST /documentation-samples/route/{route}" required-claims="BaseA, BaseB"
     route {
       @parameter-model required=#true in="route"
     }
   }
   multiline {
-    @action-model method="POST" route="/documentation-samples/multiline"
+    @action-model route="POST /documentation-samples/multiline" required-claims="BaseA, BaseB"
   }
 }
 

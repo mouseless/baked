@@ -1,6 +1,7 @@
-route-sample @controller-model {
+route-sample {
+  @controller-model locate-route="GET /coding-style/namespace-as-route/route-samples/{id}"
   method {
-    @action-model method="POST" route="/coding-style/namespace-as-route/route-samples/{id}/method"
+    @action-model route="POST /coding-style/namespace-as-route/route-samples/{id}/method" required-claims="BaseA, BaseB"
   }
 }
 

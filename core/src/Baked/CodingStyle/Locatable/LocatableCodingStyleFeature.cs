@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.RestApi;
+using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,28 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.Add(new LookupLocatableParameterConvention(), order: RestApiLayer.MaxConventionOrder - 20);
             builder.Conventions.Add(new LookupLocatableParametersConvention(), order: RestApiLayer.MaxConventionOrder - 20);
             builder.Conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+        });
+
+        configurator.Domain.ConfigureExportConfigurations(exports =>
+        {
+            exports.Build("RestApi",
+                export =>
+                {
+                    export
+                        .Include<ControllerModelAttribute>()
+                        .AddProperty(controller =>
+                        {
+                            string? value = null;
+                            if (controller.Action.TryGetValue("Locate", out var locate))
+                            {
+                                value = $"{locate.Method} /{locate.GetRoute()}";
+                            }
+
+                            return new("locate-route", Value: value);
+                        })
+                    ;
+                }
+            );
         });
 
         configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

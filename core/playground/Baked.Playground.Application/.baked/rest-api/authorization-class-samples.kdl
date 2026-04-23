@@ -1,9 +1,9 @@
 authorization-class-samples @controller-model {
   class-claims {
-    @action-model method="POST" route="/authorization-class-samples/class-claims"
+    @action-model route="POST /authorization-class-samples/class-claims" required-claims="BaseA, BaseB, GivenA, GivenB"
   }
   method-over-class-claims {
-    @action-model method="POST" route="/authorization-class-samples/method-over-class-claims"
+    @action-model route="POST /authorization-class-samples/method-over-class-claims" required-claims="GivenC"
   }
 }
 

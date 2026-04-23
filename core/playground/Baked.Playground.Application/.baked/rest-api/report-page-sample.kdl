@@ -1,21 +1,21 @@
 report-page-sample @controller-model {
   get-wide {
-    @action-model method="GET" route="/report-page-sample/wide"
+    @action-model route="GET /report-page-sample/wide" required-claims="BaseA, BaseB"
   }
   get-left {
-    @action-model method="GET" route="/report-page-sample/left"
+    @action-model route="GET /report-page-sample/left" required-claims="BaseA, BaseB"
   }
   get-right {
-    @action-model method="GET" route="/report-page-sample/right"
+    @action-model route="GET /report-page-sample/right" required-claims="BaseA, BaseB"
   }
   get-first {
-    @action-model method="GET" route="/report-page-sample/first"
+    @action-model route="GET /report-page-sample/first" required-claims="BaseA, BaseB"
     count {
       @parameter-model in="query"
     }
   }
   get-second {
-    @action-model method="GET" route="/report-page-sample/second"
+    @action-model route="GET /report-page-sample/second" required-claims="BaseA, BaseB"
     count {
       @parameter-model in="query"
     }
