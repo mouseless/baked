@@ -6,6 +6,8 @@
   each specified attribute type combination in domain model
   - `RestBindingFeature` now exports API metadata into `.baked/rest-api` folder
     in application project
+  - `AutoMapOrmFeature` now exports entity metadata into `.baked/data-access`
+    folder in application project
 - __Diagnostics:__ Baked now has `Diagnostics` class to improve error and
   warning messages during `Generate` phase
   - `Generate` task now doesn't break as soon as it encounters an exception,
