@@ -20,6 +20,7 @@
 - `Conditional` component and its helper methods are removed
   - It's recommended to implement a custom component per use case, when there is
     a need to switch between components based on its data
+  - One of the `DataTableColumn()` overloads was using `Conditional`, removed
 
 ## Improvements
 

@@ -93,7 +93,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             [
                 new("route", Value: $"{action.Method} /{action.GetRoute()}"),
                 new("form", Value: action.UseForm),
-                new("no-wrap", Value: !action.UseRequestClassForBody)
+                new("flat-request-body", Value: !action.UseRequestClassForBody)
             ]);
             properties.Set<ParameterModelAttribute>(parameter =>
             [
