@@ -4,7 +4,6 @@ namespace Baked.Theme;
 public class DescriptorBuilderAttribute<T> : Attribute, IComponentContextBasedBuilder<T>, IComponentContextFilter
 {
     public Func<ComponentContext, T> Builder { get; set; } = _ => throw DiagnosticsCode.InvalidState.Exception($"`Builder` is required to be set for a descriptor, but not set to this instance.");
-
     public Func<ComponentContext, bool> Filter { get; set; } = cc => true;
 
     protected T Build(ComponentContext context)

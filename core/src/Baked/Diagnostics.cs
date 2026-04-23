@@ -2,6 +2,9 @@ namespace Baked;
 
 public class Diagnostics : IDisposable
 {
+    static readonly string _cyan = "\x1b[1m\x1b[36m";
+    static readonly string _reset = "\x1b[0m";
+
     static Diagnostics? _current;
 
     public static Diagnostics Current
@@ -79,13 +82,15 @@ public class Diagnostics : IDisposable
         Report(message, level: "warning", code: code);
 
     public static void ReportInfo(string message) =>
-        Report(message, level: "info");
+        Report(message);
 
     static void Report(string message,
         string level = "info",
         DiagnosticsCode? code = default
     )
     {
+        if (level == "info") { level = $"{_cyan}info{_reset}"; }
+
         if (code is null)
         {
             Current._messages.Add($"{level}: {message}");
