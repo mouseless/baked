@@ -44,6 +44,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     var generator = generatorType is not null && generatorType != typeof(Assigned)
                         ? generatorType.Name.Kebaberize()
                         : null;
+                    if (generator?.EndsWith("-generator") == true) { generator = generator[..^10]; }
 
                     return new(generator);
                 })

@@ -1,6 +1,6 @@
 entity-with-auto-increment-id @entity {
   primaryKey {
-    @id type="int" generator="identity-generator"
+    @id type="int" generator="identity"
   }
 }
 
