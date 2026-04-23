@@ -104,22 +104,17 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
         configurator.Domain.ConfigureExportConfigurations(exports =>
         {
-            configurator.Domain.UsingDomainModel(domain =>
+            exports.Build("RestApi", export =>
             {
-                exports.Build("RestApi",
-                    export =>
-                    {
-                        export
-                            .Include<ControllerModelAttribute>()
-                            .AddFilter(controller => controller.Actions.Any())
-                        ;
-                        export.Include<ActionModelAttribute>();
-                        export.Include<ParameterModelAttribute>();
-                        export.TypeGroupName(type =>
-                            type.TryGetControllerModel(out var controller) ? controller.GroupName :
-                            type.Name
-                        );
-                    }
+                export
+                    .Include<ControllerModelAttribute>()
+                    .AddFilter(controller => controller.Actions.Any())
+                ;
+                export.Include<ActionModelAttribute>();
+                export.Include<ParameterModelAttribute>();
+                export.TypeGroupName(type =>
+                    type.TryGetControllerModel(out var controller) ? controller.GroupName :
+                    type.Name
                 );
             });
         });

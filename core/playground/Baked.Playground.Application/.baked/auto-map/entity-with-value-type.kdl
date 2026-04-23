@@ -1,6 +1,0 @@
-entity-with-value-type @entity {
-  id @id
-}
-
-entity-with-value-types @query
-

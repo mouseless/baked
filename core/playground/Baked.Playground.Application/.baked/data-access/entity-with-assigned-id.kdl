@@ -1,0 +1,6 @@
+entity-with-assigned-id @entity {
+  id {
+    @id type="string"
+  }
+}
+

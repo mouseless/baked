@@ -31,7 +31,7 @@ public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
             if (!idProperty.PropertyType.Is<Business.Id>()) { continue; }
 
             var idAttribute = idProperty.Get<IdAttribute>();
-            var mapping = idAttribute.Mapping ?? new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
+            var mapping = idAttribute.GetMapping();
 
             _entities.Add((entity, mapping));
         }

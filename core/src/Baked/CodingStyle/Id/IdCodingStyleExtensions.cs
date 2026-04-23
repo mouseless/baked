@@ -25,5 +25,9 @@ public static class IdCodingStyleExtensions
 
         public void AssignedGuid() =>
             id.Mapping = new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(NHibernate.Id.Assigned) };
+
+        public IdAttribute.MappingOptions GetMapping() =>
+            id.Mapping ??
+            new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
     }
 }

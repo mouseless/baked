@@ -1,0 +1,8 @@
+entity @entity {
+  id {
+    @id type="guid" generator="id-guid-generator"
+  }
+  unique @unique
+  enum @unique
+}
+

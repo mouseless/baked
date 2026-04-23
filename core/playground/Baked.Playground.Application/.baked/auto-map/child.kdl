@@ -1,6 +1,0 @@
-child @entity {
-  id @id
-}
-
-children @query
-

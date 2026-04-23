@@ -38,6 +38,16 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
+        configurator.Domain.ConfigureExportConfigurations(exports =>
+        {
+            exports.Build("DataAccess", export =>
+            {
+                export.Include<EntityAttribute>();
+                export.Include<IdAttribute>();
+                export.Include<UniqueAttribute>();
+            });
+        });
+
         configurator.CodeGeneration.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
             configurator.Domain.UsingDomainModel(domain =>
