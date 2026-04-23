@@ -16,6 +16,9 @@
     instead it collects all errors and breaks the build with multiple errors to
     provide a better DX
   - All existing build errors are now documented under [Errors](../errors.md)
+- __Inspection:__ Baked now supports inspecting a specific UI schema property
+  where it lists all conventions and value change records for the specified
+  property
 
 ## Breaking Changes
 
