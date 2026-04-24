@@ -9,6 +9,7 @@ public record PageContext
     public required IReadOnlyList<Route> Sitemap { get; init; }
     public required DomainModel Domain { get; init; }
     public required NewLocaleKey NewLocaleKey { get; init; }
+    public Inspect.Session Inspect { get; internal set; } = default!;
 
     public void Deconstruct(out DomainModel domain, out NewLocaleKey l)
     {

@@ -10,7 +10,6 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Baked.Ui.Configuration;
 using System.Collections.Immutable;
-using System.Diagnostics;
 
 using static Baked.Ui.Datas;
 
@@ -117,19 +116,12 @@ public static class ThemeExtensions
             where ??= c => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
-            var stackTrace = new StackTrace();
             conventions.AddTypeAttribute(
-                attribute: c => new DescriptorBuilderAttribute<TSchema>()
+                attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc =>
-                    {
-                        var result = schema(c, cc);
-
-                        Inspect.Capture(cc, result, stackTrace);
-
-                        return result;
-                    },
-                    Filter = where
+                    Builder = cc => cc.Inspect.Capture(cc, schema(c, cc)),
+                    Filter = where,
+                    Inspect = c.Inspect
                 },
                 when: when,
                 requiresIndex: false,
@@ -181,19 +173,12 @@ public static class ThemeExtensions
             where ??= c => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
-            var stackTrace = new StackTrace();
             conventions.AddPropertyAttribute(
-                attribute: c => new DescriptorBuilderAttribute<TSchema>()
+                attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc =>
-                    {
-                        var result = schema(c, cc);
-
-                        Inspect.Capture(cc, result, stackTrace, after: true);
-
-                        return result;
-                    },
-                    Filter = where
+                    Builder = cc => cc.Inspect.Capture(cc, schema(c, cc)),
+                    Filter = where,
+                    Inspect = c.Inspect
                 },
                 when: when,
                 requiresIndex: false,
@@ -245,19 +230,12 @@ public static class ThemeExtensions
             where ??= c => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
-            var stackTrace = new StackTrace();
             conventions.AddMethodAttribute(
-                attribute: c => new DescriptorBuilderAttribute<TSchema>()
+                attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc =>
-                    {
-                        var result = schema(c, cc);
-
-                        Inspect.Capture(cc, result, stackTrace, after: true);
-
-                        return result;
-                    },
-                    Filter = where
+                    Builder = cc => cc.Inspect.Capture(cc, schema(c, cc)),
+                    Filter = where,
+                    Inspect = c.Inspect
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
                 requiresIndex: false,
@@ -309,19 +287,12 @@ public static class ThemeExtensions
             where ??= c => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
-            var stackTrace = new StackTrace();
             conventions.AddParameterAttribute(
-                attribute: c => new DescriptorBuilderAttribute<TSchema>()
+                attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc =>
-                    {
-                        var result = schema(c, cc);
-
-                        Inspect.Capture(cc, result, stackTrace);
-
-                        return result;
-                    },
-                    Filter = where
+                    Builder = cc => cc.Inspect.Capture(cc, schema(c, cc)),
+                    Filter = where,
+                    Inspect = c.Inspect
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
                 requiresIndex: false,
@@ -371,12 +342,11 @@ public static class ThemeExtensions
             where ??= _ => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
-            var stackTrace = new StackTrace();
             conventions.AddTypeAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    stackTrace: stackTrace
+                    inspect: c.Inspect
                 ),
                 when: c => when(c),
                 order: order
@@ -413,12 +383,11 @@ public static class ThemeExtensions
             where ??= _ => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
-            var stackTrace = new StackTrace();
             conventions.AddPropertyAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    stackTrace: stackTrace
+                    inspect: c.Inspect
                 ),
                 when: c => when(c),
                 order: order
@@ -455,12 +424,11 @@ public static class ThemeExtensions
             where ??= _ => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
-            var stackTrace = new StackTrace();
             conventions.AddMethodAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    stackTrace: stackTrace
+                    inspect: c.Inspect
                 ),
                 when: c => when(c),
                 order: order
@@ -497,12 +465,11 @@ public static class ThemeExtensions
             where ??= _ => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
-            var stackTrace = new StackTrace();
             conventions.AddParameterAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    stackTrace: stackTrace
+                    inspect: c.Inspect
                 ),
                 when: c => when(c),
                 order: order
@@ -543,21 +510,14 @@ public static class ThemeExtensions
             where ??= c => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
-            var stackTrace = new StackTrace();
             conventions.AddTypeAttribute(
                 apply: (c, add) =>
                 {
-                    add(c.Type, new ComponentDescriptorBuilderAttribute<TSchema>()
+                    add(c.Type, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc =>
-                        {
-                            var result = component(c, cc);
-
-                            Inspect.Capture(cc, result, stackTrace);
-
-                            return result;
-                        },
-                        Filter = where
+                        Builder = cc => cc.Inspect.Capture(cc, component(c, cc)),
+                        Filter = where,
+                        Inspect = c.Inspect
                     });
                     add(c.Type, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -616,21 +576,14 @@ public static class ThemeExtensions
             where ??= c => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
-            var stackTrace = new StackTrace();
             conventions.AddPropertyAttribute(
                 apply: (c, add) =>
                 {
-                    add(c.Property, new ComponentDescriptorBuilderAttribute<TSchema>()
+                    add(c.Property, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc =>
-                        {
-                            var result = component(c, cc);
-
-                            Inspect.Capture(cc, result, stackTrace, after: true);
-
-                            return result;
-                        },
-                        Filter = where
+                        Builder = cc => cc.Inspect.Capture(cc, component(c, cc)),
+                        Filter = where,
+                        Inspect = c.Inspect
                     });
                     add(c.Property, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -689,21 +642,14 @@ public static class ThemeExtensions
             where ??= cc => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
-            var stackTrace = new StackTrace();
             conventions.AddMethodAttribute(
                 apply: (c, add) =>
                 {
-                    add(c.Method, new ComponentDescriptorBuilderAttribute<TSchema>()
+                    add(c.Method, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc =>
-                        {
-                            var result = component(c, cc);
-
-                            Inspect.Capture(cc, result, stackTrace, after: true);
-
-                            return result;
-                        },
-                        Filter = where
+                        Builder = cc => cc.Inspect.Capture(cc, component(c, cc)),
+                        Filter = where,
+                        Inspect = c.Inspect
                     });
                     add(c.Method, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -762,21 +708,14 @@ public static class ThemeExtensions
             where ??= c => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
-            var stackTrace = new StackTrace();
             conventions.AddParameterAttribute(
                 apply: (c, add) =>
                 {
-                    add(c.Parameter, new ComponentDescriptorBuilderAttribute<TSchema>()
+                    add(c.Parameter, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc =>
-                        {
-                            var result = component(c, cc);
-
-                            Inspect.Capture(cc, result, stackTrace);
-
-                            return result;
-                        },
-                        Filter = where
+                        Builder = cc => cc.Inspect.Capture(cc, component(c, cc)),
+                        Filter = where,
+                        Inspect = c.Inspect
                     });
                     add(c.Parameter, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -833,12 +772,11 @@ public static class ThemeExtensions
             where ??= _ => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
-            var stackTrace = new StackTrace();
             conventions.AddTypeAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
                     where: where,
-                    stackTrace: stackTrace
+                    inspect: c.Inspect
                 ),
                 when: c => when(c),
                 order: order
@@ -877,12 +815,11 @@ public static class ThemeExtensions
             where ??= _ => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
-            var stackTrace = new StackTrace();
             conventions.AddPropertyAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
                     where: where,
-                    stackTrace: stackTrace
+                    inspect: c.Inspect
                 ),
                 when: c => when(c),
                 order: order
@@ -921,12 +858,11 @@ public static class ThemeExtensions
             where ??= _ => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
-            var stackTrace = new StackTrace();
             conventions.AddMethodAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
                     where: where,
-                    stackTrace: stackTrace
+                    inspect: c.Inspect
                 ),
                 when: c => when(c),
                 order: order
@@ -965,12 +901,11 @@ public static class ThemeExtensions
             where ??= _ => true;
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
 
-            var stackTrace = new StackTrace();
             conventions.AddParameterAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
                     where: where,
-                    stackTrace: stackTrace
+                    inspect: c.Inspect
                 ),
                 when: c => when(c),
                 order: order
@@ -1159,7 +1094,7 @@ public static class ThemeExtensions
         void WrapBuilder(
             Func<ComponentContext, bool> where,
             Action<TSchema, ComponentContext> apply,
-            StackTrace stackTrace
+            Inspect.Session inspect
         )
         {
             var prev = attribute.Builder;
@@ -1169,11 +1104,10 @@ public static class ThemeExtensions
                 var result = prev(cc);
                 if (!where(cc)) { return result; }
 
-                var old = Inspect.Capture(cc, result, stackTrace);
+                var old = inspect.Evaluate(result);
                 apply(result, cc);
-                Inspect.Capture(cc, result, stackTrace, old: old, after: true);
 
-                return result;
+                return inspect.Capture(cc, result, old: old);
             };
         }
 #pragma warning restore IDE0051

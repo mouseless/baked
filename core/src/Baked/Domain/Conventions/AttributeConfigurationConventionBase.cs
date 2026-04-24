@@ -1,5 +1,6 @@
 ﻿using Baked.Domain.Configuration;
 using Baked.Domain.Model;
+using Baked.Theme;
 
 namespace Baked.Domain.Conventions;
 
@@ -7,29 +8,39 @@ public abstract class AttributeConfigurationConventionBase<TModelContext, TAttri
     Func<TModelContext, TAttribute, bool>? when = default
 ) : IDomainModelConvention<TModelContext>
     where TAttribute : Attribute
+    where TModelContext : DomainModelContext
 {
+    readonly Inspect.Session _inspect = Inspect.Start();
+
     protected abstract ICustomAttributesModel GetMetadata(TModelContext context);
 
     public void Apply(TModelContext context)
     {
-        var attributes = new List<TAttribute>();
-        if (typeof(TAttribute).AllowsMultiple())
+        var old = context.Inspect;
+        context.Inspect = _inspect;
+
+        try
         {
-            if (GetMetadata(context).TryGetAll<TAttribute>(out var list))
+            var attributes = new List<TAttribute>();
+            if (typeof(TAttribute).AllowsMultiple())
             {
-                attributes.AddRange(list);
+                if (GetMetadata(context).TryGetAll<TAttribute>(out var list))
+                {
+                    attributes.AddRange(list);
+                }
+            }
+            else if (GetMetadata(context).TryGet<TAttribute>(out var single))
+            {
+                attributes.Add(single);
+            }
+
+            foreach (var attribute in attributes)
+            {
+                if (when is not null && !when(context, attribute)) { continue; }
+
+                apply(attribute, context);
             }
         }
-        else if (GetMetadata(context).TryGet<TAttribute>(out var single))
-        {
-            attributes.Add(single);
-        }
-
-        foreach (var attribute in attributes)
-        {
-            if (when is not null && !when(context, attribute)) { continue; }
-
-            apply(attribute, context);
-        }
+        finally { context.Inspect = old; }
     }
 }

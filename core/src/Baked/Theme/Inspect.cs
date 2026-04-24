@@ -22,39 +22,62 @@ public class Inspect
             Current = new(where, typeof(T), c => evaluate((T?)c));
     }
 
-    public static object? Capture(ComponentContext context, object? target, StackTrace stackTrace,
-        object? old = null,
-        bool after = false
-    )
-    {
-        if (Current is null) { return null; }
-        if (!Current._where(context)) { return null; }
+    public static Session Start() =>
+        new Session(new StackTrace(fNeedFileInfo: true));
 
-        if (target is IComponentDescriptor componentDescriptor)
+    public class Session(StackTrace _stackTrace)
+    {
+        static ComponentPath _lastPath;
+
+        public object? Evaluate<T>(T result)
         {
-            target = componentDescriptor.Schema;
+            if (Current is null) { return null; }
+
+            object? target = result is IComponentDescriptor descriptor
+                ? descriptor.Schema
+                : result;
+            if (target?.GetType() != Current._schemaType) { return null; }
+
+            return Current._evaluate(target);
         }
 
-        if (target?.GetType() != Current._schemaType) { return null; }
+        public T Capture<T>(ComponentContext context, T result,
+            object? old = null
+        ) => Capture(context, result, out var _, old: old);
 
-        var value = Current._evaluate(target);
-
-        if (after && !Equals(value, old))
+        public T Capture<T>(ComponentContext context, T result, out object? value,
+            object? old = null
+        )
         {
-            var featureLine = stackTrace.ToString().Split(Environment.NewLine).FirstOrDefault(f => f.Contains("Feature.<>c.<Configure>"));
-            if (featureLine is not null)
+            value = null;
+            if (Current is null) { return result; }
+            if (!Current._where(context)) { return result; }
+
+            object? target = result is IComponentDescriptor descriptor
+                ? descriptor.Schema
+                : result;
+            if (target?.GetType() != Current._schemaType) { return result; }
+
+            value = Current._evaluate(target);
+            if (!Equals(value, old))
             {
-                featureLine = featureLine[6..featureLine.IndexOf(".<>")];
+                if (_lastPath != context.Path)
+                {
+                    _lastPath = context.Path;
+                    Diagnostics.ReportInfo($"{_gray}{_lastPath}{_reset}");
+                }
+
+                var featureLine = _stackTrace.ToString().Split(Environment.NewLine).FirstOrDefault(f => f.Contains("Feature.<>c.<Configure>"));
+                if (featureLine is not null)
+                {
+                    featureLine = featureLine[6..featureLine.IndexOf(".<>")];
+                }
+
+                Diagnostics.ReportInfo($"{NullSafe(value)} ⤌ {_gray}{featureLine}{_reset}");
             }
 
-            Diagnostics.ReportInfo(
-                $"{NullSafe(old)} → {NullSafe(value)}" +
-                $"{Environment.NewLine}{_gray}\t{context.Path}{_reset}" +
-                $"{Environment.NewLine}{_gray}\t{featureLine}{_reset}"
-            );
+            return result;
         }
-
-        return value;
     }
 
     static string NullSafe(object? value) =>
