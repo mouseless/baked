@@ -6,7 +6,7 @@ namespace Baked.Theme;
 public class Inspection(StackTrace _stackTrace)
 {
     const string Esc = "\x1b";
-    const string Yellow = $"{Esc}[95m";
+    const string LightMagenta = $"{Esc}[95m";
     const string Gray = $"{Esc}[90m";
     const string Reset = $"{Esc}[0m";
 
@@ -58,7 +58,7 @@ public class Inspection(StackTrace _stackTrace)
         if (_lastPath != context.Path)
         {
             _lastPath = context.Path;
-            Diagnostics.ReportInfo($"{Yellow}{_lastPath}{Reset}");
+            Diagnostics.ReportInfo($"{Gray}{_lastPath}{Reset}");
         }
 
         var frames = _stackTrace.GetFrames();
@@ -69,7 +69,7 @@ public class Inspection(StackTrace _stackTrace)
 
         if (featureFrame is null)
         {
-            Diagnostics.ReportInfo($"{NullSafe(value)} ⤌ {Gray}<unknown>{Reset}");
+            Diagnostics.ReportInfo($"{NullSafe(value)} ⤌ {LightMagenta}<unknown>{Reset}");
 
             return result;
         }
@@ -84,13 +84,12 @@ public class Inspection(StackTrace _stackTrace)
             if (lineNumber > 0)
             {
                 title += $":{lineNumber}";
-                url += $":{lineNumber}";
             }
 
             source = FileLink(title, url);
         }
 
-        Diagnostics.ReportInfo($"{NullSafe(value)} ← {Gray}{source}{Reset}");
+        Diagnostics.ReportInfo($"{NullSafe(value)} ← {LightMagenta}{source}{Reset}");
 
         return result;
     }
