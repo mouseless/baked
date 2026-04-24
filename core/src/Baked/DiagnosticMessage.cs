@@ -7,7 +7,7 @@ public class DiagnosticMessage(string _message, string _level,
     const string Esc = "\x1b";
     const string Cyan = $"{Esc}[1m{Esc}[36m";
     const string Red = $"{Esc}[1m{Esc}[31m";
-    const string Orange = $"{Esc}[1m{Esc}[33m";
+    const string Yellow = $"{Esc}[1m{Esc}[33m";
     const string Reset = $"{Esc}[0m";
 
     public string Level => _level;
@@ -23,7 +23,7 @@ public class DiagnosticMessage(string _message, string _level,
         _level switch
         {
             "error" => Red,
-            "warning" => Orange,
+            "warning" => Yellow,
             "info" => Cyan,
             _ => Reset
         };

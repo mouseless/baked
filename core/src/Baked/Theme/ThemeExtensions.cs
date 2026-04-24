@@ -1094,7 +1094,7 @@ public static class ThemeExtensions
         void WrapBuilder(
             Func<ComponentContext, bool> where,
             Action<TSchema, ComponentContext> apply,
-            Inspect.Session inspect
+            Inspection inspect
         )
         {
             var prev = attribute.Builder;

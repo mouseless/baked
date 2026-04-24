@@ -10,7 +10,7 @@ public abstract class AttributeConfigurationConventionBase<TModelContext, TAttri
     where TAttribute : Attribute
     where TModelContext : DomainModelContext
 {
-    readonly Inspect.Session _inspect = Inspect.Start();
+    readonly Inspection _inspect = Inspect.Start();
 
     protected abstract ICustomAttributesModel GetMetadata(TModelContext context);
 

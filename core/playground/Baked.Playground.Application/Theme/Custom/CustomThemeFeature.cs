@@ -80,7 +80,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
 
             Inspect
-                .Where(cc => cc.Path.Contains(nameof(FormSample)))
+                // .Where(cc => cc.Path.Contains(nameof(FormSample)))
+                .Where(_ => true)
                 .Component<DataTable>(c => c?.Paginator);
             ;
         });
