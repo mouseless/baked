@@ -2,9 +2,6 @@ namespace Baked;
 
 public class Diagnostics : IDisposable
 {
-    static readonly string _cyan = "\x1b[1m\x1b[36m";
-    static readonly string _reset = "\x1b[0m";
-
     static Diagnostics? _current;
 
     public static Diagnostics Current
@@ -55,7 +52,7 @@ public class Diagnostics : IDisposable
         {
             return action();
         }
-        catch (DiagnosticsException ex)
+        catch (DiagnosticException ex)
         {
             Current._errors.Add(ex);
             ReportError(ex.Code, ex.Message);
@@ -65,7 +62,7 @@ public class Diagnostics : IDisposable
         catch (Exception ex)
         {
             Current._errors.Add(ex);
-            ReportError(DiagnosticsCode.Unknown, ex.Message);
+            ReportError(DiagnosticCode.Unknown, ex.Message);
             if (ex.StackTrace is not null)
             {
                 ReportInfo(ex.StackTrace);
@@ -75,10 +72,10 @@ public class Diagnostics : IDisposable
         }
     }
 
-    public static void ReportError(DiagnosticsCode code, string message) =>
+    public static void ReportError(DiagnosticCode code, string message) =>
         Report(message, level: "error", code: code);
 
-    public static void ReportWarning(DiagnosticsCode code, string message) =>
+    public static void ReportWarning(DiagnosticCode code, string message) =>
         Report(message, level: "warning", code: code);
 
     public static void ReportInfo(string message) =>
@@ -86,29 +83,13 @@ public class Diagnostics : IDisposable
 
     static void Report(string message,
         string level = "info",
-        DiagnosticsCode? code = default
-    )
-    {
-        if (level == "info") { level = $"{_cyan}info{_reset}"; }
-
-        if (code is null)
-        {
-            Current._messages.Add($"{level}: {message}");
-        }
-        else if (code.Value.Key is null)
-        {
-            Current._messages.Add($"{level} C{code.Value.Number:D4}: {message}");
-        }
-        else
-        {
-            Current._messages.Add($"{level} B{code.Value.Number:D4}: {message} (See: https://baked.mouseless.codes/errors#{code.Value.Key})");
-        }
-    }
+        DiagnosticCode? code = default
+    ) => Current._messages.Add(new(message, level, code));
 
     Action<DiagnosticsResult> _dispose;
     bool _disposed;
     List<Exception> _errors = [];
-    List<string> _messages = [];
+    List<DiagnosticMessage> _messages = [];
 
     public string Name { get; }
 

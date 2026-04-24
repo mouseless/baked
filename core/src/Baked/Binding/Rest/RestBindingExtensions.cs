@@ -20,10 +20,10 @@ public static class RestBindingExtensions
             new();
     }
 
-    extension(DiagnosticsCode)
+    extension(DiagnosticCode)
     {
-        public static DiagnosticsCode RequiresInitializerAction => new(201, "requires-initializer-action");
-        public static DiagnosticsCode RequiresController => new(202, "requires-controller");
+        public static DiagnosticCode RequiresInitializerAction => new(201, "requires-initializer-action");
+        public static DiagnosticCode RequiresController => new(202, "requires-controller");
     }
 
     extension(TypeModel type)
@@ -44,7 +44,7 @@ public static class RestBindingExtensions
         {
             if (!type.TryGetInitializerActionModel(out var result))
             {
-                throw DiagnosticsCode.RequiresInitializerAction.Exception(
+                throw DiagnosticCode.RequiresInitializerAction.Exception(
                     $"{type.Name} does not have an initializer that has an action model"
                 );
             }
@@ -64,7 +64,7 @@ public static class RestBindingExtensions
         {
             if (!type.TryGetControllerModel(out var result))
             {
-                throw DiagnosticsCode.RequiresController.Exception(
+                throw DiagnosticCode.RequiresController.Exception(
                     $"{type.Name} does not have controller"
                 );
             }

@@ -24,15 +24,15 @@ public static class ThemeExtensions
             features.Add(configure(new()));
     }
 
-    extension(DiagnosticsCode)
+    extension(DiagnosticCode)
     {
-        public static DiagnosticsCode MissingRequiredComponent => new(101, "missing-required-component");
-        public static DiagnosticsCode MissingRequiredComponentOfType => new(102, "missing-required-component-of-type");
-        public static DiagnosticsCode MissingRequiredSchema => new(103, "missing-required-schema");
-        public static DiagnosticsCode RequiresLocateAction => new(104, "requires-locate-action");
-        public static DiagnosticsCode MethodRequired => new(105, "method-required");
-        public static DiagnosticsCode MissingItem => new(106, "missing-item");
-        public static DiagnosticsCode InvalidState => new(107, "invalid-state");
+        public static DiagnosticCode MissingRequiredComponent => new(101, "missing-required-component");
+        public static DiagnosticCode MissingRequiredComponentOfType => new(102, "missing-required-component-of-type");
+        public static DiagnosticCode MissingRequiredSchema => new(103, "missing-required-schema");
+        public static DiagnosticCode RequiresLocateAction => new(104, "requires-locate-action");
+        public static DiagnosticCode MethodRequired => new(105, "method-required");
+        public static DiagnosticCode MissingItem => new(106, "missing-item");
+        public static DiagnosticCode InvalidState => new(107, "invalid-state");
     }
 
     extension<T>(Action<T>? action)
@@ -75,7 +75,7 @@ public static class ThemeExtensions
                 {
                     if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate))
                     {
-                        throw DiagnosticsCode.RequiresLocateAction.Exception(
+                        throw DiagnosticCode.RequiresLocateAction.Exception(
                             $"`{c.Type.Name}` should have `Locate` action added"
                         );
                     }
@@ -1029,14 +1029,14 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMembers(out var members))
                 {
-                    throw DiagnosticsCode.RequiresBuildLevel.Exception(
+                    throw DiagnosticCode.RequiresBuildLevel.Exception(
                         $"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model"
                     );
                 }
 
                 if (!members.Methods.TryGetValue(methodName, out var method))
                 {
-                    throw DiagnosticsCode.MethodRequired.Exception(
+                    throw DiagnosticCode.MethodRequired.Exception(
                         $"{typeof(TDomainType).Name} does not have a method named '{methodName}'"
                     );
                 }
@@ -1051,7 +1051,7 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata))
                 {
-                    throw DiagnosticsCode.RequiresBuildLevel.Exception(
+                    throw DiagnosticCode.RequiresBuildLevel.Exception(
                         $"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"
                     );
                 }
@@ -1196,7 +1196,7 @@ public static class ThemeExtensions
 
         public TSchema GetRequiredSchema<TSchema>(ComponentContext context) =>
             metadata.GetSchema<TSchema>(context) ??
-            throw DiagnosticsCode.MissingRequiredSchema.Exception(
+            throw DiagnosticCode.MissingRequiredSchema.Exception(
                 $"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`"
             );
 
@@ -1215,7 +1215,7 @@ public static class ThemeExtensions
 
         public ComponentDescriptor<T> GetRequiredComponent<T>(ComponentContext context) where T : IComponentSchema =>
             metadata.GetRequiredComponent(context, componentType: typeof(T), omitWarningMessage: true) as ComponentDescriptor<T> ??
-            throw DiagnosticsCode.MissingRequiredComponentOfType.Exception(
+            throw DiagnosticCode.MissingRequiredComponentOfType.Exception(
                 $"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`"
             );
 
@@ -1234,8 +1234,8 @@ public static class ThemeExtensions
                     $"{(componentType is null ? string.Empty : $" of type {componentType.Name}")}" +
                     $" at path `{context.Path}`";
 
-                if (WarnForMissingComponent) { Diagnostics.ReportWarning(DiagnosticsCode.MissingRequiredComponent, message); }
-                else { Diagnostics.ReportError(DiagnosticsCode.MissingRequiredComponent, message); }
+                if (WarnForMissingComponent) { Diagnostics.ReportWarning(DiagnosticCode.MissingRequiredComponent, message); }
+                else { Diagnostics.ReportError(DiagnosticCode.MissingRequiredComponent, message); }
             }
 
             return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);

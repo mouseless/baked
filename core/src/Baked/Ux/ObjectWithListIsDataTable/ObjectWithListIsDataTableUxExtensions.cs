@@ -29,7 +29,7 @@ public static class ObjectWithListIsDataTableUxExtensions
         {
             if (!type.TryGetListProperty(out var result))
             {
-                throw DiagnosticsCode.PropertyWithAttribute.Exception(
+                throw DiagnosticCode.PropertyWithAttribute.Exception(
                     $"{type.Name} is expected to have members and at least one property with `{nameof(ObjectWithListAttribute)}`"
                 );
             }

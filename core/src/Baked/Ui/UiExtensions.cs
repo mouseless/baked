@@ -87,7 +87,7 @@ public static class UiExtensions
         {
             var input =
                 inputs.Find(i => i.Name == name) ??
-                throw DiagnosticsCode.MissingItem.Exception($"{name} not found in input list");
+                throw DiagnosticCode.MissingItem.Exception($"{name} not found in input list");
 
             inputs.Remove(input);
             inputs.Insert(index, input);

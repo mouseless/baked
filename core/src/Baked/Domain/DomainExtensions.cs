@@ -52,10 +52,10 @@ public static class DomainExtensions
             layers.Add(new DomainLayer());
     }
 
-    extension(DiagnosticsCode)
+    extension(DiagnosticCode)
     {
-        public static DiagnosticsCode AttributeTargetMismatch => new(301, "attribute-target-mismatch");
-        public static DiagnosticsCode AttributeDoesNotAllow => new(302, "attribute-does-not-allow");
+        public static DiagnosticCode AttributeTargetMismatch => new(301, "attribute-target-mismatch");
+        public static DiagnosticCode AttributeDoesNotAllow => new(302, "attribute-does-not-allow");
     }
 
     extension(ApplicationContext application)
@@ -211,7 +211,7 @@ public static class DomainExtensions
             var validOn = usages?.ValidOn ?? AttributeTargets.All;
             if (validOn.HasFlag(model.Target)) { return; }
 
-            throw DiagnosticsCode.AttributeTargetMismatch.Exception(
+            throw DiagnosticCode.AttributeTargetMismatch.Exception(
                 $"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'"
             );
         }

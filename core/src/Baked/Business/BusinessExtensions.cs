@@ -16,14 +16,14 @@ public static class BusinessExtensions
             features.Add(configure(new()));
     }
 
-    extension(DiagnosticsCode)
+    extension(DiagnosticCode)
     {
-        public static DiagnosticsCode TypeWithAttribute => new(001, "type-with-attribute");
-        public static DiagnosticsCode RequiresBuildLevel => new(002, "requires-build-level");
-        public static DiagnosticsCode PropertyWithAttribute => new(003, "property-with-attribute");
-        public static DiagnosticsCode MethodWithAttribute => new(004, "method-with-attribute");
-        public static DiagnosticsCode ParameterWithAttribute => new(005, "parameter-with-attribute");
-        public static DiagnosticsCode RequiresElementType => new(006, "requires-element-type");
+        public static DiagnosticCode TypeWithAttribute => new(001, "type-with-attribute");
+        public static DiagnosticCode RequiresBuildLevel => new(002, "requires-build-level");
+        public static DiagnosticCode PropertyWithAttribute => new(003, "property-with-attribute");
+        public static DiagnosticCode MethodWithAttribute => new(004, "method-with-attribute");
+        public static DiagnosticCode ParameterWithAttribute => new(005, "parameter-with-attribute");
+        public static DiagnosticCode RequiresElementType => new(006, "requires-element-type");
     }
 
 #pragma warning disable IDE0052
@@ -136,7 +136,7 @@ public static class BusinessExtensions
             if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
             if (!type.TryGetGenerics(out var generics))
             {
-                throw DiagnosticsCode.RequiresBuildLevel.Exception($"{type.Name} doesn't provide generics information to skip nullable");
+                throw DiagnosticCode.RequiresBuildLevel.Exception($"{type.Name} doesn't provide generics information to skip nullable");
             }
 
             if (type.IsGenericTypeDefinition) { return type; }
@@ -156,7 +156,7 @@ public static class BusinessExtensions
             Func<PropertyModel, bool>? filter = default
         ) where TAttribute : Attribute =>
             members.FirstPropertyOrDefault<TAttribute>(filter: filter) ??
-            throw DiagnosticsCode.PropertyWithAttribute.Exception(
+            throw DiagnosticCode.PropertyWithAttribute.Exception(
                 $"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`"
             );
 
@@ -169,7 +169,7 @@ public static class BusinessExtensions
             Func<MethodModel, bool>? filter = default
         ) where TAttribute : Attribute =>
             members.FirstMethodOrDefault<TAttribute>(filter: filter) ??
-            throw DiagnosticsCode.MethodWithAttribute.Exception(
+            throw DiagnosticCode.MethodWithAttribute.Exception(
                 $"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`"
             );
 
@@ -185,7 +185,7 @@ public static class BusinessExtensions
             Func<ParameterModel, bool>? filter = default
         ) where TAttribute : Attribute =>
             method.FirstParameterOrDefault<TAttribute>(filter: filter) ??
-            throw DiagnosticsCode.ParameterWithAttribute.Exception(
+            throw DiagnosticCode.ParameterWithAttribute.Exception(
                 $"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`"
             );
 
