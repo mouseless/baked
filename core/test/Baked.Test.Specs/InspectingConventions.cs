@@ -28,7 +28,6 @@ public class InspectingConventions : TestSpec
 
         _diagnostics?.Dispose();
         _messages.Clear();
-        Inspection.ClearLastPath();
     }
 
     [Test]
@@ -108,7 +107,7 @@ public class InspectingConventions : TestSpec
             _inspect.Capture(cc, dtc, () => dtc.AlignRight = false);
         }
 
-        _messages.Count.ShouldBe(0);
+        _messages.Count(c => c.Message.Contains($"{true}")).ShouldBe(0);
     }
 
     [Test]
@@ -124,11 +123,6 @@ public class InspectingConventions : TestSpec
 
         _messages.ShouldContain(m => m.Message.Contains("testProp"));
     }
-
-    [Test]
-    [Ignore("not tested")]
-    public void Inspects_an_attribute_property() =>
-        Assert.Fail();
 
     [Test]
     public void Allows_inspection_on_interfaces()
@@ -166,46 +160,56 @@ public class InspectingConventions : TestSpec
 
     [Test]
     [Ignore("not tested")]
+    public void Allows_inspecting_an_attribute_property() =>
+        this.ShouldFail();
+
+    [Test]
+    [Ignore("not tested")]
     public void Filters_by_component_context() =>
-        Assert.Fail();
+        this.ShouldFail();
 
     [Test]
     [Ignore("not tested")]
     public void Filters_by_model_context() =>
-        Assert.Fail();
+        this.ShouldFail();
 
     [Test]
     [Ignore("not tested")]
     public void Reports_path_in_gray_for_readability() =>
-        Assert.Fail();
+        this.ShouldFail();
 
     [Test]
     [Ignore("not tested")]
     public void Reports_schema_type_and_property_name_for_components() =>
-        Assert.Fail();
+        this.ShouldFail();
 
     [Test]
     [Ignore("not tested")]
     public void Reports_attribute_type_and_property_name_for_attributes() =>
-        Assert.Fail();
+        this.ShouldFail();
 
     [Test]
     [Ignore("not tested")]
     public void Reports_component_type_and_property_name_for_components() =>
-        Assert.Fail();
+        this.ShouldFail();
 
     [Test]
     [Ignore("not tested")]
     public void Reports_path_only_one_for_consequent_captures() =>
-        Assert.Fail();
+        this.ShouldFail();
 
     [Test]
     [Ignore("not tested")]
     public void Captures_and_reports_feature_name_from_stack_trace() =>
-        Assert.Fail();
+        this.ShouldFail();
 
     [Test]
     [Ignore("not tested")]
     public void Reports_the_whole_stack_trace_when_feature_is_not_captured() =>
-        Assert.Fail();
+        this.ShouldFail();
+
+    [Test]
+    [Ignore("not tested")]
+    public void Reports_new_value_as_json_when_value_is_not_value_type_or_string() =>
+        this.ShouldFail();
 }

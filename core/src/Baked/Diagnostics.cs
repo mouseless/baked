@@ -33,7 +33,8 @@ public class Diagnostics : IDisposable
             {
                 foreach (var message in result.Messages)
                 {
-                    Console.Build.MarkupLine($"{message}");
+                    try { Console.Build.MarkupLine(message.ToString()); }
+                    catch { Console.WriteLine(message); }
                 }
 
                 if (result.Errors.Any())

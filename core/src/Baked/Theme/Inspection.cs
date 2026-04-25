@@ -1,36 +1,39 @@
 using Baked.Ui;
+using Newtonsoft.Json;
 using Spectre.Console;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.Theme;
 
 public class Inspection(StackTrace _stackTrace)
 {
-    static ComponentPath _lastPath;
-
-    public static void ClearLastPath() =>
-        _lastPath = default;
-
-    static object? Evaluate<T>(T result)
+    static bool TryEvaluate<T>(T result, out object? value, [NotNullWhen(true)] out Type? type)
     {
+        value = null;
+        type = null;
         var inspect = Inspect.Current;
-        if (inspect is null) { return null; }
+        if (inspect is null) { return false; }
 
         object? target = result is IComponentDescriptor descriptor
             ? descriptor.Schema
             : result;
-        if (target is null || !target.GetType().IsAssignableTo(inspect.SchemaType)) { return null; }
+        if (target is null || !target.GetType().IsAssignableTo(inspect.SchemaType)) { return false; }
 
-        return inspect.Evaluate(target);
+        value = inspect.Evaluate(target);
+        type = target.GetType();
+
+        return true;
     }
 
-    public T Capture<T>(ComponentContext context, T target, Action update) =>
-        Capture(context, apply: () => { update(); return target; }, current: target);
-
     public T Capture<T>(ComponentContext context, Func<T> create) =>
-        Capture(context, apply: create);
+        Capture(context, create, create: true);
+
+    public T Capture<T>(ComponentContext context, T target, Action update) =>
+        Capture(context, () => { update(); return target; }, create: false, current: target);
 
     T Capture<T>(ComponentContext context, Func<T> apply,
+        bool create = false,
         T? current = default
     )
     {
@@ -38,47 +41,51 @@ public class Inspection(StackTrace _stackTrace)
         if (inspect is null) { return apply(); }
         if (!inspect.Filter(context)) { return apply(); }
 
-        var old = Evaluate(current);
+        TryEvaluate(current, out var old, out var _);
         var result = apply();
-        var value = Evaluate(result);
-        if (Equals(value, old)) { return result; }
-
-        if (_lastPath != context.Path)
+        if (TryEvaluate(result, out var value, out var schemaType) && create)
         {
-            _lastPath = context.Path;
-            Diagnostics.ReportInfo($"[gray]{_lastPath}[/]");
+            Diagnostics.ReportInfo($"[lightskyblue3_1]<{schemaType.Name}>[/] [gray]{context.Path}[/]");
         }
 
+        if (Equals(value, old)) { return result; }
+
+        string source;
         var frames = _stackTrace.GetFrames();
         var featureFrame =
             frames.FirstOrDefault(f => f.GetMethod()?.ReflectedType?.DeclaringType?.Name.EndsWith("Feature") == true) ??
             frames.FirstOrDefault(f => f.GetMethod()?.DeclaringType?.Name.EndsWith("Feature") == true);
         if (featureFrame is null)
         {
-            Diagnostics.ReportInfo($"{value} ⤌ [magenta]<unknown>[/]{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]");
-
-            return result;
+            source = $"[magenta]<unknown>[/]{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]";
         }
-
-        var source =
-            featureFrame.GetMethod()?.ReflectedType?.DeclaringType?.Name ??
-            featureFrame.GetMethod()?.DeclaringType?.Name ??
-            string.Empty;
-        var fileName = featureFrame.GetFileName();
-        if (fileName is not null)
+        else
         {
-            var title = source;
-            var url = new Uri(fileName).AbsoluteUri;
-            var lineNumber = featureFrame.GetFileLineNumber();
-            if (lineNumber > 0)
+            source =
+                featureFrame.GetMethod()?.ReflectedType?.DeclaringType?.Name ??
+                featureFrame.GetMethod()?.DeclaringType?.Name ??
+                string.Empty;
+            var fileName = featureFrame.GetFileName();
+            if (fileName is not null)
             {
-                title += $":{lineNumber}";
+                var title = source;
+                var url = new Uri(fileName).AbsoluteUri;
+                var lineNumber = featureFrame.GetFileLineNumber();
+                if (lineNumber > 0)
+                {
+                    title += $":{lineNumber}";
+                }
+
+                source = $"[link={url}]{title}[/]";
             }
 
-            source = $"[link={url}]title[/]";
+            source = $"[magenta]{source}[/]";
         }
 
-        Diagnostics.ReportInfo($"{value} ← [magenta]{source}[/]");
+        var valueString = value is string || value?.GetType().SkipNullable().IsValueType == true
+            ? $"{value}"
+            : JsonConvert.SerializeObject(value, Formatting.Indented);
+        Diagnostics.ReportInfo($"  {Markup.Escape(valueString)} ← {source}");
 
         return result;
     }
