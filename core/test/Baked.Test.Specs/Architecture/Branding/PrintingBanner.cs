@@ -56,11 +56,9 @@ public class PrintingBanner : ArchitectureSpec
         banner.Print();
 
         ConsoleOutput.ShouldContainWithoutWhitespace($$"""
-
         ⢐⠄⣗⡆⡶⡆⡧⡂⣶⡂⣖⡇⣀
 
          v{{VersionString}} - baked.mouseless.codes - github.com/mouseless/baked
-
         """);
     }
 
