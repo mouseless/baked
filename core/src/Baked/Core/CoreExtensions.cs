@@ -228,7 +228,13 @@ public static class CoreExtensions
         }
     }
 
+    // WARNING
+    //
+    // Do NOT remove this warning disable section unintentionally.
+    // Without this, GitHub Actions fails on dotnet format
+#pragma warning disable IDE0052
     static readonly IAnsiConsole _buildConsole = AnsiConsole.Create(new() { Out = new AnsiConsoleOutput(new EscapeFixTextWriter(Console.Out)) });
+#pragma warning restore IDE0052
 
     extension(Console)
     {

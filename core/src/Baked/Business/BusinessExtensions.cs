@@ -26,6 +26,10 @@ public static class BusinessExtensions
         public static DiagnosticCode RequiresElementType => new(006, "requires-element-type");
     }
 
+    // WARNING
+    //
+    // Do NOT remove this warning disable section unintentionally.
+    // Without this, GitHub Actions fails on dotnet format
 #pragma warning disable IDE0052
     static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 2, [typeof(IServiceCollection)]) ??
         throw new("AddTransientWithFactory<TService, TImplementation> should have existed");
