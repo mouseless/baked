@@ -17,7 +17,9 @@ public class PrintingBanner : ArchitectureSpec
         AnsiConsole.Console = AnsiConsole.Create(new()
         {
             Out = new AnsiConsoleOutput(_fakeOut = new StringWriter()),
-            Ansi = AnsiSupport.No
+            Ansi = AnsiSupport.No,
+            ColorSystem = ColorSystemSupport.NoColors,
+            Interactive = InteractionSupport.No
         });
     }
 
@@ -57,7 +59,7 @@ public class PrintingBanner : ArchitectureSpec
 
         ⢐⠄⣗⡆⡶⡆⡧⡂⣶⡂⣖⡇⣀
 
-        v{{VersionString}} - baked.mouseless.codes - github.com/mouseless/baked
+         v{{VersionString}} - baked.mouseless.codes - github.com/mouseless/baked
 
         """);
     }
