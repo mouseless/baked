@@ -27,7 +27,7 @@ public class PrintingBanner : ArchitectureSpec
     string ConsoleOutput => _fakeOut?.ToString() ?? string.Empty;
 
     // Version is shortened to Ver to keep banner width fixed
-    string VersionString =>
+    static string VersionString =>
         FileVersionInfo.GetVersionInfo(typeof(IBanner).Assembly.Location).FileVersion?[..^2] ??
         throw new("Version not found");
 
@@ -51,12 +51,9 @@ public class PrintingBanner : ArchitectureSpec
 
         ConsoleOutput.ShouldContainWithoutWhitespace($$"""
 
-        ▄  █▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄▄█
-        ▄▀ █▄█ █▀█ █▀▄ ██▄ █▄█ ▄▄
+        ⢐⠄⣗⡆⡶⡆⡧⡂⣶⡂⣖⡇⣀
 
-        version: v{{VersionString}}
-        docs: https://baked.mouseless.codes
-        source: https://github.com/mouseless/baked
+        v{{VersionString}} - docs- source
 
         """);
     }
