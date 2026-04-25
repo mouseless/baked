@@ -232,6 +232,6 @@ public static class CoreExtensions
 
     extension(Console)
     {
-        public static IAnsiConsole Build => _buildConsole;
+        internal static IAnsiConsole Build => _buildConsole;
     }
 }

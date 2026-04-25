@@ -119,7 +119,7 @@ public static class ThemeExtensions
             conventions.AddTypeAttribute(
                 attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => cc.Inspect.Capture(cc, schema(c, cc)),
+                    Builder = cc => cc.Inspect.Capture(cc, () => schema(c, cc)),
                     Filter = where,
                     Inspect = c.Inspect
                 },
@@ -176,7 +176,7 @@ public static class ThemeExtensions
             conventions.AddPropertyAttribute(
                 attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => cc.Inspect.Capture(cc, schema(c, cc)),
+                    Builder = cc => cc.Inspect.Capture(cc, () => schema(c, cc)),
                     Filter = where,
                     Inspect = c.Inspect
                 },
@@ -233,7 +233,7 @@ public static class ThemeExtensions
             conventions.AddMethodAttribute(
                 attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => cc.Inspect.Capture(cc, schema(c, cc)),
+                    Builder = cc => cc.Inspect.Capture(cc, () => schema(c, cc)),
                     Filter = where,
                     Inspect = c.Inspect
                 },
@@ -290,7 +290,7 @@ public static class ThemeExtensions
             conventions.AddParameterAttribute(
                 attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => cc.Inspect.Capture(cc, schema(c, cc)),
+                    Builder = cc => cc.Inspect.Capture(cc, () => schema(c, cc)),
                     Filter = where,
                     Inspect = c.Inspect
                 },
@@ -515,7 +515,7 @@ public static class ThemeExtensions
                 {
                     add(c.Type, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => cc.Inspect.Capture(cc, component(c, cc)),
+                        Builder = cc => cc.Inspect.Capture(cc, () => component(c, cc)),
                         Filter = where,
                         Inspect = c.Inspect
                     });
@@ -581,7 +581,7 @@ public static class ThemeExtensions
                 {
                     add(c.Property, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => cc.Inspect.Capture(cc, component(c, cc)),
+                        Builder = cc => cc.Inspect.Capture(cc, () => component(c, cc)),
                         Filter = where,
                         Inspect = c.Inspect
                     });
@@ -647,7 +647,7 @@ public static class ThemeExtensions
                 {
                     add(c.Method, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => cc.Inspect.Capture(cc, component(c, cc)),
+                        Builder = cc => cc.Inspect.Capture(cc, () => component(c, cc)),
                         Filter = where,
                         Inspect = c.Inspect
                     });
@@ -713,7 +713,7 @@ public static class ThemeExtensions
                 {
                     add(c.Parameter, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => cc.Inspect.Capture(cc, component(c, cc)),
+                        Builder = cc => cc.Inspect.Capture(cc, () => component(c, cc)),
                         Filter = where,
                         Inspect = c.Inspect
                     });
@@ -1104,10 +1104,7 @@ public static class ThemeExtensions
                 var result = prev(cc);
                 if (!where(cc)) { return result; }
 
-                var old = inspect.Evaluate(result);
-                apply(result, cc);
-
-                return inspect.Capture(cc, result, old: old);
+                return inspect.Capture(cc, result, () => apply(result, cc));
             };
         }
 #pragma warning restore IDE0051

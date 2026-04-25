@@ -1,16 +1,129 @@
+using Baked.Playground.Ui;
+using Baked.Theme;
+using Baked.Ui;
+
+using static Baked.Ui.Datas;
+
+using B = Baked.Ui.Components;
+using C = Baked.Playground.Ui.Components;
+
 namespace Baked.Test;
 
-public class InspectingConventions
+public class InspectingConventions : TestSpec
 {
-    [Test]
-    [Ignore("not tested")]
-    public void Inspects_a_component_property() =>
-        Assert.Fail();
+    readonly List<DiagnosticMessage> _messages = [];
+    Inspection _inspect = Inspect.TraceHere();
+    IDisposable? _diagnostics;
+
+    public override void SetUp()
+    {
+        base.SetUp();
+
+        _diagnostics = Diagnostics.Start(GiveMe.AString(), result => _messages.AddRange(result.Messages));
+    }
+
+    public override void TearDown()
+    {
+        base.TearDown();
+
+        _diagnostics?.Dispose();
+        _messages.Clear();
+        Inspection.ClearLastPath();
+    }
 
     [Test]
-    [Ignore("not tested")]
-    public void Inspects_a_schema_property() =>
-        Assert.Fail();
+    public void When_a_schema_is_created_with_a_non_null_on_the_inspected_property__it_reports_schema_path_and_the_initial_value()
+    {
+        Inspect.Schema<DataTable.Column>(t => t.Title);
+        var cc = GiveMe.AComponentContext(paths: ["test", "path"]);
+
+        using (_diagnostics)
+        {
+            _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test title"));
+        }
+
+        _messages.Count.ShouldBe(2);
+        _messages[0].Level.ShouldBe("info");
+        _messages[0].Message.ShouldContain("/test/path");
+        _messages[1].Level.ShouldBe("info");
+        _messages[1].Message.ShouldContain($"test title");
+    }
+
+    [Test]
+    public void When_the_inspected_property_of_a_schema_is_updated__it_reports_only_if_new_value_is_different()
+    {
+        Inspect.Schema<DataTable.Column>(t => t.Title);
+        var cc = GiveMe.AComponentContext();
+
+        using (_diagnostics)
+        {
+            var dtc = B.DataTableColumn(key: GiveMe.AString(), options: dtc => dtc.Title = "initial");
+
+            _inspect.Capture(cc, dtc, () => dtc.Title = "updated");
+            _inspect.Capture(cc, dtc, () => dtc.Title = "updated");
+        }
+
+        _messages.Count(c => c.Message.Contains("updated")).ShouldBe(1);
+    }
+
+    [Test]
+    public void Capture_returns_the_expected_schema__so_that_usages_can_return_with_a_single_line()
+    {
+        Inspect.Schema<DataTable.Column>(t => t.Title);
+        var cc = GiveMe.AComponentContext();
+
+        using (_diagnostics)
+        {
+            var dtc = _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: t => t.Title = "test title"));
+
+            dtc.Title.ShouldBe("test title");
+        }
+    }
+
+    [Test]
+    public void It_prints_schema_path_once_for_consequent_updates()
+    {
+        Inspect.Schema<DataTable.Column>(t => t.Title);
+        var cc = GiveMe.AComponentContext(paths: ["test", "path"]);
+
+        using (_diagnostics)
+        {
+            var dtc = _inspect.Capture(cc, () => B.DataTableColumn(key: GiveMe.AString(), options: dtc => dtc.Title = "1"));
+
+            _inspect.Capture(cc, dtc, () => dtc.Title = "2");
+        }
+
+        _messages.Count(c => c.Message.Contains("/test/path")).ShouldBe(1);
+    }
+
+    [Test]
+    public void Capture_does_not_report_when_a_non_inspected_property_is_set_or_updated()
+    {
+        Inspect.Schema<DataTable.Column>(t => t.Title);
+        var cc = GiveMe.AComponentContext();
+
+        using (_diagnostics)
+        {
+            var dtc = _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.AlignRight = true));
+            _inspect.Capture(cc, dtc, () => dtc.AlignRight = false);
+        }
+
+        _messages.Count.ShouldBe(0);
+    }
+
+    [Test]
+    public void Allows_inspecting_a_component_property()
+    {
+        Inspect.Component<Text>(t => t.Prop);
+        var cc = GiveMe.AComponentContext();
+
+        using (_diagnostics)
+        {
+            _inspect.Capture(cc, () => B.Text(options: t => t.Prop = "testProp"));
+        }
+
+        _messages.ShouldContain(m => m.Message.Contains("testProp"));
+    }
 
     [Test]
     [Ignore("not tested")]
@@ -18,19 +131,38 @@ public class InspectingConventions
         Assert.Fail();
 
     [Test]
-    [Ignore("not tested")]
-    public void Allows_multiple_inspections_at_once() =>
-        Assert.Fail();
+    public void Allows_inspection_on_interfaces()
+    {
+        Inspect.Component<ISelect>(s => s.OptionLabel);
+        var cc = GiveMe.AComponentContext();
+
+        using (_diagnostics)
+        {
+            var sb = _inspect.Capture(cc, () => B.SelectButton(
+                data: Inline(new[] { new { testProp = GiveMe.AString() } }),
+                options: sb => sb.OptionLabel = "initialized")
+            );
+            _inspect.Capture(cc, sb, () => sb.Schema.OptionLabel = "updated");
+        }
+
+        _messages.ShouldContain(m => m.Message.Contains("initialized"));
+        _messages.ShouldContain(m => m.Message.Contains("updated"));
+    }
 
     [Test]
-    [Ignore("not tested")]
-    public void Matches_on_interfaces_or_base_types() =>
-        Assert.Fail();
+    public void Allows_inspection_on_component_overrides()
+    {
+        Inspect.Component<MyText>(s => s.SomethingExtra);
+        var cc = GiveMe.AComponentContext();
 
-    [Test]
-    [Ignore("not tested")]
-    public void Matches_on_component_overrides() =>
-        Assert.Fail();
+        using (_diagnostics)
+        {
+            var t = B.Text();
+            _inspect.Capture(cc, t, () => t.Override(C.MyText(mt => mt.SomethingExtra = "overridden")));
+        }
+
+        _messages.ShouldContain(m => m.Message.Contains("overridden"));
+    }
 
     [Test]
     [Ignore("not tested")]
@@ -44,12 +176,7 @@ public class InspectingConventions
 
     [Test]
     [Ignore("not tested")]
-    public void Reports_when_value_changes() =>
-        Assert.Fail();
-
-    [Test]
-    [Ignore("not tested")]
-    public void Reports_component_schema_type_and_property_name_for_components() =>
+    public void Reports_path_in_gray_for_readability() =>
         Assert.Fail();
 
     [Test]
@@ -60,6 +187,11 @@ public class InspectingConventions
     [Test]
     [Ignore("not tested")]
     public void Reports_attribute_type_and_property_name_for_attributes() =>
+        Assert.Fail();
+
+    [Test]
+    [Ignore("not tested")]
+    public void Reports_component_type_and_property_name_for_components() =>
         Assert.Fail();
 
     [Test]
