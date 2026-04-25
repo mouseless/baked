@@ -13,9 +13,16 @@ public readonly record struct ComponentPath(string Value)
     internal static IEnumerable<string> GetPaths() =>
         _paths.AsReadOnly();
 
-    internal static string GetPathsAsTree() =>
+    internal static string GetPathsAsTree(Func<ComponentPath, bool> filter) =>
         ComponentPathTreeVisualizer
-            .Visualize(_paths.AsReadOnly())
+            .Visualize(
+                _paths
+                    .Select(p => new ComponentPath(p))
+                    .Where(filter)
+                    .Select(p => p.Value)
+                    .ToList()
+                    .AsReadOnly()
+            )
             .Join(Environment.NewLine);
 
     public ComponentPath(params object[] paths)

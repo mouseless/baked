@@ -14,12 +14,13 @@ namespace Baked.Theme;
 // returns it as lines ready to print — no direct `Console` calls.
 //
 // Output format:
-//   - First line: "Drilled component paths:"
+//   - First line: "Component paths:"
 //   - Second line: "/"
 //   - Followed by tree lines using `├ ` / `└ ` connectors and `│ ` / `  `
 //     indentation
-//   - Connector and indent are colored dark gray via ANSI `\x1b[90m]` /
-//     `\x1b[0m]`, node name stays default color
+//   - Connector and indent are colored gray using Spectre.Console
+//     `[gray]..[/]`, node name stays default color but should be escaped using
+//     `Markup.Escape`
 //
 // Coding style preferences:
 //   - Private nested classes and helpers — internalize everything,
@@ -32,65 +33,54 @@ namespace Baked.Theme;
 //   - Deduplicate and sort input before processing
 //   - Nullable prefix parameter with null-coalescing default rather
 //     than overloading
-internal class ComponentPathTreeVisualizer
+internal static class ComponentPathTreeVisualizer
 {
-    class Node(string name)
+    public static IEnumerable<string> Visualize(IEnumerable<string>? paths)
     {
-        public string Name { get; } = name;
-        public SortedDictionary<string, Node> Children { get; } = new();
-    }
+        var sorted = (paths ?? [])
+            .Distinct()
+            .OrderBy(p => p)
+            .ToList();
 
-    public static IEnumerable<string> Visualize(IEnumerable<string> paths)
-    {
-        paths = paths.Order().Distinct();
-
-        var result = new List<string>();
-        var root = new Node("/");
-        foreach (var path in paths)
+        var root = new Node(string.Empty);
+        foreach (var path in sorted)
         {
             var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
             var current = root;
-
             foreach (var segment in segments)
-            {
-                if (!current.Children.TryGetValue(segment, out var child))
-                {
-                    child = new Node(segment);
-                    current.Children[segment] = child;
-                }
-
-                current = child;
-            }
+                current = current.GetOrAdd(segment);
         }
 
-        result.Add("Drilled component paths:");
-        result.Add(root.Name);
-        result.AddRange(PrintChildren(root));
-
-        return result;
+        var lines = new List<string> { "Component paths:", "/" };
+        AppendChildren(root, prefix: string.Empty, lines);
+        return lines;
     }
 
-    static IEnumerable<string> PrintChildren(Node node,
-        string? prefix = default
-    )
+    private static void AppendChildren(Node node, string prefix, List<string> lines)
     {
-        prefix ??= string.Empty;
-
-        var result = new List<string>();
         var children = node.Children.Values.ToList();
-
-        for (int i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Count; i++)
         {
             var child = children[i];
             var isLast = i == children.Count - 1;
 
             var connector = isLast ? "└ " : "├ ";
-            var childPrefix = isLast ? "  " : "│ ";
+            var escapedName = Markup.Escape(child.Name);
+            lines.Add($"{prefix}[gray]{connector}[/]{escapedName}");
 
-            result.Add($"[gray]{prefix}{connector}[/]{Markup.Escape(child.Name)}");
-            result.AddRange(PrintChildren(child, $"{prefix}{childPrefix}"));
+            var childPrefix = prefix + (isLast ? "[gray]  [/]" : "[gray]│ [/]");
+            AppendChildren(child, childPrefix, lines);
         }
+    }
 
-        return result;
+    private class Node(string name)
+    {
+        public string Name { get; } = name;
+        public SortedDictionary<string, Node> Children { get; } = new();
+
+        public Node GetOrAdd(string segment) =>
+            Children.TryGetValue(segment, out var child)
+                ? child
+                : Children[segment] = new Node(segment);
     }
 }

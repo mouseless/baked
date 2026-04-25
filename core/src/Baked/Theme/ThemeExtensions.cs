@@ -1048,7 +1048,7 @@ public static class ThemeExtensions
     {
         public void AddPages(IEnumerable<Route> routes, DomainModel domain, NewLocaleKey l,
             Action<DiagnosticsResult>? onComplete = default,
-            bool? debugComponentPaths = default
+            Func<ComponentPath, bool>? debugComponentPaths = default
         )
         {
             using (Diagnostics.Start(nameof(PageDescriptors), onDispose: onComplete))
@@ -1068,9 +1068,9 @@ public static class ThemeExtensions
                     pages.Add(page);
                 }
 
-                if (debugComponentPaths == true)
+                if (debugComponentPaths is not null)
                 {
-                    Diagnostics.ReportInfo(ComponentPath.GetPathsAsTree());
+                    Diagnostics.ReportInfo(ComponentPath.GetPathsAsTree(debugComponentPaths));
                 }
             }
         }

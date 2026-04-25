@@ -2,7 +2,6 @@
 using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Model;
-using Baked.Runtime;
 using Baked.Ui;
 using Humanizer;
 
@@ -18,7 +17,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     Action<ErrorPage>? _errorPageOptions = default,
     Action<SideMenu>? _sideMenuOptions = default,
     Action<Header>? _headerOptions = default,
-    Setting<bool>? _debugComponentPaths = default
+    Func<ComponentPath, bool>? _debugComponentPaths = default
 ) : IFeature<ThemeConfigurator>
 {
     public virtual void Configure(LayerConfigurator configurator)
@@ -274,7 +273,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 configurator.Ui.UsingLocalization(l =>
                 {
                     pages.AddPages(_routes, domain, l,
-                        debugComponentPaths: _debugComponentPaths?.GetValue()
+                        debugComponentPaths: _debugComponentPaths
                     );
                 });
             });
