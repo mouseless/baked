@@ -1,27 +1,31 @@
 ﻿using Baked.Architecture;
 using Baked.Branding;
+using Spectre.Console;
 using System.Diagnostics;
 
 namespace Baked.Test.Architecture.Branding;
 
 public class PrintingBanner : ArchitectureSpec
 {
-    TextWriter _realOut = default!;
+    IAnsiConsole _realConsole = default!;
     TextWriter _fakeOut = default!;
 
     public override void SetUp()
     {
         base.SetUp();
 
-        _realOut = Console.Out;
-        Console.SetOut(_fakeOut = new StringWriter());
+        AnsiConsole.Console = AnsiConsole.Create(new()
+        {
+            Out = new AnsiConsoleOutput(_fakeOut = new StringWriter()),
+            Ansi = AnsiSupport.No
+        });
     }
 
     public override void TearDown()
     {
         base.TearDown();
 
-        Console.SetOut(_realOut);
+        AnsiConsole.Console = _realConsole;
     }
 
     string ConsoleOutput => _fakeOut?.ToString() ?? string.Empty;
@@ -53,7 +57,7 @@ public class PrintingBanner : ArchitectureSpec
 
         ⢐⠄⣗⡆⡶⡆⡧⡂⣶⡂⣖⡇⣀
 
-        v{{VersionString}} - docs- source
+        v{{VersionString}} - baked.mouseless.codes - github.com/mouseless/baked
 
         """);
     }

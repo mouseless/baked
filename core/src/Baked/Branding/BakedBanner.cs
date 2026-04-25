@@ -17,7 +17,7 @@ public sealed class BakedBanner(RunFlags _runFlags)
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine("[bold][red]⢐⠄[/]⣗⡆⡶⡆⡧⡂⣶⡂⣖⡇[red]⣀[/][/]");
         AnsiConsole.WriteLine();
-        AnsiConsole.MarkupLine($"[gray] v{versionString} - [link=https://baked.mouseless.codes]docs[/] - [link=https://github.com/mouseless/baked]source[/][/]");
+        AnsiConsole.MarkupLine($"[gray] v{versionString} - [link=https://baked.mouseless.codes]baked.mouseless.codes[/] - [link=https://github.com/mouseless/baked]github.com/mouseless/baked[/][/]");
         AnsiConsole.WriteLine();
     }
 }
