@@ -3,6 +3,7 @@ using Baked.Core;
 using Baked.Testing;
 using Newtonsoft.Json;
 using Shouldly;
+using Spectre.Console;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -225,5 +226,12 @@ public static class CoreExtensions
             method.GetParameters().Length.ShouldBe(1);
             method.GetParameters().First().ParameterType.ShouldBe<T>();
         }
+    }
+
+    static readonly IAnsiConsole _buildConsole = AnsiConsole.Create(new() { Out = new AnsiConsoleOutput(new EscapeFixTextWriter(Console.Out)) });
+
+    extension(Console)
+    {
+        public static IAnsiConsole Build => _buildConsole;
     }
 }

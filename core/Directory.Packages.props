@@ -35,6 +35,7 @@
     <PackageVersion Include="Oracle.ManagedDataAccess.Core" Version="23.26.100" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.2" />
+    <PackageVersion Include="Spectre.Console" Version="0.55.2" />
     <PackageVersion Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.5" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.5" />

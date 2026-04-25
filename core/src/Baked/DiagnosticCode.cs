@@ -2,7 +2,7 @@ namespace Baked;
 
 public readonly record struct DiagnosticCode(int Number)
 {
-    public static DiagnosticCode Unknown => new(9999, "fatal");
+    public static DiagnosticCode Unknown => new(9999, "unknown");
 
     public string? Key { get; }
 

@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Baked;
 
 public class Diagnostics : IDisposable
@@ -10,7 +12,7 @@ public class Diagnostics : IDisposable
         {
             if (_current is null)
             {
-                throw new InvalidOperationException("There is no active diagnostics. Start one using `GenerationDiagnostics.Start(...)`");
+                throw new InvalidOperationException("There is no active diagnostics. Start one using `Diagnostics.Start(...)`");
             }
 
             return _current;
@@ -31,7 +33,7 @@ public class Diagnostics : IDisposable
             {
                 foreach (var message in result.Messages)
                 {
-                    Console.WriteLine(message);
+                    Console.Build.MarkupLine($"{message}");
                 }
 
                 if (result.Errors.Any())
@@ -65,7 +67,7 @@ public class Diagnostics : IDisposable
             ReportError(DiagnosticCode.Unknown, ex.Message);
             if (ex.StackTrace is not null)
             {
-                ReportInfo(ex.StackTrace);
+                ReportInfo(Markup.Escape(ex.StackTrace));
             }
 
             return default;

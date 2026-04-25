@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Baked.Theme;
 
 // AI-GEN (Claude - Sonnet 4.6)
@@ -37,9 +39,6 @@ internal class ComponentPathTreeVisualizer
         public string Name { get; } = name;
         public SortedDictionary<string, Node> Children { get; } = new();
     }
-
-    static readonly string _gray = "\x1b[90m";
-    static readonly string _reset = "\x1b[0m";
 
     public static IEnumerable<string> Visualize(IEnumerable<string> paths)
     {
@@ -88,7 +87,7 @@ internal class ComponentPathTreeVisualizer
             var connector = isLast ? "└ " : "├ ";
             var childPrefix = isLast ? "  " : "│ ";
 
-            result.Add($"{_gray}{prefix}{connector}{_reset}{child.Name}");
+            result.Add($"[gray]{prefix}{connector}[/]{Markup.Escape(child.Name)}");
             result.AddRange(PrintChildren(child, $"{prefix}{childPrefix}"));
         }
 
