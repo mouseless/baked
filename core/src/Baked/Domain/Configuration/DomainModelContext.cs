@@ -9,5 +9,5 @@ public class DomainModelContext
 
     // NOTE this is intentionally left as null to make sure build fails if
     // there is a bug in setting this value
-    public Inspection Inspect { get; internal set; } = null!;
+    public InspectTrace Inspect { get; internal set; } = null!;
 }

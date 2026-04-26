@@ -12,7 +12,7 @@ namespace Baked.Test;
 public class InspectingConventions : TestSpec
 {
     readonly List<DiagnosticMessage> _messages = [];
-    Inspection _inspect = Inspect.TraceHere();
+    InspectTrace _inspect = Inspect.TraceHere();
     IDisposable? _diagnostics;
 
     public override void SetUp()
@@ -164,9 +164,24 @@ public class InspectingConventions : TestSpec
         this.ShouldFail();
 
     [Test]
-    [Ignore("not tested")]
-    public void Filters_by_component_context() =>
-        this.ShouldFail();
+    public void Filters_by_component_context()
+    {
+        Inspect
+            .Where(cc => cc.Path.StartsWith("page-1"))
+            .Component<Text>(s => s.Prop)
+        ;
+        var page1 = GiveMe.AComponentContext(paths: ["page-1"]);
+        var page2 = GiveMe.AComponentContext(paths: ["page-2"]);
+
+        using (_diagnostics)
+        {
+            _inspect.Capture(page1, () => B.Text(options: t => t.Prop = "prop1"));
+            _inspect.Capture(page2, () => B.Text(options: t => t.Prop = "prop2"));
+        }
+
+        _messages.ShouldContain(m => m.Message.Contains("prop1"));
+        _messages.ShouldNotContain(m => m.Message.Contains("prop2"));
+    }
 
     [Test]
     [Ignore("not tested")]
@@ -174,19 +189,33 @@ public class InspectingConventions : TestSpec
         this.ShouldFail();
 
     [Test]
-    [Ignore("not tested")]
-    public void Reports_path_in_gray_for_readability() =>
-        this.ShouldFail();
+    public void Reports_path_in_gray_for_readability()
+    {
+        Inspect.Component<Text>(s => s.Prop);
+        var cc = GiveMe.AComponentContext(paths: ["test", "path"]);
+
+        using (_diagnostics)
+        {
+            _inspect.Capture(cc, () => B.Text(options: t => t.Prop = GiveMe.AString()));
+        }
+
+        _messages.ShouldContain(m => m.Message.Contains("[gray]/test/path[/]"));
+    }
 
     [Test]
-    [Ignore("not tested")]
-    public void Reports_schema_type_and_property_name_for_components() =>
-        this.ShouldFail();
+    public void Reports_schema_type_and_property_name_for_components()
+    {
+        Inspect.Schema<DataTable.Column>(s => s.Title);
+        var cc = GiveMe.AComponentContext();
 
-    [Test]
-    [Ignore("not tested")]
-    public void Reports_attribute_type_and_property_name_for_attributes() =>
-        this.ShouldFail();
+        using (_diagnostics)
+        {
+            _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test"));
+        }
+
+        _messages.ShouldContain(m => m.Message.Contains("<DataTable.Column>"));
+        _messages.ShouldContain(m => m.Message.Contains("[gray]Title:[/] test"));
+    }
 
     [Test]
     [Ignore("not tested")]
@@ -195,7 +224,7 @@ public class InspectingConventions : TestSpec
 
     [Test]
     [Ignore("not tested")]
-    public void Reports_path_only_one_for_consequent_captures() =>
+    public void Reports_attribute_type_and_property_name_for_attributes() =>
         this.ShouldFail();
 
     [Test]

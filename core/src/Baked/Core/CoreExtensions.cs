@@ -188,6 +188,19 @@ public static class CoreExtensions
     {
         public void ShouldBe<T>() =>
             type.ShouldBe(typeof(T));
+
+        internal string GetName(bool includeDeclaringTypes)
+        {
+            if (!includeDeclaringTypes) { return type.Name; }
+
+            var result = type.Name;
+            for (var cur = type.DeclaringType; cur is not null; cur = cur.DeclaringType)
+            {
+                result = $"{cur.Name}.{result}";
+            }
+
+            return result;
+        }
     }
 
     extension(PropertyInfo property)

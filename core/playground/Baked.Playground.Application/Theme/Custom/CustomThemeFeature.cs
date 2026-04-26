@@ -81,7 +81,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
             Inspect
                 .Where(cc => cc.Path.Contains(nameof(FormSample)))
-                .Component<DataTable>(c => c?.Paginator)
+                .Schema<DataTable.Column>(c => c.Title)
             ;
         });
 
