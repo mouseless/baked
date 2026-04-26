@@ -17,7 +17,7 @@ public class ReportingErrorsInConventions : TestSpec
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
-                attribute: () => throw GiveMe.ADiagnosticsCode().Exception(GiveMe.AString())
+                attribute: () => throw GiveMe.ADiagnosticCode().Exception(GiveMe.AString())
             );
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
@@ -45,7 +45,7 @@ public class ReportingErrorsInConventions : TestSpec
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
-                attribute: () => throw GiveMe.ADiagnosticsCode().Exception("test")
+                attribute: () => throw GiveMe.ADiagnosticCode().Exception("test")
             );
             builder.OnComplete = e => errors.AddRange(e.Errors);
         });
@@ -66,11 +66,11 @@ public class ReportingErrorsInConventions : TestSpec
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
-                attribute: () => throw GiveMe.ADiagnosticsCode().Exception("string error")
+                attribute: () => throw GiveMe.ADiagnosticCode().Exception("string error")
             );
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<int>(),
-                attribute: () => throw GiveMe.ADiagnosticsCode().Exception("int error")
+                attribute: () => throw GiveMe.ADiagnosticCode().Exception("int error")
             );
             builder.OnComplete = e => errors.AddRange(e.Errors);
         });
@@ -92,7 +92,7 @@ public class ReportingErrorsInConventions : TestSpec
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>() || c.Type.Is<int>(),
-                attribute: c => throw GiveMe.ADiagnosticsCode().Exception($"{c.Type.Name} error")
+                attribute: c => throw GiveMe.ADiagnosticCode().Exception($"{c.Type.Name} error")
             );
             builder.OnComplete = e => errors.AddRange(e.Errors);
         });
@@ -116,14 +116,29 @@ public class ReportingErrorsInConventions : TestSpec
         IDomainModelConvention<MethodModelContext>,
         IDomainModelConvention<ParameterModelContext>
     {
-        public void Apply(TypeModelContext model) => throw giveMe.ADiagnosticsCode().Exception("basics");
-        public void Apply(TypeModelGenericsContext model) => throw giveMe.ADiagnosticsCode().Exception("generics");
-        public void Apply(TypeModelInheritanceContext model) => throw giveMe.ADiagnosticsCode().Exception("inheritance");
-        public void Apply(TypeModelMetadataContext model) => throw giveMe.ADiagnosticsCode().Exception("metadata");
-        public void Apply(TypeModelMembersContext model) => throw giveMe.ADiagnosticsCode().Exception("members");
-        public void Apply(PropertyModelContext model) => throw giveMe.ADiagnosticsCode().Exception("property");
-        public void Apply(MethodModelContext model) => throw giveMe.ADiagnosticsCode().Exception("method");
-        public void Apply(ParameterModelContext model) => throw giveMe.ADiagnosticsCode().Exception("parameter");
+        public void Apply(TypeModelContext model) =>
+            throw giveMe.ADiagnosticCode().Exception("basics");
+
+        public void Apply(TypeModelGenericsContext model) =>
+            throw giveMe.ADiagnosticCode().Exception("generics");
+
+        public void Apply(TypeModelInheritanceContext model) =>
+            throw giveMe.ADiagnosticCode().Exception("inheritance");
+
+        public void Apply(TypeModelMetadataContext model) =>
+            throw giveMe.ADiagnosticCode().Exception("metadata");
+
+        public void Apply(TypeModelMembersContext model) =>
+            throw giveMe.ADiagnosticCode().Exception("members");
+
+        public void Apply(PropertyModelContext model) =>
+            throw giveMe.ADiagnosticCode().Exception("property");
+
+        public void Apply(MethodModelContext model) =>
+            throw giveMe.ADiagnosticCode().Exception("method");
+
+        public void Apply(ParameterModelContext model) =>
+            throw giveMe.ADiagnosticCode().Exception("parameter");
     }
 
     [Test]

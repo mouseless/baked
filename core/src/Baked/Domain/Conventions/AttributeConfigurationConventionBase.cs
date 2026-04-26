@@ -1,5 +1,6 @@
 ﻿using Baked.Domain.Configuration;
 using Baked.Domain.Model;
+using Baked.Theme;
 
 namespace Baked.Domain.Conventions;
 
@@ -7,11 +8,16 @@ public abstract class AttributeConfigurationConventionBase<TModelContext, TAttri
     Func<TModelContext, TAttribute, bool>? when = default
 ) : IDomainModelConvention<TModelContext>
     where TAttribute : Attribute
+    where TModelContext : DomainModelContext
 {
+    readonly InspectTrace _trace = Inspect.TraceHere();
+
     protected abstract ICustomAttributesModel GetMetadata(TModelContext context);
 
     public void Apply(TModelContext context)
     {
+        context.Trace = _trace;
+
         var attributes = new List<TAttribute>();
         if (typeof(TAttribute).AllowsMultiple())
         {
@@ -29,7 +35,7 @@ public abstract class AttributeConfigurationConventionBase<TModelContext, TAttri
         {
             if (when is not null && !when(context, attribute)) { continue; }
 
-            apply(attribute, context);
+            _trace.Capture(context, attribute, () => apply(attribute, context));
         }
     }
 }

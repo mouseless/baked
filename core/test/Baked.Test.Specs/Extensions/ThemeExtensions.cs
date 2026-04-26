@@ -22,7 +22,7 @@ public static class ThemeExtensions
             if (buildFails)
             {
                 result.Page = p => p.Described(_ =>
-                    _ => throw giveMe.ADiagnosticsCode().Exception(buildFailMessage)
+                    _ => throw giveMe.ADiagnosticCode().Exception(buildFailMessage)
                 );
             }
 

@@ -1,6 +1,5 @@
 ﻿using Baked.Domain;
 using Baked.Domain.Model;
-using Baked.Runtime;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -20,7 +19,7 @@ public static class DefaultThemeExtensions
             Action<ErrorPage>? errorPageOptions = default,
             Action<SideMenu>? sideMenuOptions = default,
             Action<Header>? headerOptions = default,
-            Setting<bool>? debugComponentPaths = default
+            ComponentPath.Debug? debugComponentPaths = default
         ) => new([index(new()), .. routes?.Select(r => r(new())) ?? []],
             _errorPageOptions: errorPageOptions,
             _sideMenuOptions: sideMenuOptions,

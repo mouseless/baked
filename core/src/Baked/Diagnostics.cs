@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Baked;
 
 public class Diagnostics : IDisposable
@@ -10,7 +12,7 @@ public class Diagnostics : IDisposable
         {
             if (_current is null)
             {
-                throw new InvalidOperationException("There is no active diagnostics. Start one using `GenerationDiagnostics.Start(...)`");
+                throw new InvalidOperationException("There is no active diagnostics. Start one using `Diagnostics.Start(...)`");
             }
 
             return _current;
@@ -31,7 +33,8 @@ public class Diagnostics : IDisposable
             {
                 foreach (var message in result.Messages)
                 {
-                    Console.WriteLine(message);
+                    try { Console.Build.MarkupLine(message.ToString()); }
+                    catch { Console.WriteLine(message); }
                 }
 
                 if (result.Errors.Any())
@@ -52,7 +55,7 @@ public class Diagnostics : IDisposable
         {
             return action();
         }
-        catch (DiagnosticsException ex)
+        catch (DiagnosticException ex)
         {
             Current._errors.Add(ex);
             ReportError(ex.Code, ex.Message);
@@ -62,48 +65,34 @@ public class Diagnostics : IDisposable
         catch (Exception ex)
         {
             Current._errors.Add(ex);
-            ReportError(DiagnosticsCode.Unknown, ex.Message);
+            ReportError(DiagnosticCode.Unknown, ex.Message);
             if (ex.StackTrace is not null)
             {
-                ReportInfo(ex.StackTrace);
+                ReportInfo(Markup.Escape(ex.StackTrace));
             }
 
             return default;
         }
     }
 
-    public static void ReportError(DiagnosticsCode code, string message) =>
+    public static void ReportError(DiagnosticCode code, string message) =>
         Report(message, level: "error", code: code);
 
-    public static void ReportWarning(DiagnosticsCode code, string message) =>
+    public static void ReportWarning(DiagnosticCode code, string message) =>
         Report(message, level: "warning", code: code);
 
     public static void ReportInfo(string message) =>
-        Report(message, level: "info");
+        Report(message);
 
     static void Report(string message,
         string level = "info",
-        DiagnosticsCode? code = default
-    )
-    {
-        if (code is null)
-        {
-            Current._messages.Add($"{level}: {message}");
-        }
-        else if (code.Value.Key is null)
-        {
-            Current._messages.Add($"{level} C{code.Value.Number:D4}: {message}");
-        }
-        else
-        {
-            Current._messages.Add($"{level} B{code.Value.Number:D4}: {message} (See: https://baked.mouseless.codes/errors#{code.Value.Key})");
-        }
-    }
+        DiagnosticCode? code = default
+    ) => Current._messages.Add(new(message, level, code));
 
     Action<DiagnosticsResult> _dispose;
     bool _disposed;
     List<Exception> _errors = [];
-    List<string> _messages = [];
+    List<DiagnosticMessage> _messages = [];
 
     public string Name { get; }
 
@@ -118,6 +107,8 @@ public class Diagnostics : IDisposable
 
     void IDisposable.Dispose()
     {
+        if (_disposed) { return; }
+
         _dispose(new(_errors.AsReadOnly(), _messages.AsReadOnly()));
 
         _current = null;

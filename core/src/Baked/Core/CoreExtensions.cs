@@ -3,6 +3,7 @@ using Baked.Core;
 using Baked.Testing;
 using Newtonsoft.Json;
 using Shouldly;
+using Spectre.Console;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -187,6 +188,19 @@ public static class CoreExtensions
     {
         public void ShouldBe<T>() =>
             type.ShouldBe(typeof(T));
+
+        internal string GetName(bool includeDeclaringTypes)
+        {
+            if (!includeDeclaringTypes) { return type.Name; }
+
+            var result = type.Name;
+            for (var cur = type.DeclaringType; cur is not null; cur = cur.DeclaringType)
+            {
+                result = $"{cur.Name}.{result}";
+            }
+
+            return result;
+        }
     }
 
     extension(PropertyInfo property)
@@ -225,5 +239,18 @@ public static class CoreExtensions
             method.GetParameters().Length.ShouldBe(1);
             method.GetParameters().First().ParameterType.ShouldBe<T>();
         }
+    }
+
+    // WARNING
+    //
+    // Do NOT remove this warning disable section unintentionally.
+    // Without this, GitHub Actions fails on dotnet format
+#pragma warning disable IDE0052
+    static readonly IAnsiConsole _buildConsole = AnsiConsole.Create(new() { Out = new AnsiConsoleOutput(new EscapeFixTextWriter(Console.Out)) });
+#pragma warning restore IDE0052
+
+    extension(Console)
+    {
+        internal static IAnsiConsole Build => _buildConsole;
     }
 }

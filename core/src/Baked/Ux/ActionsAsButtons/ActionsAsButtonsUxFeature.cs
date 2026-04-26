@@ -68,7 +68,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 {
                     var routeBack =
                         c.Method.Get<ActionAttribute>().RoutePathBack ??
-                        throw DiagnosticsCode.InvalidState.Exception(
+                        throw DiagnosticCode.InvalidState.Exception(
                             $"`{nameof(ActionAttribute.RoutePathBack)}` can't be null here"
                         );
 

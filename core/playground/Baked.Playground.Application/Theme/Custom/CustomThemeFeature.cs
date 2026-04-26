@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.Playground.Caching;
 using Baked.Playground.Orm;
 using Baked.Playground.Ui;
@@ -78,6 +79,10 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             // Custom routes
             builder.Conventions.SetTypeRoute<Parent>("/parents/[id]");
             builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
+
+            Inspect
+                .Attribute<LabelAttribute>()
+            ;
         });
 
         configurator.Ui.ConfigureComponentExports(c =>

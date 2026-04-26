@@ -126,7 +126,7 @@ public class ProvidingStubs : TestSpec
         GiveMe.TheMethodOf<Abstract>(nameof(Abstract.VirtualMethod))?.ShouldBeVirtual();
         GiveMe.TheMethodOf<Abstract>(nameof(Abstract.OneParameterMethod))?.ShouldHaveOneParameter<int>();
 
-        GiveMe.TheMethod<MethodSamples>(nameof(MethodSamples.Parameters)).DefaultOverload.Parameters["required"].ShouldBeRequired();
-        GiveMe.TheMethod<MethodSamples>(nameof(MethodSamples.Parameters)).DefaultOverload.Parameters["optional"].ShouldNotBeRequired();
+        GiveMe.TheMethodModel<MethodSamples>(nameof(MethodSamples.Parameters)).DefaultOverload.Parameters["required"].ShouldBeRequired();
+        GiveMe.TheMethodModel<MethodSamples>(nameof(MethodSamples.Parameters)).DefaultOverload.Parameters["optional"].ShouldNotBeRequired();
     }
 }

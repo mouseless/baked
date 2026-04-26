@@ -47,7 +47,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                     var initializer =
                         members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>()) ??
-                        throw DiagnosticsCode.MethodWithAttribute.Exception(
+                        throw DiagnosticCode.MethodWithAttribute.Exception(
                             $"`{c.Type.Name}` should have had method with `InitializerAttribute`."
                         );
 

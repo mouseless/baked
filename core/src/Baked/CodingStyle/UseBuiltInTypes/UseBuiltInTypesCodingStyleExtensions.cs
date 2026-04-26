@@ -34,7 +34,7 @@ public static class UseBuiltInTypesCodingStyleExtensions
         {
             if (!type.TryGetElementType(out var result))
             {
-                throw DiagnosticsCode.RequiresElementType.Exception(
+                throw DiagnosticCode.RequiresElementType.Exception(
                     $"{type.Name} does not have an element type"
                 );
             }

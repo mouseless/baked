@@ -23,15 +23,15 @@ public static class ThemeExtensions
             features.Add(configure(new()));
     }
 
-    extension(DiagnosticsCode)
+    extension(DiagnosticCode)
     {
-        public static DiagnosticsCode MissingRequiredComponent => new(101, "missing-required-component");
-        public static DiagnosticsCode MissingRequiredComponentOfType => new(102, "missing-required-component-of-type");
-        public static DiagnosticsCode MissingRequiredSchema => new(103, "missing-required-schema");
-        public static DiagnosticsCode RequiresLocateAction => new(104, "requires-locate-action");
-        public static DiagnosticsCode MethodRequired => new(105, "method-required");
-        public static DiagnosticsCode MissingItem => new(106, "missing-item");
-        public static DiagnosticsCode InvalidState => new(107, "invalid-state");
+        public static DiagnosticCode MissingRequiredComponent => new(101, "missing-required-component");
+        public static DiagnosticCode MissingRequiredComponentOfType => new(102, "missing-required-component-of-type");
+        public static DiagnosticCode MissingRequiredSchema => new(103, "missing-required-schema");
+        public static DiagnosticCode RequiresLocateAction => new(104, "requires-locate-action");
+        public static DiagnosticCode MethodRequired => new(105, "method-required");
+        public static DiagnosticCode MissingItem => new(106, "missing-item");
+        public static DiagnosticCode InvalidState => new(107, "invalid-state");
     }
 
     extension<T>(Action<T>? action)
@@ -74,7 +74,7 @@ public static class ThemeExtensions
                 {
                     if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate))
                     {
-                        throw DiagnosticsCode.RequiresLocateAction.Exception(
+                        throw DiagnosticCode.RequiresLocateAction.Exception(
                             $"`{c.Type.Name}` should have `Locate` action added"
                         );
                     }
@@ -117,10 +117,11 @@ public static class ThemeExtensions
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
             conventions.AddTypeAttribute(
-                attribute: c => new DescriptorBuilderAttribute<TSchema>()
+                attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => schema(c, cc),
-                    Filter = where
+                    Builder = cc => cc.Trace.Capture(cc, () => schema(c, cc)),
+                    Filter = where,
+                    Trace = c.Trace
                 },
                 when: when,
                 requiresIndex: false,
@@ -173,10 +174,11 @@ public static class ThemeExtensions
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
             conventions.AddPropertyAttribute(
-                attribute: c => new DescriptorBuilderAttribute<TSchema>()
+                attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => schema(c, cc),
-                    Filter = where
+                    Builder = cc => cc.Trace.Capture(cc, () => schema(c, cc)),
+                    Filter = where,
+                    Trace = c.Trace
                 },
                 when: when,
                 requiresIndex: false,
@@ -229,10 +231,11 @@ public static class ThemeExtensions
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
             conventions.AddMethodAttribute(
-                attribute: c => new DescriptorBuilderAttribute<TSchema>()
+                attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => schema(c, cc),
-                    Filter = where
+                    Builder = cc => cc.Trace.Capture(cc, () => schema(c, cc)),
+                    Filter = where,
+                    Trace = c.Trace
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
                 requiresIndex: false,
@@ -285,10 +288,11 @@ public static class ThemeExtensions
             order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
             conventions.AddParameterAttribute(
-                attribute: c => new DescriptorBuilderAttribute<TSchema>()
+                attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => schema(c, cc),
-                    Filter = where
+                    Builder = cc => cc.Trace.Capture(cc, () => schema(c, cc)),
+                    Filter = where,
+                    Trace = c.Trace
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
                 requiresIndex: false,
@@ -341,7 +345,8 @@ public static class ThemeExtensions
             conventions.AddTypeAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
-                    when: where
+                    where: where,
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -381,7 +386,8 @@ public static class ThemeExtensions
             conventions.AddPropertyAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
-                    when: where
+                    where: where,
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -421,7 +427,8 @@ public static class ThemeExtensions
             conventions.AddMethodAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
-                    when: where
+                    where: where,
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -461,7 +468,8 @@ public static class ThemeExtensions
             conventions.AddParameterAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
-                    when: where
+                    where: where,
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -505,10 +513,11 @@ public static class ThemeExtensions
             conventions.AddTypeAttribute(
                 apply: (c, add) =>
                 {
-                    add(c.Type, new ComponentDescriptorBuilderAttribute<TSchema>()
+                    add(c.Type, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => component(c, cc),
-                        Filter = where
+                        Builder = cc => cc.Trace.Capture(cc, () => component(c, cc)),
+                        Filter = where,
+                        Trace = c.Trace
                     });
                     add(c.Type, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -570,10 +579,11 @@ public static class ThemeExtensions
             conventions.AddPropertyAttribute(
                 apply: (c, add) =>
                 {
-                    add(c.Property, new ComponentDescriptorBuilderAttribute<TSchema>()
+                    add(c.Property, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => component(c, cc),
-                        Filter = where
+                        Builder = cc => cc.Trace.Capture(cc, () => component(c, cc)),
+                        Filter = where,
+                        Trace = c.Trace
                     });
                     add(c.Property, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -635,10 +645,11 @@ public static class ThemeExtensions
             conventions.AddMethodAttribute(
                 apply: (c, add) =>
                 {
-                    add(c.Method, new ComponentDescriptorBuilderAttribute<TSchema>()
+                    add(c.Method, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => component(c, cc),
-                        Filter = where
+                        Builder = cc => cc.Trace.Capture(cc, () => component(c, cc)),
+                        Filter = where,
+                        Trace = c.Trace
                     });
                     add(c.Method, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -700,10 +711,11 @@ public static class ThemeExtensions
             conventions.AddParameterAttribute(
                 apply: (c, add) =>
                 {
-                    add(c.Parameter, new ComponentDescriptorBuilderAttribute<TSchema>()
+                    add(c.Parameter, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => component(c, cc),
-                        Filter = where
+                        Builder = cc => cc.Trace.Capture(cc, () => component(c, cc)),
+                        Filter = where,
+                        Trace = c.Trace
                     });
                     add(c.Parameter, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -763,7 +775,8 @@ public static class ThemeExtensions
             conventions.AddTypeAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
-                    when: where
+                    where: where,
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -805,7 +818,8 @@ public static class ThemeExtensions
             conventions.AddPropertyAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
-                    when: where
+                    where: where,
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -847,7 +861,8 @@ public static class ThemeExtensions
             conventions.AddMethodAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
-                    when: where
+                    where: where,
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -889,7 +904,8 @@ public static class ThemeExtensions
             conventions.AddParameterAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
-                    when: where
+                    where: where,
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -948,14 +964,14 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMembers(out var members))
                 {
-                    throw DiagnosticsCode.RequiresBuildLevel.Exception(
+                    throw DiagnosticCode.RequiresBuildLevel.Exception(
                         $"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model"
                     );
                 }
 
                 if (!members.Methods.TryGetValue(methodName, out var method))
                 {
-                    throw DiagnosticsCode.MethodRequired.Exception(
+                    throw DiagnosticCode.MethodRequired.Exception(
                         $"{typeof(TDomainType).Name} does not have a method named '{methodName}'"
                     );
                 }
@@ -970,7 +986,7 @@ public static class ThemeExtensions
 
                 if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata))
                 {
-                    throw DiagnosticsCode.RequiresBuildLevel.Exception(
+                    throw DiagnosticCode.RequiresBuildLevel.Exception(
                         $"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"
                     );
                 }
@@ -1032,7 +1048,7 @@ public static class ThemeExtensions
     {
         public void AddPages(IEnumerable<Route> routes, DomainModel domain, NewLocaleKey l,
             Action<DiagnosticsResult>? onComplete = default,
-            bool? debugComponentPaths = default
+            ComponentPath.Debug? debugComponentPaths = default
         )
         {
             using (Diagnostics.Start(nameof(PageDescriptors), onDispose: onComplete))
@@ -1052,9 +1068,9 @@ public static class ThemeExtensions
                     pages.Add(page);
                 }
 
-                if (debugComponentPaths == true)
+                if (debugComponentPaths is not null)
                 {
-                    Diagnostics.ReportInfo(ComponentPath.GetPathsAsTree());
+                    Diagnostics.ReportInfo(ComponentPath.GetPathsAsTree(debugComponentPaths));
                 }
             }
         }
@@ -1076,8 +1092,9 @@ public static class ThemeExtensions
         // Filter is applied within the function because it is the only
         // way to access to the component context.
         void WrapBuilder(
-            Func<ComponentContext, bool> when,
-            Action<TSchema, ComponentContext> apply
+            Func<ComponentContext, bool> where,
+            Action<TSchema, ComponentContext> apply,
+            InspectTrace trace
         )
         {
             var prev = attribute.Builder;
@@ -1085,13 +1102,9 @@ public static class ThemeExtensions
             attribute.Builder = cc =>
             {
                 var result = prev(cc);
+                if (!where(cc)) { return result; }
 
-                if (when(cc))
-                {
-                    apply(result, cc);
-                }
-
-                return result;
+                return trace.Capture(cc, result, () => apply(result, cc));
             };
         }
 #pragma warning restore IDE0051
@@ -1114,7 +1127,7 @@ public static class ThemeExtensions
 
         public TSchema GetRequiredSchema<TSchema>(ComponentContext context) =>
             metadata.GetSchema<TSchema>(context) ??
-            throw DiagnosticsCode.MissingRequiredSchema.Exception(
+            throw DiagnosticCode.MissingRequiredSchema.Exception(
                 $"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`"
             );
 
@@ -1133,7 +1146,7 @@ public static class ThemeExtensions
 
         public ComponentDescriptor<T> GetRequiredComponent<T>(ComponentContext context) where T : IComponentSchema =>
             metadata.GetRequiredComponent(context, componentType: typeof(T), omitWarningMessage: true) as ComponentDescriptor<T> ??
-            throw DiagnosticsCode.MissingRequiredComponentOfType.Exception(
+            throw DiagnosticCode.MissingRequiredComponentOfType.Exception(
                 $"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`"
             );
 
@@ -1152,8 +1165,8 @@ public static class ThemeExtensions
                     $"{(componentType is null ? string.Empty : $" of type {componentType.Name}")}" +
                     $" at path `{context.Path}`";
 
-                if (WarnForMissingComponent) { Diagnostics.ReportWarning(DiagnosticsCode.MissingRequiredComponent, message); }
-                else { Diagnostics.ReportError(DiagnosticsCode.MissingRequiredComponent, message); }
+                if (WarnForMissingComponent) { Diagnostics.ReportWarning(DiagnosticCode.MissingRequiredComponent, message); }
+                else { Diagnostics.ReportError(DiagnosticCode.MissingRequiredComponent, message); }
             }
 
             return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);

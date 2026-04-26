@@ -1,25 +1,37 @@
 ﻿using Baked.Domain.Configuration;
 using Baked.Domain.Model;
+using Baked.Theme;
 
 namespace Baked.Domain.Conventions;
 
 public class SetAttributeConvention<TModelContext>(
     Action<TModelContext, Action<ICustomAttributesModel, Attribute>> _apply,
     Func<TModelContext, bool> _when,
-    bool attributeRequiredIndex = true
+    bool attributeRequiresIndex = true
 ) : IDomainModelConvention<TModelContext>, IAddRemoveAttributeConvention
+    where TModelContext : DomainModelContext
 {
-    bool IAddRemoveAttributeConvention.AttributeRequiresIndex => attributeRequiredIndex;
+    readonly InspectTrace _trace = Inspect.TraceHere();
 
-    public void Apply(TModelContext model)
+    bool IAddRemoveAttributeConvention.AttributeRequiresIndex => attributeRequiresIndex;
+
+    public void Apply(TModelContext context)
     {
-        if (_when(model))
-        {
-            _apply(model, Set);
-        }
+        context.Trace = _trace;
+
+        if (!_when(context)) { return; }
+
+        _apply(context, (model, attribute) =>
+            _trace.Capture(context, () =>
+            {
+                Set(model, attribute);
+
+                return attribute;
+            })
+        );
     }
 
-    void Set(ICustomAttributesModel model, Attribute attribute)
+    static void Set(ICustomAttributesModel model, Attribute attribute)
     {
         attribute.ThrowIfNotTarget(model);
 

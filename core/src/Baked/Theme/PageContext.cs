@@ -10,6 +10,10 @@ public record PageContext
     public required DomainModel Domain { get; init; }
     public required NewLocaleKey NewLocaleKey { get; init; }
 
+    // NOTE this is intentionally left as null to make sure build fails if
+    // there is a bug in setting this value
+    public InspectTrace Trace { get; internal set; } = null!;
+
     public void Deconstruct(out DomainModel domain, out NewLocaleKey l)
     {
         domain = Domain;

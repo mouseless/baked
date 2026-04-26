@@ -1,5 +1,6 @@
 ﻿using Baked.Domain.Configuration;
 using Baked.Domain.Model;
+using Baked.Theme;
 
 namespace Baked.Domain.Conventions;
 
@@ -8,17 +9,29 @@ public class AddAttributeConvention<TModelContext>(
     Func<TModelContext, bool> _when,
     bool attributeRequiresIndex = true
 ) : IDomainModelConvention<TModelContext>, IAddRemoveAttributeConvention
+    where TModelContext : DomainModelContext
 {
+    readonly InspectTrace _trace = Inspect.TraceHere();
+
     bool IAddRemoveAttributeConvention.AttributeRequiresIndex => attributeRequiresIndex;
 
-    public void Apply(TModelContext model)
+    public void Apply(TModelContext context)
     {
-        if (!_when(model)) { return; }
+        context.Trace = _trace;
 
-        _apply(model, Add);
+        if (!_when(context)) { return; }
+
+        _apply(context, (model, attribute) =>
+            _trace.Capture(context, () =>
+            {
+                Add(model, attribute);
+
+                return attribute;
+            })
+        );
     }
 
-    void Add(ICustomAttributesModel model, Attribute attribute)
+    static void Add(ICustomAttributesModel model, Attribute attribute)
     {
         attribute.ThrowIfNotTarget(model);
 

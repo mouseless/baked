@@ -1,33 +1,37 @@
 ﻿using Baked.Architecture;
 using Baked.Branding;
+using Spectre.Console;
+using Spectre.Console.Testing;
 using System.Diagnostics;
 
 namespace Baked.Test.Architecture.Branding;
 
 public class PrintingBanner : ArchitectureSpec
 {
-    TextWriter _realOut = default!;
-    TextWriter _fakeOut = default!;
+    IAnsiConsole _real = default!;
+    TestConsole _test = default!;
 
     public override void SetUp()
     {
         base.SetUp();
 
-        _realOut = Console.Out;
-        Console.SetOut(_fakeOut = new StringWriter());
+        _real = AnsiConsole.Console;
+        _test = new TestConsole();
+
+        AnsiConsole.Console = _test;
     }
 
     public override void TearDown()
     {
         base.TearDown();
 
-        Console.SetOut(_realOut);
+        AnsiConsole.Console = _real;
     }
 
-    string ConsoleOutput => _fakeOut?.ToString() ?? string.Empty;
+    string ConsoleOutput => _test.Output;
 
     // Version is shortened to Ver to keep banner width fixed
-    string VersionString =>
+    static string VersionString =>
         FileVersionInfo.GetVersionInfo(typeof(IBanner).Assembly.Location).FileVersion?[..^2] ??
         throw new("Version not found");
 
@@ -51,12 +55,9 @@ public class PrintingBanner : ArchitectureSpec
 
         ConsoleOutput.ShouldContainWithoutWhitespace($$"""
 
-        ▄  █▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄▄█
-        ▄▀ █▄█ █▀█ █▀▄ ██▄ █▄█ ▄▄
+        ⢐⠄⣗⡆⡶⡆⡧⡂⣶⡂⣖⡇⣀
 
-        version: v{{VersionString}}
-        docs: https://baked.mouseless.codes
-        source: https://github.com/mouseless/baked
+         v{{VersionString}} - baked.mouseless.codes - github.com/mouseless/baked
 
         """);
     }

@@ -52,10 +52,10 @@ public static class DomainExtensions
             layers.Add(new DomainLayer());
     }
 
-    extension(DiagnosticsCode)
+    extension(DiagnosticCode)
     {
-        public static DiagnosticsCode AttributeTargetMismatch => new(301, "attribute-target-mismatch");
-        public static DiagnosticsCode AttributeDoesNotAllow => new(302, "attribute-does-not-allow");
+        public static DiagnosticCode AttributeTargetMismatch => new(301, "attribute-target-mismatch");
+        public static DiagnosticCode AttributeDoesNotAllow => new(302, "attribute-does-not-allow");
     }
 
     extension(ApplicationContext application)
@@ -211,7 +211,7 @@ public static class DomainExtensions
             var validOn = usages?.ValidOn ?? AttributeTargets.All;
             if (validOn.HasFlag(model.Target)) { return; }
 
-            throw DiagnosticsCode.AttributeTargetMismatch.Exception(
+            throw DiagnosticCode.AttributeTargetMismatch.Exception(
                 $"'{attribute.GetType().Name}' does not have '{model.Target}' target. Available targets: '{validOn}'"
             );
         }
@@ -259,11 +259,18 @@ public static class DomainExtensions
         public TypeModel TheTypeModel(Type type) =>
             giveMe.TheDomainModel().Types[type];
 
-        public MethodModel TheMethod<T>(string name) =>
+        public MethodModel TheMethodModel<T>(string name) =>
             giveMe
                 .Spec.GenerateContext
                 .GetDomainModel().Types[typeof(T)]
                 .GetMembers().Methods[name];
+
+        public TypeModelContext ATypeModelContext<T>() =>
+            new()
+            {
+                Domain = giveMe.TheDomainModel(),
+                Type = giveMe.TheTypeModel<T>()
+            };
 
         public XmlNode? TheDocumentation<T>(
             string? property = default,
@@ -313,7 +320,7 @@ public static class DomainExtensions
         public void SetTypeAttribute(Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
             bool requiresIndex = true,
             int order = default
-        ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
+        ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
         public void AddTypeAttribute(Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
             bool requiresIndex = true,
@@ -349,7 +356,7 @@ public static class DomainExtensions
         public void SetPropertyAttribute(Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
             bool requiresIndex = true,
             int order = default
-        ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
+        ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
         public void AddPropertyAttribute(Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
             bool requiresIndex = true,
@@ -385,7 +392,7 @@ public static class DomainExtensions
         public void SetMethodAttribute(Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
             bool requiresIndex = true,
             int order = default
-        ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
+        ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
         public void AddMethodAttribute(Func<Attribute> attribute, Func<MethodModelContext, bool> when,
             bool requiresIndex = true,
@@ -421,7 +428,7 @@ public static class DomainExtensions
         public void SetParameterAttribute(Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
             bool requiresIndex = true,
             int order = default
-        ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
+        ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
         public void AddParameterAttribute(Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
             bool requiresIndex = true,

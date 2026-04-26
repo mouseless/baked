@@ -1,3 +1,5 @@
+using Spectre.Console;
+
 namespace Baked.Theme;
 
 // AI-GEN (Claude - Sonnet 4.6)
@@ -12,12 +14,15 @@ namespace Baked.Theme;
 // returns it as lines ready to print — no direct `Console` calls.
 //
 // Output format:
-//   - First line: "Drilled component paths:"
+//   - First line: "Component paths:"
 //   - Second line: "/"
 //   - Followed by tree lines using `├ ` / `└ ` connectors and `│ ` / `  `
 //     indentation
-//   - Connector and indent are colored dark gray via ANSI `\x1b[90m]` /
-//     `\x1b[0m]`, node name stays default color
+//   - Connector and indent are colored gray using Spectre.Console
+//     `[gray]..[/]`, node name stays default color but should be escaped using
+//     `Markup.Escape`
+//   - Append full path to the and in `[gray]..[/]` when `includeFullPaths:` is
+//     set to true
 //
 // Coding style preferences:
 //   - Private nested classes and helpers — internalize everything,
@@ -30,24 +35,20 @@ namespace Baked.Theme;
 //   - Deduplicate and sort input before processing
 //   - Nullable prefix parameter with null-coalescing default rather
 //     than overloading
-internal class ComponentPathTreeVisualizer
+internal static class ComponentPathTreeVisualizer
 {
-    class Node(string name)
+    public static IEnumerable<string> Visualize(IEnumerable<string> paths,
+        bool includeFullPaths = false
+    )
     {
-        public string Name { get; } = name;
-        public SortedDictionary<string, Node> Children { get; } = new();
-    }
-
-    static readonly string _gray = "\x1b[90m";
-    static readonly string _reset = "\x1b[0m";
-
-    public static IEnumerable<string> Visualize(IEnumerable<string> paths)
-    {
-        paths = paths.Order().Distinct();
-
-        var result = new List<string>();
-        var root = new Node("/");
-        foreach (var path in paths)
+        var root = new Node(string.Empty);
+        var sorted = paths
+            .Select(p => p.Trim())
+            .Where(p => !string.IsNullOrEmpty(p))
+            .Distinct()
+            .OrderBy(p => p)
+            .ToList();
+        foreach (var path in sorted)
         {
             var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
             var current = root;
@@ -64,34 +65,35 @@ internal class ComponentPathTreeVisualizer
             }
         }
 
-        result.Add("Drilled component paths:");
-        result.Add(root.Name);
-        result.AddRange(PrintChildren(root));
+        var lines = new List<string> { "Component paths:", "/" };
+        RenderNode(root, string.Empty, string.Empty, lines, includeFullPaths);
 
-        return result;
+        return lines;
     }
 
-    static IEnumerable<string> PrintChildren(Node node,
-        string? prefix = default
-    )
+    static void RenderNode(Node node, string indent, string currentPath, List<string> lines, bool includeFullPaths)
     {
-        prefix ??= string.Empty;
-
-        var result = new List<string>();
         var children = node.Children.Values.ToList();
 
-        for (int i = 0; i < children.Count; i++)
+        for (var i = 0; i < children.Count; i++)
         {
             var child = children[i];
             var isLast = i == children.Count - 1;
-
             var connector = isLast ? "└ " : "├ ";
-            var childPrefix = isLast ? "  " : "│ ";
+            var childPath = $"{currentPath}/{child.Name}";
+            var escapedName = Markup.Escape(child.Name);
+            var suffix = includeFullPaths ? $" [gray]{Markup.Escape(childPath)}[/]" : string.Empty;
 
-            result.Add($"{_gray}{prefix}{connector}{_reset}{child.Name}");
-            result.AddRange(PrintChildren(child, $"{prefix}{childPrefix}"));
+            lines.Add($"{indent}[gray]{connector}[/]{escapedName}{suffix}");
+
+            var childIndent = indent + (isLast ? "[gray]  [/]" : "[gray]│ [/]");
+            RenderNode(child, childIndent, childPath, lines, includeFullPaths);
         }
+    }
 
-        return result;
+    class Node(string name)
+    {
+        public string Name { get; } = name;
+        public SortedDictionary<string, Node> Children { get; } = new();
     }
 }
