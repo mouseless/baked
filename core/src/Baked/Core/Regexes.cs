@@ -16,12 +16,18 @@ internal static partial class Regexes
                 .Value;
     }
 
-    [GeneratedRegex(@"^\w+ => \w+\.")]
+    [GeneratedRegex(@"^\w+ => (?:Convert\()?(\w+\.)")]
     public static partial Regex LambdaOfASingleMemberAccessExpression { get; }
+
+    [GeneratedRegex(@",\s*\w+\)$")]
+    public static partial Regex TrailingConvertSuffix { get; }
 
     extension(string expression)
     {
         public string StripLambdaFromASingleMemberAccessExpression() =>
-            LambdaOfASingleMemberAccessExpression.Replace(expression, string.Empty);
+            TrailingConvertSuffix.Replace(
+                LambdaOfASingleMemberAccessExpression.Replace(expression, string.Empty),
+                string.Empty
+            );
     }
 }
