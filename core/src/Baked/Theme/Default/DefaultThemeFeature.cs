@@ -17,7 +17,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     Action<ErrorPage>? _errorPageOptions = default,
     Action<SideMenu>? _sideMenuOptions = default,
     Action<Header>? _headerOptions = default,
-    Func<ComponentPath, bool>? _debugComponentPaths = default
+    ComponentPath.Debug? _debugComponentPaths = default
 ) : IFeature<ThemeConfigurator>
 {
     public virtual void Configure(LayerConfigurator configurator)

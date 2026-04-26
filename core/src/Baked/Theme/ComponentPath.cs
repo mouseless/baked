@@ -13,15 +13,16 @@ public readonly record struct ComponentPath(string Value)
     internal static IEnumerable<string> GetPaths() =>
         _paths.AsReadOnly();
 
-    internal static string GetPathsAsTree(Func<ComponentPath, bool> filter) =>
+    internal static string GetPathsAsTree(Debug debug) =>
         ComponentPathTreeVisualizer
             .Visualize(
                 _paths
                     .Select(p => new ComponentPath(p))
-                    .Where(filter)
+                    .Where(p => debug.Matches(p))
                     .Select(p => p.Value)
                     .ToList()
-                    .AsReadOnly()
+                    .AsReadOnly(),
+                includeFullPaths: debug.IncludeFullPaths
             )
             .Join(Environment.NewLine);
 
@@ -68,4 +69,16 @@ public readonly record struct ComponentPath(string Value)
 
     public override string ToString() =>
         Value;
+
+    public class Debug
+    {
+        public Func<ComponentPath, bool> Filter { get; init; } = _ => true;
+        public bool IncludeFullPaths { get; init; }
+
+        public bool Matches(ComponentPath path) =>
+            Filter(path);
+
+        public static implicit operator Debug(bool value) =>
+            new() { Filter = _ => value };
+    }
 }

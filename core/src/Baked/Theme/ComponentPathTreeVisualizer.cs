@@ -21,6 +21,8 @@ namespace Baked.Theme;
 //   - Connector and indent are colored gray using Spectre.Console
 //     `[gray]..[/]`, node name stays default color but should be escaped using
 //     `Markup.Escape`
+//   - Append full path to the and in `[gray]..[/]` when `includeFullPaths:` is
+//     set to true
 //
 // Coding style preferences:
 //   - Private nested classes and helpers — internalize everything,
@@ -35,52 +37,63 @@ namespace Baked.Theme;
 //     than overloading
 internal static class ComponentPathTreeVisualizer
 {
-    public static IEnumerable<string> Visualize(IEnumerable<string>? paths)
+    public static IEnumerable<string> Visualize(IEnumerable<string> paths,
+        bool includeFullPaths = false
+    )
     {
-        var sorted = (paths ?? [])
+        var root = new Node(string.Empty);
+        var sorted = paths
+            .Select(p => p.Trim())
+            .Where(p => !string.IsNullOrEmpty(p))
             .Distinct()
             .OrderBy(p => p)
             .ToList();
-
-        var root = new Node(string.Empty);
         foreach (var path in sorted)
         {
             var segments = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
             var current = root;
+
             foreach (var segment in segments)
-                current = current.GetOrAdd(segment);
+            {
+                if (!current.Children.TryGetValue(segment, out var child))
+                {
+                    child = new Node(segment);
+                    current.Children[segment] = child;
+                }
+
+                current = child;
+            }
         }
 
         var lines = new List<string> { "Component paths:", "/" };
-        AppendChildren(root, prefix: string.Empty, lines);
+        RenderNode(root, string.Empty, string.Empty, lines, includeFullPaths);
+
         return lines;
     }
 
-    private static void AppendChildren(Node node, string prefix, List<string> lines)
+    static void RenderNode(Node node, string indent, string currentPath, List<string> lines, bool includeFullPaths)
     {
         var children = node.Children.Values.ToList();
+
         for (var i = 0; i < children.Count; i++)
         {
             var child = children[i];
             var isLast = i == children.Count - 1;
-
             var connector = isLast ? "└ " : "├ ";
+            var childPath = $"{currentPath}/{child.Name}";
             var escapedName = Markup.Escape(child.Name);
-            lines.Add($"{prefix}[gray]{connector}[/]{escapedName}");
+            var suffix = includeFullPaths ? $" [gray]{Markup.Escape(childPath)}[/]" : string.Empty;
 
-            var childPrefix = prefix + (isLast ? "[gray]  [/]" : "[gray]│ [/]");
-            AppendChildren(child, childPrefix, lines);
+            lines.Add($"{indent}[gray]{connector}[/]{escapedName}{suffix}");
+
+            var childIndent = indent + (isLast ? "[gray]  [/]" : "[gray]│ [/]");
+            RenderNode(child, childIndent, childPath, lines, includeFullPaths);
         }
     }
 
-    private class Node(string name)
+    class Node(string name)
     {
         public string Name { get; } = name;
         public SortedDictionary<string, Node> Children { get; } = new();
-
-        public Node GetOrAdd(string segment) =>
-            Children.TryGetValue(segment, out var child)
-                ? child
-                : Children[segment] = new Node(segment);
     }
 }

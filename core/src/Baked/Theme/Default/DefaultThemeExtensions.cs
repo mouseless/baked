@@ -19,7 +19,7 @@ public static class DefaultThemeExtensions
             Action<ErrorPage>? errorPageOptions = default,
             Action<SideMenu>? sideMenuOptions = default,
             Action<Header>? headerOptions = default,
-            Func<ComponentPath, bool>? debugComponentPaths = default
+            ComponentPath.Debug? debugComponentPaths = default
         ) => new([index(new()), .. routes?.Select(r => r(new())) ?? []],
             _errorPageOptions: errorPageOptions,
             _sideMenuOptions: sideMenuOptions,

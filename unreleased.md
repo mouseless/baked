@@ -26,13 +26,23 @@
   - It's recommended to implement a custom component per use case, when there is
     a need to switch between components based on its data
   - One of the `DataTableColumn()` overloads was using `Conditional`, removed
-- `DefaultThemeFeature(debugComponentPaths:)` is now a `Func<ComponentPath,
-  bool>` to allow filtering To dump all paths just pass `_ => true`
 
 ## Improvements
 
 - `DefaultThemeFeature(debugComponentPaths:)` now prints a pretty formatted tree
   instead of a list of component paths
+  - Enable it:
+    ```csharp
+    debugComponentPaths: true
+    ```
+  - You can now filter paths:
+    ```csharp
+    debugComponentPaths: new() { Filter = path => path.EndsWith(...) }
+    ```
+  - You can still include full paths:
+    ```csharp
+    debugComponentPaths: new() { IncludeFullPaths = true }
+    ```
 
 ## Library Upgrades
 
