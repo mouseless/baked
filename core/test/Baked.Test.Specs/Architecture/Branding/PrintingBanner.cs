@@ -1,36 +1,34 @@
 ﻿using Baked.Architecture;
 using Baked.Branding;
 using Spectre.Console;
+using Spectre.Console.Testing;
 using System.Diagnostics;
 
 namespace Baked.Test.Architecture.Branding;
 
 public class PrintingBanner : ArchitectureSpec
 {
-    IAnsiConsole _realConsole = default!;
-    TextWriter _fakeOut = default!;
+    IAnsiConsole _real = default!;
+    TestConsole _test = default!;
 
     public override void SetUp()
     {
         base.SetUp();
 
-        AnsiConsole.Console = AnsiConsole.Create(new()
-        {
-            Out = new AnsiConsoleOutput(_fakeOut = new StringWriter()),
-            Ansi = AnsiSupport.No,
-            ColorSystem = ColorSystemSupport.NoColors,
-            Interactive = InteractionSupport.No
-        });
+        _real = AnsiConsole.Console;
+        _test = new TestConsole();
+
+        AnsiConsole.Console = _test;
     }
 
     public override void TearDown()
     {
         base.TearDown();
 
-        AnsiConsole.Console = _realConsole;
+        AnsiConsole.Console = _real;
     }
 
-    string ConsoleOutput => _fakeOut?.ToString() ?? string.Empty;
+    string ConsoleOutput => _test.Output;
 
     // Version is shortened to Ver to keep banner width fixed
     static string VersionString =>
@@ -60,7 +58,6 @@ public class PrintingBanner : ArchitectureSpec
         ⢐⠄⣗⡆⡶⡆⡧⡂⣶⡂⣖⡇⣀
 
          v{{VersionString}} - baked.mouseless.codes - github.com/mouseless/baked
-
 
         """);
     }

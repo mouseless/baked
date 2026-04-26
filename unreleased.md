@@ -33,3 +33,10 @@
 
 - `DefaultThemeFeature(debugComponentPaths:)` now prints a pretty formatted tree
   instead of a list of component paths
+
+## Library Upgrades
+
+| NuGet Package           | Old Version | New Version |
+| ---                     | ---         | ---         |
+| Spectre.Console         | new         | 0.52.0      |
+| Spectre.Console.Testing | new         | 0.52.0      |
