@@ -24,7 +24,7 @@ coverage:
 	@( \
 		cd core && \
 		rm -rf .coverage && \
-		dotnet test -c Release --coverage --coverage-output-format cobertura --coverage-settings ./test/runsettings.xml --report-trx --results-directory .coverage
+		dotnet test -c Release --coverage --coverage-output-format cobertura --coverage-settings ./test/runsettings.xml --report-trx --results-directory .coverage && \
 		dotnet reportgenerator -reports:.coverage/*.cobertura.xml -targetdir:.coverage/html && \
 		open .coverage/html/index.html \
 	)
