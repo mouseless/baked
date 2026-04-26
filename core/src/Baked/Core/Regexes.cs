@@ -25,9 +25,11 @@ internal static partial class Regexes
     extension(string expression)
     {
         public string StripLambdaFromASingleMemberAccessExpression() =>
-            TrailingConvertSuffix.Replace(
-                LambdaOfASingleMemberAccessExpression.Replace(expression, string.Empty),
-                string.Empty
-            );
+            expression == "x => x"
+                ? "<this>"
+                : TrailingConvertSuffix.Replace(
+                    LambdaOfASingleMemberAccessExpression.Replace(expression, string.Empty),
+                    string.Empty
+                );
     }
 }

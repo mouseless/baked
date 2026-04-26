@@ -16,27 +16,42 @@ public class Inspect
         Expression<Func<T, object?>>? evaluate = default
     ) where T : Attribute
     {
-        evaluate ??= c => c;
+        evaluate ??= x => x;
 
         Current = new(_ => true, typeof(T), c => evaluate.Compile().Invoke((T)c), evaluate.ToString());
     }
 
-    public static void Component<T>(Expression<Func<T, object?>> evaluate) where T : IComponentSchema =>
+    public static void Component<T>(
+        Expression<Func<T, object?>>? evaluate = default
+    ) where T : IComponentSchema =>
         Where(_ => true).Component(evaluate);
 
-    public static void Schema<T>(Expression<Func<T, object?>> evaluate) =>
-        Where(_ => true).Schema(evaluate);
+    public static void Schema<T>(
+        Expression<Func<T, object?>>? evaluate = default
+    ) => Where(_ => true).Schema(evaluate);
 
     public static ContextPart Where(Func<ComponentContext, bool> where) =>
         new(where);
 
     public class ContextPart(Func<ComponentContext, bool> where)
     {
-        public void Component<T>(Expression<Func<T, object?>> evaluate) where T : IComponentSchema =>
-            Current = new(where, typeof(T), c => evaluate.Compile().Invoke((T)c), evaluate.ToString());
+        public void Component<T>(
+            Expression<Func<T, object?>>? evaluate = default
+        ) where T : IComponentSchema
+        {
+            evaluate ??= x => x;
 
-        public void Schema<T>(Expression<Func<T, object?>> evaluate) =>
             Current = new(where, typeof(T), c => evaluate.Compile().Invoke((T)c), evaluate.ToString());
+        }
+
+        public void Schema<T>(
+            Expression<Func<T, object?>>? evaluate = default
+        )
+        {
+            evaluate ??= x => x;
+
+            Current = new(where, typeof(T), c => evaluate.Compile().Invoke((T)c), evaluate.ToString());
+        }
     }
 
     public Func<DomainModelContext, bool> Filter { get; }

@@ -107,6 +107,8 @@ public class Diagnostics : IDisposable
 
     void IDisposable.Dispose()
     {
+        if (_disposed) { return; }
+
         _dispose(new(_errors.AsReadOnly(), _messages.AsReadOnly()));
 
         _current = null;

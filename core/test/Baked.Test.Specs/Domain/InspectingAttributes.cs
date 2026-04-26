@@ -1,4 +1,6 @@
+using Baked.Business;
 using Baked.Domain.Configuration;
+using Baked.Playground.Orm;
 using Baked.Theme;
 using Baked.Theme.Default;
 
@@ -25,26 +27,94 @@ public class InspectingAttributes : TestSpec
         _messages.Clear();
     }
 
-    [Test]
-    [Ignore("not implemented")]
-    public void When_an_attribute_is_added_with_a_non_null_on_the_inspected_property__it_reports_applied_member_and_the_initial_value()
+    IEnumerable<(DomainModelContext, string)> CreateContextCases()
     {
-        Inspect.Attribute<DataAttribute>(d => d.Label);
-        var c = new DomainModelContext { Domain = GiveMe.TheDomainModel() };
+        var domain = GiveMe.TheDomainModel();
+        var parent = GiveMe.TheTypeModel<Parent>().GetMembers();
+        var name = parent.Properties[nameof(Parent.Name)];
+        var addChild = parent.Methods[nameof(Parent.AddChild)];
+        var pName = addChild.DefaultOverload.Parameters["name"];
 
-        using (_diagnostics)
-        {
-            _trace.Capture(c, () => new DataAttribute("test") { Label = "Test" });
-        }
-
-        // _messages.ShouldContain(m => m.Message.Contains("[[Label]]"));
-        this.ShouldFail("assert member name in message");
+        yield return (new TypeModelContext { Domain = domain, Type = parent }, "Baked.Playground.Orm.Parent");
+        yield return (new TypeModelGenericsContext { Domain = domain, Type = parent }, "Baked.Playground.Orm.Parent");
+        yield return (new TypeModelInheritanceContext { Domain = domain, Type = parent }, "Baked.Playground.Orm.Parent");
+        yield return (new TypeModelMetadataContext { Domain = domain, Type = parent }, "Baked.Playground.Orm.Parent");
+        yield return (new TypeModelMembersContext { Domain = domain, Type = parent }, "Baked.Playground.Orm.Parent");
+        yield return
+            (
+                new PropertyModelContext
+                {
+                    Domain = domain,
+                    Type = parent,
+                    Property = name
+                },
+                $"Baked.Playground.Orm.Parent.{nameof(Parent.Name)}"
+            );
+        yield return
+            (
+                new MethodModelContext
+                {
+                    Domain = domain,
+                    Type = parent,
+                    Method = addChild
+                },
+                $"Baked.Playground.Orm.Parent.{nameof(Parent.AddChild)}"
+            );
+        yield return
+            (
+                new ParameterModelContext
+                {
+                    Domain = domain,
+                    Type = parent,
+                    Method = addChild,
+                    MethodOverload = addChild.DefaultOverload,
+                    Parameter = pName
+                },
+                $"Baked.Playground.Orm.Parent.{nameof(Parent.AddChild)}.name"
+            );
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Allows_attribute_adding_without_any_property() =>
-        this.ShouldFail();
+    public void When_an_attribute_is_added_with_a_non_null_on_the_inspected_property__it_reports_applied_member_and_the_initial_value()
+    {
+        Inspect.Attribute<DataAttribute>(d => d.Label);
+
+        var cases = CreateContextCases();
+        using (_diagnostics)
+        {
+            foreach (var (context, memberName) in cases)
+            {
+                _trace.Capture(context, () => new DataAttribute("test") { Label = "Test" });
+            }
+        }
+
+        _messages.Count.ShouldBe(2 * cases.Count());
+        var i = 0;
+        foreach (var (context, memberName) in cases)
+        {
+            _messages[0 + i * 2].Level.ShouldBe("info");
+            _messages[0 + i * 2].Message.ShouldContain(memberName);
+            _messages[1 + i * 2].Level.ShouldBe("info");
+            _messages[1 + i * 2].Message.ShouldContain($"Test");
+
+            i++;
+        }
+    }
+
+    [Test]
+    public void Allows_attribute_adding_without_any_property()
+    {
+        Inspect.Attribute<LabelAttribute>();
+        var context = GiveMe.ATypeModelContext<Parent>();
+
+        var cases = CreateContextCases();
+        using (_diagnostics)
+        {
+            _trace.Capture(context, () => new LabelAttribute());
+        }
+
+        _messages.ShouldContain(m => m.Message.Contains("[gray]<this>:[/] {}"));
+    }
 
     [Test]
     [Ignore("not implemented")]
@@ -162,7 +232,7 @@ public class InspectingAttributes : TestSpec
     public void Reports_attribute_type_and_property_name()
     {
         Inspect.Attribute<DataAttribute>(d => d.Label);
-        var c = new DomainModelContext { Domain = GiveMe.TheDomainModel() };
+        var c = new TypeModelContext { Domain = GiveMe.TheDomainModel(), Type = GiveMe.TheTypeModel<Parent>() };
 
         using (_diagnostics)
         {

@@ -32,8 +32,7 @@ public class InspectingComponentAndSchemas : TestSpec
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void When_a_schema_is_created_with_a_non_null_on_the_inspected_property__it_reports_member_name__schema_path_and_the_initial_value()
+    public void When_a_schema_is_created_with_a_non_null_on_the_inspected_property__it_reports_schema_path_and_the_initial_value()
     {
         Inspect.Schema<DataTable.Column>(dtc => dtc.Title);
         var cc = GiveMe.AComponentContext(paths: ["test", "path"]);
@@ -45,7 +44,6 @@ public class InspectingComponentAndSchemas : TestSpec
 
         _messages.Count.ShouldBe(2);
         _messages[0].Level.ShouldBe("info");
-        this.ShouldFail("assert member name in message");
         _messages[0].Message.ShouldContain("/test/path");
         _messages[1].Level.ShouldBe("info");
         _messages[1].Message.ShouldContain($"test title");
@@ -258,7 +256,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         _messages.ShouldContain(m => m.Message.Contains("[magenta]<unknown>[/]"));
         _messages.ShouldContain(m =>
-            Regex.IsMatch(m.Message, @"\[gray].*at Baked[.]Test[.]InspectingComponentAndSchemas[.][.]ctor\(\).*\[/]",
+            Regex.IsMatch(m.Message, @"\[gray].*at Baked[.]Test[.]Theme[.]InspectingComponentAndSchemas[.][.]ctor\(\).*\[/]",
                 RegexOptions.Singleline
             )
         );
@@ -277,8 +275,8 @@ public class InspectingComponentAndSchemas : TestSpec
 
         _messages.ShouldContain(m => m.Message.Contains($$"""
         {
-          "MaxLength": null,
-          "Prop": "test"
+          "maxLength": null,
+          "prop": "test"
         }
         """), customMessage: _messages.Join(", "));
     }

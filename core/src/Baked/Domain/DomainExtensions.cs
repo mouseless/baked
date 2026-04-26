@@ -259,11 +259,18 @@ public static class DomainExtensions
         public TypeModel TheTypeModel(Type type) =>
             giveMe.TheDomainModel().Types[type];
 
-        public MethodModel TheMethod<T>(string name) =>
+        public MethodModel TheMethodModel<T>(string name) =>
             giveMe
                 .Spec.GenerateContext
                 .GetDomainModel().Types[typeof(T)]
                 .GetMembers().Methods[name];
+
+        public TypeModelContext ATypeModelContext<T>() =>
+            new()
+            {
+                Domain = giveMe.TheDomainModel(),
+                Type = giveMe.TheTypeModel<T>()
+            };
 
         public XmlNode? TheDocumentation<T>(
             string? property = default,

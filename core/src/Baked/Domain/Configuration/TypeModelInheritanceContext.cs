@@ -5,4 +5,6 @@ namespace Baked.Domain.Configuration;
 public class TypeModelInheritanceContext : DomainModelContext
 {
     public required TypeModelInheritance Type { get; init; }
+
+    public override string Identifier => Type.CSharpFriendlyFullName;
 }

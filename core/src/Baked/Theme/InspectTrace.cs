@@ -1,6 +1,6 @@
+using Baked.Domain.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Baked.Domain.Configuration;
 
 namespace Baked.Theme;
 
@@ -15,7 +15,7 @@ public class InspectTrace(StackTrace _stackTrace)
 
         return
             new InspectCapture<T>(inspect, _stackTrace, create,
-                reportCreate: type => ReportCreate(type)
+                reportCreate: type => ReportCreate(type, context)
             ).Execute();
     }
 
@@ -38,8 +38,8 @@ public class InspectTrace(StackTrace _stackTrace)
         return inspect is not null && inspect.Filter(context);
     }
 
-    static void ReportCreate(Type type) =>
-        Diagnostics.ReportInfo($"[lightskyblue3_1][[{type.Name.Replace("Attribute", string.Empty)}]][/]");
+    static void ReportCreate(Type type, DomainModelContext context) =>
+        Diagnostics.ReportInfo($"[lightskyblue3_1][[{type.Name.Replace("Attribute", string.Empty)}]][/] [gray]{context.Identifier}[/]");
 
     public T Capture<T>(ComponentContext context, Func<T> create)
     {

@@ -1,5 +1,6 @@
 using Baked.Core;
 using Baked.Ui;
+using Baked.Ui.Configuration;
 using Newtonsoft.Json;
 using Spectre.Console;
 using System.Diagnostics;
@@ -98,8 +99,13 @@ internal class InspectCapture<T>
         return true;
     }
 
+    static readonly JsonSerializerSettings _serializerSettings = new()
+    {
+        ContractResolver = new AttributeAwareCamelCasePropertyNamesContractResolver()
+    };
+
     static string FormatValue(object? value) =>
         value is string || value?.GetType().SkipNullable().IsValueType == true
             ? $"{value}"
-            : JsonConvert.SerializeObject(value, Formatting.Indented);
+            : JsonConvert.SerializeObject(value, Formatting.Indented, _serializerSettings);
 }
