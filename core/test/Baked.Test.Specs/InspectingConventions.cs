@@ -13,7 +13,7 @@ namespace Baked.Test;
 public class InspectingConventions : TestSpec
 {
     readonly List<DiagnosticMessage> _messages = [];
-    InspectTrace _inspect = Inspect.TraceHere();
+    InspectTrace _trace = Inspect.TraceHere();
     IDisposable? _diagnostics;
 
     public override void SetUp()
@@ -39,7 +39,7 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test title"));
+            _trace.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test title"));
         }
 
         _messages.Count.ShouldBe(2);
@@ -59,8 +59,8 @@ public class InspectingConventions : TestSpec
         {
             var dtc = B.DataTableColumn(key: GiveMe.AString(), options: dtc => dtc.Title = "initial");
 
-            _inspect.Capture(cc, dtc, () => dtc.Title = "updated");
-            _inspect.Capture(cc, dtc, () => dtc.Title = "updated");
+            _trace.Capture(cc, dtc, () => dtc.Title = "updated");
+            _trace.Capture(cc, dtc, () => dtc.Title = "updated");
         }
 
         _messages.Count(c => c.Message.Contains("updated")).ShouldBe(1);
@@ -74,7 +74,7 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            var dtc = _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: t => t.Title = "test title"));
+            var dtc = _trace.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: t => t.Title = "test title"));
 
             dtc.Title.ShouldBe("test title");
         }
@@ -88,9 +88,9 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            var dtc = _inspect.Capture(cc, () => B.DataTableColumn(key: GiveMe.AString(), options: dtc => dtc.Title = "1"));
+            var dtc = _trace.Capture(cc, () => B.DataTableColumn(key: GiveMe.AString(), options: dtc => dtc.Title = "1"));
 
-            _inspect.Capture(cc, dtc, () => dtc.Title = "2");
+            _trace.Capture(cc, dtc, () => dtc.Title = "2");
         }
 
         _messages.Count(c => c.Message.Contains("/test/path")).ShouldBe(1);
@@ -104,8 +104,8 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            var dtc = _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.AlignRight = true));
-            _inspect.Capture(cc, dtc, () => dtc.AlignRight = false);
+            var dtc = _trace.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.AlignRight = true));
+            _trace.Capture(cc, dtc, () => dtc.AlignRight = false);
         }
 
         _messages.Count(c => c.Message.Contains($"{true}")).ShouldBe(0);
@@ -119,7 +119,7 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            _inspect.Capture(cc, () => B.Text(options: t => t.Prop = "testProp"));
+            _trace.Capture(cc, () => B.Text(options: t => t.Prop = "testProp"));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("testProp"));
@@ -133,11 +133,11 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            var sb = _inspect.Capture(cc, () => B.SelectButton(
+            var sb = _trace.Capture(cc, () => B.SelectButton(
                 data: Inline(new[] { new { testProp = GiveMe.AString() } }),
                 options: sb => sb.OptionLabel = "initialized")
             );
-            _inspect.Capture(cc, sb, () => sb.Schema.OptionLabel = "updated");
+            _trace.Capture(cc, sb, () => sb.Schema.OptionLabel = "updated");
         }
 
         _messages.ShouldContain(m => m.Message.Contains("initialized"));
@@ -153,7 +153,7 @@ public class InspectingConventions : TestSpec
         using (_diagnostics)
         {
             var t = B.Text();
-            _inspect.Capture(cc, t, () => t.Override(C.MyText(mt => mt.SomethingExtra = "overridden")));
+            _trace.Capture(cc, t, () => t.Override(C.MyText(mt => mt.SomethingExtra = "overridden")));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("overridden"));
@@ -176,8 +176,8 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            _inspect.Capture(page1, () => B.Text(options: t => t.Prop = "prop1"));
-            _inspect.Capture(page2, () => B.Text(options: t => t.Prop = "prop2"));
+            _trace.Capture(page1, () => B.Text(options: t => t.Prop = "prop1"));
+            _trace.Capture(page2, () => B.Text(options: t => t.Prop = "prop2"));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("prop1"));
@@ -197,7 +197,7 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            _inspect.Capture(cc, () => B.Text(options: t => t.Prop = GiveMe.AString()));
+            _trace.Capture(cc, () => B.Text(options: t => t.Prop = GiveMe.AString()));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("[gray]/test/path[/]"));
@@ -211,7 +211,7 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test"));
+            _trace.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test"));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("<DataTable.Column>"));
@@ -226,7 +226,7 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            _inspect.Capture(cc, () => B.DataTable(options: dt => dt.Paginator = true));
+            _trace.Capture(cc, () => B.DataTable(options: dt => dt.Paginator = true));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("<DataTable>"));
@@ -261,7 +261,7 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            _inspect.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test"));
+            _trace.Capture(cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test"));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("[magenta]<unknown>[/]"));
@@ -280,7 +280,7 @@ public class InspectingConventions : TestSpec
 
         using (_diagnostics)
         {
-            _inspect.Capture(cc, () => B.Text(options: t => t.Prop = "test"));
+            _trace.Capture(cc, () => B.Text(options: t => t.Prop = "test"));
         }
 
         _messages.ShouldContain(m => m.Message.Contains($$"""

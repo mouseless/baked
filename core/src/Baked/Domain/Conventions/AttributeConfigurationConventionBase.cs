@@ -10,37 +10,32 @@ public abstract class AttributeConfigurationConventionBase<TModelContext, TAttri
     where TAttribute : Attribute
     where TModelContext : DomainModelContext
 {
-    readonly InspectTrace _inspect = Inspect.TraceHere();
+    readonly InspectTrace _trace = Inspect.TraceHere();
 
     protected abstract ICustomAttributesModel GetMetadata(TModelContext context);
 
     public void Apply(TModelContext context)
     {
-        var old = context.Inspect;
-        context.Inspect = _inspect;
+        context.Trace = _trace;
 
-        try
+        var attributes = new List<TAttribute>();
+        if (typeof(TAttribute).AllowsMultiple())
         {
-            var attributes = new List<TAttribute>();
-            if (typeof(TAttribute).AllowsMultiple())
+            if (GetMetadata(context).TryGetAll<TAttribute>(out var list))
             {
-                if (GetMetadata(context).TryGetAll<TAttribute>(out var list))
-                {
-                    attributes.AddRange(list);
-                }
-            }
-            else if (GetMetadata(context).TryGet<TAttribute>(out var single))
-            {
-                attributes.Add(single);
-            }
-
-            foreach (var attribute in attributes)
-            {
-                if (when is not null && !when(context, attribute)) { continue; }
-
-                apply(attribute, context);
+                attributes.AddRange(list);
             }
         }
-        finally { context.Inspect = old; }
+        else if (GetMetadata(context).TryGet<TAttribute>(out var single))
+        {
+            attributes.Add(single);
+        }
+
+        foreach (var attribute in attributes)
+        {
+            if (when is not null && !when(context, attribute)) { continue; }
+
+            apply(attribute, context);
+        }
     }
 }

@@ -11,22 +11,17 @@ public class AddAttributeConvention<TModelContext>(
 ) : IDomainModelConvention<TModelContext>, IAddRemoveAttributeConvention
     where TModelContext : DomainModelContext
 {
-    readonly InspectTrace _inspect = Inspect.TraceHere();
+    readonly InspectTrace _trace = Inspect.TraceHere();
 
     bool IAddRemoveAttributeConvention.AttributeRequiresIndex => attributeRequiresIndex;
 
     public void Apply(TModelContext context)
     {
-        var old = context.Inspect;
-        context.Inspect = _inspect;
+        context.Trace = _trace;
 
-        try
-        {
-            if (!_when(context)) { return; }
+        if (!_when(context)) { return; }
 
-            _apply(context, Add);
-        }
-        finally { context.Inspect = old; }
+        _apply(context, Add);
     }
 
     void Add(ICustomAttributesModel model, Attribute attribute)

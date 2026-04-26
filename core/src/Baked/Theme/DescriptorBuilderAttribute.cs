@@ -6,20 +6,14 @@ public class DescriptorBuilderAttribute<T>
 {
     public Func<ComponentContext, T> Builder { get; set; } = _ => throw DiagnosticCode.InvalidState.Exception($"`Builder` is required to be set for a descriptor, but not set to this instance.");
     public Func<ComponentContext, bool> Filter { get; set; } = cc => true;
-    public required InspectTrace Inspect { get; init; }
+    public required InspectTrace Trace { get; init; }
 
     protected T Build(ComponentContext context)
     {
         ComponentPath.AddPath(context.Path);
+        context.Trace = Trace;
 
-        var old = context.Inspect;
-        context.Inspect = Inspect;
-
-        try
-        {
-            return Builder(context);
-        }
-        finally { context.Inspect = old; }
+        return Builder(context);
     }
 
     T IComponentContextBasedBuilder<T>.Build(ComponentContext context) =>

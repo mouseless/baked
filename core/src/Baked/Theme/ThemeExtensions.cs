@@ -119,9 +119,9 @@ public static class ThemeExtensions
             conventions.AddTypeAttribute(
                 attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => cc.Inspect.Capture(cc, () => schema(c, cc)),
+                    Builder = cc => cc.Trace.Capture(cc, () => schema(c, cc)),
                     Filter = where,
-                    Inspect = c.Inspect
+                    Trace = c.Trace
                 },
                 when: when,
                 requiresIndex: false,
@@ -176,9 +176,9 @@ public static class ThemeExtensions
             conventions.AddPropertyAttribute(
                 attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => cc.Inspect.Capture(cc, () => schema(c, cc)),
+                    Builder = cc => cc.Trace.Capture(cc, () => schema(c, cc)),
                     Filter = where,
-                    Inspect = c.Inspect
+                    Trace = c.Trace
                 },
                 when: when,
                 requiresIndex: false,
@@ -233,9 +233,9 @@ public static class ThemeExtensions
             conventions.AddMethodAttribute(
                 attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => cc.Inspect.Capture(cc, () => schema(c, cc)),
+                    Builder = cc => cc.Trace.Capture(cc, () => schema(c, cc)),
                     Filter = where,
-                    Inspect = c.Inspect
+                    Trace = c.Trace
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
                 requiresIndex: false,
@@ -290,9 +290,9 @@ public static class ThemeExtensions
             conventions.AddParameterAttribute(
                 attribute: c => new DescriptorBuilderAttribute<TSchema>
                 {
-                    Builder = cc => cc.Inspect.Capture(cc, () => schema(c, cc)),
+                    Builder = cc => cc.Trace.Capture(cc, () => schema(c, cc)),
                     Filter = where,
-                    Inspect = c.Inspect
+                    Trace = c.Trace
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
                 requiresIndex: false,
@@ -346,7 +346,7 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    inspect: c.Inspect
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -387,7 +387,7 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    inspect: c.Inspect
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -428,7 +428,7 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    inspect: c.Inspect
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -469,7 +469,7 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    inspect: c.Inspect
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -515,9 +515,9 @@ public static class ThemeExtensions
                 {
                     add(c.Type, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => cc.Inspect.Capture(cc, () => component(c, cc)),
+                        Builder = cc => cc.Trace.Capture(cc, () => component(c, cc)),
                         Filter = where,
-                        Inspect = c.Inspect
+                        Trace = c.Trace
                     });
                     add(c.Type, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -581,9 +581,9 @@ public static class ThemeExtensions
                 {
                     add(c.Property, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => cc.Inspect.Capture(cc, () => component(c, cc)),
+                        Builder = cc => cc.Trace.Capture(cc, () => component(c, cc)),
                         Filter = where,
-                        Inspect = c.Inspect
+                        Trace = c.Trace
                     });
                     add(c.Property, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -647,9 +647,9 @@ public static class ThemeExtensions
                 {
                     add(c.Method, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => cc.Inspect.Capture(cc, () => component(c, cc)),
+                        Builder = cc => cc.Trace.Capture(cc, () => component(c, cc)),
                         Filter = where,
-                        Inspect = c.Inspect
+                        Trace = c.Trace
                     });
                     add(c.Method, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -713,9 +713,9 @@ public static class ThemeExtensions
                 {
                     add(c.Parameter, new ComponentDescriptorBuilderAttribute<TSchema>
                     {
-                        Builder = cc => cc.Inspect.Capture(cc, () => component(c, cc)),
+                        Builder = cc => cc.Trace.Capture(cc, () => component(c, cc)),
                         Filter = where,
-                        Inspect = c.Inspect
+                        Trace = c.Trace
                     });
                     add(c.Parameter, new ContextBasedComponentAttribute(typeof(TSchema))
                     {
@@ -776,7 +776,7 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
                     where: where,
-                    inspect: c.Inspect
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -819,7 +819,7 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
                     where: where,
-                    inspect: c.Inspect
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -862,7 +862,7 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
                     where: where,
-                    inspect: c.Inspect
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -905,7 +905,7 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapBuilder(
                     apply: (d, cc) => component(d, c, cc),
                     where: where,
-                    inspect: c.Inspect
+                    trace: c.Trace
                 ),
                 when: c => when(c),
                 order: order
@@ -1094,7 +1094,7 @@ public static class ThemeExtensions
         void WrapBuilder(
             Func<ComponentContext, bool> where,
             Action<TSchema, ComponentContext> apply,
-            InspectTrace inspect
+            InspectTrace trace
         )
         {
             var prev = attribute.Builder;
@@ -1104,7 +1104,7 @@ public static class ThemeExtensions
                 var result = prev(cc);
                 if (!where(cc)) { return result; }
 
-                return inspect.Capture(cc, result, () => apply(result, cc));
+                return trace.Capture(cc, result, () => apply(result, cc));
             };
         }
 #pragma warning restore IDE0051
