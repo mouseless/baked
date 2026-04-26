@@ -102,7 +102,7 @@ public class InspectingAttributes : TestSpec
     }
 
     [Test]
-    public void Allows_attribute_adding_without_any_property()
+    public void Allows_inspecting_an_attribute_without_any_property()
     {
         Inspect.Attribute<LabelAttribute>();
         var context = GiveMe.ATypeModelContext<Parent>();
