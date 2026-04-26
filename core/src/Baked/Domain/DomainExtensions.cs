@@ -313,7 +313,7 @@ public static class DomainExtensions
         public void SetTypeAttribute(Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
             bool requiresIndex = true,
             int order = default
-        ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
+        ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
         public void AddTypeAttribute(Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
             bool requiresIndex = true,
@@ -349,7 +349,7 @@ public static class DomainExtensions
         public void SetPropertyAttribute(Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
             bool requiresIndex = true,
             int order = default
-        ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
+        ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
         public void AddPropertyAttribute(Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
             bool requiresIndex = true,
@@ -385,7 +385,7 @@ public static class DomainExtensions
         public void SetMethodAttribute(Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
             bool requiresIndex = true,
             int order = default
-        ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
+        ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
         public void AddMethodAttribute(Func<Attribute> attribute, Func<MethodModelContext, bool> when,
             bool requiresIndex = true,
@@ -421,7 +421,7 @@ public static class DomainExtensions
         public void SetParameterAttribute(Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
             bool requiresIndex = true,
             int order = default
-        ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
+        ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
         public void AddParameterAttribute(Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
             bool requiresIndex = true,

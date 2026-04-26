@@ -21,10 +21,17 @@ public class AddAttributeConvention<TModelContext>(
 
         if (!_when(context)) { return; }
 
-        _apply(context, Add);
+        _apply(context, (model, attribute) =>
+            _trace.Capture(context, () =>
+            {
+                Add(model, attribute);
+
+                return attribute;
+            })
+        );
     }
 
-    void Add(ICustomAttributesModel model, Attribute attribute)
+    static void Add(ICustomAttributesModel model, Attribute attribute)
     {
         attribute.ThrowIfNotTarget(model);
 

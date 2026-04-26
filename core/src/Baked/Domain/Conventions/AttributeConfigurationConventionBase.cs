@@ -35,7 +35,7 @@ public abstract class AttributeConfigurationConventionBase<TModelContext, TAttri
         {
             if (when is not null && !when(context, attribute)) { continue; }
 
-            apply(attribute, context);
+            _trace.Capture(context, attribute, () => apply(attribute, context));
         }
     }
 }

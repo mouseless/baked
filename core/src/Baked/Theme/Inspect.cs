@@ -1,3 +1,4 @@
+using Baked.Domain.Configuration;
 using Baked.Ui;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -10,6 +11,15 @@ public class Inspect
 
     public static InspectTrace TraceHere() =>
         new InspectTrace(new StackTrace(fNeedFileInfo: true));
+
+    public static void Attribute<T>(
+        Expression<Func<T, object?>>? evaluate = default
+    ) where T : Attribute
+    {
+        evaluate ??= c => c;
+
+        Current = new(_ => true, typeof(T), c => evaluate.Compile().Invoke((T)c), evaluate.ToString());
+    }
 
     public static void Component<T>(Expression<Func<T, object?>> evaluate) where T : IComponentSchema =>
         Where(_ => true).Component(evaluate);
@@ -29,15 +39,17 @@ public class Inspect
             Current = new(where, typeof(T), c => evaluate.Compile().Invoke((T)c), evaluate.ToString());
     }
 
-    public Func<ComponentContext, bool> Filter { get; }
-    public Type SchemaType { get; }
+    public Func<DomainModelContext, bool> Filter { get; }
+    public Func<ComponentContext, bool> ComponentFilter { get; }
+    public Type TargetType { get; }
     public Func<object, object?> Evaluate { get; }
     public string Expression { get; }
 
-    Inspect(Func<ComponentContext, bool> filter, Type componentType, Func<object, object?> evaluate, string expression)
+    Inspect(Func<ComponentContext, bool> componentFilter, Type targetType, Func<object, object?> evaluate, string expression)
     {
-        Filter = filter;
-        SchemaType = componentType;
+        Filter = _ => true;
+        ComponentFilter = componentFilter;
+        TargetType = targetType;
         Evaluate = evaluate;
         Expression = expression;
     }

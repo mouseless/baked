@@ -11,26 +11,22 @@ internal class InspectCapture<T>
 {
     readonly Inspect _inspect;
     readonly StackTrace _stackTrace;
-    readonly ComponentContext _context;
     readonly Func<T> _apply;
-    readonly bool _create;
+    readonly Action<Type>? _reportCreate;
     readonly T? _givenTarget;
 
-    public InspectCapture(Inspect inspect, StackTrace stackTrace, ComponentContext context, Func<T> create)
-        : this(inspect, stackTrace, context, create, true) { }
+    public InspectCapture(Inspect inspect, StackTrace stackTrace, Func<T> create, Action<Type> reportCreate)
+        : this(inspect, stackTrace, create, reportCreate, default) { }
 
-    public InspectCapture(Inspect inspect, StackTrace stackTrace, ComponentContext context, Action update, T target)
-        : this(inspect, stackTrace, context, () => { update(); return target; }, false, target) { }
+    public InspectCapture(Inspect inspect, StackTrace stackTrace, Action update, T target)
+        : this(inspect, stackTrace, () => { update(); return target; }, null, target) { }
 
-    InspectCapture(Inspect inspect, StackTrace stackTrace, ComponentContext context, Func<T> apply, bool create,
-        T? givenTarget = default
-    )
+    InspectCapture(Inspect inspect, StackTrace stackTrace, Func<T> apply, Action<Type>? reportCreate, T? givenTarget)
     {
         _inspect = inspect;
         _stackTrace = stackTrace;
-        _context = context;
         _apply = apply;
-        _create = create;
+        _reportCreate = reportCreate;
         _givenTarget = givenTarget;
     }
 
@@ -40,9 +36,9 @@ internal class InspectCapture<T>
     {
         TryEvaluate(_givenTarget, out var previousValue, out var _);
         var target = _apply();
-        if (TryEvaluate(target, out var value, out var type) && _create)
+        if (TryEvaluate(target, out var value, out var type) && _reportCreate is not null)
         {
-            Diagnostics.ReportInfo($"[lightskyblue3_1]<{type.GetName(includeDeclaringTypes: true)}>[/] [gray]{_context.Path}[/]");
+            _reportCreate(type);
         }
 
         if (Equals(value, previousValue)) { return target; }
@@ -63,7 +59,7 @@ internal class InspectCapture<T>
         object? targetObject = target is IComponentDescriptor descriptor
             ? descriptor.Schema
             : target;
-        if (targetObject is null || !targetObject.GetType().IsAssignableTo(_inspect.SchemaType)) { return false; }
+        if (targetObject is null || !targetObject.GetType().IsAssignableTo(_inspect.TargetType)) { return false; }
 
         value = _inspect.Evaluate(targetObject);
         concreteTypeOfTarget = targetObject.GetType();

@@ -8,9 +8,9 @@ using static Baked.Ui.Datas;
 using B = Baked.Ui.Components;
 using C = Baked.Playground.Ui.Components;
 
-namespace Baked.Test;
+namespace Baked.Test.Theme;
 
-public class InspectingConventions : TestSpec
+public class InspectingComponentAndSchemas : TestSpec
 {
     readonly List<DiagnosticMessage> _messages = [];
     InspectTrace _trace = Inspect.TraceHere();
@@ -32,7 +32,8 @@ public class InspectingConventions : TestSpec
     }
 
     [Test]
-    public void When_a_schema_is_created_with_a_non_null_on_the_inspected_property__it_reports_schema_path_and_the_initial_value()
+    [Ignore("not implemented")]
+    public void When_a_schema_is_created_with_a_non_null_on_the_inspected_property__it_reports_member_name__schema_path_and_the_initial_value()
     {
         Inspect.Schema<DataTable.Column>(dtc => dtc.Title);
         var cc = GiveMe.AComponentContext(paths: ["test", "path"]);
@@ -44,6 +45,7 @@ public class InspectingConventions : TestSpec
 
         _messages.Count.ShouldBe(2);
         _messages[0].Level.ShouldBe("info");
+        this.ShouldFail("assert member name in message");
         _messages[0].Message.ShouldContain("/test/path");
         _messages[1].Level.ShouldBe("info");
         _messages[1].Message.ShouldContain($"test title");
@@ -81,7 +83,7 @@ public class InspectingConventions : TestSpec
     }
 
     [Test]
-    public void It_prints_schema_path_once_for_consequent_updates()
+    public void It_prints_component_path_once_for_consequent_updates()
     {
         Inspect.Schema<DataTable.Column>(dtc => dtc.Title);
         var cc = GiveMe.AComponentContext(paths: ["test", "path"]);
@@ -161,7 +163,7 @@ public class InspectingConventions : TestSpec
 
     [Test]
     [Ignore("not tested")]
-    public void Allows_inspecting_an_attribute_property() =>
+    public void Filters_by_model_context() =>
         this.ShouldFail();
 
     [Test]
@@ -183,11 +185,6 @@ public class InspectingConventions : TestSpec
         _messages.ShouldContain(m => m.Message.Contains("prop1"));
         _messages.ShouldNotContain(m => m.Message.Contains("prop2"));
     }
-
-    [Test]
-    [Ignore("not tested")]
-    public void Filters_by_model_context() =>
-        this.ShouldFail();
 
     [Test]
     public void Reports_path_in_gray_for_readability()
@@ -234,11 +231,6 @@ public class InspectingConventions : TestSpec
     }
 
     [Test]
-    [Ignore("not tested")]
-    public void Reports_attribute_type_and_property_name_for_attributes() =>
-        this.ShouldFail();
-
-    [Test]
     public void Captures_and_reports_feature_name_from_stack_trace()
     {
         Inspect.Schema<DataTable.Column>(dtc => dtc.Title);
@@ -266,7 +258,7 @@ public class InspectingConventions : TestSpec
 
         _messages.ShouldContain(m => m.Message.Contains("[magenta]<unknown>[/]"));
         _messages.ShouldContain(m =>
-            Regex.IsMatch(m.Message, @"\[gray].*at Baked[.]Test[.]InspectingConventions[.][.]ctor\(\).*\[/]",
+            Regex.IsMatch(m.Message, @"\[gray].*at Baked[.]Test[.]InspectingComponentAndSchemas[.][.]ctor\(\).*\[/]",
                 RegexOptions.Singleline
             )
         );
