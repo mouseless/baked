@@ -9,7 +9,8 @@ const id = {
   component: "component",
   onReadyValues: "onReadyValues-key",
   uniqueKey: "unique-key",
-  ready: "ready"
+  ready: "ready",
+  reactor: "reactor"
 };
 
 test("inputs are rendered", async({ page }) => {
@@ -69,4 +70,17 @@ test("'onChanged' is emitted before 'onReady' when inputs are changed", async({ 
 
   await expect(readyValues).toHaveText("value 1");
   await expect(uniqueKey).toHaveText("value 1");
+});
+
+test("when reacting, bake should respect initial values", async({ page }) => {
+  const component = page.getByTestId(id.component);
+  const reactor = page.getByTestId(id.reactor);
+
+  await expect(reactor).toBeAttached();
+  await expect(reactor).toContainText("\"required-with-default\": \"default value\"");
+  await expect(reactor).toContainText("\"optional\": null");
+
+  await component.getByTestId("optional").fill("value 3");
+
+  await expect(reactor).toContainText("\"optional\": \"value 3\"");
 });

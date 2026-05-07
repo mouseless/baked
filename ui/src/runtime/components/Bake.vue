@@ -1,15 +1,16 @@
 <template>
   <component
-    :is="render()"
+    :is="componentTemplate"
     v-if="visible"
     :key="loading"
     :class="classes"
+    v-bind="getComponentProps()"
   >
     <slot v-if="$slots.default" />
   </component>
 </template>
 <script setup>
-import { h, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, ref } from "vue";
 import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
 
 const actionExecuter = useActionExecuter();
@@ -30,7 +31,7 @@ const parentPath = context.injectPath();
 const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
 const contextData = context.injectContextData();
-const component = componentResolver.resolve(descriptor.type, "MissingComponent");
+const componentTemplate = componentResolver.resolve(descriptor.type, "MissingComponent");
 const componentProps = buildComponentProps();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data);
@@ -89,9 +90,18 @@ function buildComponentProps() {
   const result = {};
 
   if(descriptor.schema) { result.schema = descriptor.schema; }
-  if(component.emits?.includes("submit")) { result.onSubmit = onModelUpdate; }
-  if(component.props?.modelValue) {
-    result["onUpdate:modelValue"] = onModelUpdate;
+  if(componentTemplate.emits?.includes("submit")) { result.onSubmit = onModelUpdate; }
+  if(componentTemplate.props?.modelValue) { result["onUpdate:modelValue"] = onModelUpdate; }
+
+  return result;
+}
+
+function getComponentProps() {
+  const result = { ...componentProps };
+
+  if(descriptor.data) { result.data = data.value; }
+  if(componentTemplate.props?.modelValue) {
+    result.modelValue = model.value;
 
     nextTick(() => onModelUpdate(model.value));
   }
@@ -99,20 +109,8 @@ function buildComponentProps() {
   return result;
 }
 
-function render() {
-  if(descriptor.data) {
-    componentProps.data = data.value;
-  }
-
-  if(component.props?.modelValue) {
-    componentProps.modelValue = model.value;
-  }
-
-  return h(component, componentProps);
-}
-
 async function onModelUpdate(newModel) {
-  if(component.props?.modelValue) {
+  if(componentTemplate.props?.modelValue) {
     model.value = newModel;
   }
 

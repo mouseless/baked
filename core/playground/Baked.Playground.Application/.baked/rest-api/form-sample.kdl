@@ -13,13 +13,16 @@ form-sample @controller-model {
   }
   get-parents {
     @action-model route="GET /form-sample/parents" anonymous=#true
+    name {
+      @parameter-model in="query"
+    }
+    sort {
+      @parameter-model in="query"
+    }
     take {
       @parameter-model in="query"
     }
     skip {
-      @parameter-model in="query"
-    }
-    sort {
       @parameter-model in="query"
     }
   }

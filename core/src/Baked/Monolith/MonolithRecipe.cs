@@ -8,6 +8,7 @@ using Baked.CodingStyle;
 using Baked.CodingStyle.CommandPattern;
 using Baked.CodingStyle.Initializable;
 using Baked.CodingStyle.Label;
+using Baked.CodingStyle.QueryMethod;
 using Baked.CodingStyle.ScopedBySuffix;
 using Baked.CodingStyle.UseBuiltInTypes;
 using Baked.Communication;
@@ -24,6 +25,7 @@ using Baked.RateLimiter;
 using Baked.Theme;
 using Baked.Ux;
 using Baked.Ux.EnumParameterIsSelect;
+using Baked.Ux.QueryActionAsDataContainer;
 
 namespace Baked.Monolith;
 
@@ -63,6 +65,9 @@ public abstract class MonolithRecipe
     FeatureFunc<CodingStyleConfigurator> _label = c => c.Label();
     public void Label(Func<CodingStyleConfigurator, LabelCodingStyleFeature> label) => _label = c => label(c);
 
+    FeatureFunc<CodingStyleConfigurator> _queryMethod = c => c.QueryMethod();
+    public void QueryMethod(Func<CodingStyleConfigurator, QueryMethodCodingStyleFeature> queryMethod) => _queryMethod = c => queryMethod(c);
+
     FeatureFunc<CodingStyleConfigurator> _scopedBySuffix = c => c.ScopedBySuffix();
     public void ScopedBySuffix(Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> scopedBySuffix) => _scopedBySuffix = c => scopedBySuffix(c);
 
@@ -90,6 +95,7 @@ public abstract class MonolithRecipe
                 c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
                 c => c.Query(),
+                _queryMethod,
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),
@@ -139,6 +145,9 @@ public abstract class MonolithRecipe
         FeatureFunc<UxConfigurator> _enumParameterIsSelect = c => c.EnumParameterIsSelect();
         public void EnumParameterIsSelect(Func<UxConfigurator, EnumParameterIsSelectUxFeature> enumParameterIsSelect) => _enumParameterIsSelect = c => enumParameterIsSelect(c);
 
+        FeatureFunc<UxConfigurator> _queryActionAsDataContainer = c => c.QueryActionAsDataContainer();
+        public void QueryActionAsDataContainer(Func<UxConfigurator, QueryActionAsDataContainerUxFeature> queryActionAsDataContainer) => _queryActionAsDataContainer = c => queryActionAsDataContainer(c);
+
         public override void Apply(ApplicationDescriptor app)
         {
             app.Layers.AddBuildtime();
@@ -186,6 +195,7 @@ public abstract class MonolithRecipe
                     c => c.NumericValuesAreFormatted(),
                     c => c.ObjectWithListIsDataTable(),
                     c => c.PanelParametersAreStateful(),
+                    _queryActionAsDataContainer,
                     c => c.PropertiesAsFieldset(),
                     c => c.RoutedTypesAsNavLinks()
                 ]);

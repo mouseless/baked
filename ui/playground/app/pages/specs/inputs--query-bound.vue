@@ -6,7 +6,7 @@
       </span>
     </Message>
     <div
-      class="border-4 border-gray-500 rounded p-4 space-x-4"
+      class="flex border-4 border-gray-500 rounded p-4 space-x-4"
       data-testid="component"
     >
       <Inputs
@@ -67,7 +67,10 @@ const inputs = [
     required: true,
     defaultValue: "default value",
     queryBound: true,
-    component: giveMe.anExpectedInput({ testId: "required-with-default" })
+    component: giveMe.anExpectedInput({
+      testId: "required-with-default",
+      action: giveMe.aPublishAction({ pageContextKey: "required-with-default" })
+    })
   }),
   giveMe.anInput({
     name: "requiredWithDefaultSelfManaged",
@@ -100,11 +103,16 @@ const inputs = [
 
 const reactor = giveMe.anExpected({
   testId: "reactor",
-  value: "Reacting...",
+  data: giveMe.aCompositeData([
+    giveMe.aContextData({ key: "page", prop: "required-with-default", targetProp: "required-with-default" }),
+    giveMe.aContextData({ key: "page", prop: "optional", targetProp: "optional" })
+  ]),
   reactions: {
-    show: giveMe.aTrigger({
-      when: "optional",
-      constraint: giveMe.aConstraint({ is: "react" })
+    reload: giveMe.aTrigger({
+      parts: [
+        giveMe.aTrigger({ when: "required-with-default" }),
+        giveMe.aTrigger({ when: "optional" })
+      ]
     })
   }
 });

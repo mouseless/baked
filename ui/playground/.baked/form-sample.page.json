@@ -68,359 +68,425 @@
               "value": "GetParents"
             },
             "localizeTitle": true,
-            "inputs": [],
+            "inputs": [
+              {
+                "name": "name",
+                "component": {
+                  "type": "InputText",
+                  "schema": {
+                    "label": "Name",
+                    "labelMode": "float",
+                    "labelVariant": "on"
+                  }
+                }
+              }
+            ],
             "content": {
-              "type": "DataTable",
+              "type": "DataContainer",
               "schema": {
-                "columns": [
+                "inputs": [
                   {
-                    "key": "name",
+                    "name": "sort",
                     "component": {
-                      "type": "NavLink",
+                      "type": "SelectButton",
                       "schema": {
-                        "path": "/parents/[id]",
-                        "params": {
-                          "type": "Context",
-                          "key": "parent",
-                          "prop": "row.id",
-                          "targetProp": "id"
-                        }
+                        "allowEmpty": true,
+                        "optionLabel": "label",
+                        "optionValue": "value",
+                        "localizeLabel": true
                       },
                       "data": {
-                        "type": "Context",
-                        "key": "parent",
-                        "prop": "row.name"
+                        "type": "Inline",
+                        "value": [
+                          {
+                            "label": "Sort.Asc",
+                            "value": "Asc"
+                          },
+                          {
+                            "label": "Sort.Desc",
+                            "value": "Desc"
+                          }
+                        ]
                       }
-                    },
-                    "title": "Name",
-                    "minWidth": true,
-                    "exportable": true,
-                    "frozen": true
+                    }
                   },
                   {
-                    "key": "surname",
+                    "name": "take",
+                    "required": true,
+                    "default": {
+                      "type": "Inline",
+                      "value": 10
+                    },
+                    "numeric": true,
                     "component": {
-                      "type": "NavLink",
+                      "type": "PageSize",
                       "schema": {
-                        "path": "/parents/[id]",
-                        "params": {
-                          "type": "Context",
-                          "key": "parent",
-                          "prop": "row.id",
-                          "targetProp": "id"
-                        }
+                        "localizeLabel": false,
+                        "stateful": true
                       },
                       "data": {
-                        "type": "Context",
-                        "key": "parent",
-                        "prop": "row.surname"
+                        "type": "Inline",
+                        "value": [
+                          10,
+                          20,
+                          50,
+                          100
+                        ]
+                      },
+                      "action": {
+                        "type": "Publish",
+                        "pageContextKey": "take-context-key",
+                        "data": {
+                          "type": "Context",
+                          "key": "model"
+                        }
                       }
-                    },
-                    "title": "Surname",
-                    "minWidth": true,
-                    "exportable": true,
-                    "frozen": true
+                    }
                   },
                   {
-                    "key": "description",
+                    "name": "skip",
+                    "required": true,
+                    "default": {
+                      "type": "Inline",
+                      "value": 0
+                    },
+                    "numeric": true,
                     "component": {
-                      "type": "Dialog",
-                      "schema": {
-                        "content": {
+                      "type": "Paginator",
+                      "schema": {},
+                      "data": {
+                        "type": "Composite",
+                        "parts": [
+                          {
+                            "type": "Context",
+                            "key": "page",
+                            "prop": "length-context-key",
+                            "targetProp": "length"
+                          },
+                          {
+                            "type": "Inline",
+                            "value": {
+                              "take": 10
+                            }
+                          },
+                          {
+                            "type": "Context",
+                            "key": "page",
+                            "prop": "take-context-key",
+                            "targetProp": "take"
+                          }
+                        ]
+                      },
+                      "reactions": {
+                        "reload": {
+                          "type": "Composite",
+                          "parts": [
+                            {
+                              "type": "When",
+                              "when": "length-context-key"
+                            },
+                            {
+                              "type": "When",
+                              "when": "take-context-key"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ],
+                "content": {
+                  "type": "DataTable",
+                  "schema": {
+                    "columns": [
+                      {
+                        "key": "name",
+                        "component": {
+                          "type": "NavLink",
+                          "schema": {
+                            "path": "/parents/[id]",
+                            "params": {
+                              "type": "Context",
+                              "key": "parent",
+                              "prop": "row.id",
+                              "targetProp": "id"
+                            }
+                          },
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.name"
+                          }
+                        },
+                        "title": "Name",
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
+                      },
+                      {
+                        "key": "surname",
+                        "component": {
+                          "type": "NavLink",
+                          "schema": {
+                            "path": "/parents/[id]",
+                            "params": {
+                              "type": "Context",
+                              "key": "parent",
+                              "prop": "row.id",
+                              "targetProp": "id"
+                            }
+                          },
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.surname"
+                          }
+                        },
+                        "title": "Surname",
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
+                      },
+                      {
+                        "key": "description",
+                        "component": {
+                          "type": "Dialog",
+                          "schema": {
+                            "content": {
+                              "type": "Text",
+                              "schema": {},
+                              "data": {
+                                "type": "Context",
+                                "key": "parent",
+                                "prop": "data"
+                              }
+                            },
+                            "open": {
+                              "icon": "pi pi-eye",
+                              "label": "",
+                              "variant": "text",
+                              "rounded": true
+                            },
+                            "header": "Description"
+                          },
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.description"
+                          }
+                        },
+                        "title": "Description",
+                        "exportable": true
+                      },
+                      {
+                        "key": "status",
+                        "component": {
                           "type": "Text",
                           "schema": {},
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "data"
+                            "prop": "row.status"
                           }
                         },
-                        "open": {
-                          "icon": "pi pi-eye",
-                          "label": "",
-                          "variant": "text",
-                          "rounded": true
-                        },
-                        "header": "Description"
+                        "title": "Status",
+                        "exportable": true
                       },
-                      "data": {
-                        "type": "Context",
-                        "key": "parent",
-                        "prop": "row.description"
-                      }
-                    },
-                    "title": "Description",
-                    "exportable": true
-                  },
-                  {
-                    "key": "status",
-                    "component": {
-                      "type": "Text",
-                      "schema": {},
-                      "data": {
-                        "type": "Context",
-                        "key": "parent",
-                        "prop": "row.status"
-                      }
-                    },
-                    "title": "Status",
-                    "exportable": true
-                  },
-                  {
-                    "key": "role",
-                    "component": {
-                      "type": "Text",
-                      "schema": {},
-                      "data": {
-                        "type": "Context",
-                        "key": "parent",
-                        "prop": "row.role"
-                      }
-                    },
-                    "title": "Role",
-                    "exportable": true
-                  }
-                ],
-                "dataKey": "id",
-                "paginator": false,
-                "serverPaginatorOptions": {
-                  "take": {
-                    "type": "Select",
-                    "schema": {
-                      "localizeLabel": false,
-                      "stateful": true
-                    },
-                    "data": {
-                      "type": "Inline",
-                      "value": [
-                        10,
-                        20,
-                        50,
-                        100
-                      ]
-                    }
-                  }
-                },
-                "rows": 5,
-                "exportOptions": {
-                  "csvSeparator": ";",
-                  "fileName": "GetParents.ExportFileName",
-                  "formatter": "useCsvFormatter",
-                  "buttonLabel": "Export as CSV",
-                  "appendParameters": true,
-                  "parameterSeparator": "_",
-                  "parameterFormatter": "useLocaleParameterFormatter"
-                },
-                "actions": {
-                  "key": "Actions",
-                  "component": {
-                    "type": "Composite",
-                    "schema": {
-                      "parts": [
-                        {
-                          "type": "SimpleForm",
-                          "schema": {
-                            "title": "Update",
-                            "submit": {
-                              "label": "Update",
-                              "severity": "primary"
-                            },
-                            "inputs": [
-                              {
-                                "name": "name",
-                                "component": {
-                                  "type": "InputText",
-                                  "schema": {
-                                    "label": "Name",
-                                    "labelMode": "ifta"
-                                  }
-                                }
-                              },
-                              {
-                                "name": "surname",
-                                "component": {
-                                  "type": "InputText",
-                                  "schema": {
-                                    "label": "Surname",
-                                    "labelMode": "ifta"
-                                  }
-                                }
-                              },
-                              {
-                                "name": "description",
-                                "component": {
-                                  "type": "InputText",
-                                  "schema": {
-                                    "label": "Description",
-                                    "labelMode": "ifta"
-                                  }
-                                }
-                              }
-                            ],
-                            "dialogOptions": {
-                              "open": {
-                                "icon": "pi pi-pencil",
-                                "label": "",
-                                "variant": "text",
-                                "rounded": true
-                              },
-                              "cancel": {
-                                "label": "Cancel",
-                                "variant": "text"
-                              }
-                            }
-                          },
-                          "action": {
-                            "type": "Remote",
-                            "path": "parents/{id}/",
-                            "method": "PUT",
-                            "params": {
-                              "type": "Context",
-                              "key": "parent",
-                              "prop": "row"
-                            },
-                            "body": {
-                              "type": "Context",
-                              "key": "model"
-                            },
-                            "postAction": {
-                              "type": "Publish",
-                              "event": "update"
-                            }
+                      {
+                        "key": "role",
+                        "component": {
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.role"
                           }
                         },
-                        {
-                          "type": "SimpleForm",
-                          "schema": {
-                            "title": "Delete",
-                            "submit": {
-                              "label": "Delete",
-                              "severity": "danger"
-                            },
-                            "inputs": [],
-                            "dialogOptions": {
-                              "open": {
-                                "icon": "pi pi-trash",
-                                "label": "",
-                                "variant": "text",
-                                "rounded": true
+                        "title": "Role",
+                        "exportable": true
+                      }
+                    ],
+                    "dataKey": "id",
+                    "rows": 5,
+                    "exportOptions": {
+                      "csvSeparator": ";",
+                      "fileName": "GetParents.ExportFileName",
+                      "formatter": "useCsvFormatter",
+                      "buttonLabel": "Export as CSV",
+                      "appendParameters": true,
+                      "parameterSeparator": "_",
+                      "parameterFormatter": "useLocaleParameterFormatter"
+                    },
+                    "actions": {
+                      "key": "Actions",
+                      "component": {
+                        "type": "Composite",
+                        "schema": {
+                          "parts": [
+                            {
+                              "type": "SimpleForm",
+                              "schema": {
+                                "title": "Update",
+                                "submit": {
+                                  "label": "Update",
+                                  "severity": "primary"
+                                },
+                                "inputs": [
+                                  {
+                                    "name": "name",
+                                    "component": {
+                                      "type": "InputText",
+                                      "schema": {
+                                        "label": "Name",
+                                        "labelMode": "ifta"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "surname",
+                                    "component": {
+                                      "type": "InputText",
+                                      "schema": {
+                                        "label": "Surname",
+                                        "labelMode": "ifta"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "description",
+                                    "component": {
+                                      "type": "InputText",
+                                      "schema": {
+                                        "label": "Description",
+                                        "labelMode": "ifta"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "dialogOptions": {
+                                  "open": {
+                                    "icon": "pi pi-pencil",
+                                    "label": "",
+                                    "variant": "text",
+                                    "rounded": true
+                                  },
+                                  "cancel": {
+                                    "label": "Cancel",
+                                    "variant": "text"
+                                  }
+                                }
                               },
-                              "cancel": {
-                                "label": "Cancel",
-                                "variant": "text"
-                              },
-                              "message": "Are you sure?"
-                            }
-                          },
-                          "action": {
-                            "type": "Remote",
-                            "path": "parents/{id}/",
-                            "method": "DELETE",
-                            "params": {
-                              "type": "Context",
-                              "key": "parent",
-                              "prop": "row"
+                              "action": {
+                                "type": "Remote",
+                                "path": "parents/{id}/",
+                                "method": "PUT",
+                                "params": {
+                                  "type": "Context",
+                                  "key": "parent",
+                                  "prop": "row"
+                                },
+                                "body": {
+                                  "type": "Context",
+                                  "key": "model"
+                                },
+                                "postAction": {
+                                  "type": "Publish",
+                                  "event": "update"
+                                }
+                              }
                             },
-                            "postAction": {
-                              "type": "Publish",
-                              "event": "delete"
+                            {
+                              "type": "SimpleForm",
+                              "schema": {
+                                "title": "Delete",
+                                "submit": {
+                                  "label": "Delete",
+                                  "severity": "danger"
+                                },
+                                "inputs": [],
+                                "dialogOptions": {
+                                  "open": {
+                                    "icon": "pi pi-trash",
+                                    "label": "",
+                                    "variant": "text",
+                                    "rounded": true
+                                  },
+                                  "cancel": {
+                                    "label": "Cancel",
+                                    "variant": "text"
+                                  },
+                                  "message": "Are you sure?"
+                                }
+                              },
+                              "action": {
+                                "type": "Remote",
+                                "path": "parents/{id}/",
+                                "method": "DELETE",
+                                "params": {
+                                  "type": "Context",
+                                  "key": "parent",
+                                  "prop": "row"
+                                },
+                                "postAction": {
+                                  "type": "Publish",
+                                  "event": "delete"
+                                }
+                              }
                             }
-                          }
+                          ]
                         }
-                      ]
-                    }
-                  },
-                  "alignRight": true,
-                  "exportable": false,
-                  "frozen": true
-                },
-                "sort": {
-                  "type": "SelectButton",
-                  "schema": {
-                    "allowEmpty": true,
-                    "optionLabel": "label",
-                    "optionValue": "value",
-                    "localizeLabel": true,
-                    "stateful": true
+                      },
+                      "alignRight": true,
+                      "exportable": false,
+                      "frozen": true
+                    },
+                    "dataLengthContextKey": "length-context-key"
                   },
                   "data": {
-                    "type": "Inline",
-                    "value": [
-                      {
-                        "label": "Sort.Asc",
-                        "value": "Asc"
-                      },
-                      {
-                        "label": "Sort.Desc",
-                        "value": "Desc"
-                      }
-                    ]
+                    "type": "Remote",
+                    "path": "form-sample/parents",
+                    "query": {
+                      "type": "Composite",
+                      "parts": [
+                        {
+                          "type": "Computed",
+                          "composable": "useNuxtRoute",
+                          "options": {
+                            "type": "Inline",
+                            "value": {
+                              "property": "query"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "parameters"
+                        },
+                        {
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "sort-paging-parameters"
+                        }
+                      ]
+                    }
                   },
-                  "action": {
-                    "type": "Publish",
-                    "pageContextKey": "sort",
-                    "data": {
-                      "type": "Context",
-                      "key": "model"
+                  "reactions": {
+                    "reload": {
+                      "type": "Composite",
+                      "parts": [
+                        {
+                          "type": "On",
+                          "on": "update"
+                        },
+                        {
+                          "type": "On",
+                          "on": "delete"
+                        }
+                      ]
                     }
                   }
-                }
-              },
-              "data": {
-                "type": "Remote",
-                "path": "form-sample/parents",
-                "query": {
-                  "type": "Composite",
-                  "parts": [
-                    {
-                      "type": "Computed",
-                      "composable": "useNuxtRoute",
-                      "options": {
-                        "type": "Inline",
-                        "value": {
-                          "property": "query"
-                        }
-                      }
-                    },
-                    {
-                      "type": "Context",
-                      "key": "parent",
-                      "prop": "parameters"
-                    },
-                    {
-                      "type": "Context",
-                      "key": "page",
-                      "prop": "sort",
-                      "targetProp": "sort"
-                    }
-                  ]
-                }
-              },
-              "reactions": {
-                "reload": {
-                  "type": "Composite",
-                  "parts": [
-                    {
-                      "type": "On",
-                      "on": "update"
-                    },
-                    {
-                      "type": "On",
-                      "on": "delete"
-                    },
-                    {
-                      "type": "On",
-                      "on": "clear-parents"
-                    },
-                    {
-                      "type": "On",
-                      "on": "page-changed"
-                    },
-                    {
-                      "type": "When",
-                      "when": "sort"
-                    }
-                  ]
                 }
               }
             }

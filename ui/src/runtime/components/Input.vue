@@ -28,7 +28,7 @@ onAfterMountData(async() => {
   // mounted is used to set model value if it doesn't check
   if(!checkValue(model.value)) {
     if(schema.queryBound && checkValue(query.value)) {
-      model.value = query.value;
+      setModel(query.value);
     } else {
       await set(defaultValue.value);
     }
@@ -41,13 +41,13 @@ onAfterMountData(async() => {
     // because of that it needs to watch for any query change
     watch(() => route.query, async newQuery => {
       const newValue = newQuery[schema.name];
-      if(!checkValue(newValue) && schema.required && defaultValue.value) {
+      if(!checkValue(newValue) && schema.required && checkValue(defaultValue.value)) {
         await set(defaultValue.value);
 
         return;
       }
 
-      model.value = newValue;
+      setModel(newValue);
     }, { immediate: true });
   }
 
@@ -61,10 +61,16 @@ onAfterMountData(async() => {
 });
 
 async function set(value) {
-  if(schema.queryBound) {
+  if(!schema.queryBound) {
+    // prevents setting model to undefined infinitely
+    if(!checkValue(value)) { return; }
+
+    setModel(value);
+  }
+  else {
     // prevents an unnecessary router push to avoid cancelation on other
     // inputs' router pushes
-    if(value === query.value) { return; }
+    if(String(value) === String(query.value)) { return; }
 
     await router.push({
       path: route.path,
@@ -75,11 +81,6 @@ async function set(value) {
       // prevents extra browser history when setting default value of input
       replace: schema.required && (schema.default || schema.defaultSelfManaged) && !query.value
     });
-  } else {
-    // prevents setting model to undefined infinitely
-    if(!value) { return; }
-
-    model.value = value;
   }
 }
 
@@ -89,5 +90,9 @@ function checkValue(value) {
   }
 
   return value !== undefined && value !== null;
+}
+
+function setModel(value) {
+  model.value = schema.numeric ? Number(value) : value;
 }
 </script>

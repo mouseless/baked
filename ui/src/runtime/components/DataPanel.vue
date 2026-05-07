@@ -142,7 +142,9 @@ function onChanged(event) {
 }
 </script>
 <style>
-.p-panel-content {
-  @apply [&:has(.p-datatable)]:p-0;
+.b-component--DataPanel {
+  .p-panel-content {
+    @apply [&:has(.p-datatable)]:p-0;
+  }
 }
 </style>

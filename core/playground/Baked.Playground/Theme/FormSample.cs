@@ -27,10 +27,12 @@ public class FormSample(Parents _parents, Func<Parent> _newParent)
     }
 
     public List<Parent> GetParents(
+        string? name = default,
+        Sort? sort = default,
         int? take = 10,
-        int? skip = 0,
-        Sort? sort = default
+        int? skip = 0
     ) => _parents.By(
+        name: name,
         take: take,
         skip: skip,
         asc: sort == Sort.Asc,

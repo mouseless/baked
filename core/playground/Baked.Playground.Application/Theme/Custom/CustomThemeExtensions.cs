@@ -32,7 +32,7 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/inputs", "Inputs", "/specs") with { Icon = "pi pi-microchip", Description = "Manages inputs through emits", Section = "Behavior" },
                 r => r.Child("/specs/inputs--query-bound", "Inputs - Query Bound", "/specs") with { Icon = "pi pi-microchip", Description = "Manages inputs in sync with query string", Section = "Behavior" },
                 r => r.Child("/specs/layout", "Layout", "/specs") with { Icon = "pi pi-microchip", Description = "Selects specified layout for pages", Section = "Behavior" },
-                r => r.Child("/specs/redirect", "Redirect", "/specs") with { Icon = "pi pi-microchip", Description = "Provides route redirect capability to be used in a component action ", Section = "Behavior" },
+                r => r.Child("/specs/redirect", "Redirect", "/specs") with { Icon = "pi pi-microchip", Description = "Provides route redirect capability to be used in a component action", Section = "Behavior" },
                 r => r.Child("/specs/routing", "Routing", "/specs") with { Icon = "pi pi-microchip", Description = "Uses page descriptors as route template and extract parameters", Section = "Behavior" },
                 r => r.Child("/specs/toast", "Toast", "/specs") with { Icon = "pi pi-microchip", Description = "Renders alert messages", Section = "Behavior" },
 
@@ -58,10 +58,12 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/input-number", "Input Number", "/specs") with { Icon = "pi pi-microchip", Description = "Allows number input", Section = "Input" },
                 r => r.Child("/specs/labeler", "Labeler", "/specs") with { Icon = "pi pi-microchip", Description = "Showing multiple variant Inputs", Section = "Input" },
                 r => r.Child("/specs/language-switcher", "Language Switcher", "/specs") with { Icon = "pi pi-microchip", Description = "Allows change site language", Section = "Input" },
+                r => r.Child("/specs/paginator", "Paginator", "/specs") with { Icon = "pi pi-microchip", Description = "Renders component for pagination", Section = "Input" },
                 r => r.Child("/specs/select", "Select", "/specs") with { Icon = "pi pi-microchip", Description = "Allows select from given options using drow down", Section = "Input" },
                 r => r.Child("/specs/select-button", "Select Button", "/specs") with { Icon = "pi pi-microchip", Description = "Allows select from given options using buttons", Section = "Input" },
 
                 // Layout
+                r => r.Child("/specs/data-container", "Data Container", "/specs") with { Icon = "pi pi-microchip", Description = "Loads and views a data within a simple container", Section = "Layout" },
                 r => r.Child("/specs/data-panel", "Data Panel", "/specs") with { Icon = "pi pi-microchip", Description = "Lazy loads and views a data within a panel", Section = "Layout" },
                 r => r.Child("/specs/header", "Header", "/specs") with { Icon = "pi pi-microchip", Description = "Renders a breadcrumb", Section = "Layout" },
                 r => r.Child("/specs/dialog", "Dialog", "/specs") with { Icon = "pi pi-microchip", Description = "Renders a dialog with given contents and a button if given an action", Section = "Layout" },

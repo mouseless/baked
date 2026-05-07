@@ -144,6 +144,19 @@ public static class DomainComponents
         );
     }
 
+    public static ComponentDescriptor<DataContainer> MethodDataContainer(MethodModel method, ComponentContext context,
+        Action<DataContainer>? options = default
+    )
+    {
+        context = context.Drill(nameof(DataContainer));
+        var (_, l) = context;
+
+        return B.DataContainer(
+            method.GenerateRequiredComponent(context.Drill(nameof(DataContainer.Content))),
+            options: options
+        );
+    }
+
     public static Input ParameterInput(ParameterModel parameter, ComponentContext context,
         Action<Input>? options = default
     )
@@ -237,7 +250,6 @@ public static class DomainComponents
                 dt.FooterTemplate = method.GenerateSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
                 dt.VirtualScrollerOptions = method.GenerateSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
                 dt.Actions = method.GenerateSchema<DataTable.Column>(context.Drill(nameof(DataTable.Actions)));
-                dt.ServerPaginatorOptions = method.GenerateSchema<DataTable.ServerPaginator>(context.Drill(nameof(DataTable.ServerPaginatorOptions)));
 
                 options.Apply(dt);
             },

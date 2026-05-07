@@ -245,6 +245,12 @@
             "title": "Language Switcher",
             "parentRoute": "/specs"
           },
+          "/specs/paginator": {
+            "route": "/specs/paginator",
+            "icon": "pi pi-microchip",
+            "title": "Paginator",
+            "parentRoute": "/specs"
+          },
           "/specs/select": {
             "route": "/specs/select",
             "icon": "pi pi-microchip",
@@ -255,6 +261,12 @@
             "route": "/specs/select-button",
             "icon": "pi pi-microchip",
             "title": "Select Button",
+            "parentRoute": "/specs"
+          },
+          "/specs/data-container": {
+            "route": "/specs/data-container",
+            "icon": "pi pi-microchip",
+            "title": "Data Container",
             "parentRoute": "/specs"
           },
           "/specs/data-panel": {

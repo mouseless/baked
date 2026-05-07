@@ -42,6 +42,13 @@
       <span class="text-gray-500">onReadyValues-key=</span>
       <span data-testid="onReadyValues-key">{{ readyValues }}</span>
     </div>
+    <div class="border-4 border-gray-500 rounded p-4 flex gap-4">
+      <Bake
+        name="reactor"
+        :descriptor="reactor"
+        class="border border-green-500 rounded p-2"
+      />
+    </div>
   </UiSpec>
 </template>
 <script setup>
@@ -56,7 +63,10 @@ const readyValues = ref();
 const inputs = [
   giveMe.anInput({
     name: "requiredWithDefault",
-    component: giveMe.anExpectedInput({ testId: "required-with-default" }),
+    component: giveMe.anExpectedInput({
+      testId: "required-with-default",
+      action: giveMe.aPublishAction({ pageContextKey: "required-with-default" })
+    }),
     required: true,
     defaultValue: "default value"
   }),
@@ -72,9 +82,28 @@ const inputs = [
   }),
   giveMe.anInput({
     name: "optional",
-    component: giveMe.anExpectedInput({ testId: "optional" })
+    component: giveMe.anExpectedInput({
+      testId: "optional",
+      action: giveMe.aPublishAction({ pageContextKey: "optional" })
+    })
   })
 ];
+
+const reactor = giveMe.anExpected({
+  testId: "reactor",
+  data: giveMe.aCompositeData([
+    giveMe.aContextData({ key: "page", prop: "required-with-default", targetProp: "required-with-default" }),
+    giveMe.aContextData({ key: "page", prop: "optional", targetProp: "optional" })
+  ]),
+  reactions: {
+    reload: giveMe.aTrigger({
+      parts: [
+        giveMe.aTrigger({ when: "required-with-default" }),
+        giveMe.aTrigger({ when: "optional" })
+      ]
+    })
+  }
+});
 
 function onReady(value) {
   ready.value = value;

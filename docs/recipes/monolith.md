@@ -54,6 +54,7 @@ Bake.New
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
 |                    | Query                                    |                                    |
+|                    | Query Method                             |                                    |
 |                    | Records are DTOs                         |                                    |
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Rich Entity                              |                                    |
@@ -94,6 +95,7 @@ Bake.New
 |                    | Numeric Values are Formatted             |                                    |
 |                    | Object with List is Data Table           |                                    |
 |                    | Panel Parameters are Stateful            |                                    |
+|                    | Query Action As Data Container           |                                    |
 |                    | Properties as Fieldset                   |                                    |
 |                    | Routed Types as NavLinks                 |                                    |
 

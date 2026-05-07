@@ -137,9 +137,16 @@ test("unique key changes with parameter values", async({ page }) => {
 });
 
 test("when reacting, bake should respect initial values", async({ page, goto }) => {
-  await goto("/specs/inputs--query-bound?optional=react", { waitUntil: "hydration" });
   const reactor = page.getByTestId(id.reactor);
 
+  await page.waitForURL(/requiredWithDefault=default\+value/); // wait for above fills to take effect
+
   await expect(reactor).toBeAttached();
-  await expect(reactor).toHaveText("Reacting...");
+  await expect(reactor).toContainText("\"required-with-default\": \"default value\"");
+  await expect(reactor).toContainText("\"optional\": null");
+
+  await goto("/specs/inputs--query-bound?optional=react", { waitUntil: "hydration" });
+
+  await expect(reactor).toBeAttached();
+  await expect(reactor).toContainText("\"optional\": \"react");
 });

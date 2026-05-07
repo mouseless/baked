@@ -12,7 +12,7 @@
   "MenuPage": {
     "No item available!": "Hiçbir öğe mevcut değil!"
   },
-  "ServerPaginator": {
+  "Paginator": {
     "Page {page}": "Sayfa {page}"
   },
   "TabbedPage": {

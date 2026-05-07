@@ -164,6 +164,16 @@ export default {
     };
   },
 
+  aDataContainer({ inputs, content } = {}) {
+    inputs = $(inputs, []);
+    content = $(content, this.anExpected());
+
+    return {
+      type: "DataContainer",
+      schema: { inputs, content }
+    };
+  },
+
   aDataPanel({ title, collapsed, localizeTitle, inputs, content, toggleable } = {}) {
     title = $(title, this.anInlineData("Spec: Test Title"));
     collapsed = $(collapsed, false);
@@ -458,7 +468,7 @@ export default {
     };
   },
 
-  anInput({ name, required, defaultValue, default_, defaultSelfManaged, queryBound, component } = {}) {
+  anInput({ name, required, defaultValue, default_, defaultSelfManaged, numeric, queryBound, component } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anExpectedInput({ testId: name }));
@@ -466,7 +476,7 @@ export default {
     defaultSelfManaged = $(defaultSelfManaged, false);
     queryBound = $(queryBound, undefined);
 
-    return { name, required, default: default_, defaultSelfManaged, queryBound, component };
+    return { name, required, default: default_, defaultSelfManaged, numeric, queryBound, component };
   },
 
   anInputText({ label, labeler, targetProp } = {}) {

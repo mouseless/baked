@@ -12,7 +12,7 @@
   "MenuPage": {
     "No item available!": "No item available!"
   },
-  "ServerPaginator": {
+  "Paginator": {
     "Page {page}": "Page {page}"
   },
   "TabbedPage": {

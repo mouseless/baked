@@ -6,7 +6,6 @@ public record DataTable : IComponentSchema
     public string? DataKey { get; set; }
     public string? ItemsProp { get; set; }
     public bool? Paginator { get; set; }
-    public ServerPaginator? ServerPaginatorOptions { get; set; }
     public int? Rows { get; set; }
     public int? RowsWhenLoading { get; set; }
     public string? ScrollHeight { get; set; }
@@ -14,7 +13,7 @@ public record DataTable : IComponentSchema
     public Footer? FooterTemplate { get; set; }
     public Export? ExportOptions { get; set; }
     public Column? Actions { get; set; }
-    public IComponentDescriptor? Sort { get; set; }
+    public string? DataLengthContextKey { get; set; }
 
     public record Column(string Key)
         : IOrderableSchema
@@ -45,14 +44,6 @@ public record DataTable : IComponentSchema
         public bool? AppendParameters { get; set; }
         public string? ParameterSeparator { get; set; }
         public string? ParameterFormatter { get; set; }
-    }
-
-    public record ServerPaginator
-    {
-        public IComponentDescriptor? Take { get; set; }
-        public string? TakeParameterName { get; set; }
-        public string? SkipParameterName { get; set; }
-        public string? PageChangeEventName { get; set; }
     }
 
     public record VirtualScroller()

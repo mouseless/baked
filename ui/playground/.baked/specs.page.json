@@ -121,7 +121,7 @@
                 "route": "/specs/redirect",
                 "icon": "pi pi-microchip",
                 "title": "Redirect",
-                "description": "Provides route redirect capability to be used in a component action "
+                "description": "Provides route redirect capability to be used in a component action"
               }
             }
           },
@@ -369,6 +369,18 @@
             }
           },
           {
+            "title": "Paginator",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/paginator",
+                "icon": "pi pi-microchip",
+                "title": "Paginator",
+                "description": "Renders component for pagination"
+              }
+            }
+          },
+          {
             "title": "Select",
             "component": {
               "type": "CardLink",
@@ -397,6 +409,18 @@
       {
         "title": "Layout",
         "links": [
+          {
+            "title": "Data Container",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/data-container",
+                "icon": "pi pi-microchip",
+                "title": "Data Container",
+                "description": "Loads and views a data within a simple container"
+              }
+            }
+          },
           {
             "title": "Data Panel",
             "component": {

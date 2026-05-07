@@ -1,13 +1,10 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.Playground.Orm;
 using Baked.Playground.Theme;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
-using Humanizer;
-
-using static Baked.Ui.Datas;
-using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
 
@@ -23,6 +20,17 @@ public class FormSampleDomainOverrideFeature : IFeature
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
                 attribute: (a, c) => a.RoutePathBack = "/form-sample"
             );
+
+            builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+                when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
+                attribute: a => a.HideInLists = true
+            );
+
+            builder.Conventions.SetMethodAttribute(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
+                attribute: () => new QueryMethodAttribute()
+            );
+
             builder.Conventions.AddMethodComponentConfiguration<FormPage>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
                 component: fp =>
@@ -30,62 +38,6 @@ public class FormSampleDomainOverrideFeature : IFeature
                     fp.Schema.ForEachInputGroup(g => g.Wide = true);
                     fp.Schema.Sections[0].InputGroups.Move("name", toTop: true);
                 }
-            );
-
-            builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
-                attribute: a => a.HideInLists = true
-            );
-
-            builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
-                component: dp =>
-                {
-                    dp.Schema.Inputs.RemoveAt(dp.Schema.Inputs.FindIndex(i => i.Name == "take"));
-                    dp.Schema.Inputs.RemoveAt(dp.Schema.Inputs.FindIndex(i => i.Name == "skip"));
-                    dp.Schema.Inputs.RemoveAt(dp.Schema.Inputs.FindIndex(i => i.Name == "sort"));
-                }
-            );
-            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
-                component: (dt, c, cc) =>
-                {
-                    dt.ReloadOn(nameof(FormSample.ClearParents).Kebaberize());
-                    dt.ReloadOn("page-changed");
-                    dt.Schema.Paginator = false;
-                    dt.Schema.Sort = c.Method.DefaultOverload.Parameters["sort"].GenerateComponent(cc.Drill(nameof(DataTable.Sort)));
-
-                    if (dt.Schema.Sort is not null && dt.Schema.Sort.Schema is ISelect select)
-                    {
-                        dt.ReloadWhen("sort");
-                        dt.Schema.Sort.Action = Publish.PageContextValue("sort");
-                        select.Stateful = true;
-                    }
-                }
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
-                schema: rd => rd.Query += Context.Page(options: cd =>
-                {
-                    cd.Prop = "sort";
-                    cd.TargetProp = "sort";
-                })
-            );
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ServerPaginatorOptions)),
-                schema: (c, cc) => B.DataTableServerPaginator(options: dtsp =>
-                {
-                    var (_, l) = cc;
-
-                    dtsp.Take = B.Select(Inline(new[] { 10, 20, 50, 100 }, options: i => i.RequireLocalization = false),
-                        options: s =>
-                        {
-                            s.Stateful = true;
-                            s.LabelNone();
-                        }
-                    );
-                })
             );
 
             // Properties

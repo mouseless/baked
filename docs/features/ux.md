@@ -224,6 +224,24 @@ c => c.PropertiesAsFieldset()
     data, e.g., `data.parent.name`
   - Otherwise, sets the property value as component data, e.g., `data.name`
 
+
+## Query Action Is Data Container
+
+Renders methods with `QueryMethod` attribute within the `DataContainer` 
+component. When method is wrapped in a `DataPanel` only `SortAttribute` and
+`PagingAttribute` parameters are incluede in `DataContainer` and remaining
+parameters are rendered as `DataPanel.Inputs`.
+
+```csharp
+c => c.QueryActionAsDataContainer(
+  pageSizeOptions: [...]
+)
+```
+
+- `PagingAttribute` with `take` role is rendered as `Select`
+- `PagingAttribute` with `skip` role is rendered as `Paginator`
+- When there is no `take` parameter, default value for take is `10`
+
 ## Routed Types as Nav Links
 
 Configures `NavLink` component for types that have `RouteAttribute` under data

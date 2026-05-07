@@ -4,7 +4,6 @@
     :dt
     :pt
     :variant
-    class="w-full"
   >
     <template #default>
       <slot />

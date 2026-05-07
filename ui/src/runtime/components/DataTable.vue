@@ -22,33 +22,6 @@
     <template #empty>
       {{ lc("No records found") }}
     </template>
-    <div
-      v-if="sort || (!paginator && serverPaginatorOptions)"
-      class="
-        b-Header
-        flex flex-row items-center justify-end
-        gap-4 mb-2 py-4 px-2
-      "
-    >
-      <div
-        v-if="sort"
-        class="flex items-end justify-end"
-      >
-        <Bake
-          name="sort"
-          :descriptor="sort"
-        />
-      </div>
-      <div
-        v-if="!paginator && serverPaginatorOptions"
-        class="flex justify-end"
-      >
-        <ServerPaginator
-          :schema="serverPaginatorOptions"
-          :data="data"
-        />
-      </div>
-    </div>
     <Column
       v-for="column in visibleColumns"
       :key="column.key"
@@ -173,7 +146,7 @@ import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { useComposableResolver, useContext, useDataFetcher, useLocalization } from "#imports";
-import { AwaitLoading, Bake, ProvideParentContext, ServerPaginator } from "#components";
+import { AwaitLoading, Bake, ProvideParentContext } from "#components";
 
 const context = useContext();
 const composableResolver = useComposableResolver();
@@ -187,7 +160,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { actions, columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, serverPaginatorOptions, sort } = schema;
+const { actions, columns, dataKey, dataLengthContextKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
 const exportOptions = schema.exportOptions && {
   buttonIcon: "pi pi-download",
   ...schema.exportOptions
@@ -230,6 +203,10 @@ const visibleColumns = computed(() => columns.filter(c => !c.hidden));
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const exportFilename = ref(exportOptions?.fileName ? l(exportOptions.fileName) : null);
 let formatter = null;
+
+if(dataLengthContextKey && data) {
+  contextData.page[dataLengthContextKey] = data?.length;
+}
 
 if(exportOptions) {
   headerActions.value.push({
@@ -302,14 +279,12 @@ function exportFunction({ data, field }) {
 }
 </script>
 <style>
-/* If Datatable in a DataPanel, clear border and radius */
-.p-panel-content:has(.b-component--DataTable) {
+/* If Datatable in a DataPanel or DataContainer, clear border and radius */
+.p-panel-content:has(.b-component--DataTable),
+.b-component--DataContainer:has(.b-component--DataTable) {
   .b-component--DataTable {
     @apply border-none rounded-none;
 
-    .b-Header {
-      @apply rounded-none;
-    }
     .p-datatable-table-container {
       @apply border-none;
     }
@@ -325,26 +300,7 @@ function exportFunction({ data, field }) {
   ;
 
   .p-datatable-table-container {
-    @apply border-none rounded-b-[--p-border-radius-md];
-  }
-
-  &:has(.b-Header) {
-    .b-Header {
-      @apply
-        border-b dark:border-zinc-800
-        dark:bg-zinc-900 mb-0
-        rounded-t-[--p-border-radius-md]
-      ;
-    }
-    .p-datatable-table-container {
-      @apply rounded-b-[--p-border-radius-md];
-    }
-  }
-
-  &:has(:not(.b-Header)) {
-    .p-datatable-table-container {
-      @apply rounded-[--p-border-radius-md];
-    }
+    @apply border-none rounded-[--p-border-radius-md];
   }
 
   &:has(.p-datatable-paginator-bottom) {

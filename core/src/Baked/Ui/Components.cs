@@ -27,6 +27,10 @@ public static class Components
         Action<DataPanel>? options = default
     ) => new(options.Apply(new(title, content)));
 
+    public static ComponentDescriptor<DataContainer> DataContainer(IComponentDescriptor content,
+        Action<DataContainer>? options = default
+    ) => new(options.Apply(new(content)));
+
     public static ComponentDescriptor<DataTable> DataTable(
         Action<DataTable>? options = default,
         IData? data = default
@@ -43,10 +47,6 @@ public static class Components
     public static DataTable.Footer DataTableFooter(string label,
         Action<DataTable.Footer>? options = default
     ) => options.Apply(new(label));
-
-    public static DataTable.ServerPaginator DataTableServerPaginator(
-        Action<DataTable.ServerPaginator>? options = default
-    ) => options.Apply(new());
 
     public static DataTable.VirtualScroller DataTableVirtualScroller(
         Action<DataTable.VirtualScroller>? options = default
@@ -108,6 +108,10 @@ public static class Components
     public static ComponentDescriptor<Icon> Icon(string iconClass,
         Action<Icon>? options = default
     ) => new(options.Apply(new(iconClass)));
+
+    public static Input Input(string name, IComponentDescriptor component,
+        Action<Input>? options = default
+    ) => options.Apply(new(name, component));
 
     public static ComponentDescriptor<InputText> InputText(
         Action<InputText>? options = default
@@ -178,13 +182,17 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
+    public static ComponentDescriptor<PageSize> PageSize(
+        Action<PageSize>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<PageTitle> PageTitle(string title,
         Action<PageTitle>? options = default
     ) => new(options.Apply(new(title)));
 
-    public static Input Input(string name, IComponentDescriptor component,
-        Action<Input>? options = default
-    ) => options.Apply(new(name, component));
+    public static ComponentDescriptor<Paginator> Paginator(
+        Action<Paginator>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<Rate> Rate(
         Action<Rate>? options = default,
