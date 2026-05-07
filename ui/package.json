@@ -57,18 +57,18 @@
     "@playwright/test": "1.59.1",
     "@types/node": "25.6.0",
     "changelogen": "0.6.2",
-    "nuxt": "4.4.2",
+    "nuxt": "4.4.4",
     "sass": "1.99.0",
     "typescript": "6.0.3",
     "vitest": "4.1.5",
-    "vue-tsc": "3.2.7"
+    "vue-tsc": "3.2.8"
   },
   "optionalDependencies": {
-    "@oxc-parser/binding-darwin-arm64": "0.128.0",
-    "@oxc-parser/binding-linux-arm64-gnu": "0.128.0",
-    "@oxc-parser/binding-linux-arm64-musl": "0.128.0",
-    "@oxc-parser/binding-linux-x64-gnu": "0.128.0",
-    "@oxc-parser/binding-linux-x64-musl": "0.128.0",
-    "@oxc-parser/binding-win32-x64-msvc": "0.128.0"
+    "@oxc-parser/binding-darwin-arm64": "0.129.0",
+    "@oxc-parser/binding-linux-arm64-gnu": "0.129.0",
+    "@oxc-parser/binding-linux-arm64-musl": "0.129.0",
+    "@oxc-parser/binding-linux-x64-gnu": "0.129.0",
+    "@oxc-parser/binding-linux-x64-musl": "0.129.0",
+    "@oxc-parser/binding-win32-x64-msvc": "0.129.0"
   }
 }

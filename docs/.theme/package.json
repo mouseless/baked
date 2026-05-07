@@ -16,16 +16,16 @@
     "local": "npx http-server .output/public -p 3000"
   },
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "11.12.0",
+    "@mermaid-js/mermaid-cli": "11.14.0",
     "@nuxt/content": "3.13.0",
     "@nuxt/eslint": "1.15.2",
     "@pinia/nuxt": "0.11.3",
     "better-sqlite3": "12.9.0",
     "cross-env": "10.1.0",
     "log-symbols": "7.0.1",
-    "nuxt": "4.4.2",
+    "nuxt": "4.4.4",
     "sass": "1.99.0",
     "webpack": "5.106.2",
-    "yaml": "2.8.3"
+    "yaml": "2.8.4"
   }
 }
