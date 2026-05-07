@@ -62,7 +62,7 @@ const uniqueKey = ref("");
 
 const values = ref({});
 if(inputs.length > 0) {
-  contextData.parent["sort-paging-parameters"] = values;
+  contextData.parent["container-parameters"] = values;
 }
 
 function onReady(value) {

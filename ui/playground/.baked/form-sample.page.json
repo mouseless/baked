@@ -467,7 +467,7 @@
                         {
                           "type": "Context",
                           "key": "parent",
-                          "prop": "sort-paging-parameters"
+                          "prop": "container-parameters"
                         }
                       ]
                     }

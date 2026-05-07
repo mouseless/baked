@@ -37,7 +37,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataContainer), nameof(DataContainer.Content), "*", nameof(IComponentDescriptor.Data)),
-                schema: rd => rd.Query += Context.Parent(options: cd => cd.Prop = "sort-paging-parameters"),
+                schema: rd => rd.Query += Context.Parent(options: cd => cd.Prop = "container-parameters"),
                 order: 20
             );
 
@@ -82,42 +82,36 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 order: 10
             );
 
-            // Remove inputs other than `Sort` or `Paging` when in DataPanel
-            builder.Conventions.AddMethodComponentConfiguration<DataContainer>(
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: (dc, c, cc) =>
-                {
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                    {
-                        if (parameter.Has<SortingAttribute>() || parameter.Has<PagingAttribute>()) { continue; }
-
-                        var input = dc.Schema.Inputs.FirstOrDefault(i => i.Name == parameter.Name);
-                        if (input is null) { continue; }
-
-                        dc.Schema.Inputs.Remove(input);
-                    }
-                }
-            );
-
-            // Remove`Sort` or `Paging` inputs from DataPanel
+            // Remove inputs other than `Sort` or `Paging` from DataPanel and
+            // from DataPanel
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
-                component: (dp, c, cc) =>
+                component: (dp, c) =>
                 {
+                    if (dp.Schema.Content.Schema is not DataContainer dc) { return; }
+
+                    var dpInputs = dp.Schema.Inputs.ToDictionary(i => i.Name, i => i);
+                    var dcInputs = dc.Inputs.ToDictionary(i => i.Name, i => i);
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        if (!parameter.Has<SortingAttribute>() && !parameter.Has<PagingAttribute>()) { continue; }
+                        if (parameter.Has<SortingAttribute>() || parameter.Has<PagingAttribute>())
+                        {
+                            if (!dpInputs.TryGetValue(parameter.Name, out var input)) { continue; }
 
-                        var input = dp.Schema.Inputs.FirstOrDefault(i => i.Name == parameter.Name);
-                        if (input is null) { continue; }
+                            dp.Schema.Inputs.Remove(input);
+                        }
+                        else
+                        {
+                            if (!dcInputs.TryGetValue(parameter.Name, out var input)) { continue; }
 
-                        dp.Schema.Inputs.Remove(input);
+                            dc.Inputs.Remove(input);
+                        }
                     }
                 },
                 order: 10
             );
 
-            // Disable virtual scroll, configure paginator and publish 
+            // Disable virtual scroll, configure paginator and publish
             // data length when skip parameter exists
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 where: cc => cc.Path.Contains(nameof(DataContainer)),
@@ -140,16 +134,16 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 component: () => B.Paginator()
             );
             builder.Conventions.AddParameterComponentConfiguration<Paginator>(
-                component: paginator =>
+                component: p =>
                 {
-                    paginator.Data = Context.Page(o =>
+                    p.Data = Context.Page(o =>
                     {
                         o.Prop = _lengthContextKey;
                         o.TargetProp = "length";
                     });
-                    paginator.Data += Inline(new { take = 10 });
+                    p.Data += Inline(new { take = 10 });
 
-                    paginator.ReloadWhen(_lengthContextKey);
+                    p.ReloadWhen(_lengthContextKey);
                 }
             );
 
