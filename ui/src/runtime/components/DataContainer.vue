@@ -2,17 +2,17 @@
   <div
     class="
       block bg-transparent
-      border rounded border-[1px]
+      border rounded border-1
       border-slate-200 dark:border-slate-700
     "
   >
     <div
       class="
-        p-[1.125rem]
-        bg-transparent dark:bg-zinc-900
-        border-0 rounded-none
-        text-sm
-        flex gap-2 items-center justify-end
+        px-2 py-4
+        bg-transparent border-b
+        dark:bg-zinc-900 dark:border-zinc-800
+        rounded-none text-sm
+        flex gap-4 items-center justify-end
       "
     >
       <Inputs
@@ -22,7 +22,7 @@
         @changed="onChanged"
       />
     </div>
-    <div class="p-[1.125rem] pt-0 [contain:inline-size]">
+    <div class="pt-0 [contain:inline-size]">
       <Bake
         v-if="loaded && ready"
         :key="uniqueKey"
@@ -62,7 +62,7 @@ const uniqueKey = ref("");
 
 const values = ref({});
 if(inputs.length > 0) {
-  contextData.parent["sort-paging-parameters"] = values;
+  contextData.parent["container-parameters"] = values;
 }
 
 function onReady(value) {
