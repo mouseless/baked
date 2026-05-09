@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.RestApi.Model;
 using Baked.Ui;
 
 using static Baked.Theme.Default.DomainComponents;
@@ -64,8 +65,9 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 order: 10
             );
 
-            // Remove inputs other than `Sort` or `Paging` from DataPanel and
-            // from DataPanel
+            // Split inputs between `DataPanel` and `DataContainer` when
+            // container is under a panel, keeping only sorting and paging in
+            // container while keeping the rest in panel
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 component: (dp, c) =>
@@ -74,17 +76,18 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
 
                     var dpInputs = dp.Schema.Inputs.ToDictionary(i => i.Name, i => i);
                     var dcInputs = dc.Inputs.ToDictionary(i => i.Name, i => i);
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters.Having<ParameterModelAttribute>())
                     {
+                        var api = parameter.Get<ParameterModelAttribute>();
                         if (parameter.Has<SortingAttribute>() || parameter.Has<PagingAttribute>())
                         {
-                            if (!dpInputs.TryGetValue(parameter.Name, out var input)) { continue; }
+                            if (!dpInputs.TryGetValue(api.Name, out var input)) { continue; }
 
                             dp.Schema.Inputs.Remove(input);
                         }
                         else
                         {
-                            if (!dcInputs.TryGetValue(parameter.Name, out var input)) { continue; }
+                            if (!dcInputs.TryGetValue(api.Name, out var input)) { continue; }
 
                             dc.Inputs.Remove(input);
                         }
