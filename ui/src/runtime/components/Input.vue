@@ -93,6 +93,11 @@ function checkValue(value) {
 }
 
 function setModel(value) {
-  model.value = schema.numeric ? Number(value) : value;
+  if(!schema.numeric) {
+    model.value = value;
+  } else {
+    const numericValue = Number(value);
+    model.value = Number.isNaN(numericValue) ? undefined : value;
+  }
 }
 </script>

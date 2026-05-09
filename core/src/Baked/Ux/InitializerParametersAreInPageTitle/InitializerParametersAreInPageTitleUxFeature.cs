@@ -38,7 +38,7 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
 
                     var (_, l) = cc;
 
-                    labeler.LabelFloatOn(l(c.Parameter.Name.Titleize()));
+                    labeler.LabelFloatOn(labeler.Label ?? l(c.Parameter.Name.Titleize()));
                 }
             );
         });

@@ -6,7 +6,7 @@ on:
       - labeled
     branches:
       - main
-      - 'epic/**'
+      - 'v*.*'
 
 permissions:
   id-token: write  # Required for OIDC

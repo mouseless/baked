@@ -22,22 +22,22 @@ public class ReportingErrorsWhenBuildingPages : TestSpec
     [Test]
     public void After_building_pages__it_delegates_reported_error_to_given_error_handler()
     {
-        var errors = new List<Exception>();
+        var exceptions = new List<Exception>();
         var domain = GiveMe.TheDomainModel();
         var pages = new PageDescriptors();
         NewLocaleKey l = key => key;
         var routes = new List<Route> { GiveMe.ARoute(buildFails: true, buildFailMessage: "test") };
 
-        pages.AddPages(routes, domain, l, onComplete: e => errors.AddRange(e.Errors));
+        pages.AddPages(routes, domain, l, onComplete: e => exceptions.AddRange(e.Exceptions));
 
-        errors.Count.ShouldBe(1);
-        errors.ShouldContain(e => e.Message == "test");
+        exceptions.Count.ShouldBe(1);
+        exceptions.ShouldContain(e => e.Message == "test");
     }
 
     [Test]
     public void It_allows_multiple_errors_in_one_run()
     {
-        var errors = new List<Exception>();
+        var exceptions = new List<Exception>();
         var domain = GiveMe.TheDomainModel();
         var pages = new PageDescriptors();
         NewLocaleKey l = key => key;
@@ -47,10 +47,10 @@ public class ReportingErrorsWhenBuildingPages : TestSpec
             GiveMe.ARoute(buildFails: true, buildFailMessage: "second")
         };
 
-        pages.AddPages(routes, domain, l, onComplete: e => errors.AddRange(e.Errors));
+        pages.AddPages(routes, domain, l, onComplete: e => exceptions.AddRange(e.Exceptions));
 
-        errors.Count.ShouldBe(2);
-        errors.ShouldContain(e => e.Message == "first");
-        errors.ShouldContain(e => e.Message == "second");
+        exceptions.Count.ShouldBe(2);
+        exceptions.ShouldContain(e => e.Message == "first");
+        exceptions.ShouldContain(e => e.Message == "second");
     }
 }

@@ -20,7 +20,7 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
 
                     var (_, l) = cc;
 
-                    labeler.LabelIfta(l(c.Parameter.Name.Titleize()));
+                    labeler.LabelIfta(labeler.Label ?? l(c.Parameter.Name.Titleize()));
                 }
             );
         });
