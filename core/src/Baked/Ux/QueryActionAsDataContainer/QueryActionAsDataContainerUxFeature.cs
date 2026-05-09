@@ -53,24 +53,6 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 }
             );
 
-            // When skip parameter exists, add take data to skip component
-            builder.Conventions.AddMethodComponentConfiguration<DataContainer>(
-                when: c => c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
-                component: (dc, c, cc) =>
-                {
-                    var skipParameter = c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().FirstOrDefault(p => p.Get<PagingAttribute>().IsSkip);
-                    if (skipParameter is null) { return; }
-
-                    var skipInput = dc.Schema.Inputs.First(i => i.Name == skipParameter.Name);
-                    skipInput.Component.Data += Context.Page(o =>
-                    {
-                        o.Prop = _takeContextKey;
-                        o.TargetProp = "take";
-                    });
-                    skipInput.Component.ReloadWhen(_takeContextKey);
-                }
-            );
-
             // Set paging inputs to be required and numeric
             builder.Conventions.AddParameterSchemaConfiguration<Input>(
                 when: c => c.Parameter.Has<PagingAttribute>(),
@@ -141,9 +123,26 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                         o.Prop = _lengthContextKey;
                         o.TargetProp = "length";
                     });
-                    p.Data += Inline(new { take = 10 });
 
                     p.ReloadWhen(_lengthContextKey);
+                }
+            );
+            // Set take to 10 when there is no take parameter
+            builder.Conventions.AddParameterComponentConfiguration<Paginator>(
+                when: c => !c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
+                component: (p, c, cc) => p.Data += Inline(new { take = 10 })
+            );
+            // Use take parameter's value from page context when there is take parameter
+            builder.Conventions.AddParameterComponentConfiguration<Paginator>(
+                when: c => c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
+                component: (p, c, cc) =>
+                {
+                    p.Data += Context.Page(o =>
+                    {
+                        o.Prop = _takeContextKey;
+                        o.TargetProp = "take";
+                    });
+                    p.ReloadWhen(_takeContextKey);
                 }
             );
 

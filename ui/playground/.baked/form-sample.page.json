@@ -164,12 +164,6 @@
                             "targetProp": "length"
                           },
                           {
-                            "type": "Inline",
-                            "value": {
-                              "take": 10
-                            }
-                          },
-                          {
                             "type": "Context",
                             "key": "page",
                             "prop": "take-context-key",

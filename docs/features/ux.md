@@ -227,7 +227,7 @@ c => c.PropertiesAsFieldset()
 
 ## Query Action Is Data Container
 
-Renders methods with `QueryMethod` attribute within the `DataContainer` 
+Renders methods with `QueryMethod` attribute within the `DataContainer`
 component. When method is wrapped in a `DataPanel` only `SortAttribute` and
 `PagingAttribute` parameters are incluede in `DataContainer` and remaining
 parameters are rendered as `DataPanel.Inputs`.
@@ -240,7 +240,8 @@ c => c.QueryActionAsDataContainer(
 
 - `PagingAttribute` with `take` role is rendered as `Select`
 - `PagingAttribute` with `skip` role is rendered as `Paginator`
-- When there is no `take` parameter, default value for take is `10`
+  - When there is `take` parameter, paginator uses its value for page size
+    calculation, otherwise it defaults to `10`
 
 ## Routed Types as Nav Links
 
