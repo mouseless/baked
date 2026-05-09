@@ -40,28 +40,28 @@ public class ReportingErrorsInConventions : TestSpec
     [Test]
     public void After_post_build__domain_model_builder_delegates_reported_error_to_configured_error_handler()
     {
-        var errors = new List<Exception>();
+        var exceptions = new List<Exception>();
         var builder = GiveMe.ADomainModelBuilder(options: builder =>
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
                 attribute: () => throw GiveMe.ADiagnosticCode().Exception("test")
             );
-            builder.OnComplete = e => errors.AddRange(e.Errors);
+            builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
         });
 
         builder
             .StartBuild([typeof(string)])
             .EndBuild();
 
-        errors.Count.ShouldBe(1);
-        errors.ShouldContain(e => e.Message == "test");
+        exceptions.Count.ShouldBe(1);
+        exceptions.ShouldContain(e => e.Message == "test");
     }
 
     [Test]
     public void It_allows_multiple_errors_in_one_execution()
     {
-        var errors = new List<Exception>();
+        var exceptions = new List<Exception>();
         var builder = GiveMe.ADomainModelBuilder(options: builder =>
         {
             builder.Conventions.SetTypeAttribute(
@@ -72,38 +72,38 @@ public class ReportingErrorsInConventions : TestSpec
                 when: c => c.Type.Is<int>(),
                 attribute: () => throw GiveMe.ADiagnosticCode().Exception("int error")
             );
-            builder.OnComplete = e => errors.AddRange(e.Errors);
+            builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
         });
 
         builder
             .StartBuild([typeof(string), typeof(int)])
             .EndBuild();
 
-        errors.Count.ShouldBe(2);
-        errors.ShouldContain(e => e.Message == "string error");
-        errors.ShouldContain(e => e.Message == "int error");
+        exceptions.Count.ShouldBe(2);
+        exceptions.ShouldContain(e => e.Message == "string error");
+        exceptions.ShouldContain(e => e.Message == "int error");
     }
 
     [Test]
     public void It_continues_execution_for_the_same_convention_per_domain_member()
     {
-        var errors = new List<Exception>();
+        var exceptions = new List<Exception>();
         var builder = GiveMe.ADomainModelBuilder(options: builder =>
         {
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>() || c.Type.Is<int>(),
                 attribute: c => throw GiveMe.ADiagnosticCode().Exception($"{c.Type.Name} error")
             );
-            builder.OnComplete = e => errors.AddRange(e.Errors);
+            builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
         });
 
         builder
             .StartBuild([typeof(string), typeof(int)])
             .EndBuild();
 
-        errors.Count.ShouldBe(2);
-        errors.ShouldContain(e => e.Message == "String error");
-        errors.ShouldContain(e => e.Message == "Int32 error");
+        exceptions.Count.ShouldBe(2);
+        exceptions.ShouldContain(e => e.Message == "String error");
+        exceptions.ShouldContain(e => e.Message == "Int32 error");
     }
 
     class StubConvention(Stubber giveMe) :
@@ -144,7 +144,7 @@ public class ReportingErrorsInConventions : TestSpec
     [Test]
     public void Exception_handling_is_applied_for_all_convention_types()
     {
-        var errors = new List<Exception>();
+        var exceptions = new List<Exception>();
         var builder = GiveMe.ADomainModelBuilder(options: builder =>
         {
             builder.BuildLevels.Clear();
@@ -156,20 +156,20 @@ public class ReportingErrorsInConventions : TestSpec
             builder.BindingFlags.Property = BindingFlags.Instance | BindingFlags.Public;
             builder.BindingFlags.Method = BindingFlags.Instance | BindingFlags.Public;
             builder.Conventions.Add(new StubConvention(GiveMe));
-            builder.OnComplete = e => errors.AddRange(e.Errors);
+            builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
         });
 
         builder
             .StartBuild([typeof(char), typeof(int), typeof(double), typeof(long), typeof(string)])
             .EndBuild();
 
-        errors.ShouldContain(e => e.Message == "basics");
-        errors.ShouldContain(e => e.Message == "generics");
-        errors.ShouldContain(e => e.Message == "inheritance");
-        errors.ShouldContain(e => e.Message == "metadata");
-        errors.ShouldContain(e => e.Message == "members");
-        errors.ShouldContain(e => e.Message == "property");
-        errors.ShouldContain(e => e.Message == "method");
-        errors.ShouldContain(e => e.Message == "parameter");
+        exceptions.ShouldContain(e => e.Message == "basics");
+        exceptions.ShouldContain(e => e.Message == "generics");
+        exceptions.ShouldContain(e => e.Message == "inheritance");
+        exceptions.ShouldContain(e => e.Message == "metadata");
+        exceptions.ShouldContain(e => e.Message == "members");
+        exceptions.ShouldContain(e => e.Message == "property");
+        exceptions.ShouldContain(e => e.Message == "method");
+        exceptions.ShouldContain(e => e.Message == "parameter");
     }
 }

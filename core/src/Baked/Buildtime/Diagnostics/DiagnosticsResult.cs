@@ -1,6 +1,6 @@
 namespace Baked.Buildtime.Diagnostics;
 
 public record DiagnosticsResult(
-    IReadOnlyCollection<Exception> Errors,
+    IReadOnlyCollection<Exception> Exceptions,
     IReadOnlyCollection<DiagnosticMessage> Messages
 );

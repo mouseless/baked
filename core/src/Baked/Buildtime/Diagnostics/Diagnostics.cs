@@ -7,6 +7,10 @@ namespace Baked;
 
 public class Diagnostics : IDisposable
 {
+    const string ERROR = "error";
+    const string WARNING = "warning";
+    const string INFO = "info";
+
     static Diagnostics? _current;
 
     public static Diagnostics Current
@@ -45,10 +49,11 @@ public class Diagnostics : IDisposable
             catch { Console.WriteLine(message); }
         }
 
-        if (result.Errors.Any())
+        var errorCount = result.Messages.Count(m => m.Level == ERROR);
+        if (errorCount > 0)
         {
             Console.Build.WriteLine();
-            Console.Build.MarkupLine($"Generate [bold maroon]failed with {result.Errors.Count} error(s)[/]");
+            Console.Build.MarkupLine($"Generate [bold maroon]failed with {errorCount} error(s)[/]");
 
             Environment.Exit(1);
         }
@@ -56,7 +61,7 @@ public class Diagnostics : IDisposable
 
     Action<DiagnosticsResult> _dispose;
     bool _disposed;
-    List<Exception> _errors = [];
+    List<Exception> _exceptions = [];
     List<DiagnosticMessage> _messages = [];
 
     public string Name { get; }
@@ -78,14 +83,14 @@ public class Diagnostics : IDisposable
         }
         catch (DiagnosticException ex)
         {
-            _errors.Add(ex);
+            _exceptions.Add(ex);
             ReportError(ex.Code, ex.Message);
 
             return default;
         }
         catch (Exception ex)
         {
-            _errors.Add(ex);
+            _exceptions.Add(ex);
             ReportError(DiagnosticCode.Unknown, ex.Message);
             if (ex.StackTrace is not null)
             {
@@ -97,17 +102,17 @@ public class Diagnostics : IDisposable
     }
 
     public void ReportError(DiagnosticCode code, string message) =>
-        Report(message, level: "error", code: code);
+        Report(message, level: ERROR, code: code);
 
     public void ReportWarning(DiagnosticCode code, string message) =>
-        Report(message, level: "warning", code: code);
+        Report(message, level: WARNING, code: code);
 
     public void ReportInfo(string message,
         string? group = default
     ) => Report(message, group: group);
 
     void Report(string message,
-        string level = "info",
+        string level = INFO,
         DiagnosticCode? code = default,
         string? group = default
     ) => _messages.Add(new(message, level, code, group));
@@ -119,7 +124,7 @@ public class Diagnostics : IDisposable
     {
         if (_disposed) { return; }
 
-        var errors = _errors.AsReadOnly();
+        var exceptions = _exceptions.AsReadOnly();
         var messages = _messages
             .GroupBy(m => m.Group)
             .OrderBy(g => g.Key)
@@ -127,7 +132,7 @@ public class Diagnostics : IDisposable
             .ToList()
             .AsReadOnly();
 
-        _dispose(new(errors, messages));
+        _dispose(new(exceptions, messages));
 
         _current = null;
         _disposed = true;

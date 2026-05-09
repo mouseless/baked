@@ -112,7 +112,7 @@ public static class UiExtensions
 
     extension(ILabeler labeler)
     {
-        public void LabeLFloatIn(string label) =>
+        public void LabelFloatIn(string label) =>
             labeler.LabelMode("float", label, variant: "in");
 
         public void LabelFloatOn(string label) =>
