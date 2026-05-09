@@ -5,6 +5,7 @@ namespace Baked.CodingStyle.QueryMethod;
 
 public class QueryMethodCodingStyleFeature(
     HashSet<string> _queryMethodNames,
+    HashSet<string> _primaryParameterNames,
     HashSet<string> _takeParameterNames,
     HashSet<string> _skipParameterNames,
     HashSet<string> _sortingParameterNames
@@ -21,32 +22,42 @@ public class QueryMethodCodingStyleFeature(
             builder.Conventions.SetMethodAttribute(
                 when: c => c.Type.Has<QueryAttribute>() && _queryMethodNames.Contains(c.Method.Name),
                 attribute: () => new QueryMethodAttribute(),
-                requiresIndex: true
+                order: 35
             );
-
             builder.Conventions.AddMethodAttributeConfiguration<QueryMethodAttribute>(
                 when: c => c.Method.DefaultOverload.Parameters.All(p => p.IsOptional),
                 attribute: qm => qm.AllParametersAreOptional = true
             );
 
+            builder.Conventions.AddMethodAttributeConfiguration<QueryMethodAttribute>(
+                when: c => c.Method.DefaultOverload.Parameters.Any(p => _primaryParameterNames.Contains(p.Name)),
+                attribute: (qm, c) =>
+                {
+                    var primaryParameter =
+                        c.Method.DefaultOverload.Parameters.FirstOrDefault(p => _primaryParameterNames.Contains(p.Name)) ??
+                        throw DiagnosticCode.InvalidState.Exception(
+                            $"{c.Type.Name}.{c.Method.Name} is expected to contain a parameter with name that matches one of ({_primaryParameterNames.Join(", ")})"
+                        );
+
+                    qm.PrimaryParameterName = primaryParameter.Name;
+                }
+            );
+
             builder.Conventions.SetParameterAttribute(
-                when: c => c.Method.Has<QueryMethodAttribute>() && _takeParameterNames.Contains(c.Parameter.Name),
+                when: c => c.Type.Has<QueryAttribute>() && _takeParameterNames.Contains(c.Parameter.Name),
                 attribute: p => new PagingAttribute(PagingAttribute.Role.Take),
-                requiresIndex: true,
                 order: 35
             );
 
             builder.Conventions.SetParameterAttribute(
-                when: c => c.Method.Has<QueryMethodAttribute>() && _skipParameterNames.Contains(c.Parameter.Name),
+                when: c => c.Type.Has<QueryAttribute>() && _skipParameterNames.Contains(c.Parameter.Name),
                 attribute: p => new PagingAttribute(PagingAttribute.Role.Skip),
-                requiresIndex: true,
                 order: 35
             );
 
             builder.Conventions.SetParameterAttribute(
-                when: c => c.Method.Has<QueryMethodAttribute>() && _sortingParameterNames.Contains(c.Parameter.Name),
+                when: c => c.Type.Has<QueryAttribute>() && _sortingParameterNames.Contains(c.Parameter.Name),
                 attribute: () => new SortingAttribute(),
-                requiresIndex: true,
                 order: 35
             );
         });

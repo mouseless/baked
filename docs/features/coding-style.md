@@ -173,15 +173,16 @@ c => c.Query()
 > A class that injects `IQueryContext` is not considered as a query class unless
 > it satisfies the plural naming convention.
 
-## QueryMethod
+## Query Method
 
-Adds `QueryMethodAttribute` to the methods having given name of types with 
+Adds `QueryMethodAttribute` to the methods having given name of types with
 `QueryAttribute` and marks parameters with `SortAttribute` and `PagingAttribute`
 
 ```csharp
 c => c.QueryMethod(
     queryMethodNames: [...],
-    takeParameterNames: [...]
+    primaryParameterNames: [...],
+    takeParameterNames: [...],
     skipParameterNames: [...],
     sortParameterNames: [...]
 )
@@ -189,13 +190,13 @@ c => c.QueryMethod(
 
 > [!NOTE]
 >
-> default values for parameters are listed below;
-> ```csharp
-> queryMethodNames = ["By"];
-> takeParameterNames = ["take"];
-> skipParameterNames = ["skip"];  
-> sortParameterNames = ["sort"];
->```
+> Default values for parameters are listed below;
+>
+> - `queryMethodNames`: `["By"]`
+> - `primaryParameterNames`: `["searchText"]`
+> - `takeParameterNames`: `["take"]`
+> - `skipParameterNames`: `["skip"]`
+> - `sortParameterNames`: `["sort"]`
 
 ## Records are DTOs
 
