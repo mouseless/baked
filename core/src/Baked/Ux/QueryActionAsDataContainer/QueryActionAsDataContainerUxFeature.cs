@@ -127,15 +127,15 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                     p.ReloadWhen(_lengthContextKey);
                 }
             );
-            // Set take to 10 when there is no take parameter
+            // When there is no take parameter, set take to 10
             builder.Conventions.AddParameterComponentConfiguration<Paginator>(
                 when: c => !c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
-                component: (p, c, cc) => p.Data += Inline(new { take = 10 })
+                component: p => p.Data += Inline(new { take = 10 })
             );
-            // Use take parameter's value from page context when there is take parameter
+            // When there is take parameter, use take parameter's value from page context
             builder.Conventions.AddParameterComponentConfiguration<Paginator>(
                 when: c => c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
-                component: (p, c, cc) =>
+                component: (p, c) =>
                 {
                     p.Data += Context.Page(o =>
                     {
