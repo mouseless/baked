@@ -15,7 +15,7 @@ const variants = [
     descriptor: giveMe.anInputText({
       label: "Spec: Label"
     }),
-    model: ref()
+    model: ref("initial value")
   },
   {
     name: "Long Label",
