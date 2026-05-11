@@ -5,6 +5,7 @@
     v-model="models[input.name]"
     :schema="input"
     :class="inputClass"
+    :invalid="getValidProps(input)"
   />
 </template>
 <script setup>
@@ -15,9 +16,10 @@ import { Input } from "#components";
 const context = useContext();
 const route = useRoute();
 
-const { inputs } = defineProps({
+const { inputs, validateResult } = defineProps({
   inputs: { type: Array, required: true },
-  inputClass: { type: String, default: "" }
+  inputClass: { type: String, default: "" },
+  validateResult: { type: Object, default: () => {} }
 });
 const emit = defineEmits(["ready", "changed"]);
 
@@ -78,5 +80,12 @@ function getValue(input) {
   } else {
     return models[input.name];
   }
+}
+
+function getValidProps(input) {
+  // check it, test it
+  if(!validateResult) { return undefined; }
+
+  return !validateResult[input.name].valid || false;
 }
 </script>

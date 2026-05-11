@@ -17,6 +17,7 @@
         v-focustrap
         class="gap-6"
       >
+        {{ isValid }} - {{ validateResult }}
         <div
           v-for="section in sections"
           :key="section.key"
@@ -63,6 +64,7 @@
                 <Inputs
                   :inputs="inputGroup.inputs"
                   input-class="w-full"
+                  :validate-result="validateResult"
                   @ready="(value) => onReady(`${section.key}_${inputGroup.key}`, value)"
                   @changed="onChanged"
                 />
@@ -76,7 +78,7 @@
 </template>
 <script setup>
 import { computed, ref } from "vue";
-import { useLocalization } from "#imports";
+import { useLocalization, useValidateDefault, useValidateSampleForm } from "#imports";
 import { Button, Contents, Inputs, PageTitle } from "#components";
 
 const { localize: l } = useLocalization();
@@ -88,9 +90,24 @@ const emit = defineEmits(["submit"]);
 
 const { title, submit, sections } = schema;
 
+// Note: import from schema
+const validateRegistry = {
+  "useValidateDefault" : useValidateDefault,
+  "useValidateSampleForm": useValidateSampleForm
+};
+
 const formData = ref({});
 const readyData = ref({});
 const ready = computed(() => Object.values(readyData.value).every(v => v));
+
+const validators = Object.values(validateRegistry).map((useValidate => useValidate({ sections, formData })));
+
+const validateResult = computed(() =>
+  validators.reduce((_defaults, { validateResult }) => ({
+    ..._defaults,
+    ...validateResult.value
+  }), {})
+);
 
 function splitByWide(inputGroups) {
   const result = [];
