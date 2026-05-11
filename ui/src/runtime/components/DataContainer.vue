@@ -1,28 +1,29 @@
 <template>
   <div
     class="
-      block bg-transparent
-      border rounded border-1
-      border-slate-200 dark:border-slate-700
+      block
+      bg-transparent dark:bg-zinc-900
+      border rounded-md border-1
+      border-slate-200 dark:border-zinc-700
     "
   >
     <div
+      v-if="inputs.length > 0"
       class="
-        px-2 py-4
-        bg-transparent border-b
-        dark:bg-zinc-900 dark:border-zinc-800
+        inputs
+        py-2 px-4
+        bg-transparent
         rounded-none text-sm
         flex gap-4 items-center justify-end
       "
     >
       <Inputs
-        v-if="inputs.length > 0"
         :inputs="inputs"
         @ready="onReady"
         @changed="onChanged"
       />
     </div>
-    <div class="pt-0 [contain:inline-size]">
+    <div class="content p-4 [contain:inline-size]">
       <Bake
         v-if="loaded && ready"
         :key="uniqueKey"
@@ -85,6 +86,12 @@ function onChanged(event) {
 .b-component--DataContainer {
   div {
     @apply [&:has(.p-datatable)]:p-0;
+  }
+}
+
+.b-component--DataContainer:has(.inputs) {
+  div.content {
+    @apply pt-0;
   }
 }
 </style>
