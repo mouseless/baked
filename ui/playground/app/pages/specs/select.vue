@@ -28,6 +28,16 @@ const variants = [
     model: ref()
   },
   {
+    name: "Base w/ Label None",
+    descriptor: giveMe.aSelect({
+      data: ["OPTION_1", "OPTION_2"],
+      label: null,
+      labeleler: null,
+      labelMode: null
+    }),
+    model: ref()
+  },
+  {
     name: "Option Label and Value",
     descriptor: giveMe.aSelect({
       optionLabel: "label",
