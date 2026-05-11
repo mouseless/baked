@@ -39,10 +39,30 @@ const variants = [
         ]
       },
       reactions: {
-        reload: giveMe.aTrigger({ when: "take" })
+        reload: giveMe.aTrigger({
+          parts: [
+            giveMe.aTrigger({ when: "length" }),
+            giveMe.aTrigger({ when: "take" })
+          ]
+        })
       }
     },
-    model: ref()
+    model: ref(0)
+  },
+  {
+    name: "Initial Values",
+    descriptor: {
+      type: "Paginator",
+      schema: {},
+      data: {
+        type: "Composite",
+        parts: [
+          giveMe.anInlineData({ length: 10 }),
+          giveMe.anInlineData({ take: 10 }),
+        ]
+      },
+    },
+    model: ref(20)
   }
 ];
 

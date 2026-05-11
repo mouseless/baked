@@ -23,7 +23,7 @@ test.describe("Base", () => {
     await expect(display).toHaveText("Page NaN");
   });
 
-  test("next is enabled when length is equal or greater than length", async({ page }) => {
+  test("next is enabled when length is equal or greater than take", async({ page }) => {
     const component = page.getByTestId(id);
     const next = component.locator(primevue.button.base).nth(1);
     const length = page.getByTestId("length");
@@ -91,5 +91,40 @@ test.describe("Base", () => {
     await next.click();
 
     await expect(model).toHaveText("10");
+  });
+
+  test("paginator resets when take changes", async({ page }) => {
+    const component = page.getByTestId(id);
+    const next = component.locator(primevue.button.base).nth(1);
+    const length = page.getByTestId("length");
+    const take = page.getByTestId("take");
+    const model = page.getByTestId(`${id}:model`);
+
+    await length.click();
+    await page.keyboard.press("Digit5");
+    await take.click();
+    await page.keyboard.press("Digit5");
+    await next.click();
+    await next.click();
+    await take.click();
+    await page.keyboard.press("Digit1");
+
+    await expect(component.locator("span").nth(0)).toHaveText("Page 1");
+    await expect(model).toHaveText("0");
+  });
+});
+
+test.describe("Initial Values", () => {
+  const id = "Initial Values";
+
+  test("respects initial model value", async({ page }) => {
+    const component = page.getByTestId(id);
+    const previous = component.locator(primevue.button.base).nth(0);
+    const next = component.locator(primevue.button.base).nth(1);
+    const display = component.locator("span").nth(0);
+
+    await expect(previous).toBeEnabled();
+    await expect(next).toBeEnabled();
+    await expect(display).toHaveText("Page 3");
   });
 });

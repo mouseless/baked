@@ -26,20 +26,17 @@
 <script setup>
 import { computed } from "vue";
 import { Button } from "primevue";
-import { useContext, useLocalization } from "#imports";
+import { useContext, useLocalization, useUiStates } from "#imports";
 import { AwaitLoading } from "#components";
 
 const context = useContext();
 const { localize: lc } = useLocalization({ group: "Paginator" });
+const { value: { paginatorStates } } = useUiStates();
 
 const { data } = defineProps({
   data: { type: null, required: true }
 });
 const model = defineModel({ type: null, required: true });
-
-const path = context.injectPath();
-const takeStateKey = path + ".take";
-const contextData = context.injectContextData();
 
 const allowPrevious = computed(() => !Number.isNaN(page.value) && page.value > 1);
 const allowNext = computed(() => !Number.isNaN(page.value) && data.length >= data.take);
@@ -50,9 +47,14 @@ const page = computed({
   }
 });
 
-if(data && contextData.page[takeStateKey] !== data.take) {
-  contextData.page[takeStateKey] = data.take;
+const path = context.injectPath();
+const takeStateKey = path + ".previousTake";
+const previousTake = paginatorStates[takeStateKey];
+if(data && previousTake !== data.take) {
+  paginatorStates[takeStateKey] = data.take;
 
-  page.value = 1;
+  if(previousTake) {
+    page.value = 1;
+  }
 }
 </script>
