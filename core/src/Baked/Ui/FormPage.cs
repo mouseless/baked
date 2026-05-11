@@ -7,6 +7,8 @@ public record FormPage(string Path, PageTitle Title, Button Submit)
     public Button Submit { get; set; } = Submit;
     public List<Section> Sections { get; init; } = [];
 
+    public List<string>? ValidateComposable { get; set; } = ["useValidateDefault"];
+
     public record Section(string Key, string Label)
         : IOrderableSchema
     {
