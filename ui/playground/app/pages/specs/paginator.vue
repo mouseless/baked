@@ -58,9 +58,9 @@ const variants = [
         type: "Composite",
         parts: [
           giveMe.anInlineData({ length: 10 }),
-          giveMe.anInlineData({ take: 10 }),
+          giveMe.anInlineData({ take: 10 })
         ]
-      },
+      }
     },
     model: ref(20)
   }
