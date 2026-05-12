@@ -48,10 +48,9 @@ const page = computed({
 });
 
 const path = context.injectPath();
-const takeStateKey = `${path}.previousTake`;
-const previousTake = paginatorStates[takeStateKey];
+const previousTake = paginatorStates[`${path}.previousTake`];
 if(data && data.take && previousTake !== data.take) {
-  paginatorStates[takeStateKey] = data.take;
+  paginatorStates[`${path}.previousTake`] = data.take;
 
   if(previousTake) {
     page.value = 1;
