@@ -1,7 +1,6 @@
 <template>
   <div
     class="
-      block
       bg-transparent dark:bg-zinc-900
       border rounded-md border-1
       border-slate-200 dark:border-zinc-700
