@@ -131,5 +131,11 @@ function onSubmit() {
   .reset-min-w * {
     @apply min-w-0;
   }
+
+  .grid .flex {
+    .b-component--SelectButton {
+      @apply self-end;
+    }
+  }
 }
 </style>
