@@ -39,18 +39,25 @@ const variants = [
         ]
       },
       reactions: {
-        reload: giveMe.aTrigger({ when: "take" })
+        reload: giveMe.aTrigger({
+          parts: [
+            giveMe.aTrigger({ when: "length" }),
+            giveMe.aTrigger({ when: "take" })
+          ]
+        })
       }
     },
-    model: ref()
+    model: ref(20)
   }
 ];
 
 const inputs = [
   giveMe.anInput({
     name: "length",
+    defaultValue: 10,
     component: giveMe.anExpectedInput({
       testId: "length",
+      number: true,
       action: giveMe.aPublishAction({
         pageContextKey: "length",
         data: giveMe.aContextData({ key: "model" }) }
@@ -59,8 +66,10 @@ const inputs = [
   }),
   giveMe.anInput({
     name: "take",
+    defaultValue: 10,
     component: giveMe.anExpectedInput({
       testId: "take",
+      number: true,
       action: giveMe.aPublishAction({
         pageContextKey: "take",
         data: giveMe.aContextData({ key: "model" }) }

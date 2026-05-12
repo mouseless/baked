@@ -60,6 +60,17 @@ test.describe("Base w/ Localization", () => {
   });
 });
 
+test.describe("Base w/ Label None", () => {
+  const id = "Base w/ Label None";
+
+  test("not selected with null label", async({ page }) => {
+    const component = page.getByTestId(id);
+    const label = component.locator(primevue.select.label);
+
+    await expect(label).toHaveText("\u00A0");
+  });
+});
+
 test.describe("Option Label and Value", () => {
   const id = "Option Label and Value";
 

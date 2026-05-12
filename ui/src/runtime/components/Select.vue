@@ -25,9 +25,7 @@
         class="w-full"
       >
         <template #value="slotProps">
-          <span>
-            {{ getValueLabel(slotProps) }}
-          </span>
+          <span>{{ getValueLabel(slotProps) }}</span>
         </template>
         <template #option="slotProps">
           <span>{{ getOptionLabel(slotProps) }}</span>
@@ -79,7 +77,8 @@ function getOptionLabel(slotProps) {
 function getValueLabel(slotProps) {
   const result = slotProps.value?.[optionLabel] ?? slotProps.value ?? label;
 
-  return localizeLabel ? l(result) : result;
+  // return "\u00A0" to display full height
+  return (localizeLabel ? l(result) : result) ?? "\u00A0";
 }
 
 function getModel() {

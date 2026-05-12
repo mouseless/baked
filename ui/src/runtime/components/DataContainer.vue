@@ -1,28 +1,30 @@
 <template>
   <div
     class="
-      block bg-transparent
-      border rounded border-1
-      border-slate-200 dark:border-slate-700
+      bg-transparent dark:bg-zinc-900
+      border rounded-md border-1
+      border-slate-200 dark:border-zinc-700
     "
   >
     <div
+      v-if="inputs.length > 0"
       class="
-        px-2 py-4
-        bg-transparent border-b
-        dark:bg-zinc-900 dark:border-zinc-800
+        py-2 px-4
+        bg-transparent
         rounded-none text-sm
-        flex gap-4 items-center justify-end
+        flex gap-2 items-center justify-end
       "
     >
       <Inputs
-        v-if="inputs.length > 0"
         :inputs="inputs"
         @ready="onReady"
         @changed="onChanged"
       />
     </div>
-    <div class="pt-0 [contain:inline-size]">
+    <div
+      class="p-4 [contain:inline-size]"
+      :class="{ 'pt-0': inputs.length }"
+    >
       <Bake
         v-if="loaded && ready"
         :key="uniqueKey"

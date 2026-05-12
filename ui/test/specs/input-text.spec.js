@@ -14,6 +14,13 @@ test.describe("Base", () => {
     await expect(component.locator(primevue.floatLabel.base)).toHaveText("Label");
   });
 
+  test("initial value", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputText.base);
+
+    await expect(input).toHaveValue("initial value");
+  });
+
   test("model", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.locator(primevue.inputText.base);

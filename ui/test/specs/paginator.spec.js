@@ -16,18 +16,32 @@ test.describe("Base", () => {
 
     await expect(previous).toBeAttached();
     await expect(previous.locator("span")).toContainClass("pi pi-chevron-left");
-    await expect(previous).toBeDisabled();
+    await expect(previous).toBeEnabled();
     await expect(next).toBeAttached();
     await expect(next.locator("span")).toContainClass("pi pi-chevron-right");
-    await expect(next).toBeDisabled();
-    await expect(display).toHaveText("Page NaN");
+    await expect(next).toBeEnabled();
+    await expect(display).toHaveText("Page 3");
   });
 
-  test("next is enabled when length is equal or greater than length", async({ page }) => {
+  test("paginator resets when take changes", async({ page }) => {
+    const component = page.getByTestId(id);
+    const take = page.getByTestId("take");
+    const model = page.getByTestId(`${id}:model`);
+
+    await take.click();
+    await page.keyboard.press("Digit1");
+
+    await expect(component.locator("span").nth(0)).toHaveText("Page 1");
+    await expect(model).toHaveText("0");
+  });
+
+  test("next is enabled when length is equal or greater than take", async({ page }) => {
     const component = page.getByTestId(id);
     const next = component.locator(primevue.button.base).nth(1);
     const length = page.getByTestId("length");
     const take = page.getByTestId("take");
+    await length.locator("input").clear();
+    await take.locator("input").clear();
 
     await length.click();
     await page.keyboard.press("Digit5");
@@ -43,6 +57,8 @@ test.describe("Base", () => {
     const next = component.locator(primevue.button.base).nth(1);
     const length = page.getByTestId("length");
     const take = page.getByTestId("take");
+    await length.locator("input").clear();
+    await take.locator("input").clear();
 
     await length.click();
     await page.keyboard.press("Digit1");
@@ -58,6 +74,8 @@ test.describe("Base", () => {
     const previous = component.locator(primevue.button.base).nth(0);
     const length = page.getByTestId("length");
     const take = page.getByTestId("take");
+    await length.locator("input").clear();
+    await take.locator("input").clear();
 
     await length.click();
     await page.keyboard.press("Digit5");
@@ -76,6 +94,8 @@ test.describe("Base", () => {
     const length = page.getByTestId("length");
     const take = page.getByTestId("take");
     const model = page.getByTestId(`${id}:model`);
+    await length.locator("input").clear();
+    await take.locator("input").clear();
 
     await length.click();
     await page.keyboard.press("Digit5");

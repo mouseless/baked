@@ -21,7 +21,7 @@
   </AwaitLoading>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { InputText, Skeleton } from "primevue";
 import { useContext } from "#imports";
 import { AwaitLoading, Labeler } from "#components";
@@ -38,6 +38,10 @@ const { label, labelMode, labelVariant, targetProp } = schema;
 const path = context.injectPath();
 
 const input = ref("");
+
+watch(model, newValue => {
+  input.value = newValue;
+}, { immediate: true });
 
 function onUpdate(value) {
   input.value = value;

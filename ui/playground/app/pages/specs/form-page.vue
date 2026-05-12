@@ -90,7 +90,28 @@ const variants = [
               ],
               wide: true
             }),
-            giveMe.aFormPageInputGroup({ inputs: [giveMe.anInput({ name: "narrow-trailing" })] })
+            giveMe.aFormPageInputGroup({
+              inputs: [
+                giveMe.anInput({
+                  name: "narrow-trailing",
+                  component: giveMe.anInputText( {
+                    labeler: giveMe.aLabeler({ label: "Narrow-trailing", labelMode: "ifta" })
+                  })
+                }),
+                giveMe.anInput({
+                  name: "select",
+                  component: giveMe.aSelect({
+                    labeler: giveMe.aLabeler({ label: "Select Button", labelMode: "ifta" })
+                  })
+                }),
+                giveMe.anInput({
+                  name: "select-button",
+                  component: giveMe.aSelectButton({
+                    labeler: giveMe.aLabeler({ label: "Select Button", labelMode: "ifta" })
+                  })
+                })
+              ]
+            })
           ]
         })
       ]

@@ -14,7 +14,7 @@ public class SeedData(Entities _entities, Func<Entity> _newEntity, Parents _pare
 
         if (!_parents.By().Any())
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 25; i++)
             {
                 var status = i % 2 == 0 ? Status.Active : Status.Passive;
                 var role = i % 2 == 0 ? Role.Admin : Role.Moderator;
