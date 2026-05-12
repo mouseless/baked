@@ -17,7 +17,7 @@
         v-focustrap
         class="gap-6"
       >
-        {{ isValid }} - {{ validateResult }}
+        {{ validateResult }}
         <div
           v-for="section in sections"
           :key="section.key"
@@ -78,35 +78,29 @@
 </template>
 <script setup>
 import { computed, ref } from "vue";
-import { useLocalization, useValidateDefault, useValidateSampleForm } from "#imports";
+import { useLocalization, useComposableResolver } from "#imports";
 import { Button, Contents, Inputs, PageTitle } from "#components";
 
 const { localize: l } = useLocalization();
+const composableResolver = useComposableResolver();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const emit = defineEmits(["submit"]);
 
-const { title, submit, sections } = schema;
+const { title, submit, sections, validateComposable = [] } = schema;
 
-// Note: import from schema
-const validateRegistry = {
-  "useValidateDefault" : useValidateDefault,
-  "useValidateSampleForm": useValidateSampleForm
-};
+const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
 
 const formData = ref({});
 const readyData = ref({});
 const ready = computed(() => Object.values(readyData.value).every(v => v));
 
-const validators = Object.values(validateRegistry);
-
 const validateResult = computed(() =>
-  validators.reduce((_default, useValidate) => ({
-    ..._default,
-    ...useValidate({ sections, formData }) // ← burada çağrılır, reaktif bağ burada kurulur
-  }), {})
+  validators.reduce((_default, useValidate) => {
+    return { ..._default, ...useValidate({ sections, formData }) };
+  }, {})
 );
 
 function splitByWide(inputGroups) {

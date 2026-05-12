@@ -1,4 +1,4 @@
-export function useValidateDefault({ sections, formData }) {
+export default function useValidateDefault({ sections, formData }) {
   const allInputs = sections.flatMap(section =>
     section.inputGroups.flatMap(group => group.inputs)
   );

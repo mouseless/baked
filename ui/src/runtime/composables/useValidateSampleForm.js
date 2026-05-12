@@ -1,4 +1,4 @@
-export function useValidateSampleForm({ formData }) {
+export default function({ formData }) {
   const data = formData.value ?? {};
   const result = {};
 
