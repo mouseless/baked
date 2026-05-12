@@ -9,6 +9,7 @@
       :label
       :path
       :mode="labelMode == 'ifta' ? labelMode : null"
+      :required="validation?.required"
       :dt="{
         colorScheme: {
           light: {
@@ -35,13 +36,13 @@
         </template>
       </SelectButton>
       <Message
-        v-show="validation.message"
+        v-show="validation?.message"
         severity="error"
         variant="simple"
         size="small"
         class="ml-2"
       >
-        {{ validation.message || "" }}
+        {{ validation?.message || "" }}
       </Message>
     </Labeler>
   </AwaitLoading>

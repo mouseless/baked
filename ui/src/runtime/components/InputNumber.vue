@@ -10,6 +10,7 @@
       :path
       :mode="labelMode"
       :variant="labelVariant"
+      :required="validation?.required"
     >
       <InputNumber
         v-model="model"
@@ -18,18 +19,28 @@
         class="min-w-60"
         @input="onInput"
       />
+      <Message
+        v-show="validation?.message"
+        severity="error"
+        variant="simple"
+        size="small"
+        class="ml-2"
+      >
+        {{ validation?.message || "" }}
+      </Message>
     </Labeler>
   </AwaitLoading>
 </template>
 <script setup>
-import { InputNumber, Skeleton } from "primevue";
+import { InputNumber, Message, Skeleton } from "primevue";
 import { useContext } from "#imports";
 import { AwaitLoading, Labeler } from "#components";
 
 const context = useContext();
 
-const { schema } = defineProps({
-  schema: { type: null, required: true }
+const { schema, validation } = defineProps({
+  schema: { type: null, required: true },
+  validation: { type: Object, default: () => {} }
 });
 const model = defineModel({ type: null, required: true });
 

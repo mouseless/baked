@@ -10,6 +10,7 @@
       :path
       :mode="labelMode"
       :variant="labelVariant"
+      :required="validation?.required"
     >
       <Select
         v-bind="$attrs"
@@ -32,12 +33,12 @@
         </template>
       </Select>
       <Message
-        v-show="validation.message"
+        v-show="validation?.message"
         severity="error"
         variant="simple"
         size="small"
       >
-        {{ validation.message || "" }}
+        {{ validation?.message || "" }}
       </Message>
     </Labeler>
   </AwaitLoading>
