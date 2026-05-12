@@ -5,11 +5,12 @@
     v-model="models[input.name]"
     :schema="input"
     :class="inputClass"
-    :invalid="getValidProps(input)"
+    :invalid="setInvalid(input)"
+    @blur.prevent="setBlur(input.name)"
   />
 </template>
 <script setup>
-import { computed, reactive, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { useContext, useRoute } from "#imports";
 import { Input } from "#components";
 
@@ -24,6 +25,8 @@ const { inputs, validateResult } = defineProps({
 const emit = defineEmits(["ready", "changed"]);
 
 const parentPath = context.injectPath();
+
+const inputEvents = ref({});
 const models = reactive({});
 const values = computed(() =>
   inputs.reduce((result, input) => {
@@ -66,6 +69,12 @@ function emitChanged() {
   });
 }
 
+function setBlur(key) {
+  inputEvents.value[key] = {
+    blur: true
+  };
+}
+
 function checkValue(value) {
   if(typeof value === "string") {
     return value !== "";
@@ -82,10 +91,10 @@ function getValue(input) {
   }
 }
 
-function getValidProps(input) {
+function setInvalid(input) {
   // check it, test it
-  if(!validateResult) { return undefined; }
+  if(!validateResult) { return false; }
 
-  return !validateResult[input.name].valid || false;
+  return !validateResult[input.name].valid && inputEvents.value[input.name]?.blur || false;
 }
 </script>

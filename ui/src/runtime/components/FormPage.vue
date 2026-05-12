@@ -100,12 +100,12 @@ const formData = ref({});
 const readyData = ref({});
 const ready = computed(() => Object.values(readyData.value).every(v => v));
 
-const validators = Object.values(validateRegistry).map((useValidate => useValidate({ sections, formData })));
+const validators = Object.values(validateRegistry);
 
 const validateResult = computed(() =>
-  validators.reduce((_defaults, { validateResult }) => ({
-    ..._defaults,
-    ...validateResult.value
+  validators.reduce((_default, useValidate) => ({
+    ..._default,
+    ...useValidate({ sections, formData }) // ← burada çağrılır, reaktif bağ burada kurulur
   }), {})
 );
 
