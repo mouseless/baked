@@ -47,21 +47,6 @@ const variants = [
         })
       }
     },
-    model: ref(0)
-  },
-  {
-    name: "Initial Values",
-    descriptor: {
-      type: "Paginator",
-      schema: {},
-      data: {
-        type: "Composite",
-        parts: [
-          giveMe.anInlineData({ length: 10 }),
-          giveMe.anInlineData({ take: 10 })
-        ]
-      }
-    },
     model: ref(20)
   }
 ];
@@ -69,8 +54,10 @@ const variants = [
 const inputs = [
   giveMe.anInput({
     name: "length",
+    defaultValue: 10,
     component: giveMe.anExpectedInput({
       testId: "length",
+      number: true,
       action: giveMe.aPublishAction({
         pageContextKey: "length",
         data: giveMe.aContextData({ key: "model" }) }
@@ -79,8 +66,10 @@ const inputs = [
   }),
   giveMe.anInput({
     name: "take",
+    defaultValue: 10,
     component: giveMe.anExpectedInput({
       testId: "take",
+      number: true,
       action: giveMe.aPublishAction({
         pageContextKey: "take",
         data: giveMe.aContextData({ key: "model" }) }

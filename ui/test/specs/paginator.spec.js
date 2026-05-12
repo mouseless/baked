@@ -16,11 +16,11 @@ test.describe("Base", () => {
 
     await expect(previous).toBeAttached();
     await expect(previous.locator("span")).toContainClass("pi pi-chevron-left");
-    await expect(previous).toBeDisabled();
+    await expect(previous).toBeEnabled();
     await expect(next).toBeAttached();
     await expect(next.locator("span")).toContainClass("pi pi-chevron-right");
-    await expect(next).toBeDisabled();
-    await expect(display).toHaveText("Page NaN");
+    await expect(next).toBeEnabled();
+    await expect(display).toHaveText("Page 3");
   });
 
   test("next is enabled when length is equal or greater than take", async({ page }) => {
@@ -111,20 +111,5 @@ test.describe("Base", () => {
 
     await expect(component.locator("span").nth(0)).toHaveText("Page 1");
     await expect(model).toHaveText("0");
-  });
-});
-
-test.describe("Initial Values", () => {
-  const id = "Initial Values";
-
-  test("respects initial model value", async({ page }) => {
-    const component = page.getByTestId(id);
-    const previous = component.locator(primevue.button.base).nth(0);
-    const next = component.locator(primevue.button.base).nth(1);
-    const display = component.locator("span").nth(0);
-
-    await expect(previous).toBeEnabled();
-    await expect(next).toBeEnabled();
-    await expect(display).toHaveText("Page 3");
   });
 });
