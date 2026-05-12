@@ -2,7 +2,7 @@
 
 ## Improvements
 
-- `DataContainer` header not displated when no inputs exist
+- `DataContainer` header not displayed when no inputs exist
 
 ## Bugfixes
 
