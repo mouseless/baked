@@ -8,3 +8,7 @@
 - `Paginator` was resetting to zero when page reload, fixed
 - `InputText` was not displaying initial model value, fixed
 - `SelectButton` was not displaying correctly in FormPage sections, fixed
+
+## Bugfixes
+
+- `Ado` exceptions was returning 200 result, fixed
