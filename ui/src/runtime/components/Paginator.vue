@@ -54,7 +54,7 @@ if(data && data.take && previousTake !== data.take) {
   paginatorStates[takeStateKey] = data.take;
 
   if(previousTake) {
-    page.value = 1;
+    model.value = 0;
   }
 }
 </script>
