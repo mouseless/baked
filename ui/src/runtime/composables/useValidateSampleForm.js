@@ -3,7 +3,7 @@ export default function({ formData }) {
   const result = {};
 
   if(data.role === "Admin" && data.status !== "Active") {
-    result.role = {
+    result.status = {
       valid: false,
       message: "Admin rolü seçildiğinde durum 'Active' olmak zorundadır."
     };

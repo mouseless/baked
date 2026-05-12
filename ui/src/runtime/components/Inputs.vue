@@ -5,7 +5,8 @@
     v-model="models[input.name]"
     :schema="input"
     :class="inputClass"
-    :invalid="setInvalid(input)"
+    :invalid="setInvalid(input.name)"
+    :validation="getValidation(input.name)"
     @blur.prevent="setBlur(input.name)"
   />
 </template>
@@ -91,10 +92,14 @@ function getValue(input) {
   }
 }
 
+function getValidation(input) {
+  return validateResult ? validateResult[input] : false;
+}
+
 function setInvalid(input) {
   // check it, test it
   if(!validateResult) { return false; }
 
-  return !validateResult[input.name].valid && inputEvents.value[input.name]?.blur || false;
+  return !validateResult[input].valid && inputEvents.value[input]?.blur || false;
 }
 </script>

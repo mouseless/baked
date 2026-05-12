@@ -31,12 +31,20 @@
           <span>{{ getOptionLabel(slotProps) }}</span>
         </template>
       </Select>
+      <Message
+        v-show="validation.message"
+        severity="error"
+        variant="simple"
+        size="small"
+      >
+        {{ validation.message || "" }}
+      </Message>
     </Labeler>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { Select, Skeleton } from "primevue";
+import { Message, Select, Skeleton } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
 import { AwaitLoading, Labeler } from "#components";
 
@@ -44,9 +52,10 @@ const context = useContext();
 const { localize: l } = useLocalization();
 const { value: { selectStates } } = useUiStates();
 
-const { schema, data } = defineProps({
+const { schema, data, validation } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true }
+  data: { type: null, required: true },
+  validation: { type: Object, default: () => {} }
 });
 const model = defineModel({ type: null, required: true });
 
