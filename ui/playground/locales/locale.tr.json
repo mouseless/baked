@@ -6,6 +6,10 @@
   "DataTable": {
     "No records found": "Kayıt bulunamadı"
   },
+  "Labeler": {
+    "{label}_Required": "{label}",
+    "{label}_Optional": "{label} (Opsiyonel)"
+  },
   "LanguageSwitcher": {
     "Languages": "Diller"
   },
@@ -24,6 +28,9 @@
       "M": "M",
       "K": "B"
     }
+  },
+  "ValidatorMessages": {
+    "If the role is Admin, the Status must be Active": "Admin rolü seçiliyken durum bilgisi Aktif olmalı"
   },
   "If you cannot reach the page you want please contact the system administrator": "İstediğiniz sayfaya ulaşamıyorsanız lütfen sistem yöneticisi ile iletişime geçin",
   "Please contact system administrator": "Lütfen sistem yöneticisi ile iletişime geçin",
