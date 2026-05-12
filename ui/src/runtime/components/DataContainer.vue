@@ -9,11 +9,10 @@
     <div
       v-if="inputs.length > 0"
       class="
-        inputs
         py-2 px-4
         bg-transparent
         rounded-none text-sm
-        flex gap-4 items-center justify-end
+        flex gap-2 items-center justify-end
       "
     >
       <Inputs
@@ -22,7 +21,10 @@
         @changed="onChanged"
       />
     </div>
-    <div class="content p-4 [contain:inline-size]">
+    <div
+      class="p-4 [contain:inline-size]"
+      :class="{ 'pt-0': inputs.length }"
+    >
       <Bake
         v-if="loaded && ready"
         :key="uniqueKey"
@@ -85,12 +87,6 @@ function onChanged(event) {
 .b-component--DataContainer {
   div {
     @apply [&:has(.p-datatable)]:p-0;
-  }
-}
-
-.b-component--DataContainer:has(.inputs) {
-  div.content {
-    @apply pt-0;
   }
 }
 </style>
