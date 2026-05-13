@@ -35,7 +35,7 @@
       </Select>
       <Message
         v-show="validation?.message"
-        severity="error"
+        :severity="validation?.severity"
         variant="simple"
         size="small"
       >
