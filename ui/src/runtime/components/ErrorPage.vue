@@ -66,7 +66,9 @@ const {
 } = schema;
 
 const statusCode = computed(() => {
-  const code = data.value?.data?.status ?? data.value?.statusCode ?? 999;
+  const code = !data
+    ? 999
+    : (data.status ?? data.statusCode ?? data.value?.status ?? data.value?.statusCode ?? 999);
 
   return code === 999 ? "APP" : code;
 });

@@ -22,6 +22,13 @@
         @click="pageError"
       />
       <Button
+        data-testid="pageErrorFetch"
+        type="button"
+        label="Page Fetch Unhandled"
+        class="m-4"
+        @click="pageErrorFetch"
+      />
+      <Button
         data-testid="redirect"
         type="button"
         label="Redirect"
@@ -55,6 +62,19 @@ function pageError() {
     statusCode: 404,
     statusMessage: "This error displays full page!"
   });
+}
+
+function pageErrorFetch() {
+  const error = new FetchError("GenericAdoException");
+  error.statusCode = 500;
+  error.data = {
+    "type": "https://baked.mouseless.codes/errors/generic-ado",
+    "title": "Generic ADO",
+    "status": 500,
+    "detail": "This error displays full page!"
+  };
+
+  throw error;
 }
 
 function redirectError() {
