@@ -10,7 +10,6 @@
       :path
       :mode="labelMode"
       :variant="labelVariant"
-      :required="validation?.required"
       :validate-label
     >
       <Select

@@ -3,16 +3,21 @@ import { useLocalization } from "#imports";
 export default function({ formData }) {
   const { localize: lc } = useLocalization({ group: "ValidatorMessages" });
 
-  const data = formData.value ?? {};
   const result = {};
   const item = {
-    severity: "error",
     message: "",
-    valid: false
+    required: false,
+    valid: false,
+    persist: false,
+    severity: "error"
   };
 
-  if(data.role === "Admin" && data.status !== "Active") {
-    result.status = { ...item, message: lc("If the role is Admin, the Status must be Active") };
+  if(formData.value.role === "Admin" && formData.value.status !== "Active") {
+    result.status = {
+      ...item,
+      persist: true,
+      message: lc("If the role is Admin, the Status must be Active")
+    };
   }
 
   return result;

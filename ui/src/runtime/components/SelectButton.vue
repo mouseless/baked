@@ -9,7 +9,6 @@
       :label
       :path
       :mode="labelMode == 'ifta' ? labelMode : null"
-      :required="validation?.required"
       :validate-label
       :dt="{
         colorScheme: {
@@ -31,6 +30,7 @@
         :data-key="optionValue"
         :option-label
         :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
+        class="!w-auto"
       >
         <template #option="slotProps">
           <span>{{ getOptionLabel(slotProps) }}</span>

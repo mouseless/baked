@@ -5,9 +5,10 @@
     v-model="models[input.name]"
     :schema="input"
     :class="inputClass"
-    :invalid="setInvalid(input.name)"
-    :validation="getValidation(input.name)"
-    @blur.prevent="setBlur(input.name)"
+    :invalid="invalid(input.name)"
+    :required="validator[input.name]?.required"
+    :validation="validator[input.name]"
+    @blur.prevent="touched(input.name)"
   />
 </template>
 <script setup>
@@ -70,12 +71,6 @@ function emitChanged() {
   });
 }
 
-function setBlur(key) {
-  inputEvents.value[key] = {
-    blur: true
-  };
-}
-
 function checkValue(value) {
   if(typeof value === "string") {
     return value !== "";
@@ -92,14 +87,16 @@ function getValue(input) {
   }
 }
 
-function getValidation(input) {
-  return validator ? validator[input] : false;
+function touched(key) {
+  inputEvents.value[key] = { touched: true };
 }
 
-function setInvalid(input) {
-  // check it, test it
+function invalid(input) {
   if(!Object.values(validator).length) { return false; }
+  if(!validator[input].valid && validator[input].persist) {
+    return true;
+  }
 
-  return !validator[input].valid && inputEvents.value[input]?.blur || false;
+  return !validator[input].valid && inputEvents.value[input]?.touched || false;
 }
 </script>
