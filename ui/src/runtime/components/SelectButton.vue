@@ -10,6 +10,7 @@
       :path
       :mode="labelMode == 'ifta' ? labelMode : null"
       :required="validation?.required"
+      :validate-label
       :dt="{
         colorScheme: {
           light: {
@@ -60,7 +61,7 @@ const { value: { selectButtonStates } } = useUiStates();
 const { schema, data, validation } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true },
-  validation: { type: Object, default: () => {} }
+  validation: { type: Object, default: () => ({}) }
 });
 const model = defineModel({ type: null, required: true });
 
@@ -68,6 +69,7 @@ const {
   allowEmpty = false,
   label,
   labelMode,
+  validateLabel,
   localizeLabel,
   optionLabel,
   optionValue,

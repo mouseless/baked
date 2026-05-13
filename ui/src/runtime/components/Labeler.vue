@@ -25,17 +25,22 @@ import { useLocalization } from "#imports";
 const { localize: l } = useLocalization({});
 const { localize: lc } = useLocalization({ group: "Labeler" });
 
-const { label, mode, required } = defineProps({
+const { label, mode, required, validateLabel } = defineProps({
   label: { type: String, required: true },
   path: { type: String, required: true },
   mode: { type: String, default: null },
   variant: { type: String, default: "on" },
   pt: { type: Object, default: () => { } },
   dt: { type: Object, default: () => { } },
-  required: { type: Boolean, default: false }
+  required: { type: Boolean, default: false },
+  validateLabel: { type: Boolean, default: false }
 });
 
 const localizeLabel = computed(() => {
+  if(!validateLabel) {
+    return l(label);
+  }
+
   if(required) {
     return lc("{label}_Required", { label: l(label) });
   }

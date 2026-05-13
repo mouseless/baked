@@ -6,6 +6,7 @@ public record Select : ISelect, ILabeler
     public string? Label { get; set; }
     public string? LabelMode { get; set; }
     public string? LabelVariant { get; set; }
+    public bool? ValidateLabel { get; set; }
     public string? OptionLabel { get; set; }
     public string? OptionValue { get; set; }
     public bool? LocalizeLabel { get; set; }

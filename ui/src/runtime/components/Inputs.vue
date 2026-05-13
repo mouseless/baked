@@ -21,7 +21,7 @@ const route = useRoute();
 const { inputs, validator } = defineProps({
   inputs: { type: Array, required: true },
   inputClass: { type: String, default: "" },
-  validator: { type: Object, default: {} }
+  validator: { type: Object, default: () => ({}) }
 });
 const emit = defineEmits(["ready", "changed"]);
 

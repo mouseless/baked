@@ -11,6 +11,7 @@
       :mode="labelMode"
       :variant="labelVariant"
       :required="validation?.required"
+      :validate-label
     >
       <Select
         v-bind="$attrs"
@@ -56,11 +57,11 @@ const { value: { selectStates } } = useUiStates();
 const { schema, data, validation } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true },
-  validation: { type: Object, default: () => {} }
+  validation: { type: Object, default: () => ({}) }
 });
 const model = defineModel({ type: null, required: true });
 
-const { filter, label, labelMode, labelVariant, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
+const { filter, label, labelMode, validateLabel, labelVariant, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const selected = ref();

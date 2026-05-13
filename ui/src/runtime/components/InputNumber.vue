@@ -11,6 +11,7 @@
       :mode="labelMode"
       :variant="labelVariant"
       :required="validation?.required"
+      :validate-label
     >
       <InputNumber
         v-model="model"
@@ -40,11 +41,11 @@ const context = useContext();
 
 const { schema, validation } = defineProps({
   schema: { type: null, required: true },
-  validation: { type: Object, default: () => {} }
+  validation: { type: Object, default: () => ({}) }
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, labelMode, labelVariant, noGrouping } = schema;
+const { label, labelMode, labelVariant, validateLabel, noGrouping } = schema;
 
 const path = context.injectPath();
 
