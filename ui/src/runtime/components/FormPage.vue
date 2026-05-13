@@ -17,7 +17,6 @@
         v-focustrap
         class="gap-6"
       >
-        {{ validateResult }}
         <div
           v-for="section in sections"
           :key="section.key"
@@ -64,7 +63,7 @@
                 <Inputs
                   :inputs="inputGroup.inputs"
                   input-class="w-full"
-                  :validator="validateResult || {}"
+                  :validator="validator"
                   @ready="(value) => onReady(`${section.key}_${inputGroup.key}`, value)"
                   @changed="onChanged"
                 />
@@ -89,15 +88,17 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { title, submit, sections, validateComposable = [] } = schema;
+const { title, submit, sections, validateComposable } = schema;
 
 const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
 
 const formData = ref({});
 const readyData = ref({});
-const ready = computed(() => Object.values(readyData.value).every(v => v));
+const ready = computed(() => {
+  return Object.values(readyData.value).every(v => v) && Object.values(validator.value).every(v => v.valid);
+});
 
-const validateResult = computed(() =>
+const validator = computed(() =>
   validators.reduce((_default, useValidate) => {
     return { ..._default, ...useValidate({ sections, formData }) };
   }, {})

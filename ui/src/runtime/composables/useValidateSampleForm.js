@@ -9,10 +9,10 @@ export default function({ formData }) {
     severity: "error",
     message: "",
     valid: false
-  }
+  };
 
   if(data.role === "Admin" && data.status !== "Active") {
-    result.status = { ...item, message: lc("If the role is Admin, the Status must be Active") }
+    result.status = { ...item, message: lc("If the role is Admin, the Status must be Active") };
   }
 
   return result;
