@@ -16,7 +16,7 @@ export default function({ formData }) {
     result.status = {
       ...item,
       persist: true,
-      message: lc("If the role is Admin, the Status must be Active")
+      message: lc("Admin role requires Active status")
     };
   }
 

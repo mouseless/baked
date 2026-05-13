@@ -88,7 +88,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { title, submit, sections, validateComposable } = schema;
+const { title, submit, sections, validateComposable = [] } = schema;
 
 const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
 
@@ -97,7 +97,6 @@ const readyData = ref({});
 const ready = computed(() => {
   return Object.values(readyData.value).every(v => v) && Object.values(validator.value).every(v => v.valid);
 });
-
 const validator = computed(() =>
   validators.reduce((_default, useValidate) => {
     return { ..._default, ...useValidate({ sections, formData }) };

@@ -30,7 +30,7 @@
     }
   },
   "ValidatorMessages": {
-    "If the role is Admin, the Status must be Active": "Admin rolü seçiliyken durum bilgisi Aktif olmalı"
+    "Admin role requires Active status": "Admin rolü Aktif durumunda olmalı"
   },
   "If you cannot reach the page you want please contact the system administrator": "İstediğiniz sayfaya ulaşamıyorsanız lütfen sistem yöneticisi ile iletişime geçin",
   "Please contact system administrator": "Lütfen sistem yöneticisi ile iletişime geçin",

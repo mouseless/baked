@@ -30,7 +30,7 @@
     }
   },
   "ValidatorMessages": {
-    "If the role is Admin, the Status must be Active": "If the role is Admin, the status must be Active"
+    "Admin role requires Active status": "Admin role requires Active status"
   },
   "If you cannot reach the page you want please contact the system administrator": "If you cannot reach the page you want please contact the system administrator",
   "Please contact system administrator": "Please contact system administrator",
