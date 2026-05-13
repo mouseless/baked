@@ -18,10 +18,10 @@ import { Input } from "#components";
 const context = useContext();
 const route = useRoute();
 
-const { inputs, validateResult } = defineProps({
+const { inputs, validator } = defineProps({
   inputs: { type: Array, required: true },
   inputClass: { type: String, default: "" },
-  validateResult: { type: Object, default: () => {} }
+  validator: { type: Object, default: {} }
 });
 const emit = defineEmits(["ready", "changed"]);
 
@@ -93,13 +93,13 @@ function getValue(input) {
 }
 
 function getValidation(input) {
-  return validateResult ? validateResult[input] : false;
+  return validator ? validator[input] : false;
 }
 
 function setInvalid(input) {
   // check it, test it
-  if(!validateResult) { return false; }
+  if(!Object.values(validator).length) { return false; }
 
-  return !validateResult[input].valid && inputEvents.value[input]?.blur || false;
+  return !validator[input].valid && inputEvents.value[input]?.blur || false;
 }
 </script>

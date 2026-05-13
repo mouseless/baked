@@ -64,7 +64,7 @@
                 <Inputs
                   :inputs="inputGroup.inputs"
                   input-class="w-full"
-                  :validate-result="validateResult"
+                  :validator="validateResult || {}"
                   @ready="(value) => onReady(`${section.key}_${inputGroup.key}`, value)"
                   @changed="onChanged"
                 />
