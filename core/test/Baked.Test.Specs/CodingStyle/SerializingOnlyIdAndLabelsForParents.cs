@@ -27,10 +27,10 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
         {
             parent?.id,
             name = "parent",
-            surname = "wrapper",
             description = (string?)null,
             status = (string?)null,
-            role = (string?)null
+            role = (string?)null,
+            surname = new { id = "wrapper", name = "wrapper" }
         });
     }
 

@@ -74,7 +74,15 @@ public class LocatableTemplate : CodeTemplateBase
                 labelProp switch
                 {
                 {{ForEach(locatable.Properties.Having<LabelAttribute>(), label => $$"""
-                    "{{label.Name.Camelize()}}" => $"{locatable.{{label.Name}}}",
+                    {{If(label.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
+                        () => $$"""
+                            "{{label.Name.Camelize()}}" => $"{locatable.{{label.Name}}.{{label.PropertyType.GetMembers().FirstProperty<LabelAttribute>().Name}}}",
+                        """,
+                    @else:
+                        () => $$"""
+                            "{{label.Name.Camelize()}}" => $"{locatable.{{label.Name}}}",
+                        """
+                    )}}
                 """, indentation: 2)}}
                     _ => throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{locatable.Name}}`")
                 };

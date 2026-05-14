@@ -4,12 +4,12 @@ namespace Baked.Playground.Orm;
 
 public class LocatableLabel
 {
-    public Id Label { get; set; } = default!;
-    public string Name => Label;
+    public Id Id { get; set; } = default!;
+    public string Name => Id;
 
-    public LocatableLabel With(Id label)
+    public LocatableLabel With(Id id)
     {
-        Label = label;
+        Id = id;
 
         return this;
     }
