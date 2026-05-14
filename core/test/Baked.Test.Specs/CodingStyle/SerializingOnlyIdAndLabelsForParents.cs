@@ -11,7 +11,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
         var children = await Client.GetParentsChildren((object)parent.id);
         object? actual = children[0].parent;
 
-        actual?.ShouldDeeplyBe(new { parent?.id, name = "parent", surname = "test" });
+        actual?.ShouldDeeplyBe(new { parent?.id, name = "parent", surname = new { id = "test", name = "test" } });
     }
 
     [Test]
