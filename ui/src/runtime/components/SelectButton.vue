@@ -146,7 +146,7 @@ function setSelected(value) {
 
 .grid .flex {
   .b-component--SelectButton {
-    @apply self-end;
+    @apply self-end mt-4;
   }
 }
 </style>
