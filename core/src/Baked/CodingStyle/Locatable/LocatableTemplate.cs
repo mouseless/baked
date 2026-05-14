@@ -70,17 +70,17 @@ public class LocatableTemplate : CodeTemplateBase
             protected override string GetId({{locatable.CSharpFriendlyFullName}} locatable) =>
                 $"{locatable.{{id!.PropertyName}}}";
 
-            protected override string GetLabel({{locatable.CSharpFriendlyFullName}} locatable, string labelProp) =>
+            protected override Action<JsonWriter, JsonSerializer> GetLabelWriter({{locatable.CSharpFriendlyFullName}} locatable, string labelProp) =>
                 labelProp switch
                 {
                 {{ForEach(locatable.Properties.Having<LabelAttribute>(), label => $$"""
                     {{If(label.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
                         () => $$"""
-                            "{{label.Name.Camelize()}}" => $"{locatable.{{label.Name}}.{{label.PropertyType.GetMembers().FirstProperty<LabelAttribute>().Name}}}",
+                            "{{label.Name.Camelize()}}" => (writer, serializer) => serializer.Serialize(writer, locatable.{{label.Name}}),
                         """,
                     @else:
                         () => $$"""
-                            "{{label.Name.Camelize()}}" => $"{locatable.{{label.Name}}}",
+                            "{{label.Name.Camelize()}}" => (writer, _) => writer.WriteValue(locatable.{{label.Name}}),
                         """
                     )}}
                 """, indentation: 2)}}
