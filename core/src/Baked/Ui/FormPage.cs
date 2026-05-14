@@ -8,6 +8,7 @@ public record FormPage(string Path, PageTitle Title, Button Submit)
     public List<Section> Sections { get; init; } = [];
 
     public List<string>? ValidateComposable { get; set; } = ["useValidateDefault"];
+    public bool? ValidationOnTooltip { get; set; }
 
     public record Section(string Key, string Label)
         : IOrderableSchema

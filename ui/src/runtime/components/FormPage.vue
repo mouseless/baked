@@ -7,8 +7,10 @@
       >
         <Button
           v-tooltip="{
+            disabled: !validationOnTooltip,
             value: validationMessages,
             showDelay: 300,
+            pt: { text: 'text-sm' }
           }"
           :schema="submit"
           :ready
@@ -92,7 +94,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { title, submit, sections, validateComposable = [] } = schema;
+const { title, submit, sections, validateComposable = [], validationOnTooltip = true } = schema;
 
 const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
 
@@ -100,7 +102,13 @@ const formData = ref({});
 const readyData = ref({});
 
 const validationMessages = computed(() => {
-  return Object.values(validator.value).filter(v => v.message).map((v, i) => `- ${v.message} ${i > 0 ? "\n" : ""}`).join("").toString();
+  if(!validationOnTooltip) { return null; }
+
+  return Object.values(validator.value)
+    .filter(v => v.message)
+    .map((v, i) => `${i > 0 ? "\n" : ""} - ${v.message}`)
+    .join("")
+    .toString();
 });
 const ready = computed(() => {
   return Object.values(readyData.value).every(v => v) && Object.values(validator.value).every(v => v.valid);
