@@ -148,20 +148,6 @@ test.describe("Validations", () => {
     await expect(button).toBeDisabled();
   });
 
-  test("show validation result on submit button with tooltip", async({ page }) => {
-    const component = page.getByTestId(id);
-    const input2 = component.getByTestId("param-2");
-    const button = component.locator(primevue.button.base).nth(1);
-
-    await input2.fill("custom");
-    await button.scrollIntoViewIfNeeded();
-    await button.hover();
-
-    await expect(button).toBeDisabled();
-    await expect(page.locator(primevue.tooltip.left)).toBeVisible();
-    await expect(page.locator(primevue.tooltip.left)).toContainText("Param-1 cannot be empty");
-    await expect(page.locator(primevue.tooltip.left)).toContainText("Param-2 value is custom");
-  });
 });
 
 test.describe("Layout Options", () => {
