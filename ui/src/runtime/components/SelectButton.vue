@@ -41,7 +41,7 @@
         :severity="validation?.severity"
         variant="simple"
         size="small"
-        class="ml-2"
+        class="ml-3"
       >
         {{ validation?.message || "" }}
       </Message>

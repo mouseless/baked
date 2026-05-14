@@ -42,6 +42,7 @@ const { schema, validation } = defineProps({
   schema: { type: null, required: true },
   validation: { type: Object, default: () => ({}) }
 });
+
 const model = defineModel({ type: null, required: true });
 
 const { label, labelMode, labelVariant, validateLabel, targetProp } = schema;

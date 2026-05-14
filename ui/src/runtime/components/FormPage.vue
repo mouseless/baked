@@ -6,10 +6,9 @@
         #actions
       >
         <Button
-          v-tooltip="{
+          v-tooltip.left="{
             disabled: !validationOnTooltip,
             value: validationMessages,
-            showDelay: 300,
             pt: { text: 'text-sm' }
           }"
           :schema="submit"
@@ -97,7 +96,6 @@ const emit = defineEmits(["submit"]);
 const { title, submit, sections, validateComposable = [], validationOnTooltip = true } = schema;
 
 const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
-
 const formData = ref({});
 const readyData = ref({});
 

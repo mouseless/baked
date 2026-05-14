@@ -8,7 +8,7 @@
     :invalid="invalid(input.name)"
     :required="validator[input.name]?.required"
     :validation="validator[input.name]"
-    @blur.prevent="touched(input.name)"
+    @blur="touched(input.name)"
   />
 </template>
 <script setup>

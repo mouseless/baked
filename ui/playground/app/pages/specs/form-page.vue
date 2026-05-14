@@ -63,6 +63,16 @@ const variants = [
     })
   },
   {
+    name: "Validations",
+    descriptor: giveMe.aFormPage({
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [
+        giveMe.anInput({ name: "param-1", required: true }),
+        giveMe.anInput({ name: "param-2" })
+      ]
+    })
+  },
+  {
     name: "Layout Options",
     descriptor: giveMe.aFormPage({
       action: giveMe.aLocalAction({ showMessage: "ok" }),

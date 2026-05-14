@@ -387,18 +387,22 @@ export default {
     };
   },
 
-  aFormPage({ action, title, description, submit, inputs, sections } = {}) {
+  aFormPage({ action, title, description, submit, inputs, sections, validateComposable, validationOnTooltip } = {}) {
     title = this.aPageTitle({ title, description }).schema;
     submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
     sections = $(sections, [this.aFormPageSection({ inputs })]);
+    validateComposable = $(validateComposable, ["useFakeValidateDefault"]);
+    validationOnTooltip = $(validationOnTooltip, true);
 
     return {
       type: "FormPage",
       schema: {
         title,
         submit,
-        sections
+        sections,
+        validateComposable,
+        validationOnTooltip
       },
       action
     };
