@@ -18,7 +18,9 @@ public class SeedData(Entities _entities, Func<Entity> _newEntity, Parents _pare
             {
                 var status = i % 2 == 0 ? Status.Active : Status.Passive;
                 var role = i % 2 == 0 ? Role.Admin : Role.Moderator;
-                _newParent().With(i % 2 == 0 ? "John" : "Jane", "Doe", status, role).Update(description: $"This is a seed data {i}");
+                var parent = _newParent().With(i % 2 == 0 ? "John" : "Jane", "Doe", status, role);
+                parent.Update(description: $"This is a seed data {i}");
+                parent.AddChild($"{parent.Name} Child");
             }
         }
     }

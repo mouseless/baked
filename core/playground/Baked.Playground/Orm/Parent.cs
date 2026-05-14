@@ -3,16 +3,17 @@ using Baked.Orm;
 
 namespace Baked.Playground.Orm;
 
-public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities)
+public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities, Func<LocatableLabel> _newLocatableLabel)
     : IParentInterface
 {
     public Id Id { get; set; } = default!;
     public string Name { get; set; } = default!;
-    public string Surname { get; set; } = default!;
+    internal string SurnameInternal { get; set; } = default!;
     public string? Description { get; set; } = default!;
     public Status? Status { get; set; } = default;
     public Role? Role { get; set; } = default!;
 
+    public LocatableLabel Surname => _newLocatableLabel().With(SurnameInternal);
     // NOTE Calculated reference (directly or over interface) introduces a case
     // where `Orm.AutoMap.ManyToOneFetcherTemplate` and
     // `CodingStyle.Id.AutoPersistenceModelConfigurerTemplate` fail when they
@@ -23,7 +24,7 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
     public Parent With(string name, string surname, Status? status, Role? role)
     {
         Name = name;
-        Surname = surname;
+        SurnameInternal = surname;
         Status = status;
         Role = role;
 
@@ -37,7 +38,7 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
 
     public void AddChild(string name)
     {
-        _newChild().With(this, name);
+        _newChild().With(name, this);
     }
 
     public void Update(
@@ -47,7 +48,7 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
     )
     {
         Name = name ?? Name;
-        Surname = surname ?? Surname;
+        SurnameInternal = surname ?? SurnameInternal;
         Description = description ?? Description;
     }
 

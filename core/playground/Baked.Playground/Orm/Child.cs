@@ -6,15 +6,16 @@ namespace Baked.Playground.Orm;
 public class Child(IEntityContext<Child> _context)
 {
     public Id Id { get; private set; } = default!;
-    public Parent Parent { get; private set; } = default!;
     public string Name { get; private set; } = default!;
+    public Parent Parent { get; private set; } = default!;
     internal Parent? InternalParent { get; private set; } = default!;
     public ParentWrapper ParentWrapper => new(Parent);
+    public IParentInterface ParentInterface => Parent;
 
-    internal Child With(Parent parent, string name)
+    internal Child With(string name, Parent parent)
     {
-        Parent = parent;
         Name = name;
+        Parent = parent;
 
         return _context.Insert(this);
     }

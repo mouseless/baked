@@ -14,7 +14,7 @@ public class ChildDomainOverrideFeature : IFeature
             builder.Conventions.AddLocateAction<Child>();
 
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
-                when: c => c.Type.Is<Child>() && c.Property.PropertyType.Is<ParentWrapper>(),
+                when: c => c.Type.Is<Child>() && c.Property.PropertyType.Is<ParentWrapper>() || c.Property.PropertyType.Is<IParentInterface>(),
                 attribute: data => data.Visible = false
             );
 
