@@ -93,6 +93,7 @@ function touched(key) {
 
 function invalid(input) {
   if(!Object.values(validator).length) { return false; }
+
   if(!validator[input].valid && validator[input].persist) {
     return true;
   }

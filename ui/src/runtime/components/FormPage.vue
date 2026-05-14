@@ -6,6 +6,10 @@
         #actions
       >
         <Button
+          v-tooltip="{
+            value: validationMessages,
+            showDelay: 300,
+          }"
           :schema="submit"
           :ready
           @submit="onSubmit"
@@ -94,6 +98,10 @@ const validators = validateComposable.map(vc => composableResolver.resolve(vc).d
 
 const formData = ref({});
 const readyData = ref({});
+
+const validationMessages = computed(() => {
+  return Object.values(validator.value).filter(v => v.message).map((v, i) => `- ${v.message} ${i > 0 ? "\n" : ""}`).join("").toString();
+});
 const ready = computed(() => {
   return Object.values(readyData.value).every(v => v) && Object.values(validator.value).every(v => v.valid);
 });

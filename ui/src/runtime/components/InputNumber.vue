@@ -20,7 +20,7 @@
         @input="onInput"
       />
       <Message
-        v-show="validation?.message"
+        v-show="validation?.message && validation?.persist"
         :severity="validation?.severity"
         variant="simple"
         size="small"
