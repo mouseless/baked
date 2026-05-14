@@ -509,15 +509,17 @@ export default {
     };
   },
 
-  aLabeler({ label, labelMode, labelVariant } = {}) {
+  aLabeler({ label, labelMode, labelVariant, validateLabel } = {}) {
     label = $(label, "Test Label");
     labelMode = $(labelMode, "float");
     labelVariant = $(labelVariant, "on");
+    validateLabel = $(validateLabel, false);
 
     return {
       label,
       labelMode,
-      labelVariant
+      labelVariant,
+      validateLabel
     };
   },
 
