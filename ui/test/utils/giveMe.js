@@ -472,16 +472,15 @@ export default {
     };
   },
 
-  anInput({ name, required, defaultValue, default_, defaultSelfManaged, numeric, queryBound, component, validation } = {}) {
+  anInput({ name, required, defaultValue, default_, defaultSelfManaged, numeric, queryBound, component } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anExpectedInput({ testId: name }));
     default_ = $(default_, defaultValue ? this.anInlineData(defaultValue) : undefined);
     defaultSelfManaged = $(defaultSelfManaged, false);
     queryBound = $(queryBound, undefined);
-    validation = $(validation, this.aValidation({}));
 
-    return { name, required, default: default_, defaultSelfManaged, numeric, queryBound, component, validation };
+    return { name, required, default: default_, defaultSelfManaged, numeric, queryBound, component };
   },
 
   anInputText({ label, labeler, targetProp } = {}) {
@@ -905,22 +904,6 @@ export default {
       type: "On",
       on,
       constraint
-    };
-  },
-
-  aValidation({ required, valid, persist, severity, message } = {}) {
-    required = $(required, false);
-    valid = $(valid, true);
-    persist = $(valid, false);
-    severity = $(severity, "error");
-    message = $(message, "");
-
-    return {
-      required,
-      valid,
-      persist,
-      severity,
-      message
     };
   }
 };

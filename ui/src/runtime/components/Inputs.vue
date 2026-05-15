@@ -92,7 +92,7 @@ function touched(key) {
 }
 
 function invalid(input) {
-  if(!Object.values(validator.value).length) { return false; }
+  if(!validator.value || !Object.values(validator.value).length) { return; }
 
   if(!validator.value[input].valid && validator.value[input].persist) {
     return true;
