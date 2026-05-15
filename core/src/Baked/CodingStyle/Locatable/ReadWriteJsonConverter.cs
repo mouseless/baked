@@ -41,14 +41,18 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
         writer.WritePropertyName(IdProp);
         writer.WriteValue(GetId(value));
 
-        if (!value.GetType().IsAssignableTo(typeof(INHibernateProxy)))
+        if (value is INHibernateProxy proxy && proxy.HibernateLazyInitializer.IsUninitialized)
         {
-            foreach (var labelProp in LabelProps)
-            {
-                writer.WritePropertyName(labelProp);
-                var labelWriter = GetLabelWriter(value, labelProp);
-                labelWriter(writer, serializer);
-            }
+            writer.WriteEndObject();
+
+            return;
+        }
+
+        foreach (var labelProp in LabelProps)
+        {
+            writer.WritePropertyName(labelProp);
+            var labelWriter = GetLabelWriter(value, labelProp);
+            labelWriter(writer, serializer);
         }
 
         writer.WriteEndObject();
