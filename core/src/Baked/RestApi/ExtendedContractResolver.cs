@@ -86,6 +86,8 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
             {
                 configure(property, ServiceProvider);
             }
+
+            property.ValueProvider = new ProxyAwareValueProvider(property.ValueProvider);
         }
 
         return result;
