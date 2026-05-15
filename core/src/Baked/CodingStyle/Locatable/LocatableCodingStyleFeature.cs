@@ -77,7 +77,6 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             configurator.Buildtime.UsingGeneratedContext(generatedContext =>
             {
-                generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
                 var locatableContext = generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
                     .CreateRequiredImplementationInstance<ILocatableContext>();
                 locatableContext.Configure(contractResolver);
