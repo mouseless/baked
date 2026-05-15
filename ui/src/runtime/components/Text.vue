@@ -34,7 +34,7 @@ const tooltip = computed(() => ({
   disabled: !lengthIsExceeded.value,
   pt: {
     root: {
-      style: maxLength ? `min-width: ${maxLength / 4}rem;` : ""
+      style: maxLength ? `min-width: ${maxLength / 2}rem;` : ""
     }
   }
 }));
