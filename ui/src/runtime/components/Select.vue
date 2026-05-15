@@ -33,12 +33,12 @@
         </template>
       </Select>
       <Message
-        v-show="validation?.message && validation?.persist"
-        :severity="validation?.severity"
+        v-show="validator[name]?.message && validator[name]?.persist"
+        :severity="validator[name]?.severity"
         variant="simple"
         size="small"
       >
-        {{ validation?.message || "" }}
+        {{ validator[name]?.message || "" }}
       </Message>
     </Labeler>
   </AwaitLoading>
@@ -53,16 +53,16 @@ const context = useContext();
 const { localize: l } = useLocalization();
 const { value: { selectStates } } = useUiStates();
 
-const { schema, data, validation } = defineProps({
+const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true },
-  validation: { type: Object, default: () => ({}) }
+  data: { type: null, required: true }
 });
 const model = defineModel({ type: null, required: true });
 
 const { filter, label, labelMode, validateLabel, labelVariant, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
+const { validator = {}, name } = context.injectParentContext();
 const selected = ref();
 
 // two way binding between model and selected

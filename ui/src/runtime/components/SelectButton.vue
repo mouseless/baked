@@ -37,13 +37,13 @@
         </template>
       </SelectButton>
       <Message
-        v-show="validation?.message && validation?.persist"
-        :severity="validation?.severity"
+        v-show="validator[name]?.message && validator[name]?.persist"
+        :severity="validator[name]?.severity"
         variant="simple"
         size="small"
         class="ml-3"
       >
-        {{ validation?.message || "" }}
+        {{ validator[name]?.message || "" }}
       </Message>
     </Labeler>
   </AwaitLoading>
@@ -58,10 +58,9 @@ const context = useContext();
 const { localize: l } = useLocalization();
 const { value: { selectButtonStates } } = useUiStates();
 
-const { schema, data, validation } = defineProps({
+const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true },
-  validation: { type: Object, default: () => ({}) }
+  data: { type: null, required: true }
 });
 const model = defineModel({ type: null, required: true });
 
@@ -78,6 +77,7 @@ const {
 } = schema;
 
 const path = context.injectPath();
+const { validator = {}, name } = context.injectParentContext();
 const selected = ref();
 
 watch(

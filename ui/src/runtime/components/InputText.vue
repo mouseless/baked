@@ -19,13 +19,13 @@
         @update:model-value="onUpdate"
       />
       <Message
-        v-show="validation?.message && validation?.persist"
-        :severity="validation?.severity"
+        v-show="validator[name]?.message && validator[name]?.persist"
+        :severity="validator[name]?.severity"
         variant="simple"
         size="small"
         class="ml-2"
       >
-        {{ validation?.message || "" }}
+        {{ validator[name]?.message || "" }}
       </Message>
     </Labeler>
   </AwaitLoading>
@@ -38,9 +38,8 @@ import { AwaitLoading, Labeler } from "#components";
 
 const context = useContext();
 
-const { schema, validation } = defineProps({
-  schema: { type: null, required: true },
-  validation: { type: Object, default: () => ({}) }
+const { schema } = defineProps({
+  schema: { type: null, required: true }
 });
 
 const model = defineModel({ type: null, required: true });
@@ -48,6 +47,7 @@ const model = defineModel({ type: null, required: true });
 const { label, labelMode, labelVariant, validateLabel, targetProp } = schema;
 
 const path = context.injectPath();
+const { validator = {}, name } = context.injectParentContext();
 
 const input = ref("");
 

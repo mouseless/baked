@@ -68,7 +68,6 @@
                 <Inputs
                   :inputs="inputGroup.inputs"
                   input-class="w-full"
-                  :validator="validator"
                   @ready="(value) => onReady(`${section.key}_${inputGroup.key}`, value)"
                   @changed="onChanged"
                 />
@@ -82,9 +81,10 @@
 </template>
 <script setup>
 import { computed, ref } from "vue";
-import { useLocalization, useComposableResolver } from "#imports";
+import { useLocalization, useComposableResolver, useContext } from "#imports";
 import { Button, Contents, Inputs, PageTitle } from "#components";
 
+const context = useContext();
 const { localize: l } = useLocalization();
 const composableResolver = useComposableResolver();
 
@@ -116,6 +116,7 @@ const validator = computed(() =>
     return { ..._default, ...useValidate({ sections, formData }) };
   }, {})
 );
+context.provideParentContext({ validator });
 
 function splitByWide(inputGroups) {
   const result = [];

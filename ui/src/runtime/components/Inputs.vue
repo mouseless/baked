@@ -19,14 +19,14 @@ import { Input } from "#components";
 const context = useContext();
 const route = useRoute();
 
-const { inputs, validator } = defineProps({
+const { inputs } = defineProps({
   inputs: { type: Array, required: true },
-  inputClass: { type: String, default: "" },
-  validator: { type: Object, default: () => ({}) }
+  inputClass: { type: String, default: "" }
 });
 const emit = defineEmits(["ready", "changed"]);
 
 const parentPath = context.injectPath();
+const { validator = {} } = context.injectParentContext();
 
 const inputEvents = ref({});
 const models = reactive({});
@@ -92,12 +92,12 @@ function touched(key) {
 }
 
 function invalid(input) {
-  if(!Object.values(validator).length) { return false; }
+  if(!Object.values(validator.value).length) { return false; }
 
-  if(!validator[input].valid && validator[input].persist) {
+  if(!validator.value[input].valid && validator.value[input].persist) {
     return true;
   }
 
-  return !validator[input].valid && inputEvents.value[input]?.touched || false;
+  return !validator.value[input].valid && inputEvents.value[input]?.touched || false;
 }
 </script>
