@@ -45,7 +45,7 @@ const componentProps = buildComponentProps();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = !parentLoading.value && dataFetcher.shouldLoad(descriptor.data);
 const loading = ref(shouldLoad);
-const executing = ref(false);
+let executing = null;
 const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 let reactions = null;
@@ -54,12 +54,13 @@ context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
 context.provideParentContext({ ...contextData.parent, data });
 
-if(descriptor.action) {
-  context.provideExecuting(executing);
-}
-
 if(shouldLoad) {
   context.provideLoading(loading);
+}
+
+if(descriptor.action) {
+  executing = ref(false);
+  context.provideExecuting(executing);
 }
 
 if(descriptor.reactions) {
