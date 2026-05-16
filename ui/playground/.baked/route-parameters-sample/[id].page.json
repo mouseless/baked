@@ -4,9 +4,13 @@
     "title": {
       "type": "PageTitle",
       "schema": {
-        "title": "Route Parameters",
+        "localizeTitle": true,
         "description": "Showcases the route parameter support",
         "actions": []
+      },
+      "data": {
+        "type": "Inline",
+        "value": "Route Parameters"
       }
     },
     "contents": [

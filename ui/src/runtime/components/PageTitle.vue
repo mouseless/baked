@@ -1,83 +1,87 @@
 <template>
   <div
     id="page-title"
-    class="
-      sticky -top-1 z-10 space-y-4 bg-body
-      max-md:space-y-0 max-lg:space-y-2
-    "
+    class="sticky -top-1 z-10 space-y-4 bg-body"
   >
-    <div
-      class="
-        flex gap-2 items-start
-        md:max-xl:items-center
-      "
-    >
+    <div class="flex justify-between items-center gap-2">
       <div
         class="
-          w-full mt-1
-          flex flex-row gap-2
-          items-baseline justify-start
-          xl:flex-col xl:mt-2
+          w-full flex justify-between
+          max-2xs:flex-col gap-2
         "
+        :class="{
+          'max-2xs:flex-col': actions.length < earlyWrapActionsAt,
+          'max-xs:flex-col': actions.length >= earlyWrapActionsAt
+        }"
       >
-        <div class="grid">
-          <h1 class="font-bold text-xl truncate">
-            {{ l(title) }}
-          </h1>
-        </div>
-        <div class="relative">
+        <div class="flex gap-4 items-center">
+          <Bake
+            v-if="icon"
+            name="icon"
+            :descriptor="icon"
+            class="min-w-16 max-md:hidden"
+          />
           <div
-            data-testid="description"
             class="
-              text-sm text-gray-600 dark:text-gray-400
-              text-nowrap overflow-hidden
-              hidden xl:grid
+              w-full mt-1
+              flex flex-row
+              items-center justify-start
+              md:flex-col md:items-start md:mt-2
+              max-md:gap-2
             "
           >
-            <span class="truncate">
-              {{ l(description) || '&nbsp;' }}
-            </span>
+            <AwaitLoading
+              :skeleton="{
+                width: '15rem',
+                height: '1.75rem',
+                class: 'max-xs:max-w-[5rem]'
+              }"
+            >
+              <div class="grid">
+                <h1 class="font-bold text-xl truncate">
+                  {{ title }}
+                </h1>
+              </div>
+            </AwaitLoading>
+            <PageTitleDescription
+              :info-fields
+              :description
+            />
           </div>
-          <Button
-            v-if="description"
-            v-tooltip.focus.bottom="{ value: l(description) }"
-            class="xl:hidden"
-            icon="pi pi-info-circle"
-            variant="text"
-            size="small"
-            rounded
-          />
         </div>
-      </div>
-      <div
-        v-focustrap
-        class="
-          min-w-min flex gap-2 row-span-2 items-end text-nowrap
-          max-lg:text-sm md:max-xl:items-center xl:pt-6
-        "
-      >
-        <template v-if="isMd">
-          <slot
-            v-if="$slots.inputs"
-            name="inputs"
-          />
+        <div
+          v-if="actions.length || $slots.actions"
+          class="
+            actions
+            min-w-min flex gap-2 row-span-2 items-end text-nowrap
+            max-xs:text-xs max-md:text-sm
+            md:max-md:items-center md:pt-6
+          "
+        >
           <Bake
             v-for="action in actions"
             :key="action.schema.name"
             :name="`actions/${action.schema.name}`"
             :descriptor="action"
           />
-          <slot
-            v-if="$slots.actions"
-            name="actions"
-          />
+          <slot name="actions" />
+        </div>
+      </div>
+      <div
+        v-if="$slots.inputs"
+        v-focustrap
+        class="
+          min-w-min flex gap-2 row-span-2 items-end text-nowrap
+          max-md:text-sm md:max-md:items-center md:pt-6
+        "
+      >
+        <template v-if="isLg">
+          <slot name="inputs" />
         </template>
         <template v-else>
           <Button
-            v-if="$slots.inputs"
             variant="text"
             icon="pi pi-filter"
-            class="lg:hidden"
             rounded
             @click="togglePopoverInputs"
           />
@@ -87,44 +91,12 @@
           >
             <div
               class="
-              flex flex-col flex-start
-              justify-between w-full
-              gap-4 text-sm px-2 py-2"
+                flex flex-col flex-start
+                justify-between w-full
+                gap-4 text-sm px-2 py-2
+              "
             >
-              <slot
-                v-if="$slots.inputs"
-                name="inputs"
-              />
-            </div>
-          </PersistentPopover>
-          <Button
-            v-if="$slots.actions || actions?.length > 0"
-            variant="text"
-            icon="pi pi-ellipsis-h"
-            class="lg:hidden"
-            rounded
-            @click="togglePopoverActions"
-          />
-          <PersistentPopover
-            ref="popoverActions"
-            fixed
-          >
-            <div
-              class="
-              flex flex-col flex-start
-              justify-between w-full min-w-52
-              gap-4 text-sm px-2 py-2"
-            >
-              <Bake
-                v-for="action in actions"
-                :key="action.schema.name"
-                :name="`actions/${action.schema.name}`"
-                :descriptor="action"
-              />
-              <slot
-                v-if="$slots.actions"
-                name="actions"
-              />
+              <slot name="inputs" />
             </div>
           </PersistentPopover>
         </template>
@@ -140,17 +112,20 @@ import { useRuntimeConfig } from "#app";
 import { useBreakpoints, useHead, useLocalization } from "#imports";
 import { Bake, PersistentPopover } from "#components";
 
-const { isMd } = useBreakpoints();
+const { isLg } = useBreakpoints();
 const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
 
-const { schema } = defineProps({
-  schema: { type: null, required: true }
+const { schema, data } = defineProps({
+  schema: { type: null, required: true },
+  data: { type: null, required: true }
 });
 
-const { title, description, actions } = schema;
+const { actions, description, earlyWrapActionsAt = 4, icon, infoFields, localizeTitle, titleProp } = schema;
+
+const titleData = titleProp ? data?.[titleProp] : data;
+const title = titleData ? localizeTitle ? l(titleData) : titleData : "...";
 const popoverInputs = ref();
-const popoverActions = ref();
 
 useHead({
   title: components?.Page?.title
@@ -166,10 +141,9 @@ onMounted(() => {
     ([e]) => {
       toggleClasses(e.target, e.intersectionRatio < 1,
         [
-          "-mx-4", "px-4", "pb-4",
+          "sticked", "-mx-4", "-mb-4", "p-4",
           "border-b", "border-slate-300", "dark:border-zinc-800",
-          "drop-shadow", "z-[9]",
-          "md:max-xl:pt-4", "max-md:pt-2"
+          "drop-shadow", "z-[9]"
         ]
       );
     },
@@ -192,13 +166,16 @@ function toggleClasses(element, toggle, classes) {
 function togglePopoverInputs(event) {
   popoverInputs.value.toggle(event);
 }
-
-function togglePopoverActions(event) {
-  popoverActions.value.toggle(event);
-}
 </script>
 <style scoped>
 .sticky {
   top: -1px;
+}
+</style>
+<style>
+.b-component--PageTitle {
+  .p-button-icon+.p-button-label {
+    @apply max-sm:hidden;
+  }
 }
 </style>

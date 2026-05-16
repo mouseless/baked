@@ -6,7 +6,15 @@
     :class="classes"
     v-bind="getComponentProps()"
   >
-    <slot v-if="$slots.default" />
+    <template
+      v-for="(_, slotName) in $slots"
+      #[slotName]="slotProps"
+    >
+      <slot
+        :name="slotName"
+        v-bind="slotProps ?? {}"
+      />
+    </template>
   </component>
 </template>
 <script setup>
@@ -28,13 +36,14 @@ const model = defineModel({ type: null });
 const emit = defineEmits(["loaded"]);
 
 const parentPath = context.injectPath();
+const parentLoading = context.injectLoading();
 const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
 const contextData = context.injectContextData();
 const componentTemplate = componentResolver.resolve(descriptor.type, "MissingComponent");
 const componentProps = buildComponentProps();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
-const shouldLoad = dataFetcher.shouldLoad(descriptor.data);
+const shouldLoad = !parentLoading.value && dataFetcher.shouldLoad(descriptor.data);
 const loading = ref(shouldLoad);
 const executing = ref(false);
 const visible = ref(true);
@@ -44,7 +53,10 @@ let reactions = null;
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
 context.provideParentContext({ ...contextData.parent, data });
-context.provideExecuting(executing);
+
+if(descriptor.action) {
+  context.provideExecuting(executing);
+}
 
 if(shouldLoad) {
   context.provideLoading(loading);

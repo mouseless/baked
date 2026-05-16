@@ -2,7 +2,8 @@
   <div class="space-y-4 mb-40">
     <PageTitle
       v-if="loaded"
-      :schema="{ title, description }"
+      :schema="{ description, actions: [] }"
+      :data="title"
     />
     <div class="flex justify-center w-full">
       <div

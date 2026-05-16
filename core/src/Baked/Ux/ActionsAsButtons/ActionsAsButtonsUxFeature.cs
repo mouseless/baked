@@ -113,17 +113,18 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 component: (_, cc) => LocalizedButton("Cancel", cc)
             );
 
-            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+            builder.Conventions.AddMethodComponentConfiguration<PageTitle>(
+                where: cc => cc.Path.StartsWith(nameof(Page), "*", "*", nameof(FormPage)),
                 component: (fp, c, cc) =>
                 {
-                    var back = c.Method.GenerateComponent(cc.Drill(nameof(FormPage), nameof(FormPage.Title), nameof(FormPage.Title.Actions), "Back"));
+                    var back = c.Method.GenerateComponent(cc.Drill(nameof(PageTitle), nameof(PageTitle.Actions), "Back"));
                     if (back is null) { return; }
 
-                    fp.Schema.Title.Actions.Add(back);
+                    fp.Schema.Actions.Add(back);
                 }
             );
             builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.EndsWith(nameof(FormPage), nameof(FormPage.Title), nameof(FormPage.Title.Actions), "Back"),
+                where: cc => cc.Path.EndsWith(nameof(FormPage), nameof(FormPage.Title), nameof(PageTitle), nameof(PageTitle.Actions), "Back"),
                 component: (_, cc) => LocalizedButton("Back", cc)
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(

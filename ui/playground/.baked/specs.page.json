@@ -5,7 +5,7 @@
     "header": {
       "type": "PageTitle",
       "schema": {
-        "title": "Specs",
+        "localizeTitle": true,
         "description": "All UI Specs are listed here",
         "actions": [
           {
@@ -23,6 +23,10 @@
             }
           }
         ]
+      },
+      "data": {
+        "type": "Inline",
+        "value": "Specs"
       }
     },
     "sections": [

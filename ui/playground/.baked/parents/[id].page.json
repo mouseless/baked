@@ -4,7 +4,7 @@
     "title": {
       "type": "PageTitle",
       "schema": {
-        "title": "Parent",
+        "localizeTitle": true,
         "description": "Showcase a locatable entity page",
         "actions": [
           {
@@ -180,6 +180,10 @@
             }
           }
         ]
+      },
+      "data": {
+        "type": "Inline",
+        "value": "Parent"
       }
     },
     "contents": [

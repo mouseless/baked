@@ -388,7 +388,7 @@ export default {
   },
 
   aFormPage({ action, title, description, submit, inputs, sections } = {}) {
-    title = this.aPageTitle({ title, description }).schema;
+    title = this.aPageTitle({ title, description });
     submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
     sections = $(sections, [this.aFormPageSection({ inputs })]);
@@ -630,14 +630,16 @@ export default {
     };
   },
 
-  aPageTitle({ title, description, actions } = {}) {
+  aPageTitle({ title, localizeTitle, description, actions } = {}) {
     title = $(title, "Spec: Test Title");
+    localizeTitle = $(localizeTitle, true);
     description = $(description, "Spec: Test description is given for testing purposes");
     actions = $(actions, []);
 
     return {
       type: "PageTitle",
-      schema: { title, description, actions }
+      schema: { localizeTitle, description, actions },
+      data: this.anInlineData(title)
     };
   },
 
@@ -730,7 +732,7 @@ export default {
   },
 
   aTabbedPage({ title, description, inputs, tabs } = {}) {
-    title = this.aPageTitle({ title, description }).schema;
+    title = this.aPageTitle({ title, description });
     inputs = $(inputs, []);
     tabs = $(tabs, [this.aTab()]);
 

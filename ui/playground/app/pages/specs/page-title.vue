@@ -8,11 +8,14 @@
     <div>
       <h2 class="text-lg font-semibold mt-2">Inputs</h2>
       <Divider />
-      <PageTitle :schema="inputsVariant.descriptor.schema">
+      <Bake
+        name="inputs-variant"
+        :descriptor="inputsVariant.descriptor"
+      >
         <template #inputs>
           <Inputs :inputs="inputsVariant.inputs" />
         </template>
-      </PageTitle>
+      </Bake>
     </div>
   </UiSpec>
 </template>
@@ -35,13 +38,6 @@ const variants = [
         giveMe.aButton({ label: "ACTION_1" }),
         giveMe.aButton({ label: "ACTION_2" })
       ]
-    })
-  },
-  {
-    name: "No Description",
-    descriptor: giveMe.aPageTitle({
-      title: "Spec: Page Title",
-      description: null
     })
   },
   {
