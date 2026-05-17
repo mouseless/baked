@@ -158,62 +158,69 @@ test.describe("Action", () =>{
   });
 });
 
-test.describe("Reaction", () => {
+test.describe.serial("Reaction", () => {
   const id = "Reaction";
 
   test("reload reaction with composite and publish triggers", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
-
     const before = asyncCount;
+    const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
+
     await button.click();
 
-    await page.waitForLoadState("networkidle");
+    await request;
     expect(asyncCount).toBe(before + 1);
   });
 
   test("reaction is filtered out when published event value doesn't match constraint", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
-
     const before = asyncCount;
+    const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
+
     await input.fill("something else");
 
-    await page.waitForLoadState("networkidle");
+    await expect(request).rejects.toThrow();
     expect(asyncCount).toBe(before);
   });
 
   test("reaction occurs when published event value matches constraint", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
-
     const before = asyncCount;
-    await input.fill("event");
+    const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    await page.waitForLoadState("networkidle");
-    expect(asyncCount).toBeGreaterThan(before);
-    // expect(asyncCount).toBe(before + 1); // NOTE use this after fixing issue #571
+    // await input.fill("event"); // NOTE uncomment this act after fixing issue #571
+    await input.pressSequentially("event"); // NOTE remove below act after fixing issue #571
+
+    await request;
+    expect(asyncCount).toBe(before + 1);
   });
 
   test("page context action and trigger", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
-
     const before = asyncCount;
-    await input.fill("page-context");
+    const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    await page.waitForLoadState("networkidle");
+    // await input.fill("page-context"); // NOTE uncomment this act after fixing issue #571
+    await input.pressSequentially("page-context"); // NOTE remove below act after fixing issue #571
+
+    await request;
     expect(asyncCount).toBe(before + 1);
   });
 
   test("composable constraint", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
-
     const before = asyncCount;
-    await input.fill("validate");
+    const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    await page.waitForLoadState("networkidle");
+    // await input.fill("validate"); // NOTE uncomment this act after fixing issue #571
+    await input.pressSequentially("validate"); // NOTE remove below act after fixing issue #571
+
+    await request;
     expect(asyncCount).toBe(before + 1);
   });
 
@@ -224,7 +231,6 @@ test.describe("Reaction", () => {
 
     await input.fill("hide");
 
-    await page.waitForLoadState("networkidle");
     await expect(component.getByTestId("output")).not.toBeAttached();
   });
 });

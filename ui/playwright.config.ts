@@ -6,7 +6,11 @@ export default defineConfig<ConfigOptions>({
   testDir: "./test/specs",
   timeout: 2 * 60 * 1000,
   reporter: "list",
-
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.025
+    }
+  },
   projects: [
     {
       name: "Desktop Chrome",
