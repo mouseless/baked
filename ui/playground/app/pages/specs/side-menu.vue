@@ -1,7 +1,7 @@
 <template>
   <UiSpec
     :variants
-    :vertical
+    vertical
     class="ui-spec"
   />
 </template>

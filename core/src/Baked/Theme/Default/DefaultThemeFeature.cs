@@ -107,6 +107,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
                 schema: ra => ra.Body = Context.Model()
             );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                where: cc => cc.Path.StartsWith(nameof(Page), "*", "*Page"),
+                schema: (ra, c, cc) =>
+                {
+                    if (!cc.Path.StartsWith(nameof(Page), c.Type.Name)) { return; }
+
+                    ra.Params = Computed.UseRoute("params");
+                }
+            );
 
             builder.Conventions.AddMethodComponent(
                 when: c =>
@@ -206,10 +216,28 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
                 component: (c, cc) => TypePageTitle(c.Type, cc)
             );
+            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
+
+                    pt.Schema.Icon = c.Type.GenerateComponent(cc);
+                }
+            );
+
             builder.Conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
                 component: (c, cc) => MethodPageTitle(c.Method, cc)
             );
+            builder.Conventions.AddMethodComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
+
+                    pt.Schema.Icon = c.Method.GenerateComponent(cc);
+                }
+            );
+
             builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
@@ -225,11 +253,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         pt.Schema.Actions.Add(actionComponent);
                     }
                 }
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Has<LocatableAttribute>(),
-                where: cc => cc.Path.EndsWith("Title", "Actions", "**", nameof(IComponentDescriptor.Action)),
-                schema: ra => ra.Params = Computed.UseRoute("params")
             );
 
             // `Select` defaults

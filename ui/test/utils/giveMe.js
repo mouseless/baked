@@ -250,6 +250,14 @@ export default {
     };
   },
 
+  aDelayedData(data, { ms = 1 } = {}) {
+    return this.aComputedData({
+      composable: "useDelayedData",
+      options: this.anInlineData({ ms, data }),
+      isAsync: true
+    });
+  },
+
   aDialog({ action, content, header, open, submit }) {
     header = $(header, "Dialog Header");
     content = $(content, this.aText({ label: "Dialog Header" }));
@@ -338,10 +346,10 @@ export default {
     };
   },
 
-  aField({ key, label, wide, component } = {}) {
-    key = "data";
+  aField({ key, label, wide, component, testId } = {}) {
+    key = $(key, "data");
     label = $(label, "Spec: Data");
-    component = $(component, this.anExpected({ data: this.aContextData({ parent: `data.${key}` }) }));
+    component = $(component, this.anExpected({ testId, data: this.aContextData({ parent: `data.${key}` }) }));
 
     return {
       key,
@@ -630,7 +638,7 @@ export default {
     };
   },
 
-  aPageTitle({ title, localizeTitle, description, actions } = {}) {
+  aPageTitle({ title, titleProp, localizeTitle, icon, infoFields, description, actions, earlyWrapActionsAt } = {}) {
     title = $(title, "Spec: Test Title");
     localizeTitle = $(localizeTitle, true);
     description = $(description, "Spec: Test description is given for testing purposes");
@@ -638,7 +646,15 @@ export default {
 
     return {
       type: "PageTitle",
-      schema: { localizeTitle, description, actions },
+      schema: {
+        titleProp,
+        localizeTitle,
+        icon,
+        infoFields,
+        description,
+        actions,
+        earlyWrapActionsAt
+      },
       data: this.anInlineData(title)
     };
   },

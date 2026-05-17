@@ -63,6 +63,80 @@ test.describe("Actions", () => {
     await expect(component.locator("button").nth(2)).toHaveText("ACTION_2");
   });
 
+  test("action label hidden for iconed below sm", async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "xs" });
+
+    await page.setViewportSize({ ...screen });
+
+    await expect(component.locator("button").nth(1).getByText("ACTION_1")).toBeVisible();
+    await expect(component.locator("button").nth(2).getByText("ACTION_2")).not.toBeVisible();
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual (early wraps actions)", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "2xs" });
+
+    await page.setViewportSize({ ...screen });
+
+    await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Dynamic", () => {
+  const id = "Dynamic";
+
+  test("title", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator("h1")).toHaveText("From Data");
+  });
+
+  test("icon", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("icon")).toHaveText("PT");
+  });
+
+  test("info fields", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveText(/Info 1/);
+    await expect(component.getByText("Info 1")).toBeVisible();
+    await expect(component.getByTestId("info-1")).toHaveText("info-1");
+    await expect(component).toHaveText(/Info 2/);
+    await expect(component.getByText("Info 2")).toBeVisible();
+    await expect(component.getByTestId("info-2")).toHaveText("info-2");
+  });
+
+  test("info labels hidden below sm", async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "xs" });
+    await page.setViewportSize({ ...screen });
+
+    await expect(component.getByText("Info 1")).not.toBeVisible();
+    await expect(component.getByTestId("info-1")).toHaveText("info-1");
+    await expect(component.getByText("Info 2")).not.toBeVisible();
+    await expect(component.getByTestId("info-2")).toHaveText("info-2");
+  });
+
+  test("info labels hidden below xs", async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "2xs" });
+    await page.setViewportSize({ ...screen });
+
+    await expect(component.getByText("Info 1")).not.toBeVisible();
+    await expect(component.getByTestId("info-1")).not.toBeVisible();
+    await expect(component.getByText("Info 2")).not.toBeVisible();
+    await expect(component.getByTestId("info-2")).not.toBeVisible();
+  });
+
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
@@ -110,5 +184,4 @@ test.describe("Inputs", () => {
     await page.setViewportSize({ ...screen });
     await expect(component).toHaveScreenshot();
   });
-
 });

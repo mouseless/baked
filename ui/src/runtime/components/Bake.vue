@@ -109,6 +109,7 @@ function buildComponentProps() {
   return result;
 }
 
+let __BIND_COUNT__ = 0; // NOTE A work-around for query bound model problem
 function getComponentProps() {
   const result = { ...componentProps };
 
@@ -116,7 +117,13 @@ function getComponentProps() {
   if(componentTemplate.props?.modelValue) {
     result.modelValue = model.value;
 
-    nextTick(() => onModelUpdate(model.value));
+    // restrict model update during v-bind by 2, to prevent duplicated event publish
+    // first during mount, second to refresh model from query
+    if(__BIND_COUNT__ < 2) {
+      __BIND_COUNT__++;
+
+      nextTick(() => onModelUpdate(model.value));
+    }
   }
 
   return result;

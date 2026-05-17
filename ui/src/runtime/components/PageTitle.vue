@@ -174,8 +174,12 @@ function togglePopoverInputs(event) {
 </style>
 <style>
 .b-component--PageTitle {
-  .p-button-icon+.p-button-label {
-    @apply max-sm:hidden;
+  .p-button {
+    @apply self-stretch;
+
+    .p-button-icon+.p-button-label {
+      @apply max-sm:hidden;
+    }
   }
 }
 </style>

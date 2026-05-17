@@ -35,8 +35,23 @@ const variants = [
     descriptor: giveMe.aPageTitle({
       actions: [
         giveMe.aButton({ label: "ACTION_1" }),
-        giveMe.aButton({ label: "ACTION_2" })
-      ]
+        giveMe.aButton({ label: "ACTION_2", icon: "pi pi-heart" })
+      ],
+      earlyWrapActionsAt: 2
+    })
+  },
+  {
+    name: "Dynamic",
+    descriptor: giveMe.aPageTitle({
+      title: { name: "From Data", info1: "info-1", info2: "info-2" },
+      titleProp: "name",
+      localizeTitle: false,
+      icon: giveMe.anExpected({ value: "PT", testId: "icon" }),
+      infoFields: [
+        giveMe.aField({ key: "info1", label: "Spec: Info 1", testId: "info-1" }),
+        giveMe.aField({ key: "info2", label: "Spec: Info 2", testId: "info-2" })
+      ],
+      actions: [ giveMe.aButton({ label: "ACTION" }) ]
     })
   },
   {

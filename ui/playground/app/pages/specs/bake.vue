@@ -24,9 +24,16 @@ const variants = [
         giveMe.anExpected({
           testId: "child-prop",
           data: giveMe.aContextData({ key: "parent", prop: "data.child" })
+        }),
+        giveMe.anExpected({
+          testId: "child-remote",
+          data: giveMe.aRemoteData({
+            path: "/method-samples/async?ms=5",
+            headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
+          })
         })
       ],
-      data: giveMe.anInlineData({ child: "CHILD VALUE" })
+      data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
     })
   },
   {

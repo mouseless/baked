@@ -349,6 +349,16 @@
             "type": "Remote",
             "path": "parents/{id}/children",
             "method": "POST",
+            "params": {
+              "type": "Computed",
+              "composable": "useNuxtRoute",
+              "options": {
+                "type": "Inline",
+                "value": {
+                  "property": "params"
+                }
+              }
+            },
             "body": {
               "type": "Context",
               "key": "model"

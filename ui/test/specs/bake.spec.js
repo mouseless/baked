@@ -1,6 +1,8 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
+let asyncCount = 0;
+
 test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill({ body: "fake-response" });
@@ -8,10 +10,21 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/rich-transient-with-datas/**/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
-  await page.route("*/**/method-samples/async", async route => {
+
+  await page.route("*/**/method-samples/async?ms=10", async route => {
+    asyncCount++;
     await route.fulfill({ body: "fake-response" });
   });
+
+  let count = 0;
+  await page.route("*/**/method-samples/async?ms=5", async route => {
+    await route.fulfill({ body: `fake-response-${count}` });
+    count++;
+  });
+
   await goto("/specs/bake?val=2", { waitUntil: "hydration" });
+  await page.waitForLoadState("networkidle");
+  asyncCount = 0;
 });
 
 test.describe("Base", () => {
@@ -54,6 +67,13 @@ test.describe("Parent Data", () => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("child-prop")).toHaveText("CHILD VALUE");
+  });
+
+  test("child data waits for parent to load to avoid double fetch", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await page.waitForLoadState("networkidle");
+    await expect(component.getByTestId("child-remote")).toHaveText("fake-response-0");
   });
 });
 
@@ -141,96 +161,60 @@ test.describe("Action", () =>{
 test.describe("Reaction", () => {
   const id = "Reaction";
 
-  // Initial data load completes before this text execution because page is
-  // waited till hydration, request count is expected to be one. To catch if
-  // reload occured below code is used
-  // ```js
-  // let reloaded = false;
-  // page.on("request", req => {
-  //   if(req.url().includes("method-samples/async")) {
-  //     reloaded = true;
-  //   }
-  // });
-  // ```
-
   test("reload reaction with composite and publish triggers", async({ page }) => {
-    let reloaded = false;
-    page.on("request", req => {
-      if(req.url().includes("method-samples/async")) {
-        reloaded = true;
-      }
-    });
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
+    const before = asyncCount;
     await button.click();
 
     await page.waitForLoadState("networkidle");
-    expect(reloaded).toBe(true);
+    expect(asyncCount).toBe(before + 1);
   });
 
   test("reaction is filtered out when published event value doesn't match constraint", async({ page }) => {
-    let reloaded = false;
-    page.on("request", req => {
-      if(req.url().includes("method-samples/async")) {
-        reloaded = true;
-      }
-    });
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
 
+    const before = asyncCount;
     await input.fill("something else");
 
     await page.waitForLoadState("networkidle");
-    expect(reloaded).toBe(false);
+    expect(asyncCount).toBe(before);
   });
 
   test("reaction occurs when published event value matches constraint", async({ page }) => {
-    let reloaded = false;
-    page.on("request", req => {
-      if(req.url().includes("method-samples/async")) {
-        reloaded = true;
-      }
-    });
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
 
+    const before = asyncCount;
     await input.fill("event");
 
     await page.waitForLoadState("networkidle");
-    expect(reloaded).toBe(true);
+    expect(asyncCount).toBeGreaterThan(before);
+    // expect(asyncCount).toBe(before + 1); // NOTE use this after fixing issue #571
   });
 
   test("page context action and trigger", async({ page }) => {
-    let reloaded = false;
-    page.on("request", req => {
-      if(req.url().includes("method-samples/async")) {
-        reloaded = true;
-      }
-    });
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
 
+    const before = asyncCount;
     await input.fill("page-context");
 
     await page.waitForLoadState("networkidle");
-    expect(reloaded).toBe(true);
+    expect(asyncCount).toBe(before + 1);
   });
 
   test("composable constraint", async({ page }) => {
-    let reloaded = false;
-    page.on("request", req => {
-      if(req.url().includes("method-samples/async")) {
-        reloaded = true;
-      }
-    });
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
 
+    const before = asyncCount;
     await input.fill("validate");
 
     await page.waitForLoadState("networkidle");
-    expect(reloaded).toBe(true);
+    expect(asyncCount).toBe(before + 1);
   });
 
   test("show/hide reaction with isNot constraint", async({ page }) => {
