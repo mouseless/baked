@@ -71,9 +71,20 @@ public static class UiExtensions
             schemas.Find(i => i.Key == key) ??
             throw DiagnosticCode.MissingItem.Exception($"{key} not found in {typeof(T).Name} list");
 
+        public int GetIndex(string key)
+        {
+            var result = schemas.FindIndex(i => i.Key == key);
+            if (result < 0)
+            {
+                throw DiagnosticCode.MissingItem.Exception($"{key} not found in {typeof(T).Name} list");
+            }
+
+            return result;
+        }
+
         public void Move(string key,
-            bool toTop = true,
-            bool toBottom = true,
+            bool toTop = false,
+            bool toBottom = false,
             string? before = default,
             string? after = default
         )
@@ -81,11 +92,11 @@ public static class UiExtensions
             int? index = null;
             if (before is not null)
             {
-                index = schemas.FindIndex(i => i.Key == before);
+                index = schemas.GetIndex(before);
             }
             else if (after is not null)
             {
-                index = schemas.FindIndex(i => i.Key == after) + 1;
+                index = schemas.GetIndex(after) + 1;
             }
             else if (toTop)
             {
@@ -93,7 +104,7 @@ public static class UiExtensions
             }
             else if (toBottom)
             {
-                index = schemas.Count - 1;
+                index = schemas.Count;
             }
 
             if (index is null) { return; }
@@ -103,10 +114,17 @@ public static class UiExtensions
 
         public void Move(string key, int index)
         {
-            var input = schemas.Get(key);
+            var oldIndex = schemas.GetIndex(key);
+            if (oldIndex == index) { return; }
 
-            schemas.Remove(input);
-            schemas.Insert(index, input);
+            if (oldIndex < index)
+            {
+                index--;
+            }
+
+            var schema = schemas[oldIndex];
+            schemas.RemoveAt(oldIndex);
+            schemas.Insert(index, schema);
         }
     }
 

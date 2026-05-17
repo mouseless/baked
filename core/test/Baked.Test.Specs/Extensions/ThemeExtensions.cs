@@ -1,5 +1,6 @@
 using Baked.Testing;
 using Baked.Theme;
+using Baked.Ui;
 
 namespace Baked.Test;
 
@@ -27,6 +28,22 @@ public static class ThemeExtensions
             }
 
             return result;
+        }
+    }
+
+    extension(Mocker mockMe)
+    {
+        public IOrderableSchema AnOrderableSchema(
+            string? key = default
+        )
+        {
+            key ??= "test-schema";
+
+            var result = new Mock<IOrderableSchema>();
+
+            result.Setup(s => s.Key).Returns(key);
+
+            return result.Object;
         }
     }
 }
