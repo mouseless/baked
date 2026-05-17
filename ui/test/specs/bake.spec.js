@@ -72,7 +72,6 @@ test.describe("Parent Data", () => {
   test("child data waits for parent to load to avoid double fetch", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await page.waitForLoadState("networkidle");
     await expect(component.getByTestId("child-remote")).toHaveText("fake-response-0");
   });
 });
