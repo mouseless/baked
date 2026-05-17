@@ -5,12 +5,12 @@
       "type": "PageTitle",
       "schema": {
         "localizeTitle": true,
-        "description": "Showcases the route parameter support",
+        "description": "/route-parameters-sample/[id]:Description",
         "actions": []
       },
       "data": {
         "type": "Inline",
-        "value": "Route Parameters"
+        "value": "/route-parameters-sample/[id]:Title"
       }
     },
     "contents": [

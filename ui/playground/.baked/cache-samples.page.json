@@ -5,12 +5,12 @@
       "type": "PageTitle",
       "schema": {
         "localizeTitle": true,
-        "description": "Showcases the cache behavior",
+        "description": "/cache-samples:Description",
         "actions": []
       },
       "data": {
         "type": "Inline",
-        "value": "Cache"
+        "value": "/cache-samples:Title"
       }
     },
     "inputs": [

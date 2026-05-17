@@ -5,7 +5,7 @@
       "type": "PageTitle",
       "schema": {
         "localizeTitle": true,
-        "description": "Showcases action, form components and events",
+        "description": "/form-sample:Description",
         "actions": [
           {
             "type": "Button",
@@ -59,7 +59,7 @@
       },
       "data": {
         "type": "Inline",
-        "value": "Form"
+        "value": "/form-sample:Title"
       }
     },
     "contents": [

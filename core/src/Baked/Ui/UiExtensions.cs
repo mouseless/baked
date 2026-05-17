@@ -1,4 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Model;
+using Baked.Theme.Default;
 using Baked.Ui;
 using Baked.Ui.Configuration;
 
@@ -38,6 +40,18 @@ public static class UiExtensions
             layers.Add(new UiLayer());
     }
 
+    extension(PropertyModel property)
+    {
+        public bool IsData =>
+            property.Has<DataAttribute>();
+
+        public string DataName =>
+            property.Name;
+
+        public string DataProp =>
+            property.Get<DataAttribute>().Prop;
+    }
+
     extension(ISupportsReaction source)
     {
         public void ReloadOn(string @event,
@@ -67,6 +81,12 @@ public static class UiExtensions
 
     extension<T>(List<T> schemas) where T : IOrderableSchema
     {
+        public bool ContainsKey(string key) =>
+            schemas.Any(s => s.Key == key);
+
+        public void Edit(string key, Action<T> action) =>
+            action(schemas.Get(key));
+
         public T Get(string key) =>
             schemas.Find(i => i.Key == key) ??
             throw DiagnosticCode.MissingItem.Exception($"{key} not found in {typeof(T).Name} list");

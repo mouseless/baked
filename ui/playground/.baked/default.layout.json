@@ -14,22 +14,22 @@
           {
             "route": "/cache-samples",
             "icon": "pi pi-database",
-            "title": "Cache"
+            "title": "/cache-samples:Title"
           },
           {
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
-            "title": "Form"
+            "title": "/form-sample:Title"
           },
           {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
-            "title": "Report"
+            "title": "/report-page-sample:Title"
           },
           {
             "route": "/specs",
             "icon": "pi pi-list-check",
-            "title": "Specs"
+            "title": "/specs:Title"
           }
         ],
         "footer": {
@@ -53,304 +53,304 @@
           "/cache-samples": {
             "route": "/cache-samples",
             "icon": "pi pi-database",
-            "title": "Cache"
+            "title": "/cache-samples:Title"
           },
           "/form-sample": {
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
-            "title": "Form"
+            "title": "/form-sample:Title"
           },
           "/form-sample/parents/new": {
             "route": "/form-sample/parents/new",
-            "title": "New Parent",
+            "title": "/form-sample/parents/new:Title",
             "parentRoute": "/form-sample"
           },
           "/report-page-sample": {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
-            "title": "Report"
+            "title": "/report-page-sample:Title"
           },
           "/specs": {
             "route": "/specs",
             "icon": "pi pi-list-check",
-            "title": "Specs"
+            "title": "/specs:Title"
           },
           "/parents/[id]": {
             "route": "/parents/[id]",
-            "title": "Parent"
+            "title": "/parents/[id]:Title"
           },
           "/route-parameters-sample/[id]": {
             "route": "/route-parameters-sample/[id]",
-            "title": "Route Parameters"
+            "title": "/route-parameters-sample/[id]:Title"
           },
           "/specs/bake": {
             "route": "/specs/bake",
             "icon": "pi pi-microchip",
-            "title": "Bake",
+            "title": "/specs/bake:Title",
             "parentRoute": "/specs"
           },
           "/specs/composite": {
             "route": "/specs/composite",
             "icon": "pi pi-microchip",
-            "title": "Composite",
+            "title": "/specs/composite:Title",
             "parentRoute": "/specs"
           },
           "/specs/contents": {
             "route": "/specs/contents",
             "icon": "pi pi-microchip",
-            "title": "Contents",
+            "title": "/specs/contents:Title",
             "parentRoute": "/specs"
           },
           "/specs/custom-css": {
             "route": "/specs/custom-css",
             "icon": "pi pi-microchip",
-            "title": "Custom CSS",
+            "title": "/specs/custom-css:Title",
             "parentRoute": "/specs"
           },
           "/specs/inputs": {
             "route": "/specs/inputs",
             "icon": "pi pi-microchip",
-            "title": "Inputs",
+            "title": "/specs/inputs:Title",
             "parentRoute": "/specs"
           },
           "/specs/inputs--query-bound": {
             "route": "/specs/inputs--query-bound",
             "icon": "pi pi-microchip",
-            "title": "Inputs - Query Bound",
+            "title": "/specs/inputs--query-bound:Title",
             "parentRoute": "/specs"
           },
           "/specs/layout": {
             "route": "/specs/layout",
             "icon": "pi pi-microchip",
-            "title": "Layout",
+            "title": "/specs/layout:Title",
             "parentRoute": "/specs"
           },
           "/specs/redirect": {
             "route": "/specs/redirect",
             "icon": "pi pi-microchip",
-            "title": "Redirect",
+            "title": "/specs/redirect:Title",
             "parentRoute": "/specs"
           },
           "/specs/routing": {
             "route": "/specs/routing",
             "icon": "pi pi-microchip",
-            "title": "Routing",
+            "title": "/specs/routing:Title",
             "parentRoute": "/specs"
           },
           "/specs/toast": {
             "route": "/specs/toast",
             "icon": "pi pi-microchip",
-            "title": "Toast",
+            "title": "/specs/toast:Title",
             "parentRoute": "/specs"
           },
           "/specs/card-link": {
             "route": "/specs/card-link",
             "icon": "pi pi-microchip",
-            "title": "Card Link",
+            "title": "/specs/card-link:Title",
             "parentRoute": "/specs"
           },
           "/specs/data-table": {
             "route": "/specs/data-table",
             "icon": "pi pi-microchip",
-            "title": "Data Table",
+            "title": "/specs/data-table:Title",
             "parentRoute": "/specs"
           },
           "/specs/fieldset": {
             "route": "/specs/fieldset",
             "icon": "pi pi-microchip",
-            "title": "Fieldset",
+            "title": "/specs/fieldset:Title",
             "parentRoute": "/specs"
           },
           "/specs/icon": {
             "route": "/specs/icon",
             "icon": "pi pi-microchip",
-            "title": "Icon",
+            "title": "/specs/icon:Title",
             "parentRoute": "/specs"
           },
           "/specs/message": {
             "route": "/specs/message",
             "icon": "pi pi-microchip",
-            "title": "Message",
+            "title": "/specs/message:Title",
             "parentRoute": "/specs"
           },
           "/specs/missing-component": {
             "route": "/specs/missing-component",
             "icon": "pi pi-microchip",
-            "title": "Missing Component",
+            "title": "/specs/missing-component:Title",
             "parentRoute": "/specs"
           },
           "/specs/money": {
             "route": "/specs/money",
             "icon": "pi pi-microchip",
-            "title": "Money",
+            "title": "/specs/money:Title",
             "parentRoute": "/specs"
           },
           "/specs/nav-link": {
             "route": "/specs/nav-link",
             "icon": "pi pi-microchip",
-            "title": "Nav Link",
+            "title": "/specs/nav-link:Title",
             "parentRoute": "/specs"
           },
           "/specs/number": {
             "route": "/specs/number",
             "icon": "pi pi-microchip",
-            "title": "Number",
+            "title": "/specs/number:Title",
             "parentRoute": "/specs"
           },
           "/specs/rate": {
             "route": "/specs/rate",
             "icon": "pi pi-microchip",
-            "title": "Rate",
+            "title": "/specs/rate:Title",
             "parentRoute": "/specs"
           },
           "/specs/text": {
             "route": "/specs/text",
             "icon": "pi pi-microchip",
-            "title": "Text",
+            "title": "/specs/text:Title",
             "parentRoute": "/specs"
           },
           "/specs/simple-form": {
             "route": "/specs/simple-form",
             "icon": "pi pi-microchip",
-            "title": "Simple Form",
+            "title": "/specs/simple-form:Title",
             "parentRoute": "/specs"
           },
           "/specs/button": {
             "route": "/specs/button",
             "icon": "pi pi-microchip",
-            "title": "Button",
+            "title": "/specs/button:Title",
             "parentRoute": "/specs"
           },
           "/specs/input-text": {
             "route": "/specs/input-text",
             "icon": "pi pi-microchip",
-            "title": "Input Text",
+            "title": "/specs/input-text:Title",
             "parentRoute": "/specs"
           },
           "/specs/input-number": {
             "route": "/specs/input-number",
             "icon": "pi pi-microchip",
-            "title": "Input Number",
+            "title": "/specs/input-number:Title",
             "parentRoute": "/specs"
           },
           "/specs/labeler": {
             "route": "/specs/labeler",
             "icon": "pi pi-microchip",
-            "title": "Labeler",
+            "title": "/specs/labeler:Title",
             "parentRoute": "/specs"
           },
           "/specs/language-switcher": {
             "route": "/specs/language-switcher",
             "icon": "pi pi-microchip",
-            "title": "Language Switcher",
+            "title": "/specs/language-switcher:Title",
             "parentRoute": "/specs"
           },
           "/specs/paginator": {
             "route": "/specs/paginator",
             "icon": "pi pi-microchip",
-            "title": "Paginator",
+            "title": "/specs/paginator:Title",
             "parentRoute": "/specs"
           },
           "/specs/select": {
             "route": "/specs/select",
             "icon": "pi pi-microchip",
-            "title": "Select",
+            "title": "/specs/select:Title",
             "parentRoute": "/specs"
           },
           "/specs/select-button": {
             "route": "/specs/select-button",
             "icon": "pi pi-microchip",
-            "title": "Select Button",
+            "title": "/specs/select-button:Title",
             "parentRoute": "/specs"
           },
           "/specs/data-container": {
             "route": "/specs/data-container",
             "icon": "pi pi-microchip",
-            "title": "Data Container",
+            "title": "/specs/data-container:Title",
             "parentRoute": "/specs"
           },
           "/specs/data-panel": {
             "route": "/specs/data-panel",
             "icon": "pi pi-microchip",
-            "title": "Data Panel",
+            "title": "/specs/data-panel:Title",
             "parentRoute": "/specs"
           },
           "/specs/header": {
             "route": "/specs/header",
             "icon": "pi pi-microchip",
-            "title": "Header",
+            "title": "/specs/header:Title",
             "parentRoute": "/specs"
           },
           "/specs/dialog": {
             "route": "/specs/dialog",
             "icon": "pi pi-microchip",
-            "title": "Dialog",
+            "title": "/specs/dialog:Title",
             "parentRoute": "/specs"
           },
           "/specs/page-title": {
             "route": "/specs/page-title",
             "icon": "pi pi-microchip",
-            "title": "Page Title",
+            "title": "/specs/page-title:Title",
             "parentRoute": "/specs"
           },
           "/specs/side-menu": {
             "route": "/specs/side-menu",
             "icon": "pi pi-microchip",
-            "title": "Side Menu",
+            "title": "/specs/side-menu:Title",
             "parentRoute": "/specs"
           },
           "/specs/error-page": {
             "route": "/specs/error-page",
             "icon": "pi pi-microchip",
-            "title": "Error Page",
+            "title": "/specs/error-page:Title",
             "parentRoute": "/specs"
           },
           "/specs/form-page": {
             "route": "/specs/form-page",
             "icon": "pi pi-microchip",
-            "title": "Form Page",
+            "title": "/specs/form-page:Title",
             "parentRoute": "/specs"
           },
           "/specs/menu-page": {
             "route": "/specs/menu-page",
             "icon": "pi pi-microchip",
-            "title": "Menu Page",
+            "title": "/specs/menu-page:Title",
             "parentRoute": "/specs"
           },
           "/specs/simple-page": {
             "route": "/specs/simple-page",
             "icon": "pi pi-microchip",
-            "title": "Simple Page",
+            "title": "/specs/simple-page:Title",
             "parentRoute": "/specs"
           },
           "/specs/tabbed-page": {
             "route": "/specs/tabbed-page",
             "icon": "pi pi-microchip",
-            "title": "Tabbed Page",
+            "title": "/specs/tabbed-page:Title",
             "parentRoute": "/specs"
           },
           "/specs/auth": {
             "route": "/specs/auth",
             "icon": "pi pi-microchip",
-            "title": "Auth",
+            "title": "/specs/auth:Title",
             "parentRoute": "/specs"
           },
           "/specs/cache": {
             "route": "/specs/cache",
             "icon": "pi pi-microchip",
-            "title": "Cache",
+            "title": "/specs/cache:Title",
             "parentRoute": "/specs"
           },
           "/specs/locale": {
             "route": "/specs/locale",
             "icon": "pi pi-microchip",
-            "title": "Locale",
+            "title": "/specs/locale:Title",
             "parentRoute": "/specs"
           },
           "/specs/error-handling": {
             "route": "/specs/error-handling",
             "icon": "pi pi-microchip",
-            "title": "Error Handling",
+            "title": "/specs/error-handling:Title",
             "parentRoute": "/specs"
           }
         }

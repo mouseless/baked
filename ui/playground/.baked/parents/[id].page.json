@@ -5,7 +5,7 @@
       "type": "PageTitle",
       "schema": {
         "localizeTitle": true,
-        "description": "Showcase a locatable entity page",
+        "description": "/parents/[id]:Description",
         "actions": [
           {
             "type": "SimpleForm",
@@ -127,7 +127,7 @@
       },
       "data": {
         "type": "Inline",
-        "value": "Parent"
+        "value": "/parents/[id]:Title"
       }
     },
     "contents": [

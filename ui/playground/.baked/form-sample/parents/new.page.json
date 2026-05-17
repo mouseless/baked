@@ -5,7 +5,7 @@
       "type": "PageTitle",
       "schema": {
         "localizeTitle": true,
-        "description": "Fill out the form and hit save to create new parent",
+        "description": "/form-sample/parents/new:Description",
         "actions": [
           {
             "type": "Button",
@@ -28,7 +28,7 @@
       },
       "data": {
         "type": "Inline",
-        "value": "New Parent"
+        "value": "/form-sample/parents/new:Title"
       }
     },
     "submit": {
