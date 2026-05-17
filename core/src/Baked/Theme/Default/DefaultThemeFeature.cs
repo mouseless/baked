@@ -137,17 +137,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        var group = parameter.Get<GroupAttribute>();
-                        var section = fp.Schema.Sections.FirstOrDefault(s => s.Key == group.SectionKey);
+                        var section = fp.Schema.Sections.FirstOrDefault(s => s.Key == parameter.SectionKey);
                         if (section is null)
                         {
-                            section = B.FormPageSection(group.SectionKey, l(group.SectionKey.Titleize()));
+                            section = B.FormPageSection(parameter.SectionKey, l(parameter.SectionKey.Titleize()));
                             fp.Schema.Sections.Add(section);
                         }
 
                         section.InputGroups.Add(
                             parameter.GenerateRequiredSchema<FormPage.InputGroup>(
-                                cc.Drill(group.SectionKey, nameof(FormPage.Section.InputGroups))
+                                cc.Drill(parameter.SectionKey, nameof(FormPage.Section.InputGroups))
                             )
                         );
                     }

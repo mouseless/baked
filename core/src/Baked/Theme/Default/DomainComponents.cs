@@ -151,10 +151,9 @@ public static class DomainComponents
 
     public static FormPage.InputGroup ParameterFormPageInputGroup(ParameterModel parameter, ComponentContext context)
     {
-        var group = parameter.Get<GroupAttribute>();
-        context = context.Drill(group.InputGroupKey, nameof(FormPage.InputGroup.Inputs));
+        context = context.Drill(parameter.InputGroupKey, nameof(FormPage.InputGroup.Inputs));
 
-        return B.FormPageInputGroup(group.InputGroupKey,
+        return B.FormPageInputGroup(parameter.InputGroupKey,
             options: fpig => fpig.Inputs.Add(
                 parameter.GenerateRequiredSchema<Input>(context)
             )

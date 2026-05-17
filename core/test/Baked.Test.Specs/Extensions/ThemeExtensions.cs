@@ -19,7 +19,6 @@ public static class ThemeExtensions
             buildFailMessage ??= "build fails";
 
             var result = new Route(giveMe.APath(), giveMe.AString());
-
             if (buildFails)
             {
                 result.Page = p => p.Described(_ =>
@@ -40,7 +39,6 @@ public static class ThemeExtensions
             key ??= "test-schema";
 
             var result = new Mock<IOrderableSchema>();
-
             result.Setup(s => s.Key).Returns(key);
 
             return result.Object;
