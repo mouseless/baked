@@ -1,8 +1,7 @@
 <template>
   <UiSpec
-    title="Side Menu"
-    :variants="variants"
-    :vertical="true"
+    :variants
+    :vertical
     class="ui-spec"
   />
 </template>

@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Simple Page"
     :variants
     no-loading-variant
   />

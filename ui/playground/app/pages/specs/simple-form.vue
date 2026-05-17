@@ -1,7 +1,6 @@
 <template>
   <UiSpec
-    title="Simple Form"
-    :variants="variants"
+    :variants
     no-loading-variant
   />
 </template>

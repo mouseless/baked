@@ -1,8 +1,5 @@
 <template>
-  <UiSpec
-    title="Header"
-    :variants="variants"
-  />
+  <UiSpec :variants />
 </template>
 <script setup>
 import giveMe from "@utils/giveMe";

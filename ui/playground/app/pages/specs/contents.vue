@@ -1,8 +1,5 @@
 <template>
-  <UiSpec
-    title="Inputs"
-    full-page
-  >
+  <UiSpec full-page>
     <div
       v-for="variant in variants"
       :key="variant.name"

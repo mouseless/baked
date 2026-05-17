@@ -1,7 +1,6 @@
 <template>
   <UiSpec
-    title="Bake"
-    :variants="variants"
+    :variants
     no-loading-variant
   />
 </template>

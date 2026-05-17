@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Toast">
+  <UiSpec>
     <Message severity="info">
       <span class="text-xl">
         ⬆️  Check if page has a success toast at top center ⬆️

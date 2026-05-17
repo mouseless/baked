@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Select"
     :variants
     use-model
   />

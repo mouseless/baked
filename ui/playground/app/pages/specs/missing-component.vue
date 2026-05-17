@@ -1,7 +1,6 @@
 <template>
   <UiSpec
-    title="Missing Component"
-    :variants="variants"
+    :variants
     :vertical="false"
   />
 </template>

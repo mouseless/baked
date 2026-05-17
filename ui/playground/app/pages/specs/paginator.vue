@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Paginator"
     :variants
     no-loading-variant
     use-model

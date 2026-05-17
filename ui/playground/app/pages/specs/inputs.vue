@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Inputs">
+  <UiSpec>
     <Message severity="info">
       <span class="text-xl">
         ⬇️  Check if there are 4 inputs, first having `default value` ⬇️

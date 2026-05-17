@@ -1,8 +1,5 @@
 <template>
-  <UiSpec
-    title="Error Handling"
-    test-id="error-handling"
-  >
+  <UiSpec test-id="error-handling">
     <Panel
       header="Error Handlers"
       class="mt-4"

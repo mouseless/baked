@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Tabbed Page"
     :variants
     no-loading-variant
   />

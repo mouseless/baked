@@ -1,8 +1,7 @@
 <template>
   <UiSpec
-    title="Page Title"
-    :variants="variants"
-    :no-loading-variant="true"
+    :variants
+    no-loading-variant
     test-id="Inputs"
   >
     <div>
