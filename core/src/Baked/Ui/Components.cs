@@ -96,6 +96,14 @@ public static class Components
         IAction? action = default
     ) => new(options.Apply(new(path, title, submit))) { Action = action };
 
+    public static FormPage.Section FormPageSection(string key, string label,
+        Action<FormPage.Section>? options = default
+    ) => options.Apply(new(key, label));
+
+    public static FormPage.InputGroup FormPageInputGroup(string key,
+        Action<FormPage.InputGroup>? options = default
+    ) => options.Apply(new(key));
+
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,
         IData? data = default

@@ -108,6 +108,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: ra => ra.Body = Context.Model()
             );
 
+            builder.Conventions.AddMethodComponent(
+                when: c =>
+                    c.Method.TryGet<ActionModelAttribute>(out var action) &&
+                    action.Method != HttpMethod.Get,
+                where: cc => cc.Path.EndsWith(nameof(Tab.Contents), "*", nameof(Content.Component)),
+                component: (c, cc) => MethodSimpleForm(c.Method, cc)
+            );
+
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
@@ -129,20 +137,18 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        if (!parameter.TryGet<GroupAttribute>(out var group))
-                        {
-                            group = new();
-                        }
-
+                        var group = parameter.Get<GroupAttribute>();
                         var section = fp.Schema.Sections.FirstOrDefault(s => s.Key == group.SectionKey);
                         if (section is null)
                         {
-                            fp.Schema.Sections.Add(section = new(group.SectionKey, l(group.SectionKey.Titleize())));
+                            section = B.FormPageSection(group.SectionKey, l(group.SectionKey.Titleize()));
+                            fp.Schema.Sections.Add(section);
                         }
 
-                        var parameterCc = cc.Drill(group.SectionKey, nameof(FormPage.Section.InputGroups), group.InputGroupKey, nameof(FormPage.InputGroup.Inputs));
                         section.InputGroups.Add(
-                            new(group.InputGroupKey) { Inputs = [parameter.GenerateRequiredSchema<Input>(parameterCc)] }
+                            parameter.GenerateRequiredSchema<FormPage.InputGroup>(
+                                cc.Drill(group.SectionKey, nameof(FormPage.Section.InputGroups))
+                            )
                         );
                     }
                 }
@@ -151,6 +157,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // Parameter defaults
             builder.Conventions.AddParameterAttributeConfiguration<GroupAttribute>(
                 attribute: (group, c) => group.InputGroupKey = c.Parameter.Name
+            );
+
+            builder.Conventions.AddParameterSchema(
+                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                schema: (c, cc) => ParameterFormPageInputGroup(c.Parameter, cc)
             );
 
             builder.Conventions.AddParameterSchema(

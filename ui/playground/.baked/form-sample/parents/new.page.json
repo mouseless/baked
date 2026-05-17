@@ -146,6 +146,22 @@
               }
             ],
             "wide": true
+          },
+          {
+            "key": "description",
+            "inputs": [
+              {
+                "name": "description",
+                "component": {
+                  "type": "InputText",
+                  "schema": {
+                    "label": "Description",
+                    "labelMode": "ifta"
+                  }
+                }
+              }
+            ],
+            "wide": true
           }
         ]
       }
