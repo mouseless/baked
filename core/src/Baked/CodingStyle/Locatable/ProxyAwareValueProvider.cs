@@ -20,13 +20,13 @@ public class ProxyAwareValueProvider(Dictionary<Type, string> _idPropertyNames)
 
     object? IValueProvider.GetValue(object target)
     {
-        if (target is INHibernateProxy proxy && proxy.HibernateLazyInitializer.IsUninitialized)
+        if (target is not INHibernateProxy proxy || !proxy.HibernateLazyInitializer.IsUninitialized)
         {
-            if (!_idPropertyNames.TryGetValue(proxy.HibernateLazyInitializer.PersistentClass, out var idName)) { return default; }
-            if (_propertyName != idName.Camelize()) { return default; }
-
             return _valueProvider?.GetValue(target);
         }
+
+        if (!_idPropertyNames.TryGetValue(proxy.HibernateLazyInitializer.PersistentClass, out var idName)) { return default; }
+        if (_propertyName != idName.Camelize()) { return default; }
 
         return _valueProvider?.GetValue(target);
     }
