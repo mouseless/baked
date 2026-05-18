@@ -34,11 +34,11 @@ export default function useFakeValidateDefault({ sections, formData }) {
       result[input.name].message = lc("{label} cannot be empty", { label: l(label) });
     }
 
-    if(input.name === "param-2" && formData.value["param-2"] === "errror") {
+    if(input.name === "param-2" && formData.value["param-2"] === "error") {
       result["param-2"] = {
         ...validation,
         persist: true,
-        message: `${label} value is errror`
+        message: `${label} value is error`
       };
     }
 
