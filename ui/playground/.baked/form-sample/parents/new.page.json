@@ -160,7 +160,8 @@
                   "type": "InputText",
                   "schema": {
                     "label": "Description",
-                    "labelMode": "ifta"
+                    "labelMode": "ifta",
+                    "validateLabel": true
                   }
                 }
               }

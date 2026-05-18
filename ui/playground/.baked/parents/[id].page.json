@@ -10,66 +10,6 @@
           {
             "type": "SimpleForm",
             "schema": {
-              "title": "Add Child",
-              "submit": {
-                "label": "Add Child",
-                "severity": "primary"
-              },
-              "inputs": [
-                {
-                  "name": "name",
-                  "required": true,
-                  "component": {
-                    "type": "InputText",
-                    "schema": {
-                      "label": "Name",
-                      "labelMode": "ifta",
-                      "validateLabel": true
-                    }
-                  }
-                }
-              ],
-              "dialogOptions": {
-                "open": {
-                  "icon": "pi pi-plus",
-                  "label": "Add Child"
-                },
-                "cancel": {
-                  "label": "Cancel",
-                  "variant": "text"
-                }
-              },
-              "validateComposable": [
-                "useValidateDefault"
-              ]
-            },
-            "action": {
-              "type": "Remote",
-              "path": "parents/{id}/children",
-              "method": "POST",
-              "params": {
-                "type": "Computed",
-                "composable": "useNuxtRoute",
-                "options": {
-                  "type": "Inline",
-                  "value": {
-                    "property": "params"
-                  }
-                }
-              },
-              "body": {
-                "type": "Context",
-                "key": "model"
-              },
-              "postAction": {
-                "type": "Publish",
-                "event": "add-child"
-              }
-            }
-          },
-          {
-            "type": "SimpleForm",
-            "schema": {
               "title": "Update",
               "submit": {
                 "label": "Update",
@@ -408,10 +348,14 @@
                   "type": "InputText",
                   "schema": {
                     "label": "Name",
-                    "labelMode": "ifta"
+                    "labelMode": "ifta",
+                    "validateLabel": true
                   }
                 }
               }
+            ],
+            "validateComposable": [
+              "useValidateDefault"
             ]
           },
           "action": {
