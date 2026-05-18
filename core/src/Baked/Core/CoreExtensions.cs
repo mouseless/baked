@@ -67,6 +67,12 @@ public static class CoreExtensions
 
     extension(Stubber giveMe)
     {
+        public DateOnly ADateOnly(
+            int year = 2023,
+            int month = 9,
+            int day = 17
+        ) => new(year, month, day);
+
         public DateTime ADateTime(
             int year = 2023,
             int month = 9,
@@ -123,6 +129,12 @@ public static class CoreExtensions
 
             return value ?? "test string";
         }
+
+        public TimeOnly ATimeOnly(
+            int hour = 13,
+            int minute = 29,
+            int second = 00
+        ) => new(hour, minute, second);
 
         public Uri AUrl(
             string? url = default

@@ -17,7 +17,9 @@ public class PersistingEntity : TestSpec
             unique: $"{Guid.NewGuid()}",
             uri: GiveMe.AUrl(),
             @dynamic: new { },
-            @enum: @enum
+            @enum: @enum,
+            dateOnly: GiveMe.ADateOnly(),
+            timeOnly: GiveMe.ATimeOnly()
         );
 
         actual.ShouldBeInserted();
