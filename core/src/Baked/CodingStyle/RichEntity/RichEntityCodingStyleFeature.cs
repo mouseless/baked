@@ -20,7 +20,8 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     TryGetEntityContextParameter(members, out var entityContextParameter) &&
                     entityContextParameter.ParameterType.TryGetGenerics(out var entityContextGenerics) &&
                     entityContextGenerics.GenericTypeArguments.First().Model == c.Type,
-                attribute: () => new EntityAttribute()
+                attribute: () => new EntityAttribute(),
+                order: int.MinValue + 10
             );
             builder.Conventions.SetTypeAttribute(
                 when: c => c.Type.Has<EntityAttribute>(),
@@ -28,7 +29,8 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 {
                     set(c.Type, new ApiInputAttribute());
                     set(c.Type, new LocatableAttribute());
-                }
+                },
+                order: int.MinValue + 20
             );
             builder.Conventions.SetMethodAttribute(
                 when: c =>

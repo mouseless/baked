@@ -12,12 +12,13 @@ public class ScopedBySuffixCodingStyleFeature(IEnumerable<string> _suffixes)
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeAttribute(
-                attribute: () => new ScopedAttribute(),
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMetadata(out var metadata) &&
                     metadata.Has<ServiceAttribute>() &&
-                    _suffixes.Any(suffix => c.Type.Name.EndsWith(suffix))
+                    _suffixes.Any(suffix => c.Type.Name.EndsWith(suffix)),
+                attribute: () => new ScopedAttribute(),
+                order: int.MinValue + 20
             );
         });
     }
