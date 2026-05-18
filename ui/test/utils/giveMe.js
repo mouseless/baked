@@ -338,6 +338,39 @@ export default {
     };
   },
 
+  aFakeFormInput({ testId, defaultValue, labeler, validator, action } = {}) {
+    testId = $(testId, "test-id");
+    labeler = $(labeler, this.aLabeler({ ...labeler }));
+    validator = $(validator, this.aValidator({ ...validator }));
+
+    return {
+      type: "FakeFormInput",
+      schema: {
+        testId,
+        defaultValue,
+        labeler,
+        validator
+      },
+      action
+    };
+  },
+
+  aValidator({ required, valid, persist, severity, message } = {}) {
+    required = $(required, false);
+    valid = $(valid, true);
+    persist = $(valid, false);
+    severity = $(severity, "error");
+    message = $(message, "");
+
+    return {
+      required,
+      valid,
+      persist,
+      severity,
+      message
+    };
+  },
+
   aField({ key, label, wide, component } = {}) {
     key = "data";
     label = $(label, "Spec: Data");

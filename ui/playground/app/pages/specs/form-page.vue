@@ -67,8 +67,8 @@ const variants = [
     descriptor: giveMe.aFormPage({
       action: giveMe.aLocalAction({ showMessage: "ok" }),
       inputs: [
-        giveMe.anInput({ name: "param-1", required: true }),
-        giveMe.anInput({ name: "param-2" })
+        giveMe.anInput({ name: "param-1", required: true, component: giveMe.aFakeFormInput({ testId: "huhu" }) }),
+        giveMe.anInput({ name: "param-2", component: giveMe.aFakeFormInput({ testId: "huhu" }) })
       ]
     })
   },
