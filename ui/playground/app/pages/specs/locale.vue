@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Locale">
+  <UiSpec>
     <Message severity="info">
       <span class="text-xl">
         ⬇️  Check if day name case is in current language ⬇️

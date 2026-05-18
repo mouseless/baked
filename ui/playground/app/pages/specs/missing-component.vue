@@ -1,9 +1,5 @@
 <template>
-  <UiSpec
-    title="Missing Component"
-    :variants="variants"
-    :vertical="false"
-  />
+  <UiSpec :variants />
 </template>
 <script setup>
 import giveMe from "@utils/giveMe";

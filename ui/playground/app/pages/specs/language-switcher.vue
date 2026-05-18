@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Language Switcher">
+  <UiSpec>
     <Message severity="info">
       <span class="text-xl">
         ⬇️  Change the language below ⬇️

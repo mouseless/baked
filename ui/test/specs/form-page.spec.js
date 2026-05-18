@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
@@ -117,7 +118,8 @@ test.describe("Layout Options", () => {
   test("input flow goes column based", async({ page }) => {
     const component = page.getByTestId(id);
 
-    const grids = component.locator(".b-Contents .grid .grid");
+    const contents = component.locator(baked.contents.main);
+    const grids = contents.locator(".grid .grid");
     const count = await grids.count();
 
     await expect(grids).toHaveClass(Array(count).fill(/grid-flow-col/));
@@ -126,7 +128,8 @@ test.describe("Layout Options", () => {
   test("grouped inputs fill one cell", async({ page }) => {
     const component = page.getByTestId(id);
 
-    const grids = component.locator(".b-Contents .grid .grid");
+    const contents = component.locator(baked.contents.main);
+    const grids = contents.locator(".grid .grid");
     const count = await grids.count();
 
     await expect(grids).toHaveClass(Array(count).fill(/grid-flow-col/));
@@ -135,10 +138,10 @@ test.describe("Layout Options", () => {
   test("inputs are split by wide groups", async({ page }) => {
     const component = page.getByTestId(id);
 
-    const grids = component.locator(".b-Contents .grid .grid");
+    const contents = component.locator(baked.contents.main);
+    const grids = contents.locator(".grid .grid");
 
     await expect(grids).toHaveCount(4);
-
     await expect(grids.nth(0).locator("input")).toHaveCount(5);
     await expect(grids.nth(1).locator("input")).toHaveCount(1);
     await expect(grids.nth(2).locator("input")).toHaveCount(3);
@@ -148,7 +151,8 @@ test.describe("Layout Options", () => {
   test("wide group spans to two cells", async({ page }) => {
     const component = page.getByTestId(id);
 
-    const grids = component.locator(".b-Contents .grid .grid");
+    const contents = component.locator(baked.contents.main);
+    const grids = contents.locator(".grid .grid");
     const group1 = grids.nth(0).locator(".flex").nth(0).locator("input");
     const group2 = grids.nth(2).locator(".flex").nth(0).locator("input");
 
@@ -159,7 +163,8 @@ test.describe("Layout Options", () => {
   test("wide groups reset min width to make them fit into cell", async({ page }) => {
     const component = page.getByTestId(id);
 
-    const grids = component.locator(".b-Contents .grid .grid");
+    const contents = component.locator(baked.contents.main);
+    const grids = contents.locator(".grid .grid");
     const group1 = grids.nth(0).locator(".flex").nth(0);
     const group2 = grids.nth(2).locator(".flex").nth(0);
 

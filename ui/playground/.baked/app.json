@@ -151,8 +151,8 @@
           "schema": {
             "route": "/cache-samples",
             "icon": "pi pi-database",
-            "title": "Cache",
-            "description": "Showcases the cache behavior"
+            "title": "/cache-samples:Title",
+            "description": "/cache-samples:Description"
           }
         },
         {
@@ -160,8 +160,8 @@
           "schema": {
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
-            "title": "Form",
-            "description": "Showcases action, form components and events"
+            "title": "/form-sample:Title",
+            "description": "/form-sample:Description"
           }
         },
         {
@@ -169,8 +169,8 @@
           "schema": {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
-            "title": "Report",
-            "description": "Showcases a report layout with tabs and data panels"
+            "title": "/report-page-sample:Title",
+            "description": "/report-page-sample:Description"
           }
         },
         {
@@ -178,8 +178,8 @@
           "schema": {
             "route": "/specs",
             "icon": "pi pi-list-check",
-            "title": "Specs",
-            "description": "All UI Specs are listed here"
+            "title": "/specs:Title",
+            "description": "/specs:Description"
           }
         }
       ]

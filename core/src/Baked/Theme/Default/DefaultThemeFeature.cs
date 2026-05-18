@@ -107,6 +107,24 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
                 schema: ra => ra.Body = Context.Model()
             );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                where: cc => cc.Path.StartsWith(nameof(Page), "*", "*Page"),
+                schema: (ra, c, cc) =>
+                {
+                    if (!cc.Path.StartsWith(nameof(Page), c.Type.Name)) { return; }
+
+                    ra.Params = Computed.UseRoute("params");
+                }
+            );
+
+            builder.Conventions.AddMethodComponent(
+                when: c =>
+                    c.Method.TryGet<ActionModelAttribute>(out var action) &&
+                    action.Method != HttpMethod.Get,
+                where: cc => cc.Path.EndsWith(nameof(Tab.Contents), "*", nameof(Content.Component)),
+                component: (c, cc) => MethodSimpleForm(c.Method, cc)
+            );
 
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
@@ -129,20 +147,17 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        if (!parameter.TryGet<GroupAttribute>(out var group))
-                        {
-                            group = new();
-                        }
-
-                        var section = fp.Schema.Sections.FirstOrDefault(s => s.Key == group.SectionKey);
+                        var section = fp.Schema.Sections.FirstOrDefault(s => s.Key == parameter.SectionKey);
                         if (section is null)
                         {
-                            fp.Schema.Sections.Add(section = new(group.SectionKey, l(group.SectionKey.Titleize())));
+                            section = B.FormPageSection(parameter.SectionKey, l(parameter.SectionKey.Titleize()));
+                            fp.Schema.Sections.Add(section);
                         }
 
-                        var parameterCc = cc.Drill(group.SectionKey, nameof(FormPage.Section.InputGroups), group.InputGroupKey, nameof(FormPage.InputGroup.Inputs));
                         section.InputGroups.Add(
-                            new(group.InputGroupKey) { Inputs = [parameter.GenerateRequiredSchema<Input>(parameterCc)] }
+                            parameter.GenerateRequiredSchema<FormPage.InputGroup>(
+                                cc.Drill(parameter.SectionKey, nameof(FormPage.Section.InputGroups))
+                            )
                         );
                     }
                 }
@@ -151,6 +166,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // Parameter defaults
             builder.Conventions.AddParameterAttributeConfiguration<GroupAttribute>(
                 attribute: (group, c) => group.InputGroupKey = c.Parameter.Name
+            );
+
+            builder.Conventions.AddParameterSchema(
+                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                schema: (c, cc) => ParameterFormPageInputGroup(c.Parameter, cc)
             );
 
             builder.Conventions.AddParameterSchema(
@@ -196,10 +216,28 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
                 component: (c, cc) => TypePageTitle(c.Type, cc)
             );
+            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
+
+                    pt.Schema.Icon = c.Type.GenerateComponent(cc);
+                }
+            );
+
             builder.Conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
                 component: (c, cc) => MethodPageTitle(c.Method, cc)
             );
+            builder.Conventions.AddMethodComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
+
+                    pt.Schema.Icon = c.Method.GenerateComponent(cc);
+                }
+            );
+
             builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
@@ -215,11 +253,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         pt.Schema.Actions.Add(actionComponent);
                     }
                 }
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Has<LocatableAttribute>(),
-                where: cc => cc.Path.EndsWith("Title", "Actions", "**", nameof(IComponentDescriptor.Action)),
-                schema: ra => ra.Params = Computed.UseRoute("params")
             );
 
             // `Select` defaults

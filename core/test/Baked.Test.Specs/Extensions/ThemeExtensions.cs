@@ -1,5 +1,6 @@
 using Baked.Testing;
 using Baked.Theme;
+using Baked.Ui;
 
 namespace Baked.Test;
 
@@ -18,7 +19,6 @@ public static class ThemeExtensions
             buildFailMessage ??= "build fails";
 
             var result = new Route(giveMe.APath(), giveMe.AString());
-
             if (buildFails)
             {
                 result.Page = p => p.Described(_ =>
@@ -27,6 +27,21 @@ public static class ThemeExtensions
             }
 
             return result;
+        }
+    }
+
+    extension(Mocker mockMe)
+    {
+        public IOrderableSchema AnOrderableSchema(
+            string? key = default
+        )
+        {
+            key ??= "test-schema";
+
+            var result = new Mock<IOrderableSchema>();
+            result.Setup(s => s.Key).Returns(key);
+
+            return result.Object;
         }
     }
 }

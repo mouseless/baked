@@ -26,7 +26,7 @@ import { useLocalization } from "#imports";
 const { localize: l } = useLocalization();
 
 const { label, mode } = defineProps({
-  label: { type: String, required: true },
+  label: { type: String, default: null },
   path: { type: String, required: true },
   mode: { type: String, default: null },
   variant: { type: String, default: "on" },

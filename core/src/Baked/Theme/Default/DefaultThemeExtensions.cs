@@ -4,6 +4,7 @@ using Baked.Domain.Model;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Humanizer;
 
 using static Baked.Ui.Actions;
 
@@ -150,8 +151,32 @@ public static class DefaultThemeExtensions
 
     extension(GroupAttribute group)
     {
-        public string SectionKey { get => group[nameof(FormPage.Section)]; set => group[nameof(FormPage.Section)] = value; }
         public string InputGroupKey { get => group[nameof(FormPage.InputGroup)]; set => group[nameof(FormPage.InputGroup)] = value; }
+        public string SectionKey { get => group[nameof(FormPage.Section)]; set => group[nameof(FormPage.Section)] = value; }
         public string TabName { get => group[nameof(Tab)]; set => group[nameof(Tab)] = value; }
+    }
+
+    extension(ICustomAttributesModel model)
+    {
+        public string InputGroupKey =>
+            model.Get<GroupAttribute>().InputGroupKey;
+
+        public string SectionKey =>
+            model.Get<GroupAttribute>().SectionKey;
+
+        public string TabName =>
+            model.Get<GroupAttribute>().TabName.Kebaberize();
+    }
+
+    extension<T>(IEnumerable<T> models) where T : ICustomAttributesModel
+    {
+        public IEnumerable<string> GetInputGroupKeys() =>
+            models.Select(m => m.InputGroupKey).Distinct();
+
+        public IEnumerable<string> GetSectionKeys() =>
+            models.Select(m => m.SectionKey).Distinct();
+
+        public IEnumerable<string> GetTabNames() =>
+            models.Select(m => m.TabName).Distinct();
     }
 }

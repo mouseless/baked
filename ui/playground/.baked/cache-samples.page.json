@@ -2,9 +2,16 @@
   "type": "TabbedPage",
   "schema": {
     "title": {
-      "title": "Cache",
-      "description": "Showcases the cache behavior",
-      "actions": []
+      "type": "PageTitle",
+      "schema": {
+        "localizeTitle": true,
+        "description": "/cache-samples:Description",
+        "actions": []
+      },
+      "data": {
+        "type": "Inline",
+        "value": "/cache-samples:Title"
+      }
     },
     "inputs": [
       {

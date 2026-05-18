@@ -7,6 +7,10 @@ export default {
     statusCode: ".p-tag",
     footer: ".p-message-content"
   },
+  contents: {
+    base: ".b-Contents",
+    main: ".b-Contents .grid"
+  },
   number:{
     base: ".b-component--Number"
   },

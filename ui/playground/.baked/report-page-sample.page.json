@@ -2,9 +2,16 @@
   "type": "TabbedPage",
   "schema": {
     "title": {
-      "title": "Report",
-      "description": "Showcases a report layout with tabs and data panels",
-      "actions": []
+      "type": "PageTitle",
+      "schema": {
+        "localizeTitle": true,
+        "description": "/report-page-sample:Description",
+        "actions": []
+      },
+      "data": {
+        "type": "Inline",
+        "value": "/report-page-sample:Title"
+      }
     },
     "inputs": [
       {

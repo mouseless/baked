@@ -15,14 +15,28 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Property.Add<DescriptionAttribute>();
+            builder.Index.Parameter.Add<DescriptionAttribute>();
+
             builder.Conventions.SetPropertyAttribute(
                 when: c => c.Property.Name.EndsWith("Description"),
                 attribute: () => new DescriptionAttribute()
             );
+
+            builder.Conventions.SetParameterAttribute(
+                when: c => c.Parameter.Name.Pascalize().EndsWith("Description"),
+                attribute: () => new DescriptionAttribute()
+            );
+
             builder.Conventions.AddPropertySchemaConfiguration<Field>(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 schema: f => f.Wide = true
             );
+
+            builder.Conventions.AddParameterSchemaConfiguration<FormPage.InputGroup>(
+                when: c => c.Parameter.Has<DescriptionAttribute>(),
+                schema: f => f.Wide = true
+            );
+
             builder.Conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
