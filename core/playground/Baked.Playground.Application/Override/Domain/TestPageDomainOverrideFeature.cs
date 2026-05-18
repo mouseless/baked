@@ -19,7 +19,7 @@ public class TestPageDomainOverrideFeature : IFeature
             builder.Conventions.AddTypeComponent(
                 when: c => c.Type.Is<TestPage>(),
                 where: cc => cc.Path.EndsWith(nameof(Page)),
-                component: () => B.TabbedPage("test-page", B.PageTitle("Test Page").Schema)
+                component: () => B.TabbedPage("test-page", B.PageTitle("Test Page"))
             );
             builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c => c.Type.Is<TestPage>(),

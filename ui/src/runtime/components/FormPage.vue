@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-col gap-8">
-    <PageTitle :schema="title">
+    <Bake
+      name="title"
+      :descriptor="title"
+    >
       <template
         v-if="sections.length > 0"
         #actions
@@ -11,7 +14,7 @@
           @submit="onSubmit"
         />
       </template>
-    </PageTitle>
+    </Bake>
     <div class="flex justify-center">
       <Contents
         v-focustrap
@@ -77,7 +80,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useLocalization } from "#imports";
-import { Button, Contents, Inputs, PageTitle } from "#components";
+import { Button, Contents, Inputs } from "#components";
 
 const { localize: l } = useLocalization();
 

@@ -36,11 +36,7 @@ public static class DomainComponents
         return B.SimplePage(path, title, options: options);
     }
 
-    public static ComponentDescriptor<PageTitle> TypePageTitle(
-#pragma warning disable IDE0060
-        TypeModelMetadata type,
-#pragma warning restore IDE0060
-        ComponentContext context,
+    public static ComponentDescriptor<PageTitle> TypePageTitle(TypeModelMetadata _, ComponentContext context,
         Action<PageTitle>? options = default
     )
     {
@@ -63,7 +59,7 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title = method.GenerateRequiredComponent<PageTitle>(context.Drill(nameof(FormPage.Title))).Schema;
+        var title = method.GenerateRequiredComponent(context.Drill(nameof(FormPage.Title)));
         var button = method.GenerateRequiredComponent<Button>(context.Drill(nameof(FormPage.Submit))).Schema;
 
         return B.FormPage(path, title, button,
@@ -72,11 +68,7 @@ public static class DomainComponents
         );
     }
 
-    public static ComponentDescriptor<PageTitle> MethodPageTitle(
-#pragma warning disable IDE0060
-        MethodModel method,
-#pragma warning restore IDE0060
-        ComponentContext context,
+    public static ComponentDescriptor<PageTitle> MethodPageTitle(MethodModel _, ComponentContext context,
         Action<PageTitle>? options = default
     )
     {
@@ -99,7 +91,7 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title = type.GenerateRequiredComponent<PageTitle>(context.Drill(nameof(TabbedPage.Title))).Schema;
+        var title = type.GenerateRequiredComponent(context.Drill(nameof(TabbedPage.Title)));
 
         return B.TabbedPage(path, title, options: options);
     }
@@ -154,6 +146,17 @@ public static class DomainComponents
         return B.DataContainer(
             method.GenerateRequiredComponent(context.Drill(nameof(DataContainer.Content))),
             options: options
+        );
+    }
+
+    public static FormPage.InputGroup ParameterFormPageInputGroup(ParameterModel parameter, ComponentContext context)
+    {
+        context = context.Drill(parameter.InputGroupKey, nameof(FormPage.InputGroup.Inputs));
+
+        return B.FormPageInputGroup(parameter.InputGroupKey,
+            options: fpig => fpig.Inputs.Add(
+                parameter.GenerateRequiredSchema<Input>(context)
+            )
         );
     }
 

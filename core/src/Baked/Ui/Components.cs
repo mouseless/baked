@@ -91,10 +91,18 @@ public static class Components
         Action<Filterable>? options = default
     ) => options.Apply(new(component));
 
-    public static ComponentDescriptor<FormPage> FormPage(string path, PageTitle title, Button submit,
+    public static ComponentDescriptor<FormPage> FormPage(string path, IComponentDescriptor title, Button submit,
         Action<FormPage>? options = default,
         IAction? action = default
     ) => new(options.Apply(new(path, title, submit))) { Action = action };
+
+    public static FormPage.Section FormPageSection(string key, string label,
+        Action<FormPage.Section>? options = default
+    ) => options.Apply(new(key, label));
+
+    public static FormPage.InputGroup FormPageInputGroup(string key,
+        Action<FormPage.InputGroup>? options = default
+    ) => options.Apply(new(key));
 
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,
@@ -188,7 +196,11 @@ public static class Components
 
     public static ComponentDescriptor<PageTitle> PageTitle(string title,
         Action<PageTitle>? options = default
-    ) => new(options.Apply(new(title)));
+    ) => PageTitle(Datas.Inline(title), options: options);
+
+    public static ComponentDescriptor<PageTitle> PageTitle(IData data,
+        Action<PageTitle>? options = default
+    ) => new(options.Apply(new() { LocalizeTitle = data?.RequireLocalization })) { Data = data };
 
     public static ComponentDescriptor<Paginator> Paginator(
         Action<Paginator>? options = default
@@ -233,7 +245,7 @@ public static class Components
         Action<Tab>? options = default
     ) => options.Apply(new(id));
 
-    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, PageTitle title,
+    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, IComponentDescriptor title,
         Action<TabbedPage>? options = default
     ) => new(options.Apply(new(path, title)));
 

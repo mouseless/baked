@@ -55,14 +55,58 @@ public static class ThemeExtensions
             string? icon = default
         ) => router.Root("/", title ?? "Home", icon ?? "pi pi-home");
 
+        public Route Root<TType, TPage>(string path, string icon)
+            where TPage : IPageSchema =>
+            router.Root(path, icon) with { Page = p => p.Generated(g => g.Type<TType, TPage>()) };
+
+        public Route Root<TType, TPage>(string path, string icon, string methodName)
+            where TPage : IPageSchema =>
+            router.Root(path, icon) with { Page = p => p.Generated(g => g.Method<TType, TPage>(methodName)) };
+
+        public Route Root(string path, string icon) =>
+            router.Root(path, $"{path}:Title", icon) with { Description = $"{path}:Description" };
+
         public Route Root(string path, string title, string icon) =>
             router.Create(path, title) with { Icon = icon, SideMenu = true, ErrorSafeLink = true };
+
+        public Route RootDynamic<TType, TPage>(string path)
+            where TPage : IPageSchema =>
+            router.RootDynamic(path) with { Page = p => p.Generated(g => g.Type<TType, TPage>()) };
+
+        public Route RootDynamic<TType, TPage>(string path, string methodName)
+            where TPage : IPageSchema =>
+            router.RootDynamic(path) with { Page = p => p.Generated(g => g.Method<TType, TPage>(methodName)) };
+
+        public Route RootDynamic(string path) =>
+            router.RootDynamic(path, $"{path}:Title") with { Description = $"{path}:Description" };
 
         public Route RootDynamic(string path, string title) =>
             router.Create(path, title) with { ErrorSafeLink = false, SideMenu = false };
 
+        public Route Child<TType, TPage>(string path, string parentPath)
+            where TPage : IPageSchema =>
+            router.Child(path, parentPath) with { Page = p => p.Generated(g => g.Type<TType, TPage>()) };
+
+        public Route Child<TType, TPage>(string path, string parentPath, string methodName)
+            where TPage : IPageSchema =>
+            router.Child(path, parentPath) with { Page = p => p.Generated(g => g.Method<TType, TPage>(methodName)) };
+
+        public Route Child(string path, string parentPath) =>
+            router.Child(path, $"{path}:Title", parentPath) with { Description = $"{path}:Description" };
+
         public Route Child(string path, string title, string parentPath) =>
             router.Create(path, title) with { ParentPath = parentPath };
+
+        public Route ChildDynamic<TType, TPage>(string path, string parentPath)
+            where TPage : IPageSchema =>
+            router.ChildDynamic(path, parentPath) with { Page = p => p.Generated(g => g.Type<TType, TPage>()) };
+
+        public Route ChildDynamic<TType, TPage>(string path, string parentPath, string methodName)
+            where TPage : IPageSchema =>
+            router.ChildDynamic(path, parentPath) with { Page = p => p.Generated(g => g.Method<TType, TPage>(methodName)) };
+
+        public Route ChildDynamic(string path, string parentPath) =>
+            router.ChildDynamic(path, $"{path}:Title", parentPath) with { Description = $"{path}:Description" };
 
         public Route ChildDynamic(string path, string title, string parentPath) =>
             router.Create(path, title) with { ParentPath = parentPath, ErrorSafeLink = false, SideMenu = false };

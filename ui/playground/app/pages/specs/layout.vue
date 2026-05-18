@@ -1,8 +1,5 @@
 <template>
-  <UiSpec
-    title="Layout"
-    test-id="layout"
-  >
+  <UiSpec test-id="layout">
     <Message severity="info">
       <span class="text-xl">
         ⬇️  Check if below button displays `Report` page with `Default` layout ⬆️

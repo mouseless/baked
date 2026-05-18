@@ -1,8 +1,7 @@
 <template>
   <UiSpec
-    title="Cache"
-    :variants="variants"
-    :no-loading-variant="true"
+    :variants
+    no-loading-variant
   >
     <Message severity="info">
       <span class="text-xl">

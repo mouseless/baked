@@ -9,12 +9,13 @@ public class FormSample(Parents _parents, Func<Parent> _newParent)
     public void NewParent(string surname,
         string? name = default,
         Role? role = default,
-        Status? status = default
+        Status? status = default,
+        string? description = default
     )
     {
         name ??= "Dr.";
 
-        _newParent().With(name, surname, status, role);
+        _newParent().With(name, surname, status, role).Update(description: description);
     }
 
     public void ClearParents()

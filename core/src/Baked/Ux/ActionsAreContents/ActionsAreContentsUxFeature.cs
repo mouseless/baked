@@ -52,13 +52,12 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                         var action = method.Get<ActionModelAttribute>();
                         if (action.Method != HttpMethod.Get) { continue; }
 
-                        var tabName = method.Get<GroupAttribute>().TabName;
-                        if (!tabs.TryGetValue(tabName, out var t))
+                        if (!tabs.TryGetValue(method.TabName, out var t))
                         {
-                            tabs.Add(tabName, t = TypeTab(c.Type, cc, tabName));
+                            tabs.Add(method.TabName, t = TypeTab(c.Type, cc, method.TabName));
                         }
 
-                        var content = method.GenerateSchema<Content>(cc.Drill(tabName, nameof(Tab.Contents), t.Contents.Count));
+                        var content = method.GenerateSchema<Content>(cc.Drill(method.TabName, nameof(Tab.Contents), t.Contents.Count));
                         if (content is null) { continue; }
 
                         t.Contents.Add(content);

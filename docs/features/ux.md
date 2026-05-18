@@ -84,11 +84,14 @@ c => c.DataTableDefaults()
 
 ## Description Property
 
-Marks properties that ends with `*Description` using `DescriptionAttribute` and
-treats properties with `DescriptionAttribute` special attention to allow more
-UI space when under a `DataTable` or a `Fieldset`.
+Marks properties and parameters that ends with or equal to `Description` using
+`DescriptionAttribute` and treats properties and parameters with
+`DescriptionAttribute` special attention to allow more UI space when under a
+`DataTable`, `Fieldset` or `FormPage`.
 
 - Set `Field.Wide` to `true` to have a full width under a fieldset
+- Set `FormPage.InputGroup.Wide` to `true` to have a full width under a form
+  page
 - Sets up a dialog button to show the content of description properties in a
   dialog under data tables
 

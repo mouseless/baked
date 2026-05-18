@@ -13,23 +13,32 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+                when: c =>
+                    c.Type.Has<TransientAttribute>() && c.Type.HasMembers() &&
+                    !c.Type.Has<LocatableAttribute>(),
                 component: (tp, c, cc) =>
                 {
                     var members = c.Type.GetMembers();
-                    var initializer = members.Methods.Having<InitializerAttribute>().Single();
+                    var initializer =
+                        members.Methods.Having<InitializerAttribute>().SingleOrDefault() ??
+                        throw DiagnosticCode.RequiresInitializerAction.Exception(
+                            $"{c.Type.Name} is a transient but doesn't have an initializer action." +
+                            " Initializer is needed to render its inputs on page title in a tabbed page."
+                        );
 
                     tp.Schema.Inputs.AddRange(
                         initializer
                             .DefaultOverload.Parameters
                             .Select(p => p.GenerateRequiredSchema<Input>(cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Inputs))))
                     );
-                },
-                when: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
+                }
             );
+
             builder.Conventions.AddParameterSchemaConfiguration<Input>(
                 where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
                 schema: i => i.QueryBound = true
             );
+
             builder.Conventions.AddParameterSchemaConfiguration<Input>(
                 where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
                 schema: (i, c, cc) =>

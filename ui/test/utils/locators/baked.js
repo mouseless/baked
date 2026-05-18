@@ -6,6 +6,10 @@ export default {
     message: ".pt-8 div",
     footer: ".p-message-content"
   },
+  contents: {
+    base: ".b-Contents",
+    main: ".b-Contents .grid"
+  },
   number:{
     base: ".b-component--Number"
   },

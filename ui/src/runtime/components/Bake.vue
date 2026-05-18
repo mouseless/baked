@@ -6,7 +6,15 @@
     :class="classes"
     v-bind="getComponentProps()"
   >
-    <slot v-if="$slots.default" />
+    <template
+      v-for="(_, slotName) in $slots"
+      #[slotName]="slotProps"
+    >
+      <slot
+        :name="slotName"
+        v-bind="slotProps ?? {}"
+      />
+    </template>
   </component>
 </template>
 <script setup>
@@ -28,15 +36,16 @@ const model = defineModel({ type: null });
 const emit = defineEmits(["loaded"]);
 
 const parentPath = context.injectPath();
+const parentLoading = context.injectLoading();
 const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
 const contextData = context.injectContextData();
 const componentTemplate = componentResolver.resolve(descriptor.type, "MissingComponent");
 const componentProps = buildComponentProps();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
-const shouldLoad = dataFetcher.shouldLoad(descriptor.data);
+const shouldLoad = !parentLoading.value && dataFetcher.shouldLoad(descriptor.data);
 const loading = ref(shouldLoad);
-const executing = ref(false);
+let executing = null;
 const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 let reactions = null;
@@ -44,10 +53,14 @@ let reactions = null;
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
 context.provideParentContext({ ...contextData.parent, data });
-context.provideExecuting(executing);
 
 if(shouldLoad) {
   context.provideLoading(loading);
+}
+
+if(descriptor.action) {
+  executing = ref(false);
+  context.provideExecuting(executing);
 }
 
 if(descriptor.reactions) {
@@ -96,6 +109,7 @@ function buildComponentProps() {
   return result;
 }
 
+let __BIND_COUNT__ = 0; // NOTE A work-around for query bound model problem
 function getComponentProps() {
   const result = { ...componentProps };
 
@@ -103,7 +117,13 @@ function getComponentProps() {
   if(componentTemplate.props?.modelValue) {
     result.modelValue = model.value;
 
-    nextTick(() => onModelUpdate(model.value));
+    // restrict model update during v-bind by 2, to prevent duplicated event publish
+    // first during mount, second to refresh model from query
+    if(__BIND_COUNT__ < 2) {
+      __BIND_COUNT__++;
+
+      nextTick(() => onModelUpdate(model.value));
+    }
   }
 
   return result;

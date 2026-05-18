@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Inputs - Query Bound">
+  <UiSpec>
     <Message severity="info">
       <span class="text-xl">
         ⬆️  Check if values sync with query string above ⬆️

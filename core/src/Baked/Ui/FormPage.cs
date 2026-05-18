@@ -1,9 +1,9 @@
 ﻿namespace Baked.Ui;
 
-public record FormPage(string Path, PageTitle Title, Button Submit)
+public record FormPage(string Path, IComponentDescriptor Title, Button Submit)
     : PageSchemaBase(Path)
 {
-    public PageTitle Title { get; set; } = Title;
+    public IComponentDescriptor Title { get; set; } = Title;
     public Button Submit { get; set; } = Submit;
     public List<Section> Sections { get; init; } = [];
 
