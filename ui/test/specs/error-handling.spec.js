@@ -23,6 +23,25 @@ test("full page error", async({ page }) => {
   await content.getByTestId("page").click();
 
   await expect(page.getByTestId(baked.errorPage.baseTestId)).toBeVisible();
+  await expect(page.getByTestId(baked.errorPage.baseTestId).locator(baked.errorPage.statusCode)).toHaveText("404");
+});
+
+test("full page fetch unhandled", async({ page }) => {
+  const content = page.getByTestId(id);
+
+  await content.getByTestId("pageErrorFetch").click();
+
+  await expect(page.getByTestId(baked.errorPage.baseTestId)).toBeVisible();
+  await expect(page.getByTestId(baked.errorPage.baseTestId).locator(baked.errorPage.statusCode)).toHaveText("500");
+});
+
+test("full page type error", async({ page }) => {
+  const content = page.getByTestId(id);
+
+  await content.getByTestId("type").click();
+
+  await expect(page.getByTestId(baked.errorPage.baseTestId)).toBeVisible();
+  await expect(page.getByTestId(baked.errorPage.baseTestId).locator(baked.errorPage.statusCode)).toHaveText("APP");
 });
 
 test("redirect and toast with fetch error data", async({ page }) => {

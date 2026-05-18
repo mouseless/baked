@@ -3,7 +3,7 @@ parent @entity {
     @id type="guid" generator="id-guid"
   }
   name @column
-  surname @column
+  surname-internal @column
   description @column
   status @column
   role @column

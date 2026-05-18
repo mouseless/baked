@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Redirect"
     :variants
     no-loading-variant
   />

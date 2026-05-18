@@ -11,6 +11,7 @@ public class MappingsDataAccessOverrideFeature : IFeature
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());
+            model.Override<Parent>(x => x.Map(e => e.SurnameInternal).Column("Surname"));
         });
     }
 }

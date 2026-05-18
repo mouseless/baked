@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-2 items-baseline">
+  <div class="flex gap-2 items-baseline max-xs:flex-col">
     <Text
       v-bind="$attrs"
       :schema

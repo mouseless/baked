@@ -1,7 +1,5 @@
 <template>
-  <UiSpec
-    title="Route Parameters"
-  >
+  <UiSpec>
     <Message severity="info">
       <span class="text-xl">
         ⬆️  click the link below to navigate to a page with route parameter ⬆️

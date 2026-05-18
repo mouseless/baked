@@ -21,6 +21,10 @@
     <PackageReference Include="Virtuosity.Fody" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+	<InternalsVisibleTo Include="Baked.Playground.Application" />
+  </ItemGroup>
+
   <!--
     this import statement should be the last element to for targets to be
     executed after this file

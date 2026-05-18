@@ -2,27 +2,34 @@
   "type": "FormPage",
   "schema": {
     "title": {
-      "title": "New Parent",
-      "description": "Fill out the form and hit save to create new parent",
-      "actions": [
-        {
-          "type": "Button",
-          "schema": {
-            "label": "Back",
-            "variant": "text"
-          },
-          "action": {
-            "type": "Local",
-            "composable": "useRedirect",
-            "options": {
-              "type": "Inline",
-              "value": {
-                "back": true
+      "type": "PageTitle",
+      "schema": {
+        "localizeTitle": true,
+        "description": "/form-sample/parents/new:Description",
+        "actions": [
+          {
+            "type": "Button",
+            "schema": {
+              "label": "Back",
+              "variant": "text"
+            },
+            "action": {
+              "type": "Local",
+              "composable": "useRedirect",
+              "options": {
+                "type": "Inline",
+                "value": {
+                  "back": true
+                }
               }
             }
           }
-        }
-      ]
+        ]
+      },
+      "data": {
+        "type": "Inline",
+        "value": "/form-sample/parents/new:Title"
+      }
     },
     "submit": {
       "label": "Save",
@@ -138,6 +145,22 @@
                         "value": "Passive"
                       }
                     ]
+                  }
+                }
+              }
+            ],
+            "wide": true
+          },
+          {
+            "key": "description",
+            "inputs": [
+              {
+                "name": "description",
+                "component": {
+                  "type": "InputText",
+                  "schema": {
+                    "label": "Description",
+                    "labelMode": "ifta"
                   }
                 }
               }

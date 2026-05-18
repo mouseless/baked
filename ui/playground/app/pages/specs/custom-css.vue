@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Custom CSS">
+  <UiSpec>
     <Message severity="info">
       <span class="text-xl">
         ⬇️  Check if there is only `VISIBLE` below ⬇️

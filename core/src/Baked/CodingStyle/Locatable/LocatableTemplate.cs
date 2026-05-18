@@ -70,14 +70,23 @@ public class LocatableTemplate : CodeTemplateBase
             protected override string GetId({{locatable.CSharpFriendlyFullName}} locatable) =>
                 $"{locatable.{{id!.PropertyName}}}";
 
-            protected override string GetLabel({{locatable.CSharpFriendlyFullName}} locatable, string labelProp) =>
-                labelProp switch
-                {
+            protected override void WriteLabel(JsonWriter writer, {{locatable.CSharpFriendlyFullName}} locatable, JsonSerializer serializer, string labelProp)    
+            {
                 {{ForEach(locatable.Properties.Having<LabelAttribute>(), label => $$"""
-                    "{{label.Name.Camelize()}}" => $"{locatable.{{label.Name}}}",
-                """, indentation: 2)}}
-                    _ => throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{locatable.Name}}`")
-                };
+                if(labelProp == "{{label.Name.Camelize()}}")
+                {
+                    {{If(label.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(), () => $$"""
+                    serializer.Serialize(writer, locatable.{{label.Name}});
+                    """, @else: () => $$"""
+                    writer.WriteValue(locatable.{{label.Name}});
+                    """)}}
+
+                    return;
+                }
+                """, indentation: 3)}}
+
+                throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{locatable.Name}}`");
+            }
         }
     """);
 

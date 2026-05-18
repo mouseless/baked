@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Data Container"
     :variants
     no-loading-variant
   />

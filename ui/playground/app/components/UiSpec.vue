@@ -1,8 +1,12 @@
 <template>
   <div class="space-y-4 mb-40">
     <PageTitle
-      v-if="loaded"
-      :schema="{ title, description }"
+      :schema="{
+        description: `${$route.path}:Description`,
+        localizeTitle: true,
+        actions: []
+      }"
+      :data="`${$route.path}:Title`"
     />
     <div class="flex justify-center w-full">
       <div
@@ -92,16 +96,14 @@
   </div>
 </template>
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, reactive } from "vue";
 import { Divider } from "primevue";
-import { useContext, useEvents, usePages } from "#imports";
+import { useContext, useEvents } from "#imports";
 
 const context = useContext();
 const events = useEvents();
-const pages = usePages();
 
-const { title, variants, noLoadingVariant } = defineProps({
-  title: { type: String, required: true },
+const { variants, noLoadingVariant } = defineProps({
   variants: { type: Array, default: () => [] },
   noLoadingVariant: { type: Boolean, default: false },
   vertical: { type: Boolean, default: false },
@@ -112,8 +114,6 @@ const { title, variants, noLoadingVariant } = defineProps({
 });
 
 const pageContext = reactive({});
-const description = ref();
-const loaded = ref(false);
 const allVariants = computed(() => {
   if(noLoadingVariant) { return variants; }
   if(variants.length === 0) { return variants; }
@@ -132,19 +132,6 @@ const allVariants = computed(() => {
 
 context.provideEvents(events);
 context.providePageContext(pageContext);
-
-onMounted(async() => {
-  const specs = await pages.fetch("specs");
-
-  const linksWithTitle = specs.schema.sections.flatMap(section =>
-    section.links.filter(link => link.title === title).map(link => link.component)
-  );
-  if(linksWithTitle.length > 0) {
-    description.value = linksWithTitle[0].schema.description;
-  }
-
-  loaded.value = true;
-});
 
 function camelize(str) {
   return str

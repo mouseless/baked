@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Composite"
     :variants
     no-loading-variant
   />

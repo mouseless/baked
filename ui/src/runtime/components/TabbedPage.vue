@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-col gap-4">
-    <PageTitle :schema="title">
+    <Bake
+      name="title"
+      :descriptor="title"
+    >
       <template
         v-if="inputs?.length > 0"
         #inputs
@@ -34,7 +37,7 @@
           </TabList>
         </Tabs>
       </template>
-    </PageTitle>
+    </Bake>
     <Message
       v-if="showRequiredMessage"
       severity="info"
@@ -68,7 +71,7 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { Message, Tab, TabList, Tabs } from "primevue";
 import { useContext, useLocalization, useReactionHandler } from "#imports";
-import { Bake, Contents, DeferredTabContent, Inputs, PageTitle } from "#components";
+import { Bake, Contents, DeferredTabContent, Inputs } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();

@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Data Panel"
     :variants
     no-loading-variant
   />

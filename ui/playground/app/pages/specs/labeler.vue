@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Labeler"
     :variants
     use-model
     no-loading-variant

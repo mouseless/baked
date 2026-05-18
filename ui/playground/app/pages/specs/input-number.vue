@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Input Number"
     :variants
     use-model
   />

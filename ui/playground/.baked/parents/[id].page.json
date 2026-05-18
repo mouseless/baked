@@ -4,8 +4,8 @@
     "title": {
       "type": "PageTitle",
       "schema": {
-        "title": "Parent",
-        "description": "Showcase a locatable entity page",
+        "localizeTitle": true,
+        "description": "/parents/[id]:Description",
         "actions": [
           {
             "type": "SimpleForm",
@@ -193,6 +193,10 @@
             }
           }
         ]
+      },
+      "data": {
+        "type": "Inline",
+        "value": "/parents/[id]:Title"
       }
     },
     "contents": [
@@ -224,7 +228,7 @@
                   "data": {
                     "type": "Context",
                     "key": "parent",
-                    "prop": "data.surname"
+                    "prop": "data.surname.label"
                   }
                 }
               },
@@ -386,6 +390,56 @@
           }
         },
         "key": "get-children"
+      },
+      {
+        "component": {
+          "type": "SimpleForm",
+          "schema": {
+            "title": "Add Child",
+            "submit": {
+              "label": "Add Child",
+              "severity": "primary"
+            },
+            "inputs": [
+              {
+                "name": "name",
+                "required": true,
+                "component": {
+                  "type": "InputText",
+                  "schema": {
+                    "label": "Name",
+                    "labelMode": "ifta"
+                  }
+                }
+              }
+            ]
+          },
+          "action": {
+            "type": "Remote",
+            "path": "parents/{id}/children",
+            "method": "POST",
+            "params": {
+              "type": "Computed",
+              "composable": "useNuxtRoute",
+              "options": {
+                "type": "Inline",
+                "value": {
+                  "property": "params"
+                }
+              }
+            },
+            "body": {
+              "type": "Context",
+              "key": "model"
+            },
+            "postAction": {
+              "type": "Publish",
+              "event": "add-child"
+            }
+          }
+        },
+        "key": "add-child",
+        "side": true
       }
     ],
     "path": "parents/[id]"

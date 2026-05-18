@@ -1,6 +1,5 @@
 <template>
   <UiSpec
-    title="Input Text"
     :variants
     use-model
   />

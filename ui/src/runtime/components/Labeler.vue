@@ -26,7 +26,7 @@ const { localize: l } = useLocalization({});
 const { localize: lc } = useLocalization({ group: "Labeler" });
 
 const { label, mode, required, validateLabel } = defineProps({
-  label: { type: String, required: true },
+  label: { type: String, default: null },
   path: { type: String, required: true },
   mode: { type: String, default: null },
   variant: { type: String, default: "on" },

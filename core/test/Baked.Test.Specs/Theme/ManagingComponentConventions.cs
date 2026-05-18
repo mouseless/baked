@@ -15,7 +15,7 @@ public class ManagingComponentConventions : TestSpec
 
         var page = component.ShouldBeOfType<ComponentDescriptor<TabbedPage>>();
         page.Schema.Path.ShouldBe("test-page");
-        page.Schema.Title.Title.ShouldBe("Test Page");
+        page.Schema.Title.Data.ShouldBeOfType<InlineData>().Value.ShouldBe("Test Page");
     }
 
     [Test]

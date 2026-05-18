@@ -1,8 +1,7 @@
 <template>
   <UiSpec
-    title="Button"
-    :variants="variants"
-    :no-loading-variant="true"
+    :variants
+    no-loading-variant
   />
 </template>
 <script setup>
