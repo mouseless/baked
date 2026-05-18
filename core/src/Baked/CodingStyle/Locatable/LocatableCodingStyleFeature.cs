@@ -81,10 +81,9 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     .CreateRequiredImplementationInstance<ILocatableContext>();
                 locatableContext.Configure(contractResolver);
 
-                contractResolver.SetValueProvider((property, serviceProvider) =>
+                contractResolver.SetValueProvider((property, _) =>
                 {
-                    property.ValueProvider = new ProxyAwareValueProvider(locatableContext.IdPropertyNames)
-                        .With(property.PropertyName, property.ValueProvider);
+                    property.ValueProvider = new ProxyAwareValueProvider(locatableContext.IdPropertyNames, property.PropertyName, property.ValueProvider);
                 });
             });
         });

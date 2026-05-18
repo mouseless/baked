@@ -4,20 +4,9 @@ using NHibernate.Proxy;
 
 namespace Baked.CodingStyle.Locatable;
 
-public class ProxyAwareValueProvider(Dictionary<Type, string> _idPropertyNames)
+public class ProxyAwareValueProvider(Dictionary<Type, string> _idPropertyNames, string? _propertyName, IValueProvider? _valueProvider)
     : IValueProvider
 {
-    string? _propertyName = default!;
-    IValueProvider? _valueProvider = default!;
-
-    public ProxyAwareValueProvider With(string? propertyName, IValueProvider? valueProvider)
-    {
-        _propertyName = propertyName;
-        _valueProvider = valueProvider;
-
-        return this;
-    }
-
     object? IValueProvider.GetValue(object target)
     {
         if (target is not INHibernateProxy proxy || !proxy.HibernateLazyInitializer.IsUninitialized)
