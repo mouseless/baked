@@ -2,13 +2,10 @@ import { useLocalization } from "#imports";
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
-export default function useValidateDefault({ sections, formData }) {
+export default function useValidateDefault({ inputData, formData }) {
   const { localize: lc } = useLocalization({ group: "ValidatorMessages" });
   const { localize: l } = useLocalization({ });
 
-  const allInputs = sections.flatMap(section =>
-    section.inputGroups.flatMap(group => group.inputs)
-  );
   const result = {};
   const validation = {
     required: false,
@@ -18,7 +15,7 @@ export default function useValidateDefault({ sections, formData }) {
     message: ""
   };
 
-  allInputs.map(input => {
+  inputData.value.map(input => {
     const value = formData.value?.[input.name];
     const isEmpty = value === undefined || value === null || String(value).trim() === "";
     const label = input.component?.schema?.label || capitalize(input.name);

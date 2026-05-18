@@ -98,6 +98,7 @@ const { title, submit, sections, validateComposable = [], validationOnTooltip = 
 const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
 const formData = ref({});
 const readyData = ref({});
+const inputData = ref(sections.flatMap(section => section.inputGroups.flatMap(group => group.inputs)));
 
 const validationMessages = computed(() => {
   if(!validationOnTooltip) { return null; }
@@ -113,7 +114,7 @@ const ready = computed(() => {
 });
 const validator = computed(() =>
   validators.reduce((_default, useValidate) => {
-    return { ..._default, ...useValidate({ sections, formData }) };
+    return { ..._default, ...useValidate({ inputData, formData }) };
   }, {})
 );
 context.provideParentContext({ validator });
