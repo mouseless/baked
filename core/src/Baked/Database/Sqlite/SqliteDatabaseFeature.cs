@@ -38,9 +38,9 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
             });
         });
 
-        configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
+        configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
-            middlewares.Add<FlatTransactionMiddleware>();
+            builder.Conventions.Add(new AddFlatTransactionToActionConvention());
         });
     }
 }

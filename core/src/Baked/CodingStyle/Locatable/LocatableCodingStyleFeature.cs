@@ -77,9 +77,14 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             configurator.Buildtime.UsingGeneratedContext(generatedContext =>
             {
-                generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
-                    .CreateRequiredImplementationInstance<ILocatableContext>()
-                    .Configure(contractResolver);
+                var locatableContext = generatedContext.Assemblies[nameof(LocatableCodingStyleFeature)]
+                    .CreateRequiredImplementationInstance<ILocatableContext>();
+                locatableContext.Configure(contractResolver);
+
+                contractResolver.SetValueProvider((property, _) =>
+                {
+                    property.ValueProvider = new ProxyAwareValueProvider(locatableContext.IdPropertyNames, property.PropertyName, property.ValueProvider);
+                });
             });
         });
 

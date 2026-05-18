@@ -237,7 +237,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.surname"
+                            "prop": "row.surname.label"
                           }
                         },
                         "title": "Surname",

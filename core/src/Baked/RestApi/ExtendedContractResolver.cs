@@ -8,6 +8,7 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
 {
     readonly Dictionary<string, Action<JsonContract, IServiceProvider>> _typeConfigureMap = [];
     readonly Dictionary<string, Action<JsonProperty, IServiceProvider>> _propertyConfigureMap = [];
+    Action<JsonProperty, IServiceProvider?> _valueProvider = (property, _) => { };
 
     public Type? ProxyType { get; set; }
 
@@ -61,6 +62,9 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
         };
     }
 
+    public void SetValueProvider(Action<JsonProperty, IServiceProvider?> valueProvider) =>
+        _valueProvider = valueProvider;
+
     public override JsonContract ResolveContract(Type type)
     {
         if (type.IsAssignableTo(ProxyType))
@@ -86,6 +90,8 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
             {
                 configure(property, ServiceProvider);
             }
+
+            _valueProvider(property, _serviceProvider);
         }
 
         return result;

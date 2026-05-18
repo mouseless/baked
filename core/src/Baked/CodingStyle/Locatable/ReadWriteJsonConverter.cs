@@ -1,5 +1,6 @@
 ﻿using Baked.Business;
 using Newtonsoft.Json;
+using NHibernate.Proxy;
 
 namespace Baked.CodingStyle.Locatable;
 
@@ -10,7 +11,7 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
 
     protected abstract string GetId(TLocatable entity);
     protected abstract IEnumerable<string> LabelProps { get; }
-    protected abstract string GetLabel(TLocatable entity, string labelProp);
+    protected abstract void WriteLabel(JsonWriter writer, TLocatable entity, JsonSerializer serializer, string labelProp);
 
     public override void WriteJson(JsonWriter writer, TLocatable? value, JsonSerializer serializer)
     {
@@ -40,10 +41,17 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
         writer.WritePropertyName(IdProp);
         writer.WriteValue(GetId(value));
 
+        if (value is INHibernateProxy proxy && proxy.HibernateLazyInitializer.IsUninitialized)
+        {
+            writer.WriteEndObject();
+
+            return;
+        }
+
         foreach (var labelProp in LabelProps)
         {
             writer.WritePropertyName(labelProp);
-            writer.WriteValue(GetLabel(value, labelProp));
+            WriteLabel(writer, value, serializer, labelProp);
         }
 
         writer.WriteEndObject();

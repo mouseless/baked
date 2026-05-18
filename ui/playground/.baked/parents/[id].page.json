@@ -159,7 +159,7 @@
                   "data": {
                     "type": "Context",
                     "key": "parent",
-                    "prop": "data.surname"
+                    "prop": "data.surname.label"
                   }
                 }
               },
