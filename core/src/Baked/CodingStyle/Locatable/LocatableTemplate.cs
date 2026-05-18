@@ -83,7 +83,7 @@ public class LocatableTemplate : CodeTemplateBase
 
                     return;
                 }
-                """, indentation: 2)}}
+                """, indentation: 3)}}
 
                 throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{locatable.Name}}`");
             }
