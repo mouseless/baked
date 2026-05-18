@@ -12,3 +12,4 @@
 ## Bugfixes
 
 - `Ado` exceptions was returning 200 result, fixed
+- Adding locate action by conventions was missing claim requirements, fixed
