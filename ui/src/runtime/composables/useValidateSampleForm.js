@@ -12,7 +12,7 @@ export default function({ formData }) {
     severity: "error"
   };
 
-  if(formData.value.role === "Admin" && formData.value.status !== "Active") {
+  if(formData.role === "Admin" && formData.status !== "Active") {
     result.status = {
       ...item,
       persist: true,
