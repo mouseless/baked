@@ -11,7 +11,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
         var children = await Client.GetParentsChildren((object)parent.id);
         object? actual = children[0].parent;
 
-        actual?.ShouldDeeplyBe(new { parent?.id, name = "parent", surname = new { id = "test", name = "test" } });
+        actual?.ShouldDeeplyBe(new { parent?.id, name = "parent", surname = new { id = "test", label = "test" } });
     }
 
     [Test]
@@ -30,7 +30,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
             description = (string?)null,
             status = (string?)null,
             role = (string?)null,
-            surname = new { id = "wrapper", name = "wrapper" }
+            surname = new { id = "wrapper", label = "wrapper" }
         });
     }
 
