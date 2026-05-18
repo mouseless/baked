@@ -109,12 +109,10 @@ const validationMessages = computed(() => {
     .join("")
     .toString();
 });
-const ready = computed(() => {
-  return Object.values(readyData.value).every(v => v) && Object.values(validator.value).every(v => v.valid);
-});
+const ready = computed(() => Object.values(readyData.value).every(v => v) && Object.values(validator.value).every(v => v.valid));
 const validator = computed(() =>
   validators.reduce((_default, useValidate) => {
-    return { ..._default, ...useValidate({ inputData, formData }) };
+    return { ..._default, ...useValidate({ inputData: inputData.value, formData: formData.value }) };
   }, {})
 );
 context.provideParentContext({ validator });

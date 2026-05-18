@@ -15,8 +15,8 @@ export default function useValidateDefault({ inputData, formData }) {
     message: ""
   };
 
-  inputData.value.map(input => {
-    const value = formData.value?.[input.name];
+  inputData.map(input => {
+    const value = formData?.[input.name];
     const isEmpty = value === undefined || value === null || String(value).trim() === "";
     const label = input.component?.schema?.label || capitalize(input.name);
 
@@ -29,6 +29,11 @@ export default function useValidateDefault({ inputData, formData }) {
 
     if(input.required && isEmpty) {
       result[input.name].message = lc("{label} cannot be empty", { label: l(label) });
+    }
+
+    if(input.name == "surname" && formData.surname == "huhu") {
+      result.surname.message = "huhuhuuhh";
+      result.surname.valid = false;
     }
 
     return input;

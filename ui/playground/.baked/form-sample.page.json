@@ -43,7 +43,10 @@
                   "variant": "text"
                 },
                 "message": "Are you sure?"
-              }
+              },
+              "validateComposable": [
+                "useValidateDefault"
+              ]
             },
             "action": {
               "type": "Remote",
@@ -372,7 +375,10 @@
                                     "label": "Cancel",
                                     "variant": "text"
                                   }
-                                }
+                                },
+                                "validateComposable": [
+                                  "useValidateDefault"
+                                ]
                               },
                               "action": {
                                 "type": "Remote",
@@ -414,7 +420,10 @@
                                     "variant": "text"
                                   },
                                   "message": "Are you sure?"
-                                }
+                                },
+                                "validateComposable": [
+                                  "useValidateDefault"
+                                ]
                               },
                               "action": {
                                 "type": "Remote",
