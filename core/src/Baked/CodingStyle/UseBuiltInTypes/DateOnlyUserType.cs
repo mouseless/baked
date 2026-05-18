@@ -23,15 +23,8 @@ public class DateOnlyUserType : UserTypeBase
         return null;
     }
 
-    public override void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
-    {
-        if (value is DateOnly dateOnly)
-        {
-            NHibernateUtil.Date.NullSafeSet(cmd, dateOnly.ToDateTime(TimeOnly.MinValue), index, session);
-
-            return;
-        }
-
-        NHibernateUtil.Date.NullSafeSet(cmd, null, index, session);
-    }
+    public override void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session) =>
+        cmd.Parameters[index].Value = value is DateOnly dateOnly
+            ? dateOnly.ToDateTime(TimeOnly.MinValue)
+            : DBNull.Value;
 }
