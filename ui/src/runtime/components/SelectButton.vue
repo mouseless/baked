@@ -140,13 +140,7 @@ function setSelected(value) {
 <style scoped>
 &:has(.p-iftalabel) {
   .p-iftalabel {
-    @apply mt-2;
-  }
-}
-
-.grid .flex {
-  .b-component--SelectButton {
-    @apply self-end mt-4;
+    @apply mt-4;
   }
 }
 </style>
