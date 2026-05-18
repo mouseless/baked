@@ -24,15 +24,8 @@ public class TimeOnlyUserType : UserTypeBase
         return null;
     }
 
-    public override void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
-    {
-        if (value is TimeOnly timeOnly)
-        {
-            NHibernateUtil.Time.NullSafeSet(cmd, timeOnly.ToTimeSpan(), index, session);
-
-            return;
-        }
-
-        NHibernateUtil.Time.NullSafeSet(cmd, null, index, session);
-    }
+    public override void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session) =>
+        cmd.Parameters[index].Value = value is TimeOnly timeOnly
+            ? timeOnly.ToTimeSpan()
+            : DBNull.Value;
 }
