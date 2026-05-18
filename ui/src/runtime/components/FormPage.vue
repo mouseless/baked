@@ -9,6 +9,11 @@
         #actions
       >
         <Button
+          v-tooltip.left="{
+            disabled: !validationOnTooltip,
+            value: validationMessages,
+            pt: { text: 'text-sm' }
+          }"
           :schema="submit"
           :ready
           @submit="onSubmit"
@@ -79,21 +84,41 @@
 </template>
 <script setup>
 import { computed, ref } from "vue";
-import { useLocalization } from "#imports";
+import { useLocalization, useComposableResolver, useContext } from "#imports";
 import { Button, Contents, Inputs } from "#components";
 
+const context = useContext();
 const { localize: l } = useLocalization();
+const composableResolver = useComposableResolver();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const emit = defineEmits(["submit"]);
 
-const { title, submit, sections } = schema;
+const { title, submit, sections, validateComposable = [], validationOnTooltip = true } = schema;
 
+const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
 const formData = ref({});
 const readyData = ref({});
-const ready = computed(() => Object.values(readyData.value).every(v => v));
+const inputData = ref(sections.flatMap(section => section.inputGroups.flatMap(group => group.inputs)));
+
+const validationMessages = computed(() => {
+  if(!validationOnTooltip) { return null; }
+
+  return Object.values(validator.value)
+    .filter(v => v.message)
+    .map((v, i) => `${i > 0 ? "\n" : ""} - ${v.message}`)
+    .join("")
+    .toString();
+});
+const ready = computed(() => Object.values(readyData.value).every(v => v) && Object.values(validator.value).every(v => v.valid));
+const validator = computed(() =>
+  validators.reduce((_default, useValidate) => {
+    return { ..._default, ...useValidate({ inputData: inputData.value, formData: formData.value }) };
+  }, {})
+);
+context.provideParentContext({ validator });
 
 function splitByWide(inputGroups) {
   const result = [];

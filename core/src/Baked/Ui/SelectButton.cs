@@ -11,4 +11,5 @@ public record SelectButton : ISelect, ILabeler
     public string? Label { get; set; }
     public string? LabelMode { get; set; }
     public string? LabelVariant { get; set; }
+    public bool? ValidateLabel { get; set; }
 }

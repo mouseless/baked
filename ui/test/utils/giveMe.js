@@ -346,6 +346,39 @@ export default {
     };
   },
 
+  aFakeFormInput({ testId, defaultValue, labeler, validator, action } = {}) {
+    testId = $(testId, "test-id");
+    labeler = $(labeler, this.aLabeler({ ...labeler }));
+    validator = $(validator, this.aValidator({ ...validator }));
+
+    return {
+      type: "FakeFormInput",
+      schema: {
+        testId,
+        defaultValue,
+        labeler,
+        validator
+      },
+      action
+    };
+  },
+
+  aValidator({ required, valid, persist, severity, message } = {}) {
+    required = $(required, false);
+    valid = $(valid, true);
+    persist = $(valid, false);
+    severity = $(severity, "error");
+    message = $(message, "");
+
+    return {
+      required,
+      valid,
+      persist,
+      severity,
+      message
+    };
+  },
+
   aField({ key, label, wide, component, testId } = {}) {
     key = $(key, "data");
     label = $(label, "Spec: Data");
@@ -395,18 +428,22 @@ export default {
     };
   },
 
-  aFormPage({ action, title, description, submit, inputs, sections } = {}) {
+  aFormPage({ action, title, description, submit, inputs, sections, validateComposable, validationOnTooltip } = {}) {
     title = this.aPageTitle({ title, description });
     submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
     sections = $(sections, [this.aFormPageSection({ inputs })]);
+    validateComposable = $(validateComposable, ["useFakeValidateDefault"]);
+    validationOnTooltip = $(validationOnTooltip, true);
 
     return {
       type: "FormPage",
       schema: {
         title,
         submit,
-        sections
+        sections,
+        validateComposable,
+        validationOnTooltip
       },
       action
     };
@@ -512,15 +549,17 @@ export default {
     };
   },
 
-  aLabeler({ label, labelMode, labelVariant } = {}) {
+  aLabeler({ label, labelMode, labelVariant, validateLabel } = {}) {
     label = $(label, "Test Label");
     labelMode = $(labelMode, "float");
     labelVariant = $(labelVariant, "on");
+    validateLabel = $(validateLabel, false);
 
     return {
       label,
       labelMode,
-      labelVariant
+      labelVariant,
+      validateLabel
     };
   },
 

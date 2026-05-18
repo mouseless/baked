@@ -8,9 +8,10 @@
 <script setup>
 import { computed, watch } from "vue";
 import { useRoute, useRouter } from "#app";
-import { useDataMounter } from "#imports";
+import { useDataMounter, useContext } from "#imports";
 import { Bake } from "#components";
 
+const context = useContext();
 const { mount: mountData, onAfterMount: onAfterMountData } = useDataMounter();
 const route = useRoute();
 const router = useRouter();
@@ -19,6 +20,9 @@ const { schema } = defineProps({
   schema: { type: Object, required: true }
 });
 const model = defineModel({ type: null, required: true });
+
+const parentContext = context.injectParentContext();
+context.provideParentContext({ ...parentContext, name: schema.name });
 
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;

@@ -49,7 +49,8 @@
                   "type": "InputText",
                   "schema": {
                     "label": "Name",
-                    "labelMode": "ifta"
+                    "labelMode": "ifta",
+                    "validateLabel": true
                   }
                 }
               }
@@ -66,7 +67,8 @@
                   "type": "InputText",
                   "schema": {
                     "label": "Surname",
-                    "labelMode": "ifta"
+                    "labelMode": "ifta",
+                    "validateLabel": true
                   }
                 }
               }
@@ -83,6 +85,7 @@
                   "schema": {
                     "label": "Role",
                     "labelMode": "ifta",
+                    "validateLabel": true,
                     "optionLabel": "label",
                     "optionValue": "value",
                     "localizeLabel": true,
@@ -127,7 +130,8 @@
                     "optionValue": "value",
                     "localizeLabel": true,
                     "label": "Status",
-                    "labelMode": "ifta"
+                    "labelMode": "ifta",
+                    "validateLabel": true
                   },
                   "data": {
                     "type": "Inline",
@@ -156,7 +160,8 @@
                   "type": "InputText",
                   "schema": {
                     "label": "Description",
-                    "labelMode": "ifta"
+                    "labelMode": "ifta",
+                    "validateLabel": true
                   }
                 }
               }
@@ -165,6 +170,10 @@
           }
         ]
       }
+    ],
+    "validateComposable": [
+      "useValidateDefault",
+      "useValidateSampleForm"
     ],
     "path": "form-sample/parents/new"
   },

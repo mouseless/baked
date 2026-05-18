@@ -22,7 +22,8 @@
                     "type": "InputText",
                     "schema": {
                       "label": "Name",
-                      "labelMode": "ifta"
+                      "labelMode": "ifta",
+                      "validateLabel": true
                     }
                   }
                 },
@@ -32,7 +33,8 @@
                     "type": "InputText",
                     "schema": {
                       "label": "Surname",
-                      "labelMode": "ifta"
+                      "labelMode": "ifta",
+                      "validateLabel": true
                     }
                   }
                 },
@@ -42,7 +44,8 @@
                     "type": "InputText",
                     "schema": {
                       "label": "Description",
-                      "labelMode": "ifta"
+                      "labelMode": "ifta",
+                      "validateLabel": true
                     }
                   }
                 }
@@ -56,7 +59,10 @@
                   "label": "Cancel",
                   "variant": "text"
                 }
-              }
+              },
+              "validateComposable": [
+                "useValidateDefault"
+              ]
             },
             "action": {
               "type": "Remote",
@@ -101,7 +107,10 @@
                   "variant": "text"
                 },
                 "message": "Are you sure?"
-              }
+              },
+              "validateComposable": [
+                "useValidateDefault"
+              ]
             },
             "action": {
               "type": "Remote",
@@ -339,10 +348,14 @@
                   "type": "InputText",
                   "schema": {
                     "label": "Name",
-                    "labelMode": "ifta"
+                    "labelMode": "ifta",
+                    "validateLabel": true
                   }
                 }
               }
+            ],
+            "validateComposable": [
+              "useValidateDefault"
             ]
           },
           "action": {

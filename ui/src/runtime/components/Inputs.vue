@@ -5,10 +5,14 @@
     v-model="models[input.name]"
     :schema="input"
     :class="inputClass"
+    :invalid="invalid(input.name)"
+    :required="validator[input.name]?.required"
+    :validation="validator[input.name]"
+    @blur="touched(input.name)"
   />
 </template>
 <script setup>
-import { computed, reactive, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { useContext, useRoute } from "#imports";
 import { Input } from "#components";
 
@@ -22,6 +26,9 @@ const { inputs } = defineProps({
 const emit = defineEmits(["ready", "changed"]);
 
 const parentPath = context.injectPath();
+const { validator = {} } = context.injectParentContext();
+
+const inputEvents = ref({});
 const models = reactive({});
 const values = computed(() =>
   inputs.reduce((result, input) => {
@@ -78,5 +85,19 @@ function getValue(input) {
   } else {
     return models[input.name];
   }
+}
+
+function touched(key) {
+  inputEvents.value[key] = { touched: true };
+}
+
+function invalid(input) {
+  if(!validator.value || !Object.values(validator.value).length) { return; }
+
+  if(!validator.value[input].valid && validator.value[input].persist) {
+    return true;
+  }
+
+  return !validator.value[input].valid && inputEvents.value[input]?.touched || false;
 }
 </script>

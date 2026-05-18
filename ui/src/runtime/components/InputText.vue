@@ -10,6 +10,7 @@
       :path
       :mode="labelMode"
       :variant="labelVariant"
+      :validate-label
     >
       <InputText
         v-model="input"
@@ -17,12 +18,21 @@
         class="min-w-60"
         @update:model-value="onUpdate"
       />
+      <Message
+        v-show="validator[name]?.message && validator[name]?.persist"
+        :severity="validator[name]?.severity"
+        variant="simple"
+        size="small"
+        class="ml-2"
+      >
+        {{ validator[name]?.message || "" }}
+      </Message>
     </Labeler>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { InputText, Skeleton } from "primevue";
+import { InputText, Message, Skeleton } from "primevue";
 import { useContext } from "#imports";
 import { AwaitLoading, Labeler } from "#components";
 
@@ -31,11 +41,13 @@ const context = useContext();
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
+
 const model = defineModel({ type: null, required: true });
 
-const { label, labelMode, labelVariant, targetProp } = schema;
+const { label, labelMode, labelVariant, validateLabel, targetProp } = schema;
 
 const path = context.injectPath();
+const { validator = {}, name } = context.injectParentContext();
 
 const input = ref("");
 

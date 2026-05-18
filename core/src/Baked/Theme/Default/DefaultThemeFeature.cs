@@ -274,6 +274,17 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 },
                 order: UiLayer.MaxConventionOrder - 10
             );
+            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+                where: cc =>
+                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs)) ||
+                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs)),
+                schema: (i, c, cc) =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+
+                    labeler.ValidateLabel = true;
+                }
+            );
         });
 
         configurator.Ui.ConfigureComponentExports(exports =>

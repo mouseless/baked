@@ -74,27 +74,38 @@
   </template>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { Dialog } from "primevue";
-import { useLocalization } from "#imports";
+import { useLocalization, useComposableResolver, useContext } from "#imports";
 import { Button, Inputs } from "#components";
 
+const context = useContext();
 const { localize: l } = useLocalization();
+const composableResolver = useComposableResolver();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const emit = defineEmits(["submit"]);
 
-const { dialogOptions, inputs, submit, title } = schema;
+const { dialogOptions, inputs, submit, title, validateComposable = [] } = schema;
 
+const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
 const formData = ref({});
-const ready = ref(inputs.length === 0);
+const readyData = ref({});
 const submitted = ref(false);
 const visible = ref(false);
 
+const ready = computed(() => readyData.value && Object.values(validator.value).every(v => v.valid));
+const validator = computed(() =>
+  validators.reduce((_default, useValidate) => {
+    return { ..._default, ...useValidate({ inputData: inputs, formData: formData.value }) };
+  }, {})
+);
+context.provideParentContext({ validator });
+
 function onReady(value) {
-  ready.value = value;
+  readyData.value = value;
 }
 
 function onChanged({ values }) {
@@ -102,12 +113,14 @@ function onChanged({ values }) {
 }
 
 function execute() {
+  if(!ready.value) { return; }
+
   submitted.value = true;
   visible.value = false;
 }
 
 function emitSubmit() {
-  if(submitted.value) {
+  if(submitted.value && ready.value) {
     submitted.value = false;
     emit("submit", formData.value);
   }

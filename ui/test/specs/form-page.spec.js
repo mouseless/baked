@@ -112,6 +112,67 @@ test.describe("Sections", () => {
   });
 });
 
+test.describe("Validations", () => {
+  const id = "Validations";
+
+  test("show a red border on required fields when the user leaves without entry", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.locator(primevue.inputText.base).nth(0);
+    const input2 = component.locator(primevue.inputText.base).nth(1);
+
+    await input1.focus();
+    await input2.focus();
+
+    await expect(input1).toContainClass("p-invalid");
+  });
+
+  test("remove red border on required fields when the user focus again ", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.locator(primevue.inputText.base).nth(0);
+    const input2 = component.locator(primevue.inputText.base).nth(1);
+
+    await input1.focus();
+    await input2.focus();
+    await input1.focus();
+
+    await expect(input1).toContainClass("p-invalid");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.locator(primevue.inputText.base).nth(0);
+    const input2 = component.locator(primevue.inputText.base).nth(1);
+
+    await input1.focus();
+    await input2.focus();
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("disable form submitting when return invalid state by non-required input", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.locator(primevue.inputText.base).nth(0);
+    const input2 = component.locator(primevue.inputText.base).nth(1);
+    const button = component.locator(primevue.button.base).nth(1);
+
+    await input1.fill("text");
+    await input2.fill("error");
+
+    await expect(button).toBeDisabled();
+  });
+
+  test("show a message when validators return a not valid input with message", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputText.base).nth(1);
+    const message = component.locator(primevue.message.base);
+
+    await input.fill("error");
+
+    await expect(message.getByText("param-2 value is error")).toBeVisible();
+  });
+
+});
+
 test.describe("Layout Options", () => {
   const id = "Layout Options";
 

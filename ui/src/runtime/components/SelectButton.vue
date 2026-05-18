@@ -9,6 +9,7 @@
       :label
       :path
       :mode="labelMode == 'ifta' ? labelMode : null"
+      :validate-label
       :dt="{
         colorScheme: {
           light: {
@@ -22,23 +23,34 @@
     >
       <SelectButton
         v-if="data"
+        v-bind="$attrs"
         v-model="selected"
         :options="data"
         :allow-empty
         :data-key="optionValue"
         :option-label
         :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
+        class="!w-auto"
       >
         <template #option="slotProps">
           <span>{{ getOptionLabel(slotProps) }}</span>
         </template>
       </SelectButton>
+      <Message
+        v-show="validator[name]?.message && validator[name]?.persist"
+        :severity="validator[name]?.severity"
+        variant="simple"
+        size="small"
+        class="ml-3"
+      >
+        {{ validator[name]?.message || "" }}
+      </Message>
     </Labeler>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { SelectButton, Skeleton } from "primevue";
+import { Message, SelectButton, Skeleton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
 import { AwaitLoading, Labeler } from "#components";
 
@@ -56,6 +68,7 @@ const {
   allowEmpty = false,
   label,
   labelMode,
+  validateLabel,
   localizeLabel,
   optionLabel,
   optionValue,
@@ -64,6 +77,7 @@ const {
 } = schema;
 
 const path = context.injectPath();
+const { validator = {}, name } = context.injectParentContext();
 const selected = ref();
 
 watch(

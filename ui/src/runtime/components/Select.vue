@@ -10,6 +10,7 @@
       :path
       :mode="labelMode"
       :variant="labelVariant"
+      :validate-label
     >
       <Select
         v-bind="$attrs"
@@ -31,12 +32,20 @@
           <span>{{ getOptionLabel(slotProps) }}</span>
         </template>
       </Select>
+      <Message
+        v-show="validator[name]?.message && validator[name]?.persist"
+        :severity="validator[name]?.severity"
+        variant="simple"
+        size="small"
+      >
+        {{ validator[name]?.message || "" }}
+      </Message>
     </Labeler>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { Select, Skeleton } from "primevue";
+import { Message, Select, Skeleton } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
 import { AwaitLoading, Labeler } from "#components";
 
@@ -50,9 +59,10 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { filter, label, labelMode, labelVariant, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
+const { filter, label, labelMode, validateLabel, labelVariant, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
+const { validator = {}, name } = context.injectParentContext();
 const selected = ref();
 
 // two way binding between model and selected

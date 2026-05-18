@@ -10,6 +10,14 @@ import giveMe from "@utils/giveMe";
 
 const variants = [
   {
+    name: "Validate Label",
+    descriptor: giveMe.anInputText({
+      labeler: giveMe.aLabeler({
+        validateLabel: true
+      })
+    })
+  },
+  {
     name: "Select: No Label Mode",
     descriptor: giveMe.aSelect({
       labeler: giveMe.aLabeler({

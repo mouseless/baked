@@ -12,28 +12,41 @@
         class="max-sm:truncate max-sm:w-5/6"
         :for="path"
       >
-        {{ l(label) }}
+        {{ localizeLabel }}
       </label>
     </template>
   </component>
 </template>
-
 <script setup>
 import { computed } from "vue";
 import { FloatLabel, IftaLabel } from "primevue";
 import { useLocalization } from "#imports";
 
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization({});
+const { localize: lc } = useLocalization({ group: "Labeler" });
 
-const { label, mode } = defineProps({
+const { label, mode, required, validateLabel } = defineProps({
   label: { type: String, default: null },
   path: { type: String, required: true },
   mode: { type: String, default: null },
   variant: { type: String, default: "on" },
   pt: { type: Object, default: () => { } },
-  dt: { type: Object, default: () => { } }
+  dt: { type: Object, default: () => { } },
+  required: { type: Boolean, default: false },
+  validateLabel: { type: Boolean, default: false }
 });
 
+const localizeLabel = computed(() => {
+  if(!validateLabel) {
+    return l(label);
+  }
+
+  if(required) {
+    return lc("{label}_Required", { label: l(label) });
+  }
+
+  return lc("{label}_Optional", { label: l(label) });
+});
 const labelComponent = computed(() => {
   if(!label) { return "div"; }
 

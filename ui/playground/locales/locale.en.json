@@ -6,6 +6,10 @@
   "DataTable": {
     "No records found": "No records found"
   },
+  "Labeler": {
+    "{label}_Required": "{label}",
+    "{label}_Optional": "{label} (Optional)"
+  },
   "LanguageSwitcher": {
     "Languages": "Languages"
   },
@@ -24,6 +28,10 @@
       "M": "M",
       "K": "K"
     }
+  },
+  "ValidatorMessages": {
+    "{label} cannot be empty": "{label} cannot be empty",
+    "Admin role requires Active status": "Admin role requires Active status"
   },
   "If you cannot reach the page you want please contact the system administrator": "If you cannot reach the page you want please contact the system administrator",
   "Please contact system administrator": "Please contact system administrator",
