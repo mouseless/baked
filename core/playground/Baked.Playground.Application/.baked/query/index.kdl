@@ -1,0 +1,32 @@
+children {
+  @query locatable-type="Baked.Playground.Orm.Child"
+}
+
+entities {
+  @query locatable-type="Baked.Playground.Orm.Entity"
+}
+
+parents {
+  @query locatable-type="Baked.Playground.Orm.Parent"
+}
+
+entity-with-value-types {
+  @query locatable-type="Baked.Playground.CodingStyle.ValueType.EntityWithValueType"
+}
+
+entity-extensions {
+  @query locatable-type="Baked.Playground.CodingStyle.LocatableExtension.EntityExtension"
+}
+
+rich-transient-async-extensions {
+  @query locatable-type="Baked.Playground.CodingStyle.LocatableExtension.RichTransientAsyncExtension"
+}
+
+rich-transient-extensions {
+  @query locatable-type="Baked.Playground.CodingStyle.LocatableExtension.RichTransientExtension"
+}
+
+typed-entities {
+  @query locatable-type="Baked.Playground.CodingStyle.EntitySubclass.TypedEntity"
+}
+
