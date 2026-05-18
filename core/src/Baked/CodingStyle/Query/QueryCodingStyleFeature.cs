@@ -34,16 +34,5 @@ public class QueryCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
             ));
         });
-
-        configurator.Domain.ConfigureExportConfigurations(exports =>
-        {
-            exports.Build("Query", query =>
-            {
-                query.Include<QueryAttribute>()
-                    .AddProperty(query => new(query.LocatableType));
-
-                query.TypeGroupName(_ => "index");
-            });
-        });
     }
 }
