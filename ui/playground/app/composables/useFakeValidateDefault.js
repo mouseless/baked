@@ -2,13 +2,9 @@ import { useLocalization } from "#imports";
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
-export default function useFakeValidateDefault({ sections, formData }) {
+export default function useFakeValidateDefault({ inputData, formData }) {
   const { localize: lc } = useLocalization({ group: "ValidatorMessages" });
   const { localize: l } = useLocalization({ });
-
-  const allInputs = sections.flatMap(section =>
-    section.inputGroups.flatMap(group => group.inputs)
-  );
   const result = {};
   const validation = {
     required: false,
@@ -18,8 +14,8 @@ export default function useFakeValidateDefault({ sections, formData }) {
     message: ""
   };
 
-  allInputs.map(input => {
-    const value = formData.value?.[input.name];
+  inputData.map(input => {
+    const value = formData?.[input.name];
     const isEmpty = value === undefined || value === null || String(value).trim() === "";
     const label = input.component?.schema?.label || capitalize(input.name);
 
@@ -34,7 +30,7 @@ export default function useFakeValidateDefault({ sections, formData }) {
       result[input.name].message = lc("{label} cannot be empty", { label: l(label) });
     }
 
-    if(input.name === "param-2" && formData.value["param-2"] === "error") {
+    if(input.name === "param-2" && formData["param-2"] === "error") {
       result["param-2"] = {
         ...validation,
         persist: true,
