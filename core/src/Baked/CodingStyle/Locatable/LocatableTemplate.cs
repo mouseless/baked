@@ -70,22 +70,23 @@ public class LocatableTemplate : CodeTemplateBase
             protected override string GetId({{locatable.CSharpFriendlyFullName}} locatable) =>
                 $"{locatable.{{id!.PropertyName}}}";
 
-            protected override Action<JsonWriter, JsonSerializer> GetLabelWriter({{locatable.CSharpFriendlyFullName}} locatable, string labelProp) =>
-                labelProp switch
-                {
+            protected override void WriteLabel(JsonWriter writer, JsonSerializer serializer, {{locatable.CSharpFriendlyFullName}} locatable, string labelProp)    
+            {
                 {{ForEach(locatable.Properties.Having<LabelAttribute>(), label => $$"""
-                    {{If(label.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
-                        () => $$"""
-                            "{{label.Name.Camelize()}}" => (writer, serializer) => serializer.Serialize(writer, locatable.{{label.Name}}),
-                        """,
-                    @else:
-                        () => $$"""
-                            "{{label.Name.Camelize()}}" => (writer, _) => writer.WriteValue(locatable.{{label.Name}}),
-                        """
-                    )}}
+                if(labelProp == "{{label.Name.Camelize()}}")
+                {
+                    {{If(label.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(), () => $$"""
+                    serializer.Serialize(writer, locatable.{{label.Name}});
+                    """, @else: () => $$"""
+                    writer.WriteValue(locatable.{{label.Name}});
+                    """)}}
+
+                    return;
+                }
                 """, indentation: 2)}}
-                    _ => throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{locatable.Name}}`")
-                };
+
+                throw new InvalidOperationException($"`{labelProp}` is not a label property for `{{locatable.Name}}`");
+            }
         }
     """);
 

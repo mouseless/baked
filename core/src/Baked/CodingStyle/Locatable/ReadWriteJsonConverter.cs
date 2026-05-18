@@ -11,7 +11,7 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
 
     protected abstract string GetId(TLocatable entity);
     protected abstract IEnumerable<string> LabelProps { get; }
-    protected abstract Action<JsonWriter, JsonSerializer> GetLabelWriter(TLocatable entity, string labelProp);
+    protected abstract void WriteLabel(JsonWriter writer, JsonSerializer serializer, TLocatable entity, string labelProp);
 
     public override void WriteJson(JsonWriter writer, TLocatable? value, JsonSerializer serializer)
     {
@@ -51,8 +51,7 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
         foreach (var labelProp in LabelProps)
         {
             writer.WritePropertyName(labelProp);
-            var labelWriter = GetLabelWriter(value, labelProp);
-            labelWriter(writer, serializer);
+            WriteLabel(writer, serializer, value, labelProp);
         }
 
         writer.WriteEndObject();
