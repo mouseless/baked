@@ -24,6 +24,10 @@
           "path": "route-parameters-samples/{id}/items"
         },
         {
+          "method": "PUT",
+          "path": "children/{id}/"
+        },
+        {
           "method": "GET",
           "path": "cache-samples/scoped"
         },

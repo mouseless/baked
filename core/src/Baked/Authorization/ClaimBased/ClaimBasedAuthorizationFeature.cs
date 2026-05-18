@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -14,18 +15,18 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetMethodAttribute(
-                attribute: c => c.Type.Get<AllowAnonymousAttribute>(),
-                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>()
+                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>(),
+                attribute: c => c.Type.Get<AllowAnonymousAttribute>()
             );
             builder.Conventions.SetMethodAttribute(
-                attribute: c => c.Type.Get<RequireUserAttribute>(),
-                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>()
+                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>(),
+                attribute: c => c.Type.Get<RequireUserAttribute>()
             );
 
-            builder.Conventions.Add(new AllowAnonymousIsAllowAnonymousConvention());
-            builder.Conventions.Add(new RequireUserIsAuthorizeConvention());
-            builder.Conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims));
-            builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
+            builder.Conventions.Add(new AllowAnonymousIsAllowAnonymousConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new RequireUserIsAuthorizeConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention(), order: RestApiLayer.MaxConventionOrder);
         });
 
         configurator.Domain.ConfigureExportConfigurations(exports =>

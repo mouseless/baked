@@ -1,8 +1,10 @@
-﻿using Baked.Business;
+﻿using Baked.Authorization;
+using Baked.Business;
 using Baked.Orm;
 
 namespace Baked.Playground.Orm;
 
+[AllowAnonymous]
 public class Child(IEntityContext<Child> _context)
 {
     public Id Id { get; private set; } = default!;
