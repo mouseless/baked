@@ -57,7 +57,7 @@
               <div
                 v-for="inputGroup in inputGroups"
                 :key="inputGroup.key"
-                class="w-full flex gap-4 max-md:flex-col self-end"
+                class="w-full flex gap-4 max-md:flex-col"
                 :class="{
                   'col-span-2': inputGroup.wide,
                   'reset-min-w': inputGroup.inputs.length > 1
