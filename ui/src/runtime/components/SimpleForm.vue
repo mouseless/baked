@@ -66,9 +66,14 @@
         />
       </div>
       <Button
+        v-tooltip.left="{
+          disabled: !showValidationSummary,
+          value: messages,
+          pt: { text: 'text-sm' }
+        }"
         :schema="submit"
         :ready
-        @submit="$emit('submit', formData)"
+        @submit="$emit('submit', model)"
       />
     </div>
   </template>
@@ -76,40 +81,40 @@
 <script setup>
 import { ref, computed } from "vue";
 import { Dialog } from "primevue";
-import { useLocalization, useComposableResolver, useContext } from "#imports";
+import { useLocalization, useContext, useValidate } from "#imports";
 import { Button, Inputs } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
-const composableResolver = useComposableResolver();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const emit = defineEmits(["submit"]);
 
-const { dialogOptions, inputs, submit, title, validateComposable = [] } = schema;
+const { dialogOptions, inputs, submit, title, validateComposables = [], showValidationSummary = true } = schema;
 
-const validators = validateComposable.map(vc => composableResolver.resolve(vc).default);
-const formData = ref({});
+const model = ref({});
 const readyData = ref({});
 const submitted = ref(false);
 const visible = ref(false);
 
-const ready = computed(() => readyData.value && Object.values(validator.value).every(v => v.valid));
-const validator = computed(() =>
-  validators.reduce((_default, useValidate) => {
-    return { ..._default, ...useValidate({ inputData: inputs, formData: formData.value }) };
-  }, {})
-);
-context.provideParentContext({ validator });
+const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
+
+const { isValid, messages, validations } = useValidate({
+  model,
+  inputs: ref(inputs),
+  composables: validateComposables
+});
+
+context.provideValidations(validations);
 
 function onReady(value) {
   readyData.value = value;
 }
 
 function onChanged({ values }) {
-  formData.value = values;
+  model.value = values;
 }
 
 function execute() {
@@ -122,7 +127,7 @@ function execute() {
 function emitSubmit() {
   if(submitted.value && ready.value) {
     submitted.value = false;
-    emit("submit", formData.value);
+    emit("submit", model.value);
   }
 }
 </script>
