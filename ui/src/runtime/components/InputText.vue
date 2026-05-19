@@ -19,13 +19,13 @@
         @update:model-value="onUpdate"
       />
       <Message
-        v-show="valdations[name]?.message && valdations[name]?.persist"
-        :severity="valdations[name]?.severity"
+        v-show="validation.message && validation.persist"
+        :severity="validation.severity"
         variant="simple"
         size="small"
         class="ml-2"
       >
-        {{ valdations[name]?.message || "" }}
+        {{ validation.message || "" }}
       </Message>
     </Labeler>
   </AwaitLoading>
@@ -47,8 +47,8 @@ const model = defineModel({ type: null, required: true });
 const { label, labelMode, labelVariant, validateLabel, targetProp } = schema;
 
 const path = context.injectPath();
-const { valdations = {}, name } = context.injectParentContext();
-console.log(valdations, name);
+const validation = context.injectValidations();
+
 const input = ref("");
 
 watch(model, newValue => {

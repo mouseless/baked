@@ -103,13 +103,13 @@ const inputData = ref(sections.flatMap(section => section.inputGroups.flatMap(gr
 const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
 
 const { isValid, messages, validations } = useValidate({
-  formData,
-  inputData,
+  model: formData,
+  inputs: inputData,
   validateComposable,
   includeDefault: true
 });
 
-context.provideParentContext({ validations });
+context.provideValidations(validations)
 
 function splitByWide(inputGroups) {
   const result = [];

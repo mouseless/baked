@@ -64,6 +64,14 @@ export default function() {
     provide("__bake_parent_context", value);
   }
 
+  function injectValidations() {
+    return inject("__bake_validations");
+  }
+
+  function provideValidations(value) {
+    provide("__bake_validations", value);
+  }
+
   return {
     injectPath,
     providePath,
@@ -79,6 +87,8 @@ export default function() {
     injectPageContext,
     providePageContext,
     injectParentContext,
-    provideParentContext
+    provideParentContext,
+    injectValidations,
+    provideValidations
   };
 }

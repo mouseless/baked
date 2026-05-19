@@ -1,6 +1,6 @@
 import { useLocalization } from "#imports";
 
-export default function({ formData }) {
+export default function({ model }) {
   const { localize: lc } = useLocalization({ group: "ValidatorMessages" });
 
   const result = {};
@@ -12,7 +12,7 @@ export default function({ formData }) {
     severity: "error"
   };
 
-  if(formData.role === "Admin" && formData.status !== "Active") {
+  if(model.role === "Admin" && model.status !== "Active") {
     result.status = {
       ...item,
       persist: true,

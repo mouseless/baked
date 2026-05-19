@@ -21,11 +21,13 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const parentContext = context.injectParentContext();
-context.provideParentContext({ ...parentContext, name: schema.name });
+const validations = context.injectValidations();
 
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
+const validation = computed(() => validations?.value[schema.name] || {})
+
+context.provideValidations(validation);
 
 onAfterMountData(async() => {
   // parent component might set model to null during setup, because of that on

@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import { useComposableResolver } from "#imports";
 
-export default function useValidate({ formData, inputData, validateComposable = [], includeDefault = false }) {
+export default function useValidate({ model, inputs, validateComposable = [], includeDefault = false }) {
   const composableResolver = useComposableResolver();
 
   const composableKeys = includeDefault
@@ -14,8 +14,8 @@ export default function useValidate({ formData, inputData, validateComposable = 
     validators.reduce((acc, validation) => ({
       ...acc,
       ...validation({
-        inputData: inputData.value,
-        formData: formData.value
+        inputs: inputs.value,
+        model: model.value
       })
     }), {})
   );
