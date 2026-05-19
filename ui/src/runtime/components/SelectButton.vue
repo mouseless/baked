@@ -37,11 +37,12 @@
         </template>
       </SelectButton>
       <Message
+        v-if="validation"
         v-show="validation.message && validation.persist"
         :severity="validation.severity"
         variant="simple"
         size="small"
-        class="ml-3"
+        class="ml-2"
       >
         {{ validation.message || "" }}
       </Message>

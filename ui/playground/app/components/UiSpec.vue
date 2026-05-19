@@ -114,11 +114,11 @@ const { variants, noLoadingVariant, useModel, noValidationVariant } = defineProp
   testId: { type: String, default: "test" },
   fullPage: { type: Boolean, default: false },
   useModel: { type: Boolean, default: false },
-  noValidationVariant: { type: Boolean },
+  noValidationVariant: { type: Boolean, default: null },
   variantClass: { type: String, default: "inline-block" }
 });
 
-const useValidationVariant = noValidationVariant !== undefined ? !noValidationVariant : useModel;
+const useValidationVariant = noValidationVariant ? !noValidationVariant : useModel;
 const useLoadingVariant = !noLoadingVariant;
 
 const pageContext = reactive({});
@@ -132,15 +132,10 @@ const allVariants = computed(() => {
       name: "Validation",
       model: ref(),
       validation: {
-        name: "testInput",
-        validations: {
-          testInput: {
-            valid: false,
-            persist: true,
-            message: "test fail message",
-            severity: "error"
-          }
-        }
+        valid: false,
+        persist: true,
+        message: "this is an error message",
+        severity: "error"
       },
       descriptor: { ...variants[0].descriptor }
     });

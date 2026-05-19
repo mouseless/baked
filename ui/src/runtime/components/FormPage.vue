@@ -10,7 +10,7 @@
       >
         <Button
           v-tooltip.left="{
-            disabled: !validationOnTooltip,
+            disabled: !showValidationSummary,
             value: messages,
             pt: { text: 'text-sm' }
           }"
@@ -95,21 +95,20 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { title, submit, sections, validateComposable = [], validationOnTooltip = true } = schema;
+const { title, submit, sections, validateComposables = [], showValidationSummary = true } = schema;
 
-const formData = ref({});
+const model = ref({});
 const readyData = ref({});
-const inputData = ref(sections.flatMap(section => section.inputGroups.flatMap(group => group.inputs)));
+const inputs = ref(sections.flatMap(section => section.inputGroups.flatMap(group => group.inputs)));
 const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
 
 const { isValid, messages, validations } = useValidate({
-  model: formData,
-  inputs: inputData,
-  validateComposable,
-  includeDefault: true
+  model,
+  inputs,
+  composables: validateComposables
 });
 
-context.provideValidations(validations)
+context.provideValidations(validations);
 
 function splitByWide(inputGroups) {
   const result = [];
@@ -136,13 +135,13 @@ function onReady(key, value) {
 }
 
 function onChanged({ values }) {
-  Object.assign(formData.value, values);
+  Object.assign(model.value, values);
 }
 
 function onSubmit() {
   if(!ready.value) { return; }
 
-  emit("submit", formData.value);
+  emit("submit", model.value);
 }
 </script>
 <style>

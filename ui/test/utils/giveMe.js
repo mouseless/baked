@@ -346,7 +346,6 @@ export default {
     };
   },
 
-
   aField({ key, label, wide, component, testId } = {}) {
     key = $(key, "data");
     label = $(label, "Spec: Data");

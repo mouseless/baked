@@ -2,6 +2,7 @@
   <UiSpec
     :variants
     no-loading-variant
+    no-validation-variant
     use-model
   >
     <Message severity="info">

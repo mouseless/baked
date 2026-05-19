@@ -37,8 +37,8 @@ public class FormSampleDomainOverrideFeature : IFeature
                 {
                     fp.Schema.ForEachInputGroup(g => g.Wide = true);
                     fp.Schema.Sections[0].InputGroups.Move("name", toTop: true);
-                    fp.Schema.ValidateComposable ??= [];
-                    fp.Schema.ValidateComposable.Add("useValidateSampleForm");
+                    fp.Schema.ValidateComposables ??= [];
+                    fp.Schema.ValidateComposables.Add("useValidateSampleForm");
                 }
             );
 

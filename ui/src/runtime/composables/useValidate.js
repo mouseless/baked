@@ -1,14 +1,10 @@
 import { computed } from "vue";
 import { useComposableResolver } from "#imports";
 
-export default function useValidate({ model, inputs, validateComposable = [], includeDefault = false }) {
+export default function useValidate({ model, inputs, composables = [] }) {
   const composableResolver = useComposableResolver();
 
-  const composableKeys = includeDefault
-    ? ["useValidateDefault", ...validateComposable]
-    : [...validateComposable];
-
-  const validators = composableKeys.map(vc => composableResolver.resolve(vc).default);
+  const validators = ["useValidateDefault", ...composables].map(vc => composableResolver.resolve(vc).default);
 
   const validations = computed(() =>
     validators.reduce((acc, validation) => ({

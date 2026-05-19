@@ -19,11 +19,13 @@
         @update:model-value="onUpdate"
       />
       <Message
+        v-if="validation"
         v-show="validation.message && validation.persist"
         :severity="validation.severity"
         variant="simple"
         size="small"
         class="ml-2"
+        :class="labelMode !== 'ifta' ? 'absolute' : ''"
       >
         {{ validation.message || "" }}
       </Message>

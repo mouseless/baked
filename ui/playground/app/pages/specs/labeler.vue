@@ -3,6 +3,7 @@
     :variants
     use-model
     no-loading-variant
+    no-validation-variant
   />
 </template>
 <script setup>
