@@ -31,11 +31,6 @@ export default function useValidateDefault({ inputData, formData }) {
       result[input.name].message = lc("{label} cannot be empty", { label: l(label) });
     }
 
-    if(input.name == "surname" && formData.surname == "huhu") {
-      result.surname.message = "huhuhuuhh";
-      result.surname.valid = false;
-    }
-
     return input;
   });
 

@@ -172,7 +172,6 @@
       }
     ],
     "validateComposable": [
-      "useValidateDefault",
       "useValidateSampleForm"
     ],
     "path": "form-sample/parents/new"

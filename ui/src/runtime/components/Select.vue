@@ -33,12 +33,12 @@
         </template>
       </Select>
       <Message
-        v-show="validator[name]?.message && validator[name]?.persist"
-        :severity="validator[name]?.severity"
+        v-show="validations[name]?.message && validations[name]?.persist"
+        :severity="validations[name]?.severity"
         variant="simple"
         size="small"
       >
-        {{ validator[name]?.message || "" }}
+        {{ validations[name]?.message || "" }}
       </Message>
     </Labeler>
   </AwaitLoading>
@@ -62,7 +62,7 @@ const model = defineModel({ type: null, required: true });
 const { filter, label, labelMode, validateLabel, labelVariant, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
-const { validator = {}, name } = context.injectParentContext();
+const { validations = {}, name } = context.injectParentContext();
 const selected = ref();
 
 // two way binding between model and selected

@@ -37,13 +37,13 @@
         </template>
       </SelectButton>
       <Message
-        v-show="validator[name]?.message && validator[name]?.persist"
-        :severity="validator[name]?.severity"
+        v-show="validations[name]?.message && validations[name]?.persist"
+        :severity="validations[name]?.severity"
         variant="simple"
         size="small"
         class="ml-3"
       >
-        {{ validator[name]?.message || "" }}
+        {{ validations[name]?.message || "" }}
       </Message>
     </Labeler>
   </AwaitLoading>
@@ -77,7 +77,7 @@ const {
 } = schema;
 
 const path = context.injectPath();
-const { validator = {}, name } = context.injectParentContext();
+const { validations = {}, name } = context.injectParentContext();
 const selected = ref();
 
 watch(

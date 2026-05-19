@@ -56,12 +56,16 @@
               :class="`variantClass ${variant.class || ''}`"
             >
               <!-- renders given variants -->
-              <Bake
+              <ProvideValidation
                 v-if="variant.model"
-                v-model="variant.model.value"
-                :name="`variants/${camelize(variant.name)}`"
-                :descriptor="prepareDescriptor(variant)"
-              />
+                :validation="variant.validation"
+              >
+                <Bake
+                  v-model="variant.model.value"
+                  :name="`variants/${camelize(variant.name)}`"
+                  :descriptor="prepareDescriptor(variant)"
+                />
+              </ProvideValidation>
               <!-- draws remaining variant, e.g., loading variant -->
               <Bake
                 v-else
@@ -96,36 +100,59 @@
   </div>
 </template>
 <script setup>
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { Divider } from "primevue";
 import { useContext, useEvents } from "#imports";
 
 const context = useContext();
 const events = useEvents();
 
-const { variants, noLoadingVariant } = defineProps({
+const { variants, noLoadingVariant, useModel, noValidationVariant } = defineProps({
   variants: { type: Array, default: () => [] },
   noLoadingVariant: { type: Boolean, default: false },
   vertical: { type: Boolean, default: false },
   testId: { type: String, default: "test" },
   fullPage: { type: Boolean, default: false },
   useModel: { type: Boolean, default: false },
+  noValidationVariant: { type: Boolean },
   variantClass: { type: String, default: "inline-block" }
 });
 
+const useValidationVariant = noValidationVariant !== undefined ? !noValidationVariant : useModel;
+const useLoadingVariant = !noLoadingVariant;
+
 const pageContext = reactive({});
 const allVariants = computed(() => {
-  if(noLoadingVariant) { return variants; }
   if(variants.length === 0) { return variants; }
 
-  const result = [
-    ...variants,
-    {
+  const result = [ ...variants ];
+
+  if(useValidationVariant) {
+    result.push({
+      name: "Validation",
+      model: ref(),
+      validation: {
+        name: "testInput",
+        validations: {
+          testInput: {
+            valid: false,
+            persist: true,
+            message: "test fail message",
+            severity: "error"
+          }
+        }
+      },
+      descriptor: { ...variants[0].descriptor }
+    });
+  }
+
+  if(useLoadingVariant) {
+    result.push({
       name: "Loading",
       delay: 60 * 1000,
       descriptor: { ...variants[0].descriptor }
-    }
-  ];
+    });
+  }
 
   return result;
 });

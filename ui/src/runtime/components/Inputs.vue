@@ -6,8 +6,7 @@
     :schema="input"
     :class="inputClass"
     :invalid="invalid(input.name)"
-    :required="validator[input.name]?.required"
-    :validation="validator[input.name]"
+    :required="validations[input.name]?.required"
     @blur="touched(input.name)"
   />
 </template>
@@ -26,7 +25,7 @@ const { inputs } = defineProps({
 const emit = defineEmits(["ready", "changed"]);
 
 const parentPath = context.injectPath();
-const { validator = {} } = context.injectParentContext();
+const { validations = {} } = context.injectParentContext();
 
 const inputEvents = ref({});
 const models = reactive({});
@@ -92,12 +91,12 @@ function touched(key) {
 }
 
 function invalid(input) {
-  if(!validator.value || !Object.values(validator.value).length) { return; }
+  if(!validations.value || !Object.values(validations.value).length) { return; }
 
-  if(!validator.value[input].valid && validator.value[input].persist) {
+  if(!validations.value[input].valid && validations.value[input].persist) {
     return true;
   }
 
-  return !validator.value[input].valid && inputEvents.value[input]?.touched || false;
+  return !validations.value[input].valid && inputEvents.value[input]?.touched || false;
 }
 </script>
