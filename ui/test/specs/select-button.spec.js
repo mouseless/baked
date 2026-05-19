@@ -239,3 +239,14 @@ test.describe("Target Prop", () => {
     await expect(model).toHaveText("{ \"id\": \"VALUE_B\" }");
   });
 });
+
+test.describe("Validation", () => {
+  const id = "Validation";
+
+  test("component shows the message component under the input text", async({ page }) => {
+    const component = page.getByTestId(id);
+    const message = component.locator(primevue.message.base);
+
+    await expect(message).toHaveText("this is an error message");
+  });
+});
