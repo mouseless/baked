@@ -395,13 +395,13 @@ export default {
     };
   },
 
-  aFormPage({ action, title, description, submit, inputs, sections, validateComposable, validationOnTooltip } = {}) {
+  aFormPage({ action, title, description, submit, inputs, sections, validateComposables, showValidateSummary } = {}) {
     title = this.aPageTitle({ title, description });
     submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
     sections = $(sections, [this.aFormPageSection({ inputs })]);
-    validateComposable = $(validateComposable, ["useFakeValidateDefault"]);
-    validationOnTooltip = $(validationOnTooltip, true);
+    validateComposables = $(validateComposables, ["useFakeDefaultValidate"]);
+    showValidateSummary = $(showValidateSummary, true);
 
     return {
       type: "FormPage",
@@ -409,8 +409,8 @@ export default {
         title,
         submit,
         sections,
-        validateComposable,
-        validationOnTooltip
+        validateComposables,
+        showValidateSummary
       },
       action
     };

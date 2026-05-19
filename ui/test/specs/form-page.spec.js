@@ -126,50 +126,55 @@ test.describe("Validations", () => {
     await expect(input1).toContainClass("p-invalid");
   });
 
-  // test("remove red border on required fields when the user focus again ", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //   const input1 = component.locator(primevue.inputText.base).nth(0);
-  //   const input2 = component.locator(primevue.inputText.base).nth(1);
+  test("remove red border on required fields when the user focus again ", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("param-1");
+    const input2 = component.getByTestId("param-2");
 
-  //   await input1.focus();
-  //   await input2.focus();
-  //   await input1.focus();
+    await input1.focus();
+    await input2.focus();
+    await input1.focus();
 
-  //   await expect(input1).toContainClass("p-invalid");
-  // });
+    await expect(input1).toContainClass("p-invalid");
+  });
 
-  // test("visual", { tag: "@visual" }, async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //   const input1 = component.locator(primevue.inputText.base).nth(0);
-  //   const input2 = component.locator(primevue.inputText.base).nth(1);
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("param-1");
+    const input2 = component.getByTestId("param-2");
 
-  //   await input1.focus();
-  //   await input2.focus();
+    await input1.focus();
+    await input2.focus();
 
-  //   await expect(component).toHaveScreenshot();
-  // });
+    await expect(component).toHaveScreenshot();
+  });
 
-  // test("disable form submitting when return invalid state by non-required input", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //   const input1 = component.locator(primevue.inputText.base).nth(0);
-  //   const input2 = component.locator(primevue.inputText.base).nth(1);
-  //   const button = component.locator(primevue.button.base).nth(1);
+  test("disable form submitting when return invalid state by non-required input", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("param-1");
+    const input2 = component.getByTestId("param-2");
+    const button = component.locator(primevue.button.base).nth(1);
 
-  //   await input1.fill("text");
-  //   await input2.fill("error");
+    await input1.fill("text");
+    await input2.fill("error");
 
-  //   await expect(button).toBeDisabled();
-  // });
+    await expect(button).toBeDisabled();
+  });
 
-  // test("show a message when validators return a not valid input with message", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //   const input = component.locator(primevue.inputText.base).nth(1);
-  //   const message = component.locator(primevue.message.base);
+  test("show validation result on submit button with tooltip", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input2 = component.getByTestId("param-2");
+    const button = component.locator(primevue.button.base).nth(1);
 
-  //   await input.fill("error");
+    await input2.fill("error");
+    await button.scrollIntoViewIfNeeded();
+    await button.hover();
 
-  //   await expect(message.getByText("param-2 value is error")).toBeVisible();
-  // });
+    await expect(button).toBeDisabled();
+    await expect(page.locator(primevue.tooltip.left)).toBeVisible();
+    await expect(page.locator(primevue.tooltip.left)).toContainText("Param-1 cannot be empty");
+    await expect(page.locator(primevue.tooltip.left)).toContainText("Param-2 value is error");
+  });
 
 });
 
