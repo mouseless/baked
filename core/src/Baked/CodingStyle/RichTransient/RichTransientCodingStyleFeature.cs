@@ -37,7 +37,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     set(c.Type, new ApiInputAttribute());
                     set(c.Type, new LocatableAttribute());
                 },
-                order: -100
+                order: 10
             );
             builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
                 when: c => c.Type.Has<RichTransientAttribute>(),

@@ -90,7 +90,6 @@ public class DomainAssembliesBusinessFeature(
             );
 
             builder.Conventions.SetTypeAttribute(
-                when: c => setNamespaceWhen(c.Type),
                 attribute: context =>
                 {
                     var @namespace = context.Type.Namespace ?? string.Empty;
@@ -106,9 +105,10 @@ public class DomainAssembliesBusinessFeature(
 
                     return new NamespaceAttribute(@namespace);
                 },
-                order: int.MinValue + 10
+                when: c => setNamespaceWhen(c.Type)
             );
             builder.Conventions.SetTypeAttribute(
+                attribute: () => new ServiceAttribute(),
                 when: c =>
                     c.Type.IsPublic &&
                     !c.Type.IsValueType &&
@@ -117,34 +117,29 @@ public class DomainAssembliesBusinessFeature(
                     !c.Type.IsGenericTypeDefinition &&
                     !c.Type.IsAssignableTo<IEnumerable>() &&
                     c.Type.TryGetMembers(out var members) &&
-                    !members.Methods.Contains("<Clone>$"), // if type is record
-                attribute: () => new ServiceAttribute(),
-                order: int.MinValue + 10
+                    !members.Methods.Contains("<Clone>$") // if type is record
             );
 
             builder.Conventions.SetMethodAttribute(
+                attribute: () => new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.DeclaringType is not null &&
                     c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
-                    !metadata.Has<ServiceAttribute>(),
-                attribute: () => new ExternalAttribute(),
-                order: int.MinValue + 10
+                    !metadata.Has<ServiceAttribute>()
             );
 
             builder.Conventions.SetMethodAttribute(
+                attribute: () => new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.BaseDefinition is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType.TryGetMetadata(out var metadata) &&
-                    !metadata.Has<ServiceAttribute>(),
-                attribute: () => new ExternalAttribute(),
-                order: int.MinValue + 10
+                    !metadata.Has<ServiceAttribute>()
             );
 
             builder.Conventions.SetTypeAttribute(
-                when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>)),
                 attribute: () => new CasterAttribute(),
-                order: int.MinValue + 10
+                when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
             );
         });
 

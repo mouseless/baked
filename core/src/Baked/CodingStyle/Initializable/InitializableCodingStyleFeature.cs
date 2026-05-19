@@ -21,13 +21,11 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
                     _initializerNames.Any(i => members.Methods.Contains(i)),
-                attribute: () => new TransientAttribute(),
-                order: int.MinValue + 20
+                attribute: () => new TransientAttribute()
             );
             builder.Conventions.SetMethodAttribute(
                 when: c => _initializerNames.Contains(c.Method.Name),
-                attribute: () => new InitializerAttribute(),
-                order: int.MinValue + 20
+                attribute: () => new InitializerAttribute()
             );
 
             builder.Conventions.Add(new AddInitializerParametersToQueryConvention());

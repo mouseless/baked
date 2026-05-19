@@ -26,7 +26,7 @@ public class QueryCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     var locatable = c.Type.Get<LocatableAttribute>();
                     queryType.Apply(qt => locatable.QueryType = qt);
                 },
-                order: -10
+                order: 30
             );
 
             builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
