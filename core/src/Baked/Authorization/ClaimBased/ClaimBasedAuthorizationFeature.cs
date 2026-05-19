@@ -23,10 +23,10 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
                 attribute: c => c.Type.Get<RequireUserAttribute>()
             );
 
-            builder.Conventions.Add(new AllowAnonymousIsAllowAnonymousConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new RequireUserIsAuthorizeConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention(), order: RestApiLayer.MaxConventionOrder);
+            builder.Conventions.Add(new AllowAnonymousIsAllowAnonymousConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+            builder.Conventions.Add(new RequireUserIsAuthorizeConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+            builder.Conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims), order: RestApiLayer.MaxConventionOrder - 10);
+            builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention(), order: RestApiLayer.MaxConventionOrder - 10);
         });
 
         configurator.Domain.ConfigureExportConfigurations(exports =>
