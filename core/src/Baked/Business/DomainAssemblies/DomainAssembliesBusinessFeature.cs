@@ -143,25 +143,6 @@ public class DomainAssembliesBusinessFeature(
             );
         });
 
-        configurator.Domain.ConfigureExportConfigurations(exports =>
-        {
-            exports.Build("Locatable", query =>
-            {
-                query.Include<LocatableAttribute>()
-                    .AddProperty(locatable => new(locatable.QueryType));
-
-                query.TypeGroupName(_ => "index");
-            });
-
-            exports.Build("Query", query =>
-            {
-                query.Include<QueryAttribute>()
-                    .AddProperty(query => new(query.LocatableType));
-
-                query.TypeGroupName(_ => "index");
-            });
-        });
-
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
