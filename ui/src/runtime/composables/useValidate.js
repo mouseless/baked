@@ -4,7 +4,7 @@ import { useComposableResolver } from "#imports";
 export default function useValidate({ model, inputs, composables = [] }) {
   const composableResolver = useComposableResolver();
 
-  const validators = ["useValidateDefault", ...composables].map(vc => composableResolver.resolve(vc).default);
+  const validators = ["useDefaultValidate", ...composables].map(vc => composableResolver.resolve(vc).default);
 
   const validations = computed(() =>
     validators.reduce((acc, validation) => ({

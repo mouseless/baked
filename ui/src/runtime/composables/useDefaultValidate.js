@@ -2,7 +2,7 @@ import { useLocalization } from "#imports";
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
-export default function useValidateDefault({ inputs, model }) {
+export default function useDefaultValidate({ inputs, model }) {
   const { localize: lc } = useLocalization({ group: "ValidatorMessages" });
   const { localize: l } = useLocalization({ });
 
