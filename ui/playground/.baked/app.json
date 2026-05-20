@@ -25,6 +25,10 @@
         },
         {
           "method": "GET",
+          "path": "exception-samples/handled"
+        },
+        {
+          "method": "GET",
           "path": "cache-samples/scoped"
         },
         {

@@ -5,5 +5,8 @@ exception-samples @controller-model {
       @parameter-model required=#true in="query"
     }
   }
+  get-handled {
+    @action-model route="GET /exception-samples/handled" anonymous=#true
+  }
 }
 

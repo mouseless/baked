@@ -61,6 +61,15 @@ const variants = [
     })
   },
   {
+    name: "Data Error",
+    descriptor: giveMe.anExpected({
+      testId: "test",
+      data: giveMe.aRemoteData({
+        path: "/exception-samples/handled"
+      })
+    })
+  },
+  {
     name: "Model",
     descriptor: giveMe.anExpectedInput({ testId: "input" }),
     model: ref("Model Data")
