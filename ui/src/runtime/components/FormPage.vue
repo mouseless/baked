@@ -84,11 +84,12 @@
 </template>
 <script setup>
 import { computed, ref } from "vue";
-import { useLocalization, useContext, useValidate } from "#imports";
+import { useLocalization, useContext, useValidation } from "#imports";
 import { Button, Contents, Inputs } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
+const { validate } = useValidation();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
@@ -102,7 +103,7 @@ const readyData = ref({});
 const inputs = ref(sections.flatMap(section => section.inputGroups.flatMap(group => group.inputs)));
 const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
 
-const { isValid, messages, validations } = useValidate({
+const { isValid, messages, validations } = validate({
   model,
   inputs,
   composables: validateComposables

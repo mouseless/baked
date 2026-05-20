@@ -81,11 +81,12 @@
 <script setup>
 import { ref, computed } from "vue";
 import { Dialog } from "primevue";
-import { useLocalization, useContext, useValidate } from "#imports";
+import { useLocalization, useContext, useValidation } from "#imports";
 import { Button, Inputs } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
+const { validate } = useValidation();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
@@ -101,9 +102,9 @@ const visible = ref(false);
 
 const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
 
-const { isValid, messages, validations } = useValidate({
-  model,
+const { isValid, messages, validations } = validate({
   inputs: ref(inputs),
+  model,
   composables: validateComposables
 });
 
