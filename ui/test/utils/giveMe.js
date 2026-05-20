@@ -839,10 +839,12 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogOptions, inputs, submit, title, action }) {
+  aSimpleForm({ dialogOptions, inputs, submit, title, action, validateComposables, showValidateSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
+    validateComposables = $(validateComposables, ["useFakeDefaultValidate"]);
+    showValidateSummary = $(showValidateSummary, true);
 
     return {
       type: "SimpleForm",
@@ -850,7 +852,9 @@ export default {
         dialogOptions,
         inputs,
         submit,
-        title
+        title,
+        validateComposables,
+        showValidateSummary
       },
       action
     };

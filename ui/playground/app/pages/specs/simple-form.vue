@@ -17,15 +17,14 @@ const variants = [
           composable: "useShowMessage",
           options: giveMe.aContextData({
             key: "model",
-            prop: "text",
+            prop: "input",
             targetProp: "message"
           })
         })
       ]),
       inputs: [
         giveMe.anInput({
-          name: "text",
-          component: giveMe.anExpectedInput({ testId: "input" }),
+          name: "input",
           required: true
         })
       ],
@@ -38,18 +37,9 @@ const variants = [
     descriptor: giveMe.aSimpleForm({
       action: giveMe.aLocalAction({ showMessage: "ok" }),
       inputs: [
-        giveMe.anInput({
-          name: "param-1",
-          component: giveMe.anExpectedInput()
-        }),
-        giveMe.anInput({
-          name: "param-2",
-          component: giveMe.anExpectedInput()
-        }),
-        giveMe.anInput({
-          name: "param-3",
-          component: giveMe.anExpectedInput()
-        })
+        giveMe.anInput({ name: "param-1" }),
+        giveMe.anInput({ name: "param-2" }),
+        giveMe.anInput({ name: "param-3" })
       ]
     })
   },
@@ -74,13 +64,29 @@ const variants = [
       }),
       inputs: [
         giveMe.anInput({
-          name: "text",
-          component: giveMe.anExpectedInput({ testId: "input" }),
+          name: "input",
           required: true
         })
       ],
       submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
       title: "Spec: Simple Form"
+    })
+  },
+  {
+    name: "Validation",
+    descriptor: giveMe.aSimpleForm({
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [
+        giveMe.anInput({
+          name: "input-1",
+          numeric: true,
+          required: true
+        }),
+        giveMe.anInput({
+          name: "input-2",
+          numeric: true
+        })
+      ]
     })
   }
 ];
