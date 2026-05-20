@@ -16,18 +16,22 @@ const variants = [
       inputs: [
         giveMe.anInput({
           name: "param-1",
-          required: true,
           component: giveMe.anInputText({})
         }),
         giveMe.anInput({
           name: "param-2",
-          component: giveMe.anInputNumber({})
+          component: giveMe.anInputNumber({
+            labeler: giveMe.aLabeler({
+              validateLabel: true
+            })
+          })
         }),
         giveMe.anInput({
           name: "param-3",
           component: giveMe.aSelectButton({})
         }),
         giveMe.anInput({
+          name: "param-4",
           component: giveMe.aSelect({
             allowEmpty: true
           })

@@ -7,8 +7,8 @@
     "No records found": "Kayıt bulunamadı"
   },
   "Labeler": {
-    "{label}_Required": "{label}",
-    "{label}_Optional": "{label} (Opsiyonel)"
+    "{ label }_Required": "{ label }",
+    "{ label }_Optional": "{ label } (Opsiyonel)"
   },
   "LanguageSwitcher": {
     "Languages": "Diller"
@@ -17,7 +17,7 @@
     "No item available!": "Hiçbir öğe mevcut değil!"
   },
   "Paginator": {
-    "Page {page}": "Sayfa {page}"
+    "Page { page }": "Sayfa { page }"
   },
   "TabbedPage": {
     "Select required values to view this page": "Bu sayfayı görüntülemek için gerekli seçimleri yapın"
@@ -30,7 +30,7 @@
     }
   },
   "ValidatorMessages": {
-    "{label} cannot be empty": "{label}  boş bırakılamaz",
+    "{ label } cannot be empty": "{ label }  boş bırakılamaz",
     "Admin role requires Active status": "Yönetici rolü Aktif durumunda olmalı"
   },
   "If you cannot reach the page you want please contact the system administrator": "İstediğiniz sayfaya ulaşamıyorsanız lütfen sistem yöneticisi ile iletişime geçin",

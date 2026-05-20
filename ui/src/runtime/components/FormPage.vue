@@ -104,7 +104,7 @@ const ready = computed(() => Object.values(readyData.value).every(v => v) && isV
 
 const { isValid, messages } = validate({
   model,
-  inputs,
+  inputs: inputs.value,
   composables: validateComposables
 });
 

@@ -102,7 +102,7 @@ const visible = ref(false);
 const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
 
 const { isValid, messages } = validate({
-  inputs: ref(inputs),
+  inputs,
   model,
   composables: validateComposables
 });

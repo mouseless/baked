@@ -36,17 +36,19 @@
           <span>{{ getOptionLabel(slotProps) }}</span>
         </template>
       </SelectButton>
+      <template #message>
+        <Message
+          v-if="validation"
+          v-show="validation.message && validation.persist"
+          :severity="validation.severity"
+          variant="simple"
+          size="small"
+          class="ml-2"
+        >
+          {{ validation.message || "" }}
+        </Message>
+      </template>
     </Labeler>
-    <Message
-      v-if="validation"
-      v-show="validation.message && validation.persist"
-      :severity="validation.severity"
-      variant="simple"
-      size="small"
-      class="ml-2"
-    >
-      {{ validation.message || "" }}
-    </Message>
   </AwaitLoading>
 </template>
 <script setup>
