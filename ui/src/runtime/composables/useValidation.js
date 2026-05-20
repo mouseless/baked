@@ -6,7 +6,15 @@ export default function useValidation() {
   const composableResolver = useComposableResolver();
 
   function validate({ model, inputs, composables = [] }) {
-    const validators = ["useDefaultValidate", ...composables].map(vc => composableResolver.resolve(vc).default);
+    const validators = ["useDefaultValidate", ...composables].map(vc => {
+      try {
+        return composableResolver.resolve(vc).default;
+      } catch {
+        console.error(`${vc} not loaded`);
+
+        return;
+      }
+    }).filter(v => v);
 
     const validations = computed(() =>
       validators.reduce((acc, validation) => ({
