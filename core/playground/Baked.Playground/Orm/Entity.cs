@@ -31,6 +31,8 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
     public object? Dynamic { get; private set; } = default!;
     public Enumeration? Enum { get; private set; } = default!;
     public DateTime? DateTime { get; private set; } = default!;
+    public DateOnly? DateOnly { get; private set; } = default!;
+    public TimeOnly? TimeOnly { get; private set; } = default!;
 
     public Entity With(
         Guid? guid = default,
@@ -41,7 +43,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         Uri? uri = default,
         object? @dynamic = default,
         Enumeration? @enum = default,
-        DateTime? dateTime = default
+        DateTime? dateTime = default,
+        DateOnly? dateOnly = default,
+        TimeOnly? timeOnly = default
     )
     {
         Set(
@@ -53,7 +57,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
             uri: uri,
             @dynamic: @dynamic,
             @enum: @enum,
-            dateTime: dateTime
+            dateTime: dateTime,
+            dateOnly: dateOnly,
+            timeOnly: timeOnly
         );
 
         return _context.Insert(this);
@@ -137,7 +143,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         Uri? uri = default,
         object? @dynamic = default,
         Enumeration? @enum = default,
-        DateTime? dateTime = default
+        DateTime? dateTime = default,
+        DateOnly? dateOnly = default,
+        TimeOnly? timeOnly = default
     )
     {
         if (unique is not null && unique != Unique && _entities.AnyByUnique(unique))
@@ -159,6 +167,8 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         Dynamic = @dynamic ?? Dynamic;
         Enum = @enum ?? Enum;
         DateTime = dateTime ?? DateTime;
+        DateOnly = dateOnly ?? DateOnly;
+        TimeOnly = timeOnly ?? TimeOnly;
     }
 
     public void Delete()

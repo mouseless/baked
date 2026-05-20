@@ -11,6 +11,8 @@ entity {
     dynamic @parameter-model
     enum @parameter-model
     date-time @parameter-model
+    date-only @parameter-model
+    time-only @parameter-model
   }
   update {
     @action-model route="PUT /entities/{id}/" required-claims="BaseA, BaseB"
