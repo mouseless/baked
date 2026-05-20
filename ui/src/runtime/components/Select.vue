@@ -1,5 +1,5 @@
 <template>
-  <AwaitLoading>
+  <MultiSlot>
     <template #loading>
       <div class="min-w-40">
         <Skeleton class="min-h-10" />
@@ -32,24 +32,24 @@
           <span>{{ getOptionLabel(slotProps) }}</span>
         </template>
       </Select>
-      <Message
-        v-if="validation"
-        v-show="validation.message && validation.persist"
-        :severity="validation.severity"
-        variant="simple"
-        size="small"
-        class="ml-2"
-      >
-        {{ validation.message || "" }}
-      </Message>
     </Labeler>
-  </AwaitLoading>
+    <Message
+      v-if="validation"
+      v-show="validation.message && validation.persist"
+      :severity="validation.severity"
+      variant="simple"
+      size="small"
+      class="ml-2"
+    >
+      {{ validation.message || "" }}
+    </Message>
+  </MultiSlot>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { Message, Select, Skeleton } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
-import { AwaitLoading, Labeler } from "#components";
+import { MultiSlot, Labeler } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
