@@ -1,7 +1,8 @@
 import { computed } from "vue";
-import { useComposableResolver } from "#imports";
+import { useContext, useComposableResolver } from "#imports";
 
 export default function useValidation() {
+  const context = useContext();
   const composableResolver = useComposableResolver();
 
   function validate({ model, inputs, composables = [] }) {
@@ -16,6 +17,8 @@ export default function useValidation() {
         })
       }), {})
     );
+
+    context.provideValidations(validations);
 
     const isValid = computed(() =>
       Object.values(validations.value).every(v => v.valid)

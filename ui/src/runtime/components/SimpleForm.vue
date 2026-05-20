@@ -81,10 +81,9 @@
 <script setup>
 import { ref, computed } from "vue";
 import { Dialog } from "primevue";
-import { useLocalization, useContext, useValidation } from "#imports";
+import { useLocalization, useValidation } from "#imports";
 import { Button, Inputs } from "#components";
 
-const context = useContext();
 const { localize: l } = useLocalization();
 const { validate } = useValidation();
 
@@ -102,13 +101,11 @@ const visible = ref(false);
 
 const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
 
-const { isValid, messages, validations } = validate({
+const { isValid, messages } = validate({
   inputs: ref(inputs),
   model,
   composables: validateComposables
 });
-
-context.provideValidations(validations);
 
 function onReady(value) {
   readyData.value = value;
