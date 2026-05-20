@@ -6,7 +6,6 @@ export default function({ model }) {
   const result = {};
   const item = {
     message: "",
-    required: false,
     valid: false,
     persist: false,
     severity: "error"

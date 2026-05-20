@@ -8,7 +8,6 @@ export default function useDefaultValidate({ inputs, model }) {
 
   const result = {};
   const validation = {
-    required: false,
     valid: false,
     persist: false,
     severity: "error",

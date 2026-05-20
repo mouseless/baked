@@ -1,22 +1,27 @@
 <template>
-  <component
-    :is="labelComponent"
-    :dt
-    :pt
-    :variant
-  >
-    <template #default>
-      <slot />
-      <label
-        v-if="labelComponent !== 'div'"
-        class="max-sm:truncate max-sm:w-5/6"
-        :for="path"
-      >
-        {{ localizeLabel }}
-      </label>
-    </template>
-  </component>
+  <div class="flex flex-col">
+    <component
+      :is="labelComponent"
+      v-bind="$attrs"
+      :dt
+      :pt
+      :variant
+    >
+      <template #default>
+        <slot />
+        <label
+          v-if="labelComponent !== 'div'"
+          class="max-sm:truncate max-sm:w-5/6"
+          :for="path"
+        >
+          {{ localizeLabel }}
+        </label>
+      </template>
+    </component>
+    <slot name="message" />
+  </div>
 </template>
+
 <script setup>
 import { computed } from "vue";
 import { FloatLabel, IftaLabel } from "primevue";
@@ -30,8 +35,8 @@ const { label, mode, required, validateLabel } = defineProps({
   path: { type: String, required: true },
   mode: { type: String, default: null },
   variant: { type: String, default: "on" },
-  pt: { type: Object, default: () => { } },
-  dt: { type: Object, default: () => { } },
+  pt: { type: Object, default: () => ({ }) },
+  dt: { type: Object, default: () => ({ }) },
   required: { type: Boolean, default: false },
   validateLabel: { type: Boolean, default: false }
 });
