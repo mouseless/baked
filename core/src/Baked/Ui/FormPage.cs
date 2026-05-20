@@ -6,7 +6,6 @@ public record FormPage(string Path, IComponentDescriptor Title, Button Submit)
     public IComponentDescriptor Title { get; set; } = Title;
     public Button Submit { get; set; } = Submit;
     public List<Section> Sections { get; init; } = [];
-
     public List<string>? ValidateComposables { get; set; }
     public bool? ShowValidationSummary { get; set; }
 
