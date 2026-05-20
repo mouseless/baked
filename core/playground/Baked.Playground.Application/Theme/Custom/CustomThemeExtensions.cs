@@ -51,6 +51,7 @@ public static class CustomThemeExtensions
 
                 // Form
                 r => r.Child("/specs/simple-form", "/specs") with { Icon = "pi pi-microchip", Section = "Form" },
+                r => r.Child("/specs/form-validation", "/specs") with { Icon = "pi pi-microchip", Section = "Form" },
 
                 // Input
                 r => r.Child("/specs/button", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },

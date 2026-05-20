@@ -1,5 +1,5 @@
 <template>
-  <MultiSlot>
+  <AwaitLoading>
     <template #loading>
       <div class="min-w-60">
         <Skeleton class="min-h-10" />
@@ -47,13 +47,13 @@
     >
       {{ validation.message || "" }}
     </Message>
-  </MultiSlot>
+  </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { Message, SelectButton, Skeleton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
-import { MultiSlot, Labeler } from "#components";
+import { AwaitLoading, Labeler } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();

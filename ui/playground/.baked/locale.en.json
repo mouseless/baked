@@ -45,6 +45,8 @@
   "/specs/fieldset:Title": "Fieldset",
   "/specs/form-page:Description": "Renders a form as a page",
   "/specs/form-page:Title": "Form Page",
+  "/specs/form-validation:Description": "Showcases form validation variants",
+  "/specs/form-validation:Title": "Form Validation",
   "/specs/header:Description": "Renders a breadcrumb",
   "/specs/header:Title": "Header",
   "/specs/icon:Description": "Displays built-in icons",

@@ -215,6 +215,12 @@
             "title": "/specs/simple-form:Title",
             "parentRoute": "/specs"
           },
+          "/specs/form-validation": {
+            "route": "/specs/form-validation",
+            "icon": "pi pi-microchip",
+            "title": "/specs/form-validation:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/button": {
             "route": "/specs/button",
             "icon": "pi pi-microchip",
