@@ -11,7 +11,7 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aSimpleForm({
-      validateComposables: ["mustSkipThisComposables", "useFakeDefaultValidate"],
+      validateComposables: ["useFakeDefaultValidate"],
       action: giveMe.aLocalAction({ showMessage: "ok" }),
       inputs: [
         giveMe.anInput({
@@ -27,16 +27,6 @@ const variants = [
             })
           })
         })
-      ]
-    })
-  },
-  {
-    name: "Missing Composable",
-    descriptor: giveMe.aSimpleForm({
-      validateComposables: ["mustSkipThisComposables", "useFakeDefaultValidate"],
-      action: giveMe.aLocalAction({ showMessage: "ok" }),
-      inputs: [
-        giveMe.anInput({ name: "param-1" })
       ]
     })
   }

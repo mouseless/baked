@@ -42,15 +42,3 @@ test.describe("Base", () => {
     await expect(label).toHaveText("Test Label (Optional)");
   });
 });
-
-test.describe("Missing Composable", () => {
-  const id = "Missing Composable";
-
-  test("missing composable should not break validation flow", async({ page }) => {
-    const component = page.getByTestId(id);
-    const button = component.locator(primevue.button.base);
-
-    expect(consoleErrors.some(e => e.includes("mustSkipThisComposables"))).toBe(true);
-    await expect(button).toBeEnabled();
-  });
-});

@@ -5,50 +5,40 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <Labeler
-      :label
-      :path
-    >
-      <Select
-        v-bind="$attrs"
-        v-model="selected"
-        :input-id="path"
-        :options="data"
-        :placeholder
-        :show-clear
-        :filter
-        :auto-filter-focus="filter"
-        :filter-fields="[optionLabel]"
-        reset-filter-on-hide
-        class="w-full"
+    <Validation>
+      <Labeler
+        :label
+        :path
       >
-        <template #value="slotProps">
-          <span>{{ getValueLabel(slotProps) }}</span>
-        </template>
-        <template #option="slotProps">
-          <span>{{ getOptionLabel(slotProps) }}</span>
-        </template>
-      </Select>
-      <template #message>
-        <Message
-          v-if="validation"
-          v-show="validation.message && validation.persist"
-          :severity="validation.severity"
-          variant="simple"
-          size="small"
-          class="ml-2"
+        <Select
+          v-bind="$attrs"
+          v-model="selected"
+          :input-id="path"
+          :options="data"
+          :placeholder
+          :show-clear
+          :filter
+          :auto-filter-focus="filter"
+          :filter-fields="[optionLabel]"
+          reset-filter-on-hide
+          class="w-full"
         >
-          {{ validation.message || "" }}
-        </Message>
-      </template>
-    </Labeler>
+          <template #value="slotProps">
+            <span>{{ getValueLabel(slotProps) }}</span>
+          </template>
+          <template #option="slotProps">
+            <span>{{ getOptionLabel(slotProps) }}</span>
+          </template>
+        </Select>
+      </Labeler>
+    </Validation>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { Message, Select, Skeleton } from "primevue";
+import { Select, Skeleton } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
-import { AwaitLoading, Labeler } from "#components";
+import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -63,7 +53,6 @@ const model = defineModel({ type: null, required: true });
 const { filter, label, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
-const validation = context.injectValidations();
 
 const selected = ref();
 const placeholder = label?.text ? l(label.text) : null;

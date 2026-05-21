@@ -119,7 +119,8 @@ const variants = [
                     label: giveMe.aLabel({ text: "Select Button", mode: "ifta" })
                   })
                 })
-              ]
+              ],
+              wide: true
             })
           ]
         })

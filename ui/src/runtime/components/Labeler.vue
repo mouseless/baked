@@ -1,29 +1,25 @@
 <template>
-  <div class="flex flex-col">
-    <component
-      :is="labelComponent"
-      v-bind="$attrs"
-      :dt
-      :pt
-      :variant
-    >
-      <template #default>
-        <slot />
-        <label
-          v-if="labelComponent !== 'div'"
-          class="max-sm:truncate max-sm:w-5/6"
-          :for="path"
-        >
-          {{ localizedText }}
-        </label>
-      </template>
-    </component>
-    <div v-if="$slots.message">
-      <slot name="message" />
-    </div>
-  </div>
+  <template v-if="!text">
+    <slot />
+  </template>
+  <component
+    :is="labelComponent"
+    v-else
+    :dt
+    :pt
+    :variant
+  >
+    <template #default>
+      <slot />
+      <label
+        class="max-sm:truncate max-sm:w-5/6"
+        :for="path"
+      >
+        {{ localizedText }}
+      </label>
+    </template>
+  </component>
 </template>
-
 <script setup>
 import { computed } from "vue";
 import { FloatLabel, IftaLabel } from "primevue";
@@ -54,15 +50,9 @@ const localizedText = computed(() => {
   return lc("{label} (Optional)", { label: l(text) });
 });
 const labelComponent = computed(() => {
-  if(!text) { return "div"; }
+  if(mode === "ifta") { return IftaLabel; }
+  if(mode === "float") { return FloatLabel; }
 
-  switch (mode) {
-  case "ifta":
-    return IftaLabel;
-  case "float":
-    return FloatLabel;
-  default:
-    return "div";
-  }
+  throw new Error("`mode` must be set when `text` is set");
 });
 </script>

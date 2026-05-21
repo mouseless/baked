@@ -25,7 +25,7 @@ const { inputs } = defineProps({
 const emit = defineEmits(["ready", "changed"]);
 
 const parentPath = context.injectPath();
-const validations = context.injectValidations() || {};
+const validations = context.injectValidations();
 
 const inputEvents = ref({});
 const models = reactive({});
@@ -91,7 +91,7 @@ function touched(key) {
 }
 
 function invalid(input) {
-  if(!validations.value || !Object.values(validations.value).length) { return; }
+  if(!Object.values(validations.value).length) { return; }
 
   if(!validations.value[input]?.valid && validations.value[input]?.persist) {
     return true;

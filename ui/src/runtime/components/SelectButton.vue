@@ -5,58 +5,49 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <Labeler
-      :label="{
-        ...label,
-        mode: label?.mode == 'ifta' ? label.mode : null
-      }"
-      :path
-      :dt="{
-        colorScheme: {
-          light: {
-            top: '-1rem',
-          },
-          dark: {
-            top: '-1rem'
+    <Validation>
+      <Labeler
+        :label="{
+          ...label,
+          mode: label?.mode === 'ifta' ? label.mode : null,
+          text: label?.mode === 'ifta' ? label.text : null
+        }"
+        :path
+        :dt="{
+          colorScheme: {
+            light: {
+              top: '-1rem',
+            },
+            dark: {
+              top: '-1rem'
+            }
           }
-        }
-      }"
-    >
-      <SelectButton
-        v-if="data"
-        v-bind="$attrs"
-        v-model="selected"
-        :options="data"
-        :allow-empty
-        :data-key="optionValue"
-        :option-label
-        :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
-        class="!w-auto"
+        }"
       >
-        <template #option="slotProps">
-          <span>{{ getOptionLabel(slotProps) }}</span>
-        </template>
-      </SelectButton>
-      <template #message>
-        <Message
-          v-if="validation"
-          v-show="validation.message && validation.persist"
-          :severity="validation.severity"
-          variant="simple"
-          size="small"
-          class="ml-2"
+        <SelectButton
+          v-if="data"
+          v-bind="$attrs"
+          v-model="selected"
+          :options="data"
+          :allow-empty
+          :data-key="optionValue"
+          :option-label
+          :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
+          class="!w-auto"
         >
-          {{ validation.message || "" }}
-        </Message>
-      </template>
-    </Labeler>
+          <template #option="slotProps">
+            <span>{{ getOptionLabel(slotProps) }}</span>
+          </template>
+        </SelectButton>
+      </Labeler>
+    </Validation>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { Message, SelectButton, Skeleton } from "primevue";
+import { SelectButton, Skeleton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
-import { AwaitLoading, Labeler } from "#components";
+import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -79,7 +70,6 @@ const {
 } = schema;
 
 const path = context.injectPath();
-const validation = context.injectValidations();
 
 const selected = ref();
 
@@ -155,10 +145,7 @@ function setSelected(value) {
 }
 </style>
 <style scoped>
-.b-component--SelectButton {
-  &:has(.p-iftalabel) {
-    @apply mt-4;
-  }
+.p-iftalabel:has(.p-selectbutton) {
+  @apply mt-4;
 }
-
 </style>

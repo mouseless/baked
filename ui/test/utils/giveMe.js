@@ -521,8 +521,8 @@ export default {
   },
 
   aLabel({ text, mode, variant, showOptionality } = {}) {
-    text = $(text, "Test Label");
-    mode = $(mode, "float");
+    text = $(text, mode !== null ? "Test Label" : null);
+    mode = $(mode, text ? "float" : null);
     variant = $(variant, "on");
     showOptionality = $(showOptionality, false);
 

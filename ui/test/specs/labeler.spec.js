@@ -50,7 +50,7 @@ test.describe("Select Input Label Mode", () => {
 
 test.describe("SelectButton Input Label Mode", () => {
   [
-    { id: "Select: No Label Mode", expected: null },
+    { id: "SelectButton: No Label Mode", expected: null },
     { id: "SelectButton: Ifta Mode", expected: "Ifta Mode" }
   ].forEach(({ id, expected }) => {
     test(`testing correct label text ${expected}`, async({ page }) => {

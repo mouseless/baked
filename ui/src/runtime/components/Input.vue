@@ -27,7 +27,7 @@ const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
 const validation = computed(() => validations?.value[schema.name] || {});
 
-context.provideValidations(validation);
+context.provideValidation(validation);
 
 onAfterMountData(async() => {
   // parent component might set model to null during setup, because of that on

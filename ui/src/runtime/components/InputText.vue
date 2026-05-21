@@ -5,49 +5,37 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <Labeler
-      :label
-      :path
-    >
-      <InputText
-        v-model="input"
-        v-bind="$attrs"
-        class="min-w-60"
-        @update:model-value="onUpdate"
-      />
-      <template #message>
-        <Message
-          v-if="validation"
-          v-show="validation.message && validation.persist"
-          :severity="validation.severity"
-          variant="simple"
-          size="small"
-          class="ml-2"
-        >
-          {{ validation.message || "" }}
-        </Message>
-      </template>
-    </Labeler>
+    <Validation>
+      <Labeler
+        :label
+        :path
+      >
+        <InputText
+          v-model="input"
+          v-bind="$attrs"
+          class="min-w-60"
+          @update:model-value="onUpdate"
+        />
+      </Labeler>
+    </Validation>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { InputText, Message, Skeleton } from "primevue";
+import { InputText, Skeleton } from "primevue";
 import { useContext } from "#imports";
-import { AwaitLoading, Labeler } from "#components";
+import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
-
 const model = defineModel({ type: null, required: true });
 
 const { label, targetProp } = schema;
 
 const path = context.injectPath();
-const validation = context.injectValidations();
 
 const input = ref("");
 
