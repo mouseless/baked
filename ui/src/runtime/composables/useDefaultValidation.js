@@ -4,7 +4,7 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 export default function useDefaultValidation({ inputs, model }) {
   const { localize: lc } = useLocalization({ group: "useDefaultValidation" });
-  const { localize: l } = useLocalization({ });
+  const { localize: l } = useLocalization();
 
   const result = {};
   const validation = {
