@@ -24,24 +24,33 @@ test.describe("Base", () => {
     await expect(button).toBeDisabled();
   });
 
+  test("show a red border on required fields when the user leaves without entry", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.locator(primevue.inputText.base).first();
+    const input2 = component.locator(primevue.inputText.base).nth(1);
+
+    await input1.focus();
+    await input2.focus();
+
+    await expect(input1).toContainClass("p-invalid");
+  });
+
+  test("show optionality label when input is optional", async({ page }) => {
+    const component = page.getByTestId(id);
+    const label = component.locator(primevue.floatLabel.base).nth(1);
+
+    await expect(label).toHaveText("Test Label (Optional)");
+  });
+});
+
+test.describe("Missing Composable", () => {
+  const id = "Missing Composable";
+
   test("missing composable should not break validation flow", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
     expect(consoleErrors.some(e => e.includes("mustSkipThisComposables"))).toBe(true);
-    await expect(button).toBeDisabled();
+    await expect(button).toBeEnabled();
   });
-
-  test("show a red border on required fields when the user leaves without entry", async({ page }) => {
-    const component = page.getByTestId(id);
-    const textInput = component.locator(primevue.inputText.base);
-    const numberInput = component.locator(primevue.inputNumber.base);
-
-    await textInput.focus();
-    await numberInput.focus();
-
-    await expect(textInput).toContainClass("p-invalid");
-  });
-
-  test.skip("show validated label when validateLabel is on", async() => {});
 });

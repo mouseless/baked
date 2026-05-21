@@ -11,31 +11,32 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aSimpleForm({
-      validateComposables: ["mustSkipThisComposables"],
+      validateComposables: ["mustSkipThisComposables", "useFakeDefaultValidate"],
       action: giveMe.aLocalAction({ showMessage: "ok" }),
       inputs: [
         giveMe.anInput({
           name: "param-1",
-          component: giveMe.anInputText({})
+          required: true,
+          component: giveMe.anInputText()
         }),
         giveMe.anInput({
-          name: "param-2",
-          component: giveMe.anInputNumber({
+          name: "input-2",
+          component: giveMe.anInputText({
             labeler: giveMe.aLabeler({
               validateLabel: true
             })
           })
-        }),
-        giveMe.anInput({
-          name: "param-3",
-          component: giveMe.aSelectButton({})
-        }),
-        giveMe.anInput({
-          name: "param-4",
-          component: giveMe.aSelect({
-            allowEmpty: true
-          })
         })
+      ]
+    })
+  },
+  {
+    name: "Missing Composable",
+    descriptor: giveMe.aSimpleForm({
+      validateComposables: ["mustSkipThisComposables", "useFakeDefaultValidate"],
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [
+        giveMe.anInput({ name: "param-1" })
       ]
     })
   }
