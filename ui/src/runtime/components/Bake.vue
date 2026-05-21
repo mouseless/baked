@@ -3,8 +3,8 @@
     :is="component"
     v-if="visible"
     :key="loading"
+    :class="classes"
     v-bind="{
-      ...$attrs,
       ...baseAttrs,
       ...dataAttrs(),
       ...modelAttrs()
@@ -48,17 +48,23 @@ const component = componentResolver.resolve(descriptor.type, "MissingComponent")
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = !parentLoading.value && dataFetcher.shouldLoad(descriptor.data);
 const loading = ref(shouldLoad);
-let executing = null;
 const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
-let reactions = null;
-const baseAttrs = { "class": classes };
-let dataAttrs = () => ({});
-let modelAttrs = () => ({});
+const baseAttrs = { };
 
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
 context.provideParentContext({ ...contextData.parent, data });
+
+if(shouldLoad) {
+  context.provideLoading(loading);
+}
+
+let executing = null;
+if(descriptor.action) {
+  executing = ref(false);
+  context.provideExecuting(executing);
+}
 
 if(descriptor.schema) {
   baseAttrs.schema = descriptor.schema;
@@ -68,24 +74,20 @@ if(component.emits?.includes("submit")) {
   baseAttrs.onSubmit = updateModel;
 }
 
+let dataAttrs = () => ({});
 if(descriptor.data) {
   dataAttrs = () => ({ data: data.value });
 }
 
+let lastModel = null;
+let modelAttrs = () => ({});
 if(component.props?.modelValue) {
+  lastModel = ref();
   modelAttrs = () => ({ modelValue: model.value, "onUpdate:modelValue": updateModel });
   watch(model, updateModel);
 }
 
-if(shouldLoad) {
-  context.provideLoading(loading);
-}
-
-if(descriptor.action) {
-  executing = ref(false);
-  context.provideExecuting(executing);
-}
-
+let reactions = null;
 if(descriptor.reactions) {
   reactions = reactionHandler.create(`${path}:bake`, {
     reload(success) {
@@ -124,12 +126,16 @@ async function load() {
 
 async function updateModel(newModel) {
   if(component.props?.modelValue) {
-    if(newModel === model.value) { return; }
-
     model.value = newModel;
   }
 
   if(!descriptor.action) { return; }
+
+  if(component.props?.modelValue) {
+    if(lastModel.value == newModel) { return; }
+
+    lastModel.value = newModel;
+  }
 
   try {
     executing.value = true;
