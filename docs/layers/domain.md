@@ -327,8 +327,9 @@ configurator.Domain.ConfigureDomainModelBuilder(builder =>
 }
 ```
 
-Layers also provide order within their min/max values or a specific order within
-the layer.
+A convention with given level order will be added to the median, in other words
+will have 0 as its order relative to its level. It is also possible to specify 
+min/max values or a specific position within the level.
 
 ```csharp
 builder.Conventions.SetPropertyAttribute(
