@@ -90,7 +90,7 @@ if(descriptor.schema) {
 }
 
 if(component.emits?.includes("submit")) {
-  baseAttrs.onSubmit = updateModel;
+  baseAttrs.onSubmit = executeAction;
 }
 
 let dataAttrs = () => ({});
@@ -98,12 +98,10 @@ if(descriptor.data) {
   dataAttrs = () => ({ data: data.value });
 }
 
-let lastModel = null;
 let modelAttrs = () => ({});
 if(component.props?.modelValue) {
-  lastModel = ref();
-  modelAttrs = () => ({ modelValue: model.value, "onUpdate:modelValue": updateModel });
-  watch(model, updateModel);
+  modelAttrs = () => ({ modelValue: model.value, "onUpdate:modelValue": value => model.value = value });
+  watch(model, executeAction);
 }
 
 let reactions = null;
@@ -163,18 +161,8 @@ function getMessage(error) {
   };
 }
 
-async function updateModel(newModel) {
-  if(component.props?.modelValue) {
-    model.value = newModel;
-  }
-
+async function executeAction(newModel) {
   if(!descriptor.action) { return; }
-
-  if(component.props?.modelValue) {
-    if(lastModel.value == newModel) { return; }
-
-    lastModel.value = newModel;
-  }
 
   try {
     executing.value = true;
