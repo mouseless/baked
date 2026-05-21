@@ -224,7 +224,7 @@ a reusable and extendable reflection metadata.
 
 Baked utilizes the `Attribute` system to mark or add additional metadata to
 reflected types, members, or parameters. All models defined within the 
-`DomainModel` has their own attributes collection initialized with default
+`DomainModel` has their own attributes collection initialized with dotnet
 or user provided attributes, which allows layers and features to define custom 
 behaviors, metadata, or runtime behaviours.
 
@@ -247,8 +247,7 @@ public class IdConvention : IDomainModelConvention<PropertyModelContext>
     {
         if(c.Property.Name != "Id") { continue; }
 
-        ((IMutableAttributeCollection).Property.CustomAttributes).
-            Add(new IdAttribute());
+        ((IMutableAttributeCollection).Property.CustomAttributes).Add(new IdAttribute());
     }
 }
 
@@ -260,7 +259,7 @@ configurator.Domain.ConfigureDomainModelBuilder(builder =>
     // Adding convention via extensions
     builder.Conventions.SetPropertyAttribute(
         when: c => c.Property.Name == "Id"
-        attribute: () => new IdAttribute(),    
+        attribute: () => new IdAttribute()
     );
 }
 ```
@@ -268,55 +267,79 @@ configurator.Domain.ConfigureDomainModelBuilder(builder =>
 #### Convention Execution Order
 
 By deault a convention is applied in the order which it is added with respect to
-the feature order. A global value can be also set when a specific convention is
-required to apply at the exact order. 
+its feature order. A global value can be also set when a specific convention is
+required to execute at the exact order. 
 
 ```csharp
-// Adding convention via extensions
-builder.Conventions.SetPropertyAttribute(
-    when: c => c.Property.Name == "Id"
-    attribute: () => new IdAttribute(),
-    order: int.minValue + 10
-);
-```
+// program.cs
+app.Features.Add(new FeatureA());
+app.Features.Add(new FeatureB());
 
-Baked also provides a level system that allows conventions to be grouped and 
-executed within a specific stage. This helps organize convention execution and 
-provide a predictable ordering between related convention groups.
-
-```csharp
-configurator.Domain.ConfigureDomainModelBuilder(builder =>
+public class FeatureB : IFeature 
 {
-    builder.Layers.Add("Infra");
-    builder.Layers.Add("Business");
-
-    // Adding convention via extensions
     builder.Conventions.SetPropertyAttribute(
-        when: c => c.Property.Name == "Id"
-        attribute: () => new IdAttribute(),
-        order: Layers["Infra"]
+        when: ...,
+        attribute: ...
+    );
+}
+
+public class FeatureB : IFeature 
+{
+    // This convention will apply first
+    builder.Conventions.SetPropertyAttribute(
+        when: ...,
+        attribute: ...,
+        order: int.minValue + 10
     );
 
+    // This convention will apply last
     builder.Conventions.SetPropertyAttribute(
-        when: c => c.Property.Has<IdAttribute>(),
-        attribute: () => new DataAttribute(),
-        order: Layers["Business"]
+        when: ...,
+        attribute: ...
     );
 }
 ```
 
-Layers also provide execution order within their min and max ranges.
+Baked also provides a level system that allows conventions to be grouped and 
+executed within a specific stage. This helps organize convention execution 
+accross multiple features and provide a predictable ordering between related 
+convention groups.
+
+```csharp
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
+{
+    builder.Levels.Add("Infra");
+    builder.Levels.Add("Business");
+
+
+    builder.Conventions.SetPropertyAttribute(
+        when: ...,
+        attribute: ...,
+        order: Levels["Business"]
+    );
+
+    // This convention executes first
+    builder.Conventions.SetPropertyAttribute(
+        when: ...,
+        attribute: ...,
+        order: Levels["Infra"]
+    );
+}
+```
+
+Layers also provide order within their min/max values or a specific order within
+the layer.
 
 ```csharp
 builder.Conventions.SetPropertyAttribute(
-    when: c => c.Property.Name == "Id"
-    attribute: () => new IdAttribute(),
-    order: Layers["Infra"].Min + 10
+    when: ...,
+    attribute: ...,
+    order: Levels["Infra"].Min + 10
 );
 
 builder.Conventions.SetPropertyAttribute(
-    when: c => c.Property.Has<IdAttribute>(),
-    attribute: () => new DataAttribute(),
-    order: Layers["Infra"].At(10)
+    when: ...,
+    attribute: ...,
+    order: Levels["Infra"].At(10)
 );
 ```
