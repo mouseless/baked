@@ -1,12 +1,12 @@
 import { computed } from "vue";
 import { useContext, useComposableResolver } from "#imports";
 
-export default function useValidation() {
+export default function() {
   const context = useContext();
   const composableResolver = useComposableResolver();
 
   function validate({ model, inputs, composables = [] }) {
-    const validators = ["useDefaultValidation", ...composables].map(vc => {
+    const validationComposables = ["useDefaultValidation", ...composables.map(c => c.name)].map(vc => {
       try {
         return composableResolver.resolve(vc).default;
       } catch {
@@ -17,9 +17,9 @@ export default function useValidation() {
     }).filter(v => v);
 
     const validations = computed(() =>
-      validators.reduce((acc, validation) => ({
+      validationComposables.reduce((acc, useComposable) => ({
         ...acc,
-        ...validation({
+        ...useComposable({
           inputs,
           model: model.value
         })

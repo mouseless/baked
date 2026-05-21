@@ -147,4 +147,10 @@ public static class UiExtensions
             schemas.Insert(index, schema);
         }
     }
+
+    extension(List<ValidationComposable> validations)
+    {
+        public void AddComposable(string name) =>
+            validations.Add(new(name));
+    }
 }

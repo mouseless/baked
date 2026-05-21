@@ -85,4 +85,10 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/error-handling", "/specs") with { Icon = "pi pi-microchip", Section = "Plugins" },
             ]);
     }
+
+    extension(List<ValidationComposable> validations)
+    {
+        public void AddFormSampleValidation() =>
+            validations.Add(new("useFormSampleValidation"));
+    }
 }

@@ -11,7 +11,7 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aSimpleForm({
-      validateComposables: ["useFakeDefaultValidate"],
+      validations: ["useFakeValidation"],
       action: giveMe.aLocalAction({ showMessage: "ok" }),
       inputs: [
         giveMe.anInput({

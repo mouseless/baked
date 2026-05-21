@@ -95,7 +95,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { title, submit, sections, validateComposables = [], showValidationSummary = true } = schema;
+const { title, submit, sections, validations = [], showValidationSummary = true } = schema;
 
 const model = ref({});
 const readyData = ref({});
@@ -105,7 +105,7 @@ const ready = computed(() => Object.values(readyData.value).every(v => v) && isV
 const { isValid, messages } = validate({
   model,
   inputs: inputs.value,
-  composables: validateComposables
+  composables: validations
 });
 
 function splitByWide(inputGroups) {

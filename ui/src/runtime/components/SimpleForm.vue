@@ -92,7 +92,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { dialogOptions, inputs, submit, title, validateComposables = [], showValidationSummary = false } = schema;
+const { dialogOptions, inputs, submit, title, validations = [], showValidationSummary = false } = schema;
 
 const model = ref({});
 const readyData = ref({});
@@ -104,7 +104,7 @@ const ready = computed(() => Object.values(readyData.value).every(v => v) && isV
 const { isValid, messages } = validate({
   inputs,
   model,
-  composables: validateComposables
+  composables: validations
 });
 
 function onReady(value) {

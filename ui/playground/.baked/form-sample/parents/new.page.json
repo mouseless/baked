@@ -181,8 +181,10 @@
         ]
       }
     ],
-    "validateComposables": [
-      "useFormSampleValidation"
+    "validations": [
+      {
+        "name": "useFormSampleValidation"
+      }
     ],
     "path": "form-sample/parents/new"
   },

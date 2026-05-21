@@ -1,4 +1,4 @@
-export default function useFakeDefaultValidate({ model }) {
+export default function({ model }) {
   const result = {};
 
   if(model["param-2"] === "error") {

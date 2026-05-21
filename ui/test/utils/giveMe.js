@@ -395,12 +395,12 @@ export default {
     };
   },
 
-  aFormPage({ action, title, description, submit, inputs, sections, validateComposables, showValidateSummary } = {}) {
+  aFormPage({ action, title, description, submit, inputs, sections, validations, showValidateSummary } = {}) {
     title = this.aPageTitle({ title, description });
     submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
     sections = $(sections, [this.aFormPageSection({ inputs })]);
-    validateComposables = $(validateComposables, ["useFakeDefaultValidate"]);
+    validations = $(validations, ["useFakeValidation"]);
     showValidateSummary = $(showValidateSummary, true);
 
     return {
@@ -409,7 +409,7 @@ export default {
         title,
         submit,
         sections,
-        validateComposables,
+        validations: validations.map(name => ({ name })),
         showValidateSummary
       },
       action
@@ -847,11 +847,11 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogOptions, inputs, submit, title, action, validateComposables, showValidateSummary }) {
+  aSimpleForm({ dialogOptions, inputs, submit, title, action, validations, showValidateSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
-    validateComposables = $(validateComposables, ["useFakeDefaultValidate"]);
+    validations = $(validations, ["useFakeValidation"]);
     showValidateSummary = $(showValidateSummary, true);
 
     return {
@@ -861,7 +861,7 @@ export default {
         inputs,
         submit,
         title,
-        validateComposables,
+        validations: validations.map(name => ({ name })),
         showValidateSummary
       },
       action
