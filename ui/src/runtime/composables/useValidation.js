@@ -41,6 +41,7 @@ export default function useValidation() {
 
     return { isValid, messages, validations };
   }
+
   return {
     validate
   };
