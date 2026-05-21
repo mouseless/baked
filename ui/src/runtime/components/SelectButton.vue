@@ -156,9 +156,10 @@ function setSelected(value) {
 }
 </style>
 <style scoped>
-&:has(.p-iftalabel) {
-  .p-iftalabel {
+.b-component--SelectButton {
+  &:has(.p-iftalabel) {
     @apply mt-4;
-  }
+  }  
 }
+
 </style>

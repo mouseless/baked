@@ -28,8 +28,6 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
-    // Act — run in beforeEach
-
     expect(consoleErrors.some(e => e.includes("mustSkipThisComposables"))).toBe(true);
     await expect(button).toBeDisabled();
   });

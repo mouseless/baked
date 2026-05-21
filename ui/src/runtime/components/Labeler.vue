@@ -18,7 +18,9 @@
         </label>
       </template>
     </component>
-    <slot name="message" />
+    <div v-if="$slots.message">
+      <slot name="message" />
+    </div>
   </div>
 </template>
 
