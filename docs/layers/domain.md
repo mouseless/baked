@@ -232,6 +232,21 @@ In order to create a specific set of rules or behaviors, `DomainLayer` provides
 convention based configuration mechanism which are configured using 
 `DomainModeBuilder` configuration target's `Conventions`. 
 
+### Indexing Models
+
+Baked provides indexing mechanism of domain models according to their owned 
+or added attributes to improve performance. Indicies of a model in domain can 
+be specified from its builder options.
+
+```csharp
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
+{
+    builder.Index.Type.Add<ServiceAttribute>();
+    builder.Index.Method.Add<InitializerAttribute>();
+    builder.Index.Property.Add<IdAttribute>();
+}
+```
+
 #### Utilizing Conventions
 
 Attributes can be directly added to types or members as well as using built-in
@@ -298,6 +313,31 @@ public class FeatureB : IFeature
         attribute: ...
     );
 }
+```
+
+Another key factor that affects convention execution order is whether a
+convention should execute before or after indices are built. Some conventions
+may need to modify metadata or add attributes before the indexing stage begins,
+while remaining may depend on generated indices.To support this behavior, 
+conventions can be marked with the before index flag. These conventions are 
+grouped and executed in a separate stage, guaranteeing that they run before 
+index generation and all remaining conventions.
+
+```csharp
+// This convention will apply after the indicies are built
+builder.Conventions.SetPropertyAttribute(
+    when: ...,
+    attribute: ...,
+    order: int.MinValue + 10,
+);
+
+// This convention will apply before the indicies are built
+builder.Conventions.SetPropertyAttribute(
+    when: ...,
+    attribute: ...,
+    order: int.MaxValue - 10;
+    beforeIndex: true
+);
 ```
 
 Baked also provides a level system that allows conventions to be grouped and 

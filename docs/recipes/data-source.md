@@ -104,3 +104,15 @@ flowchart LR;
 
   Generate --> Start
 ```
+## Convention Levels
+
+```mermaid
+flowchart
+  I(Infra)
+  D(Domain)
+
+  subgraph Execution Order
+    direction TB
+    I --> D
+  end
+```

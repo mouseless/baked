@@ -141,19 +141,17 @@ flowchart LR;
 
 ```mermaid
 flowchart
-
   I(Infra)
   D(Domain)
   UX(Ux)
   T(Theme)
   O(Override)
 
-  subgraph Order
+  subgraph Execution Order
     direction TB
     I --> D
     D --> UX
     UX --> T
     T --> O
   end
-  
 ```
