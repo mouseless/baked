@@ -7,8 +7,8 @@
     "No records found": "Kayıt bulunamadı"
   },
   "Labeler": {
-    "{label}_Required": "{label}",
-    "{label}_Optional": "{label} (Opsiyonel)"
+    "{label} (Required)": "{label}",
+    "{label} (Optional)": "{label} (Opsiyonel)"
   },
   "LanguageSwitcher": {
     "Languages": "Diller"
@@ -30,8 +30,7 @@
     }
   },
   "ValidatorMessages": {
-    "{label} cannot be empty": "{label} boş bırakılamaz",
-    "Admin role requires Active status": "Yönetici rolü Aktif durumunda olmalı"
+    "{label} cannot be empty": "{label} boş bırakılamaz"
   },
   "If you cannot reach the page you want please contact the system administrator": "İstediğiniz sayfaya ulaşamıyorsanız lütfen sistem yöneticisi ile iletişime geçin",
   "Please contact system administrator": "Lütfen sistem yöneticisi ile iletişime geçin",
@@ -54,67 +53,18 @@
   },
 
   "primevue": {
-    "dayNames": [
-      "Pazar",
-      "Pazartesi",
-      "Salı",
-      "Çarşamba",
-      "Perşembe",
-      "Cuma",
-      "Cumartesi"
-    ],
-    "dayNamesMin": [
-      "Pz",
-      "Pt",
-      "Sa",
-      "Ça",
-      "Pe",
-      "Cu",
-      "Ct"
-    ],
-    "dayNamesShort": [
-      "Paz",
-      "Pzt",
-      "Sal",
-      "Çar",
-      "Per",
-      "Cum",
-      "Cmt"
-    ],
-    "monthNames": [
-      "Ocak",
-      "Şubat",
-      "Mart",
-      "Nisan",
-      "Mayıs",
-      "Haziran",
-      "Temmuz",
-      "Ağustos",
-      "Eylül",
-      "Ekim",
-      "Kasım",
-      "Aralık"
-    ],
-    "monthNamesShort": [
-      "Oca",
-      "Şub",
-      "Mar",
-      "Nis",
-      "May",
-      "Haz",
-      "Tem",
-      "Ağu",
-      "Eyl",
-      "Eki",
-      "Kas",
-      "Ara"
-    ]
+    "dayNames": [ "Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi" ],
+    "dayNamesMin": [ "Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct" ],
+    "dayNamesShort": [ "Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt" ],
+    "monthNames": [ "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık" ],
+    "monthNamesShort": [ "Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara" ]
   },
 
   "// test case specific keys": "//",
   "Spec: A link": "A bağlantısı",
   "Spec: Access denied": "Erişim Reddedildi",
   "Spec: Action": "Aksiyon",
+  "Spec: Admin role requires Active status": "Yönetici rolü Aktif durumunda olmalı",
   "Spec: B link": "B bağlantısı",
   "Spec: Button": "Buton",
   "Spec: Cancel": "Vazgeç",

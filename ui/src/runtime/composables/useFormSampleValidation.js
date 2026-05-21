@@ -1,7 +1,7 @@
 import { useLocalization } from "#imports";
 
 export default function({ model }) {
-  const { localize: lc } = useLocalization({ group: "ValidatorMessages" });
+  const { localize: l } = useLocalization();
 
   const result = {};
   const item = {
@@ -15,7 +15,7 @@ export default function({ model }) {
     result.status = {
       ...item,
       persist: true,
-      message: lc("Admin role requires Active status")
+      message: l("Spec: Admin role requires Active status")
     };
   }
 

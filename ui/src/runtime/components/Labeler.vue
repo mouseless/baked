@@ -49,10 +49,10 @@ const localizeLabel = computed(() => {
   }
 
   if(required) {
-    return lc("{label}_Required", { label: l(label) });
+    return lc("{label} (Required)", { label: l(label) });
   }
 
-  return lc("{label}_Optional", { label: l(label) });
+  return lc("{label} (Optional)", { label: l(label) });
 });
 const labelComponent = computed(() => {
   if(!label) { return "div"; }

@@ -7,8 +7,8 @@
     "No records found": "No records found"
   },
   "Labeler": {
-    "{label}_Required": "{label}",
-    "{label}_Optional": "{label} (Optional)"
+    "{label} (Required)": "{label}",
+    "{label} (Optional)": "{label} (Optional)"
   },
   "LanguageSwitcher": {
     "Languages": "Languages"
@@ -30,8 +30,7 @@
     }
   },
   "ValidatorMessages": {
-    "{label} cannot be empty": "{label} cannot be empty",
-    "Admin role requires Active status": "Admin role requires Active status"
+    "{label} cannot be empty": "{label} cannot be empty"
   },
   "If you cannot reach the page you want please contact the system administrator": "If you cannot reach the page you want please contact the system administrator",
   "Please contact system administrator": "Please contact system administrator",
@@ -65,6 +64,7 @@
   "Spec: A link": "A link",
   "Spec: Access denied": "Access Denied",
   "Spec: Action": "Action",
+  "Spec: Admin role requires Active status": "Admin role requires Active status",
   "Spec: B link": "B link",
   "Spec: Button": "Button",
   "Spec: Cancel": "Cancel",
