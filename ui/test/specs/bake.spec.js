@@ -190,8 +190,7 @@ test.describe.serial("Reaction", () => {
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    // await input.fill("event"); // NOTE uncomment this act after fixing issue #571
-    await input.pressSequentially("event"); // NOTE remove below act after fixing issue #571
+    await input.pressSequentially("event");
 
     await request;
     expect(asyncCount).toBe(before + 1);
@@ -203,8 +202,7 @@ test.describe.serial("Reaction", () => {
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    // await input.fill("page-context"); // NOTE uncomment this act after fixing issue #571
-    await input.pressSequentially("page-context"); // NOTE remove below act after fixing issue #571
+    await input.pressSequentially("page-context");
 
     await request;
     expect(asyncCount).toBe(before + 1);
@@ -216,8 +214,7 @@ test.describe.serial("Reaction", () => {
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    // await input.fill("validate"); // NOTE uncomment this act after fixing issue #571
-    await input.pressSequentially("validate"); // NOTE remove below act after fixing issue #571
+    await input.pressSequentially("validate");
 
     await request;
     expect(asyncCount).toBe(before + 1);

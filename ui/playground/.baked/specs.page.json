@@ -306,6 +306,18 @@
                 "description": "/specs/simple-form:Description"
               }
             }
+          },
+          {
+            "title": "/specs/form-validation:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/form-validation",
+                "icon": "pi pi-microchip",
+                "title": "/specs/form-validation:Title",
+                "description": "/specs/form-validation:Description"
+              }
+            }
           }
         ]
       },

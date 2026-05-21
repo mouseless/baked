@@ -45,6 +45,8 @@
   "/specs/fieldset:Title": "Alanlar",
   "/specs/form-page:Description": "Bir formu sayfa halinde görselleştirir",
   "/specs/form-page:Title": "Form Sayfası",
+  "/specs/form-validation:Description": "Form kontrollerini görselleştirir",
+  "/specs/form-validation:Title": "Form Kontrol",
   "/specs/header:Description": "Gezinti yolu (breadcrumb) gösterir",
   "/specs/header:Title": "Başlık",
   "/specs/icon:Description": "Yerleşik simgeleri gösterir",

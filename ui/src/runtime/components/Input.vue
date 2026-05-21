@@ -8,9 +8,10 @@
 <script setup>
 import { computed, watch } from "vue";
 import { useRoute, useRouter } from "#app";
-import { useDataMounter } from "#imports";
+import { useDataMounter, useContext } from "#imports";
 import { Bake } from "#components";
 
+const context = useContext();
 const { mount: mountData, onAfterMount: onAfterMountData } = useDataMounter();
 const route = useRoute();
 const router = useRouter();
@@ -20,8 +21,13 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
+const validations = context.injectValidations();
+
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
+const validation = computed(() => validations.value[schema.name] || {});
+
+context.provideValidation(validation);
 
 onAfterMountData(async() => {
   // parent component might set model to null during setup, because of that on
@@ -66,8 +72,7 @@ async function set(value) {
     if(!checkValue(value)) { return; }
 
     setModel(value);
-  }
-  else {
+  } else {
     // prevents an unnecessary router push to avoid cancelation on other
     // inputs' router pushes
     if(String(value) === String(query.value)) { return; }
@@ -93,6 +98,8 @@ function checkValue(value) {
 }
 
 function setModel(value) {
+  if(value === model.value) { return; }
+
   if(!schema.numeric) {
     model.value = value;
   } else {

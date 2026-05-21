@@ -213,11 +213,11 @@ public static class Components
 
     public static ComponentDescriptor<Select> Select(IData data,
         Action<Select>? options = default
-    ) => new(options.Apply(new() { LocalizeLabel = data.RequireLocalization })) { Data = data };
+    ) => new(options.Apply(new() { LocalizeOptionLabels = data.RequireLocalization })) { Data = data };
 
     public static ComponentDescriptor<SelectButton> SelectButton(IData data,
         Action<SelectButton>? options = default
-    ) => new(options.Apply(new() { LocalizeLabel = data.RequireLocalization })) { Data = data };
+    ) => new(options.Apply(new() { LocalizeOptionLabels = data.RequireLocalization })) { Data = data };
 
     public static ComponentDescriptor<SideMenu> SideMenu(
         Action<SideMenu>? options = default,

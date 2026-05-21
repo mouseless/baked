@@ -33,15 +33,13 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                     }
                 }
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs)),
-                schema: (i, c, cc) =>
+            builder.Conventions.AddParameterSchemaConfiguration<Label>(
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(ILabeler.Label)),
+                schema: (label, c, cc) =>
                 {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
-
                     var (_, l) = cc;
 
-                    labeler.LabelFloatOn(labeler.Label ?? l(c.Parameter.Name.Titleize()));
+                    label.FloatOn(() => l(c.Parameter.Name.Titleize()));
                 }
             );
         });

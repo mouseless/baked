@@ -395,18 +395,22 @@ export default {
     };
   },
 
-  aFormPage({ action, title, description, submit, inputs, sections } = {}) {
+  aFormPage({ action, title, description, submit, inputs, sections, validations, showValidateSummary } = {}) {
     title = this.aPageTitle({ title, description });
     submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
     sections = $(sections, [this.aFormPageSection({ inputs })]);
+    validations = $(validations, ["useFakeValidation"]);
+    showValidateSummary = $(showValidateSummary, true);
 
     return {
       type: "FormPage",
       schema: {
         title,
         submit,
-        sections
+        sections,
+        validations: validations.map(name => ({ name })),
+        showValidateSummary
       },
       action
     };
@@ -487,40 +491,46 @@ export default {
     return { name, required, default: default_, defaultSelfManaged, numeric, queryBound, component };
   },
 
-  anInputText({ label, labeler, targetProp } = {}) {
+  anInputText({ label, targetProp } = {}) {
     targetProp = $(targetProp, undefined);
-    labeler = $(labeler, this.aLabeler({ label }));
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
 
     return {
       type: "InputText",
       schema: {
-        ...labeler,
+        label,
         targetProp
       }
     };
   },
 
-  anInputNumber({ label, labeler, noGrouping } = {}) {
-    labeler = $(labeler, this.aLabeler({ label }));
+  anInputNumber({ label, noGrouping } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
 
     return {
       type: "InputNumber",
       schema: {
-        ...labeler,
+        label,
         noGrouping
       }
     };
   },
 
-  aLabeler({ label, labelMode, labelVariant } = {}) {
-    label = $(label, "Test Label");
-    labelMode = $(labelMode, "float");
-    labelVariant = $(labelVariant, "on");
+  aLabel({ text, mode, variant, showOptionality } = {}) {
+    text = $(text, mode !== null ? "Test Label" : null);
+    mode = $(mode, text ? "float" : null);
+    variant = $(variant, "on");
+    showOptionality = $(showOptionality, false);
 
     return {
-      label,
-      labelMode,
-      labelVariant
+      text,
+      mode,
+      variant,
+      showOptionality
     };
   },
 
@@ -764,12 +774,14 @@ export default {
     return screens.find(screen => screen.name === name) || null;
   },
 
-  aSelect({ action, data, filter, inline, label, labeler, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = {}) {
+  aSelect({ action, data, filter, inline, label, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     label = $(label, "Spec: Test");
-    labeler = $(labeler, this.aLabeler({ label }));
-    localizeLabel = $(localizeLabel, false);
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    localizeOptionLabels = $(localizeOptionLabels, false);
     showClear = $(showClear, false);
     stateful = $(stateful, false);
     data = inline
@@ -782,19 +794,21 @@ export default {
 
     return {
       type: "Select",
-      schema: { ...labeler, filter, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp },
+      schema: { label, filter, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp },
       data,
       action
     };
   },
 
-  aSelectButton({ action, allowEmpty, data, inline, label, labeler, localizeLabel, optionLabel, optionValue, stateful, targetProp } = {}) {
+  aSelectButton({ action, allowEmpty, data, inline, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
-    labeler = $(labeler, this.aLabeler({ label }));
-    localizeLabel = $(localizeLabel, false);
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    localizeOptionLabels = $(localizeOptionLabels, false);
     data = inline
       ? this.anInlineData(data)
       : this.aComputedData({
@@ -805,7 +819,7 @@ export default {
 
     return {
       type: "SelectButton",
-      schema: { ...labeler, localizeLabel, allowEmpty, optionLabel, optionValue, stateful, targetProp },
+      schema: { label, localizeOptionLabels, allowEmpty, optionLabel, optionValue, stateful, targetProp },
       data,
       action
     };
@@ -833,10 +847,12 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogOptions, inputs, submit, title, action }) {
+  aSimpleForm({ dialogOptions, inputs, submit, title, action, validations, showValidateSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
+    validations = $(validations, ["useFakeValidation"]);
+    showValidateSummary = $(showValidateSummary, true);
 
     return {
       type: "SimpleForm",
@@ -844,7 +860,9 @@ export default {
         dialogOptions,
         inputs,
         submit,
-        title
+        title,
+        validations: validations.map(name => ({ name })),
+        showValidateSummary
       },
       action
     };

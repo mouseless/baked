@@ -346,3 +346,14 @@ test.describe("Filtering on Select without Option Label", () => {
     await expect(list.getByRole("listbox").first()).toHaveText("Test Option 2");
   });
 });
+
+test.describe("Validation", () => {
+  const id = "Validation";
+
+  test("component shows the message component under the component", async({ page }) => {
+    const component = page.getByTestId(id);
+    const message = component.locator(primevue.message.base);
+
+    await expect(message).toHaveText("this is an error message");
+  });
+});

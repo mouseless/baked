@@ -39,15 +39,13 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                 schema: i => i.QueryBound = true
             );
 
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
-                schema: (i, c, cc) =>
+            builder.Conventions.AddParameterSchemaConfiguration<Label>(
+                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs), "*", nameof(ILabeler.Label)),
+                schema: (label, c, cc) =>
                 {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
-
                     var (_, l) = cc;
 
-                    labeler.LabelFloatOn(labeler.Label ?? l(c.Parameter.Name.Titleize()));
+                    label.FloatOn(() => l(c.Parameter.Name.Titleize()));
                 }
             );
         });

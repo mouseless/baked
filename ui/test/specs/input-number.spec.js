@@ -59,3 +59,14 @@ test.describe("No Grouping", () => {
     await expect(input.locator("input")).toHaveValue("1000");
   });
 });
+
+test.describe("Validation", () => {
+  const id = "Validation";
+
+  test("component shows the message component under the component", async({ page }) => {
+    const component = page.getByTestId(id);
+    const message = component.locator(primevue.message.base);
+
+    await expect(message).toHaveText("this is an error message");
+  });
+});

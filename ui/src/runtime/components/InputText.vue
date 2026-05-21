@@ -5,26 +5,26 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <Labeler
-      :label
-      :path
-      :mode="labelMode"
-      :variant="labelVariant"
-    >
-      <InputText
-        v-model="input"
-        v-bind="$attrs"
-        class="min-w-60"
-        @update:model-value="onUpdate"
-      />
-    </Labeler>
+    <Validation>
+      <Labeler
+        :label
+        :path
+      >
+        <InputText
+          v-model="input"
+          v-bind="$attrs"
+          class="min-w-60"
+          @update:model-value="onUpdate"
+        />
+      </Labeler>
+    </Validation>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { InputText, Skeleton } from "primevue";
 import { useContext } from "#imports";
-import { AwaitLoading, Labeler } from "#components";
+import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
 
@@ -33,7 +33,7 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, labelMode, labelVariant, targetProp } = schema;
+const { label, targetProp } = schema;
 
 const path = context.injectPath();
 

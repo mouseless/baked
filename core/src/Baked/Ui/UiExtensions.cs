@@ -148,36 +148,9 @@ public static class UiExtensions
         }
     }
 
-    extension(ILabeler labeler)
+    extension(List<ValidationComposable> validations)
     {
-        public void LabelFloatIn(string label) =>
-            labeler.LabelMode("float", label, variant: "in");
-
-        public void LabelFloatOn(string label) =>
-            labeler.LabelMode("float", label, variant: "on");
-
-        public void LabelFLoatOver(string label) =>
-            labeler.LabelMode("float", label, variant: "over");
-
-        public void LabelIfta(string label) =>
-            labeler.LabelMode("ifta", label);
-
-        public void LabelNone() =>
-            labeler.LabelMode(null, null);
-
-        // WARNING
-        //
-        // Do NOT remove this warning disable section unintentionally.
-        // Without this, GitHub Actions fails on dotnet format
-#pragma warning disable IDE0051
-        void LabelMode(string? mode, string? label,
-            string? variant = default
-        )
-        {
-            labeler.LabelMode = mode;
-            labeler.Label = label;
-            labeler.LabelVariant = variant;
-        }
-#pragma warning restore IDE0051
+        public void AddComposable(string name) =>
+            validations.Add(new(name));
     }
 }

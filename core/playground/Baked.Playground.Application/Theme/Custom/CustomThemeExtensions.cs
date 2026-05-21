@@ -51,6 +51,7 @@ public static class CustomThemeExtensions
 
                 // Form
                 r => r.Child("/specs/simple-form", "/specs") with { Icon = "pi pi-microchip", Section = "Form" },
+                r => r.Child("/specs/form-validation", "/specs") with { Icon = "pi pi-microchip", Section = "Form" },
 
                 // Input
                 r => r.Child("/specs/button", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
@@ -83,5 +84,11 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/locale", "/specs") with { Icon = "pi pi-microchip", Section = "Plugins" },
                 r => r.Child("/specs/error-handling", "/specs") with { Icon = "pi pi-microchip", Section = "Plugins" },
             ]);
+    }
+
+    extension(List<ValidationComposable> validations)
+    {
+        public void AddFormSampleValidation() =>
+            validations.Add(new("useFormSampleValidation"));
     }
 }

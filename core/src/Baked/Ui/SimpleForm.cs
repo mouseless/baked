@@ -6,6 +6,8 @@ public record SimpleForm(string Title, Button Submit) : IComponentSchema
     public Button Submit { get; set; } = Submit;
     public List<Input> Inputs { get; init; } = [];
     public Dialog? DialogOptions { get; set; }
+    public List<ValidationComposable>? Validations { get; set; }
+    public bool? ShowValidationSummary { get; set; }
 
     public record Dialog(Button Open, Button Cancel)
     {

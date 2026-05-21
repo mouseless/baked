@@ -21,7 +21,7 @@ const variants = [
     name: "Base w/ Localization",
     descriptor: giveMe.aSelect({
       label: "Label",
-      localizeLabel: true,
+      localizeOptionLabels: true,
       data: ["Spec: Option 1", "Spec: Option 2"]
     }),
     model: ref()
@@ -30,9 +30,7 @@ const variants = [
     name: "Base w/ Label None",
     descriptor: giveMe.aSelect({
       data: ["OPTION_1", "OPTION_2"],
-      label: null,
-      labeleler: null,
-      labelMode: null
+      label: null
     }),
     model: ref()
   },
@@ -53,7 +51,7 @@ const variants = [
     descriptor: giveMe.aSelect({
       optionLabel: "label",
       optionValue: "value",
-      localizeLabel: true,
+      localizeOptionLabels: true,
       data: [
         { label: "Spec: Label 1", value: "VALUE_1" },
         { label: "Spec: Label 2", value: "VALUE_2" }
@@ -107,7 +105,7 @@ const variants = [
   {
     name: "Set Selected with Localization",
     descriptor: giveMe.aSelect({
-      localizeLabel: true,
+      localizeOptionLabels: true,
       data: ["ValueA", "ValueB"],
       inline: false
     }),
@@ -116,7 +114,7 @@ const variants = [
   {
     name: "Page Context",
     descriptor: giveMe.aSelect({
-      localizeLabel: true,
+      localizeOptionLabels: true,
       data: ["ValueA", "ValueB"],
       inline: false,
       action: giveMe.aPublishAction({ pageContextKey: "test:select" })

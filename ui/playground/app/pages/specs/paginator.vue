@@ -2,6 +2,7 @@
   <UiSpec
     :variants
     no-loading-variant
+    no-validation-variant
     use-model
   >
     <Message severity="info">
@@ -13,9 +14,7 @@
       class="flex gap-4 border-4 border-gray-500 rounded p-4"
       data-testid="component"
     >
-      <Inputs
-        :inputs
-      />
+      <Inputs :inputs />
     </div>
   </UiSpec>
 </template>

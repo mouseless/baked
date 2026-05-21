@@ -66,50 +66,66 @@
         />
       </div>
       <Button
+        v-tooltip.left="{
+          disabled: !showValidationSummary,
+          value: messages,
+          pt: { text: 'text-sm' }
+        }"
         :schema="submit"
         :ready
-        @submit="$emit('submit', formData)"
+        @submit="$emit('submit', model)"
       />
     </div>
   </template>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { Dialog } from "primevue";
-import { useLocalization } from "#imports";
+import { useLocalization, useValidation } from "#imports";
 import { Button, Inputs } from "#components";
 
 const { localize: l } = useLocalization();
+const { validate } = useValidation();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const emit = defineEmits(["submit"]);
 
-const { dialogOptions, inputs, submit, title } = schema;
+const { dialogOptions, inputs, submit, title, validations = [], showValidationSummary = false } = schema;
 
-const formData = ref({});
-const ready = ref(inputs.length === 0);
+const model = ref({});
+const readyData = ref({});
 const submitted = ref(false);
 const visible = ref(false);
 
+const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
+
+const { isValid, messages } = validate({
+  inputs,
+  model,
+  composables: validations
+});
+
 function onReady(value) {
-  ready.value = value;
+  readyData.value = value;
 }
 
 function onChanged({ values }) {
-  formData.value = values;
+  model.value = values;
 }
 
 function execute() {
+  if(!ready.value) { return; }
+
   submitted.value = true;
   visible.value = false;
 }
 
 function emitSubmit() {
-  if(submitted.value) {
+  if(submitted.value && ready.value) {
     submitted.value = false;
-    emit("submit", formData.value);
+    emit("submit", model.value);
   }
 }
 </script>
