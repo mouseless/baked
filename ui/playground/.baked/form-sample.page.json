@@ -78,9 +78,11 @@
                 "component": {
                   "type": "InputText",
                   "schema": {
-                    "label": "Name",
-                    "labelMode": "float",
-                    "labelVariant": "on"
+                    "label": {
+                      "text": "Name",
+                      "mode": "float",
+                      "variant": "on"
+                    }
                   }
                 }
               }
@@ -95,9 +97,9 @@
                       "type": "SelectButton",
                       "schema": {
                         "allowEmpty": true,
+                        "localizeOptionLabels": true,
                         "optionLabel": "label",
-                        "optionValue": "value",
-                        "localizeLabel": true
+                        "optionValue": "value"
                       },
                       "data": {
                         "type": "Inline",
@@ -125,7 +127,7 @@
                     "component": {
                       "type": "PageSize",
                       "schema": {
-                        "localizeLabel": false,
+                        "localizeOptionLabels": false,
                         "stateful": true
                       },
                       "data": {
@@ -336,9 +338,11 @@
                                     "component": {
                                       "type": "InputText",
                                       "schema": {
-                                        "label": "Name",
-                                        "labelMode": "ifta",
-                                        "validateLabel": true
+                                        "label": {
+                                          "text": "Name",
+                                          "mode": "ifta",
+                                          "showOptionality": true
+                                        }
                                       }
                                     }
                                   },
@@ -347,9 +351,11 @@
                                     "component": {
                                       "type": "InputText",
                                       "schema": {
-                                        "label": "Surname",
-                                        "labelMode": "ifta",
-                                        "validateLabel": true
+                                        "label": {
+                                          "text": "Surname",
+                                          "mode": "ifta",
+                                          "showOptionality": true
+                                        }
                                       }
                                     }
                                   },
@@ -358,9 +364,11 @@
                                     "component": {
                                       "type": "InputText",
                                       "schema": {
-                                        "label": "Description",
-                                        "labelMode": "ifta",
-                                        "validateLabel": true
+                                        "label": {
+                                          "text": "Description",
+                                          "mode": "ifta",
+                                          "showOptionality": true
+                                        }
                                       }
                                     }
                                   }

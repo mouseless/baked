@@ -5,8 +5,8 @@ test.beforeEach(async({ goto }) => {
   await goto("/specs/labeler", { waitUntil: "hydration" });
 });
 
-test.describe("Validate Label", () => {
-  const id = "Validate Label";
+test.describe("Base", () => {
+  const id = "Base";
 
   test("show (Optional) field is not required", async({ page }) => {
     const component = page.getByTestId(id);

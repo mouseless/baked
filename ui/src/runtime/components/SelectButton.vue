@@ -6,10 +6,11 @@
       </div>
     </template>
     <Labeler
-      :label
+      :label="{
+        ...label,
+        mode: label?.mode == 'ifta' ? label.mode : null
+      }"
       :path
-      :mode="labelMode == 'ifta' ? labelMode : null"
-      :validate-label
       :dt="{
         colorScheme: {
           light: {
@@ -70,9 +71,7 @@ const model = defineModel({ type: null, required: true });
 const {
   allowEmpty = false,
   label,
-  labelMode,
-  validateLabel,
-  localizeLabel,
+  localizeOptionLabels,
   optionLabel,
   optionValue,
   stateful,
@@ -99,7 +98,7 @@ watch(selected, newSelected => setModel(newSelected));
 function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
 
-  return localizeLabel ? l(result) : result;
+  return localizeOptionLabels ? l(result) : result;
 }
 
 function getModel() {

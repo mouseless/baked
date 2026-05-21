@@ -21,9 +21,11 @@
                   "component": {
                     "type": "InputText",
                     "schema": {
-                      "label": "Name",
-                      "labelMode": "ifta",
-                      "validateLabel": true
+                      "label": {
+                        "text": "Name",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
                     }
                   }
                 },
@@ -32,9 +34,11 @@
                   "component": {
                     "type": "InputText",
                     "schema": {
-                      "label": "Surname",
-                      "labelMode": "ifta",
-                      "validateLabel": true
+                      "label": {
+                        "text": "Surname",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
                     }
                   }
                 },
@@ -43,9 +47,11 @@
                   "component": {
                     "type": "InputText",
                     "schema": {
-                      "label": "Description",
-                      "labelMode": "ifta",
-                      "validateLabel": true
+                      "label": {
+                        "text": "Description",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
                     }
                   }
                 }
@@ -341,9 +347,11 @@
                 "component": {
                   "type": "InputText",
                   "schema": {
-                    "label": "Name",
-                    "labelMode": "ifta",
-                    "validateLabel": true
+                    "label": {
+                      "text": "Name",
+                      "mode": "ifta",
+                      "showOptionality": true
+                    }
                   }
                 }
               }

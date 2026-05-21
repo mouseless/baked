@@ -8,9 +8,6 @@
     <Labeler
       :label
       :path
-      :mode="labelMode"
-      :variant="labelVariant"
-      :validate-label
     >
       <InputNumber
         v-model="model"
@@ -46,7 +43,7 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, labelMode, labelVariant, validateLabel, noGrouping } = schema;
+const { label, noGrouping } = schema;
 
 const path = context.injectPath();
 const validation = context.injectValidations();

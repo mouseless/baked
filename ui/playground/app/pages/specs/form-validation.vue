@@ -20,10 +20,10 @@ const variants = [
           component: giveMe.anInputText()
         }),
         giveMe.anInput({
-          name: "input-2",
+          name: "param-2",
           component: giveMe.anInputText({
-            labeler: giveMe.aLabeler({
-              validateLabel: true
+            label: giveMe.aLabel({
+              showOptionality: true
             })
           })
         })

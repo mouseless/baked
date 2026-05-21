@@ -14,7 +14,7 @@
           class="max-sm:truncate max-sm:w-5/6"
           :for="path"
         >
-          {{ localizeLabel }}
+          {{ localizedText }}
         </label>
       </template>
     </component>
@@ -32,30 +32,29 @@ import { useLocalization } from "#imports";
 const { localize: l } = useLocalization({});
 const { localize: lc } = useLocalization({ group: "Labeler" });
 
-const { label, mode, required, validateLabel } = defineProps({
-  label: { type: String, default: null },
+const { label, required } = defineProps({
+  label: { type: Object, default: null },
   path: { type: String, required: true },
-  mode: { type: String, default: null },
-  variant: { type: String, default: "on" },
   pt: { type: Object, default: () => ({ }) },
   dt: { type: Object, default: () => ({ }) },
-  required: { type: Boolean, default: false },
-  validateLabel: { type: Boolean, default: false }
+  required: { type: Boolean, default: false }
 });
 
-const localizeLabel = computed(() => {
-  if(!validateLabel) {
-    return l(label);
+const { text, mode, variant = "on", showOptionality } = label ?? { };
+
+const localizedText = computed(() => {
+  if(!showOptionality) {
+    return l(text);
   }
 
   if(required) {
-    return lc("{label} (Required)", { label: l(label) });
+    return lc("{label} (Required)", { label: l(text) });
   }
 
-  return lc("{label} (Optional)", { label: l(label) });
+  return lc("{label} (Optional)", { label: l(text) });
 });
 const labelComponent = computed(() => {
-  if(!label) { return "div"; }
+  if(!text) { return "div"; }
 
   switch (mode) {
   case "ifta":

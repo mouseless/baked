@@ -17,7 +17,7 @@ export default function useDefaultValidation({ inputs, model }) {
   inputs.map(input => {
     const value = model?.[input.name];
     const isEmpty = value === undefined || value === null || String(value).trim() === "";
-    const label = input.component?.schema?.label || capitalize(input.name);
+    const label = input.component?.schema?.label?.text || capitalize(input.name);
 
     result[input.name] = {
       ...validation,

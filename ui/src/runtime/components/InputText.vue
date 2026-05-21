@@ -8,9 +8,6 @@
     <Labeler
       :label
       :path
-      :mode="labelMode"
-      :variant="labelVariant"
-      :validate-label
     >
       <InputText
         v-model="input"
@@ -47,7 +44,7 @@ const { schema } = defineProps({
 
 const model = defineModel({ type: null, required: true });
 
-const { label, labelMode, labelVariant, validateLabel, targetProp } = schema;
+const { label, targetProp } = schema;
 
 const path = context.injectPath();
 const validation = context.injectValidations();

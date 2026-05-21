@@ -8,16 +8,13 @@
     <Labeler
       :label
       :path
-      :mode="labelMode"
-      :variant="labelVariant"
-      :validate-label
     >
       <Select
         v-bind="$attrs"
         v-model="selected"
         :input-id="path"
         :options="data"
-        :placeholder="l(label)"
+        :placeholder
         :show-clear
         :filter
         :auto-filter-focus="filter"
@@ -63,12 +60,13 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { filter, label, labelMode, validateLabel, labelVariant, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
+const { filter, label, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const validation = context.injectValidations();
 
 const selected = ref();
+const placeholder = label?.text ? l(label.text) : null;
 
 // two way binding between model and selected
 watch(
@@ -86,14 +84,14 @@ watch(selected, newSelected => setModel(newSelected));
 function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
 
-  return localizeLabel ? l(result) : result;
+  return localizeOptionLabels ? l(result) : result;
 }
 
 function getValueLabel(slotProps) {
-  const result = slotProps.value?.[optionLabel] ?? slotProps.value ?? label;
+  const result = slotProps.value?.[optionLabel] ?? slotProps.value ?? placeholder;
 
   // return "\u00A0" to display full height
-  return (localizeLabel ? l(result) : result) ?? "\u00A0";
+  return (localizeOptionLabels ? l(result) : result) ?? "\u00A0";
 }
 
 function getModel() {

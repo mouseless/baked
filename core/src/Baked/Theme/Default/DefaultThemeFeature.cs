@@ -195,6 +195,33 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     p.DefaultValue = c.Parameter.DefaultValue;
                 }
             );
+            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+                schema: (i, c, cc) =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+
+                    labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, nameof(ILabeler.Label)));
+                }
+            );
+            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+                schema: i =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+                    if (labeler.Label?.Text != null) { return; }
+
+                    labeler.Label = null;
+                },
+                order: UiLayer.MaxConventionOrder - 10
+            );
+            builder.Conventions.AddParameterSchema(
+                schema: () => new Label()
+            );
+            builder.Conventions.AddParameterSchemaConfiguration<Label>(
+                where: cc =>
+                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs), "*", nameof(ILabeler.Label)) ||
+                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs), "*", nameof(ILabeler.Label)),
+                schema: label => label.ShowOptionality = true
+            );
 
             builder.Conventions.AddParameterComponent(
                 when: c =>
@@ -264,26 +291,15 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddParameterComponentConfiguration<SelectButton>(
                 component: (s, c) => s.Schema.AllowEmpty = c.Parameter.IsNullable ? true : null
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
-                schema: i =>
+            builder.Conventions.AddParameterSchemaConfiguration<Label>(
+                where: cc => cc.Path.EndsWith(nameof(SelectButton), nameof(ILabeler.Label)),
+                schema: label =>
                 {
-                    if (i.Component.Schema is not SelectButton sb) { return; }
-                    if (sb.LabelMode == "ifta") { return; }
+                    if (label.Mode == "ifta") { return; }
 
-                    sb.LabelNone();
+                    label.None();
                 },
-                order: UiLayer.MaxConventionOrder - 10
-            );
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
-                where: cc =>
-                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs)) ||
-                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs)),
-                schema: (i, c, cc) =>
-                {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
-
-                    labeler.ValidateLabel = true;
-                }
+                order: UiLayer.MaxConventionOrder - 20
             );
         });
 

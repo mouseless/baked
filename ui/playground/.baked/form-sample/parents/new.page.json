@@ -48,9 +48,11 @@
                 "component": {
                   "type": "InputText",
                   "schema": {
-                    "label": "Name",
-                    "labelMode": "ifta",
-                    "validateLabel": true
+                    "label": {
+                      "text": "Name",
+                      "mode": "ifta",
+                      "showOptionality": true
+                    }
                   }
                 }
               }
@@ -66,9 +68,11 @@
                 "component": {
                   "type": "InputText",
                   "schema": {
-                    "label": "Surname",
-                    "labelMode": "ifta",
-                    "validateLabel": true
+                    "label": {
+                      "text": "Surname",
+                      "mode": "ifta",
+                      "showOptionality": true
+                    }
                   }
                 }
               }
@@ -83,12 +87,14 @@
                 "component": {
                   "type": "Select",
                   "schema": {
-                    "label": "Role",
-                    "labelMode": "ifta",
-                    "validateLabel": true,
+                    "label": {
+                      "text": "Role",
+                      "mode": "ifta",
+                      "showOptionality": true
+                    },
+                    "localizeOptionLabels": true,
                     "optionLabel": "label",
                     "optionValue": "value",
-                    "localizeLabel": true,
                     "showClear": true
                   },
                   "data": {
@@ -126,12 +132,14 @@
                   "type": "SelectButton",
                   "schema": {
                     "allowEmpty": true,
+                    "label": {
+                      "text": "Status",
+                      "mode": "ifta",
+                      "showOptionality": true
+                    },
+                    "localizeOptionLabels": true,
                     "optionLabel": "label",
-                    "optionValue": "value",
-                    "localizeLabel": true,
-                    "label": "Status",
-                    "labelMode": "ifta",
-                    "validateLabel": true
+                    "optionValue": "value"
                   },
                   "data": {
                     "type": "Inline",
@@ -159,9 +167,11 @@
                 "component": {
                   "type": "InputText",
                   "schema": {
-                    "label": "Description",
-                    "labelMode": "ifta",
-                    "validateLabel": true
+                    "label": {
+                      "text": "Description",
+                      "mode": "ifta",
+                      "showOptionality": true
+                    }
                   }
                 }
               }
