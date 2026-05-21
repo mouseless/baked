@@ -136,3 +136,24 @@ flowchart LR;
 
   Generate --> Start
 ```
+
+## Convention Levels
+
+```mermaid
+flowchart
+
+  I(Infra)
+  D(Domain)
+  UX(Ux)
+  T(Theme)
+  O(Override)
+
+  subgraph Order
+    direction TB
+    I --> D
+    D --> UX
+    UX --> T
+    T --> O
+  end
+  
+```

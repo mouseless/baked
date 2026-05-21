@@ -211,3 +211,112 @@ Add versions to `Directory.Packages.props`;
 >   <Virtuosity />
 > </Weavers>
 > ```
+
+## DomainModel
+
+`DomainModel` is a reflection cache that stores and reuses type metadata,
+properties, methods, parameters, and attribute information. Since baked relies 
+on dynamic code generation based on certain set of rules or conventions, 
+`DomainModel` serves as the core foundation of the system by providing 
+a reusable and extendable reflection metadata.
+
+### Extending DomainModel
+
+Baked utilizes the `Attribute` system to mark or add additional metadata to
+reflected types, members, or parameters. All models defined within the 
+`DomainModel` has their own attributes collection initialized with default
+or user provided attributes, which allows layers and features to define custom 
+behaviors, metadata, or runtime behaviours.
+
+In order to create a specific set of rules or behaviors, `DomainLayer` provides 
+convention based configuration mechanism which are configured using 
+`DomainModeBuilder` configuration target's `Conventions`. 
+
+#### Utilizing Conventions
+
+Attributes can be directly added to types or members as well as using built-in
+convetion system of baked. A convention can be used to add/remove or configure
+an attribute. Baked provides `IDomainModelConvention<TModel>` to create custom
+convention classes and extension methods for `DomainModelConvetionCollection` 
+to manage attributes.
+
+```csharp
+public class IdConvention : IDomainModelConvention<PropertyModelContext>
+{
+    public void Apply(PropertModelContext context) 
+    {
+        if(c.Property.Name != "Id") { continue; }
+
+        ((IMutableAttributeCollection).Property.CustomAttributes).
+            Add(new IdAttribute());
+    }
+}
+
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
+{
+    // Adding an implemented convention
+    builder.Conventions.Add(new IdConvention());
+
+    // Adding convention via extensions
+    builder.Conventions.SetPropertyAttribute(
+        when: c => c.Property.Name == "Id"
+        attribute: () => new IdAttribute(),    
+    );
+}
+```
+
+#### Convention Execution Order
+
+By deault a convention is applied in the order which it is added with respect to
+the feature order. A global value can be also set when a specific convention is
+required to apply at the exact order. 
+
+```csharp
+// Adding convention via extensions
+builder.Conventions.SetPropertyAttribute(
+    when: c => c.Property.Name == "Id"
+    attribute: () => new IdAttribute(),
+    order: int.minValue + 10
+);
+```
+
+Baked also provides a level system that allows conventions to be grouped and 
+executed within a specific stage. This helps organize convention execution and 
+provide a predictable ordering between related convention groups.
+
+```csharp
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
+{
+    builder.Layers.Add("Infra");
+    builder.Layers.Add("Business");
+
+    // Adding convention via extensions
+    builder.Conventions.SetPropertyAttribute(
+        when: c => c.Property.Name == "Id"
+        attribute: () => new IdAttribute(),
+        order: Layers["Infra"]
+    );
+
+    builder.Conventions.SetPropertyAttribute(
+        when: c => c.Property.Has<IdAttribute>(),
+        attribute: () => new DataAttribute(),
+        order: Layers["Business"]
+    );
+}
+```
+
+Layers also provide execution order within their min and max ranges.
+
+```csharp
+builder.Conventions.SetPropertyAttribute(
+    when: c => c.Property.Name == "Id"
+    attribute: () => new IdAttribute(),
+    order: Layers["Infra"].Min + 10
+);
+
+builder.Conventions.SetPropertyAttribute(
+    when: c => c.Property.Has<IdAttribute>(),
+    attribute: () => new DataAttribute(),
+    order: Layers["Infra"].At(10)
+);
+```
