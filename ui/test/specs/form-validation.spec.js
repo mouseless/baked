@@ -1,16 +1,7 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
-const consoleErrors = [];
-
-test.beforeEach(async({ goto, page }) => {
-  consoleErrors.length = 0;
-
-  page.on("console", msg => {
-    if(msg.type() === "error") {
-      consoleErrors.push(msg.text());
-    }
-  });
+test.beforeEach(async({ goto }) => {
   await goto("/specs/form-validation", { waitUntil: "hydration" });
 });
 

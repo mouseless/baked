@@ -25,7 +25,7 @@ const validations = context.injectValidations();
 
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
-const validation = computed(() => validations?.value[schema.name] || {});
+const validation = computed(() => validations.value[schema.name] || {});
 
 context.provideValidation(validation);
 

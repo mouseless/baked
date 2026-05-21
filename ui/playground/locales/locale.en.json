@@ -22,15 +22,15 @@
   "TabbedPage": {
     "Select required values to view this page": "Select required values to view this page"
   },
+  "useDefaultValidation": {
+    "{label} cannot be empty": "{label} cannot be empty"
+  },
   "useFormat": {
     "suffix": {
       "B": "B",
       "M": "M",
       "K": "K"
     }
-  },
-  "ValidatorMessages": {
-    "{label} cannot be empty": "{label} cannot be empty"
   },
   "If you cannot reach the page you want please contact the system administrator": "If you cannot reach the page you want please contact the system administrator",
   "Please contact system administrator": "Please contact system administrator",

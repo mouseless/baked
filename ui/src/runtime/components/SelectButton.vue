@@ -32,8 +32,7 @@
           :allow-empty
           :data-key="optionValue"
           :option-label
-          :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
-          class="!w-auto"
+          pt:pc-toggle-button:root="text-[length:inherit]"
         >
           <template #option="slotProps">
             <span>{{ getOptionLabel(slotProps) }}</span>
