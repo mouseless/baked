@@ -42,6 +42,11 @@
       <span class="text-gray-500">onReadyValues-key=</span>
       <span data-testid="onReadyValues-key">{{ readyValues }}</span>
     </div>
+    <Message severity="info">
+      <span class="text-xl">
+        ⬇️  Check if only required with default on mounted ⬇️
+      </span>
+    </Message>
     <div class="border-4 border-gray-500 rounded p-4 flex gap-4">
       <Bake
         name="reactor"

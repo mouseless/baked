@@ -7,7 +7,7 @@
     :class="inputClass"
     :invalid="invalid(input.name)"
     :required="validations[input.name]?.required"
-    @blur="touched(input.name)"
+    @blur="() => touched(input.name)"
   />
 </template>
 <script setup>

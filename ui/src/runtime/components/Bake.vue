@@ -1,10 +1,14 @@
 <template>
   <component
-    :is="componentTemplate"
+    :is="component"
     v-if="visible"
     :key="loading"
-    :class="classes"
-    v-bind="getComponentProps()"
+    v-bind="{
+      ...$attrs,
+      ...baseAttrs,
+      ...dataAttrs(),
+      ...modelAttrs()
+    }"
   >
     <template
       v-for="(_, slotName) in $slots"
@@ -18,7 +22,7 @@
   </component>
 </template>
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
 
 const actionExecuter = useActionExecuter();
@@ -40,8 +44,7 @@ const parentLoading = context.injectLoading();
 const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
 const contextData = context.injectContextData();
-const componentTemplate = componentResolver.resolve(descriptor.type, "MissingComponent");
-const componentProps = buildComponentProps();
+const component = componentResolver.resolve(descriptor.type, "MissingComponent");
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = !parentLoading.value && dataFetcher.shouldLoad(descriptor.data);
 const loading = ref(shouldLoad);
@@ -49,10 +52,30 @@ let executing = null;
 const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 let reactions = null;
+const baseAttrs = { "class": classes };
+let dataAttrs = () => ({});
+let modelAttrs = () => ({});
 
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
 context.provideParentContext({ ...contextData.parent, data });
+
+if(descriptor.schema) {
+  baseAttrs.schema = descriptor.schema;
+}
+
+if(component.emits?.includes("submit")) {
+  baseAttrs.onSubmit = updateModel;
+}
+
+if(descriptor.data) {
+  dataAttrs = () => ({ data: data.value });
+}
+
+if(component.props?.modelValue) {
+  modelAttrs = () => ({ modelValue: model.value, "onUpdate:modelValue": updateModel });
+  watch(model, updateModel);
+}
 
 if(shouldLoad) {
   context.provideLoading(loading);
@@ -99,38 +122,10 @@ async function load() {
   emit("loaded");
 }
 
-function buildComponentProps() {
-  const result = {};
+async function updateModel(newModel) {
+  if(component.props?.modelValue) {
+    if(newModel === model.value) { return; }
 
-  if(descriptor.schema) { result.schema = descriptor.schema; }
-  if(componentTemplate.emits?.includes("submit")) { result.onSubmit = onModelUpdate; }
-  if(componentTemplate.props?.modelValue) { result["onUpdate:modelValue"] = onModelUpdate; }
-
-  return result;
-}
-
-let __BIND_COUNT__ = 0; // NOTE A work-around for query bound model problem
-function getComponentProps() {
-  const result = { ...componentProps };
-
-  if(descriptor.data) { result.data = data.value; }
-  if(componentTemplate.props?.modelValue) {
-    result.modelValue = model.value;
-
-    // restrict model update during v-bind by 2, to prevent duplicated event publish
-    // first during mount, second to refresh model from query
-    if(__BIND_COUNT__ < 2) {
-      __BIND_COUNT__++;
-
-      nextTick(() => onModelUpdate(model.value));
-    }
-  }
-
-  return result;
-}
-
-async function onModelUpdate(newModel) {
-  if(componentTemplate.props?.modelValue) {
     model.value = newModel;
   }
 

@@ -72,8 +72,7 @@ async function set(value) {
     if(!checkValue(value)) { return; }
 
     setModel(value);
-  }
-  else {
+  } else {
     // prevents an unnecessary router push to avoid cancelation on other
     // inputs' router pushes
     if(String(value) === String(query.value)) { return; }
@@ -99,6 +98,8 @@ function checkValue(value) {
 }
 
 function setModel(value) {
+  if(value === model.value) { return; }
+
   if(!schema.numeric) {
     model.value = value;
   } else {
