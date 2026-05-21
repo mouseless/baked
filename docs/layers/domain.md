@@ -258,7 +258,7 @@ to manage attributes.
 ```csharp
 public class IdConvention : IDomainModelConvention<PropertyModelContext>
 {
-    public void Apply(PropertModelContext context) 
+    public void Apply(PropertyModelContext context) 
     {
         if(c.Property.Name != "Id") { continue; }
 
@@ -304,7 +304,7 @@ public class FeatureB : IFeature
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...,
-        order: int.minValue + 10
+        order: int.MinValue + 10
     );
 
     // This convention will apply last
