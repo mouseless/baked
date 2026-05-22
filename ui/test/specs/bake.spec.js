@@ -103,6 +103,35 @@ test.describe("Data Descriptor", () => {
   });
 });
 
+test.describe("Data Error", () => {
+  const id = "Data Error";
+
+  test.skip("shows error, when claimed", async({ page }) => {
+    const _ = page.getByTestId(id);
+
+    console.error("not implemented");
+  });
+
+  test.skip("shows error, when not claimed, using local component", async({ page }) => {
+    const _ = page.getByTestId(id);
+
+    // NOTE passes error as data
+    console.error("not implemented");
+  });
+
+  test.skip("shows error, when not claimed, using global component", async({ page }) => {
+    const _ = page.getByTestId(id);
+
+    console.error("not implemented");
+  });
+
+  test.skip("grantchild can't claim error", async({ page }) => {
+    const _ = page.getByTestId(id);
+
+    console.error("not implemented");
+  });
+});
+
 test.describe("Model", () => {
   const id = "Model";
 

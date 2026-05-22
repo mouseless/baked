@@ -24,6 +24,27 @@ export default function() {
     return provide("__bake_data_descriptor", value);
   }
 
+  function injectError() {
+    const { error, claim } = inject("__bake_error", {
+      error: ref({}),
+      claim: () => { }
+    });
+
+    claim();
+
+    return error;
+  }
+
+  function provideError(error) {
+    const claimed = ref(false);
+    provide("__bake_error", {
+      error,
+      claim: () => claimed.value = true
+    });
+
+    return claimed;
+  }
+
   function injectEvents() {
     return inject("__bake_events");
   }
@@ -86,6 +107,8 @@ export default function() {
     injectContextData,
     injectDataDescriptor,
     provideDataDescriptor,
+    injectError,
+    provideError,
     injectEvents,
     provideEvents,
     injectExecuting,

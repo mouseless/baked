@@ -51,3 +51,12 @@
 
 - Data and actions now inlines 400 responses with a user-friendly look-and-feel
   - Toast messages are now deprecated
+- `AwaitLoading` now has a `#error` slot that allows you customize data loading
+  errors
+- `context.injectError` and `context.provideError` are introduced to pass a load
+  or execution error to child
+  - Injecting error automatically means it is claimed so that parent don't
+    display the error message
+- `IComponentDescriptor.Error` and `AppDescriptor.InlineError` are introduced
+  to customize error display for components that don't claim their inline errors
+  by injecting

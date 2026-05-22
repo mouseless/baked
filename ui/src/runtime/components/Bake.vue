@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!error">
+  <template v-if="!error || errorClaimed">
     <component
       :is="component"
       v-if="visible"
@@ -24,13 +24,14 @@
     </component>
   </template>
   <div
-    v-else
+    v-else-if="error && !errorClaimed"
     class="
       flex flex-col gap-4 p-4
       rounded-md border border-red-500/10
       text-red-500 bg-red-500/10
       overflow-auto
     "
+    v-bind="$attrs"
   >
     <div class="flex gap-3">
       <i class="pi pi-exclamation-circle max-w-min self-center" />
@@ -70,6 +71,7 @@ const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 const baseAttrs = { };
 const error = ref();
+const errorClaimed = context.provideError(error);
 
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
