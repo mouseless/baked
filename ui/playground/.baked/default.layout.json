@@ -83,6 +83,12 @@
             "route": "/route-parameters-sample/[id]",
             "title": "/route-parameters-sample/[id]:Title"
           },
+          "/specs/await-loading": {
+            "route": "/specs/await-loading",
+            "icon": "pi pi-microchip",
+            "title": "/specs/await-loading:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/bake": {
             "route": "/specs/bake",
             "icon": "pi pi-microchip",

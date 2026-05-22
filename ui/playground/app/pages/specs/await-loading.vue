@@ -1,12 +1,50 @@
 <template>
   <UiSpec>
-    <i>CASE: default loading skeleton</i>
-    <i>CASE: customized skeleton</i>
-    <i>CASE: overridden skeleton</i>
+    <FakeLoading title="Base">
+      <AwaitLoading>NONE</AwaitLoading>
+    </FakeLoading>
+    <FakeLoading title="Customized">
+      <AwaitLoading :skeleton="{ width: '5rem', height: '5rem' }" />
+    </FakeLoading>
+    <FakeLoading title="Overridden">
+      <AwaitLoading>
+        <template #loading>
+          loading...
+        </template>
+      </AwaitLoading>
+    </FakeLoading>
     <i>CASE: verify props forwarded to component</i>
-    <i>CASE: default error</i>
-    <i>CASE: bigger error using skeleton props</i>
-    <i>CASE: overridden error</i>
+    <FakeLoading
+      title="Error"
+      :error
+    >
+      <AwaitLoading />
+    </FakeLoading>
+    <FakeLoading
+      title="Error"
+      :error
+    >
+      <AwaitLoading :skeleton="{ width: '5rem', height: '5rem' }" />
+    </FakeLoading>
+    <FakeLoading
+      title="Error"
+      :error
+    >
+      <AwaitLoading>
+        <template #error="{ error: e }">
+          ! {{ e.summary }} - {{ e.detail }} !
+        </template>
+      </AwaitLoading>
+    </FakeLoading>
     <i>CASE: verify error claimed</i>
   </UiSpec>
 </template>
+<script setup>
+import { AwaitLoading } from "#components";
+import giveMe from "@utils/giveMe";
+
+const error = giveMe.anError({
+  title: "TEST ERROR",
+  detail: "TEST DESCRIPTION"
+});
+</script>

@@ -35,9 +35,9 @@
   >
     <div class="flex gap-3">
       <i class="pi pi-exclamation-circle max-w-min self-center" />
-      <h2 class="font-bold">{{ error.summary }}</h2>
+      <h2 class="font-bold">{{ getMessage(error).summary }}</h2>
     </div>
-    <span>{{ error.detail }}</span>
+    <span>{{ getMessage(error).detail }}</span>
   </div>
 </template>
 <script setup>
@@ -143,7 +143,7 @@ async function load() {
   } catch (err) {
     if(err?.status !== 400) { throw err; }
 
-    error.value = getMessage(err);
+    error.value = err;
   }
   loading.value = false;
   emit("loaded");

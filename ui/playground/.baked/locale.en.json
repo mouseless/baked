@@ -15,6 +15,8 @@
   "/specs:Title": "Specs",
   "/specs/auth:Description": "Authorized routing and client",
   "/specs/auth:Title": "Auth",
+  "/specs/await-loading:Description": "A helper component that manages loading state for a child component",
+  "/specs/await-loading:Title": "Await Loading",
   "/specs/bake:Description": "The core component that renders a dynamic component using given descriptor",
   "/specs/bake:Title": "Bake",
   "/specs/button:Description": "Showcases interactions using button component",

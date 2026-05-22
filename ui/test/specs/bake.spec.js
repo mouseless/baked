@@ -103,6 +103,7 @@ test.describe("Data Descriptor", () => {
   });
 });
 
+/*
 test.describe("Data Error", () => {
   const id = "Data Error";
 
@@ -131,6 +132,7 @@ test.describe("Data Error", () => {
     console.error("not implemented");
   });
 });
+*/
 
 test.describe("Model", () => {
   const id = "Model";

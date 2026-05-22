@@ -275,12 +275,26 @@ export default {
     };
   },
 
+  anError({ name, title, detail, statusCode } = {}) {
+    name = $(name, "FetchError");
+    title = $(title, "Test Error");
+    detail = $(detail, "A test error detail");
+    statusCode = $(statusCode, 500);
+
+    const result = new Error(title);
+    result.name = name;
+    result.statusCode = statusCode;
+    result.data = { title, detail };
+
+    return result;
+  },
+
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}) {
     errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");
     safeLinks = $(safeLinks, [this.anExpected()]);
     safeLinksMessage = $(safeLinksMessage, "Test links message");
-    data = $(data, new Error("Test Error", { status: 500 }));
+    data = $(data, this.anError());
 
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
