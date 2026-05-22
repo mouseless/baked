@@ -167,6 +167,248 @@ This layer introduces following `Generate` phases to the application it is added
 > });
 > ```
 
+## Domain Model
+
+`DomainModel` is a reflection cache that stores and reuses type metadata,
+properties, methods, parameters, and attribute information. Since baked relies 
+on dynamic code generation based on certain set of rules or conventions, 
+`DomainModel` serves as the core foundation of the system by providing 
+a reusable and extendable reflection metadata.
+
+### Extending Domain Model
+
+Baked utilizes the `Attribute` system to mark or add additional metadata to
+reflected types, members, or parameters. All models defined within the 
+`DomainModel` has their own attributes collection initialized with dotnet
+or user provided attributes, which allows layers and features to define custom 
+behaviors, metadata, or runtime behaviours.
+
+In order to create a specific set of rules or behaviors, `DomainLayer` provides 
+convention based configuration mechanism which are configured using 
+`DomainModelBuilder` configuration target's `Conventions`. 
+
+### Indexing Models
+
+Baked provides indexing mechanism of domain models according to their owned 
+or added attributes to improve performance. Indexes of a model in domain can 
+be specified from its builder options.
+
+```csharp
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
+{
+    builder.Index.Type.Add<MyTypeAttribute>();
+    builder.Index.Property.Add<MyPropertyAttribute>();
+    builder.Index.Method.Add<MyMethodAttribute>();
+    builder.Index.Parameter.Add<MyParameterAttribute>();
+}
+```
+
+When any model type are indexed, they can be accessed using `.Having` extension
+method instead of querying through models.
+
+```csharp
+foreach(var type in domain.Types.Where(t => t.TryGetMetadata(out var metadata) && metadata.Has<MyTypeAttribute>()))
+{
+    ...
+}
+
+// Indexed, no query needed
+foreach(var type in domain.Types.Having<MyTypeAttribute>())
+{
+    ...
+}
+```
+
+## Convention System
+
+Attributes can be directly added to types or members as well as using built-in
+convetion system of baked. A convention can be used to add/remove or configure
+an attribute. Baked provides `IDomainModelConvention<TModel>` to create custom
+convention classes and extension methods for `DomainModelConvetionCollection` 
+to manage attributes.
+
+```csharp
+public class IdConvention : IDomainModelConvention<PropertyModelContext>
+{
+    public void Apply(PropertyModelContext context) 
+    {
+        if(c.Property.Name != "Id") { continue; }
+
+        ((IMutableAttributeCollection).Property.CustomAttributes).Add(new IdAttribute());
+    }
+}
+
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
+{
+    // Adding an implemented convention
+    builder.Conventions.Add(new IdConvention());
+
+    // Adding convention via extensions
+    builder.Conventions.SetPropertyAttribute(
+        when: c => c.Property.Name == "Id"
+        attribute: () => new IdAttribute()
+    );
+}
+```
+
+### Ordering Conventions
+
+By deault a convention is applied in the order which it is added with respect to
+its feature order. A global value can be also set when a specific convention is
+required to execute at the exact order. 
+
+```csharp
+// program.cs
+app.Features.Add(new FeatureA());
+app.Features.Add(new FeatureB());
+
+public class FeatureA : IFeature 
+{
+    // this convention wil apply before conventions
+    // in feature B with default order
+    builder.Conventions.SetPropertyAttribute(...);
+}
+
+public class FeatureB : IFeature 
+{
+    // This convention will apply first since a
+    // global order is given
+    builder.Conventions.SetPropertyAttribute(
+        ...,
+        order: Order.Earliest
+    );
+
+    // This convention will apply after conventions
+    // in feature A
+    builder.Conventions.SetPropertyAttribute(...);
+}
+```
+
+Another key factor that affects convention execution order is whether a
+convention should execute before or after indexes are built. Some conventions
+may need to modify metadata or add attributes before the indexing stage begins,
+so that the attributes they add can be using in `.Having<T>()` clauses in
+conventions that run after building indexes. 
+
+```mermaid
+flowchart
+  BBI(Conventions Before <br/> Building Indexes)
+  BI@{ shape: hex, label: "Build Indexes" }
+  ABI(Conventions After <br/> Building Indexes)
+
+  subgraph Convention Order
+    direction LR
+    BBI --> BI --> ABI
+  end
+```
+
+To support this behavior, conventions can be marked with the 
+`beforeBuildingIndexes` flag. These conventions are grouped and executed in a 
+separate stage, guaranteeing that they run before index generation and all 
+remaining conventions.
+
+```csharp
+// This convention will apply before the indexes are built
+builder.Conventions.SetPropertyAttribute(
+    ...,
+    order: Order.Latest;
+    beforeBuildingIndexes: true
+);
+
+// This convention will apply after the indexes are built
+builder.Conventions.SetPropertyAttribute(
+    ...,
+    order: Order.Earliest,
+);
+```
+
+Baked also provides a level system that allows conventions to be grouped and 
+executed within a specific stage. This helps organize convention execution 
+accross multiple features and provide a predictable ordering between related 
+convention groups.
+
+```csharp
+configurator.Domain.ConfigureDomainModelBuilder(builder =>
+{
+    builder.Levels.Add("LevelA");
+    builder.Levels.Add("LevelB");
+
+    builder.Conventions.SetPropertyAttribute(
+        ...,
+        order: Order.Level("LevelB")
+    );
+
+    // This convention executes first
+    builder.Conventions.SetPropertyAttribute(
+        ...,
+        order: Order.Level("LevelA")
+    );
+}
+```
+
+A convention with given level order will be added to the median, in other words
+will have 0 as its order relative to its level. It is also possible to specify 
+min/max values or a specific position within the level.
+
+```csharp
+builder.Conventions.SetPropertyAttribute(
+    ...,
+    order: Order.Level("LevelA").Min
+);
+
+builder.Conventions.SetPropertyAttribute(
+    ...,
+    order: Order.Level("LevelA") + 10
+);
+```
+
+#### `Order`
+
+Possible order usages;
+
+```csharp
+Order.Global.AbsoluteMin
+Order.Global.Min
+Order.Level("prior-level").AbsoluteMin
+Order.Level("prior-level").Min
+Order.Level("prior-level") // .Zero
+Order.Level("prior-level").Max
+Order.Level("prior-level").AbsoluteMax
+Order.AbsoluteMin
+Order.Min
+Order.Zero // 0
+Order.Max
+Order.AbsoluteMax
+Order.Level("posterior-level").AbsoluteMin
+Order.Level("posterior-level").Min
+Order.Level("posterior-level") // .Zero
+Order.Level("posterior-level").Max
+Order.Level("posterior-level").AbsoluteMax
+Order.Global.Max
+Order.Global.AbsoluteMax
+```
+
+Following operatior overloads are implemented
+```csharp
+{Order} = {Order} +- {int}
+{Order} = {int}
+
+// e.g.
+order: Order.Level("my-level") + 10
+order: Order.Max - 10
+order: 10 // Order.Zero + 10
+```
+
+> [!NOTE]
+>
+> Levels does not allow values exceeding their absolute boundaries, absolute 
+> values should be avaoided unless it is requried to override exceptional cases
+
+> [!CAUTION]
+>
+> Order has range between int.MinValue and int.MaxValue, any
+> values exceeding will throw error
+
 ## Proxifying Entities
 
 It is possible to avoid adding `protected virtual` and default constructors to
