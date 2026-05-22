@@ -1,7 +1,7 @@
 <template>
   <Message
     :severity="severity"
-    :pt="{ text: { class: 'min-w-[10rem] min-h-[1.5rem]' } }"
+    pt:text="min-w-[10rem] min-h-[1.5rem]"
   >
     <template
       v-if="icon"

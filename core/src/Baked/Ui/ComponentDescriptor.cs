@@ -18,4 +18,6 @@ public class ComponentDescriptor<TSchema>(TSchema schema)
     }
 
     IComponentSchema IComponentDescriptor.Schema => Schema;
+
+    IComponentSchema IComponentDescriptor.Schema { get => Schema; set => throw new NotImplementedException(); }
 }

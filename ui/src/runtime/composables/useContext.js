@@ -25,12 +25,11 @@ export default function() {
   }
 
   function injectError() {
-    const { error, claim } = inject("__bake_error", {
+    const { error, claimed } = inject("__bake_error", {
       error: ref({}),
-      claim: () => { }
+      claimed: ref(false)
     });
-
-    claim();
+    claimed.value = true;
 
     return error;
   }
@@ -39,7 +38,7 @@ export default function() {
     const claimed = ref(false);
     provide("__bake_error", {
       error,
-      claim: () => claimed.value = true
+      claimed
     });
 
     return claimed;
