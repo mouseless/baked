@@ -323,21 +323,21 @@ convention groups.
 ```csharp
 configurator.Domain.ConfigureDomainModelBuilder(builder =>
 {
-    builder.Levels.Add("Infra");
-    builder.Levels.Add("Business");
+    builder.Levels.Add("LevelA");
+    builder.Levels.Add("LevelB");
 
 
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...,
-        order: Order.Level("Business")
+        order: Order.Level("LevelB")
     );
 
     // This convention executes first
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...,
-        order: Order.Level("Infra")
+        order: Order.Level("LevelA")
     );
 }
 ```
@@ -350,13 +350,13 @@ min/max values or a specific position within the level.
 builder.Conventions.SetPropertyAttribute(
     when: ...,
     attribute: ...,
-    order: Order.Level("Infra").Earliest
+    order: Order.Level("LevelA").Earliest
 );
 
 builder.Conventions.SetPropertyAttribute(
     when: ...,
     attribute: ...,
-    order: Order.Level("Infra").At(1)
+    order: Order.Level("LevelA").At(1)
 );
 ```
 
