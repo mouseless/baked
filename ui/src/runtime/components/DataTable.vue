@@ -38,7 +38,10 @@
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
-        <AwaitLoading :skeleton="{ class: 'min-h-5' }">
+        <AwaitLoading
+          :skeleton="{ class: 'min-h-5' }"
+          no-error
+        >
           <ProvideParentContext
             v-if="data"
             :data="row.$getRow()"
@@ -87,7 +90,10 @@
         v-if="actions"
         #body="{ data: row, index }"
       >
-        <AwaitLoading :skeleton="{ class: 'min-h-5' }">
+        <AwaitLoading
+          :skeleton="{ class: 'min-h-5' }"
+          no-error
+        >
           <ProvideParentContext
             v-if="data"
             :data="row.$getRow()"
@@ -119,7 +125,10 @@
           :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
-            <AwaitLoading :skeleton="{ class: 'min-h-5' }">
+            <AwaitLoading
+              :skeleton="{ class: 'min-h-5' }"
+              no-error
+            >
               <Bake
                 v-if="data"
                 :name="`rows/footer/${column.key}`"

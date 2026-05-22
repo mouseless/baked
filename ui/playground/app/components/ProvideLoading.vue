@@ -15,17 +15,12 @@ import { useContext } from "#imports";
 
 const context = useContext();
 
-const { state, error } = defineProps({
+const { loaded } = defineProps({
   title: { type: String, required: true },
-  state: { type: Boolean, default: true },
-  error: { type: Object, default: null }
+  loading: { type: Boolean, default: false }
 });
 
-const loading = ref(state);
+const loading = ref(!loaded);
 
-if(error) {
-  context.provideError(ref(error));
-} else {
-  context.provideLoading(loading);
-}
+context.provideLoading(loading);
 </script>

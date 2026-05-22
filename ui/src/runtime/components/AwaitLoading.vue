@@ -4,15 +4,15 @@
       <Skeleton v-bind="skeleton" />
     </slot>
   </template>
-  <template v-else-if="error">
+  <template v-else-if="!noError && error">
     <slot
       name="error"
       :error
     >
       <div
         class="
-          rounded-md bg-red-500/10 pl-2 py-1
-          truncate text-red-500
+          rounded-md pl-1
+          bg-red-500/10 text-red-500
         "
         :style="skeleton"
       >
@@ -25,25 +25,26 @@
               arrow: { class: 'border-b-red-500' }
             }
           }"
-          class="text-xs"
+          class="text-sm"
         >{{ error.summary }}</span>
       </div>
     </slot>
   </template>
-  <slot v-else />
+  <slot v-else-if="!error" />
 </template>
 <script setup>
 import { computed } from "vue";
 import { Skeleton } from "primevue";
 import { useContext } from "#imports";
 
-const { skeleton = {} } = defineProps({
-  skeleton: { type: Object, default: () => ({}) }
+const { skeleton = {}, noError } = defineProps({
+  skeleton: { type: Object, default: () => ({}) },
+  noError: { type: Boolean, default: false }
 });
 
 const context = useContext();
 const loading = context.injectLoading();
-const errorObject = context.injectError();
+const errorObject = noError ? null : context.injectError();
 
 const error = computed(() => {
   if(!errorObject.value) { return null; }

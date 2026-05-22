@@ -1,33 +1,46 @@
 <template>
   <UiSpec>
-    <FakeLoading title="Base">
-      <AwaitLoading>NONE</AwaitLoading>
-    </FakeLoading>
-    <FakeLoading title="Customized">
-      <AwaitLoading :skeleton="{ width: '5rem', height: '5rem' }" />
-    </FakeLoading>
-    <FakeLoading title="Overridden">
+    <ProvideLoading title="Base">
+      <AwaitLoading>
+        HIDDEN
+      </AwaitLoading>
+    </ProvideLoading>
+    <ProvideLoading
+      title="Loaded"
+      loaded
+    >
+      <AwaitLoading class="test">
+        <span>SHOWN</span>
+      </AwaitLoading>
+    </ProvideLoading>
+    <ProvideLoading title="Customized">
+      <AwaitLoading
+        :skeleton="{ width: '5rem', height: '5rem' }"
+      />
+    </ProvideLoading>
+    <ProvideLoading title="Overridden">
       <AwaitLoading>
         <template #loading>
           loading...
         </template>
       </AwaitLoading>
-    </FakeLoading>
-    <i>CASE: verify props forwarded to component</i>
-    <FakeLoading
+    </ProvideLoading>
+    <ProvideError
       title="Error"
       :error
     >
       <AwaitLoading />
-    </FakeLoading>
-    <FakeLoading
-      title="Error"
+    </ProvideError>
+    <ProvideError
+      title="Customized Error"
       :error
     >
-      <AwaitLoading :skeleton="{ width: '5rem', height: '5rem' }" />
-    </FakeLoading>
-    <FakeLoading
-      title="Error"
+      <AwaitLoading
+        :skeleton="{ width: '5rem', height: '5rem' }"
+      />
+    </ProvideError>
+    <ProvideError
+      title="Overridden Error"
       :error
     >
       <AwaitLoading>
@@ -35,8 +48,15 @@
           ! {{ e.summary }} - {{ e.detail }} !
         </template>
       </AwaitLoading>
-    </FakeLoading>
-    <i>CASE: verify error claimed</i>
+    </ProvideError>
+    <ProvideError
+      title="No Error"
+      :error
+    >
+      <AwaitLoading no-error>
+        HIDDEN
+      </AwaitLoading>
+    </ProvideError>
   </UiSpec>
 </template>
 <script setup>
