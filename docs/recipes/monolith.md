@@ -147,8 +147,8 @@ flowchart
   T(Theme)
   O(Override)
 
-  subgraph Execution Order
-    direction TB
+  subgraph Level Order
+    direction LR
     I --> D
     D --> UX
     UX --> T
