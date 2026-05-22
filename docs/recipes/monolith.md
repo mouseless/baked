@@ -143,7 +143,7 @@ flowchart LR;
 flowchart
   I(Infra)
   D(Domain)
-  UX(Ux)
+  UX(UX)
   T(Theme)
   O(Override)
 

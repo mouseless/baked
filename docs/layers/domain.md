@@ -202,7 +202,23 @@ configurator.Domain.ConfigureDomainModelBuilder(builder =>
 }
 ```
 
-#### Utilizing Conventions
+When any model type are indexed, they can be accessed using `.Having` extension
+method instead of querying through models.
+
+```csharp
+foreach(var type in domain.Types.Where(t => t.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>()))
+{
+    ...
+}
+
+// Indexed, no query needed
+foreach( var type in domain.Types.Having<ServiceAttribute>())
+{
+    ...
+}
+```
+
+## Convention System
 
 Attributes can be directly added to types or members as well as using built-in
 convetion system of baked. A convention can be used to add/remove or configure
@@ -234,7 +250,7 @@ configurator.Domain.ConfigureDomainModelBuilder(builder =>
 }
 ```
 
-#### Convention Execution Order
+### Convention Execution Order
 
 By deault a convention is applied in the order which it is added with respect to
 its feature order. A global value can be also set when a specific convention is
@@ -247,6 +263,8 @@ app.Features.Add(new FeatureB());
 
 public class FeatureB : IFeature 
 {
+    // this convention wil apply before conventions
+    // in feature B with default order
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...
@@ -255,14 +273,16 @@ public class FeatureB : IFeature
 
 public class FeatureB : IFeature 
 {
-    // This convention will apply first
+    // This convention will apply first since a
+    // global order is given
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...,
         order: Order.Earliest
     );
 
-    // This convention will apply last
+    // This convention will apply after conventions
+    // in feature A
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...
@@ -273,7 +293,7 @@ public class FeatureB : IFeature
 Another key factor that affects convention execution order is whether a
 convention should execute before or after indices are built. Some conventions
 may need to modify metadata or add attributes before the indexing stage begins,
-while remaining may depend on generated indices.To support this behavior, 
+while remaining may depend on generated indices. To support this behavior, 
 conventions can be marked with the before index flag. These conventions are 
 grouped and executed in a separate stage, guaranteeing that they run before 
 index generation and all remaining conventions.
