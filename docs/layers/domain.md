@@ -167,52 +167,7 @@ This layer introduces following `Generate` phases to the application it is added
 > });
 > ```
 
-## Proxifying Entities
-
-It is possible to avoid adding `protected virtual` and default constructors to
-classes (such as entity classes) to enable lazy loading and dynamic proxy.
-
-Please add below references to your projects that contain your domain objects
-(projects that depend only to `Baked.Abstractions`).
-
-```xml
-<ItemGroup>
-  <PackageReference Include="EmptyConstructor.Fody" PrivateAssets="All" />
-  <PackageReference Include="Fody" PrivateAssets="All" />
-  <PackageReference Include="Publicize.Fody" PrivateAssets="All" />
-  <PackageReference Include="Virtuosity.Fody" PrivateAssets="All" />
-</ItemGroup>
-```
-
-Add versions to `Directory.Packages.props`;
-
-```xml
-<PackageVersion Include="EmptyConstructor.Fody" Version="..." />
-<PackageVersion Include="Fody" Version="..." />
-<PackageVersion Include="Publicize.Fody" Version="..." />
-<PackageVersion Include="Virtuosity.Fody" Version="..." />
-```
-
-> [!WARNING]
->
-> Build your project now. Expect a build fail on your first build after you add
-> fody. This fail adds `FodyWeavers.xml` to your project. Following builds will
-> success.
-
-> [!TIP]
-> You can use `GenerateXsd="false"` property in your `FodyWeavers.xml` to remove
-> the extra `.xsd` file
->
-> ```xml
-> <?xml version="1.0" encoding="utf-8"?>
-> <Weavers GenerateXsd="false">
->   <EmptyConstructor />
->   <Publicize />
->   <Virtuosity />
-> </Weavers>
-> ```
-
-## DomainModel
+## Domain Model
 
 `DomainModel` is a reflection cache that stores and reuses type metadata,
 properties, methods, parameters, and attribute information. Since baked relies 
@@ -235,7 +190,7 @@ convention based configuration mechanism which are configured using
 ### Indexing Models
 
 Baked provides indexing mechanism of domain models according to their owned 
-or added attributes to improve performance. Indicies of a model in domain can 
+or added attributes to improve performance. Indexes of a model in domain can 
 be specified from its builder options.
 
 ```csharp
@@ -304,7 +259,7 @@ public class FeatureB : IFeature
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...,
-        order: int.MinValue + 10
+        order: Order.Earliest
     );
 
     // This convention will apply last
@@ -324,18 +279,18 @@ grouped and executed in a separate stage, guaranteeing that they run before
 index generation and all remaining conventions.
 
 ```csharp
-// This convention will apply after the indicies are built
+// This convention will apply after the indexes are built
 builder.Conventions.SetPropertyAttribute(
     when: ...,
     attribute: ...,
-    order: int.MinValue + 10,
+    order: Order.Earliest,
 );
 
-// This convention will apply before the indicies are built
+// This convention will apply before the indexes are built
 builder.Conventions.SetPropertyAttribute(
     when: ...,
     attribute: ...,
-    order: int.MaxValue - 10;
+    order: Order.Latest;
     beforeIndex: true
 );
 ```
@@ -355,14 +310,14 @@ configurator.Domain.ConfigureDomainModelBuilder(builder =>
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...,
-        order: Levels["Business"]
+        order: Order.Level("Business")
     );
 
     // This convention executes first
     builder.Conventions.SetPropertyAttribute(
         when: ...,
         attribute: ...,
-        order: Levels["Infra"]
+        order: Order.Level("Infra")
     );
 }
 ```
@@ -375,12 +330,57 @@ min/max values or a specific position within the level.
 builder.Conventions.SetPropertyAttribute(
     when: ...,
     attribute: ...,
-    order: Levels["Infra"].Min + 10
+    order: Order.Level("Infra").Earliest
 );
 
 builder.Conventions.SetPropertyAttribute(
     when: ...,
     attribute: ...,
-    order: Levels["Infra"].At(10)
+    order: Order.Level("Infra").At(1)
 );
 ```
+
+## Proxifying Entities
+
+It is possible to avoid adding `protected virtual` and default constructors to
+classes (such as entity classes) to enable lazy loading and dynamic proxy.
+
+Please add below references to your projects that contain your domain objects
+(projects that depend only to `Baked.Abstractions`).
+
+```xml
+<ItemGroup>
+  <PackageReference Include="EmptyConstructor.Fody" PrivateAssets="All" />
+  <PackageReference Include="Fody" PrivateAssets="All" />
+  <PackageReference Include="Publicize.Fody" PrivateAssets="All" />
+  <PackageReference Include="Virtuosity.Fody" PrivateAssets="All" />
+</ItemGroup>
+```
+
+Add versions to `Directory.Packages.props`;
+
+```xml
+<PackageVersion Include="EmptyConstructor.Fody" Version="..." />
+<PackageVersion Include="Fody" Version="..." />
+<PackageVersion Include="Publicize.Fody" Version="..." />
+<PackageVersion Include="Virtuosity.Fody" Version="..." />
+```
+
+> [!WARNING]
+>
+> Build your project now. Expect a build fail on your first build after you add
+> fody. This fail adds `FodyWeavers.xml` to your project. Following builds will
+> success.
+
+> [!TIP]
+> You can use `GenerateXsd="false"` property in your `FodyWeavers.xml` to remove
+> the extra `.xsd` file
+>
+> ```xml
+> <?xml version="1.0" encoding="utf-8"?>
+> <Weavers GenerateXsd="false">
+>   <EmptyConstructor />
+>   <Publicize />
+>   <Virtuosity />
+> </Weavers>
+> ```
