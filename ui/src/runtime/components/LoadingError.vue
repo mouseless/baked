@@ -7,7 +7,7 @@
   >
     <span
       v-tooltip.bottom="{
-        value: `${summary} - ${detail}`,
+        value: `${title} - ${detail}`,
         autoHide: false,
         pt: {
           text: { class: 'bg-red-500' },
@@ -15,7 +15,7 @@
         }
       }"
       class="text-sm"
-    >{{ summary }}</span>
+    >{{ title }}</span>
   </div>
 </template>
 <script setup>
@@ -23,5 +23,5 @@ const { error } = defineProps({
   error: { type: Object, required: true }
 });
 
-const { formatted: { summary, detail } } = error;
+const { normalized: { title, detail } } = error;
 </script>

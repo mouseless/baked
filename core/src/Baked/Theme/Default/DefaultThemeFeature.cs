@@ -333,6 +333,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     },
                     data: Computed.UseError()
                 );
+                app.InlineError = B.Message(
+                    data: default(IData),
+                    options: m =>
+                    {
+                        m.Icon = "pi pi-exclamation-circle";
+                        m.Severity = "error";
+                    }
+                );
             });
         });
 

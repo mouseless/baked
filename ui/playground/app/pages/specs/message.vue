@@ -9,7 +9,7 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aMessage({
       message: "Message",
-      icon: "pi-info-circle",
+      icon: "pi pi-info-circle",
       severity: "info"
     })
   },

@@ -40,7 +40,7 @@
     </Bake>
     <Message
       v-if="showRequiredMessage"
-      :schema="{severity: 'info', icon: 'pi-info-circle'}"
+      :schema="{ severity: 'info', icon: 'pi pi-info-circle' }"
       :data="lc('Select required values to view this page')"
     />
     <div

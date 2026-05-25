@@ -1,6 +1,6 @@
 <template>
   <div
-    class="b-message"
+    class="b-message grid rounded-md outline outline-1"
     :class="severityClass"
   >
     <div class="min-h-0">
@@ -8,13 +8,17 @@
         :class="sizeClass"
         class="
           b-message-content
-          flex flex-col
+          flex flex-col gap-3
           py-[0.50rem] px-[0.75rem]
           min-w-[10rem] min-h-[1.5rem]
         "
       >
         <div class="flex flex-row items-center gap-2">
-          <i v-if="icon" class="b-message-icon" :class="`pi ${icon}`" ></i>
+          <i
+            v-if="icon"
+            class="b-message-icon"
+            :class="icon"
+          />
           <AwaitLoading :skeleton="{ height: '1.5rem', width: '100%' }">
             <span v-if="data">{{ localizeMessage ? l(data) : data }}</span>
             <span v-else>-</span>
@@ -35,10 +39,10 @@ const { schema, data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
+
 const { icon, severity = "info", localizeMessage, size } = schema;
 
 const severityClass = computed(() => `message-${severity}`);
-
 const sizeClass = computed(() => {
   switch (size) {
   case "small":
@@ -49,13 +53,8 @@ const sizeClass = computed(() => {
     return "text-base font-medium";
   }
 });
-
 </script>
-
 <style scoped>
-.b-message {
-  @apply grid rounded-md outline outline-1;
-}
 .message-info {
   @apply bg-blue-50/95 text-blue-600 outline-blue-200
     dark:bg-blue-500/15 dark:text-blue-500 dark:outline-blue-700/65;
@@ -81,5 +80,4 @@ const sizeClass = computed(() => {
     text-slate-950 outline-slate-950
     dark:text-white dark:outline-white;
 }
-
 </style>

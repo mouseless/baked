@@ -193,6 +193,13 @@
       "composable": "useNuxtError"
     }
   },
+  "inlineError": {
+    "type": "Message",
+    "schema": {
+      "severity": "error",
+      "icon": "pi pi-exclamation-circle"
+    }
+  },
   "i18n": {
     "defaultLanguage": {
       "code": "en",

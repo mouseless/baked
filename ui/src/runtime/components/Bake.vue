@@ -23,33 +23,31 @@
       </template>
     </component>
   </template>
-  <div
+  <Bake
     v-else-if="error && !errorHandled"
-    class="
-      flex flex-col gap-4 p-4
-      rounded-md border border-red-500/10
-      text-red-500 bg-red-500/10
-      overflow-auto
-    "
-    v-bind="$attrs"
+    name="error"
+    :descriptor="inlineError"
+    :class="$attrs.class"
+    :style="$attrs.style"
   >
-    <div class="flex gap-3">
-      <i class="pi pi-exclamation-circle max-w-min self-center" />
-      <h2 class="font-bold">{{ getMessage(error).summary }}</h2>
-    </div>
-    <span>{{ getMessage(error).detail }}</span>
-  </div>
+    <template #content>
+      {{ normalizedError.detail }}
+    </template>
+  </Bake>
 </template>
 <script setup>
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useRuntimeConfig } from "#app";
+import { useActionExecuter, useBakeError, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
 
 const actionExecuter = useActionExecuter();
+const { normalize: normalizeError } = useBakeError();
 const componentResolver = useComponentResolver();
 const context = useContext();
 const dataFetcher = useDataFetcher();
 const { asClasses } = useFormat();
 const reactionHandler = useReactionHandler();
+const { public: { inlineError: inlineErrorRaw } } = useRuntimeConfig();
 
 const { name, descriptor } = defineProps({
   name: { type: String, required: true },
@@ -72,6 +70,14 @@ const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 const baseAttrs = { };
 const error = ref();
 const errorHandled = context.provideError(error);
+const normalizedError = computed(() => normalizeError(error));
+const inlineError = computed(() => ({
+  ...inlineErrorRaw,
+  data: {
+    type: "Inline",
+    value: normalizedError.value.title
+  }
+}));
 
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
@@ -147,20 +153,6 @@ async function load() {
   }
   loading.value = false;
   emit("loaded");
-}
-
-function getMessage(error) {
-  if(error.name === "FetchError") {
-    return {
-      summary: error.data?.title ?? error.statusCode ?? "ERROR",
-      detail: error.data?.detail ?? error.message ?? error.cause ?? "An error occured..."
-    };
-  }
-
-  return {
-    summary: error.statusCode ?? error.status ?? "ERROR",
-    detail: error.message ?? error.cause ?? "An error occured..."
-  };
 }
 
 async function executeAction(newModel) {

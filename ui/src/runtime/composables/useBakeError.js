@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import { computed, unref } from "vue";
 import { useContext } from "#imports";
 
 export default function() {
@@ -7,34 +7,42 @@ export default function() {
   function handle() {
     const data = context.injectError();
 
-    return FormattedError(data);
+    return NormalizedError(data);
+  }
+
+  function normalize(error) {
+    return NormalizedError(error).normalized.value;
   }
 
   return {
-    handle
+    handle,
+    normalize
   };
 }
 
-function FormattedError(raw) {
-  const formatted = computed(() => {
-    if(raw.value === null) { return null; }
+function NormalizedError(raw) {
+  const normalized = computed(() => {
+    const error = unref(raw);
 
-    const error = raw.value;
+    if(!error) {
+      return null;
+    }
+
     if(error.name === "FetchError") {
       return {
-        summary: error.data?.title ?? error.statusCode ?? "ERROR",
+        title: error.data?.title ?? error.statusCode ?? "ERROR",
         detail: error.data?.detail ?? error.message ?? error.cause ?? "An error occured..."
       };
     }
 
     return {
-      summary: error.statusCode ?? error.status ?? "ERROR",
+      title: error.statusCode ?? error.status ?? "ERROR",
       detail: error.message ?? error.cause ?? "An error occured..."
     };
   });
 
   return {
     raw,
-    formatted
+    normalized
   };
 }

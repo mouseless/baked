@@ -52,6 +52,7 @@
 - `Bake.vue` now inlines 400 responses for data and action errors with a
   to help user relate the error and the place where error has occured
   - Other status codes are still handled via the existing `errorHandling` plugin
+  - Configure `AppDescriptor.InlineError` to change default inline component
 - `context.injectError` and `context.provideError` are introduced to pass a data
   or an action error to child
   - Injecting error automatically means it is handled so that parent doesn't
