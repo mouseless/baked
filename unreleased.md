@@ -17,7 +17,7 @@
   });
 
   // current usage
-  configurator.Domain.ConfigureDomainConventions(conventions =>
+  configurator.Domain.ConfigureConventions(conventions =>
   {
     conventions.Add(...);
   });
