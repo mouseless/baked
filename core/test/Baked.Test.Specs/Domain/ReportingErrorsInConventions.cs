@@ -13,8 +13,7 @@ public class ReportingErrorsInConventions : TestSpec
     public void Domain_model_builder_continues_execution_even_if_an_exception_occurs_during_post_build()
     {
         var hit = false;
-        var builder = GiveMe.ADomainModelBuilder();
-        var conventions = GiveMe.ADomainModelConventionCollection(options: conventions =>
+        var builder = GiveMe.ADomainModelBuilder(conventions: conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.Is<string>(),
@@ -33,7 +32,7 @@ public class ReportingErrorsInConventions : TestSpec
 
         builder
             .StartBuild([typeof(string)])
-            .EndBuild(conventions);
+            .EndBuild();
 
         hit.ShouldBeTrue();
     }
@@ -42,22 +41,23 @@ public class ReportingErrorsInConventions : TestSpec
     public void After_post_build__domain_model_builder_delegates_reported_error_to_configured_error_handler()
     {
         var exceptions = new List<Exception>();
-        var builder = GiveMe.ADomainModelBuilder(options: builder =>
-        {
-            builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
-        });
-
-        var conventions = GiveMe.ADomainModelConventionCollection(options: conventions =>
-        {
-            conventions.SetTypeAttribute(
-                when: c => c.Type.Is<string>(),
-                attribute: () => throw GiveMe.ADiagnosticCode().Exception("test")
-            );
-        });
+        var builder = GiveMe.ADomainModelBuilder(
+            options: builder =>
+            {
+                builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
+            },
+            conventions: conventions =>
+            {
+                conventions.SetTypeAttribute(
+                    when: c => c.Type.Is<string>(),
+                    attribute: () => throw GiveMe.ADiagnosticCode().Exception("test")
+                );
+            }
+        );
 
         builder
             .StartBuild([typeof(string)])
-            .EndBuild(conventions);
+            .EndBuild();
 
         exceptions.Count.ShouldBe(1);
         exceptions.ShouldContain(e => e.Message == "test");
@@ -67,25 +67,27 @@ public class ReportingErrorsInConventions : TestSpec
     public void It_allows_multiple_errors_in_one_execution()
     {
         var exceptions = new List<Exception>();
-        var builder = GiveMe.ADomainModelBuilder(options: builder =>
-        {
-            builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
-        });
-        var conventions = GiveMe.ADomainModelConventionCollection(options: conventions =>
-        {
-            conventions.SetTypeAttribute(
-                when: c => c.Type.Is<string>(),
-                attribute: () => throw GiveMe.ADiagnosticCode().Exception("string error")
-            );
-            conventions.SetTypeAttribute(
-                when: c => c.Type.Is<int>(),
-                attribute: () => throw GiveMe.ADiagnosticCode().Exception("int error")
-            );
-        });
+        var builder = GiveMe.ADomainModelBuilder(
+            options: builder =>
+            {
+                builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
+            },
+            conventions: conventions =>
+            {
+                conventions.SetTypeAttribute(
+                    when: c => c.Type.Is<string>(),
+                    attribute: () => throw GiveMe.ADiagnosticCode().Exception("string error")
+                );
+                conventions.SetTypeAttribute(
+                    when: c => c.Type.Is<int>(),
+                    attribute: () => throw GiveMe.ADiagnosticCode().Exception("int error")
+                );
+            }
+        );
 
         builder
             .StartBuild([typeof(string), typeof(int)])
-            .EndBuild(conventions);
+            .EndBuild();
 
         exceptions.Count.ShouldBe(2);
         exceptions.ShouldContain(e => e.Message == "string error");
@@ -96,21 +98,22 @@ public class ReportingErrorsInConventions : TestSpec
     public void It_continues_execution_for_the_same_convention_per_domain_member()
     {
         var exceptions = new List<Exception>();
-        var builder = GiveMe.ADomainModelBuilder(options: builder =>
-        {
-            builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
-        });
-        var conventions = GiveMe.ADomainModelConventionCollection(options: conventions =>
-        {
-            conventions.SetTypeAttribute(
-                when: c => c.Type.Is<string>() || c.Type.Is<int>(),
-                attribute: c => throw GiveMe.ADiagnosticCode().Exception($"{c.Type.Name} error")
-            );
-        });
+        var builder = GiveMe.ADomainModelBuilder(
+            options: builder =>
+            {
+                builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
+            }, conventions: conventions =>
+            {
+                conventions.SetTypeAttribute(
+                    when: c => c.Type.Is<string>() || c.Type.Is<int>(),
+                    attribute: c => throw GiveMe.ADiagnosticCode().Exception($"{c.Type.Name} error")
+                );
+            }
+        );
 
         builder
             .StartBuild([typeof(string), typeof(int)])
-            .EndBuild(conventions);
+            .EndBuild();
 
         exceptions.Count.ShouldBe(2);
         exceptions.ShouldContain(e => e.Message == "String error");
@@ -156,26 +159,28 @@ public class ReportingErrorsInConventions : TestSpec
     public void Exception_handling_is_applied_for_all_convention_types()
     {
         var exceptions = new List<Exception>();
-        var builder = GiveMe.ADomainModelBuilder(options: builder =>
-        {
-            builder.BuildLevels.Clear();
-            builder.BuildLevels.Add(t => t == typeof(string), BuildLevels.Members);
-            builder.BuildLevels.Add(t => t == typeof(long), BuildLevels.Metadata);
-            builder.BuildLevels.Add(t => t == typeof(double), BuildLevels.Inheritance);
-            builder.BuildLevels.Add(t => t == typeof(int), BuildLevels.Generics);
-            builder.BuildLevels.Add(BuildLevels.Basics);
-            builder.BindingFlags.Property = BindingFlags.Instance | BindingFlags.Public;
-            builder.BindingFlags.Method = BindingFlags.Instance | BindingFlags.Public;
-            builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
-        });
-        var conventions = GiveMe.ADomainModelConventionCollection(options: conventions =>
-        {
-            conventions.Add(new StubConvention(GiveMe));
-        });
+        var builder = GiveMe.ADomainModelBuilder(
+            options: builder =>
+            {
+                builder.BuildLevels.Clear();
+                builder.BuildLevels.Add(t => t == typeof(string), BuildLevels.Members);
+                builder.BuildLevels.Add(t => t == typeof(long), BuildLevels.Metadata);
+                builder.BuildLevels.Add(t => t == typeof(double), BuildLevels.Inheritance);
+                builder.BuildLevels.Add(t => t == typeof(int), BuildLevels.Generics);
+                builder.BuildLevels.Add(BuildLevels.Basics);
+                builder.BindingFlags.Property = BindingFlags.Instance | BindingFlags.Public;
+                builder.BindingFlags.Method = BindingFlags.Instance | BindingFlags.Public;
+                builder.OnComplete = e => exceptions.AddRange(e.Exceptions);
+            },
+            conventions: conventions =>
+            {
+                conventions.Add(new StubConvention(GiveMe));
+            }
+        );
 
         builder
             .StartBuild([typeof(char), typeof(int), typeof(double), typeof(long), typeof(string)])
-            .EndBuild(conventions);
+            .EndBuild();
 
         exceptions.ShouldContain(e => e.Message == "basics");
         exceptions.ShouldContain(e => e.Message == "generics");

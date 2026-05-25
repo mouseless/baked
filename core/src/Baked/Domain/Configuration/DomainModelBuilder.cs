@@ -2,7 +2,7 @@
 
 namespace Baked.Domain.Configuration;
 
-public class DomainModelBuilder(DomainModelBuilderOptions _options)
+public class DomainModelBuilder(DomainModelBuilderOptions _options, IDomainModelConventionCollection _conventions)
 {
     readonly TypeModelBuildQueue _buildQueue = new();
     readonly HashSet<Type> _domainTypes = [];
@@ -34,7 +34,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         }
         while (!_buildQueue.IsEmpty);
 
-        return new(_options, new(new(_references.Select(t => t.Model))));
+        return new(_options, _conventions, new(new(_references.Select(t => t.Model))));
 
     }
 
