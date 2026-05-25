@@ -4,36 +4,51 @@ using Baked.Domain.Configuration;
 namespace Baked.Test.Domain;
 
 [TestFixture]
-public class ApplyingConventions : TestSpec
+public class ApplyingConventions
 {
     static List<string> _values = default!;
 
-    DomainModelPostBuilder _postBuilder = default!;
-    DomainModelBuilderOptions _builderOptions = default!;
-    IDomainModelConventionCollection _conventions = default!;
-
-    public override void SetUp()
+    static DomainModelBuilder ADomainModelBuilder(
+            Action<DomainModelBuilderOptions>? options = default,
+            Action<IDomainModelConventionCollection>? conventions = default
+        )
     {
-        base.SetUp();
+        var optionsInstance = new DomainModelBuilderOptions();
+        optionsInstance.BuildLevels.Add(BuildLevels.Metadata);
+        optionsInstance.OnComplete = _ => { };
 
-        _values = new();
+        if (options is not null)
+        {
+            options(optionsInstance);
+        }
 
-        _conventions = new DomainModelConventionCollection(_builderOptions);
-        _builderOptions = new();
-        _postBuilder = new(_builderOptions, _conventions, GiveMe.TheDomainModel());
+        var conventionsInstance = new DomainModelConventionCollection(optionsInstance);
+        if (conventions is not null)
+        {
+            conventions(conventionsInstance);
+        }
+
+        return new DomainModelBuilder(optionsInstance, conventionsInstance);
     }
 
-    public override void TearDown()
+    [SetUp]
+    public void SetUp()
     {
-        base.TearDown();
+        _values = new();
+    }
 
+    [TearDown]
+    public void TearDown()
+    {
         _values.Clear();
     }
 
     public class TestConvention(string _value) : IDomainModelConvention<TypeModelContext>
     {
-        public void Apply(TypeModelContext model)
+        public void Apply(TypeModelContext context)
         {
+            if (!context.Type.Is<string>()) { return; }
+
             _values.Add(_value);
         }
     }
@@ -41,10 +56,15 @@ public class ApplyingConventions : TestSpec
     [Test]
     public void Conventions_are_applied_based_on_added_order()
     {
-        _conventions.Add(new TestConvention("C1"));
-        _conventions.Add(new TestConvention("C2"));
-
-        _postBuilder.EndBuild();
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("C1"));
+                c.Add(new TestConvention("C2"));
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
 
         _values[0].ShouldBe("C1");
         _values[1].ShouldBe("C2");
@@ -53,10 +73,15 @@ public class ApplyingConventions : TestSpec
     [Test]
     public void Conventions_can_have_specific_orders()
     {
-        _conventions.Add(new TestConvention("C1"), order: 2);
-        _conventions.Add(new TestConvention("C2"), order: 1);
-
-        _postBuilder.EndBuild();
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("C1"), order: 2);
+                c.Add(new TestConvention("C2"), order: 1);
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
 
         _values[0].ShouldBe("C2");
         _values[1].ShouldBe("C1");
@@ -65,13 +90,20 @@ public class ApplyingConventions : TestSpec
     [Test]
     public void Conventions_can_have_level_based_orders()
     {
-        _builderOptions.ConventionLevels.Add("A");
-        _builderOptions.ConventionLevels.Add("B");
-
-        _conventions.Add(new TestConvention("B"), order: Order.FromLevel("B"));
-        _conventions.Add(new TestConvention("A"), order: Order.FromLevel("A"));
-
-        _postBuilder.EndBuild();
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("B"), order: Order.FromLevel("B"));
+                c.Add(new TestConvention("A"), order: Order.FromLevel("A"));
+            },
+            options: o =>
+            {
+                o.ConventionLevels.Add("A");
+                o.ConventionLevels.Add("B");
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
 
         _values[0].ShouldBe("A");
         _values[1].ShouldBe("B");
@@ -80,16 +112,23 @@ public class ApplyingConventions : TestSpec
     [Test]
     public void Levels_have_default__min_and_max_values()
     {
-        _builderOptions.ConventionLevels.Add("A");
-
-        _conventions.Add(new TestConvention("C2"), order: Order.FromLevel("A").Min);
-        _conventions.Add(new TestConvention("C3"), order: Order.FromLevel("A").Max);
-        _conventions.Add(new TestConvention("C1"), order: Order.FromLevel("A"));
-
-        _postBuilder.EndBuild();
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("C2"), order: Order.FromLevel("A").Min);
+                c.Add(new TestConvention("C3"), order: Order.FromLevel("A").Max);
+                c.Add(new TestConvention("C1"), order: Order.FromLevel("A"));
+            },
+            options: o =>
+            {
+                o.ConventionLevels.Add("A");
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
 
         _values[0].ShouldBe("C2");
         _values[1].ShouldBe("C1");
-        _values[1].ShouldBe("C3");
+        _values[2].ShouldBe("C3");
     }
 }

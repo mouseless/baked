@@ -1,6 +1,6 @@
 namespace Baked.Domain;
 
-public partial record struct Order
+public struct Order
 {
     public const int OrderSpan = 1000;
 
@@ -9,7 +9,7 @@ public partial record struct Order
 
     string? _level;
     int _offset = 0;
-    int _value;
+    int _base = 0;
 
     Order(
         string? level = default,
@@ -20,16 +20,24 @@ public partial record struct Order
         _offset = offset;
     }
 
-    public readonly int Offset => _offset;
-    public readonly string? Level => _level;
-    public readonly int Value => _value;
-    public Order AbsoluteMin => this with { _offset = -OrderSpan };
-    public Order Min => this with { _offset = -OrderSpan + 10 };
-    public Order Max => this with { _offset = OrderSpan - 10 };
-    public Order AbsoluteMax => this with { _offset = OrderSpan };
-
-    internal void SetValue(int @base)
+#pragma warning disable IDE0251 // Make member 'readonly'
+    public int Offset => _offset;
+    public string? Level => _level;
+    public Order AbsoluteMin => new(level: _level, offset: -OrderSpan);
+    public Order Min => new(level: _level, offset: -OrderSpan + 10);
+    public Order Max => new(level: _level, offset: OrderSpan - 10);
+    public Order AbsoluteMax => new(level: _level, offset: OrderSpan);
+#pragma warning restore IDE0251 // Make member 'readonly'
+    internal Order SetBase(int @base)
     {
-        _value = @base + _offset;
+        _base = @base;
+
+        return this;
     }
+
+    public static implicit operator int(Order order) =>
+        order._base + order._offset;
+
+    public static implicit operator Order(int value) =>
+        new(offset: value);
 }

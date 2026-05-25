@@ -11,8 +11,8 @@ public class DomainModelBuilderOptions
     public DomainIndexOptions Index { get; set; } = new();
     public Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> DefaultOverloadSelector { get; set; } = overloads => overloads.First();
     public Action<DiagnosticsResult>? OnComplete { get; set; }
-    public List<string> ConventionLevels { get; set; } = ["Domain"];
-    public string DefaultLevel { get; internal set; } = "Domain";
+    public List<string> ConventionLevels { get; set; } = [];
+    public string? DefaultLevel { get; set; }
 
     public class BindingFlagOptions
     {
