@@ -125,7 +125,6 @@ function setSelected(value) {
   .p-placeholder {
     opacity: 0;
   }
-
   .p-select-label {
     font-size: inherit;
   }

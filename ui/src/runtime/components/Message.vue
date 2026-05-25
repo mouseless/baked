@@ -76,8 +76,7 @@ const sizeClass = computed(() => {
     dark:text-slate-400 dark:outline-slate-400;
 }
 .message-contrast {
-  @apply bg-transparent
-    text-slate-950 outline-slate-950
+  @apply bg-transparent text-slate-950 outline-slate-950
     dark:text-white dark:outline-white;
 }
 </style>

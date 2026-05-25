@@ -204,7 +204,6 @@ function highlightJson(src) {
 code:not(:has(pre)) {
   @apply rounded p-1 text-xs bg-zinc-50 text-orange-700 dark:bg-zinc-950 dark:text-orange-400;
 }
-
 pre {
   @apply block rounded-lg overflow-auto max-h-[20em] bg-zinc-950 p-4 text-xs text-sky-300;
 

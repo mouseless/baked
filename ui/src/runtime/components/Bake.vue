@@ -24,7 +24,7 @@
     </component>
   </template>
   <Bake
-    v-else-if="error && !errorHandled"
+    v-else
     name="error"
     :descriptor="inlineError"
     :class="$attrs.class"

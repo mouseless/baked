@@ -62,7 +62,7 @@
     ```vue
     <template>
       <span v-if="error.raw">
-        {{ error.formatted.summary }} - {{ error.formatted.detail }}
+        {{ error.normalized.title }} - {{ error.normalized.detail }}
       </span>
     </template>
     <script setup>
@@ -81,3 +81,5 @@
   - You can now pass multiple children to `#default`, `#loading` and `#error`
     slots to be wrapped automatically by a `div` when there are more than one
     children
+- `Message` was not loading styles due to transition, fixed
+- `Message` now supports `content` slot for additional content rendering

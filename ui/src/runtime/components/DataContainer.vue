@@ -80,7 +80,6 @@ function onChanged(event) {
     @apply border-none rounded-none;
   }
 }
-
 .b-component--DataContainer {
   div {
     @apply [&:has(.p-datatable)]:p-0;
