@@ -8,24 +8,19 @@
         :class="sizeClass"
         class="
           b-message-content
-          flex items-center gap-2
+          flex flex-col
           py-[0.50rem] px-[0.75rem]
           min-w-[10rem] min-h-[1.5rem]
         "
       >
-        <slot
-          v-if="icon"
-          name="icon"
-        >
-          <i
-            class="b-message-icon"
-            :class="`pi ${icon}`"
-          />
-        </slot>
-        <AwaitLoading :skeleton="{ height: '1.5rem', width: '100%' }">
-          <span v-if="data">{{ localizeMessage ? l(data) : data }}</span>
-          <span v-else>-</span>
-        </AwaitLoading>
+        <div class="flex flex-row items-center gap-2">
+          <i v-if="icon" class="b-message-icon" :class="`pi ${icon}`" ></i>
+          <AwaitLoading :skeleton="{ height: '1.5rem', width: '100%' }">
+            <span v-if="data">{{ localizeMessage ? l(data) : data }}</span>
+            <span v-else>-</span>
+          </AwaitLoading>
+        </div>
+        <slot name="content" />
       </div>
     </div>
   </div>
