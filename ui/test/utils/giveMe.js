@@ -591,17 +591,19 @@ export default {
     };
   },
 
-  aMessage({ message, icon, severity, localizeMessage, data } = {}) {
+  aMessage({ message, icon, severity, localizeMessage, data, variant } = {}) {
     message = $(message, "Spec: This is a message");
     localizeMessage = $(localizeMessage, true);
     data = $(data, this.anInlineData(message));
+    variant = $(variant, "outlined");
 
     return {
       type: "Message",
       schema: {
         icon,
         severity,
-        localizeMessage
+        localizeMessage,
+        variant
       },
       data
     };

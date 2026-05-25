@@ -60,6 +60,12 @@ const variants = [
     descriptor: giveMe.aMessage({
       severity: "contrast"
     })
+  },
+  {
+    name: "Simple Variant",
+    descriptor: giveMe.aMessage({
+      variant: "simple"
+    })
   }
 ];
 </script>

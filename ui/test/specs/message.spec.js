@@ -58,3 +58,26 @@ test.describe("Severity", () => {
     });
   });
 });
+
+test.describe("Simple Variant", () => {
+  const id = "Simple Variant";
+
+  test("simple variant class should be set correctly", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(baked.message.base)).toContainClass("message-simple");
+  });
+
+  test("simple variant does not have any outline", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(baked.message.base)).not.toContainClass("outline");
+    await expect(component.locator(baked.message.base)).not.toContainClass("outline-1");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+});

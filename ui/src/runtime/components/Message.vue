@@ -1,7 +1,7 @@
 <template>
   <div
-    class="b-message grid rounded-md outline outline-1"
-    :class="severityClass"
+    class="b-message grid"
+    :class="[`message-${severity}`, `message-${variant}`]"
   >
     <div class="min-h-0">
       <div
@@ -40,9 +40,8 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { icon, severity = "info", localizeMessage, size } = schema;
+const { icon, severity = "info", localizeMessage, size, variant = "outlined" } = schema;
 
-const severityClass = computed(() => `message-${severity}`);
 const sizeClass = computed(() => {
   switch (size) {
   case "small":
@@ -55,6 +54,18 @@ const sizeClass = computed(() => {
 });
 </script>
 <style scoped>
+.message-outlined {
+  @apply outline outline-1 rounded-md;
+}
+
+.message-simple {
+  @apply !bg-transparent;
+}
+
+.message-simple .b-message-content {
+  @apply  px-0;
+}
+
 .message-info {
   @apply bg-blue-50/95 text-blue-600 outline-blue-200
     dark:bg-blue-500/15 dark:text-blue-500 dark:outline-blue-700/65;
