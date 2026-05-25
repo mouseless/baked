@@ -26,7 +26,7 @@ public static class DomainExtensions
         public void ConfigureDomainTypeCollection(Action<IDomainTypeCollection> configuration) =>
             _configurator.Configure(configuration);
 
-        public void ConfigureDomainModelBuilder(Action<DomainModelBuilderOptions> configuration) =>
+        public void ConfigureBuilder(Action<DomainModelBuilderOptions> configuration) =>
             _configurator.Configure(configuration);
 
         public void ConfigureConventions(Action<IDomainModelConventionCollection> configuration) =>

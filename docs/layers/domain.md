@@ -100,7 +100,7 @@ This target exposes options for configuring built-in `DomainModelBuilder` and is
 provided in `AddDomainTypes` phase. To configure it in a feature;
 
 ```csharp
-configurator.Domain.ConfigureDomainModelBuilder(builder =>
+configurator.Domain.ConfigureBuilder(builder =>
 {
     ...
 });
@@ -206,7 +206,7 @@ or added attributes to improve performance. Indexes of a model in domain can
 be specified from its builder options.
 
 ```csharp
-configurator.Domain.ConfigureDomainModelBuilder(builder =>
+configurator.Domain.ConfigureBuilder(builder =>
 {
     builder.Index.Type.Add<MyTypeAttribute>();
     builder.Index.Property.Add<MyPropertyAttribute>();

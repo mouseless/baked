@@ -22,7 +22,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 {
     public virtual void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<RouteAttribute>();
             builder.Index.Property.Add<DataAttribute>();

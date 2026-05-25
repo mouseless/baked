@@ -13,7 +13,7 @@ public class QueryMethodCodingStyleFeature(
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Method.Add<QueryMethodAttribute>();
             builder.Index.Parameter.Add<PagingAttribute>();

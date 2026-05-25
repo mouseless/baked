@@ -32,7 +32,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             """);
         });
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add(typeof(EntityAttribute));
             builder.Index.Property.Add(typeof(UniqueAttribute));

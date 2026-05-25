@@ -8,6 +8,20 @@
 ## Breaking Changes
 
 - `requireIndex` convention flag is renamed to `beforeBuildingIndex`
+- `ConfigureDomainModelBuilder` is is renamed to `ConfigureBuilder`
+  ```csharp
+  // old usage
+  configurator.Domain.ConfigureDomainModelBuilder(builder =>
+  {
+    ...
+  });
+
+  // current usage
+  configurator.Domain.ConfigureBuilder(builder =>
+  {
+    ...
+  });
+  ```
 - `IDomainModelConventionCollection` is now provided as a configuration target
   ```csharp
   // old usage
