@@ -13,13 +13,13 @@
   // old usage
   configurator.Domain.ConfigureDomainModelBuilder(builder =>
   {
-    ...
+      ...
   });
 
   // current usage
   configurator.Domain.ConfigureBuilder(builder =>
   {
-    ...
+      ...
   });
   ```
 - `IDomainModelConventionCollection` is now provided as a configuration target
@@ -27,13 +27,13 @@
   // old usage
   configurator.Domain.ConfigureDomainModelBuilder(builder =>
   {
-    builder.Conventions.Add(...);
+      builder.Conventions.Add(...);
   });
 
   // current usage
   configurator.Domain.ConfigureConventions(conventions =>
   {
-    conventions.Add(...);
+      conventions.Add(...);
   });
   ```
 
