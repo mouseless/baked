@@ -43,24 +43,18 @@ test.describe("No data", () => {
 });
 
 test.describe("Severity", () => {
-  test("Info", async({ page }) => {
-    const component = page.getByTestId("Info");
-    const color = "rgb(37, 99, 235)";
+  [
+    { id: "Info", expected: "rgb(37, 99, 235)" },
+    { id: "Warning", expected:  "rgb(202, 138, 4)" },
+    { id: "Error", expected: "rgb(220, 38, 38)" },
+    { id: "Success", expected: "rgb(22, 163, 74)" },
+    { id: "Contrast", expected: "rgb(2, 6, 23)" },
+    { id: "Secondary", expected: "rgb(100, 116, 139)" }
+  ].forEach(({ id, expected }) => {
+    test(`Severity ${id}`, async({ page }) => {
+      const component = page.getByTestId(id);
 
-    await expect(component.locator(baked.message.base)).toHaveCSS("color", color);
-  });
-
-  test("Warning", async({ page }) => {
-    const component = page.getByTestId("Warning");
-    const color = "rgb(202, 138, 4)";
-
-    await expect(component.locator(baked.message.base)).toHaveCSS("color", color);
-  });
-
-  test("Error", async({ page }) => {
-    const component = page.getByTestId("Error");
-    const color = "rgb(220, 38, 38)";
-
-    await expect(component.locator(baked.message.base)).toHaveCSS("color", color);
+      await expect(component.locator(baked.message.base)).toHaveCSS("color", expected);
+    });
   });
 });

@@ -42,6 +42,24 @@ const variants = [
     descriptor: giveMe.aMessage({
       severity: "error"
     })
+  },
+  {
+    name: "Success",
+    descriptor: giveMe.aMessage({
+      severity: "success"
+    })
+  },
+  {
+    name: "Secondary",
+    descriptor: giveMe.aMessage({
+      severity: "secondary"
+    })
+  },
+  {
+    name: "Contrast",
+    descriptor: giveMe.aMessage({
+      severity: "contrast"
+    })
   }
 ];
 </script>

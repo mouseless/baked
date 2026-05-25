@@ -73,5 +73,18 @@ const sizeClass = computed(() => {
   @apply bg-yellow-50/95 text-yellow-600 outline-yellow-200
     dark:bg-yellow-500/15 dark:text-yellow-500 dark:outline-yellow-700/65;
 }
+.message-success {
+  @apply bg-green-50/95 text-green-600 outline-green-200
+    dark:bg-green-500/15 dark:text-green-500 dark:outline-green-700/65;
+}
+.message-secondary {
+  @apply bg-transparent text-slate-500 outline-slate-500
+    dark:text-slate-400 dark:outline-slate-400;
+}
+.message-contrast {
+  @apply bg-transparent
+    text-slate-950 outline-slate-950
+    dark:text-white dark:outline-white;
+}
 
 </style>
