@@ -25,7 +25,7 @@ export default {
         });
       }
 
-      if(!props.noError && error?.raw.value) {
+      if(error?.raw.value) {
         return render(slots.error, {
           props: { error: unref.deepUnref(error) },
           fallback: () => h(InlineError, { style: props.skeleton, error: unref.deepUnref(error) })

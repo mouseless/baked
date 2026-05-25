@@ -120,71 +120,96 @@ test.describe("Overridden", () => {
 });
 
 test.describe("Error", () => {
-  // const id = "Error";
-  //
-  // test.skip("error summary in body", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   console.error("not implemented");
-  // });
-  //
-  // test.skip("summary and detail in tooltip", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   console.error("not implemented");
-  // });
-  //
-  // test.skip("error claimed", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   console.error("not implemented");
-  // });
-  //
-  // test.skip("visual", { tag: "@visual" }, async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   await expect(component).toHaveScreenshot();
-  // });
-  //
-  // test.skip("visual (tooltip)", { tag: "@visual" }, async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   await expect(component).toHaveScreenshot();
-  // });
+  const id = "Error";
+
+  test("error summary in body", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("error")).toHaveText("TEST ERROR");
+  });
+
+  test("summary and detail in tooltip", async({ page }) => {
+    const component = page.getByTestId(id);
+    const errorSpan = component.getByTestId("error").locator("span");
+
+    await errorSpan.scrollIntoViewIfNeeded();
+    await errorSpan.hover();
+
+    await expect(page.locator(primevue.tooltip.base)).toBeAttached();
+    await expect(page.locator(primevue.tooltip.base)).toBeVisible();
+    await expect(page.locator(primevue.tooltip.base)).toHaveText("TEST ERROR - TEST DESCRIPTION");
+  });
+
+  test("error claimed", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("claimed")).toHaveText("claimed");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual (tooltip)", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const errorSpan = component.getByTestId("error").locator("span");
+
+    await errorSpan.scrollIntoViewIfNeeded();
+    await errorSpan.hover();
+
+    await expect(page.locator(primevue.tooltip.base)).toBeAttached();
+    await expect(page.locator(primevue.tooltip.base)).toBeVisible();
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Customized Error", () => {
-  // const id = "Customized Error";
-  //
-  // test.skip("skeleton styles in error element", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   console.error("not implemented");
-  // });
-  //
-  // test.skip("visual", { tag: "@visual" }, async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   await expect(component).toHaveScreenshot();
-  // });
+  const id = "Customized Error";
+
+  test("skeleton styles in error element", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("error")).toHaveCSS("width", "80px");
+    await expect(component.getByTestId("error")).toHaveCSS("height", "80px");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Overridden Error", () => {
-  // const id = "Overridden Error";
-  //
-  // test.skip("uses template", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   console.error("not implemented");
-  // });
+  const id = "Overridden Error";
+
+  test("uses template", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("error")).toHaveText("! TEST ERROR - TEST DESCRIPTION !");
+  });
 });
 
 test.describe("No Error", () => {
-  // const id = "No Error";
-  //
-  // test.skip("does not show error nor content", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //
-  //   console.error("not implemented");
-  // });
+  const id = "No Error";
+
+  test("shows content", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveText(/CONTENT/);
+  });
+
+  test("does not show error", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).not.toHaveText(/TEST ERROR/);
+  });
+
+  test("does not claim error", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("claimed")).toHaveText("not-claimed");
+  });
 });

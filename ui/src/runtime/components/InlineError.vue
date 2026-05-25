@@ -11,7 +11,7 @@
         autoHide: false,
         pt: {
           text: { class: 'bg-red-500' },
-          arrow: { class: 'border-b-red-500' }
+          arrow: { class: 'border-y-red-500' },
         }
       }"
       class="text-sm"

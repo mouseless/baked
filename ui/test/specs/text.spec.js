@@ -17,9 +17,12 @@ test.describe("Base", () => {
 
   test("tooltip is disabled", async({ page }) => {
     const component = page.getByTestId(id);
+    const text = component.locator(baked.string.text);
 
-    await component.locator(baked.string.text).hover();
-    await expect(page.locator(primevue.tooltip.bottom)).not.toBeAttached();
+    await text.scrollIntoViewIfNeeded();
+    await text.hover();
+
+    await expect(page.locator(primevue.tooltip.base)).not.toBeAttached();
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -38,18 +41,17 @@ test.describe("Max Length", () => {
     await expect(component.locator(baked.string.text)).toHaveText("This text sho...");
   });
 
-  // TODO fix test
-  /*
-  test("show tool tip", async({ page }) => {
+  test("show tooltip", async({ page }) => {
     const component = page.getByTestId(id);
+    const text = component.locator(baked.string.text);
 
-    await component.locator(baked.string.text).hover();
+    await text.scrollIntoViewIfNeeded();
+    await text.hover();
 
-    await expect(page.locator(primevue.tooltip.bottom)).toBeAttached();
-    await expect(page.locator(primevue.tooltip.bottom)).toBeVisible();
-    await expect(page.locator(primevue.tooltip.bottom)).toHaveText("This text should be truncated with elipsis when exceeds max length");
+    await expect(page.locator(primevue.tooltip.base)).toBeAttached();
+    await expect(page.locator(primevue.tooltip.base)).toBeVisible();
+    await expect(page.locator(primevue.tooltip.base)).toHaveText("This text should be truncated with elipsis when exceeds max length");
   });
-  */
 });
 
 test.describe("No Data", () => {
@@ -63,9 +65,12 @@ test.describe("No Data", () => {
 
   test("tooltip is disabled", async({ page }) => {
     const component = page.getByTestId(id);
+    const text = component.locator(baked.string.text);
 
-    await component.locator(baked.string.text).hover();
-    await expect(page.locator(primevue.tooltip.bottom)).not.toBeAttached();
+    await text.scrollIntoViewIfNeeded();
+    await text.hover();
+
+    await expect(page.locator(primevue.tooltip.base)).not.toBeAttached();
   });
 });
 

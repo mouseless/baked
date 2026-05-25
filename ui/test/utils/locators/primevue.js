@@ -81,6 +81,8 @@ export default {
     detail: ".p-toast-detail"
   },
   tooltip: {
+    base: ".p-tooltip",
+    top: ".p-tooltip-top",
     bottom: ".p-tooltip-bottom",
     left: ".p-tooltip-left",
     right: ".p-tooltip-right"

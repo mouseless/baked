@@ -41,13 +41,17 @@
       title="Error"
       :error
     >
-      <AwaitLoading />
+      <template #default="{ claimed }">
+        <AwaitLoading data-testid="error" />
+        <span data-testid="claimed">{{ claimed ? "claimed" : "not-claimed" }}</span>
+      </template>
     </ProvideError>
     <ProvideError
       title="Customized Error"
       :error
     >
       <AwaitLoading
+        data-testid="error"
         :skeleton="{
           width: '5rem',
           height: '5rem'
@@ -60,7 +64,7 @@
     >
       <AwaitLoading>
         <template #error="{ error: { formatted: e } }">
-          ! {{ e.summary }} - {{ e.detail }} !
+          <span data-testid="error">! {{ e.summary }} - {{ e.detail }} !</span>
         </template>
       </AwaitLoading>
     </ProvideError>
@@ -68,9 +72,10 @@
       title="No Error"
       :error
     >
-      <AwaitLoading no-error>
-        HIDDEN
-      </AwaitLoading>
+      <template #default="{ claimed }">
+        <AwaitLoading no-error>CONTENT</AwaitLoading>
+        <span data-testid="claimed">{{ claimed ? "claimed" : "not-claimed" }}</span>
+      </template>
     </ProvideError>
   </UiSpec>
 </template>
