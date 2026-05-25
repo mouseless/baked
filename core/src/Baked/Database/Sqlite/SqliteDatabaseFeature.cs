@@ -38,9 +38,9 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
             });
         });
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.Add(new AddFlatTransactionToActionConvention());
+            conventions.Add(new AddFlatTransactionToActionConvention());
         });
     }
 }

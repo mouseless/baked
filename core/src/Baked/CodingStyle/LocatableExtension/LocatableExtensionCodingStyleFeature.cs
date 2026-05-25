@@ -9,11 +9,14 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<LocatableExtensionAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
@@ -31,7 +34,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 },
                 order: 20
             );
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 attribute: c =>
                 {
@@ -41,7 +44,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 },
                 order: 20
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 apply: (c, set) =>
                 {
@@ -53,7 +56,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 },
                 order: 20
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 apply: (c, set) =>
                 {
@@ -68,8 +71,8 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 order: 20
             );
 
-            builder.Conventions.Add(new ExtensionsUnderLocatablesConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new ExtensionsUnderLocatablesConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

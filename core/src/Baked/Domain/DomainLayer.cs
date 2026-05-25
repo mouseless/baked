@@ -16,6 +16,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
     readonly Inspect _inspect = new();
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
+    readonly IDomainModelConventionCollection _conventions = new DomainModelConventionCollection();
     readonly DomainServiceCollection _domainServiceCollection = new();
     readonly AttributeProperties _attributeProperties = new();
     readonly ExportConfigurations _attributeExportConfigurations = new();
@@ -25,6 +26,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
             .Add(_inspect)
             .Add(_domainTypes)
             .Add(_builderOptions)
+            .Add(_conventions)
             .Build();
 
     protected override PhaseContext GetContext(Generate phase)
@@ -81,7 +83,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
     protected override IEnumerable<IPhase> GetGeneratePhases()
     {
         yield return new AddDomainTypes(_domainTypes);
-        yield return new BuildDomainModel(_builderOptions);
+        yield return new BuildDomainModel(_builderOptions, _conventions);
     }
 
     public class AddDomainTypes(IDomainTypeCollection _domainTypes)
@@ -93,12 +95,12 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
         }
     }
 
-    public class BuildDomainModel(DomainModelBuilderOptions _builderOptions)
+    public class BuildDomainModel(DomainModelBuilderOptions _builderOptions, IDomainModelConventionCollection _conventions)
         : PhaseBase<IDomainTypeCollection>(PhaseOrder.Latest)
     {
         protected override void Initialize(IDomainTypeCollection domainTypes)
         {
-            var builder = new DomainModelBuilder(_builderOptions).StartBuild(domainTypes);
+            var builder = new DomainModelBuilder(_builderOptions, _conventions).StartBuild(domainTypes);
             Context.Add(builder.Model);
             builder.EndBuild();
         }

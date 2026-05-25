@@ -32,18 +32,21 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             """);
         });
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add(typeof(EntityAttribute));
             builder.Index.Property.Add(typeof(UniqueAttribute));
+        });
 
-            builder.Conventions.SetPropertyAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Property.IsAutoProperty,
                 attribute: () => new ColumnAttribute()
             );
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Property.Has<ColumnAttribute>() &&

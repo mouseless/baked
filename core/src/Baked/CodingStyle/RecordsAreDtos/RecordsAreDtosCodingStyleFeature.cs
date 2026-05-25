@@ -7,9 +7,9 @@ public class RecordsAreDtosCodingStyleFeature : IFeature<CodingStyleConfigurator
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&

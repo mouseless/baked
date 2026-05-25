@@ -6,7 +6,7 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<SingletonAttribute>();
         });

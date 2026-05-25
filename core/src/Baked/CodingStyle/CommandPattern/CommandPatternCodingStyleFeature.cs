@@ -13,9 +13,9 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new PubliclyInitializableAttribute(),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
@@ -28,7 +28,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                     ),
                 order: 40
             );
-            builder.Conventions.RemoveTypeAttribute<ControllerModelAttribute>(
+            conventions.RemoveTypeAttribute<ControllerModelAttribute>(
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     !c.Type.Has<LocatableAttribute>() &&
@@ -36,18 +36,18 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                 order: 40
             );
 
-            builder.Conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: -10);
-            builder.Conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: -10);
-            builder.Conventions.Add(new RemoveFromRouteConvention(_methodNames));
-            builder.Conventions.Add(new RemoveFromRouteConvention(["Sync", "Create"]));
-            builder.Conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention());
+            conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: -10);
+            conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: -10);
+            conventions.Add(new RemoveFromRouteConvention(_methodNames));
+            conventions.Add(new RemoveFromRouteConvention(["Sync", "Create"]));
+            conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention());
 
-            builder.Conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
+            conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
                 _when: action => action.Name.StartsWith("Sync"),
                 _method: HttpMethod.Put
             ), order: -10);
 
-            builder.Conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
+            conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
                 _when: action => action.Name.StartsWith("Create"),
                 _method: HttpMethod.Patch
             ), order: -10);

@@ -7,13 +7,13 @@ public class PanelParametersAreStatefulUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddParameterComponentConfiguration<Select>(
+            conventions.AddParameterComponentConfiguration<Select>(
                 component: sb => sb.Schema.Stateful = true,
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(Input.Component))
             );
-            builder.Conventions.AddParameterComponentConfiguration<SelectButton>(
+            conventions.AddParameterComponentConfiguration<SelectButton>(
                 component: sb => sb.Schema.Stateful = true,
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(Input.Component))
             );

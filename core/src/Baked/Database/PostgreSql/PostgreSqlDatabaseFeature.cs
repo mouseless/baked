@@ -32,9 +32,9 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             ;
         });
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.Add(new AddFlatTransactionToActionConvention());
+            conventions.Add(new AddFlatTransactionToActionConvention());
         });
     }
 }

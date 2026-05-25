@@ -10,9 +10,9 @@ public class RemainingServicesAreSingletonCodingStyleFeature()
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                attribute: () => new SingletonAttribute(),
                when: c =>
                    c.Type.IsClass && !c.Type.IsAbstract &&

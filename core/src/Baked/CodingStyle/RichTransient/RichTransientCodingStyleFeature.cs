@@ -12,11 +12,14 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<RichTransientAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
@@ -39,7 +42,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 },
                 order: 10
             );
-            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
+            conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
                 when: c => c.Type.Has<RichTransientAttribute>(),
                 attribute: (locatable, c) =>
                 {
@@ -55,7 +58,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 },
                 order: 10
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<RichTransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
@@ -66,8 +69,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 order: 20
             );
 
-            builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());
-            builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
+            conventions.Add(new RichTransientUnderPluralGroupConvention());
+            conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

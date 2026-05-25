@@ -48,7 +48,8 @@ public static class DomainModelExtensions
         }
 
         public DomainModelBuilder ADomainModelBuilder(
-            Action<DomainModelBuilderOptions>? options = default
+            Action<DomainModelBuilderOptions>? options = default,
+            Action<IDomainModelConventionCollection>? conventions = default
         )
         {
             var optionsInstance = new DomainModelBuilderOptions();
@@ -60,7 +61,13 @@ public static class DomainModelExtensions
                 options(optionsInstance);
             }
 
-            return new DomainModelBuilder(optionsInstance);
+            var conventionsInstance = new DomainModelConventionCollection();
+            if (conventions is not null)
+            {
+                conventions(conventionsInstance);
+            }
+
+            return new DomainModelBuilder(optionsInstance, conventionsInstance);
         }
     }
 
