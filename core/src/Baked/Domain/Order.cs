@@ -1,61 +1,35 @@
 namespace Baked.Domain;
 
-public struct Order : IComparable<Order>, IEquatable<Order>
+public partial record struct Order
 {
+    public const int OrderSpan = 1000;
+
+    public static Order FromLevel(string level) =>
+        new(level: level);
+
+    string? _level;
+    int _offset = 0;
     int _value;
 
-    public readonly int CompareTo(Order other) =>
-        _value.CompareTo(other._value);
-
-    public readonly bool Equals(Order other) =>
-        _value.Equals(other._value);
-
-    public override readonly bool Equals(object? obj) =>
-        obj is Order order && Equals(order);
-
-    public override readonly int GetHashCode() =>
-        _value.GetHashCode();
-
-    public static implicit operator int(Order order) =>
-        order._value;
-
-    public static implicit operator Order(int value)
+    Order(
+        string? level = default,
+        int offset = 0
+    )
     {
-        var result = new Order
-        {
-            _value = value
-        };
-
-        return result;
+        _level = level;
+        _offset = offset;
     }
 
-    public static bool operator ==(Order a, Order b)
-    {
-        return a._value == b._value;
-    }
+    public readonly int Offset => _offset;
+    public readonly string? Level => _level;
+    public readonly int Value => _value;
+    public Order AbsoluteMin => this with { _offset = -OrderSpan };
+    public Order Min => this with { _offset = -OrderSpan + 10 };
+    public Order Max => this with { _offset = OrderSpan - 10 };
+    public Order AbsoluteMax => this with { _offset = OrderSpan };
 
-    public static bool operator !=(Order a, Order b)
+    internal void SetValue(int @base)
     {
-        return a._value != b._value;
-    }
-
-    public static bool operator <=(Order a, Order b)
-    {
-        return a._value <= b._value;
-    }
-
-    public static bool operator >=(Order a, Order b)
-    {
-        return a._value >= b._value;
-    }
-
-    public static bool operator <(Order a, Order b)
-    {
-        return a._value < b._value;
-    }
-
-    public static bool operator >(Order a, Order b)
-    {
-        return a._value > b._value;
+        _value = @base + _offset;
     }
 }

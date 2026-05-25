@@ -17,7 +17,7 @@ public class DomainModelPostBuilder(DomainModelBuilderOptions options, IDomainMo
             var conventionsRequiringIndex = new List<IDomainModelConvention>();
             var restOfTheConventions = new List<IDomainModelConvention>();
 
-            foreach (var convention in _conventions.OrderBy(c => c.Order).Select(c => c.Convention))
+            foreach (var convention in _conventions.OrderBy(c => c.Order.Value).Select(c => c.Convention))
             {
                 if (convention is IAddRemoveAttributeConvention addRemove && addRemove.AttributeRequiresIndex)
                 {

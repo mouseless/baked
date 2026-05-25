@@ -61,7 +61,7 @@ public static class DomainModelExtensions
                 options(optionsInstance);
             }
 
-            var conventionsInstance = new DomainModelConventionCollection();
+            var conventionsInstance = new DomainModelConventionCollection(optionsInstance);
             if (conventions is not null)
             {
                 conventions(conventionsInstance);

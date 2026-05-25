@@ -249,10 +249,6 @@ public static class DomainExtensions
 
     extension(IDomainModelConventionCollection conventions)
     {
-        public void Add(IDomainModelConvention convention,
-            int order = default
-        ) => conventions.Add((convention, order));
-
         public void SetTypeAttribute(Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
             bool requiresIndex = true,
             int order = default
