@@ -25,23 +25,23 @@ export default function() {
   }
 
   function injectError() {
-    const { error, claimed } = inject("__bake_error", {
+    const { error, handled } = inject("__bake_error", {
       error: ref({}),
-      claimed: ref(false)
+      handled: ref(false)
     });
-    claimed.value = true;
+    handled.value = true;
 
     return error;
   }
 
   function provideError(error) {
-    const claimed = ref(false);
+    const handled = ref(false);
     provide("__bake_error", {
       error,
-      claimed
+      handled
     });
 
-    return claimed;
+    return handled;
   }
 
   function injectEvents() {

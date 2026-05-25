@@ -5,7 +5,7 @@
   >
     <h2 class="text-lg font-semibold mt-2">{{ title }}</h2>
     <Divider />
-    <slot :claimed />
+    <slot :handled />
   </div>
 </template>
 <script setup>
@@ -20,5 +20,5 @@ const { error } = defineProps({
   error: { type: Object, required: true }
 });
 
-const claimed = context.provideError(ref(error));
+const handled = context.provideError(ref(error));
 </script>

@@ -41,9 +41,9 @@
       title="Error"
       :error
     >
-      <template #default="{ claimed }">
+      <template #default="{ handled }">
         <AwaitLoading data-testid="error" />
-        <span data-testid="claimed">{{ claimed ? "claimed" : "not-claimed" }}</span>
+        <span data-testid="handled">{{ handled ? "handled" : "not-handled" }}</span>
       </template>
     </ProvideError>
     <ProvideError
@@ -72,9 +72,9 @@
       title="No Error"
       :error
     >
-      <template #default="{ claimed }">
+      <template #default="{ handled }">
         <AwaitLoading no-error>CONTENT</AwaitLoading>
-        <span data-testid="claimed">{{ claimed ? "claimed" : "not-claimed" }}</span>
+        <span data-testid="handled">{{ handled ? "handled" : "not-handled" }}</span>
       </template>
     </ProvideError>
   </UiSpec>

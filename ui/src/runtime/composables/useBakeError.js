@@ -4,14 +4,14 @@ import { useContext } from "#imports";
 export default function() {
   const context = useContext();
 
-  function claim() {
+  function handle() {
     const data = context.injectError();
 
     return FormattedError(data);
   }
 
   return {
-    claim
+    handle
   };
 }
 

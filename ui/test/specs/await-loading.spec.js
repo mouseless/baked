@@ -140,10 +140,10 @@ test.describe("Error", () => {
     await expect(page.locator(primevue.tooltip.base)).toHaveText("TEST ERROR - TEST DESCRIPTION");
   });
 
-  test("error claimed", async({ page }) => {
+  test("error handled", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("claimed")).toHaveText("claimed");
+    await expect(component.getByTestId("handled")).toHaveText("handled");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -207,9 +207,9 @@ test.describe("No Error", () => {
     await expect(component).not.toHaveText(/TEST ERROR/);
   });
 
-  test("does not claim error", async({ page }) => {
+  test("does not handle error", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("claimed")).toHaveText("not-claimed");
+    await expect(component.getByTestId("handled")).toHaveText("not-handled");
   });
 });
