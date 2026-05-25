@@ -49,7 +49,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         {
             // Your custom conventions and page overrides
         });
-        
+
         configurator.Ui.ConfigureComponentExports(c =>
         {
             // Add your component exports using your own `Components` extensions
