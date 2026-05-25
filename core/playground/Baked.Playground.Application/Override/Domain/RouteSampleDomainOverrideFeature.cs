@@ -7,9 +7,9 @@ public class RouteSampleDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddLocateAction<RouteSample>();
+            conventions.AddLocateAction<RouteSample>();
         });
     }
 }

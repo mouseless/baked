@@ -2,9 +2,10 @@ using Baked.Domain.Model;
 
 namespace Baked.Domain.Configuration;
 
-public class DomainModelPostBuilder(DomainModelBuilderOptions options, DomainModel model)
+public class DomainModelPostBuilder(DomainModelBuilderOptions options, IDomainModelConventionCollection conventions, DomainModel model)
 {
     readonly DomainModelBuilderOptions _options = options;
+    readonly IDomainModelConventionCollection _conventions = conventions;
 
     public DomainModel Model { get; } = model;
 
@@ -16,7 +17,7 @@ public class DomainModelPostBuilder(DomainModelBuilderOptions options, DomainMod
             var conventionsRequiringIndex = new List<IDomainModelConvention>();
             var restOfTheConventions = new List<IDomainModelConvention>();
 
-            foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention))
+            foreach (var convention in _conventions.OrderBy(c => c.Order).Select(c => c.Convention))
             {
                 if (convention is IAddRemoveAttributeConvention addRemove && addRemove.AttributeRequiresIndex)
                 {

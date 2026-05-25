@@ -12,9 +12,9 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+            conventions.AddTypeComponentConfiguration<SimplePage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
@@ -35,7 +35,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                     }
                 }
             );
-            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
@@ -67,7 +67,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                 },
                 order: -10
             );
-            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.AddTypeComponentConfiguration<TabbedPage>(
                component: (tp, c, cc) =>
                {
                    if (tp.Schema.Tabs.Count <= 1) { return; }

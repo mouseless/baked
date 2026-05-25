@@ -12,46 +12,49 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Property.Add<DescriptionAttribute>();
             builder.Index.Parameter.Add<DescriptionAttribute>();
+        });
 
-            builder.Conventions.SetPropertyAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetPropertyAttribute(
                 when: c => c.Property.Name.EndsWith("Description"),
                 attribute: () => new DescriptionAttribute()
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: c => c.Parameter.Name.Pascalize().EndsWith("Description"),
                 attribute: () => new DescriptionAttribute()
             );
 
-            builder.Conventions.AddPropertySchemaConfiguration<Field>(
+            conventions.AddPropertySchemaConfiguration<Field>(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 schema: f => f.Wide = true
             );
 
-            builder.Conventions.AddParameterSchemaConfiguration<FormPage.InputGroup>(
+            conventions.AddParameterSchemaConfiguration<FormPage.InputGroup>(
                 when: c => c.Parameter.Has<DescriptionAttribute>(),
                 schema: f => f.Wide = true
             );
 
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
                 component: (c, cc) => PropertyDialog(c.Property, cc)
             );
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(Dialog.Open)),
                 component: (c, cc) => LocalizedButton(c.Property.Name.Titleize(), cc)
             );
-            builder.Conventions.AddPropertyComponentConfiguration<Button>(
+            conventions.AddPropertyComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith(nameof(Dialog.Open)),
                 component: b => b.Schema.Icon = "pi pi-eye"
             );
-            builder.Conventions.AddPropertyComponentConfiguration<Dialog>(
+            conventions.AddPropertyComponentConfiguration<Dialog>(
                 component: d => d.Schema.Content.Data ??= Context.Parent()
             );
         });

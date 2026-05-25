@@ -12,16 +12,16 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Use `SelectButton` when enum member count is <= _maxMemberCountForSelectButton
-            builder.Conventions.AddParameterComponent(
+            conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton,
                 component: (c, cc) => ParameterSelectButton(c.Parameter, cc)
             );
-            builder.Conventions.AddParameterComponentConfiguration<SelectButton>(
+            conventions.AddParameterComponentConfiguration<SelectButton>(
                 when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
                 component: (s, c) =>
                 {
@@ -34,13 +34,13 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
             );
 
             // Use `Select` when enum member count is > _maxMemberCountForSelectButton
-            builder.Conventions.AddParameterComponent(
+            conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton,
                 component: (c, cc) => ParameterSelect(c.Parameter, cc)
             );
-            builder.Conventions.AddParameterComponentConfiguration<Select>(
+            conventions.AddParameterComponentConfiguration<Select>(
                 when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
                 component: (s, c) =>
                 {
@@ -54,7 +54,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
 
             // Default value of a required enum parameter is set to the first enum
             // member when it is in query or route
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.AddParameterSchemaConfiguration<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.Has<RequiredAttribute>() &&

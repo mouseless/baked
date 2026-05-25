@@ -13,9 +13,9 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsAssignableTo(typeof(Nullable<>)) &&
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
@@ -24,7 +24,7 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                 order: RestApiLayer.MinConventionOrder
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: c =>
                 {
                     var nullable = c.Parameter.ParameterType.IsAssignableTo(typeof(Nullable<>));
@@ -39,13 +39,13 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                 order: RestApiLayer.MinConventionOrder
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: c => !c.Parameter.IsOptional && !c.Parameter.IsNullable,
                 attribute: () => new RequiredAttribute()
             );
 
-            builder.Conventions.Add(new RequiredParametersAreRequiredInApiModelConvention());
-            builder.Conventions.Add(new SetDefaultValueForNullableEnumConvention());
+            conventions.Add(new RequiredParametersAreRequiredInApiModelConvention());
+            conventions.Add(new SetDefaultValueForNullableEnumConvention());
         });
 
         configurator.RestApi.ConfigureApiModel(api =>

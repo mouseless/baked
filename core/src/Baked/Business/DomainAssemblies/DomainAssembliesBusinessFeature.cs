@@ -49,7 +49,7 @@ public class DomainAssembliesBusinessFeature(
             """);
         });
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
             builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
@@ -67,29 +67,32 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Method.Add<InitializerAttribute>();
             builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<LabelAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: _ => true,
                 attribute: () => new GroupAttribute(),
                 order: int.MinValue + 10
             );
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: _ => true,
                 attribute: () => new GroupAttribute(),
                 order: int.MinValue + 10
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 when: _ => true,
                 attribute: () => new GroupAttribute(),
                 order: int.MinValue + 10
             );
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: _ => true,
                 attribute: () => new GroupAttribute(),
                 order: int.MinValue + 10
             );
 
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: context =>
                 {
                     var @namespace = context.Type.Namespace ?? string.Empty;
@@ -107,7 +110,7 @@ public class DomainAssembliesBusinessFeature(
                 },
                 when: c => setNamespaceWhen(c.Type)
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new ServiceAttribute(),
                 when: c =>
                     c.Type.IsPublic &&
@@ -120,7 +123,7 @@ public class DomainAssembliesBusinessFeature(
                     !members.Methods.Contains("<Clone>$") // if type is record
             );
 
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 attribute: () => new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.DeclaringType is not null &&
@@ -128,7 +131,7 @@ public class DomainAssembliesBusinessFeature(
                     !metadata.Has<ServiceAttribute>()
             );
 
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 attribute: () => new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.BaseDefinition is not null &&
@@ -137,7 +140,7 @@ public class DomainAssembliesBusinessFeature(
                     !metadata.Has<ServiceAttribute>()
             );
 
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new CasterAttribute(),
                 when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
             );

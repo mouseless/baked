@@ -9,9 +9,9 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 when: c =>
                     c.Property.PropertyType.SkipNullable().Is<int>() ||
                     c.Property.PropertyType.SkipNullable().Is<long>() ||
@@ -19,17 +19,17 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
                     c.Property.PropertyType.SkipNullable().Is<decimal>(),
                 schema: dtc => dtc.AlignRight = true
             );
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c =>
                     c.Property.PropertyType.SkipNullable().Is<int>() ||
                     c.Property.PropertyType.SkipNullable().Is<long>(),
                 component: (c) => B.Number()
             );
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<decimal>(),
                 component: () => B.Money()
             );
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<double>(),
                 component: () => B.Rate()
             );

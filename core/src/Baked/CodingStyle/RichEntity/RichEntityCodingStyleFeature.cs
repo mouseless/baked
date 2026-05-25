@@ -12,9 +12,9 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     TryGetEntityContextParameter(members, out var entityContextParameter) &&
@@ -22,7 +22,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     entityContextGenerics.GenericTypeArguments.First().Model == c.Type,
                 attribute: () => new EntityAttribute()
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c => c.Type.Has<EntityAttribute>(),
                 apply: (c, set) =>
                 {
@@ -30,7 +30,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     set(c.Type, new LocatableAttribute());
                 }
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
@@ -38,7 +38,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 order: 30
             );
 
-            builder.Conventions.Add(new EntityInitializerIsPostResourceConvention());
+            conventions.Add(new EntityInitializerIsPostResourceConvention());
         });
 
         configurator.DataAccess.ConfigureNHibernateInterceptor(interceptor =>

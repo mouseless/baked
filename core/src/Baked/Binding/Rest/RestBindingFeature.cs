@@ -16,16 +16,19 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             // domain attribute indices
             builder.Index.Type.Add<ControllerModelAttribute>();
             builder.Index.Type.Add<ApiInputAttribute>();
             builder.Index.Method.Add<ActionModelAttribute>();
             builder.Index.Parameter.Add<ParameterModelAttribute>();
+        });
 
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
             // domain attribute mutations
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: c => new ControllerModelAttribute(),
                 when: c =>
                   c.Type.Has<ServiceAttribute>() &&
@@ -36,7 +39,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName),
               order: 10
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     !c.Method.Has<ExternalAttribute>() &&
@@ -45,15 +48,15 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
                 order: RestApiLayer.MaxConventionOrder
             );
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 attribute: c => new ParameterModelAttribute(),
                 when: c => c.Parameter.IsApiInput,
                 order: RestApiLayer.MaxConventionOrder
             );
 
             // init before any domain convention
-            builder.Conventions.Add(new InitApiModelConvention(), order: int.MinValue);
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.Add(new InitApiModelConvention(), order: int.MinValue);
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: (action, context) =>
                     action.Parameter[ParameterModelAttribute.TargetParameterName] =
                         new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
@@ -61,28 +64,28 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             );
 
             // rest api conventions
-            builder.Conventions.Add(new AutoHttpMethodConvention([
+            conventions.Add(new AutoHttpMethodConvention([
                 (Regexes.StartsWithGet, HttpMethod.Get),
                 (Regexes.IsUpdateChangeOrSet, HttpMethod.Put),
                 (Regexes.StartsWithUpdateChangeOrSet, HttpMethod.Patch),
                 (Regexes.StartsWithDeleteRemoveOrClear, HttpMethod.Delete)
             ]));
-            builder.Conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
-            builder.Conventions.Add(new RemoveFromRouteConvention(["Get"]));
-            builder.Conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
-            builder.Conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
+            conventions.Add(new RemoveFromRouteConvention(["Get"]));
+            conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
+            conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
                 when: (_, action) => action.HasBody,
                 order: 10
             );
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
                 when: (_, action) => !action.ReturnIsVoid,
                 order: 10
             );
-            builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: 10);
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
+            conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: 10);
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
                 action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")")
             );
         });

@@ -8,9 +8,9 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.AddParameterSchemaConfiguration<Input>(
                 where: cc =>
                     cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs)) ||
                     cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs)),

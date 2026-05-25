@@ -8,13 +8,13 @@ public class OverrideSamplesDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
+            conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
                 routeParts: ["override-samples", "override", "update-route"],
                 method: HttpMethod.Post
             );
-            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.Parameter),
+            conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.Parameter),
                 parameter: parameter =>
                 {
                     parameter["parameter"].Name = "id";
@@ -22,7 +22,7 @@ public class OverrideSamplesDomainOverrideFeature : IFeature
                     parameter["parameter"].RoutePosition = 2;
                 }
             );
-            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
+            conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
                 useRequestClassForBody: false
             );
         });

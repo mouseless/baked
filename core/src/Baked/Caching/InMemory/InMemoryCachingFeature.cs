@@ -11,9 +11,9 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "application"),
                 when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "application"
             );

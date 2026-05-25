@@ -13,9 +13,9 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
                 when: c =>
                   c.Type.IsEnum ||
@@ -24,7 +24,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                   c.Type.IsAssignableTo(typeof(string)),
               order: RestApiLayer.MinConventionOrder
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
                 when: c =>
                     c.Type.IsAssignableTo(typeof(IEnumerable<>)) &&
@@ -33,7 +33,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                     genericArgMetadata.Has<ApiInputAttribute>(),
                 order: 20
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
                 when: c =>
                     c.Type.IsArray && c.Type.TryGetGenerics(out var generics) &&
@@ -42,9 +42,9 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                 order: 20
             );
 
-            builder.Conventions.Add(new BoolDefaultValueConvention());
-            builder.Conventions.Add(new SetDefaultValueForEnumConvention());
-            builder.Conventions.Add(new StringDefaultValueConvention());
+            conventions.Add(new BoolDefaultValueConvention());
+            conventions.Add(new SetDefaultValueForEnumConvention());
+            conventions.Add(new StringDefaultValueConvention());
         });
 
         configurator.DataAccess.ConfigureAutoPersistenceModel(model =>

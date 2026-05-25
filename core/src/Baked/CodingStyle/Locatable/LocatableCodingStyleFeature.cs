@@ -11,15 +11,18 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<LocatableAttribute>();
+        });
 
-            builder.Conventions.Add(new ReplaceTargetWithIdParameterConvention());
-            builder.Conventions.Add(new InitializeLocatablesConvention());
-            builder.Conventions.Add(new LookupLocatableParameterConvention(), order: RestApiLayer.MaxConventionOrder - 20);
-            builder.Conventions.Add(new LookupLocatableParametersConvention(), order: RestApiLayer.MaxConventionOrder - 20);
-            builder.Conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.Add(new ReplaceTargetWithIdParameterConvention());
+            conventions.Add(new InitializeLocatablesConvention());
+            conventions.Add(new LookupLocatableParameterConvention(), order: RestApiLayer.MaxConventionOrder - 20);
+            conventions.Add(new LookupLocatableParametersConvention(), order: RestApiLayer.MaxConventionOrder - 20);
+            conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 10);
         });
 
         configurator.Domain.ConfigureExportConfigurations(exports =>
