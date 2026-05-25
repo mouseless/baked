@@ -42,18 +42,7 @@ const { schema, data } = defineProps({
 });
 const { icon, severity = "info", localizeMessage, size } = schema;
 
-const severityClass = computed(() => {
-  switch (severity) {
-  case "info":
-    return "message-info";
-  case "error":
-    return "message-error";
-  case "warn":
-    return "message-warn";
-  default:
-    return "message-info";
-  }
-});
+const severityClass = computed(() => `message-${severity}`);
 
 const sizeClass = computed(() => {
   switch (size) {
@@ -73,13 +62,16 @@ const sizeClass = computed(() => {
   @apply grid rounded-md outline outline-1;
 }
 .message-info {
-  @apply bg-blue-50/95 text-blue-600 outline-blue-200;
+  @apply bg-blue-50/95 text-blue-600 outline-blue-200
+    dark:bg-blue-500/15 dark:text-blue-500 dark:outline-blue-700/65;
 }
 .message-error {
-  @apply bg-red-50/95 text-red-600 outline-red-200;
+  @apply bg-red-50/95 text-red-600 outline-red-200
+    dark:bg-red-500/15 dark:text-red-500 dark:outline-red-700/65;
 }
 .message-warn {
-  @apply bg-yellow-50/95 text-yellow-600 outline-yellow-200;
+  @apply bg-yellow-50/95 text-yellow-600 outline-yellow-200
+    dark:bg-yellow-500/15 dark:text-yellow-500 dark:outline-yellow-700/65;
 }
 
 </style>
