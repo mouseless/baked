@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
 let asyncCount = 0;
@@ -7,8 +8,19 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
+
   await page.route("*/**/rich-transient-with-datas/**/*", async route => {
     await route.fulfill({ body: "fake-response" });
+  });
+
+  await page.route("*/**/exception-samples/handled", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
   });
 
   await page.route("*/**/method-samples/async?ms=10", async route => {
@@ -103,36 +115,20 @@ test.describe("Data Descriptor", () => {
   });
 });
 
-/*
 test.describe("Data Error", () => {
   const id = "Data Error";
 
-  test.skip("shows error, when handled", async({ page }) => {
-    const _ = page.getByTestId(id);
+  test("shows error when not handled using global component", async({ page }) => {
+    const component = page.getByTestId(id);
+    const message = component.locator(baked.message.base);
 
-    console.error("not implemented");
-  });
-
-  test.skip("shows error, when not handled, using local component", async({ page }) => {
-    const _ = page.getByTestId(id);
-
-    // NOTE passes error as data
-    console.error("not implemented");
-  });
-
-  test.skip("shows error, when not handled, using global component", async({ page }) => {
-    const _ = page.getByTestId(id);
-
-    console.error("not implemented");
-  });
-
-  test.skip("grantchild can't handled error", async({ page }) => {
-    const _ = page.getByTestId(id);
-
-    console.error("not implemented");
+    await expect(message).toBeAttached();
+    await expect(message).toHaveClass(/b--error/);
+    await expect(message).toHaveClass(/message-error/);
+    await expect(message).toHaveText(/Test Service Handled/);
+    await expect(message).toHaveText(/A handled exception was thrown/);
   });
 });
-*/
 
 test.describe("Model", () => {
   const id = "Model";
