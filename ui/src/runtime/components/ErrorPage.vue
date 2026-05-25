@@ -40,16 +40,17 @@
       type="dashed"
       class="my-8"
     />
-    <Message severity="warn">
-      <i class="pi pi-exclamation-circle mr-2" />
-      {{ l(footerInfo) }}
-    </Message>
+    <Message
+      :schema="{severity: 'warn', icon: 'pi pi-exclamation-circle'}"
+      :data="footerInfo"
+    />
   </div>
 </template>
 <script setup>
 import { computed } from "vue";
-import { Divider, Message, Tag } from "primevue";
+import { Divider, Tag } from "primevue";
 import { useLocalization } from "#imports";
+import { Message } from "#components";
 
 const { localize: l } = useLocalization();
 
