@@ -8,7 +8,7 @@ public class OverrideSamplesDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
                 routeParts: ["override-samples", "override", "update-route"],

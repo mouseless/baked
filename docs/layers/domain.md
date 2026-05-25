@@ -112,7 +112,7 @@ This target exposes options for configuring domain conventions and levels and is
 provided in `AddDomainTypes` phase. To configure it in a feature;
 
 ```csharp
-configurator.Domain.ConfigureDomainConventions(conventions =>
+configurator.Domain.ConfigureConventions(conventions =>
 {
     ...
 });
@@ -250,7 +250,7 @@ public class IdConvention : IDomainModelConvention<PropertyModelContext>
     }
 }
 
-configurator.Domain.ConfigureDomainConventions(conventions =>
+configurator.Domain.ConfigureConventions(conventions =>
 {
     // Adding an implemented convention
     conventions.Add(new IdConvention());
@@ -340,7 +340,7 @@ accross multiple features and provide a predictable ordering between related
 convention groups.
 
 ```csharp
-configurator.Domain.ConfigureDomainConventions(builder =>
+configurator.Domain.ConfigureConventions(builder =>
 {
     conventions.Levels.Add("LevelA");
     conventions.Levels.Add("LevelB");

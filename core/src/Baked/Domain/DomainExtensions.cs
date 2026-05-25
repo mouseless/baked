@@ -29,7 +29,7 @@ public static class DomainExtensions
         public void ConfigureDomainModelBuilder(Action<DomainModelBuilderOptions> configuration) =>
             _configurator.Configure(configuration);
 
-        public void ConfigureDomainConventions(Action<IDomainModelConventionCollection> configuration) =>
+        public void ConfigureConventions(Action<IDomainModelConventionCollection> configuration) =>
             _configurator.Configure(configuration);
 
         public void ConfigureDomainServiceCollection(Action<DomainServiceCollection> configuration) =>

@@ -13,7 +13,7 @@ public class ParentDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddLocateAction<Parent>();
             conventions.AddEntityRemoteData<Parent>();

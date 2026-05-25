@@ -13,7 +13,7 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c =>

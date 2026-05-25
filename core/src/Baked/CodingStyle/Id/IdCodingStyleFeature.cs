@@ -13,7 +13,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.RemoveTypeAttribute<ValueTypeAttribute>(
                 when: c => c.Type.Is<Business.Id>(),

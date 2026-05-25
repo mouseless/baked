@@ -31,7 +31,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
                     .Dialect<CustomMySQL57Dialect>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.Add(new AddFlatTransactionToActionConvention());
         });

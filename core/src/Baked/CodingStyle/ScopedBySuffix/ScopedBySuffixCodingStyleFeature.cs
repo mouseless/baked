@@ -9,7 +9,7 @@ public class ScopedBySuffixCodingStyleFeature(IEnumerable<string> _suffixes)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 attribute: () => new ScopedAttribute(),

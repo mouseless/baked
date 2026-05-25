@@ -38,7 +38,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             builder.Index.Property.Add(typeof(UniqueAttribute));
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetPropertyAttribute(
                 when: c =>

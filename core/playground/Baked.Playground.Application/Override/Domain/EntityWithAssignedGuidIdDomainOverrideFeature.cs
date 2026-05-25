@@ -8,7 +8,7 @@ public class EntityWithAssignedGuidIdDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddPropertyAttributeConfiguration<IdAttribute>(
                 when: c => c.Type.Is<EntityWithAssignedGuidId>(),

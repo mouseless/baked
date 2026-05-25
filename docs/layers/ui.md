@@ -121,7 +121,7 @@ domain model, for instance to a type, use the `AddTypeComponent` extension of
 `IDomainModelConventionCollection`;
 
 ```csharp
-configurator.Domain.ConfigureDomainConventions(conventions =>
+configurator.Domain.ConfigureConventions(conventions =>
 {
     conventions.AddTypeComponent(
         when: c => c.Type...,

@@ -7,7 +7,7 @@ public class PanelParametersAreStatefulUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddParameterComponentConfiguration<Select>(
                 component: sb => sb.Schema.Stateful = true,

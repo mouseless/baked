@@ -7,7 +7,7 @@ public class RecordsAreDtosCodingStyleFeature : IFeature<CodingStyleConfigurator
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),

@@ -14,7 +14,7 @@ public class TestPageDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddTypeComponent(
                 when: c => c.Type.Is<TestPage>(),

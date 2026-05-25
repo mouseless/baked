@@ -16,7 +16,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Index.Type.Add<LocatableAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.Add(new ReplaceTargetWithIdParameterConvention());
             conventions.Add(new InitializeLocatablesConvention());

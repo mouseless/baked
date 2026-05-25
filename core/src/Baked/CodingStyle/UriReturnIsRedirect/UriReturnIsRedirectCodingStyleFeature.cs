@@ -6,7 +6,7 @@ public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigu
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.Add(new UriReturnIsRedirectConvention());
             conventions.Add(new UriReturnWithoutParameterIsGetConvention());

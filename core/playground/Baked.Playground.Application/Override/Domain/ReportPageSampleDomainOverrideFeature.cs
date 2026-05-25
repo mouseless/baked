@@ -14,7 +14,7 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Tabs
             conventions.AddMethodAttributeConfiguration<GroupAttribute>(

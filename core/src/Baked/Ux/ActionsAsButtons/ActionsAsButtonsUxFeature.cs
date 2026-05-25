@@ -14,7 +14,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // `Button`
             conventions.AddMethodComponent(

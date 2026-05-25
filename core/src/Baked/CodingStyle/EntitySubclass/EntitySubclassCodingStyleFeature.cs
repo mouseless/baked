@@ -15,7 +15,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
             builder.Index.Type.Add<EntitySubclassAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c =>

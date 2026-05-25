@@ -10,7 +10,7 @@ public class RemainingServicesAreSingletonCodingStyleFeature()
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                attribute: () => new SingletonAttribute(),

@@ -11,7 +11,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),

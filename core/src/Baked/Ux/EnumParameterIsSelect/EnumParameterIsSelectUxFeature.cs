@@ -12,7 +12,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Use `SelectButton` when enum member count is <= _maxMemberCountForSelectButton
             conventions.AddParameterComponent(

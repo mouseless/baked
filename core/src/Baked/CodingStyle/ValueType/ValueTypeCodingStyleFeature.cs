@@ -16,7 +16,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Index.Type.Add<ValueTypeAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c =>

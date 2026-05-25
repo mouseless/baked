@@ -36,7 +36,7 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
             fluent.ExposeConfiguration(c => c.SetProperty(NHibernate.Cfg.Environment.OracleSuppressDecimalInvalidCastException, "true"));
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.Add(new AddFlatTransactionToActionConvention());
         });

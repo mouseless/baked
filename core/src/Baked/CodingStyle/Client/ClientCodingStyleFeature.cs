@@ -13,7 +13,7 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Index.Type.Add<ClientAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.IsInterface && c.Type.Name.EndsWith("Client"),

@@ -12,7 +12,7 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddPropertyComponent(
                 when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<LabelAttribute>(),

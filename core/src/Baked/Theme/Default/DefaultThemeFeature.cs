@@ -30,7 +30,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Index.Method.Add<RouteAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Type defaults
             conventions.AddTypeComponent(

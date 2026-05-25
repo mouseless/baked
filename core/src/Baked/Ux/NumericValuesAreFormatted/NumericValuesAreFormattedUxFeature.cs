@@ -9,7 +9,7 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 when: c =>

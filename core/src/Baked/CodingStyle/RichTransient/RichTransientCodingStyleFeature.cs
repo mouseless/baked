@@ -17,7 +17,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Index.Type.Add<RichTransientAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c =>

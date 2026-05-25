@@ -12,7 +12,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddTypeComponentConfiguration<SimplePage>(
                 when: c =>

@@ -10,7 +10,7 @@ public class LabelCodingStyleFeature(IEnumerable<string> propertyNames)
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetPropertyAttribute(
                 when: c =>

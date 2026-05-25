@@ -8,7 +8,7 @@ public class CacheSamplesDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c => c.Type.Is<CacheSamples>(),

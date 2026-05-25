@@ -13,7 +13,7 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c =>

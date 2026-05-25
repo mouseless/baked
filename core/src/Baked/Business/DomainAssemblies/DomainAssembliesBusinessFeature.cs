@@ -69,7 +69,7 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Property.Add<LabelAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: _ => true,

@@ -14,7 +14,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
             builder.Index.Type.Add<LocatableExtensionAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c =>

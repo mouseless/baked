@@ -25,7 +25,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Index.Parameter.Add<ParameterModelAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // domain attribute mutations
             conventions.SetTypeAttribute(

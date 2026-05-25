@@ -8,7 +8,7 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddParameterSchemaConfiguration<Input>(
                 where: cc =>

@@ -10,7 +10,7 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c =>

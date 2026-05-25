@@ -20,7 +20,7 @@ public class QueryMethodCodingStyleFeature(
             builder.Index.Parameter.Add<SortingAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetMethodAttribute(
                 when: c => c.Type.Has<QueryAttribute>() && _queryMethodNames.Contains(c.Method.Name),

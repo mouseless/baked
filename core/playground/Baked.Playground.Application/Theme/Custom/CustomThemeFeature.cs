@@ -32,7 +32,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
     {
         base.Configure(configurator);
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Custom theme CSV formatter settings
             conventions.AddMethodSchemaConfiguration<DataTable.Export>(

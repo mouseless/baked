@@ -18,7 +18,7 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
             builder.Index.Parameter.Add<DescriptionAttribute>();
         });
 
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetPropertyAttribute(
                 when: c => c.Property.Name.EndsWith("Description"),

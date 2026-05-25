@@ -19,7 +19,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainConventions(conventions =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Order is set to -10 to allow DataPanel override
             conventions.AddMethodComponent(
