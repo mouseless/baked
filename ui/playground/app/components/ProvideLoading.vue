@@ -17,7 +17,7 @@ const context = useContext();
 
 const { loaded } = defineProps({
   title: { type: String, required: true },
-  loading: { type: Boolean, default: false }
+  loaded: { type: Boolean, default: false }
 });
 
 const loading = ref(!loaded);

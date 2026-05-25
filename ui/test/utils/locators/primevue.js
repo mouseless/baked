@@ -66,6 +66,9 @@ export default {
     option: ".p-togglebutton",
     selected: ".p-togglebutton-checked"
   },
+  skeleton: {
+    base: ".p-skeleton"
+  },
   tab: {
     base: ".p-tab"
   },

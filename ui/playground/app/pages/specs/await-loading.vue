@@ -2,26 +2,38 @@
   <UiSpec>
     <ProvideLoading title="Base">
       <AwaitLoading>
-        HIDDEN
+        <span data-testid="output">HIDDEN</span>
       </AwaitLoading>
     </ProvideLoading>
     <ProvideLoading
       title="Loaded"
       loaded
     >
-      <AwaitLoading class="test">
+      <AwaitLoading data-testid="output">
         <span>SHOWN</span>
+      </AwaitLoading>
+    </ProvideLoading>
+    <ProvideLoading
+      title="Multi Children Slot"
+      loaded
+    >
+      <AwaitLoading data-testid="output">
+        <span data-testid="output-1">1</span>
+        <span data-testid="output-2">2</span>
       </AwaitLoading>
     </ProvideLoading>
     <ProvideLoading title="Customized">
       <AwaitLoading
-        :skeleton="{ width: '5rem', height: '5rem' }"
+        :skeleton="{
+          width: '5rem',
+          height: '5rem'
+        }"
       />
     </ProvideLoading>
     <ProvideLoading title="Overridden">
-      <AwaitLoading>
+      <AwaitLoading data-testid="output">
         <template #loading>
-          loading...
+          <span>loading...</span>
         </template>
       </AwaitLoading>
     </ProvideLoading>
@@ -36,7 +48,10 @@
       :error
     >
       <AwaitLoading
-        :skeleton="{ width: '5rem', height: '5rem' }"
+        :skeleton="{
+          width: '5rem',
+          height: '5rem'
+        }"
       />
     </ProvideError>
     <ProvideError
@@ -44,7 +59,7 @@
       :error
     >
       <AwaitLoading>
-        <template #error="{ error: e }">
+        <template #error="{ error: { formatted: e } }">
           ! {{ e.summary }} - {{ e.detail }} !
         </template>
       </AwaitLoading>
