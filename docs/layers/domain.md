@@ -106,6 +106,18 @@ configurator.Domain.ConfigureDomainModelBuilder(builder =>
 });
 ```
 
+### `IDomainModelConventionCollection`
+
+This target exposes options for configuring domain conventions and levels and is
+provided in `AddDomainTypes` phase. To configure it in a feature;
+
+```csharp
+configurator.Domain.ConfigureDomainConventions(conventions =>
+{
+    ...
+});
+```
+
 ### `DomainServiceCollection`
 
 This target is provided in `Generate` phase and it is used to generate
@@ -224,7 +236,7 @@ foreach(var type in domain.Types.Having<MyTypeAttribute>())
 Attributes can be directly added to types or members as well as using built-in
 convetion system of baked. A convention can be used to add/remove or configure
 an attribute. Baked provides `IDomainModelConvention<TModel>` to create custom
-convention classes and extension methods for `DomainModelConvetionCollection` 
+convention classes and extension methods for `DomainModelConventionCollection` 
 to manage attributes.
 
 ```csharp
@@ -238,13 +250,13 @@ public class IdConvention : IDomainModelConvention<PropertyModelContext>
     }
 }
 
-configurator.Domain.ConfigureDomainModelBuilder(builder =>
+configurator.Domain.ConfigureDomainConventions(conventions =>
 {
     // Adding an implemented convention
-    builder.Conventions.Add(new IdConvention());
+    conventions.Add(new IdConvention());
 
     // Adding convention via extensions
-    builder.Conventions.SetPropertyAttribute(
+    conventions.SetPropertyAttribute(
         when: c => c.Property.Name == "Id"
         attribute: () => new IdAttribute()
     );
@@ -266,21 +278,21 @@ public class FeatureA : IFeature
 {
     // this convention wil apply before conventions
     // in feature B with default order
-    builder.Conventions.SetPropertyAttribute(...);
+    conventions.SetPropertyAttribute(...);
 }
 
 public class FeatureB : IFeature 
 {
     // This convention will apply first since a
     // global order is given
-    builder.Conventions.SetPropertyAttribute(
+    conventions.SetPropertyAttribute(
         ...,
         order: Order.Earliest
     );
 
     // This convention will apply after conventions
     // in feature A
-    builder.Conventions.SetPropertyAttribute(...);
+    conventions.SetPropertyAttribute(...);
 }
 ```
 
@@ -309,14 +321,14 @@ remaining conventions.
 
 ```csharp
 // This convention will apply before the indexes are built
-builder.Conventions.SetPropertyAttribute(
+conventions.SetPropertyAttribute(
     ...,
     order: Order.Latest;
     beforeBuildingIndexes: true
 );
 
 // This convention will apply after the indexes are built
-builder.Conventions.SetPropertyAttribute(
+conventions.SetPropertyAttribute(
     ...,
     order: Order.Earliest,
 );
@@ -328,18 +340,18 @@ accross multiple features and provide a predictable ordering between related
 convention groups.
 
 ```csharp
-configurator.Domain.ConfigureDomainModelBuilder(builder =>
+configurator.Domain.ConfigureDomainConventions(builder =>
 {
-    builder.Levels.Add("LevelA");
-    builder.Levels.Add("LevelB");
+    conventions.Levels.Add("LevelA");
+    conventions.Levels.Add("LevelB");
 
-    builder.Conventions.SetPropertyAttribute(
+    conventions.SetPropertyAttribute(
         ...,
         order: Order.Level("LevelB")
     );
 
     // This convention executes first
-    builder.Conventions.SetPropertyAttribute(
+    conventions.SetPropertyAttribute(
         ...,
         order: Order.Level("LevelA")
     );
@@ -351,12 +363,12 @@ will have 0 as its order relative to its level. It is also possible to specify
 min/max values or a specific position within the level.
 
 ```csharp
-builder.Conventions.SetPropertyAttribute(
+conventions.SetPropertyAttribute(
     ...,
     order: Order.Level("LevelA").Min
 );
 
-builder.Conventions.SetPropertyAttribute(
+conventions.SetPropertyAttribute(
     ...,
     order: Order.Level("LevelA") + 10
 );

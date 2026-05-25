@@ -14,24 +14,24 @@ public class FormSampleDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+            conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
                 attribute: (a, c) => a.RoutePathBack = "/form-sample"
             );
 
-            builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+            conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
                 attribute: a => a.HideInLists = true
             );
 
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
                 attribute: () => new QueryMethodAttribute()
             );
 
-            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+            conventions.AddMethodComponentConfiguration<FormPage>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
                 component: fp =>
                 {
@@ -41,7 +41,7 @@ public class FormSampleDomainOverrideFeature : IFeature
             );
 
             // Properties
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().IsEnum,
                 where: cc => cc.Path.StartsWith(nameof(Page), nameof(FormSample)),
                 component: () => B.Text()

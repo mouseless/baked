@@ -10,9 +10,9 @@ public class QueryCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.Has<LocatableAttribute>() &&
                     c.Domain.Types.TryGetValue(((IModel)c.Type).Id.Pluralize(), out var query) &&
@@ -29,8 +29,8 @@ public class QueryCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 order: 30
             );
 
-            builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
-            builder.Conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
+            conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
+            conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
                 _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
             ));
         });

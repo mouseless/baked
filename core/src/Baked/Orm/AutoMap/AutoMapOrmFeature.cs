@@ -36,14 +36,17 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             builder.Index.Type.Add(typeof(EntityAttribute));
             builder.Index.Property.Add(typeof(UniqueAttribute));
+        });
 
-            builder.Conventions.SetPropertyAttribute(
+        configurator.Domain.ConfigureDomainConventions(conventions =>
+        {
+            conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Property.IsAutoProperty,
                 attribute: () => new ColumnAttribute()
             );
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Property.Has<ColumnAttribute>() &&

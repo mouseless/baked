@@ -18,17 +18,20 @@ public class QueryMethodCodingStyleFeature(
             builder.Index.Method.Add<QueryMethodAttribute>();
             builder.Index.Parameter.Add<PagingAttribute>();
             builder.Index.Parameter.Add<SortingAttribute>();
+        });
 
-            builder.Conventions.SetMethodAttribute(
+        configurator.Domain.ConfigureDomainConventions(conventions =>
+        {
+            conventions.SetMethodAttribute(
                 when: c => c.Type.Has<QueryAttribute>() && _queryMethodNames.Contains(c.Method.Name),
                 attribute: () => new QueryMethodAttribute(),
                 order: 40
             );
-            builder.Conventions.AddMethodAttributeConfiguration<QueryMethodAttribute>(
+            conventions.AddMethodAttributeConfiguration<QueryMethodAttribute>(
                 when: c => c.Method.DefaultOverload.Parameters.All(p => p.IsOptional),
                 attribute: qm => qm.AllParametersAreOptional = true
             );
-            builder.Conventions.AddMethodAttributeConfiguration<QueryMethodAttribute>(
+            conventions.AddMethodAttributeConfiguration<QueryMethodAttribute>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(p => _primaryParameterNames.Contains(p.Name)),
                 attribute: (qm, c) =>
                 {
@@ -42,19 +45,19 @@ public class QueryMethodCodingStyleFeature(
                 }
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: c => c.Method.Has<QueryMethodAttribute>() && _takeParameterNames.Contains(c.Parameter.Name),
                 attribute: () => new PagingAttribute(PagingAttribute.Role.Take),
                 order: 40
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: c => c.Method.Has<QueryMethodAttribute>() && _skipParameterNames.Contains(c.Parameter.Name),
                 attribute: () => new PagingAttribute(PagingAttribute.Role.Skip),
                 order: 40
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: c => c.Method.Has<QueryMethodAttribute>() && _sortingParameterNames.Contains(c.Parameter.Name),
                 attribute: () => new SortingAttribute(),
                 order: 40

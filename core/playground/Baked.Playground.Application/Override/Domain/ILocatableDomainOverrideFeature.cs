@@ -8,9 +8,9 @@ public class ILocatableDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c => c.Type.Is<ILocatable>(),
                 attribute: () => new LocatableAttribute()
             );

@@ -13,13 +13,13 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.RemoveTypeAttribute<ValueTypeAttribute>(
+            conventions.RemoveTypeAttribute<ValueTypeAttribute>(
                 when: c => c.Type.Is<Business.Id>(),
                 order: 10
             );
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c => c.Property.PropertyType.Is<Business.Id>(),
                 attribute: c => new IdAttribute(c.Property.Name.Camelize()),
                 order: int.MinValue + 10

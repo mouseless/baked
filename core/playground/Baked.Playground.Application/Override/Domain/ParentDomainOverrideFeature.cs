@@ -13,24 +13,24 @@ public class ParentDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.AddLocateAction<Parent>();
-            builder.Conventions.AddEntityRemoteData<Parent>();
+            conventions.AddLocateAction<Parent>();
+            conventions.AddEntityRemoteData<Parent>();
 
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c => c.Type.Is<Parent>() && c.Property.Name == nameof(Parent.Surname),
                 attribute: () => new LabelAttribute()
             );
 
-            builder.Conventions.RemoveMethodAttribute<ActionAttribute>(
+            conventions.RemoveMethodAttribute<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.RemoveChild),
                 order: RestApiLayer.MaxConventionOrder + 15
             );
 
             // Move `AddChild` action to contents
             {
-                builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+                conventions.AddTypeComponentConfiguration<PageTitle>(
                     when: c => c.Type.Is<Parent>(),
                     component: (pt, c) =>
                     {
@@ -41,7 +41,7 @@ public class ParentDomainOverrideFeature : IFeature
                     }
                 );
 
-                builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+                conventions.AddTypeComponentConfiguration<SimplePage>(
                     when: c => c.Type.Is<Parent>(),
                     component: (dp, c, cc) =>
                     {
@@ -54,17 +54,17 @@ public class ParentDomainOverrideFeature : IFeature
                 );
             }
 
-            builder.Conventions.AddMethodSchemaConfiguration<Content>(
+            conventions.AddMethodSchemaConfiguration<Content>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.AddChild),
                 schema: s => s.Side = true
             );
 
-            builder.Conventions.AddTypeComponentConfiguration<Fieldset>(
+            conventions.AddTypeComponentConfiguration<Fieldset>(
                 when: c => c.Type.Is<Parent>(),
                 component: dt => dt.ReloadOn(nameof(Parent.Update).Kebaberize())
             );
 
-            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.GetChildren),
                 component: dt => dt.ReloadOn(nameof(Parent.AddChild).Kebaberize())
             );

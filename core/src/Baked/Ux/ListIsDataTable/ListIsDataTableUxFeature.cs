@@ -11,14 +11,14 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.AddMethodComponent(
+            conventions.AddMethodComponent(
                 when: c => c.Method.DefaultOverload.ReturnsList(),
                 where: cc => cc.Path.EndsWith("*Panel", "Content") || cc.Path.EndsWith("*Container", "Content"),
                 component: (c, cc) => MethodDataTable(c.Method, cc)
             );
-            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
@@ -43,7 +43,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                 },
                 order: -10
             );
-            builder.Conventions.AddMethodSchema(
+            conventions.AddMethodSchema(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
@@ -52,7 +52,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
                 schema: () => ActionsDataTableColumn()
             );
-            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.TryGetElementType(out var itemType) &&

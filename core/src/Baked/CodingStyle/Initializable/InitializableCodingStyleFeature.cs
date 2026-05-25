@@ -13,9 +13,9 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
@@ -23,14 +23,14 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
                     _initializerNames.Any(i => members.Methods.Contains(i)),
                 attribute: () => new TransientAttribute()
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 when: c => _initializerNames.Contains(c.Method.Name),
                 attribute: () => new InitializerAttribute()
             );
 
-            builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
-            builder.Conventions.Add(new TargetUsingInitializerConvention(), order: RestApiLayer.MaxConventionOrder - 10);
-            builder.Conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new AddInitializerParametersToQueryConvention());
+            conventions.Add(new TargetUsingInitializerConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+            conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
     }
 }

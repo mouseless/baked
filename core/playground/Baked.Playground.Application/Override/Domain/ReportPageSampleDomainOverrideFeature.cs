@@ -14,46 +14,46 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
             // Tabs
-            builder.Conventions.AddMethodAttributeConfiguration<GroupAttribute>(
+            conventions.AddMethodAttributeConfiguration<GroupAttribute>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>(),
                 attribute: group => group.TabName = "SingleValue"
             );
-            builder.Conventions.AddMethodAttributeConfiguration<GroupAttribute>(
+            conventions.AddMethodAttributeConfiguration<GroupAttribute>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnsList(),
                 attribute: group => group.TabName = "DataTable"
             );
-            builder.Conventions.AddTypeComponent(
+            conventions.AddTypeComponent(
                 when: c => c.Type.Is<ReportPageSample>(),
                 where: cc => cc.Path.EndsWith("SingleValue", nameof(Tab.Icon)),
                 component: () => B.Icon("pi-box")
             );
-            builder.Conventions.AddTypeComponent(
+            conventions.AddTypeComponent(
                 when: c => c.Type.Is<ReportPageSample>(),
                 where: cc => cc.Path.EndsWith("DataTable", nameof(Tab.Icon)),
                 component: () => B.Icon("pi-table")
             );
 
             // Allowing admin token for report api
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.AddMethodSchemaConfiguration<RemoteData>(
                 when: c => c.Type.Is<ReportPageSample>(),
                 schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" })
             );
 
             // Parameter overrides
-            builder.Conventions.AddParameterComponent(
+            conventions.AddParameterComponent(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.With) && !c.Parameter.IsNullable,
                 component: (c, cc) => ParameterSelect(c.Parameter, cc)
             );
-            builder.Conventions.AddParameterComponent(
+            conventions.AddParameterComponent(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.GetFirst) && c.Parameter.Name == "count",
                 component: (c, cc) => ParameterSelect(c.Parameter, cc)
             );
 
             // Page overrides
-            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c => c.Type.Is<ReportPageSample>(),
                 component: tp =>
                 {

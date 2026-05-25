@@ -8,9 +8,9 @@ public class EntityWithAssignedIdDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+            conventions.AddPropertyAttributeConfiguration<IdAttribute>(
                 when: c => c.Type.Is<EntityWithAssignedId>(),
                 attribute: id => id.Assigned()
             );

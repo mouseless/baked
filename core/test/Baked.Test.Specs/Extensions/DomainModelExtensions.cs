@@ -62,6 +62,20 @@ public static class DomainModelExtensions
 
             return new DomainModelBuilder(optionsInstance);
         }
+
+        public IDomainModelConventionCollection ADomainModelConventionCollection(
+            Action<IDomainModelConventionCollection>? options = default
+        )
+        {
+            var optionsInstance = new DomainModelConventionCollection();
+
+            if (options is not null)
+            {
+                options(optionsInstance);
+            }
+
+            return optionsInstance;
+        }
     }
 
     extension(DomainModelBuilder builder)

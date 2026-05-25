@@ -9,16 +9,16 @@ public class ChildDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.AddLocateAction<Child>();
+            conventions.AddLocateAction<Child>();
 
-            builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Type.Is<Child>() && c.Property.PropertyType.Is<ParentWrapper>() || c.Property.PropertyType.Is<IParentInterface>(),
                 attribute: data => data.Visible = false
             );
 
-            builder.Conventions.RemoveMethodAttribute<ActionAttribute>(
+            conventions.RemoveMethodAttribute<ActionAttribute>(
                 when: c => c.Type.Is<Child>(),
                 order: RestApiLayer.MaxConventionOrder + 15
             );

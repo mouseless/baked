@@ -8,9 +8,9 @@ public class UniqueCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Type.TryGet<LocatableAttribute>(out var locatable) &&

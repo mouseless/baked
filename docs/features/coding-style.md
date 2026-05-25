@@ -80,7 +80,7 @@ public class Entity(IEntityContext<Parent> _context)
 > `IdAttribute` as below,
 >
 > ```csharp
-> builder.Conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+> conventions.AddPropertyAttributeConfiguration<IdAttribute>(
 >     when: c => c.Type.Is<MyEntity>(),
 >     attribute: id => id.Assigned() // or id.AutoIncrement()
 > );

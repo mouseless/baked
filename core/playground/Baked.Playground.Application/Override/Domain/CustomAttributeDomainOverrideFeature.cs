@@ -7,51 +7,51 @@ public class CustomAttributeDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new CustomAttribute(),
                 when: c => c.Type.Is<Class>()
             );
-            builder.Conventions.AddTypeAttributeConfiguration<CustomAttribute>(
+            conventions.AddTypeAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c => c.Type.Is<Class>()
             );
 
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Record>() &&
                     c.Property.Name == nameof(Record.Text)
             );
-            builder.Conventions.AddPropertyAttributeConfiguration<CustomAttribute>(
+            conventions.AddPropertyAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<Record>() &&
                     c.Property.Name == nameof(Record.Text)
             );
 
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Class>() &&
                     c.Method.Name == nameof(Class.Method)
             );
-            builder.Conventions.AddMethodAttributeConfiguration<CustomAttribute>(
+            conventions.AddMethodAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<Class>() &&
                     c.Method.Name == nameof(Class.Method)
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
                     c.Parameter.Name == "string"
             );
-            builder.Conventions.AddParameterAttributeConfiguration<CustomAttribute>(
+            conventions.AddParameterAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<MethodSamples>() &&

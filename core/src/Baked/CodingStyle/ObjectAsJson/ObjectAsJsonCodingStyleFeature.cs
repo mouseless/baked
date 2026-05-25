@@ -10,14 +10,14 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
                 when: c => c.Type.Is<object>()
             );
 
-            builder.Conventions.Add(new SingleObjectParametersDontUseRequestClassConvention());
+            conventions.Add(new SingleObjectParametersDontUseRequestClassConvention());
         });
 
         configurator.DataAccess.ConfigureAutoPersistenceModel(model =>

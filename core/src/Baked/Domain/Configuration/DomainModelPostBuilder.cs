@@ -8,7 +8,7 @@ public class DomainModelPostBuilder(DomainModelBuilderOptions options, DomainMod
 
     public DomainModel Model { get; } = model;
 
-    public void EndBuild()
+    public void EndBuild(IDomainModelConventionCollection conventions)
     {
         using (Diagnostics.Start(nameof(DomainModelPostBuilder), onDispose: _options.OnComplete))
         {
@@ -16,7 +16,7 @@ public class DomainModelPostBuilder(DomainModelBuilderOptions options, DomainMod
             var conventionsRequiringIndex = new List<IDomainModelConvention>();
             var restOfTheConventions = new List<IDomainModelConvention>();
 
-            foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention))
+            foreach (var convention in conventions.OrderBy(c => c.Order).Select(c => c.Convention))
             {
                 if (convention is IAddRemoveAttributeConvention addRemove && addRemove.AttributeRequiresIndex)
                 {

@@ -11,12 +11,15 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<ClientAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureDomainConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c => c.Type.IsInterface && c.Type.Name.EndsWith("Client"),
                 attribute: () => new ClientAttribute()
             );
-            builder.Conventions.RemoveTypeAttribute<ControllerModelAttribute>(
+            conventions.RemoveTypeAttribute<ControllerModelAttribute>(
                 when: c => c.Type.Name.EndsWith("Client"),
                 order: RestApiLayer.MaxConventionOrder - 10
             );

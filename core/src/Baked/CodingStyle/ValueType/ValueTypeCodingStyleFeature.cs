@@ -14,8 +14,11 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<ValueTypeAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureDomainConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsValueType &&
                     !c.Type.IsEnum &&

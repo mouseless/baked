@@ -32,10 +32,10 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
     {
         base.Configure(configurator);
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
             // Custom theme CSV formatter settings
-            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Export>(
+            conventions.AddMethodSchemaConfiguration<DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
                     var (_, l) = cc;
@@ -49,18 +49,18 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // String api rendering
-            builder.Conventions.AddMethodComponent(
+            conventions.AddMethodComponent(
                 when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
                 component: (c, cc) => MethodText(c.Method, cc)
             );
-            builder.Conventions.AddMethodComponentConfiguration<Text>(
+            conventions.AddMethodComponentConfiguration<Text>(
                 component: t => t.Override(C.MyText())
             );
-            builder.Conventions.AddMethodComponentConfiguration<Text>(
+            conventions.AddMethodComponentConfiguration<Text>(
                 component: t => t.Schema.MaxLength = 100
             );
-            builder.Conventions.AddMethodComponentConfiguration<Text>(
+            conventions.AddMethodComponentConfiguration<Text>(
                 component: t =>
                 {
                     if (t.Schema is not MyText mt) { return; }
@@ -70,14 +70,14 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // Non-localized enums
-            builder.Conventions.AddTypeSchema(
+            conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
             );
 
             // Custom routes
-            builder.Conventions.SetTypeRoute<Parent>("/parents/[id]");
-            builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
+            conventions.SetTypeRoute<Parent>("/parents/[id]");
+            conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
         });
 
         configurator.Ui.ConfigureComponentExports(c =>

@@ -12,9 +12,9 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureDomainConventions(conventions =>
         {
-            builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+            conventions.AddTypeComponentConfiguration<SimplePage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
@@ -29,21 +29,21 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                 },
                 order: -10
             );
-            builder.Conventions.AddTypeSchema(
+            conventions.AddTypeSchema(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
                 where: cc => cc.Path.EndsWith("Fields"),
                 schema: (c, cc) => TypeContent(c.Type, cc, "fields")
             );
-            builder.Conventions.AddTypeComponent(
+            conventions.AddTypeComponent(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
                 where: cc => cc.Path.EndsWith("Fields", nameof(Content.Component)),
                 component: (c, cc) => TypeFieldset(c.Type.GetMembers(), cc)
             );
-            builder.Conventions.AddTypeComponentConfiguration<Fieldset>(
+            conventions.AddTypeComponentConfiguration<Fieldset>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
@@ -60,10 +60,10 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     }
                 }
             );
-            builder.Conventions.AddPropertySchema(
+            conventions.AddPropertySchema(
                 schema: (c, cc) => PropertyField(c.Property, cc)
             );
-            builder.Conventions.AddPropertySchemaConfiguration<Field>(
+            conventions.AddPropertySchemaConfiguration<Field>(
                 when: c =>
                     c.Property.Has<DataAttribute>() &&
                     c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
@@ -79,7 +79,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
                 }
             );
-            builder.Conventions.AddPropertySchemaConfiguration<Field>(
+            conventions.AddPropertySchemaConfiguration<Field>(
                 when: c => c.Property.Has<DataAttribute>(),
                 schema: (f, c) =>
                 {

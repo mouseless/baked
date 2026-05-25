@@ -13,8 +13,11 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
         configurator.Domain.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add<EntitySubclassAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureDomainConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
@@ -31,7 +34,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
                 },
                 order: 10
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
                 apply: (c, set) =>
                 {
@@ -53,7 +56,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
                 },
                 order: 40
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&
@@ -61,10 +64,10 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
                 order: 30
             );
 
-            builder.Conventions.Add(new UniqueIdParameterConvention(), order: RestApiLayer.MaxConventionOrder - 20);
-            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new UniqueIdParameterConvention(), order: RestApiLayer.MaxConventionOrder - 20);
+            conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
