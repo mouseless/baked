@@ -1,5 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import primevue from "../utils/locators/primevue.js";
+import baked from "../utils/locators/baked";
 
 test.beforeEach(async({ goto }) => {
   await goto("/specs/message", { waitUntil: "hydration" });
@@ -11,8 +11,8 @@ test.describe("Base", () => {
   test("Base", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.message.content)).toHaveText("Message");
-    await expect(component.locator(primevue.message.icon)).toHaveClass(/pi pi-info-circle/);
+    await expect(component.locator(baked.message.content)).toHaveText("Message");
+    await expect(component.locator(baked.message.icon)).toHaveClass(/pi pi-info-circle/);
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -28,7 +28,7 @@ test.describe("No icon", () => {
   test("does not attach icon element", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.message.icon)).not.toBeAttached();
+    await expect(component.locator(baked.message.icon)).not.toBeAttached();
   });
 });
 
@@ -38,39 +38,29 @@ test.describe("No data", () => {
   test("display single dash(-) when data is null", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.message.content)).toHaveText("-");
+    await expect(component.locator(baked.message.content)).toHaveText("-");
   });
 });
 
 test.describe("Severity", () => {
   test("Info", async({ page }) => {
     const component = page.getByTestId("Info");
-    const color = await component.evaluate(element =>
-      globalThis.getComputedStyle(element).getPropertyValue("--p-message-info-color")
-    );
+    const color = "rgb(37, 99, 235)";
 
-    await expect(component.locator(primevue.message.base)).toHaveCSS("color", hexToRGB(color));
+    await expect(component.locator(baked.message.base)).toHaveCSS("color", color);
   });
 
   test("Warning", async({ page }) => {
     const component = page.getByTestId("Warning");
-    const color = await component.evaluate(element =>
-      globalThis.getComputedStyle(element).getPropertyValue("--p-message-warn-color")
-    );
+    const color = "rgb(202, 138, 4)";
 
-    await expect(component.locator(primevue.message.base)).toHaveCSS("color", hexToRGB(color));
+    await expect(component.locator(baked.message.base)).toHaveCSS("color", color);
   });
 
   test("Error", async({ page }) => {
     const component = page.getByTestId("Error");
-    const color = await component.evaluate(element =>
-      globalThis.getComputedStyle(element).getPropertyValue("--p-message-error-color")
-    );
+    const color = "rgb(220, 38, 38)";
 
-    await expect(component.locator(primevue.message.base)).toHaveCSS("color", hexToRGB(color));
+    await expect(component.locator(baked.message.base)).toHaveCSS("color", color);
   });
 });
-
-function hexToRGB(hex) {
-  return `rgb(${hex.replace("#","").match(/.{1,2}/g).map(e=>parseInt(e, 16)).join(", ")})`;
-}

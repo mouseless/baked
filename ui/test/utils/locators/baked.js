@@ -19,5 +19,10 @@ export default {
   },
   string:{
     text: "span"
+  },
+  message: {
+    base: ".b-message",
+    content: ".b-message-content",
+    icon: ".b-message-icon"
   }
 };
