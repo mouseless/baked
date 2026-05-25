@@ -193,7 +193,7 @@ domain models that don't have the given `TComponentSchema` or `TSchema` at the
 expected component path.
 
 ```csharp
-configurator.Domain.ConfigureDomainModelBuilder(builder =>
+configurator.Domain.ConfigureConventions(conventions =>
 {
     // This convention will automatically apply only to the types that have a
     // `SimplePage` component

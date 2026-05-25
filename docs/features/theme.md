@@ -45,11 +45,11 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         // Applies default theme rules
         base.Configure(configurator);
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Your custom conventions and page overrides
         });
-
+        
         configurator.Ui.ConfigureComponentExports(c =>
         {
             // Add your component exports using your own `Components` extensions
