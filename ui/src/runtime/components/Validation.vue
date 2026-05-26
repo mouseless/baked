@@ -7,7 +7,10 @@
     class="b-Validation flex flex-col gap-2"
   >
     <slot />
-    <slot name="message">
+    <slot
+      name="message"
+      :validation
+    >
       <Message
         v-if="validation.message && validation.persist"
         :schema="{

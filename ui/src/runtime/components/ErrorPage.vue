@@ -42,7 +42,7 @@
     />
     <Message
       :schema="{ severity: 'warn', icon: 'pi pi-exclamation-circle' }"
-      :data="footerInfo"
+      :data="l(footerInfo)"
     />
   </div>
 </template>
