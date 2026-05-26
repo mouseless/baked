@@ -20,6 +20,13 @@ const variants = [
       query: giveMe.anInlineData({ query: "value" }),
       params: giveMe.anInlineData({ id: "test-id" })
     })
+  },
+  {
+    name: "Inline Error",
+    descriptor: giveMe.aNavLink({
+      path: "/test-path/[id]",
+      params: giveMe.aRemoteData({ path: "/exception-samples/handled" })
+    })
   }
 ];
 </script>

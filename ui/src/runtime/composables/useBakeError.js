@@ -5,7 +5,7 @@ export default function() {
   const context = useContext();
 
   function handle() {
-    const data = context.injectError();
+    const data = context.injectError({ handle: true });
 
     return NormalizedError(data);
   }

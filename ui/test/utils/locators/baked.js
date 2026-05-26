@@ -1,4 +1,8 @@
 export default {
+  contents: {
+    base: ".b-Contents",
+    main: ".b-Contents .grid"
+  },
   errorPage: {
     baseTestId: "error-page",
     tag: ".pt-8 .p-tag",
@@ -7,22 +11,18 @@ export default {
     statusCode: ".p-tag",
     footer: ".p-message-content"
   },
-  contents: {
-    base: ".b-Contents",
-    main: ".b-Contents .grid"
-  },
-  number:{
-    base: ".b-component--Number"
-  },
-  money:{
-    base: ".b-component--Money"
-  },
-  string:{
-    text: "span"
-  },
   message: {
     base: ".b-message",
     content: ".b-message-content",
     icon: ".b-message-icon"
+  },
+  money:{
+    base: ".b-component--Money"
+  },
+  number:{
+    base: ".b-component--Number"
+  },
+  string:{
+    text: "span"
   }
 };

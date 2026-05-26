@@ -1,11 +1,13 @@
 import { onMounted, ref } from "vue";
 import { useContext, useDataFetcher } from "#imports";
 
-export default function() {
+export default function({ defaultInlineError } = {}) {
   const context = useContext();
   const dataFetcher = useDataFetcher();
+
   const contextData = context.injectContextData();
-  const error = context.injectError({ handle: false });
+  const error = context.injectError();
+
   const mounts = [];
   let onAfterMountCallback = null;
   let onBeforeMountCallback = null;
@@ -36,7 +38,7 @@ export default function() {
     }
   });
 
-  function mount(schema, { inlineError } = {}) {
+  function mount(schema, { inlineError = defaultInlineError } = {}) {
     const value = ref(null);
 
     if(!schema) {

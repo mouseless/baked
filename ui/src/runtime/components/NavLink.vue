@@ -16,7 +16,7 @@ import { Button } from "primevue";
 import { useDataMounter, usePathBuilder } from "#imports";
 import { AwaitLoading } from "#components";
 
-const { mount: mountData } = useDataMounter();
+const { mount: mountData } = useDataMounter({ defaultInlineError: true });
 const pathBuilder = usePathBuilder();
 
 const { schema, data } = defineProps({
@@ -26,8 +26,8 @@ const { schema, data } = defineProps({
 
 const { icon, path, query: queryData, params: paramsData } = schema;
 
-const query = mountData(queryData, { inlineError: true });
-const params = mountData(paramsData, { inlineError: true });
+const query = mountData(queryData);
+const params = mountData(paramsData);
 
 const to = computed(() => ({
   path: params.value ? pathBuilder.build(path, params.value, { forRoute: true }) : path,

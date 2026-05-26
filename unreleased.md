@@ -55,8 +55,6 @@
   - Configure `AppDescriptor.InlineError` to change default inline component
 - `context.injectError` and `context.provideError` are introduced to pass a data
   or an action error to child
-  - Injecting error automatically means it is handled so that parent doesn't
-    have to display the error message
   - `useBakeError` composable is introduced to handle and format a `Bake.vue`
     data or action error
     ```vue
@@ -71,6 +69,9 @@
     const error = handleError();
     </script>
     ```
+- `useDataMounter` now supports inline error display via `useDataMounter{
+  defaultInlineError: true }` option to enable it page-wide, or `mount({
+  inlineError: true })` to enable it individually
 - `IComponentDescriptor.Error` and `AppDescriptor.InlineError` are introduced
   to customize error display for components that don't handle their inline
   errors by injecting

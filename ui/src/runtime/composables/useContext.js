@@ -24,7 +24,7 @@ export default function() {
     return provide("__bake_data_descriptor", value);
   }
 
-  function injectError({ handle } = {}) {
+  function injectError({ handle = false } = {}) {
     const { error, handled } = inject("__bake_error", {
       error: ref({}),
       handled: ref(false)
