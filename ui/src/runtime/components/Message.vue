@@ -40,7 +40,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { icon, severity = "info", localizeMessage, size, variant = "outlined" } = schema;
+const { icon, localizeMessage, severity = "info", size, variant = "outlined" } = schema;
 
 const sizeClass = computed(() => {
   switch (size) {

@@ -7,20 +7,16 @@
     class="b-Validation flex flex-col gap-2"
   >
     <slot />
-    <slot
-      name="message"
-      :validation
-    >
+    <slot name="message">
       <Message
-        v-if="validation.message"
-        v-show="validation.message && validation.persist"
+        v-if="validation.message && validation.persist"
         :schema="{
           severity: validation.severity,
           variant: 'simple',
           size: 'small'
         }"
-        class="ml-2 mt-[-1rem]"
         :data="validation.message || ''"
+        class="ml-3 mt-[-0.75rem]"
       />
     </slot>
   </div>

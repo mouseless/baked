@@ -32,6 +32,7 @@
           :allow-empty
           :data-key="optionValue"
           :option-label
+          class="!w-auto"
           pt:pc-toggle-button:root="text-[length:inherit]"
         >
           <template #option="slotProps">
