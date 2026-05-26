@@ -11,7 +11,7 @@ test.describe("Base", () => {
   test("Base", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(baked.message.content)).toHaveText("Message");
+    await expect(component.locator(baked.message.body)).toHaveText("Message");
     await expect(component.locator(baked.message.icon)).toHaveClass(/pi pi-info-circle/);
   });
 
@@ -38,7 +38,7 @@ test.describe("No data", () => {
   test("display single dash(-) when data is null", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(baked.message.content)).toHaveText("-");
+    await expect(component.locator(baked.message.body)).toHaveText("-");
   });
 });
 

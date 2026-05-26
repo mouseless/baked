@@ -56,7 +56,7 @@ test.describe("Base", () => {
   test("footer info from schema", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(baked.message.content)).toHaveText("Spec: Footer info");
+    await expect(component.locator(baked.message.body)).toHaveText("Spec: Footer info");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {

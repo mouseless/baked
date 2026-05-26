@@ -7,10 +7,8 @@
       <div
         :class="sizeClass"
         class="
-          b-message-content
+          b-message-body
           flex flex-col gap-3
-          py-[0.50rem] px-[0.75rem]
-          min-w-[10rem] min-h-[1.5rem]
         "
       >
         <div class="flex flex-row items-center gap-2">
@@ -56,16 +54,17 @@ const sizeClass = computed(() => {
 <style scoped>
 .message-outlined {
   @apply outline outline-1 rounded-md;
-}
 
+  .b-message-body {
+    @apply py-[0.50rem] px-[0.75rem] min-w-[10rem] min-h-[1.5rem];
+  }
+}
 .message-simple {
   @apply !bg-transparent;
 }
-
-.message-simple .b-message-content {
+.message-simple .b-message-body {
   @apply  px-0;
 }
-
 .message-info {
   @apply bg-blue-50/95 text-blue-600 outline-blue-200
     dark:bg-blue-500/15 dark:text-blue-500 dark:outline-blue-700/65;

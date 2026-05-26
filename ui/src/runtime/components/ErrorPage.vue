@@ -41,7 +41,7 @@
       class="my-8"
     />
     <Message
-      :schema="{severity: 'warn', icon: 'pi pi-exclamation-circle'}"
+      :schema="{ severity: 'warn', icon: 'pi pi-exclamation-circle' }"
       :data="footerInfo"
     />
   </div>

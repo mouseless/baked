@@ -16,7 +16,7 @@
           size: 'small'
         }"
         :data="validation.message || ''"
-        class="ml-3 mt-[-0.75rem]"
+        class="ml-3"
       />
     </slot>
   </div>

@@ -13,7 +13,7 @@ export default {
   },
   message: {
     base: ".b-message",
-    content: ".b-message-content",
+    body: ".b-message-body",
     icon: ".b-message-icon"
   },
   money:{
