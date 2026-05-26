@@ -63,18 +63,24 @@ public readonly struct Order
 
         if (!levels.TryGetValue(defaultLevel, out var defaultLevelIndex))
         {
-            throw DiagnosticCode.UndefinedLevel.Exception($"Default level ({defaultLevel}) must be defined in levels");
+            throw DiagnosticCode.UndefinedLevel.Exception(
+                $"Default level ({defaultLevel}) must be defined in levels"
+            );
         }
 
         if (_offset < _lowerBound || _offset > _upperBound)
         {
-            throw DiagnosticCode.OrderOutOfBounds.Exception($"Order ({_level ?? defaultLevel}: {_offset}) must be between {_lowerBound} - {_upperBound}");
+            throw DiagnosticCode.OrderOutOfBounds.Exception(
+                $"Order ({_level ?? defaultLevel}: {_offset}) must be between {_lowerBound} - {_upperBound}"
+            );
         }
 
         var levelIndex = defaultLevelIndex;
         if (_level is not null && !levels.TryGetValue(_level, out levelIndex))
         {
-            Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel, $"Given level '{_level}' was not found in configured levels, defaulting to '{defaultLevel}'");
+            Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel,
+                $"Given level '{_level}' was not found in configured levels, defaulting to '{defaultLevel}'"
+            );
         }
 
         return (levelIndex - defaultLevelIndex) * LEVEL_SPAN + _offset;
