@@ -64,6 +64,7 @@ public static class DomainExtensions
         public static DiagnosticCode AttributeTargetMismatch => new(301, "attribute-target-mismatch");
         public static DiagnosticCode AttributeDoesNotAllow => new(302, "attribute-does-not-allow");
         public static DiagnosticCode OrderOutOfBounds => new(303, "order-out-of-bounds");
+        public static DiagnosticCode UndefinedLevel => new(304, "undefined-level");
     }
 
     extension(ApplicationContext application)

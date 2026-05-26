@@ -1,3 +1,4 @@
+using Baked.Buildtime.Diagnostics;
 using Baked.Domain.Configuration;
 
 namespace Baked.Domain;
@@ -5,29 +6,12 @@ namespace Baked.Domain;
 public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
     : List<(IDomainModelConvention Convention, int Order)>, IDomainModelConventionCollection
 {
-    int _defaultLevelIndex = _options.DefaultLevel is null ? 0
-                : !_options.ConventionLevels.Any() ? 0
-                    : _options.ConventionLevels.IndexOf(_options.DefaultLevel);
+    readonly IReadOnlyDictionary<string, int> _levels = _options.ConventionLevels
+            .Select((name, index) => new { name, index })
+            .ToDictionary(x => x.name, x => x.index);
 
-    void IDomainModelConventionCollection.Add(IDomainModelConvention convention, Order order)
-    {
-        using (Diagnostics.Start(nameof(DomainModelConventionCollection), onDispose: _options.OnComplete))
-        {
-            Diagnostics.Current.Diagnose(() =>
-            {
-                if (order.IsGlobal)
-                {
-                    Add((convention, order.Calculate()));
-                }
-                else
-                {
-                    var conventionLevel = order.Level ?? _options.DefaultLevel;
-                    var levelIndex = conventionLevel is null ? 0 : _options.ConventionLevels.IndexOf(conventionLevel);
-                    levelIndex = levelIndex == -1 ? _defaultLevelIndex : levelIndex;
+    public Action<DiagnosticsResult>? OnCollectionFinalized => throw new NotImplementedException();
 
-                    Add((convention, order.WithBase(levelIndex - _defaultLevelIndex).Calculate()));
-                }
-            });
-        }
-    }
+    void IDomainModelConventionCollection.Add(IDomainModelConvention convention, Order order) =>
+            Add((convention, order.Calculate(_levels, _options.DefaultConventionLevel)));
 }

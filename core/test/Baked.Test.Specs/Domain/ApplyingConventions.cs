@@ -93,8 +93,8 @@ public class ApplyingConventions
         var builder = ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.FromLevel("B"));
-                c.Add(new TestConvention("A"), order: Order.FromLevel("A"));
+                c.Add(new TestConvention("B"), order: Order.Create.Level("B"));
+                c.Add(new TestConvention("A"), order: Order.Create.Level("A"));
             },
             options: o =>
             {
@@ -115,14 +115,14 @@ public class ApplyingConventions
         var builder = ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.Default);
-                c.Add(new TestConvention("A"), order: Order.FromLevel("A"));
+                c.Add(new TestConvention("B"), order: Order.Create);
+                c.Add(new TestConvention("A"), order: Order.Create.Level("A"));
             },
             options: o =>
             {
                 o.ConventionLevels.Add("A");
                 o.ConventionLevels.Add("B");
-                o.DefaultLevel = "B";
+                o.DefaultConventionLevel = "B";
             }
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
@@ -138,9 +138,9 @@ public class ApplyingConventions
         var builder = ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("C2"), order: Order.FromLevel("A").Min);
-                c.Add(new TestConvention("C3"), order: Order.FromLevel("A").Max);
-                c.Add(new TestConvention("C1"), order: Order.FromLevel("A"));
+                c.Add(new TestConvention("C2"), order: Order.Create.Level("A").Min);
+                c.Add(new TestConvention("C3"), order: Order.Create.Level("A").Max);
+                c.Add(new TestConvention("C1"), order: Order.Create.Level("A") + 5);
             },
             options: o =>
             {
@@ -161,8 +161,8 @@ public class ApplyingConventions
         var builder = ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("A"), order: Order.FromLevel("A").AbsoluteMax);
-                c.Add(new TestConvention("B"), order: Order.FromLevel("B").AbsoluteMin);
+                c.Add(new TestConvention("A"), order: Order.Create.Level("A").AbsoluteMax);
+                c.Add(new TestConvention("B"), order: Order.Create.Level("B").AbsoluteMin);
             },
             options: o =>
             {
@@ -184,8 +184,8 @@ public class ApplyingConventions
         var builder = ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("A"), order: Order.FromLevel("A").AbsoluteMax + 1);
-                c.Add(new TestConvention("A"), order: Order.FromLevel("A").Max + 11);
+                c.Add(new TestConvention("A"), order: Order.Create.Level("A").AbsoluteMax + 1);
+                c.Add(new TestConvention("A"), order: Order.Create.Level("A").Max + 11);
             },
             options: o =>
             {
@@ -203,12 +203,13 @@ public class ApplyingConventions
     [Test]
     public void Order_cannot_be_lover_than_absolute_min_value()
     {
+
         var exceptions = new List<Exception>();
         var builder = ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("A"), order: Order.FromLevel("A").AbsoluteMin - 1);
-                c.Add(new TestConvention("A"), order: Order.FromLevel("A").Min - 11);
+                c.Add(new TestConvention("A"), order: Order.Create.Level("A").AbsoluteMin - 1);
+                c.Add(new TestConvention("A"), order: Order.Create.Level("A").Min - 11);
             },
             options: o =>
             {
@@ -230,8 +231,8 @@ public class ApplyingConventions
         var builder = ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("A"), order: Order.Global + int.MinValue);
-                c.Add(new TestConvention("A"), order: Order.Global + int.MaxValue);
+                c.Add(new TestConvention("A"), order: Order.Create.Global + int.MinValue);
+                c.Add(new TestConvention("A"), order: Order.Create.Global + int.MaxValue);
             },
             options: o =>
             {

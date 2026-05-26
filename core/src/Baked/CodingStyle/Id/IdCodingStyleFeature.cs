@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Domain;
+using Baked.Domain.Configuration;
 using Baked.Orm;
 using Baked.RestApi;
 using Humanizer;
@@ -23,7 +23,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             conventions.SetPropertyAttribute(
                 when: c => c.Property.PropertyType.Is<Business.Id>(),
                 attribute: c => new IdAttribute(c.Property.Name.Camelize()),
-                order: Order.Global.Min
+                order: Order.Create.Global.Min
             );
         });
 

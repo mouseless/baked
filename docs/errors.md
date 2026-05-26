@@ -100,6 +100,8 @@ type for the domain member at the indicated path.
 > indicated path. This is because a SPECIFIC type of component, not ANY type, is
 > required for that domain member.
 
+## `order-out-of-bounds`
+
 ## `parameter-with-attribute`
 
 It indicates that the type is required to have a parameter with the given
@@ -177,6 +179,8 @@ It indicates that the type is required to have the given attribute.
 
 To fix this, either add the given attribute to the type or remove the convention
 that causes this requirement.
+
+## `undefined-convention-level`
 
 ## `unknown`
 
