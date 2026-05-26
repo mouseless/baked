@@ -26,13 +26,18 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
         _conventions = new DomainModelConventionCollection(_builderOptions);
     }
 
-    protected override PhaseContext GetContext(AddDomainTypes phase) =>
-        phase.CreateContextBuilder()
+    protected override PhaseContext GetContext(AddDomainTypes phase)
+    {
+        IDisposable diagnostics = Diagnostics.Start(nameof(DomainLayer));
+
+        return phase.CreateContextBuilder()
             .Add(_inspect)
             .Add(_domainTypes)
             .Add(_builderOptions)
             .Add(_conventions)
+            .OnDispose(() => diagnostics.Dispose())
             .Build();
+    }
 
     protected override PhaseContext GetContext(Generate phase)
     {

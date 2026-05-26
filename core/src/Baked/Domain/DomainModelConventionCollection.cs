@@ -1,4 +1,3 @@
-using Baked.Buildtime.Diagnostics;
 using Baked.Domain.Configuration;
 
 namespace Baked.Domain;
@@ -10,8 +9,9 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
             .Select((name, index) => new { name, index })
             .ToDictionary(x => x.name, x => x.index);
 
-    public Action<DiagnosticsResult>? OnCollectionFinalized => throw new NotImplementedException();
-
     void IDomainModelConventionCollection.Add(IDomainModelConvention convention, Order order) =>
+        Diagnostics.Current.Diagnose(() =>
+        {
             Add((convention, order.Calculate(_levels, _options.DefaultConventionLevel)));
+        });
 }

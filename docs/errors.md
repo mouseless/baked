@@ -102,6 +102,16 @@ type for the domain member at the indicated path.
 
 ## `order-out-of-bounds`
 
+This error occurs when given `Order` instance exceeds its boundary values.
+
+> [!NOTE]
+>
+> Lower and upper bound for an order is -5000 and 4999 respectively if
+> global flag is set to false
+
+To fix this, make sure defined convention orders stays within the given
+boundaries
+
 ## `parameter-with-attribute`
 
 It indicates that the type is required to have a parameter with the given
@@ -181,6 +191,11 @@ To fix this, either add the given attribute to the type or remove the convention
 that causes this requirement.
 
 ## `undefined-convention-level`
+
+It indicates that given convention level does not exists in `ConventionLevels`
+
+To fix this, add specified level to `ConventionLevels` from 
+`DomainModelBuilderOptions`.
 
 ## `unknown`
 

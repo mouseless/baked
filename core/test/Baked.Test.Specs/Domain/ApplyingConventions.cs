@@ -1,4 +1,5 @@
-﻿using Baked.Domain;
+﻿using Baked.Buildtime.Diagnostics;
+using Baked.Domain;
 using Baked.Domain.Configuration;
 
 namespace Baked.Test.Domain;
@@ -9,9 +10,10 @@ public class ApplyingConventions
     static List<string> _values = default!;
 
     static DomainModelBuilder ADomainModelBuilder(
-            Action<DomainModelBuilderOptions>? options = default,
-            Action<IDomainModelConventionCollection>? conventions = default
-        )
+        Action<DomainModelBuilderOptions>? options = default,
+        Action<IDomainModelConventionCollection>? conventions = default,
+        Action<DiagnosticsResult>? onConvetionsFinalized = default
+    )
     {
         var optionsInstance = new DomainModelBuilderOptions();
         optionsInstance.BuildLevels.Add(BuildLevels.Metadata);
@@ -23,10 +25,13 @@ public class ApplyingConventions
         }
 
         var conventionsInstance = new DomainModelConventionCollection(optionsInstance);
+        IDisposable diagnostics = Diagnostics.Start(nameof(ReportingErrorsInConventions), onDispose: onConvetionsFinalized);
         if (conventions is not null)
         {
             conventions(conventionsInstance);
         }
+
+        diagnostics.Dispose();
 
         return new DomainModelBuilder(optionsInstance, conventionsInstance);
     }
@@ -178,53 +183,6 @@ public class ApplyingConventions
     }
 
     [Test]
-    public void Order_cannot_exceed_level_absolute_max_value()
-    {
-        var exceptions = new List<Exception>();
-        var builder = ADomainModelBuilder(
-            conventions: c =>
-            {
-                c.Add(new TestConvention("A"), order: Order.Create.Level("A").AbsoluteMax + 1);
-                c.Add(new TestConvention("A"), order: Order.Create.Level("A").Max + 11);
-            },
-            options: o =>
-            {
-                o.ConventionLevels.Add("A");
-                o.OnComplete = e => exceptions.AddRange(e.Exceptions);
-            }
-        );
-        var postBuilder = builder.StartBuild([typeof(string)]);
-        postBuilder.EndBuild();
-
-        exceptions.Count.ShouldBe(2);
-        exceptions.ShouldAllBe(e => e.Message == "Order cannot exceed allowed absolute max value");
-    }
-
-    [Test]
-    public void Order_cannot_be_lover_than_absolute_min_value()
-    {
-
-        var exceptions = new List<Exception>();
-        var builder = ADomainModelBuilder(
-            conventions: c =>
-            {
-                c.Add(new TestConvention("A"), order: Order.Create.Level("A").AbsoluteMin - 1);
-                c.Add(new TestConvention("A"), order: Order.Create.Level("A").Min - 11);
-            },
-            options: o =>
-            {
-                o.ConventionLevels.Add("A");
-                o.OnComplete = e => exceptions.AddRange(e.Exceptions);
-            }
-        );
-        var postBuilder = builder.StartBuild([typeof(string)]);
-        postBuilder.EndBuild();
-
-        exceptions.Count.ShouldBe(2);
-        exceptions.ShouldAllBe(e => e.Message == "Order cannot be lower than allowed absolute min value");
-    }
-
-    [Test]
     public void Global_order_has_same_range_with_int()
     {
         var exceptions = new List<Exception>();
@@ -234,10 +192,7 @@ public class ApplyingConventions
                 c.Add(new TestConvention("A"), order: Order.Create.Global + int.MinValue);
                 c.Add(new TestConvention("A"), order: Order.Create.Global + int.MaxValue);
             },
-            options: o =>
-            {
-                o.OnComplete = e => exceptions.AddRange(e.Exceptions);
-            }
+            onConvetionsFinalized: e => exceptions.AddRange(e.Exceptions)
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();

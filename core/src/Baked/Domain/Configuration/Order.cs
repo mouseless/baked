@@ -20,18 +20,24 @@ public readonly struct Order
     public readonly Order Max => new(offset: _upperBound - ABSOLUTE_OFFSET, level: _level, global: _global);
     public readonly Order AbsoluteMax => new(offset: _upperBound, level: _level, global: _global);
 
+    public Order()
+    {
+        _lowerBound = -LEVEL_SPAN / 2;
+        _upperBound = LEVEL_SPAN / 2 - 1;
+    }
+
     Order(
         int offset = 0,
         string? level = default,
         bool global = false
-    )
+    ) : this()
     {
         _offset = offset;
         _level = level;
         _global = global;
 
-        _lowerBound = _global ? int.MinValue : -LEVEL_SPAN / 2;
-        _upperBound = _global ? int.MaxValue : LEVEL_SPAN / 2 - 1;
+        _lowerBound = _global ? int.MinValue : _lowerBound;
+        _upperBound = _global ? int.MaxValue : _upperBound;
     }
 
     public Order Offset(int value) =>
@@ -40,30 +46,32 @@ public readonly struct Order
     public Order Level(string level) =>
         new(level: level);
 
-    public int Calculate(IReadOnlyDictionary<string, int> levels, string? defaultLevel)
+    public int Calculate(IReadOnlyDictionary<string, int> levels, string defaultLevel)
     {
-        if (_global)
-        {
-            return _offset;
-        }
-
         if (_offset < _lowerBound || _offset > _upperBound)
         {
             throw DiagnosticCode.OrderOutOfBounds.Exception($"Order offset ({_offset}) must be between {_lowerBound} - {_upperBound}");
         }
 
-        var level = _level ?? defaultLevel;
-        if (level is null)
+        if (!levels.TryGetValue(defaultLevel, out var defaultLevelIndex))
         {
-            return _offset;
+            throw DiagnosticCode.UndefinedLevel.Exception($"Default level ({defaultLevel}) must be defined in levels");
         }
 
-        if (!levels.TryGetValue(level, out var levelIndex))
+        if (_global) { return _offset; }
+
+        if (_level is null || !levels.TryGetValue(_level, out var levelIndex))
         {
-            Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel, $"Given level '{level}' was not found in configured levels, d");
+            Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel,
+                _level is null
+                    ? $"Level not specified, defaulting to '{defaultLevel}'"
+                    : $"Given level '{_level}' was not found in configured levels, defaulting to '{defaultLevel}'"
+                );
+
+            levelIndex = defaultLevelIndex;
         }
 
-        return levelIndex * LEVEL_SPAN + _offset;
+        return (levelIndex - defaultLevelIndex) * LEVEL_SPAN + _offset;
     }
 
     public static implicit operator Order(int value) =>
