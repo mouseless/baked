@@ -6,7 +6,7 @@ public readonly struct Order
     const int ABSOLUTE_OFFSET = 10;
 
     static readonly Order _globalInstance = new(global: true);
-    public static Order At = new();
+    public static readonly Order At = new();
 
     readonly int _offset;
     readonly string? _level;
