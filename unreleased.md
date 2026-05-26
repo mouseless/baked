@@ -44,7 +44,7 @@
   conventions.Add(..., order: int.MinValue);
 
   // use below instead
-  conventions.Add(..., order: Order.Create.Global.AbsolutMin);
+  conventions.Add(..., order: Order.At.Global.AbsolutMin);
   ```
 
 ## Bugfixes

@@ -106,11 +106,11 @@ This error occurs when given `Order` instance exceeds its boundary values.
 
 > [!NOTE]
 >
-> Lower and upper bound for an order is -5000 and 4999 respectively if
-> global flag is set to false
+> Lower and upper bound for an order is -5000 and 4999 respectively unless it is
+> a global order
 
 To fix this, make sure defined convention orders stays within the given
-boundaries
+boundaries.
 
 ## `parameter-with-attribute`
 
@@ -192,7 +192,7 @@ that causes this requirement.
 
 ## `undefined-convention-level`
 
-It indicates that given convention level does not exists in `ConventionLevels`
+It indicates that given convention level does not exist in `ConventionLevels`
 
 To fix this, add specified level to `ConventionLevels` from 
 `DomainModelBuilderOptions`.

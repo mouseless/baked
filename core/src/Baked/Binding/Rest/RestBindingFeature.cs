@@ -56,12 +56,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             );
 
             // init before any domain convention
-            conventions.Add(new InitApiModelConvention(), order: Order.Create.Global.AbsoluteMin);
+            conventions.Add(new InitApiModelConvention(), order: Order.At.Global.AbsoluteMin);
             conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: (action, context) =>
                     action.Parameter[ParameterModelAttribute.TargetParameterName] =
                         new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
-                order: Order.Create.Global.AbsoluteMin
+                order: Order.At.Global.AbsoluteMin
             );
 
             // rest api conventions

@@ -73,8 +73,8 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.Create.Level("B"));
-                c.Add(new TestConvention("A"), order: Order.Create.Level("A"));
+                c.Add(new TestConvention("B"), order: Order.At.Level("B"));
+                c.Add(new TestConvention("A"), order: Order.At.Level("A"));
             },
             options: o =>
             {
@@ -96,21 +96,20 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.Create.Level("B"));
-                c.Add(new TestConvention("B"), order: Order.Create);
+                c.Add(new TestConvention("B"), order: Order.At.Level("B"));
+                c.Add(new TestConvention("B"), order: Order.At.Zero);
             },
             options: o =>
             {
                 o.ConventionLevels.Add("A");
                 o.DefaultConventionLevel = "A";
             },
-            onConvetionsFinalized: r => messages.AddRange(r.Messages)
+            onConventionsFinalized: r => messages.AddRange(r.Messages)
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
 
-        messages.Count.ShouldBe(2);
-        messages[0].Message.ShouldBe("Given level 'B' was not found in configured levels, defaulting to 'A'");
-        messages[1].Message.ShouldBe("Level not specified, defaulting to 'A'");
+        messages.Count.ShouldBe(1);
+        messages.Single().Message.ShouldBe("Given level 'B' was not found in configured levels, defaulting to 'A'");
     }
 }

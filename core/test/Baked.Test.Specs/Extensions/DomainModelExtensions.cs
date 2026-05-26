@@ -52,7 +52,7 @@ public static class DomainModelExtensions
         public DomainModelBuilder ADomainModelBuilder(
             Action<DomainModelBuilderOptions>? options = default,
             Action<IDomainModelConventionCollection>? conventions = default,
-            Action<DiagnosticsResult>? onConvetionsFinalized = default
+            Action<DiagnosticsResult>? onConventionsFinalized = default
         )
         {
             var optionsInstance = new DomainModelBuilderOptions();
@@ -65,7 +65,7 @@ public static class DomainModelExtensions
             }
 
             var conventionsInstance = new DomainModelConventionCollection(optionsInstance);
-            using (var diagnostics = Diagnostics.Start(nameof(ReportingErrorsInConventions), onDispose: onConvetionsFinalized))
+            using (var diagnostics = Diagnostics.Start(nameof(ReportingErrorsInConventions), onDispose: onConventionsFinalized))
             {
                 if (conventions is not null)
                 {

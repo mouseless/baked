@@ -6,7 +6,7 @@ public readonly struct Order
     const int ABSOLUTE_OFFSET = 10;
 
     static readonly Order _globalInstance = new(global: true);
-    public static Order Create = new();
+    public static Order At = new();
 
     readonly int _offset;
     readonly string? _level;
@@ -14,11 +14,12 @@ public readonly struct Order
     readonly int _lowerBound;
     readonly int _upperBound;
 
-    public Order Global => _globalInstance;
-    public readonly Order AbsoluteMin => new(offset: _lowerBound, level: _level, global: _global);
-    public readonly Order Min => new(offset: _lowerBound + ABSOLUTE_OFFSET, level: _level, global: _global);
-    public readonly Order Max => new(offset: _upperBound - ABSOLUTE_OFFSET, level: _level, global: _global);
-    public readonly Order AbsoluteMax => new(offset: _upperBound, level: _level, global: _global);
+    public readonly Order Global => _globalInstance;
+    public readonly Order AbsoluteMin => Clone(offset: _lowerBound);
+    public readonly Order Min => Clone(offset: _lowerBound + ABSOLUTE_OFFSET);
+    public readonly Order Zero => Clone(offset: 0);
+    public readonly Order Max => Clone(offset: _upperBound - ABSOLUTE_OFFSET);
+    public readonly Order AbsoluteMax => Clone(offset: _upperBound);
 
     public Order()
     {
@@ -41,34 +42,39 @@ public readonly struct Order
     }
 
     public Order Offset(int value) =>
-        new(offset: _offset + value, level: _level, global: _global);
+        Clone(offset: _offset + value);
 
     public Order Level(string level) =>
-        new(level: level);
+        Clone(level: level, global: false);
+
+    Order Clone(
+        int? offset = default,
+        string? level = default,
+        bool? global = default
+    ) => new(
+            offset: offset ?? _offset,
+            level: level ?? _level,
+            global: global ?? _global
+        );
 
     public int Calculate(IReadOnlyDictionary<string, int> levels, string defaultLevel)
     {
-        if (_offset < _lowerBound || _offset > _upperBound)
-        {
-            throw DiagnosticCode.OrderOutOfBounds.Exception($"Order offset ({_offset}) must be between {_lowerBound} - {_upperBound}");
-        }
+        if (_global) { return _offset; }
 
         if (!levels.TryGetValue(defaultLevel, out var defaultLevelIndex))
         {
             throw DiagnosticCode.UndefinedLevel.Exception($"Default level ({defaultLevel}) must be defined in levels");
         }
 
-        if (_global) { return _offset; }
-
-        if (_level is null || !levels.TryGetValue(_level, out var levelIndex))
+        if (_offset < _lowerBound || _offset > _upperBound)
         {
-            Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel,
-                _level is null
-                    ? $"Level not specified, defaulting to '{defaultLevel}'"
-                    : $"Given level '{_level}' was not found in configured levels, defaulting to '{defaultLevel}'"
-                );
+            throw DiagnosticCode.OrderOutOfBounds.Exception($"Order ({_level ?? defaultLevel}: {_offset}) must be between {_lowerBound} - {_upperBound}");
+        }
 
-            levelIndex = defaultLevelIndex;
+        var levelIndex = defaultLevelIndex;
+        if (_level is not null && !levels.TryGetValue(_level, out levelIndex))
+        {
+            Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel, $"Given level '{_level}' was not found in configured levels, defaulting to '{defaultLevel}'");
         }
 
         return (levelIndex - defaultLevelIndex) * LEVEL_SPAN + _offset;
