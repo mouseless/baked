@@ -23,7 +23,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             conventions.SetPropertyAttribute(
                 when: c => c.Property.PropertyType.Is<Business.Id>(),
                 attribute: c => new IdAttribute(c.Property.Name.Camelize()),
-                order: Order.Global.AbsoluteMin + 10
+                order: Order.Global.Min
             );
         });
 
