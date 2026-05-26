@@ -110,6 +110,29 @@ public class ApplyingConventions
     }
 
     [Test]
+    public void Order_level_is_set_to_default_when_not_specified()
+    {
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("B"), order: Order.Default);
+                c.Add(new TestConvention("A"), order: Order.FromLevel("A"));
+            },
+            options: o =>
+            {
+                o.ConventionLevels.Add("A");
+                o.ConventionLevels.Add("B");
+                o.DefaultLevel = "B";
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
+
+        _values[0].ShouldBe("A");
+        _values[1].ShouldBe("B");
+    }
+
+    [Test]
     public void Levels_have_default__min_and_max_values()
     {
         var builder = ADomainModelBuilder(
@@ -174,7 +197,7 @@ public class ApplyingConventions
         postBuilder.EndBuild();
 
         exceptions.Count.ShouldBe(2);
-        exceptions.ShouldContain(e => e.Message == "Order cannot exceed allowed absolute max value");
+        exceptions.ShouldAllBe(e => e.Message == "Order cannot exceed allowed absolute max value");
     }
 
     [Test]
@@ -197,6 +220,27 @@ public class ApplyingConventions
         postBuilder.EndBuild();
 
         exceptions.Count.ShouldBe(2);
-        exceptions.ShouldContain(e => e.Message == "Order cannot be lower then allowed absolute min value");
+        exceptions.ShouldAllBe(e => e.Message == "Order cannot be lower than allowed absolute min value");
+    }
+
+    [Test]
+    public void Global_order_has_same_range_with_int()
+    {
+        var exceptions = new List<Exception>();
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("A"), order: Order.Global + int.MinValue);
+                c.Add(new TestConvention("A"), order: Order.Global + int.MaxValue);
+            },
+            options: o =>
+            {
+                o.OnComplete = e => exceptions.AddRange(e.Exceptions);
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
+
+        exceptions.Count.ShouldBe(0);
     }
 }
