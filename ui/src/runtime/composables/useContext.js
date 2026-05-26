@@ -24,12 +24,15 @@ export default function() {
     return provide("__bake_data_descriptor", value);
   }
 
-  function injectError() {
+  function injectError({ handle } = {}) {
     const { error, handled } = inject("__bake_error", {
       error: ref({}),
       handled: ref(false)
     });
-    handled.value = true;
+
+    if(handle) {
+      handled.value = true;
+    }
 
     return error;
   }

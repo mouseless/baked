@@ -5,6 +5,7 @@ export default function() {
   const context = useContext();
   const dataFetcher = useDataFetcher();
   const contextData = context.injectContextData();
+  const error = context.injectError({ handle: false });
   const mounts = [];
   let onAfterMountCallback = null;
   let onBeforeMountCallback = null;
@@ -15,8 +16,18 @@ export default function() {
     }
 
     await Promise.all(
-      mounts.map(async({ value, schema }) => {
-        value.value = await dataFetcher.fetch({ data: schema, contextData });
+      mounts.map(async({ value, schema, inlineError }) => {
+        try {
+          value.value = await dataFetcher.fetch({ data: schema, contextData });
+        } catch (err) {
+          if(inlineError && err.statusCode === 400) {
+            error.value = err;
+
+            return;
+          }
+
+          throw err;
+        }
       })
     );
 
@@ -25,7 +36,7 @@ export default function() {
     }
   });
 
-  function mount(schema) {
+  function mount(schema, { inlineError } = {}) {
     const value = ref(null);
 
     if(!schema) {
@@ -36,7 +47,7 @@ export default function() {
 
     const shouldLoad = dataFetcher.shouldLoad(schema);
     if(shouldLoad) {
-      mounts.push({ value, schema });
+      mounts.push({ value, schema, inlineError });
     }
 
     return value;
