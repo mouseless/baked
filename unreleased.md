@@ -84,3 +84,4 @@
     children
 - `Message` was not loading styles due to transition, fixed
 - `Message` now supports `content` slot for additional content rendering
+- `Toast` is wider and sticky by default in `errorHandling` plugin
