@@ -2,13 +2,13 @@ namespace Baked.Domain;
 
 public struct Order
 {
-    public static Order Global => new Order(level: "Global");
-    public static Order Default => new Order();
+    public static Order Global => new(level: "Global");
+    public static Order Default => new();
 
     public static Order FromLevel(string level) =>
         new(level: level);
 
-    public const int LevelSpan = 10000;
+    const int LevelSpan = 10000;
 
     int _base = default;
     int _offset = default;
@@ -39,7 +39,7 @@ public struct Order
     internal readonly Order WithBase(int @base) =>
         new(@base: @base, offset: _offset, level: _level);
 
-    internal readonly int CalculateValue()
+    internal readonly int Calculate()
     {
         if (_offset > UpperBound)
         {

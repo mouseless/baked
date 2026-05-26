@@ -17,7 +17,7 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
             {
                 if (order.IsGlobal)
                 {
-                    Add((convention, order.CalculateValue()));
+                    Add((convention, order.Calculate()));
                 }
                 else
                 {
@@ -25,7 +25,7 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
                     var levelIndex = conventionLevel is null ? 0 : _options.ConventionLevels.IndexOf(conventionLevel);
                     levelIndex = levelIndex == -1 ? _defaultLevelIndex : levelIndex;
 
-                    Add((convention, order.WithBase(levelIndex - _defaultLevelIndex).CalculateValue()));
+                    Add((convention, order.WithBase(levelIndex - _defaultLevelIndex).Calculate()));
                 }
             });
         }
