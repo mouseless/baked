@@ -16,18 +16,28 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
     readonly Inspect _inspect = new();
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
-    readonly IDomainModelConventionCollection _conventions = new DomainModelConventionCollection();
+    readonly IDomainModelConventionCollection _conventions;
     readonly DomainServiceCollection _domainServiceCollection = new();
     readonly AttributeProperties _attributeProperties = new();
     readonly ExportConfigurations _attributeExportConfigurations = new();
 
-    protected override PhaseContext GetContext(AddDomainTypes phase) =>
-        phase.CreateContextBuilder()
+    public DomainLayer()
+    {
+        _conventions = new DomainModelConventionCollection(_builderOptions);
+    }
+
+    protected override PhaseContext GetContext(AddDomainTypes phase)
+    {
+        IDisposable diagnostics = Diagnostics.Start(nameof(DomainLayer));
+
+        return phase.CreateContextBuilder()
             .Add(_inspect)
             .Add(_domainTypes)
             .Add(_builderOptions)
             .Add(_conventions)
+            .OnDispose(() => diagnostics.Dispose())
             .Build();
+    }
 
     protected override PhaseContext GetContext(Generate phase)
     {

@@ -74,22 +74,22 @@ public class DomainAssembliesBusinessFeature(
             conventions.SetTypeAttribute(
                 when: _ => true,
                 attribute: () => new GroupAttribute(),
-                order: int.MinValue + 10
+                order: Order.At.Global.Min
             );
             conventions.SetPropertyAttribute(
                 when: _ => true,
                 attribute: () => new GroupAttribute(),
-                order: int.MinValue + 10
+                order: Order.At.Global.Min
             );
             conventions.SetMethodAttribute(
                 when: _ => true,
                 attribute: () => new GroupAttribute(),
-                order: int.MinValue + 10
+                order: Order.At.Global.Min
             );
             conventions.SetParameterAttribute(
                 when: _ => true,
                 attribute: () => new GroupAttribute(),
-                order: int.MinValue + 10
+                order: Order.At.Global.Min
             );
 
             conventions.SetTypeAttribute(
