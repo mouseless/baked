@@ -9,6 +9,7 @@ public struct Order
         new(level: level);
 
     const int LevelSpan = 10000;
+    const int AbsoluteOffset = 10;
 
     int _base = default;
     int _offset = default;
@@ -28,8 +29,8 @@ public struct Order
     public readonly bool IsGlobal => _level == "Global";
     public readonly string? Level => _level;
     public readonly Order AbsoluteMin => new(@base: _base, offset: LowerBound, level: _level);
-    public readonly Order Min => new(@base: _base, offset: LowerBound + 10, level: _level);
-    public readonly Order Max => new(@base: _base, offset: UpperBound - 10, level: _level);
+    public readonly Order Min => new(@base: _base, offset: LowerBound + AbsoluteOffset, level: _level);
+    public readonly Order Max => new(@base: _base, offset: UpperBound - AbsoluteOffset, level: _level);
     public readonly Order AbsoluteMax => new(@base: _base, offset: UpperBound, level: _level);
 
     readonly int BaseValue => IsGlobal ? 0 : _base * LevelSpan;
