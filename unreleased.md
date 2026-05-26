@@ -41,10 +41,10 @@
   result errors; 
   ```csharp
   // this will throw error
-  conventions.Add(..., order: int.MinValue);
+  conventions.Add(..., order: int.MinValue + 10);
 
   // use below instead
-  conventions.Add(..., order: Order.At.Global.AbsolutMin);
+  conventions.Add(..., order: Order.At.Global.Min);
   ```
 
 ## Bugfixes
