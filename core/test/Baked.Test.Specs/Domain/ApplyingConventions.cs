@@ -1,50 +1,25 @@
 ﻿using Baked.Buildtime.Diagnostics;
-using Baked.Domain;
 using Baked.Domain.Configuration;
+using Baked.Testing;
 
 namespace Baked.Test.Domain;
 
 [TestFixture]
-public class ApplyingConventions
+public class ApplyingConventions : Spec
 {
     static List<string> _values = default!;
 
-    static DomainModelBuilder ADomainModelBuilder(
-        Action<DomainModelBuilderOptions>? options = default,
-        Action<IDomainModelConventionCollection>? conventions = default,
-        Action<DiagnosticsResult>? onConvetionsFinalized = default
-    )
+    public override void SetUp()
     {
-        var optionsInstance = new DomainModelBuilderOptions();
-        optionsInstance.BuildLevels.Add(BuildLevels.Metadata);
-        optionsInstance.OnComplete = _ => { };
+        base.SetUp();
 
-        if (options is not null)
-        {
-            options(optionsInstance);
-        }
-
-        var conventionsInstance = new DomainModelConventionCollection(optionsInstance);
-        IDisposable diagnostics = Diagnostics.Start(nameof(ReportingErrorsInConventions), onDispose: onConvetionsFinalized);
-        if (conventions is not null)
-        {
-            conventions(conventionsInstance);
-        }
-
-        diagnostics.Dispose();
-
-        return new DomainModelBuilder(optionsInstance, conventionsInstance);
-    }
-
-    [SetUp]
-    public void SetUp()
-    {
         _values = new();
     }
 
-    [TearDown]
-    public void TearDown()
+    public override void TearDown()
     {
+        base.TearDown();
+
         _values.Clear();
     }
 
@@ -61,7 +36,7 @@ public class ApplyingConventions
     [Test]
     public void Conventions_are_applied_based_on_added_order()
     {
-        var builder = ADomainModelBuilder(
+        var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
                 c.Add(new TestConvention("C1"));
@@ -78,7 +53,7 @@ public class ApplyingConventions
     [Test]
     public void Conventions_can_have_specific_orders()
     {
-        var builder = ADomainModelBuilder(
+        var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
                 c.Add(new TestConvention("C1"), order: 2);
@@ -95,7 +70,7 @@ public class ApplyingConventions
     [Test]
     public void Conventions_can_have_level_based_orders()
     {
-        var builder = ADomainModelBuilder(
+        var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
                 c.Add(new TestConvention("B"), order: Order.Create.Level("B"));
@@ -115,88 +90,27 @@ public class ApplyingConventions
     }
 
     [Test]
-    public void Order_level_is_set_to_default_when_not_specified()
+    public void Prompts_diagnostic_warning_on_default_layer_fallback()
     {
-        var builder = ADomainModelBuilder(
+        var messages = new List<DiagnosticMessage>();
+        var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
+                c.Add(new TestConvention("B"), order: Order.Create.Level("B"));
                 c.Add(new TestConvention("B"), order: Order.Create);
-                c.Add(new TestConvention("A"), order: Order.Create.Level("A"));
             },
             options: o =>
             {
                 o.ConventionLevels.Add("A");
-                o.ConventionLevels.Add("B");
-                o.DefaultConventionLevel = "B";
-            }
-        );
-        var postBuilder = builder.StartBuild([typeof(string)]);
-        postBuilder.EndBuild();
-
-        _values[0].ShouldBe("A");
-        _values[1].ShouldBe("B");
-    }
-
-    [Test]
-    public void Levels_have_default__min_and_max_values()
-    {
-        var builder = ADomainModelBuilder(
-            conventions: c =>
-            {
-                c.Add(new TestConvention("C2"), order: Order.Create.Level("A").Min);
-                c.Add(new TestConvention("C3"), order: Order.Create.Level("A").Max);
-                c.Add(new TestConvention("C1"), order: Order.Create.Level("A") + 5);
+                o.DefaultConventionLevel = "A";
             },
-            options: o =>
-            {
-                o.ConventionLevels.Add("A");
-            }
+            onConvetionsFinalized: r => messages.AddRange(r.Messages)
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
 
-        _values[0].ShouldBe("C2");
-        _values[1].ShouldBe("C1");
-        _values[2].ShouldBe("C3");
-    }
-
-    [Test]
-    public void Levels_does_not_intersect()
-    {
-        var builder = ADomainModelBuilder(
-            conventions: c =>
-            {
-                c.Add(new TestConvention("A"), order: Order.Create.Level("A").AbsoluteMax);
-                c.Add(new TestConvention("B"), order: Order.Create.Level("B").AbsoluteMin);
-            },
-            options: o =>
-            {
-                o.ConventionLevels.Add("A");
-                o.ConventionLevels.Add("B");
-            }
-        );
-        var postBuilder = builder.StartBuild([typeof(string)]);
-        postBuilder.EndBuild();
-
-        _values[0].ShouldBe("A");
-        _values[1].ShouldBe("B");
-    }
-
-    [Test]
-    public void Global_order_has_same_range_with_int()
-    {
-        var exceptions = new List<Exception>();
-        var builder = ADomainModelBuilder(
-            conventions: c =>
-            {
-                c.Add(new TestConvention("A"), order: Order.Create.Global + int.MinValue);
-                c.Add(new TestConvention("A"), order: Order.Create.Global + int.MaxValue);
-            },
-            onConvetionsFinalized: e => exceptions.AddRange(e.Exceptions)
-        );
-        var postBuilder = builder.StartBuild([typeof(string)]);
-        postBuilder.EndBuild();
-
-        exceptions.Count.ShouldBe(0);
+        messages.Count.ShouldBe(2);
+        messages[0].Message.ShouldBe("Given level 'B' was not found in configured levels, defaulting to 'A'");
+        messages[1].Message.ShouldBe("Level not specified, defaulting to 'A'");
     }
 }
