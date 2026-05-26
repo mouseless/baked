@@ -1,7 +1,11 @@
 <template>
   <Toast
-    :pt="{ root: 'z-10' }"
     position="top-center"
+    :pt="{
+      root: ({ state }) => ({
+        class: ['z-10', state.messages[0]?.wide ? 'w-4/5' : '']
+      }) 
+    }"
   />
   <Bake
     :key="descriptor.type"
