@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
@@ -55,12 +56,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             );
 
             // init before any domain convention
-            conventions.Add(new InitApiModelConvention(), order: int.MinValue);
+            conventions.Add(new InitApiModelConvention(), order: Order.Global.AbsoluteMin);
             conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: (action, context) =>
                     action.Parameter[ParameterModelAttribute.TargetParameterName] =
                         new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
-                order: int.MinValue
+                order: Order.Global.AbsoluteMin
             );
 
             // rest api conventions

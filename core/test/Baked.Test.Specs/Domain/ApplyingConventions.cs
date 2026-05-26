@@ -131,4 +131,72 @@ public class ApplyingConventions
         _values[1].ShouldBe("C1");
         _values[2].ShouldBe("C3");
     }
+
+    [Test]
+    public void Levels_does_not_intersect()
+    {
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("A"), order: Order.FromLevel("A").AbsoluteMax);
+                c.Add(new TestConvention("B"), order: Order.FromLevel("B").AbsoluteMin);
+            },
+            options: o =>
+            {
+                o.ConventionLevels.Add("A");
+                o.ConventionLevels.Add("B");
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
+
+        _values[0].ShouldBe("A");
+        _values[1].ShouldBe("B");
+    }
+
+    [Test]
+    public void Order_cannot_exceed_level_absolute_max_value()
+    {
+        var exceptions = new List<Exception>();
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("A"), order: Order.FromLevel("A").AbsoluteMax + 1);
+                c.Add(new TestConvention("A"), order: Order.FromLevel("A").Max + 11);
+            },
+            options: o =>
+            {
+                o.ConventionLevels.Add("A");
+                o.OnComplete = e => exceptions.AddRange(e.Exceptions);
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
+
+        exceptions.Count.ShouldBe(2);
+        exceptions.ShouldContain(e => e.Message == "Order cannot exceed allowed absolute max value");
+    }
+
+    [Test]
+    public void Order_cannot_be_lover_than_absolute_min_value()
+    {
+        var exceptions = new List<Exception>();
+        var builder = ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("A"), order: Order.FromLevel("A").AbsoluteMin - 1);
+                c.Add(new TestConvention("A"), order: Order.FromLevel("A").Min - 11);
+            },
+            options: o =>
+            {
+                o.ConventionLevels.Add("A");
+                o.OnComplete = e => exceptions.AddRange(e.Exceptions);
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
+
+        exceptions.Count.ShouldBe(2);
+        exceptions.ShouldContain(e => e.Message == "Order cannot be lower then allowed absolute min value");
+    }
 }

@@ -5,26 +5,22 @@ namespace Baked.Domain;
 public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
     : List<(IDomainModelConvention Convention, int Order)>, IDomainModelConventionCollection
 {
-    int? _defaultLevelIndex;
-
-    void IDomainModelConventionCollection.Add(IDomainModelConvention convention, Order? order)
-    {
-        if (!_defaultLevelIndex.HasValue)
-        {
-            _defaultLevelIndex = string.IsNullOrEmpty(_options.DefaultLevel) ? 0
+    int _defaultLevelIndex = _options.DefaultLevel is null ? 0
                 : !_options.ConventionLevels.Any() ? 0 : _options.ConventionLevels.IndexOf(_options.DefaultLevel);
-        }
 
-        if (!order.HasValue)
+    void IDomainModelConventionCollection.Add(IDomainModelConvention convention, Order order)
+    {
+        if (order.IsGlobal)
         {
-            order = _options.DefaultLevel is null ? new() : Order.FromLevel(_options.DefaultLevel);
+            Add((convention, order));
         }
+        else
+        {
+            var conventionLevel = order.Level ?? _options.DefaultLevel;
+            var levelIndex = conventionLevel is null ? 0 : _options.ConventionLevels.IndexOf(conventionLevel);
+            levelIndex = levelIndex == -1 ? _defaultLevelIndex : levelIndex;
 
-        var level = order.Value.Level ?? _options.DefaultLevel;
-        var levelIndex = level is null ? 0 : _options.ConventionLevels.IndexOf(level);
-        levelIndex = levelIndex == -1 ? _defaultLevelIndex.Value : levelIndex;
-        order = order.Value.SetBase((levelIndex - _defaultLevelIndex.Value) * Order.OrderSpan);
-
-        Add((convention, order.Value));
+            Add((convention, order.WithBase(levelIndex - _defaultLevelIndex)));
+        }
     }
 }
