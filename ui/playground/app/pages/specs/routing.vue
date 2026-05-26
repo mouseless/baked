@@ -1,10 +1,9 @@
 <template>
   <UiSpec>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬆️  click the link below to navigate to a page with route parameter ⬆️
-      </span>
-    </Message>
+    <Message
+      :schema="{size: 'large'}"
+      data="⬆️  click the link below to navigate to a page with route parameter ⬆️"
+    />
     <div class="flex gap-4 flex-col">
       <Button
         as="routerLink"
@@ -25,5 +24,6 @@
   </UiSpec>
 </template>
 <script setup>
-import { Button, Message } from "primevue";
+import { Message } from "#components";
+import { Button } from "primevue";
 </script>

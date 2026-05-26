@@ -5,11 +5,10 @@
     no-validation-variant
     use-model
   >
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Set values to test paginator behavior ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{size: 'large'}"
+      data="⬇️  Set values to test paginator behavior ⬇️"
+    />
     <div
       class="flex gap-4 border-4 border-gray-500 rounded p-4"
       data-testid="component"
@@ -20,7 +19,7 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { Message } from "primevue";
+import { Message } from "#components";
 import giveMe from "@utils/giveMe";
 
 const variants = [

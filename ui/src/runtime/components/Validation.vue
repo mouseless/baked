@@ -12,12 +12,13 @@
       :validation
     >
       <Message
+        v-if="validation.message"
+        v-show="validation.message && validation.persist"
         :schema="{
           severity: validation.severity,
           variant: 'simple',
           size: 'small'
         }"
-        v-show="validation.message && validation.persist"
         class="ml-2 mt-[-1rem]"
         :data="validation.message || ''"
       />

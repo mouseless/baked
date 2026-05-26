@@ -1,32 +1,29 @@
 <template>
   <UiSpec>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if day name case is in current language ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if day name case is in current language ⬇️"
+    />
     <div
       class="border-4 border-gray-500 rounded p-4 text-center"
       data-testid="test-datepicker"
     >
       <DatePicker inline />
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Below you can see the supported locales ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Below you can see the supported locales ⬇️"
+    />
     <div
       class="border-4 border-gray-500 rounded p-4 text-center"
       data-testid="test-locales"
     >
       {{ locales }}
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Below you can see the current locale ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Below you can see the current locale ⬇️"
+    />
     <div
       class="border-4 border-gray-500 rounded p-4 text-center"
       data-testid="test-locale"
@@ -36,7 +33,8 @@
   </UiSpec>
 </template>
 <script setup>
-import { DatePicker, Message } from "primevue";
+import { Message } from "#components";
+import { DatePicker } from "primevue";
 import { useLocalization } from "#imports";
 
 const { locale, getLocales } = useLocalization();
