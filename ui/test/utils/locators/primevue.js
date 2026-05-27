@@ -89,6 +89,6 @@ export default {
   },
   popover: {
     base: ".p-popover:not([style*='display: none'])",
-    content: ".p-popover:not([style*='display: none']) .p-popover-content"
+    content: ".p-popover-content"
   }
 };

@@ -141,9 +141,11 @@ test.describe("Inputs", () => {
 
   test("visual for mobile", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
+    const message = component.locator(baked.message.base);
     const screen = giveMe.aScreenSize({ name: "sm" });
 
     await page.setViewportSize({ ...screen });
+    await message.scrollIntoViewIfNeeded();
 
     await expect(component).toHaveScreenshot();
   });
@@ -151,7 +153,7 @@ test.describe("Inputs", () => {
   test("visual for mobile opened", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
     const screen = giveMe.aScreenSize({ name: "sm" });
-    const content = page.locator(primevue.popover.content);
+    const content = page.locator(primevue.popover.base).locator(primevue.popover.content);
     await page.setViewportSize({ ...screen });
 
     await page.mouse.wheel(0, 500);

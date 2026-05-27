@@ -1,8 +1,9 @@
 <template>
-  <template v-if="!error || errorHandled">
+  <template v-if="!error || (error && errorFromAction) || errorHandled">
     <component
       :is="component"
       v-if="visible"
+      ref="componentRef"
       :key="loading"
       :class="classes"
       v-bind="{
@@ -22,6 +23,22 @@
         />
       </template>
     </component>
+    <Popover
+      v-if="descriptor.action && !errorHandled"
+      ref="errorPopover"
+      class="bg-transparent border-none before:content-none after:content-none"
+      pt:content="p-0"
+    >
+      <Bake
+        v-if="error"
+        name="error"
+        :descriptor="inlineError"
+      >
+        <template #content>
+          {{ normalizedError.detail }}
+        </template>
+      </Bake>
+    </Popover>
   </template>
   <Bake
     v-else
@@ -37,6 +54,7 @@
 </template>
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { Popover } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { useActionExecuter, useBakeError, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
 
@@ -58,10 +76,12 @@ const emit = defineEmits(["loaded"]);
 
 const parentPath = context.injectPath();
 const parentLoading = context.injectLoading();
-const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
 const contextData = context.injectContextData();
+
 const component = componentResolver.resolve(descriptor.type, "MissingComponent");
+const componentRef = ref();
+const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = !parentLoading.value && dataFetcher.shouldLoad(descriptor.data);
 const loading = ref(shouldLoad);
@@ -87,10 +107,25 @@ if(shouldLoad) {
   context.provideLoading(loading);
 }
 
+let errorPopover = null;
+let errorFromAction = null;
 let executing = null;
 if(descriptor.action) {
+  errorPopover = ref();
+  errorFromAction = ref(false);
   executing = ref(false);
   context.provideExecuting(executing);
+
+  watch([executing, error], ([newExecuting, newError], [oldExecuting, oldError]) => {
+    if(newExecuting) {
+      error.value = null;
+      errorFromAction.value = false;
+      errorPopover.value?.hide();
+    } else if(oldExecuting && newError && !oldError) {
+      errorFromAction.value = true;
+      errorPopover.value?.show({ currentTarget: componentRef.value.$el });
+    }
+  });
 }
 
 if(descriptor.schema) {
@@ -165,6 +200,10 @@ async function executeAction(newModel) {
       contextData: { ...contextData, model: newModel },
       events
     });
+  } catch (err) {
+    if(err?.status !== 400) { throw err; }
+
+    error.value = err;
   } finally {
     executing.value = false;
   }

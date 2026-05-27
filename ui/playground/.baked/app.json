@@ -24,6 +24,10 @@
           "path": "route-parameters-samples/{id}/items"
         },
         {
+          "method": "POST",
+          "path": "exception-samples/throw"
+        },
+        {
           "method": "GET",
           "path": "exception-samples/handled"
         },

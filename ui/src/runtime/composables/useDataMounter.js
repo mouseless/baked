@@ -22,13 +22,9 @@ export default function({ defaultInlineError } = {}) {
         try {
           value.value = await dataFetcher.fetch({ data: schema, contextData });
         } catch (err) {
-          if(inlineError && err.statusCode === 400) {
-            error.value = err;
+          if(!inlineError || err.statusCode !== 400) { throw err; }
 
-            return;
-          }
-
-          throw err;
+          error.value = err;
         }
       })
     );

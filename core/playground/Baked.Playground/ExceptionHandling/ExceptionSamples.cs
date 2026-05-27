@@ -2,6 +2,7 @@
 
 namespace Baked.Playground.ExceptionHandling;
 
+[AllowAnonymous]
 public class ExceptionSamples
 {
     public void Throw(bool handled)
@@ -14,7 +15,6 @@ public class ExceptionSamples
         throw new InvalidOperationException();
     }
 
-    [AllowAnonymous]
     public void GetHandled() =>
         throw new TestServiceHandledException();
 }

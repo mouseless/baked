@@ -725,6 +725,7 @@ export default {
 
   aRemoteAction({ path, method, headers, query, params, body, postAction } = {}) {
     path = $(path, "/fake-remote");
+    method = $(method, "POST");
 
     return {
       type: "Remote",

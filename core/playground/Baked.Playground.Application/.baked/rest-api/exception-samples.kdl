@@ -1,6 +1,6 @@
 exception-samples @controller-model {
   throw {
-    @action-model route="POST /exception-samples/throw" required-claims="BaseA, BaseB"
+    @action-model route="POST /exception-samples/throw" anonymous=#true
     handled {
       @parameter-model required=#true in="query"
     }
