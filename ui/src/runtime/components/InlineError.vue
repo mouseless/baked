@@ -2,7 +2,7 @@
   <Bake
     v-if="error"
     name="error"
-    :descriptor="inlineError"
+    :descriptor
   >
     <template #content>
       {{ error.detail }}
@@ -13,14 +13,14 @@
 import { computed } from "vue";
 import { useRuntimeConfig } from "#imports";
 
-const { public: { inlineError: inlineErrorRaw } } = useRuntimeConfig();
+const { public: { inlineError } } = useRuntimeConfig();
 
 const { error } = defineProps({
   error: { type: null, default: undefined }
 });
 
-const inlineError = computed(() => ({
-  ...inlineErrorRaw,
+const descriptor = computed(() => ({
+  ...inlineError,
   data: {
     type: "Inline",
     value: error.title
