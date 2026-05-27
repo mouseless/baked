@@ -73,9 +73,10 @@
     inlineError: true })` to enable it individually
   - `AppDescriptor.InlineError` is introduced to customize error display for
     components that don't handle their inline errors by injecting
-- `AwaitLoading` is now mult-slot and handles inlined errors automatically
+- `AwaitLoading` now supports multi-children and handles inlined errors
+  automatically
   - You can now pass multiple children to `#default`, `#loading` and `#error`
-    slots to be wrapped automatically by a `div` when there are more than one
+    slots to be wrapped automatically by a `div` when there are more two or more
     children
   - Has an `#error` slot that allows you customize data loading errors
   - Automatically sets error as handled, to disable this behavior set the
