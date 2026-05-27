@@ -94,7 +94,7 @@ if(descriptor.action) {
 
   watch([executing, error], ([newExecuting, newError], [oldExecuting, oldError]) => {
     if(newExecuting) {
-      error.value = null;
+      rawError.value = null;
       errorCausedByAction.value = false;
     } else if(oldExecuting && newError && !oldError) {
       errorCausedByAction.value = true;

@@ -1,7 +1,18 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
-test.beforeEach(async({ goto }) => {
+test.beforeEach(async({ goto, page }) => {
+  await page.route("*/**/exception-samples/handled", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
+  });
+
   await goto("/specs/simple-form", { waitUntil: "hydration" });
 });
 
@@ -78,6 +89,24 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Error", () => {
+  const id = "Error";
+
+  test("shows error using inline error in a popover", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toBeAttached();
+    await expect(popover.locator(baked.message.base)).toHaveClass(/b--error/);
+    await expect(popover.locator(baked.message.base)).toHaveClass(/message-error/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/Test Service Handled/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/A handled exception was thrown/);
   });
 });
 
@@ -174,6 +203,27 @@ test.describe("Dialog", () => {
     await cancelButton.click();
 
     await expect(page.locator(primevue.toast.base)).not.toBeVisible();
+  });
+});
+
+test.describe("Dialog Error", () => {
+  const id = "Dialog Error";
+
+  test("shows error using inline error in a popover", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const submitButton = dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(1);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+    await submitButton.click();
+
+    await expect(popover).toBeAttached();
+    await expect(popover.locator(baked.message.base)).toHaveClass(/b--error/);
+    await expect(popover.locator(baked.message.base)).toHaveClass(/message-error/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/Test Service Handled/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/A handled exception was thrown/);
   });
 });
 

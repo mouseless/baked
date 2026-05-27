@@ -33,6 +33,21 @@ const variants = [
     })
   },
   {
+    name: "Error",
+    descriptor: giveMe.aSimpleForm({
+      action: giveMe.aRemoteAction({ path: "/exception-samples/handled" }),
+      title: "Spec: Title",
+      description: "Spec: Description",
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
+      inputs: [
+        giveMe.anInput({
+          name: "text",
+          component: giveMe.anExpectedInput({ testId: "input" })
+        })
+      ]
+    })
+  },
+  {
     name: "Multiple Inputs",
     descriptor: giveMe.aSimpleForm({
       action: giveMe.aLocalAction({ showMessage: "ok" }),
@@ -70,6 +85,26 @@ const variants = [
       ],
       submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
       title: "Spec: Simple Form"
+    })
+  },
+  {
+    name: "Dialog Error",
+    descriptor: giveMe.aSimpleForm({
+      action: giveMe.aRemoteAction({ path: "/exception-samples/handled" }),
+      title: "Spec: Title",
+      description: "Spec: Description",
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
+      dialogOptions: giveMe.aSimpleFormDialog({
+        open: giveMe.aButton({ label: "Spec: Simple Form" }).schema,
+        cancel: giveMe.aButton({ label: "Spec: Cancel" }).schema,
+        message: "Spec: Message"
+      }),
+      inputs: [
+        giveMe.anInput({
+          name: "text",
+          component: giveMe.anExpectedInput({ testId: "input" })
+        })
+      ]
     })
   },
   {
