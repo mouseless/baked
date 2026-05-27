@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!error || (error && actionCausedError) || errorHandled">
+  <template v-if="!error || errorHandled || errorCausedByAction">
     <component
       :is="component"
       v-if="visible"
@@ -108,21 +108,21 @@ if(shouldLoad) {
 }
 
 let errorPopover = null;
-let actionCausedError = null;
+let errorCausedByAction = null;
 let executing = null;
 if(descriptor.action) {
   errorPopover = ref();
-  actionCausedError = ref(false);
+  errorCausedByAction = ref(false);
   executing = ref(false);
   context.provideExecuting(executing);
 
   watch([executing, error], ([newExecuting, newError], [oldExecuting, oldError]) => {
     if(newExecuting) {
       error.value = null;
-      actionCausedError.value = false;
+      errorCausedByAction.value = false;
       errorPopover.value?.hide();
     } else if(oldExecuting && newError && !oldError) {
-      actionCausedError.value = true;
+      errorCausedByAction.value = true;
       errorPopover.value?.show({ currentTarget: componentRef.value.$el });
     }
   });
