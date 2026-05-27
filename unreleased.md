@@ -75,6 +75,11 @@
     ```
 - `ISelect.LocalizeLabel` is renamed as `ISelect.LocalizeOptionLabels` for
   clarity
+- Locale files has changed to include API validation errors, update your locale
+  files with the latest locale files in baked project
+- Every `locale.{lang}.restext` file requires an entry per parameter in
+  `PascalCase` naming, e.g., for `name` a locale file should have a `Name=...`
+  entry
 
 ## Improvements
 
@@ -91,3 +96,5 @@
 - `Message` was not loading styles due to transition, fixed
 - `Message` now supports `content` slot for additional content rendering
 - `Toast` is wider and sticky by default in `errorHandling` plugin
+- API model validation now uses localization for error messages as well as
+  parameter names

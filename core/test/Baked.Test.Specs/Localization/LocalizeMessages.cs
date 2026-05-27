@@ -48,4 +48,27 @@ public class LocalizeMessages : TestNfr
 
         trResult.ShouldBe("\"Parametre değeri 'test' verildi\"");
     }
+
+    [Test]
+    public async Task Model_validation_uses_request_language()
+    {
+        Client.DefaultRequestHeaders.Add("Accept-Language", "en");
+
+        var enResponse = await Client.GetAsync("/localization-samples/parameterized");
+        dynamic? enResult = await enResponse.Content.Deserialize();
+
+        ((string?)enResult?.title).ShouldBe("Invalid Request");
+        ((int?)enResult?.errors.param.Count).ShouldBe(1);
+        ((string?)enResult?.errors.param[0]).ShouldBe("The field 'Parameter' is required.");
+
+        Client.DefaultRequestHeaders.Remove("Accept-Language");
+        Client.DefaultRequestHeaders.Add("Accept-Language", "tr");
+
+        var trResponse = await Client.GetAsync("/localization-samples/parameterized");
+        dynamic? trResult = await trResponse.Content.Deserialize();
+
+        ((string?)trResult?.title).ShouldBe("Geçersiz İstek");
+        ((int?)trResult?.errors.param.Count).ShouldBe(1);
+        ((string?)trResult?.errors.param[0]).ShouldBe("'Parametre' alanı zorunludur.");
+    }
 }

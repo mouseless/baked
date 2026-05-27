@@ -28,15 +28,19 @@ function NormalizedError(rawError) {
     }
 
     if(e.name === "FetchError") {
+      const messages = e.data?.errors
+        ? Object.values(e.data.errors).flat().join(" ")
+        : null;
+
       return {
         title: e.data?.title ?? e.statusCode ?? "ERROR",
-        detail: e.data?.detail ?? e.message ?? e.cause ?? "An error occured..."
+        detail: messages ?? e.data?.detail ?? e.message ?? e.cause ?? "An error occured."
       };
     }
 
     return {
       title: e.statusCode ?? e.status ?? "ERROR",
-      detail: e.message ?? e.cause ?? "An error occured..."
+      detail: e.message ?? e.cause ?? "An error occured."
     };
   });
 
