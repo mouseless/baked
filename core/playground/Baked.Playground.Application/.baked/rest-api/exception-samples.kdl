@@ -8,5 +8,9 @@ exception-samples @controller-model {
   get-handled {
     @action-model route="GET /exception-samples/handled" anonymous=#true
   }
+  handled {
+    @action-model route="POST /exception-samples/handled" anonymous=#true
+    text @parameter-model
+  }
 }
 

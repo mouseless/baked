@@ -63,7 +63,7 @@
       :error
     >
       <AwaitLoading>
-        <template #error="{ error: { normalized: e } }">
+        <template #error="{ error: e }">
           <span data-testid="error">! {{ e.title }} - {{ e.detail }} !</span>
         </template>
       </AwaitLoading>

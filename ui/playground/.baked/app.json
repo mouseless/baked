@@ -32,6 +32,10 @@
           "path": "exception-samples/handled"
         },
         {
+          "method": "POST",
+          "path": "exception-samples/handled"
+        },
+        {
           "method": "GET",
           "path": "cache-samples/scoped"
         },

@@ -29,6 +29,7 @@ The service is currently unavailable. Please try again later.=Servis şu anda ku
 A handled exception was thrown=Bir hata oluştu
 Child#{0} does not belong this parent=Child#{0}, bu parent'a ait değil
 Must Be Unique=Tekil Olmalı
+Name must contain at least 3 chars=Ad alanı en az 3 karakter içermelidir
 Not My Child=Benim Child'ım Değil
 Parameter value is '{0}'=Parametre değeri '{0}' verildi
 Test Service Handled=Yakalanmış Servis Hatası Testi

@@ -1,7 +1,7 @@
-import { h, useSlots } from "vue";
+import { h, unref, useSlots } from "vue";
 import { Skeleton } from "primevue";
 import { LoadingError } from "#components";
-import { useBakeError, useContext, useUnref } from "#imports";
+import { useBakeError, useContext } from "#imports";
 
 export default {
   props: {
@@ -11,12 +11,11 @@ export default {
   setup(props) {
     const { handle: handleError } = useBakeError();
     const context = useContext();
-    const unref = useUnref();
     const slots = useSlots();
 
     const loading = context.injectLoading();
 
-    const error = props.noError ? null : handleError();
+    const { rawError, error } = props.noError ? { } : handleError();
 
     return () => {
       if(loading.value) {
@@ -25,10 +24,16 @@ export default {
         });
       }
 
-      if(error?.raw.value) {
+      if(rawError?.value) {
         return render(slots.error, {
-          props: { error: unref.deepUnref(error) },
-          fallback: () => h(LoadingError, { style: props.skeleton, error: unref.deepUnref(error) })
+          props: {
+            error: unref(error),
+            rawError: unref(rawError)
+          },
+          fallback: () => h(LoadingError, {
+            style: props.skeleton,
+            error: unref(error)
+          })
         });
       }
 

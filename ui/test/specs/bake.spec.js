@@ -128,7 +128,7 @@ test.describe("Data Descriptor", () => {
 test.describe("Data Error", () => {
   const id = "Data Error";
 
-  test("shows error when not handled using global component", async({ page }) => {
+  test("shows error when not handled using inline error", async({ page }) => {
     const component = page.getByTestId(id);
     const message = component.locator(baked.message.base);
 
@@ -197,7 +197,7 @@ test.describe("Action", () =>{
 test.describe("Action Error", () => {
   const id = "Action Error";
 
-  test("shows error when not handled using global component using a popover", async({ page }) => {
+  test("shows error when not handled using inline error in a popover", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const popover = page.locator(primevue.popover.base);

@@ -23,5 +23,5 @@ const { error } = defineProps({
   error: { type: Object, required: true }
 });
 
-const { normalized: { title, detail } } = error;
+const { title, detail } = error;
 </script>

@@ -17,4 +17,7 @@ public class ExceptionSamples
 
     public void GetHandled() =>
         throw new TestServiceHandledException();
+
+    public void Handled(string? text) =>
+        throw new TestServiceHandledException();
 }

@@ -23,40 +23,24 @@
         />
       </template>
     </component>
-    <Popover
+    <ErrorPopover
       v-if="descriptor.action && !errorHandled"
-      ref="errorPopover"
-      class="bg-transparent border-none before:content-none after:content-none"
-      pt:content="p-0"
+      ref="errorPopoverRef"
     >
-      <Bake
-        v-if="error"
-        name="error"
-        :descriptor="inlineError"
-      >
-        <template #content>
-          {{ normalizedError.detail }}
-        </template>
-      </Bake>
-    </Popover>
+      <InlineError :error />
+    </ErrorPopover>
   </template>
-  <Bake
+  <InlineError
     v-else
-    name="error"
-    :descriptor="inlineError"
     :class="$attrs.class"
     :style="$attrs.style"
-  >
-    <template #content>
-      {{ normalizedError.detail }}
-    </template>
-  </Bake>
+    :error
+  />
 </template>
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { Popover } from "primevue";
-import { useRuntimeConfig } from "#app";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useActionExecuter, useBakeError, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
+import { ErrorPopover, InlineError } from "#components";
 
 const actionExecuter = useActionExecuter();
 const { normalize: normalizeError } = useBakeError();
@@ -65,7 +49,6 @@ const context = useContext();
 const dataFetcher = useDataFetcher();
 const { asClasses } = useFormat();
 const reactionHandler = useReactionHandler();
-const { public: { inlineError: inlineErrorRaw } } = useRuntimeConfig();
 
 const { name, descriptor } = defineProps({
   name: { type: String, required: true },
@@ -88,16 +71,9 @@ const loading = ref(shouldLoad);
 const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 const baseAttrs = { };
-const error = ref();
-const errorHandled = context.provideError(error);
-const normalizedError = computed(() => normalizeError(error));
-const inlineError = computed(() => ({
-  ...inlineErrorRaw,
-  data: {
-    type: "Inline",
-    value: normalizedError.value.title
-  }
-}));
+const rawError = ref();
+const errorHandled = context.provideError(rawError);
+const error = normalizeError(rawError);
 
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
@@ -107,11 +83,11 @@ if(shouldLoad) {
   context.provideLoading(loading);
 }
 
-let errorPopover = null;
+let errorPopoverRef = null;
 let errorCausedByAction = null;
 let executing = null;
 if(descriptor.action) {
-  errorPopover = ref();
+  errorPopoverRef = ref();
   errorCausedByAction = ref(false);
   executing = ref(false);
   context.provideExecuting(executing);
@@ -120,10 +96,16 @@ if(descriptor.action) {
     if(newExecuting) {
       error.value = null;
       errorCausedByAction.value = false;
-      errorPopover.value?.hide();
     } else if(oldExecuting && newError && !oldError) {
       errorCausedByAction.value = true;
-      errorPopover.value?.show({ currentTarget: componentRef.value.$el });
+    }
+  });
+
+  watch(error, newError => {
+    if(newError) {
+      errorPopoverRef.value?.show(componentRef);
+    } else {
+      errorPopoverRef.value?.hide();
     }
   });
 }
@@ -184,7 +166,7 @@ async function load() {
   } catch (err) {
     if(err?.status !== 400) { throw err; }
 
-    error.value = err;
+    rawError.value = err;
   }
   loading.value = false;
   emit("loaded");
@@ -203,7 +185,7 @@ async function executeAction(newModel) {
   } catch (err) {
     if(err?.status !== 400) { throw err; }
 
-    error.value = err;
+    rawError.value = err;
   } finally {
     executing.value = false;
   }

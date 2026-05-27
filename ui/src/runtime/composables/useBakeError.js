@@ -11,7 +11,7 @@ export default function() {
   }
 
   function normalize(error) {
-    return NormalizedError(error).normalized.value;
+    return NormalizedError(error).error;
   }
 
   return {
@@ -20,29 +20,28 @@ export default function() {
   };
 }
 
-function NormalizedError(raw) {
-  const normalized = computed(() => {
-    const error = unref(raw);
-
-    if(!error) {
+function NormalizedError(rawError) {
+  const error = computed(() => {
+    const e = unref(rawError);
+    if(!e) {
       return null;
     }
 
-    if(error.name === "FetchError") {
+    if(e.name === "FetchError") {
       return {
-        title: error.data?.title ?? error.statusCode ?? "ERROR",
-        detail: error.data?.detail ?? error.message ?? error.cause ?? "An error occured..."
+        title: e.data?.title ?? e.statusCode ?? "ERROR",
+        detail: e.data?.detail ?? e.message ?? e.cause ?? "An error occured..."
       };
     }
 
     return {
-      title: error.statusCode ?? error.status ?? "ERROR",
-      detail: error.message ?? error.cause ?? "An error occured..."
+      title: e.statusCode ?? e.status ?? "ERROR",
+      detail: e.message ?? e.cause ?? "An error occured..."
     };
   });
 
   return {
-    raw,
-    normalized
+    error,
+    rawError
   };
 }
