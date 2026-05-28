@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Reflection;
 
@@ -20,10 +19,7 @@ public class DotnetLocalizationFeature(CultureInfo _language,
     {
         configurator.Buildtime.ConfigureGeneratedFileCollection(files =>
         {
-            if (configurator.IsNfr)
-            {
-                return;
-            }
+            if (configurator.IsNfr) { return; }
 
             var localeDir = Path.Combine(
                 Assembly.GetEntryAssembly()?.Location ??
@@ -32,29 +28,42 @@ public class DotnetLocalizationFeature(CultureInfo _language,
 
             configurator.Ui.UsingLocaleTemplate(localeTemplate =>
             {
-                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir), name: $"locale.{_language.Name}", outdir: "Ui");
-
-                if (_otherLanguages is not null)
+                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir),
+                    name: $"locale.{_language.Name}",
+                    outdir: "Ui"
+                );
+                foreach (var language in _otherLanguages ?? [])
                 {
-                    foreach (var language in _otherLanguages)
-                    {
-                        files.AddAsJson(new LocalizedTexts(language, localeTemplate).With(localeDir), name: $"locale.{language.Name}", outdir: "Ui");
-                    }
+                    files.AddAsJson(new LocalizedTexts(language, localeTemplate).With(localeDir),
+                        name: $"locale.{language.Name}",
+                        outdir: "Ui"
+                    );
                 }
             });
         });
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            services.AddLocalization(option => option.ResourcesPath = "Locales");
             var entryAssembly =
                 (configurator.IsNfr ? Nfr.EntryAssembly : Assembly.GetEntryAssembly()) ??
                 throw new("'EntryAssembly' should have existed");
             var entryAssemblyName =
                 entryAssembly.GetName().Name ??
                 throw new("'EntryAssembly' should have a name");
+
+            services.AddLocalization(option => option.ResourcesPath = "Locales");
             services.AddSingleton(sp => sp.GetRequiredService<IStringLocalizerFactory>().Create("locale", entryAssemblyName));
+
+            // Configures error messages from attributes
             services.AddSingleton<LocalizedValidationMetadataProvider>();
+            services.Configure<MvcDataAnnotationsLocalizationOptions>(opts =>
+                opts.DataAnnotationLocalizerProvider = (_, factory) => factory.Create("locale", entryAssemblyName)
+            );
+            services.Configure<MvcOptions, LocalizedValidationMetadataProvider>((opts, lvmp) =>
+                opts.ModelMetadataDetailsProviders.Add(lvmp)
+            );
+
+            // Configures problem details object for model validation errors
             services.Configure<ApiBehaviorOptions>(opts =>
             {
                 opts.InvalidModelStateResponseFactory = ctx =>
@@ -74,29 +83,17 @@ public class DotnetLocalizationFeature(CultureInfo _language,
                     return new BadRequestObjectResult(details);
                 };
             });
-            services.Configure<MvcDataAnnotationsLocalizationOptions>(opts =>
-            {
-                opts.DataAnnotationLocalizerProvider = (_, factory) => factory.Create("locale", entryAssemblyName);
-            });
-            services.AddSingleton<IConfigureOptions<MvcOptions>>(sp =>
-                new ConfigureOptions<MvcOptions>(opts =>
-                {
-                    var l = sp.GetRequiredService<IStringLocalizer>();
 
-                    opts.ModelMetadataDetailsProviders.Add(sp.GetRequiredService<LocalizedValidationMetadataProvider>());
-                    opts.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((val, field) => l["The value '{0}' is not valid for the field '{1}'.", val, l[field.Pascalize()]]);
-                    opts.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(field => l["A value for '{0}' is required.", l[field.Pascalize()]]);
-                    opts.ModelBindingMessageProvider.SetMissingKeyOrValueAccessor(() => l["A key and value are required."]);
-                    opts.ModelBindingMessageProvider.SetMissingRequestBodyRequiredValueAccessor(() => l["A non-empty request body is required."]);
-                    opts.ModelBindingMessageProvider.SetNonPropertyAttemptedValueIsInvalidAccessor(val => l["The value '{0}' is invalid.", val]);
-                    opts.ModelBindingMessageProvider.SetNonPropertyUnknownValueIsInvalidAccessor(() => l["The value is invalid."]);
-                    opts.ModelBindingMessageProvider.SetNonPropertyValueMustBeANumberAccessor(() => l["The field must be a number."]);
-                    opts.ModelBindingMessageProvider.SetUnknownValueIsInvalidAccessor(field => l["The field '{0}' has an invalid value.", l[field.Pascalize()]]);
-                    opts.ModelBindingMessageProvider.SetValueIsInvalidAccessor(val => l["The value '{0}' is invalid.", val]);
-                    opts.ModelBindingMessageProvider.SetValueMustBeANumberAccessor(field => l["The field '{0}' must be a number.", l[field.Pascalize()]]);
-                    opts.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(_ => l["A value is required."]);
-                })
-            );
+            // Configures localization for model binding errors
+            services.Configure<MvcOptions, IStringLocalizer>((opts, l) =>
+            {
+                opts.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor((val, field) =>
+                    l["The value '{0}' is not valid for the field '{1}'.", val, l[field.Pascalize()]]
+                );
+                opts.ModelBindingMessageProvider.SetMissingBindRequiredValueAccessor(field =>
+                    l["A value for '{0}' field was not provided.", l[field.Pascalize()]]
+                );
+            });
         });
 
         configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>

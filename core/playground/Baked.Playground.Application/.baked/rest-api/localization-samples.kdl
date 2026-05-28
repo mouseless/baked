@@ -8,5 +8,14 @@ localization-samples @controller-model {
       @parameter-model required=#true in="query"
     }
   }
+  get-model-binding-errors {
+    @action-model route="GET /localization-samples/model-binding-errors" required-claims="BaseA, BaseB"
+    number {
+      @parameter-model required=#true in="query"
+    }
+    enumeration {
+      @parameter-model in="query"
+    }
+  }
 }
 
