@@ -9,6 +9,7 @@
         #actions
       >
         <Button
+          ref="submitRef"
           v-tooltip.left="{
             disabled: !showValidationSummary,
             value: messages,
@@ -18,6 +19,9 @@
           :ready
           @submit="onSubmit"
         />
+        <ErrorPopover ref="errorPopoverRef">
+          <InlineError :error />
+        </ErrorPopover>
       </template>
     </Bake>
     <div class="flex justify-center">
@@ -83,10 +87,11 @@
   </div>
 </template>
 <script setup>
-import { computed, ref } from "vue";
-import { useLocalization, useValidation } from "#imports";
-import { Button, Contents, Inputs } from "#components";
+import { computed, ref, watch } from "vue";
+import { useBakeError, useLocalization, useValidation } from "#imports";
+import { Bake, Button, Contents, ErrorPopover, InlineError, Inputs } from "#components";
 
+const { handle: handleError } = useBakeError();
 const { localize: l } = useLocalization();
 const { validate } = useValidation();
 
@@ -101,11 +106,22 @@ const model = ref({});
 const readyData = ref({});
 const inputs = ref(sections.flatMap(section => section.inputGroups.flatMap(group => group.inputs)));
 const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
+const submitRef = ref();
+const errorPopoverRef = ref();
+const { error } = handleError();
 
 const { isValid, messages } = validate({
   model,
   inputs: inputs.value,
   composables: validations
+});
+
+watch(error, newError => {
+  if(newError) {
+    errorPopoverRef.value.show(submitRef);
+  } else {
+    errorPopoverRef.value.hide();
+  }
 });
 
 function splitByWide(inputGroups) {

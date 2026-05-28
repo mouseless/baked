@@ -1,10 +1,9 @@
 <template>
   <UiSpec>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if there are 4 inputs, first having `default value` ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if there are 4 inputs, first having `default value` ⬇️"
+    />
     <div
       class="flex gap-4 border-4 border-gray-500 rounded p-4"
       data-testid="component"
@@ -15,38 +14,34 @@
         @changed="onChanged"
       />
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if ready is true when all required inputs are set ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if ready is true when all required inputs are set ⬇️"
+    />
     <div class="border-4 border-gray-500 rounded p-4">
       <span class="text-gray-500">ready=</span>
       <span data-testid="ready">{{ ready }}</span>
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if unique key changes when any input changes ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if unique key changes when any input changes ⬇️"
+    />
     <div class="border-4 border-gray-500 rounded p-4">
       <span class="text-gray-500">unique-key=</span>
       <span data-testid="unique-key">{{ uniqueKey }}</span>
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if 'readyValues' same with 'uniqueKey' ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if 'readyValues' same with 'uniqueKey' ⬇️"
+    />
     <div class="border-4 border-gray-500 rounded p-4">
       <span class="text-gray-500">onReadyValues-key=</span>
       <span data-testid="onReadyValues-key">{{ readyValues }}</span>
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if only required with default on mounted ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if only required with default on mounted ⬇️"
+    />
     <div class="border-4 border-gray-500 rounded p-4 flex gap-4">
       <Bake
         name="reactor"
@@ -58,7 +53,7 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { Message } from "primevue";
+import { Message } from "#components";
 import giveMe from "@utils/giveMe";
 
 const ready = ref();

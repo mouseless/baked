@@ -15,6 +15,8 @@
   "/specs:Title": "Spesifikasyonlar",
   "/specs/auth:Description": "Yetkilendirilmiş yönlendirme ve istemci",
   "/specs/auth:Title": "Kimlik Doğrulama",
+  "/specs/await-loading:Description": "Veri yükleme durumuna göre alt bileşeni yöneten yardımcı bileşen",
+  "/specs/await-loading:Title": "Yüklerken Bekleme",
   "/specs/bake:Description": "Verilen tanımlayıcıyı kullanarak dinamik bir bileşen oluşturan ana bileşen",
   "/specs/bake:Title": "Bake",
   "/specs/button:Description": "Buton ile yapılabilecek eylemleri gösterir",

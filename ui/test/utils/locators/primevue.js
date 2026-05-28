@@ -66,6 +66,9 @@ export default {
     option: ".p-togglebutton",
     selected: ".p-togglebutton-checked"
   },
+  skeleton: {
+    base: ".p-skeleton"
+  },
   tab: {
     base: ".p-tab"
   },
@@ -78,12 +81,14 @@ export default {
     detail: ".p-toast-detail"
   },
   tooltip: {
+    base: ".p-tooltip",
+    top: ".p-tooltip-top",
     bottom: ".p-tooltip-bottom",
     left: ".p-tooltip-left",
     right: ".p-tooltip-right"
   },
   popover: {
     base: ".p-popover:not([style*='display: none'])",
-    content: ".p-popover:not([style*='display: none']) .p-popover-content"
+    content: ".p-popover-content"
   }
 };

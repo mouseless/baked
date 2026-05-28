@@ -1,5 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import primevue from "../utils/locators/primevue";
+import baked from "../utils/locators/baked";
 
 test.beforeEach(async({ goto }) => {
   await goto("/specs/data-container", { waitUntil: "hydration" });
@@ -34,10 +34,10 @@ test.describe("Inputs", () => {
   test("informs only when required inputs are not selected", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this data");
+    await expect(component.locator(baked.message.base)).toHaveText("Select required values to view this data");
 
     await component.getByTestId("required").fill("any text");
-    await expect(component.locator(primevue.message.base)).not.toBeAttached();
+    await expect(component.locator(baked.message.base)).not.toBeAttached();
   });
 
   test("listens ready model", async({ page }) => {

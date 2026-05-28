@@ -34,6 +34,14 @@ const variants = [
         }),
         giveMe.aContent({
           component: giveMe.anExpected({ testId: "content-3", value: "CONTENT_3" })
+        }),
+        giveMe.aContent({
+          component: giveMe.anExpected({ testId: "content-4", value: "CONTENT_4" }),
+          side: true
+        }),
+        giveMe.aContent({
+          component: giveMe.anExpected({ testId: "content-5", value: "CONTENT_5" }),
+          side: true
         })
       ]
     }

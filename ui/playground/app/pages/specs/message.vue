@@ -9,7 +9,7 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aMessage({
       message: "Message",
-      icon: "pi-info-circle",
+      icon: "pi pi-info-circle",
       severity: "info"
     })
   },
@@ -41,6 +41,30 @@ const variants = [
     name: "Error",
     descriptor: giveMe.aMessage({
       severity: "error"
+    })
+  },
+  {
+    name: "Success",
+    descriptor: giveMe.aMessage({
+      severity: "success"
+    })
+  },
+  {
+    name: "Secondary",
+    descriptor: giveMe.aMessage({
+      severity: "secondary"
+    })
+  },
+  {
+    name: "Contrast",
+    descriptor: giveMe.aMessage({
+      severity: "contrast"
+    })
+  },
+  {
+    name: "Simple Variant",
+    descriptor: giveMe.aMessage({
+      variant: "simple"
     })
   }
 ];

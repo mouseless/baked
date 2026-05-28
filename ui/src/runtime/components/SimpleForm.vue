@@ -1,6 +1,7 @@
 <template>
   <template v-if="dialogOptions">
     <Button
+      ref="submitRef"
       :schema="dialogOptions.open"
       v-bind="$attrs"
       @click="visible = true"
@@ -47,6 +48,9 @@
         />
       </template>
     </Dialog>
+    <ErrorPopover ref="errorPopoverRef">
+      <InlineError :error />
+    </ErrorPopover>
   </template>
   <template v-else>
     <div
@@ -66,6 +70,7 @@
         />
       </div>
       <Button
+        ref="submitRef"
         v-tooltip.left="{
           disabled: !showValidationSummary,
           value: messages,
@@ -75,15 +80,19 @@
         :ready
         @submit="$emit('submit', model)"
       />
+      <ErrorPopover ref="errorPopoverRef">
+        <InlineError :error />
+      </ErrorPopover>
     </div>
   </template>
 </template>
 <script setup>
-import { ref, computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { Dialog } from "primevue";
-import { useLocalization, useValidation } from "#imports";
-import { Button, Inputs } from "#components";
+import { useBakeError, useLocalization, useValidation } from "#imports";
+import { Button, ErrorPopover, InlineError, Inputs } from "#components";
 
+const { handle: handleError } = useBakeError();
 const { localize: l } = useLocalization();
 const { validate } = useValidation();
 
@@ -98,6 +107,9 @@ const model = ref({});
 const readyData = ref({});
 const submitted = ref(false);
 const visible = ref(false);
+const submitRef = ref();
+const errorPopoverRef = ref();
+const { error } = handleError();
 
 const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
 
@@ -105,6 +117,14 @@ const { isValid, messages } = validate({
   inputs,
   model,
   composables: validations
+});
+
+watch(error, newError => {
+  if(newError) {
+    errorPopoverRef.value.show(submitRef);
+  } else {
+    errorPopoverRef.value.hide();
+  }
 });
 
 function onReady(value) {

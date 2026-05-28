@@ -1,10 +1,9 @@
 <template>
   <UiSpec>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if there is only `VISIBLE` below ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if there is only `VISIBLE` below ⬇️"
+    />
     <div
       class="border-4 border-gray-500 rounded p-4"
       data-testid="test"
@@ -15,5 +14,5 @@
   </UiSpec>
 </template>
 <script setup>
-import { Message } from "primevue";
+import { Message } from "#components";
 </script>

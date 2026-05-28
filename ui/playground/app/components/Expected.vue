@@ -1,5 +1,8 @@
 <template>
-  <AwaitLoading :skeleton="{ height: '1.5em', width: '10em' }">
+  <AwaitLoading
+    :skeleton="{ height: '1.5em', width: '10em' }"
+    no-error
+  >
     <span :data-testid="testId">{{ value }}</span>
   </AwaitLoading>
 </template>

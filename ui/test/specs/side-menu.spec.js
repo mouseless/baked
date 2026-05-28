@@ -43,19 +43,17 @@ test.describe("Base", () => {
     await expect(component.getByTestId("footer")).toHaveText("FT");
   });
 
-  // TODO fix test
-  /*
   test("localized tooltip", async({ page }) => {
     const component = page.getByTestId(id);
     const firstSideMenuItem = component.locator(primevue.button.base).nth(0);
 
+    await firstSideMenuItem.scrollIntoViewIfNeeded();
     await firstSideMenuItem.hover();
 
     await expect(page.locator(primevue.tooltip.right)).toBeAttached();
     await expect(page.locator(primevue.tooltip.right)).toBeVisible();
     await expect(page.locator(primevue.tooltip.right)).toHaveText("Title");
   });
-  */
 
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);

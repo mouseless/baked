@@ -138,12 +138,12 @@ export default {
     };
   },
 
-  aContent({ component, narrow, key } = {}) {
+  aContent({ component, narrow, key, side } = {}) {
     component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
     narrow = $(narrow, false);
     key = $(key, "content");
 
-    return { component, narrow, key };
+    return { component, narrow, key, side };
   },
 
   aContextData({ key, prop, targetProp, parent } = {}) {
@@ -275,12 +275,26 @@ export default {
     };
   },
 
+  anError({ name, title, detail, statusCode } = {}) {
+    name = $(name, "FetchError");
+    title = $(title, "Test Error");
+    detail = $(detail, "A test error detail");
+    statusCode = $(statusCode, 500);
+
+    const result = new Error(title);
+    result.name = name;
+    result.statusCode = statusCode;
+    result.data = { title, detail };
+
+    return result;
+  },
+
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}) {
     errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");
     safeLinks = $(safeLinks, [this.anExpected()]);
     safeLinksMessage = $(safeLinksMessage, "Test links message");
-    data = $(data, new Error("Test Error", { status: 500 }));
+    data = $(data, this.anError());
 
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
@@ -577,17 +591,19 @@ export default {
     };
   },
 
-  aMessage({ message, icon, severity, localizeMessage, data } = {}) {
+  aMessage({ message, icon, severity, localizeMessage, data, variant } = {}) {
     message = $(message, "Spec: This is a message");
     localizeMessage = $(localizeMessage, true);
     data = $(data, this.anInlineData(message));
+    variant = $(variant, "outlined");
 
     return {
       type: "Message",
       schema: {
         icon,
         severity,
-        localizeMessage
+        localizeMessage,
+        variant
       },
       data
     };
@@ -709,6 +725,7 @@ export default {
 
   aRemoteAction({ path, method, headers, query, params, body, postAction } = {}) {
     path = $(path, "/fake-remote");
+    method = $(method, "POST");
 
     return {
       type: "Remote",

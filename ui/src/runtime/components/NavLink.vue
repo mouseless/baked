@@ -16,7 +16,7 @@ import { Button } from "primevue";
 import { useDataMounter, usePathBuilder } from "#imports";
 import { AwaitLoading } from "#components";
 
-const { mount: mountData } = useDataMounter();
+const { mount: mountData } = useDataMounter({ defaultInlineError: true });
 const pathBuilder = usePathBuilder();
 
 const { schema, data } = defineProps({

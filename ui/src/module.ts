@@ -119,6 +119,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = app?.error;
+    _nuxt.options.runtimeConfig.public.inlineError = app?.inlineError;
     _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
     _nuxt.options.runtimeConfig.public.composables = _options.composables;
