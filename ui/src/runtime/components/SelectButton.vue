@@ -32,6 +32,7 @@
           :allow-empty
           :data-key="optionValue"
           :option-label
+          class="!w-auto"
           pt:pc-toggle-button:root="text-[length:inherit]"
         >
           <template #option="slotProps">
@@ -127,7 +128,6 @@ function setSelected(value) {
 .p-togglebutton-content {
   @apply whitespace-nowrap;
 }
-
 .p-popover-content {
   .b-component--SelectButton .p-selectbutton {
     @apply max-sm:flex max-sm:flex-col;

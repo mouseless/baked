@@ -1,29 +1,26 @@
 <template>
   <UiSpec>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Change the language below ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Change the language below ⬇️"
+    />
     <div
       class="border-4 border-gray-500 rounded p-6 space-x-4"
       data-testid="component-block"
     >
       <LanguageSwitcher />
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Below, we expect the text to change according to the language. ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Below, we expect the text to change according to the language. ⬇️"
+    />
     <div class="border-4 border-gray-500 rounded p-4 space-x-4">
       <span data-testid="text">{{ l("Spec: Test Text") }}</span>
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Below, we expect the `Accept-Language` header to be send header according to the current language. ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Below, we expect the `Accept-Language` header to be send header according to the current language. ⬇️"
+    />
     <div
       class="border-4 border-gray-500 rounded"
       data-testid="component"
@@ -39,7 +36,8 @@
   </UiSpec>
 </template>
 <script setup>
-import { Button, Message } from "primevue";
+import { Message } from "#components";
+import { Button } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { useLocalization } from "#imports";
 

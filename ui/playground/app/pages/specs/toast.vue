@@ -1,15 +1,14 @@
 <template>
   <UiSpec>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬆️  Check if page has a success toast at top center ⬆️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬆️  Check if page has a success toast at top center ⬆️"
+    />
   </UiSpec>
 </template>
 <script setup>
 import { onMounted } from "vue";
-import { Message } from "primevue";
+import { Message } from "#components";
 import { useToast, useLocalization } from "#imports";
 
 const toast = useToast();

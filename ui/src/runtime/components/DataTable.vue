@@ -38,7 +38,10 @@
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
-        <AwaitLoading :skeleton="{ class: 'min-h-5' }">
+        <AwaitLoading
+          :skeleton="{ class: 'min-h-5' }"
+          no-error
+        >
           <ProvideParentContext
             v-if="data"
             :data="row.$getRow()"
@@ -87,7 +90,10 @@
         v-if="actions"
         #body="{ data: row, index }"
       >
-        <AwaitLoading :skeleton="{ class: 'min-h-5' }">
+        <AwaitLoading
+          :skeleton="{ class: 'min-h-5' }"
+          no-error
+        >
           <ProvideParentContext
             v-if="data"
             :data="row.$getRow()"
@@ -119,7 +125,10 @@
           :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
-            <AwaitLoading :skeleton="{ class: 'min-h-5' }">
+            <AwaitLoading
+              :skeleton="{ class: 'min-h-5' }"
+              no-error
+            >
               <Bake
                 v-if="data"
                 :name="`rows/footer/${column.key}`"
@@ -302,7 +311,6 @@ function exportFunction({ data, field }) {
   .p-datatable-table-container {
     @apply border-none rounded-[--p-border-radius-md];
   }
-
   &:has(.p-datatable-paginator-bottom) {
     .p-datatable-paginator-bottom {
       @apply
@@ -323,22 +331,18 @@ function exportFunction({ data, field }) {
   tfoot > tr > td{
     @apply border-t;
   }
-
   .b-label-column--wide {
     @apply 3xl:w-[30%] 2xl:w-[20%] xl:w-[15%];
   }
   .b-label-column--narrow {
     @apply 3xl:w-[40%] 2xl:w-[30%] xl:w-[20%];
   }
-
   a {
     @apply text-sm;
   }
-
   .p-button {
     @apply -my-2;
   }
-
   td.p-datatable-frozen-column {
     @apply z-[1];
   }

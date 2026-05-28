@@ -25,6 +25,7 @@ public static class CustomThemeExtensions
                 r => r.RootDynamic<RouteParametersSample, SimplePage>("/route-parameters-sample/[id]"),
 
                 // Behavior
+                r => r.Child("/specs/await-loading", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/bake", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/composite", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/contents", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },

@@ -61,6 +61,13 @@ const variants = [
     })
   },
   {
+    name: "Data Error",
+    descriptor: giveMe.anExpected({
+      testId: "test",
+      data: giveMe.aRemoteData({ path: "/exception-samples/handled" })
+    })
+  },
+  {
     name: "Model",
     descriptor: giveMe.anExpectedInput({ testId: "input" }),
     model: ref("Model Data")
@@ -73,7 +80,6 @@ const variants = [
         giveMe.aLocalAction({ delay: 300 }),
         giveMe.aRemoteAction({
           path: "/rich-transient-with-datas/{id}/method",
-          method: "POST",
           headers: giveMe.anInlineData({ Authorization: "token-admin-ui" }),
           query: giveMe.theQueryData(),
           params: giveMe.anInlineData({ id: 12 }),
@@ -86,6 +92,15 @@ const variants = [
       ]),
       label: "Spec: Button",
       icon: "pi pi-play-circle"
+    })
+  },
+  {
+    name: "Action Error",
+    descriptor: giveMe.aButton({
+      action: giveMe.aRemoteAction({
+        path: "/exception-samples/throw",
+        query: giveMe.anInlineData({ handled: true })
+      })
     })
   },
   {

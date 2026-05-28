@@ -12,20 +12,21 @@
       :validation
     >
       <Message
-        v-show="validation.message && validation.persist"
-        :severity="validation.severity"
-        variant="simple"
-        size="small"
-        class="ml-2"
-      >
-        {{ validation.message || "" }}
-      </Message>
+        v-if="validation.message && validation.persist"
+        :schema="{
+          severity: validation.severity,
+          variant: 'simple',
+          size: 'small'
+        }"
+        :data="validation.message || ''"
+        class="ml-3"
+      />
     </slot>
   </div>
 </template>
 <script setup>
-import { Message } from "primevue";
 import { useContext } from "#imports";
+import { Message } from "#components";
 
 const context = useContext();
 

@@ -1,6 +1,7 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import giveMe from "../utils/giveMe";
 import primevue from "../utils/locators/primevue";
+import baked from "../utils/locators/baked";
 
 test.beforeEach(async({ goto }) => {
   await goto("/specs/data-panel", { waitUntil: "hydration" });
@@ -103,10 +104,10 @@ test.describe("Inputs", () => {
   test("informs only when required inputs are not selected", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this data");
+    await expect(component.locator(baked.message.base)).toHaveText("Select required values to view this data");
 
     await component.getByTestId("required").fill("any text");
-    await expect(component.locator(primevue.message.base)).not.toBeAttached();
+    await expect(component.locator(baked.message.base)).not.toBeAttached();
   });
 
   test("listens ready model", async({ page }) => {
@@ -140,9 +141,11 @@ test.describe("Inputs", () => {
 
   test("visual for mobile", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
+    const message = component.locator(baked.message.base);
     const screen = giveMe.aScreenSize({ name: "sm" });
 
     await page.setViewportSize({ ...screen });
+    await message.scrollIntoViewIfNeeded();
 
     await expect(component).toHaveScreenshot();
   });
@@ -150,7 +153,7 @@ test.describe("Inputs", () => {
   test("visual for mobile opened", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
     const screen = giveMe.aScreenSize({ name: "sm" });
-    const content = page.locator(primevue.popover.content);
+    const content = page.locator(primevue.popover.base).locator(primevue.popover.content);
     await page.setViewportSize({ ...screen });
 
     await page.mouse.wheel(0, 500);

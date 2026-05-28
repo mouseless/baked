@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
 let asyncCount = 0;
@@ -7,8 +8,29 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
+
   await page.route("*/**/rich-transient-with-datas/**/*", async route => {
     await route.fulfill({ body: "fake-response" });
+  });
+
+  await page.route("*/**/exception-samples/throw?handled=true", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
+  });
+
+  await page.route("*/**/exception-samples/handled", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
   });
 
   await page.route("*/**/method-samples/async?ms=10", async route => {
@@ -103,6 +125,21 @@ test.describe("Data Descriptor", () => {
   });
 });
 
+test.describe("Data Error", () => {
+  const id = "Data Error";
+
+  test("shows error when not handled using inline error", async({ page }) => {
+    const component = page.getByTestId(id);
+    const message = component.locator(baked.message.base);
+
+    await expect(message).toBeAttached();
+    await expect(message).toHaveClass(/b--error/);
+    await expect(message).toHaveClass(/message-error/);
+    await expect(message).toHaveText(/Test Service Handled/);
+    await expect(message).toHaveText(/A handled exception was thrown/);
+  });
+});
+
 test.describe("Model", () => {
   const id = "Model";
 
@@ -154,6 +191,59 @@ test.describe("Action", () =>{
 
     await expect(page.locator(primevue.toast.base).last()).toBeVisible();
     await expect(page.locator(primevue.toast.summary).last()).toHaveText("fake-response");
+  });
+});
+
+test.describe("Action Error", () => {
+  const id = "Action Error";
+
+  test("shows error when not handled using inline error in a popover", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toBeAttached();
+    await expect(popover.locator(baked.message.base)).toHaveClass(/b--error/);
+    await expect(popover.locator(baked.message.base)).toHaveClass(/message-error/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/Test Service Handled/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/A handled exception was thrown/);
+  });
+
+  test("doesn't remove the component", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toBeAttached();
+    await expect(button).toBeVisible();
+  });
+
+  test("popover is cleared of visual styles", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toHaveClass(/bg-transparent/);
+    await expect(popover).toHaveClass(/border-none/);
+    await expect(popover).toHaveClass(/before:content-none/);
+    await expect(popover).toHaveClass(/after:content-none/);
+    await expect(popover.locator(primevue.popover.content)).toHaveClass(/p-0/);
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toHaveScreenshot();
   });
 });
 

@@ -8,6 +8,7 @@
     :dt
     :pt
     :variant
+    :required
   >
     <template #default>
       <slot />
@@ -23,27 +24,29 @@
 <script setup>
 import { computed } from "vue";
 import { FloatLabel, IftaLabel } from "primevue";
-import { useLocalization } from "#imports";
+import { useContext, useLocalization } from "#imports";
 
+const context = useContext();
 const { localize: l } = useLocalization({});
 const { localize: lc } = useLocalization({ group: "Labeler" });
 
-const { label, required } = defineProps({
+const { label } = defineProps({
   label: { type: Object, default: null },
   path: { type: String, required: true },
   pt: { type: Object, default: () => ({ }) },
-  dt: { type: Object, default: () => ({ }) },
-  required: { type: Boolean, default: false }
+  dt: { type: Object, default: () => ({ }) }
 });
 
 const { text, mode, variant = "on", showOptionality } = label ?? { };
 
+const validation = context.injectValidation();
+const required = computed(() => validation?.value?.required);
 const localizedText = computed(() => {
   if(!showOptionality) {
     return l(text);
   }
 
-  if(required) {
+  if(required.value) {
     return lc("{label} (Required)", { label: l(text) });
   }
 

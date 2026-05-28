@@ -33,19 +33,16 @@
       />
       <Message
         v-else-if="!ready"
-        severity="info"
-      >
-        <i class="pi pi-info-circle" />
-        <span class="ml-3">{{ lc("Select required values to view this data") }}</span>
-      </Message>
+        :schema="{ severity: 'info', icon: 'pi pi-info-circle' }"
+        :data="lc('Select required values to view this data')"
+      />
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
-import { Message } from "primevue";
 import { useContext, useLocalization } from "#imports";
-import { Bake, Inputs } from "#components";
+import { Bake, Inputs, Message } from "#components";
 
 const context = useContext();
 const { localize: lc } = useLocalization({ group: "DataContainer" });
@@ -83,7 +80,6 @@ function onChanged(event) {
     @apply border-none rounded-none;
   }
 }
-
 .b-component--DataContainer {
   div {
     @apply [&:has(.p-datatable)]:p-0;

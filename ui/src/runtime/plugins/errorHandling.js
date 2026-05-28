@@ -83,7 +83,7 @@ function getMessage(error) {
       severity: "error",
       summary: error.data?.title ?? error.statusCode ?? l($defaultAlert.title),
       detail: error.data?.detail ?? error.message ?? error.cause ?? l($defaultAlert.message),
-      life: 3000
+      wide: true
     };
   }
 
@@ -91,6 +91,6 @@ function getMessage(error) {
     severity: "error",
     summary: error.statusCode ?? error.status ?? l($defaultAlert.title),
     detail: error.message ?? error.cause ?? l($defaultAlert.message),
-    life: 3000
+    wide: true
   };
 }

@@ -35,6 +35,21 @@ const variants = [
     })
   },
   {
+    name: "Error",
+    descriptor: giveMe.aFormPage({
+      action: giveMe.aRemoteAction({ path: "/exception-samples/handled" }),
+      title: "Spec: Title",
+      description: "Spec: Description",
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
+      inputs: [
+        giveMe.anInput({
+          name: "text",
+          component: giveMe.anExpectedInput({ testId: "input" })
+        })
+      ]
+    })
+  },
+  {
     name: "Multiple Inputs",
     descriptor: giveMe.aFormPage({
       action: giveMe.aLocalAction({ showMessage: "ok" }),
