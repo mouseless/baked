@@ -138,12 +138,12 @@ export default {
     };
   },
 
-  aContent({ component, narrow, key } = {}) {
+  aContent({ component, narrow, key, side } = {}) {
     component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
     narrow = $(narrow, false);
     key = $(key, "content");
 
-    return { component, narrow, key };
+    return { component, narrow, key, side };
   },
 
   aContextData({ key, prop, targetProp, parent } = {}) {
