@@ -9,6 +9,6 @@
     "express": "5.2.1"
   },
   "devDependencies": {
-    "artillery": "2.0.30"
+    "artillery": "2.0.32"
   }
 }
