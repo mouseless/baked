@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
@@ -31,14 +32,16 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                             !p.PropertyType.Is<string>() &&
                             p.PropertyType.IsAssignableTo<IEnumerable>()
                         ).Name
-                )
+                ),
+                order: Order.At.Infra
             );
 
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c =>
                     c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
                     c.Property.Name == objectWithList.ListPropertyName,
-                attribute: data => data.Visible = false
+                attribute: data => data.Visible = false,
+                order: Order.At.Infra
             );
 
             conventions.AddMethodComponent(
@@ -54,7 +57,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .Get<ObjectWithListAttribute>()
                         .ListPropertyName
                         .Camelize();
-                })
+                }),
+                order: Order.At.Ux
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c =>
@@ -68,7 +72,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .Get<ObjectWithListAttribute>()
                         .ListPropertyName
                         .Camelize();
-                }
+                },
+                order: Order.At.Ux
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c =>
@@ -99,7 +104,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dt.Schema.DataKey = idInfo.RouteName;
                     }
                 },
-                order: -10
+                order: Order.At.Ux - 10
             );
             conventions.AddMethodSchema(
                 when: c =>
@@ -111,7 +116,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     elementType.TryGetMembers(out var elementMembers) &&
                     elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: () => ActionsDataTableColumn()
+                schema: () => ActionsDataTableColumn(),
+                order: Order.At.Ux
             );
             conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c =>
@@ -139,14 +145,16 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 
                         col.Component += component;
                     }
-                }
+                },
+                order: Order.At.Ux
             );
 
             conventions.AddMethodSchema(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
-                schema: (c, cc) => MethodDataTableFooter(c.Method, cc)
+                schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
+                order: Order.At.Ux
             );
             conventions.AddMethodSchemaConfiguration<DataTable.Footer>(
                 when: c =>
@@ -168,7 +176,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 
                         dtf.Columns.Add(column);
                     }
-                }
+                },
+                order: Order.At.Ux
             );
 
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
@@ -178,7 +187,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     dtc.Title = null;
                     dtc.Exportable = null;
                 },
-                order: 10
+                order: Order.At.Ux + 10
             );
         });
     }

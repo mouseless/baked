@@ -2,8 +2,8 @@
 using Baked.CodingStyle;
 using Baked.CodingStyle.Locatable;
 using Baked.Domain;
+using Baked.Domain.Configuration;
 using Baked.Domain.Model;
-using Baked.RestApi;
 using Baked.RestApi.Model;
 using Humanizer;
 using System.Diagnostics.CodeAnalysis;
@@ -55,7 +55,7 @@ public static class LocatableCodingStyleExtensions
     extension(IDomainModelConventionCollection conventions)
     {
         public void AddLocateAction<TLocatable>() =>
-            conventions.Add(new AddLocateActionConvention<TLocatable>(), order: RestApiLayer.MaxConventionOrder - 20);
+            conventions.Add(new AddLocateActionConvention<TLocatable>(), order: Order.At.Override.Min);
     }
 
     extension(ParameterModelAttribute parameter)

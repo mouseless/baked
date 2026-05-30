@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.DataAccess.Sqlite;
+using Baked.Domain.Configuration;
 using Baked.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -40,7 +41,7 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.Add(new AddFlatTransactionToActionConvention());
+            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }

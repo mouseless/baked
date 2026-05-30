@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Baked.Ui;
 using Humanizer;
@@ -28,6 +28,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Index.Property.Add<DataAttribute>();
             builder.Index.Method.Add<ActionAttribute>();
             builder.Index.Method.Add<RouteAttribute>();
+
+            var index = builder.ConventionLevels.IndexOf("Override");
+            if (index < 0) { index = builder.ConventionLevels.Count; }
+
+            builder.ConventionLevels.Insert(index, nameof(Ux));
+            builder.ConventionLevels.Insert(index, nameof(Theme));
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
@@ -51,7 +57,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     var idAttribute = c.Type.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
 
                     r.Params[idAttribute.RouteName] = idAttribute.RouteName;
-                }
+                },
+                order: Order.At.Infra
             );
 
             // Enum Data
@@ -64,11 +71,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
-                order: -10
+                order: Order.At.Infra - 10
             );
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
-                attribute: data => data.Visible = false
+                attribute: data => data.Visible = false,
+                order: Order.At.Infra
             );
             conventions.AddPropertyComponent(
                 when: c =>
@@ -80,14 +88,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         metadata.Has<ValueTypeAttribute>()
                     ),
                 component: () => B.Text(),
-                order: UiLayer.MinConventionOrder + 10
+                order: Order.At.Ux.Min
             );
 
             // Method Defaults
             conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 attribute: () => new ActionAttribute(),
-                order: RestApiLayer.MaxConventionOrder + 10
+                order: Order.At.Max
             );
             conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*"),
@@ -205,14 +213,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.Is<string>() ||
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
                 component: (c, cc) => ParameterInputText(c.Parameter, cc),
-                order: UiLayer.MinConventionOrder + 10
+                order: Order.At.Ux.Min
             );
             conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<long>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
-                order: UiLayer.MinConventionOrder + 10
+                order: Order.At.Ux.Min
             );
 
             // `PageTitle` defaults
@@ -276,7 +284,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     sb.LabelNone();
                 },
-                order: UiLayer.MaxConventionOrder - 10
+                order: Order.At.Max
             );
         });
 

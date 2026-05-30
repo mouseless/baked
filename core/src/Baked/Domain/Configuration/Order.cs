@@ -44,8 +44,12 @@ public readonly struct Order
     public Order Offset(int value) =>
         Clone(offset: _offset + value);
 
-    public Order Level(string level) =>
-        Clone(level: level, global: false);
+    public Order Level(string level,
+        bool @default = false
+    ) => Clone(
+        level: @default ? _level ?? level : level,
+        global: false
+    );
 
     Order Clone(
         int? offset = default,

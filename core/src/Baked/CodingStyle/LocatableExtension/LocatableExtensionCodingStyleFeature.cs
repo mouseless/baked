@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.LocatableExtension;
@@ -32,7 +32,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     return locatableType.Apply(t => new LocatableExtensionAttribute(t));
                 },
-                order: 20
+                order: Order.At.Infra + 20
             );
             conventions.SetPropertyAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
@@ -42,7 +42,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     return c.Domain.Types[locatableExtensionAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
                 },
-                order: 20
+                order: Order.At.Infra + 20
             );
             conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
@@ -54,7 +54,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     set(c.Type, namespaceAttribute);
                 },
-                order: 20
+                order: Order.At.Infra + 20
             );
             conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
@@ -68,11 +68,11 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     set(c.Type, new LocatableAttribute());
                 },
-                order: 20
+                order: Order.At.Infra + 20
             );
 
-            conventions.Add(new ExtensionsUnderLocatablesConvention(), order: RestApiLayer.MaxConventionOrder);
-            conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new ExtensionsUnderLocatablesConvention(), order: Order.At.AbsoluteMax); // TODO consider using Order.At.Max
+            conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: Order.At.AbsoluteMax); // TODO consider using Order.At.Max
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

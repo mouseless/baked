@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
@@ -22,40 +23,48 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
         {
             conventions.SetPropertyAttribute(
                 when: c => c.Property.Name.EndsWith("Description"),
-                attribute: () => new DescriptionAttribute()
+                attribute: () => new DescriptionAttribute(),
+                order: Order.At.Infra
             );
 
             conventions.SetParameterAttribute(
                 when: c => c.Parameter.Name.Pascalize().EndsWith("Description"),
-                attribute: () => new DescriptionAttribute()
+                attribute: () => new DescriptionAttribute(),
+                order: Order.At.Infra
             );
 
             conventions.AddPropertySchemaConfiguration<Field>(
                 when: c => c.Property.Has<DescriptionAttribute>(),
-                schema: f => f.Wide = true
+                schema: f => f.Wide = true,
+                order: Order.At.Ux
             );
 
             conventions.AddParameterSchemaConfiguration<FormPage.InputGroup>(
                 when: c => c.Parameter.Has<DescriptionAttribute>(),
-                schema: f => f.Wide = true
+                schema: f => f.Wide = true,
+                order: Order.At.Ux
             );
 
             conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
-                component: (c, cc) => PropertyDialog(c.Property, cc)
+                component: (c, cc) => PropertyDialog(c.Property, cc),
+                order: Order.At.Ux
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(Dialog.Open)),
-                component: (c, cc) => LocalizedButton(c.Property.Name.Titleize(), cc)
+                component: (c, cc) => LocalizedButton(c.Property.Name.Titleize(), cc),
+                order: Order.At.Ux
             );
             conventions.AddPropertyComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith(nameof(Dialog.Open)),
-                component: b => b.Schema.Icon = "pi pi-eye"
+                component: b => b.Schema.Icon = "pi pi-eye",
+                order: Order.At.Ux
             );
             conventions.AddPropertyComponentConfiguration<Dialog>(
-                component: d => d.Schema.Content.Data ??= Context.Parent()
+                component: d => d.Schema.Content.Data ??= Context.Parent(),
+                order: Order.At.Ux
             );
         });
     }

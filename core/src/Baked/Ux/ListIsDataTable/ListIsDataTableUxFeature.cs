@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
@@ -16,7 +17,8 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodComponent(
                 when: c => c.Method.DefaultOverload.ReturnsList(),
                 where: cc => cc.Path.EndsWith("*Panel", "Content") || cc.Path.EndsWith("*Container", "Content"),
-                component: (c, cc) => MethodDataTable(c.Method, cc)
+                component: (c, cc) => MethodDataTable(c.Method, cc),
+                order: Order.At.Ux
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c =>
@@ -41,7 +43,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dt.Schema.DataKey = idInfo.RouteName;
                     }
                 },
-                order: -10
+                order: Order.At.Ux - 10
             );
             conventions.AddMethodSchema(
                 when: c =>
@@ -50,7 +52,8 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                     elementType.TryGetMembers(out var elementMembers) &&
                     elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: () => ActionsDataTableColumn()
+                schema: () => ActionsDataTableColumn(),
+                order: Order.At.Ux
             );
             conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c =>
@@ -72,7 +75,8 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
 
                         col.Component += component;
                     }
-                }
+                },
+                order: Order.At.Ux
             );
         });
     }

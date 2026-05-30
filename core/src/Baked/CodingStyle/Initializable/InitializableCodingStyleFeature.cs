@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Lifetime;
-using Baked.RestApi;
 using NHibernate.Util;
 
 namespace Baked.CodingStyle.Initializable;
@@ -21,16 +21,19 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
                     _initializerNames.Any(i => members.Methods.Contains(i)),
-                attribute: () => new TransientAttribute()
-            );
-            conventions.SetMethodAttribute(
-                when: c => _initializerNames.Contains(c.Method.Name),
-                attribute: () => new InitializerAttribute()
+                attribute: () => new TransientAttribute(),
+                order: Order.At.Infra
             );
 
-            conventions.Add(new AddInitializerParametersToQueryConvention());
-            conventions.Add(new TargetUsingInitializerConvention(), order: RestApiLayer.MaxConventionOrder - 10);
-            conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.SetMethodAttribute(
+                when: c => _initializerNames.Contains(c.Method.Name),
+                attribute: () => new InitializerAttribute(),
+                order: Order.At.Infra
+            );
+
+            conventions.Add(new AddInitializerParametersToQueryConvention(), order: Order.At.Infra);
+            conventions.Add(new TargetUsingInitializerConvention(), order: Order.At.Max);
+            conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
         });
     }
 }

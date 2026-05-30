@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Lifetime;
 using Baked.Ui;
 using Humanizer;
@@ -31,12 +32,14 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                             .DefaultOverload.Parameters
                             .Select(p => p.GenerateRequiredSchema<Input>(cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Inputs))))
                     );
-                }
+                },
+                order: Order.At.Ux
             );
 
             conventions.AddParameterSchemaConfiguration<Input>(
                 where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
-                schema: i => i.QueryBound = true
+                schema: i => i.QueryBound = true,
+                order: Order.At.Ux
             );
 
             conventions.AddParameterSchemaConfiguration<Input>(
@@ -48,7 +51,8 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                     var (_, l) = cc;
 
                     labeler.LabelFloatOn(labeler.Label ?? l(c.Parameter.Name.Titleize()));
-                }
+                },
+                order: Order.At.Ux
             );
         });
     }

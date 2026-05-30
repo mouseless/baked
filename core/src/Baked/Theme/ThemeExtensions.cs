@@ -4,7 +4,6 @@ using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Inspection;
 using Baked.Domain.Model;
-using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Testing;
 using Baked.Theme;
@@ -112,6 +111,20 @@ public static class ThemeExtensions
             router.Create(path, title) with { ParentPath = parentPath, ErrorSafeLink = false, SideMenu = false };
     }
 
+    extension(Order order)
+    {
+        public Order Theme =>
+            order.Level(nameof(Theme));
+
+        public Order Ux =>
+            order.Level(nameof(Ux));
+
+#pragma warning disable IDE0051
+        Order ThemeDefault =>
+            order.Level(nameof(Theme), @default: true);
+#pragma warning restore IDE0051
+    }
+
     extension(IDomainModelConventionCollection conventions)
     {
         public void AddEntityRemoteData<TEntity>()
@@ -128,7 +141,8 @@ public static class ThemeExtensions
                     }
 
                     return Remote(locate.GetRoute(), o => o.Params = Computed.UseRoute("params"));
-                }
+                },
+                order: Order.At.Override
             );
         }
 
@@ -162,7 +176,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.AddTypeAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -172,7 +186,7 @@ public static class ThemeExtensions
                     Trace = c.Trace
                 },
                 when: when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -181,10 +195,10 @@ public static class ThemeExtensions
             Order order = default
         )
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.RemoveTypeAttribute<GeneratorAttribute<TSchema>>(when: when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -219,7 +233,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.AddPropertyAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -229,7 +243,7 @@ public static class ThemeExtensions
                     Trace = c.Trace
                 },
                 when: when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -238,10 +252,10 @@ public static class ThemeExtensions
             Order order = default
         )
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.RemovePropertyAttribute<GeneratorAttribute<TSchema>>(when: when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -276,7 +290,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.AddMethodAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -286,7 +300,7 @@ public static class ThemeExtensions
                     Trace = c.Trace
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -295,10 +309,10 @@ public static class ThemeExtensions
             Order order = default
         )
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.RemoveMethodAttribute<GeneratorAttribute<TSchema>>(when: when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -333,7 +347,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.AddParameterAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -343,7 +357,7 @@ public static class ThemeExtensions
                     Trace = c.Trace
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -352,10 +366,10 @@ public static class ThemeExtensions
             Order order = default
         )
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.RemoveParameterAttribute<GeneratorAttribute<TSchema>>(when: when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -388,7 +402,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault;
 
             conventions.AddTypeAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -429,7 +443,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault;
 
             conventions.AddPropertyAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -470,7 +484,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault;
 
             conventions.AddMethodAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -511,7 +525,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault;
 
             conventions.AddParameterAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -556,7 +570,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.AddTypeAttribute(
                 apply: (c, add) =>
@@ -573,7 +587,7 @@ public static class ThemeExtensions
                     });
                 },
                 when: c => when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -582,10 +596,10 @@ public static class ThemeExtensions
             Order order = default
         ) where TSchema : IComponentSchema
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.RemoveTypeAttribute<ComponentGeneratorAttribute<TSchema>>(when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -622,7 +636,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.AddPropertyAttribute(
                 apply: (c, add) =>
@@ -639,7 +653,7 @@ public static class ThemeExtensions
                     });
                 },
                 when: c => when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -648,10 +662,10 @@ public static class ThemeExtensions
             Order order = default
         ) where TSchema : IComponentSchema
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.RemovePropertyAttribute<ComponentGeneratorAttribute<TSchema>>(when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -688,7 +702,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= cc => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.AddMethodAttribute(
                 apply: (c, add) =>
@@ -705,7 +719,7 @@ public static class ThemeExtensions
                     });
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -714,10 +728,10 @@ public static class ThemeExtensions
             Order order = default
         ) where TSchema : IComponentSchema
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.RemoveMethodAttribute<ComponentGeneratorAttribute<TSchema>>(when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -754,7 +768,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.AddParameterAttribute(
                 apply: (c, add) =>
@@ -771,7 +785,7 @@ public static class ThemeExtensions
                     });
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -780,10 +794,10 @@ public static class ThemeExtensions
             Order order = default
         ) where TSchema : IComponentSchema
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault;
 
             conventions.RemoveParameterAttribute<ComponentGeneratorAttribute<TSchema>>(when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
@@ -818,7 +832,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault;
 
             conventions.AddTypeAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -861,7 +875,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault;
 
             conventions.AddPropertyAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -904,7 +918,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault;
 
             conventions.AddMethodAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -947,7 +961,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault;
 
             conventions.AddParameterAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(

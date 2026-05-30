@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Runtime;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +35,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.Add(new AddFlatTransactionToActionConvention());
+            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }

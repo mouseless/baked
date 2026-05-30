@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +22,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                   c.Type.Is<Uri>() ||
                   c.Type.IsAssignableTo(typeof(IParsable<>)) ||
                   c.Type.IsAssignableTo(typeof(string)),
-              order: RestApiLayer.MinConventionOrder
+              order: Order.At.Infra.AbsoluteMin // TODO consider using Order.At.Infra.Min
             );
             conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
@@ -31,7 +31,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                     c.Type.IsGenericType && c.Type.TryGetGenerics(out var generics) &&
                     generics.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgMetadata) == true &&
                     genericArgMetadata.Has<ApiInputAttribute>(),
-                order: 20
+                order: Order.At.Infra + 20
             );
             conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
@@ -39,12 +39,12 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                     c.Type.IsArray && c.Type.TryGetGenerics(out var generics) &&
                     generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&
                     elementMetadata.Has<ApiInputAttribute>(),
-                order: 20
+                order: Order.At.Infra + 20
             );
 
-            conventions.Add(new BoolDefaultValueConvention());
-            conventions.Add(new SetDefaultValueForEnumConvention());
-            conventions.Add(new StringDefaultValueConvention());
+            conventions.Add(new BoolDefaultValueConvention(), order: Order.At.Infra);
+            conventions.Add(new SetDefaultValueForEnumConvention(), order: Order.At.Infra);
+            conventions.Add(new StringDefaultValueConvention(), order: Order.At.Infra);
         });
 
         configurator.DataAccess.ConfigureAutoPersistenceModel(model =>

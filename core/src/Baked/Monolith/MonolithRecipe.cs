@@ -180,6 +180,7 @@ public abstract class MonolithRecipe
             {
                 app.Layers.AddUi();
 
+                app.Features.AddTheme(_theme);
                 app.Features.AddUx(
                 [
                     c => c.ActionsAsButtons(),
@@ -199,8 +200,6 @@ public abstract class MonolithRecipe
                     c => c.PropertiesAsFieldset(),
                     c => c.RoutedTypesAsNavLinks()
                 ]);
-
-                app.Features.AddTheme(_theme);
             }
 
             _configure(app);

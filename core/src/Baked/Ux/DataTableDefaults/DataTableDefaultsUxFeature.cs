@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -20,17 +21,20 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 {
                     dt.Schema.Rows = 5;
                     dt.Schema.Paginator = true;
-                }
+                },
+                order: Order.At.Ux
             );
 
             // Columns
             conventions.AddPropertySchema(
                 when: c => c.Property.Has<DataAttribute>(),
-                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc)
+                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
+                order: Order.At.Ux
             );
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
-                schema: (dtc, c, cc) => dtc.Hidden = cc.Path.StartsWith(nameof(Page), c.Property.PropertyType.Name) ? true : null
+                schema: (dtc, c, cc) => dtc.Hidden = cc.Path.StartsWith(nameof(Page), c.Property.PropertyType.Name) ? true : null,
+                order: Order.At.Ux
             );
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: (dtc, c, cc) =>
@@ -40,7 +44,8 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
-                }
+                },
+                order: Order.At.Ux
             );
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 when: c => c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
@@ -55,7 +60,8 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
                     var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}.{labelData.Prop}");
-                }
+                },
+                order: Order.At.Ux
             );
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: (dtc, c, cc) =>
@@ -65,21 +71,22 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
                 },
-                order: UiLayer.MaxConventionOrder - 10
+                order: Order.At.Theme.Max // TODO Consider using Order.At.Ux
             );
 
             // Export
             conventions.AddMethodSchema(
                 when: c => c.Method.Has<ComponentGeneratorAttribute<DataTable>>(),
                 schema: (c, cc) => MethodDataTableExport(c.Method, cc),
-                order: 10
+                order: Order.At.Ux + 10
             );
 
             // Actions
             conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Method.Has<ActionAttribute>(),
                 where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
+                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row"),
+                order: Order.At.Ux
             );
 
             conventions.AddMethodComponentConfiguration<DataTable>(
@@ -96,7 +103,8 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
                         dt.ReloadOn(publish.Event);
                     }
-                }
+                },
+                order: Order.At.Ux
             );
 
             conventions.AddMethodSchemaConfiguration<DataTable.Column>(
@@ -106,7 +114,8 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     col.Frozen = true;
                     col.AlignRight = true;
                     col.Exportable = false;
-                }
+                },
+                order: Order.At.Ux
             );
 
             // `Button` defaults
@@ -115,12 +124,12 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "*") ||
                     cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "**", nameof(SimpleForm.DialogOptions.Open)),
                 component: ButtonDefaults,
-                order: 10
+                order: Order.At.Ux + 10
             );
             conventions.AddPropertyComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "**", nameof(SimpleForm.DialogOptions.Open)),
                 component: ButtonDefaults,
-                order: 10
+                order: Order.At.Ux + 10
             );
             void ButtonDefaults(ComponentDescriptor<Button> button)
             {

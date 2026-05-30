@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
@@ -17,7 +18,8 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
             conventions.AddPropertyComponent(
                 when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<LabelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
-                component: (c, cc) => TypeNavLink(c.Type, cc)
+                component: (c, cc) => TypeNavLink(c.Type, cc),
+                order: Order.At.Ux
             );
             conventions.AddPropertyComponentConfiguration<NavLink>(
                 when: c => c.Type.Has<RouteAttribute>(),
@@ -32,7 +34,8 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
                             o.TargetProp = param;
                         });
                     }
-                }
+                },
+                order: Order.At.Ux
             );
         });
     }

@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Orm;
 
 namespace Baked.CodingStyle.Unique;
@@ -21,7 +22,7 @@ public class UniqueCodingStyleFeature : IFeature<CodingStyleConfigurator>
                         query.Methods.Contains($"AnyBy{c.Property.Name}")
                     ),
                 attribute: c => new UniqueAttribute(),
-                order: 30
+                order: Order.At.Infra + 30
             );
         });
     }

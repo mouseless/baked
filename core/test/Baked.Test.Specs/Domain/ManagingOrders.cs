@@ -83,6 +83,13 @@ public class ManagingOrders
     }
 
     [Test]
+    public void A_level_change_can_be_set_as_default_so_that_it_is_used_when_a_level_is_not_present()
+    {
+        Order.At.Level("C", @default: true).Calculate(_levels, "B").ShouldBe(10000);
+        Order.At.Level("B").Level("C", @default: true).Calculate(_levels, "B").ShouldBe(0);
+    }
+
+    [Test]
     public void Order_cannot_be_below_absolute_min_value()
     {
         var order = Order.At.Level("A").AbsoluteMin - 1;

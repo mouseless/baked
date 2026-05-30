@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
@@ -14,7 +15,8 @@ public class LabelsAreFrozenUxFeature()
         {
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<LabelAttribute>(),
-                attribute: data => data.Order = -10
+                attribute: data => data.Order = -10,
+                order: Order.At.Infra
             );
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 when: c => c.Property.Has<LabelAttribute>(),
@@ -22,7 +24,8 @@ public class LabelsAreFrozenUxFeature()
                 {
                     dtc.Frozen = true;
                     dtc.MinWidth = true;
-                }
+                },
+                order: Order.At.Ux
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c) =>
@@ -30,7 +33,8 @@ public class LabelsAreFrozenUxFeature()
                     if (dt.Schema.DataKey is not null) { return; }
 
                     dt.Schema.DataKey = dt.Schema.Columns.FirstOrDefault(dtc => dtc.Frozen == true)?.Key;
-                }
+                },
+                order: Order.At.Ux
             );
         });
     }

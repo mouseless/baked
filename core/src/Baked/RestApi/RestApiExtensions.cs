@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Domain;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
@@ -161,7 +162,7 @@ public static class RestApiExtensions
                     if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
                     if (parameter is not null) { parameter(action.Parameter); }
                 }),
-                order: RestApiLayer.MinConventionOrder + 10
+                order: Order.At.Infra.Min
             );
         }
 
@@ -182,7 +183,7 @@ public static class RestApiExtensions
                     if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
                     if (parameter is not null) { parameter(action.Parameter); }
                 }),
-                order: RestApiLayer.MaxConventionOrder - 10
+                order: Order.At.Override.Min
             );
         }
     }

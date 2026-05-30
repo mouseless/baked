@@ -18,7 +18,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             conventions.RemoveTypeAttribute<ValueTypeAttribute>(
                 when: c => c.Type.Is<Business.Id>(),
-                order: 10
+                order: Order.At.Infra + 10
             );
             conventions.SetPropertyAttribute(
                 when: c => c.Property.PropertyType.Is<Business.Id>(),

@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.Orm;
 using Baked.RestApi.Model;
@@ -20,7 +21,8 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     TryGetEntityContextParameter(members, out var entityContextParameter) &&
                     entityContextParameter.ParameterType.TryGetGenerics(out var entityContextGenerics) &&
                     entityContextGenerics.GenericTypeArguments.First().Model == c.Type,
-                attribute: () => new EntityAttribute()
+                attribute: () => new EntityAttribute(),
+                order: Order.At.Infra
             );
             conventions.SetTypeAttribute(
                 when: c => c.Type.Has<EntityAttribute>(),
@@ -28,17 +30,18 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 {
                     set(c.Type, new ApiInputAttribute());
                     set(c.Type, new LocatableAttribute());
-                }
+                },
+                order: Order.At.Infra
             );
             conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
                 attribute: c => new ActionModelAttribute(),
-                order: 30
+                order: Order.At.Infra + 30
             );
 
-            conventions.Add(new EntityInitializerIsPostResourceConvention());
+            conventions.Add(new EntityInitializerIsPostResourceConvention(), order: Order.At.Infra);
         });
 
         configurator.DataAccess.ConfigureNHibernateInterceptor(interceptor =>

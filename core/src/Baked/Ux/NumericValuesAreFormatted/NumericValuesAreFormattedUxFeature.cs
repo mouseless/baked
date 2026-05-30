@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Ui;
 
 using B = Baked.Ui.Components;
@@ -17,21 +18,25 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
                     c.Property.PropertyType.SkipNullable().Is<long>() ||
                     c.Property.PropertyType.SkipNullable().Is<double>() ||
                     c.Property.PropertyType.SkipNullable().Is<decimal>(),
-                schema: dtc => dtc.AlignRight = true
+                schema: dtc => dtc.AlignRight = true,
+                order: Order.At.Ux
             );
             conventions.AddPropertyComponent(
                 when: c =>
                     c.Property.PropertyType.SkipNullable().Is<int>() ||
                     c.Property.PropertyType.SkipNullable().Is<long>(),
-                component: (c) => B.Number()
+                component: (c) => B.Number(),
+                order: Order.At.Ux
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<decimal>(),
-                component: () => B.Money()
+                component: () => B.Money(),
+                order: Order.At.Ux
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<double>(),
-                component: () => B.Rate()
+                component: () => B.Rate(),
+                order: Order.At.Ux
             );
         });
     }

@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Baked.Ui;
 
@@ -26,12 +27,13 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
                 component: (c, cc) => MethodDataContainer(c.Method, cc),
-                order: -10
+                order: Order.At.Ux - 10
             );
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: (c, cc) => MethodDataContainer(c.Method, cc)
+                component: (c, cc) => MethodDataContainer(c.Method, cc),
+                order: Order.At.Ux
             );
 
             // Add sort and paging parameters to RemoteData query
@@ -39,7 +41,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataContainer), nameof(DataContainer.Content), "*", nameof(IComponentDescriptor.Data)),
                 schema: rd => rd.Query += Context.Parent(options: cd => cd.Prop = "container-parameters"),
-                order: 20
+                order: Order.At.Ux + 20
             );
 
             // Add all inputs to DataContainer
@@ -51,7 +53,8 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                         var input = parameter.GenerateRequiredSchema<Input>(cc.Drill(nameof(DataContainer), nameof(DataContainer.Inputs)));
                         dc.Schema.Inputs.Add(input);
                     }
-                }
+                },
+                order: Order.At.Ux
             );
 
             // Set paging inputs to be required and numeric
@@ -62,7 +65,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                     input.Required = true;
                     input.Numeric = true;
                 },
-                order: 10
+                order: Order.At.Ux + 10
             );
 
             // Split inputs between `DataPanel` and `DataContainer` when
@@ -93,7 +96,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                         }
                     }
                 },
-                order: 10
+                order: Order.At.Ux + 10
             );
 
             // Disable virtual scroll, configure paginator and publish
@@ -110,13 +113,14 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                         dt.Schema.DataLengthContextKey = _lengthContextKey;
                     }
                 },
-                order: 10
+                order: Order.At.Ux + 10
             );
 
             // Skip
             conventions.AddParameterComponent(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsSkip,
-                component: () => B.Paginator()
+                component: () => B.Paginator(),
+                order: Order.At.Ux
             );
             conventions.AddParameterComponentConfiguration<Paginator>(
                 component: p =>
@@ -128,12 +132,14 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                     });
 
                     p.ReloadWhen(_lengthContextKey);
-                }
+                },
+                order: Order.At.Ux
             );
             // When there is no take parameter, set take to 10
             conventions.AddParameterComponentConfiguration<Paginator>(
                 when: c => !c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
-                component: p => p.Data += Inline(new { take = 10 })
+                component: p => p.Data += Inline(new { take = 10 }),
+                order: Order.At.Ux
             );
             // When there is take parameter, use take parameter's value from page context
             conventions.AddParameterComponentConfiguration<Paginator>(
@@ -146,7 +152,8 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                         o.TargetProp = "take";
                     });
                     p.ReloadWhen(_takeContextKey);
-                }
+                },
+                order: Order.At.Ux
             );
 
             // Take
@@ -158,11 +165,13 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                     var (_, l) = cc;
 
                     return B.Select(Inline(_pageSizeOptions, options: i => i.RequireLocalization = false));
-                }
+                },
+                order: Order.At.Ux
             );
             conventions.AddParameterComponentConfiguration<Select>(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
-                component: s => s.Override(B.PageSize())
+                component: s => s.Override(B.PageSize()),
+                order: Order.At.Ux
             );
             conventions.AddParameterComponentConfiguration<Select>(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
@@ -172,7 +181,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                     s.Schema.Stateful = true;
                     s.Action = Publish.PageContextValue(_takeContextKey, o => o.Data = Context.Model());
                 },
-                order: 10
+                order: Order.At.Ux + 10
             );
         });
     }

@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Baked.Runtime;
 using Microsoft.AspNetCore.Builder;
@@ -16,8 +17,9 @@ public class ConcurrencyRateLimiterFeature(
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(action =>
-                action.AdditionalAttributes.Add("""EnableRateLimiting("Concurrency")""")
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+                attribute: action => action.AdditionalAttributes.Add("""EnableRateLimiting("Concurrency")"""),
+                order: Order.At.Infra
             );
         });
 

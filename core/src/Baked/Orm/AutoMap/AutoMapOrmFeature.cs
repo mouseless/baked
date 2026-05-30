@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
@@ -44,7 +45,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Property.IsAutoProperty,
-                attribute: () => new ColumnAttribute()
+                attribute: () => new ColumnAttribute(),
+                order: Order.At.Infra
             );
             conventions.SetPropertyAttribute(
                 when: c =>
@@ -52,7 +54,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     c.Property.Has<ColumnAttribute>() &&
                     c.Property.PropertyType.TryGetMetadata(out var metadata) &&
                     metadata.Has<EntityAttribute>(),
-                attribute: () => new ForeignKeyAttribute()
+                attribute: () => new ForeignKeyAttribute(),
+                order: Order.At.Infra
             );
         });
 
