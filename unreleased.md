@@ -3,7 +3,7 @@
 ## Features
 
 - `Domain` layer now introduces a level system to improve managing convention
-  execution orders.  
+  execution orders.
 
 ## Breaking Changes
 
@@ -38,7 +38,7 @@
   ```
 - `order: {int}` will now be cast to an `Order` which will fallback to default
   convention level having (-5000, 4999) range, previous usages like below will
-  result errors; 
+  result errors;
   ```csharp
   // this will throw error
   conventions.Add(..., order: int.MinValue + 10);
