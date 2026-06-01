@@ -251,14 +251,20 @@ public static class DomainExtensions
 
     extension(Order order)
     {
-        public Order Infra =>
-            order.Level("Infra");
+        public Order Defaults =>
+            order.WithLevel("Defaults");
 
-        public Order Domain =>
-            order.Level(nameof(Domain));
+        public Order Custom =>
+            order.WithLevel("Custom");
 
         public Order Override =>
-            order.Level("Override");
+            order.WithLevel("Override");
+
+        public Order Add =>
+            order.WithExtension("Add");
+
+        public Order Configure =>
+            order.WithExtension("Configure");
     }
 
     extension(IDomainModelConventionCollection conventions)
@@ -276,7 +282,7 @@ public static class DomainExtensions
         public void SetTypeAttribute(Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void AddTypeAttribute(Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -291,13 +297,13 @@ public static class DomainExtensions
         public void AddTypeAttribute(Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new AddAttributeConvention<TypeModelMetadataContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        ) => conventions.Add(new AddAttributeConvention<TypeModelMetadataContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void RemoveTypeAttribute<TAttribute>(Func<TypeModelMetadataContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new RemoveAttributeConvention<TypeModelMetadataContext, TAttribute>((context, remove) => remove(context.Type), when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+            conventions.Add(new RemoveAttributeConvention<TypeModelMetadataContext, TAttribute>((context, remove) => remove(context.Type), when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void SetPropertyAttribute(Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -312,7 +318,7 @@ public static class DomainExtensions
         public void SetPropertyAttribute(Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void AddPropertyAttribute(Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -327,13 +333,13 @@ public static class DomainExtensions
         public void AddPropertyAttribute(Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new AddAttributeConvention<PropertyModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        ) => conventions.Add(new AddAttributeConvention<PropertyModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void RemovePropertyAttribute<TAttribute>(Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new RemoveAttributeConvention<PropertyModelContext, TAttribute>((context, remove) => remove(context.Property), when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+            conventions.Add(new RemoveAttributeConvention<PropertyModelContext, TAttribute>((context, remove) => remove(context.Property), when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void SetMethodAttribute(Func<Attribute> attribute, Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -348,7 +354,7 @@ public static class DomainExtensions
         public void SetMethodAttribute(Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void AddMethodAttribute(Func<Attribute> attribute, Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -363,13 +369,13 @@ public static class DomainExtensions
         public void AddMethodAttribute(Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new AddAttributeConvention<MethodModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        ) => conventions.Add(new AddAttributeConvention<MethodModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void RemoveMethodAttribute<TAttribute>(Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new RemoveAttributeConvention<MethodModelContext, TAttribute>((context, remove) => remove(context.Method), when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+            conventions.Add(new RemoveAttributeConvention<MethodModelContext, TAttribute>((context, remove) => remove(context.Method), when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void SetParameterAttribute(Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -384,7 +390,7 @@ public static class DomainExtensions
         public void SetParameterAttribute(Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void AddParameterAttribute(Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -399,13 +405,13 @@ public static class DomainExtensions
         public void AddParameterAttribute(Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new AddAttributeConvention<ParameterModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        ) => conventions.Add(new AddAttributeConvention<ParameterModelContext>(apply, when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void RemoveParameterAttribute<TAttribute>(Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new RemoveAttributeConvention<ParameterModelContext, TAttribute>((context, remove) => remove(context.Parameter), when, beforeBuildingIndexes: beforeBuildingIndexes), order);
+            conventions.Add(new RemoveAttributeConvention<ParameterModelContext, TAttribute>((context, remove) => remove(context.Parameter), when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
         public void AddTypeAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<TypeModelMetadataContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -429,7 +435,7 @@ public static class DomainExtensions
             Func<TypeModelMetadataContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new TypeAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order);
+            conventions.Add(new TypeAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order.BusinessDefault.Configure);
 
         public void AddPropertyAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<PropertyModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -453,7 +459,7 @@ public static class DomainExtensions
             Func<PropertyModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new PropertyAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order);
+            conventions.Add(new PropertyAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order.BusinessDefault.Configure);
 
         public void AddMethodAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<MethodModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -477,7 +483,7 @@ public static class DomainExtensions
             Func<MethodModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new MethodAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order);
+            conventions.Add(new MethodAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order.BusinessDefault.Configure);
 
         public void AddParameterAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<ParameterModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -501,7 +507,7 @@ public static class DomainExtensions
             Func<ParameterModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new ParameterAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order);
+            conventions.Add(new ParameterAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order.BusinessDefault.Configure);
     }
 
     extension(TypeModel type)

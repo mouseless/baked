@@ -33,7 +33,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                             p.PropertyType.IsAssignableTo<IEnumerable>()
                         ).Name
                 ),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
@@ -41,7 +41,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
                     c.Property.Name == objectWithList.ListPropertyName,
                 attribute: data => data.Visible = false,
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
             conventions.AddMethodComponent(

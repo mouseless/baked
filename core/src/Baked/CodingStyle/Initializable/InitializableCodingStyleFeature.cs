@@ -22,16 +22,16 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
                     members.Has<ServiceAttribute>() &&
                     _initializerNames.Any(i => members.Methods.Contains(i)),
                 attribute: () => new TransientAttribute(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
             conventions.SetMethodAttribute(
                 when: c => _initializerNames.Contains(c.Method.Name),
                 attribute: () => new InitializerAttribute(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
-            conventions.Add(new AddInitializerParametersToQueryConvention(), order: Order.At.Infra);
+            conventions.Add(new AddInitializerParametersToQueryConvention(), order: Order.At.Defaults);
             conventions.Add(new TargetUsingInitializerConvention(), order: Order.At.Max);
             conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
         });

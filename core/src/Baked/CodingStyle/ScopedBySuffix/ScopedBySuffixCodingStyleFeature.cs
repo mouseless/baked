@@ -19,7 +19,7 @@ public class ScopedBySuffixCodingStyleFeature(IEnumerable<string> _suffixes)
                     c.Type.TryGetMetadata(out var metadata) &&
                     metadata.Has<ServiceAttribute>() &&
                     _suffixes.Any(suffix => c.Type.Name.EndsWith(suffix)),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
         });
     }

@@ -16,10 +16,10 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
             conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
                 when: c => c.Type.Is<object>(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
-            conventions.Add(new SingleObjectParametersDontUseRequestClassConvention(), order: Order.At.Infra);
+            conventions.Add(new SingleObjectParametersDontUseRequestClassConvention(), order: Order.At.Defaults);
         });
 
         configurator.DataAccess.ConfigureAutoPersistenceModel(model =>

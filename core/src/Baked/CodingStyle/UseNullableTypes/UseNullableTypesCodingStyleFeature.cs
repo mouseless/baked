@@ -21,7 +21,7 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
                     genericArgumentMetadata.Has<ApiInputAttribute>(),
                 attribute: () => new ApiInputAttribute(),
-                order: Order.At.Infra.AbsoluteMin // TODO consider using Order.At.Infra.Min
+                order: Order.At.Defaults.AbsoluteMin // TODO consider using Order.At.Infra.Min
             );
 
             conventions.SetParameterAttribute(
@@ -36,17 +36,17 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                     return !nullable;
                 },
                 attribute: () => new NotNullAttribute(),
-                order: Order.At.Infra.Min
+                order: Order.At.Defaults.Min
             );
 
             conventions.SetParameterAttribute(
                 when: c => !c.Parameter.IsOptional && !c.Parameter.IsNullable,
                 attribute: () => new RequiredAttribute(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
-            conventions.Add(new RequiredParametersAreRequiredInApiModelConvention(), order: Order.At.Infra);
-            conventions.Add(new SetDefaultValueForNullableEnumConvention(), order: Order.At.Infra);
+            conventions.Add(new RequiredParametersAreRequiredInApiModelConvention(), order: Order.At.Defaults);
+            conventions.Add(new SetDefaultValueForNullableEnumConvention(), order: Order.At.Defaults);
         });
 
         configurator.RestApi.ConfigureApiModel(api =>

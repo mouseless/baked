@@ -114,15 +114,10 @@ public static class ThemeExtensions
     extension(Order order)
     {
         public Order Theme =>
-            order.Level(nameof(Theme));
+            order.WithBase("Theme");
 
-        public Order Ux =>
-            order.Level(nameof(Ux));
-
-#pragma warning disable IDE0051
-        Order ThemeDefault =>
-            order.Level(nameof(Theme), @default: true);
-#pragma warning restore IDE0051
+        internal Order ThemeDefault =>
+            order.WithBase(order.Base ?? "Theme");
     }
 
     extension(IDomainModelConventionCollection conventions)
@@ -176,7 +171,6 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
 
             conventions.AddTypeAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -187,7 +181,7 @@ public static class ThemeExtensions
                 },
                 when: when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -195,11 +189,9 @@ public static class ThemeExtensions
             Order order = default
         )
         {
-            order = order.ThemeDefault;
-
             conventions.RemoveTypeAttribute<GeneratorAttribute<TSchema>>(when: when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -233,7 +225,6 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
 
             conventions.AddPropertyAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -244,7 +235,7 @@ public static class ThemeExtensions
                 },
                 when: when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -252,11 +243,9 @@ public static class ThemeExtensions
             Order order = default
         )
         {
-            order = order.ThemeDefault;
-
             conventions.RemovePropertyAttribute<GeneratorAttribute<TSchema>>(when: when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -290,7 +279,6 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
 
             conventions.AddMethodAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -301,7 +289,7 @@ public static class ThemeExtensions
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -309,11 +297,9 @@ public static class ThemeExtensions
             Order order = default
         )
         {
-            order = order.ThemeDefault;
-
             conventions.RemoveMethodAttribute<GeneratorAttribute<TSchema>>(when: when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -347,7 +333,6 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
 
             conventions.AddParameterAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -358,7 +343,7 @@ public static class ThemeExtensions
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -366,11 +351,9 @@ public static class ThemeExtensions
             Order order = default
         )
         {
-            order = order.ThemeDefault;
-
             conventions.RemoveParameterAttribute<GeneratorAttribute<TSchema>>(when: when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -402,7 +385,6 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
 
             conventions.AddTypeAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -411,7 +393,7 @@ public static class ThemeExtensions
                     where: where
                 ),
                 when: c => when(c),
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -443,7 +425,6 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
 
             conventions.AddPropertyAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -452,7 +433,7 @@ public static class ThemeExtensions
                     where: where
                 ),
                 when: c => when(c),
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -484,7 +465,6 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
 
             conventions.AddMethodAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -493,7 +473,7 @@ public static class ThemeExtensions
                     where: where
                 ),
                 when: c => when(c),
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -525,7 +505,6 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
 
             conventions.AddParameterAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -534,7 +513,7 @@ public static class ThemeExtensions
                     where: where
                 ),
                 when: c => when(c),
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -570,7 +549,6 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
 
             conventions.AddTypeAttribute(
                 apply: (c, add) =>
@@ -588,7 +566,7 @@ public static class ThemeExtensions
                 },
                 when: c => when(c),
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -596,11 +574,9 @@ public static class ThemeExtensions
             Order order = default
         ) where TSchema : IComponentSchema
         {
-            order = order.ThemeDefault;
-
             conventions.RemoveTypeAttribute<ComponentGeneratorAttribute<TSchema>>(when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -636,7 +612,6 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
 
             conventions.AddPropertyAttribute(
                 apply: (c, add) =>
@@ -654,7 +629,7 @@ public static class ThemeExtensions
                 },
                 when: c => when(c),
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -662,11 +637,9 @@ public static class ThemeExtensions
             Order order = default
         ) where TSchema : IComponentSchema
         {
-            order = order.ThemeDefault;
-
             conventions.RemovePropertyAttribute<ComponentGeneratorAttribute<TSchema>>(when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -702,7 +675,6 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= cc => true;
-            order = order.ThemeDefault;
 
             conventions.AddMethodAttribute(
                 apply: (c, add) =>
@@ -720,7 +692,7 @@ public static class ThemeExtensions
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -728,11 +700,9 @@ public static class ThemeExtensions
             Order order = default
         ) where TSchema : IComponentSchema
         {
-            order = order.ThemeDefault;
-
             conventions.RemoveMethodAttribute<ComponentGeneratorAttribute<TSchema>>(when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -768,7 +738,6 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
 
             conventions.AddParameterAttribute(
                 apply: (c, add) =>
@@ -786,7 +755,7 @@ public static class ThemeExtensions
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -794,11 +763,9 @@ public static class ThemeExtensions
             Order order = default
         ) where TSchema : IComponentSchema
         {
-            order = order.ThemeDefault;
-
             conventions.RemoveParameterAttribute<ComponentGeneratorAttribute<TSchema>>(when,
                 beforeBuildingIndexes: false,
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -832,7 +799,6 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
 
             conventions.AddTypeAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -841,7 +807,7 @@ public static class ThemeExtensions
                     where: where
                 ),
                 when: c => when(c),
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -875,7 +841,6 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
 
             conventions.AddPropertyAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -884,7 +849,7 @@ public static class ThemeExtensions
                     where: where
                 ),
                 when: c => when(c),
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -918,7 +883,6 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
 
             conventions.AddMethodAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -927,7 +891,7 @@ public static class ThemeExtensions
                     where: where
                 ),
                 when: c => when(c),
-                order: order
+                order: order.ThemeDefault
             );
         }
 
@@ -961,7 +925,6 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
 
             conventions.AddParameterAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -970,7 +933,7 @@ public static class ThemeExtensions
                     where: where
                 ),
                 when: c => when(c),
-                order: order
+                order: order.ThemeDefault
             );
         }
     }

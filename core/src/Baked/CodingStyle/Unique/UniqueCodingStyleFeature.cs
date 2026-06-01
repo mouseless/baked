@@ -22,7 +22,7 @@ public class UniqueCodingStyleFeature : IFeature<CodingStyleConfigurator>
                         query.Methods.Contains($"AnyBy{c.Property.Name}")
                     ),
                 attribute: c => new UniqueAttribute(),
-                order: Order.At.Infra + 30
+                order: Order.At.Defaults + 30
             );
         });
     }

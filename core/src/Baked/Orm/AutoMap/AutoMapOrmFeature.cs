@@ -46,7 +46,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     c.Type.Has<EntityAttribute>() &&
                     c.Property.IsAutoProperty,
                 attribute: () => new ColumnAttribute(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
             conventions.SetPropertyAttribute(
                 when: c =>
@@ -55,7 +55,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     c.Property.PropertyType.TryGetMetadata(out var metadata) &&
                     metadata.Has<EntityAttribute>(),
                 attribute: () => new ForeignKeyAttribute(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
         });
 

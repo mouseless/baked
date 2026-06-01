@@ -35,7 +35,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
+            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Defaults);
         });
     }
 }

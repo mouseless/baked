@@ -16,7 +16,7 @@ public class LabelsAreFrozenUxFeature()
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<LabelAttribute>(),
                 attribute: data => data.Order = -10,
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 when: c => c.Property.Has<LabelAttribute>(),

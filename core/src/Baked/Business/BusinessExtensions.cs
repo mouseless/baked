@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,15 @@ public static class BusinessExtensions
         public static DiagnosticCode MethodWithAttribute => new(004, "method-with-attribute");
         public static DiagnosticCode ParameterWithAttribute => new(005, "parameter-with-attribute");
         public static DiagnosticCode RequiresElementType => new(006, "requires-element-type");
+    }
+
+    extension(Order order)
+    {
+        public Order Business =>
+            order.WithBase("Business");
+
+        internal Order BusinessDefault =>
+            order.WithBase(order.Base ?? "Business");
     }
 
     // WARNING

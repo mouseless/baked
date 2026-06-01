@@ -73,8 +73,8 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.At.Level("B"));
-                c.Add(new TestConvention("A"), order: Order.At.Level("A"));
+                c.Add(new TestConvention("B"), order: Order.At.WithLevel("B"));
+                c.Add(new TestConvention("A"), order: Order.At.WithLevel("A"));
             },
             options: o =>
             {
@@ -96,7 +96,7 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.At.Level("B"));
+                c.Add(new TestConvention("B"), order: Order.At.WithLevel("B"));
                 c.Add(new TestConvention("B"), order: Order.At.Zero);
             },
             options: o =>

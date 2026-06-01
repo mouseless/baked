@@ -29,11 +29,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Index.Method.Add<ActionAttribute>();
             builder.Index.Method.Add<RouteAttribute>();
 
-            var index = builder.ConventionLevels.IndexOf("Override");
-            if (index < 0) { index = builder.ConventionLevels.Count; }
-
-            builder.ConventionLevels.Insert(index, nameof(Ux));
-            builder.ConventionLevels.Insert(index + 1, nameof(Theme));
+            // builder.ConventionMatrix.Levels.Add("Theme");
+            builder.ConventionLevels.Add("Theme.Baked.Add");
+            builder.ConventionLevels.Add("Theme.User.Add");
+            builder.ConventionLevels.Add("Theme.Override.Add");
+            builder.ConventionLevels.Add("Theme.Baked.Configure");
+            builder.ConventionLevels.Add("Theme.User.Configure");
+            builder.ConventionLevels.Add("Theme.Override.Configure");
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
@@ -58,7 +60,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     r.Params[idAttribute.RouteName] = idAttribute.RouteName;
                 },
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
             // Enum Data
@@ -71,12 +73,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
-                order: Order.At.Infra - 10
+                order: Order.At.Defaults - 10
             );
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
                 attribute: data => data.Visible = false,
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
             conventions.AddPropertyComponent(
                 when: c =>

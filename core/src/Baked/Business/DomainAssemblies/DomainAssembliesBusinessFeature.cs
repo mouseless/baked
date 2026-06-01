@@ -61,8 +61,15 @@ public class DomainAssembliesBusinessFeature(
             builder.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
             builder.BuildLevels.Add(BuildLevels.Metadata);
 
-            builder.ConventionLevels.Insert(0, "Infra");
-            builder.ConventionLevels.Add("Override");
+            // builder.ConventionMatrix.Bases.Add("Business");
+            // builder.ConventionMatrix.Levels.Add("Baked", "User", "Override");
+            // builder.ConventionMatrix.Extensions.Add("Add", "Configure");
+            builder.ConventionLevels.Add("Business.Baked.Add");
+            builder.ConventionLevels.Add("Business.User.Add");
+            builder.ConventionLevels.Add("Business.Override.Add");
+            builder.ConventionLevels.Add("Business.Baked.Configure");
+            builder.ConventionLevels.Add("Business.User.Configure");
+            builder.ConventionLevels.Add("Business.Override.Configure");
 
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<CasterAttribute>();
@@ -112,7 +119,7 @@ public class DomainAssembliesBusinessFeature(
                     return new NamespaceAttribute(@namespace);
                 },
                 when: c => setNamespaceWhen(c.Type),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
             conventions.SetTypeAttribute(
                 attribute: () => new ServiceAttribute(),
@@ -125,7 +132,7 @@ public class DomainAssembliesBusinessFeature(
                     !c.Type.IsAssignableTo<IEnumerable>() &&
                     c.Type.TryGetMembers(out var members) &&
                     !members.Methods.Contains("<Clone>$"), // if type is record
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
             conventions.SetMethodAttribute(
@@ -134,7 +141,7 @@ public class DomainAssembliesBusinessFeature(
                     c.Method.DefaultOverload.DeclaringType is not null &&
                     c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
                     !metadata.Has<ServiceAttribute>(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
             conventions.SetMethodAttribute(
@@ -144,13 +151,13 @@ public class DomainAssembliesBusinessFeature(
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType.TryGetMetadata(out var metadata) &&
                     !metadata.Has<ServiceAttribute>(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
             conventions.SetTypeAttribute(
                 attribute: () => new CasterAttribute(),
                 when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>)),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
         });
 

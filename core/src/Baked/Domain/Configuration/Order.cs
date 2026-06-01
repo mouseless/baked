@@ -9,7 +9,9 @@ public readonly struct Order
     public static readonly Order At = new();
 
     readonly int _offset;
+    readonly string? _base;
     readonly string? _level;
+    readonly string? _extension;
     readonly bool _global;
     readonly int _lowerBound;
     readonly int _upperBound;
@@ -21,6 +23,10 @@ public readonly struct Order
     public readonly Order Max => Clone(offset: _upperBound - ABSOLUTE_OFFSET);
     public readonly Order AbsoluteMax => Clone(offset: _upperBound);
 
+    public readonly string? Base => _base;
+    public readonly string? Level => _level;
+    public readonly string? Extension => _extension;
+
     public Order()
     {
         _lowerBound = -LEVEL_SPAN / 2;
@@ -29,12 +35,16 @@ public readonly struct Order
 
     Order(
         int offset = 0,
+        string? @base = default,
         string? level = default,
+        string? extension = default,
         bool global = false
     ) : this()
     {
         _offset = offset;
+        _base = @base;
         _level = level;
+        _extension = extension;
         _global = global;
 
         _lowerBound = _global ? int.MinValue : _lowerBound;
@@ -44,20 +54,32 @@ public readonly struct Order
     public Order Offset(int value) =>
         Clone(offset: _offset + value);
 
-    public Order Level(string level,
-        bool @default = false
-    ) => Clone(
-        level: @default ? _level ?? level : level,
+    public Order WithBase(string @base) => Clone(
+        @base: @base,
+        global: false
+    );
+
+    public Order WithLevel(string level) => Clone(
+        level: level,
+        global: false
+    );
+
+    public Order WithExtension(string extension) => Clone(
+        extension: extension,
         global: false
     );
 
     Order Clone(
         int? offset = default,
+        string? @base = default,
         string? level = default,
+        string? extension = default,
         bool? global = default
     ) => new(
             offset: offset ?? _offset,
+            @base: @base ?? _base,
             level: level ?? _level,
+            extension: extension ?? _extension,
             global: global ?? _global
         );
 
@@ -72,10 +94,15 @@ public readonly struct Order
             );
         }
 
+        if (_base is null) { throw new("no base"); }
+        if (_level is null) { throw new("no level"); }
+        if (_extension is null) { throw new("no extension"); }
+
+        var level = $"{_base}.{_level}.{_extension}";
         if (_offset < _lowerBound || _offset > _upperBound)
         {
             throw DiagnosticCode.OrderOutOfBounds.Exception(
-                $"Order ({_level ?? defaultLevel}: {_offset}) must be between {_lowerBound} - {_upperBound}"
+                $"Order ({level}: {_offset}) must be between {_lowerBound} - {_upperBound}"
             );
         }
 

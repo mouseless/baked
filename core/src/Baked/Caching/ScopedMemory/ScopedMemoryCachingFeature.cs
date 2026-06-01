@@ -17,7 +17,7 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
             conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "user"),
                 when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "user",
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
         });
 

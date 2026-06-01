@@ -19,7 +19,7 @@ public class ConcurrencyRateLimiterFeature(
         {
             conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("""EnableRateLimiting("Concurrency")"""),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
         });
 

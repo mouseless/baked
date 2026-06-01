@@ -21,7 +21,7 @@ public class LabelCodingStyleFeature(IEnumerable<string> propertyNames)
                     ) &&
                     _propertyNames.Contains(c.Property.Name),
                 attribute: () => new LabelAttribute(),
-                order: Order.At.Infra + 10
+                order: Order.At.Defaults + 10
             );
         });
     }

@@ -41,7 +41,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     set(c.Type, new ApiInputAttribute());
                     set(c.Type, new LocatableAttribute());
                 },
-                order: Order.At.Infra + 10
+                order: Order.At.Defaults + 10
             );
             conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
                 when: c => c.Type.Has<RichTransientAttribute>(),
@@ -57,7 +57,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                     locatable.IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
                 },
-                order: Order.At.Infra + 10
+                order: Order.At.Defaults + 10
             );
             conventions.SetMethodAttribute(
                 when: c =>
@@ -67,11 +67,11 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublic,
                 attribute: c => new ActionModelAttribute(),
-                order: Order.At.Infra + 20
+                order: Order.At.Defaults + 20
             );
 
-            conventions.Add(new RichTransientUnderPluralGroupConvention(), order: Order.At.Infra);
-            conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: Order.At.Infra + 10);
+            conventions.Add(new RichTransientUnderPluralGroupConvention(), order: Order.At.Defaults);
+            conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: Order.At.Defaults + 10);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

@@ -38,7 +38,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   !c.Type.IsGenericType &&
                   c.Type.TryGetMembers(out var members) &&
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName),
-              order: Order.At.Infra + 10
+              order: Order.At.Defaults + 10
             );
             conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
@@ -70,25 +70,25 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 (Regexes.IsUpdateChangeOrSet, HttpMethod.Put),
                 (Regexes.StartsWithUpdateChangeOrSet, HttpMethod.Patch),
                 (Regexes.StartsWithDeleteRemoveOrClear, HttpMethod.Delete)
-            ]), order: Order.At.Infra);
-            conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention(), order: Order.At.Infra);
-            conventions.Add(new RemoveFromRouteConvention(["Get"]), order: Order.At.Infra);
-            conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]), order: Order.At.Infra);
-            conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]), order: Order.At.Infra);
+            ]), order: Order.At.Defaults);
+            conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention(), order: Order.At.Defaults);
+            conventions.Add(new RemoveFromRouteConvention(["Get"]), order: Order.At.Defaults);
+            conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]), order: Order.At.Defaults);
+            conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]), order: Order.At.Defaults);
             conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
                 when: (_, action) => action.HasBody,
-                order: Order.At.Infra + 10
+                order: Order.At.Defaults + 10
             );
             conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
                 when: (_, action) => !action.ReturnIsVoid,
-                order: Order.At.Infra + 10
+                order: Order.At.Defaults + 10
             );
-            conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: Order.At.Infra + 10);
+            conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: Order.At.Defaults + 10);
             conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
                 action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")"),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
         });
 

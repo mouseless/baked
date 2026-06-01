@@ -32,7 +32,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     return locatableType.Apply(t => new LocatableExtensionAttribute(t));
                 },
-                order: Order.At.Infra + 20
+                order: Order.At.Defaults + 20
             );
             conventions.SetPropertyAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
@@ -42,7 +42,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     return c.Domain.Types[locatableExtensionAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
                 },
-                order: Order.At.Infra + 20
+                order: Order.At.Defaults + 20
             );
             conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
@@ -54,7 +54,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     set(c.Type, namespaceAttribute);
                 },
-                order: Order.At.Infra + 20
+                order: Order.At.Defaults + 20
             );
             conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
@@ -68,7 +68,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     set(c.Type, new LocatableAttribute());
                 },
-                order: Order.At.Infra + 20
+                order: Order.At.Defaults + 20
             );
 
             conventions.Add(new ExtensionsUnderLocatablesConvention(), order: Order.At.AbsoluteMax); // TODO consider using Order.At.Max

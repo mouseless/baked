@@ -33,33 +33,33 @@ public class ManagingOrders
         Order.At.Global.Min.Calculate(_levels, "B").ShouldBe(int.MinValue + 10);
 
         // Pre Level
-        Order.At.Level("A").AbsoluteMin.Calculate(_levels, "B").ShouldBe(-15000);
-        Order.At.Level("A").Min.Calculate(_levels, "B").ShouldBe(-14990);
-        Order.At.Level("A").Calculate(_levels, "B").ShouldBe(-10000);
-        Order.At.Level("A").Max.Calculate(_levels, "B").ShouldBe(-5011);
-        Order.At.Level("A").AbsoluteMax.Calculate(_levels, "B").ShouldBe(-5001);
+        Order.At.WithLevel("A").AbsoluteMin.Calculate(_levels, "B").ShouldBe(-15000);
+        Order.At.WithLevel("A").Min.Calculate(_levels, "B").ShouldBe(-14990);
+        Order.At.WithLevel("A").Calculate(_levels, "B").ShouldBe(-10000);
+        Order.At.WithLevel("A").Max.Calculate(_levels, "B").ShouldBe(-5011);
+        Order.At.WithLevel("A").AbsoluteMax.Calculate(_levels, "B").ShouldBe(-5001);
 
         // Default Level
-        Order.At.Level("B").AbsoluteMin.Calculate(_levels, "B").ShouldBe(-5000);
+        Order.At.WithLevel("B").AbsoluteMin.Calculate(_levels, "B").ShouldBe(-5000);
         Order.At.AbsoluteMin.Calculate(_levels, "B").ShouldBe(-5000);
-        Order.At.Level("B").Min.Calculate(_levels, "B").ShouldBe(-4990);
+        Order.At.WithLevel("B").Min.Calculate(_levels, "B").ShouldBe(-4990);
         Order.At.Min.Calculate(_levels, "B").ShouldBe(-4990);
 
         Order.At.Global.Calculate(_levels, "B").ShouldBe(0);
-        Order.At.Level("B").Calculate(_levels, "B").ShouldBe(0);
+        Order.At.WithLevel("B").Calculate(_levels, "B").ShouldBe(0);
         Order.At.Zero.Calculate(_levels, "B").ShouldBe(0);
 
-        Order.At.Level("B").Max.Calculate(_levels, "B").ShouldBe(4989);
+        Order.At.WithLevel("B").Max.Calculate(_levels, "B").ShouldBe(4989);
         Order.At.Max.Calculate(_levels, "B").ShouldBe(4989);
-        Order.At.Level("B").AbsoluteMax.Calculate(_levels, "B").ShouldBe(4999);
+        Order.At.WithLevel("B").AbsoluteMax.Calculate(_levels, "B").ShouldBe(4999);
         Order.At.AbsoluteMax.Calculate(_levels, "B").ShouldBe(4999);
 
         // Post Level
-        Order.At.Level("C").AbsoluteMin.Calculate(_levels, "B").ShouldBe(5000);
-        Order.At.Level("C").Min.Calculate(_levels, "B").ShouldBe(5010);
-        Order.At.Level("C").Calculate(_levels, "B").ShouldBe(10000);
-        Order.At.Level("C").Max.Calculate(_levels, "B").ShouldBe(14989);
-        Order.At.Level("C").AbsoluteMax.Calculate(_levels, "B").ShouldBe(14999);
+        Order.At.WithLevel("C").AbsoluteMin.Calculate(_levels, "B").ShouldBe(5000);
+        Order.At.WithLevel("C").Min.Calculate(_levels, "B").ShouldBe(5010);
+        Order.At.WithLevel("C").Calculate(_levels, "B").ShouldBe(10000);
+        Order.At.WithLevel("C").Max.Calculate(_levels, "B").ShouldBe(14989);
+        Order.At.WithLevel("C").AbsoluteMax.Calculate(_levels, "B").ShouldBe(14999);
 
         // Global Level
         Order.At.Global.Max.Calculate(_levels, "B").ShouldBe(int.MaxValue - 10);
@@ -77,7 +77,7 @@ public class ManagingOrders
     [Test]
     public void Setting_level_defaults_global_flag_to_false()
     {
-        var order = Order.At.Global.Level("B").AbsoluteMin;
+        var order = Order.At.Global.WithLevel("B").AbsoluteMin;
 
         order.Calculate(_levels, "B").ShouldBe(-5000);
     }
@@ -86,13 +86,13 @@ public class ManagingOrders
     public void A_level_change_can_be_set_as_default_so_that_it_is_used_when_a_level_is_not_present()
     {
         Order.At.Level("C", @default: true).Calculate(_levels, "B").ShouldBe(10000);
-        Order.At.Level("B").Level("C", @default: true).Calculate(_levels, "B").ShouldBe(0);
+        Order.At.WithLevel("B").Level("C", @default: true).Calculate(_levels, "B").ShouldBe(0);
     }
 
     [Test]
     public void Order_cannot_be_below_absolute_min_value()
     {
-        var order = Order.At.Level("A").AbsoluteMin - 1;
+        var order = Order.At.WithLevel("A").AbsoluteMin - 1;
 
         var action = () => { order.Calculate(_levels, "B"); };
 
@@ -104,7 +104,7 @@ public class ManagingOrders
     [Test]
     public void Order_cannot_exceed_absolute_max_value()
     {
-        var order = Order.At.Level("A").AbsoluteMax + 1;
+        var order = Order.At.WithLevel("A").AbsoluteMax + 1;
 
         var action = () => { order.Calculate(_levels, "B"); };
 
@@ -116,7 +116,7 @@ public class ManagingOrders
     [Test]
     public void Throws_exception_when_default_layer_is_not_defined()
     {
-        var order = Order.At.Level("A");
+        var order = Order.At.WithLevel("A");
 
         var action = () => { order.Calculate(_levels, "not-existing"); };
 

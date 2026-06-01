@@ -17,12 +17,12 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
             conventions.SetMethodAttribute(
                 when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>(),
                 attribute: c => c.Type.Get<AllowAnonymousAttribute>(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
             conventions.SetMethodAttribute(
                 when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>(),
                 attribute: c => c.Type.Get<RequireUserAttribute>(),
-                order: Order.At.Infra
+                order: Order.At.Defaults
             );
 
             conventions.Add(new AllowAnonymousIsAllowAnonymousConvention(), order: Order.At.Max);
