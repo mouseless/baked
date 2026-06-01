@@ -21,7 +21,7 @@ public class ChildDomainOverrideFeature : IFeature
 
             conventions.RemoveMethodAttribute<ActionAttribute>(
                 when: c => c.Type.Is<Child>(),
-                order: Order.At.Override
+                order: Order.At.Theme.Override
             );
         });
     }

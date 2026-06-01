@@ -1,4 +1,5 @@
 using Baked.Domain.Configuration;
+using static Baked.Domain.Configuration.DomainModelBuilderOptions;
 
 namespace Baked.Domain;
 
@@ -6,16 +7,38 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
     : List<(IDomainModelConvention Convention, int Order)>, IDomainModelConventionCollection
 {
     readonly Lazy<IReadOnlyDictionary<string, int>> _levels = new(() =>
-        _options.ConventionLevels
+            BuildLevels(_options.ConventionMatrix)
             .Select((name, index) => (name, index))
             .ToDictionary(x => x.name, x => x.index)
     );
 
     void IDomainModelConventionCollection.Add(IDomainModelConvention convention, Order order)
     {
-        Diagnostics.Current.Diagnose(() =>
+        var calculatedOrder = order.BusinessDefault
+            .WithLevel(order.Level ?? "User")
+            .WithExtension(order.Extension ?? (convention.BeforeBuildingIndexes ? "Add" : "Configure"))
+            .Calculate(_levels.Value, _options.DefaultConventionLevel);
+        Add((convention, calculatedOrder));
+        //Diagnostics.Current.Diagnose(() =>
+        //{
+        //    Add((convention, order.Calculate(_levels.Value, _options.DefaultConventionLevel)));
+        //});
+    }
+
+    static List<string> BuildLevels(ConventionMatrixOptions options)
+    {
+        var result = new List<string>();
+        foreach (var @base in options.Bases)
         {
-            Add((convention, order.Calculate(_levels.Value, _options.DefaultConventionLevel)));
-        });
+            foreach (var extension in options.Extensions)
+            {
+                foreach (var level in options.Levels)
+                {
+                    result.Add($"{@base}.{level}.{extension}");
+                }
+            }
+        }
+
+        return result;
     }
 }

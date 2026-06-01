@@ -29,13 +29,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Index.Method.Add<ActionAttribute>();
             builder.Index.Method.Add<RouteAttribute>();
 
-            // builder.ConventionMatrix.Levels.Add("Theme");
-            builder.ConventionLevels.Add("Theme.Baked.Add");
-            builder.ConventionLevels.Add("Theme.User.Add");
-            builder.ConventionLevels.Add("Theme.Override.Add");
-            builder.ConventionLevels.Add("Theme.Baked.Configure");
-            builder.ConventionLevels.Add("Theme.User.Configure");
-            builder.ConventionLevels.Add("Theme.Override.Configure");
+            builder.ConventionMatrix.Bases.Add("Theme");
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
@@ -97,7 +91,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 attribute: () => new ActionAttribute(),
-                order: Order.At.Max
+                order: Order.At.Theme
             );
             conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*"),

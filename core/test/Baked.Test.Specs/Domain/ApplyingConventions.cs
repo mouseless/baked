@@ -68,6 +68,28 @@ public class ApplyingConventions : Spec
     }
 
     [Test]
+    public void Conventions_can_have_bases()
+    {
+        var builder = GiveMe.ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("B"), order: Order.At.WithBase("B"));
+                c.Add(new TestConvention("A"), order: Order.At.WithBase("A"));
+            },
+            options: o =>
+            {
+                o.ConventionMatrix.Bases.Add("A");
+                o.ConventionMatrix.Bases.Add("B");
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
+
+        _values[0].ShouldBe("A");
+        _values[1].ShouldBe("B");
+    }
+
+    [Test]
     public void Conventions_can_have_level_based_orders()
     {
         var builder = GiveMe.ADomainModelBuilder(
@@ -78,8 +100,30 @@ public class ApplyingConventions : Spec
             },
             options: o =>
             {
-                o.ConventionLevels.Add("A");
-                o.ConventionLevels.Add("B");
+                o.ConventionMatrix.Levels.Add("A");
+                o.ConventionMatrix.Levels.Add("B");
+            }
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
+
+        _values[0].ShouldBe("A");
+        _values[1].ShouldBe("B");
+    }
+
+    [Test]
+    public void Conventions_can_have_level_extension_orders()
+    {
+        var builder = GiveMe.ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("B"), order: Order.At.WithExtension("B"));
+                c.Add(new TestConvention("A"), order: Order.At.WithExtension("A"));
+            },
+            options: o =>
+            {
+                o.ConventionMatrix.Levels.Add("A");
+                o.ConventionMatrix.Levels.Add("B");
             }
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
@@ -101,7 +145,7 @@ public class ApplyingConventions : Spec
             },
             options: o =>
             {
-                o.ConventionLevels.Add("A");
+                o.ConventionMatrix.Levels.Add("A");
                 o.DefaultConventionLevel = "A";
             },
             onConventionsFinalized: r => messages.AddRange(r.Messages)

@@ -26,7 +26,7 @@ public class ParentDomainOverrideFeature : IFeature
 
             conventions.RemoveMethodAttribute<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.RemoveChild),
-                order: Order.At.Override
+                order: Order.At.Theme.Override
             );
 
             // Move `AddChild` action to contents

@@ -61,15 +61,13 @@ public class DomainAssembliesBusinessFeature(
             builder.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
             builder.BuildLevels.Add(BuildLevels.Metadata);
 
-            // builder.ConventionMatrix.Bases.Add("Business");
-            // builder.ConventionMatrix.Levels.Add("Baked", "User", "Override");
-            // builder.ConventionMatrix.Extensions.Add("Add", "Configure");
-            builder.ConventionLevels.Add("Business.Baked.Add");
-            builder.ConventionLevels.Add("Business.User.Add");
-            builder.ConventionLevels.Add("Business.Override.Add");
-            builder.ConventionLevels.Add("Business.Baked.Configure");
-            builder.ConventionLevels.Add("Business.User.Configure");
-            builder.ConventionLevels.Add("Business.Override.Configure");
+            builder.ConventionMatrix.Bases.Add("Business");
+            builder.ConventionMatrix.Levels.Add("Defaults");
+            builder.ConventionMatrix.Levels.Add("User");
+            builder.ConventionMatrix.Levels.Add("Override");
+            builder.ConventionMatrix.Extensions.Add("Add");
+            builder.ConventionMatrix.Extensions.Add("Configure");
+            builder.DefaultConventionLevel = "Business.User.Configure";
 
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<CasterAttribute>();

@@ -26,6 +26,7 @@ public readonly struct Order
     public readonly string? Base => _base;
     public readonly string? Level => _level;
     public readonly string? Extension => _extension;
+    public readonly bool IsGlobal => _global;
 
     public Order()
     {
@@ -55,33 +56,36 @@ public readonly struct Order
         Clone(offset: _offset + value);
 
     public Order WithBase(string @base) => Clone(
-        @base: @base,
-        global: false
+        @base: @base
     );
 
     public Order WithLevel(string level) => Clone(
-        level: level,
-        global: false
+        level: level
     );
 
     public Order WithExtension(string extension) => Clone(
-        extension: extension,
-        global: false
+        extension: extension
     );
 
     Order Clone(
         int? offset = default,
         string? @base = default,
         string? level = default,
-        string? extension = default,
-        bool? global = default
-    ) => new(
+        string? extension = default
+    )
+    {
+        if (_global)
+        {
+            return new(offset: offset ?? _offset, global: true);
+        }
+
+        return new(
             offset: offset ?? _offset,
             @base: @base ?? _base,
             level: level ?? _level,
-            extension: extension ?? _extension,
-            global: global ?? _global
+            extension: extension ?? _extension
         );
+    }
 
     public int Calculate(IReadOnlyDictionary<string, int> levels, string defaultLevel)
     {
@@ -107,7 +111,7 @@ public readonly struct Order
         }
 
         var levelIndex = defaultLevelIndex;
-        if (_level is not null && !levels.TryGetValue(_level, out levelIndex))
+        if (level is not null && !levels.TryGetValue(level, out levelIndex))
         {
             Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel,
                 $"Given level '{_level}' was not found in configured levels, defaulting to '{defaultLevel}'"
