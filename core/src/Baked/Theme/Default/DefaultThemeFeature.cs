@@ -33,7 +33,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             if (index < 0) { index = builder.ConventionLevels.Count; }
 
             builder.ConventionLevels.Insert(index, nameof(Ux));
-            builder.ConventionLevels.Insert(index, nameof(Theme));
+            builder.ConventionLevels.Insert(index + 1, nameof(Theme));
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
