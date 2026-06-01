@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Domain.Configuration;
 using Baked.Ui;
 using Humanizer;
 
@@ -16,13 +15,11 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
         {
             conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
-                component: (c, cc) => MethodDataPanel(c.Method, cc),
-                order: Order.At.Ux
+                component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title)),
-                schema: (c, cc) => MethodNameInline(c.Method, cc),
-                order: Order.At.Ux
+                schema: (c, cc) => MethodNameInline(c.Method, cc)
             );
             conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Method.GetAction().Method == HttpMethod.Get,
@@ -34,8 +31,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                             parameter.GenerateRequiredSchema<Input>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Inputs)))
                         );
                     }
-                },
-                order: Order.At.Ux
+                }
             );
             conventions.AddParameterSchemaConfiguration<Input>(
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs)),
@@ -46,8 +42,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                     var (_, l) = cc;
 
                     labeler.LabelFloatOn(labeler.Label ?? l(c.Parameter.Name.Titleize()));
-                },
-                order: Order.At.Ux
+                }
             );
         });
     }

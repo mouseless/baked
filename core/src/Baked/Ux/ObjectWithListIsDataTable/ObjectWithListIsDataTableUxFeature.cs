@@ -57,8 +57,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .Get<ObjectWithListAttribute>()
                         .ListPropertyName
                         .Camelize();
-                }),
-                order: Order.At.Ux
+                })
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c =>
@@ -72,8 +71,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .Get<ObjectWithListAttribute>()
                         .ListPropertyName
                         .Camelize();
-                },
-                order: Order.At.Ux
+                }
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c =>
@@ -104,7 +102,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dt.Schema.DataKey = idInfo.RouteName;
                     }
                 },
-                order: Order.At.Ux - 10
+                order: -10
             );
             conventions.AddMethodSchema(
                 when: c =>
@@ -116,8 +114,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     elementType.TryGetMembers(out var elementMembers) &&
                     elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: () => ActionsDataTableColumn(),
-                order: Order.At.Ux
+                schema: () => ActionsDataTableColumn()
             );
             conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c =>
@@ -145,16 +142,14 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 
                         col.Component += component;
                     }
-                },
-                order: Order.At.Ux
+                }
             );
 
             conventions.AddMethodSchema(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
-                schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
-                order: Order.At.Ux
+                schema: (c, cc) => MethodDataTableFooter(c.Method, cc)
             );
             conventions.AddMethodSchemaConfiguration<DataTable.Footer>(
                 when: c =>
@@ -176,8 +171,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 
                         dtf.Columns.Add(column);
                     }
-                },
-                order: Order.At.Ux
+                }
             );
 
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
@@ -187,7 +181,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     dtc.Title = null;
                     dtc.Exportable = null;
                 },
-                order: Order.At.Ux + 10
+                order: 10
             );
         });
     }

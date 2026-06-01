@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Baked.Ui;
 using System.ComponentModel.DataAnnotations;
@@ -20,8 +19,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton,
-                component: (c, cc) => ParameterSelectButton(c.Parameter, cc),
-                order: Order.At.Ux
+                component: (c, cc) => ParameterSelectButton(c.Parameter, cc)
             );
             conventions.AddParameterComponentConfiguration<SelectButton>(
                 when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
@@ -32,9 +30,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                         s.Schema.OptionLabel = "label";
                         s.Schema.OptionValue = "value";
                     }
-                },
-                order: Order.At.Ux
-
+                }
             );
 
             // Use `Select` when enum member count is > _maxMemberCountForSelectButton
@@ -42,9 +38,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton,
-                component: (c, cc) => ParameterSelect(c.Parameter, cc),
-                order: Order.At.Ux
-
+                component: (c, cc) => ParameterSelect(c.Parameter, cc)
             );
             conventions.AddParameterComponentConfiguration<Select>(
                 when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
@@ -55,8 +49,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                         s.Schema.OptionLabel = "label";
                         s.Schema.OptionValue = "value";
                     }
-                },
-                order: Order.At.Ux
+                }
             );
 
             // Default value of a required enum parameter is set to the first enum
@@ -68,7 +61,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     c.Parameter.TryGet<ParameterModelAttribute>(out var api) &&
                     (api.FromQuery || api.FromRoute),
                 schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
-                order: Order.At.Ux + 10
+                order: 10
             );
         });
     }

@@ -1,5 +1,4 @@
 using Baked.Architecture;
-using Baked.Domain.Configuration;
 using Baked.Ui;
 using Humanizer;
 
@@ -22,8 +21,7 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
                     var (_, l) = cc;
 
                     labeler.LabelIfta(labeler.Label ?? l(c.Parameter.Name.Titleize()));
-                },
-                order: Order.At.Ux
+                }
             );
         });
     }

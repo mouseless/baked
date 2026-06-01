@@ -90,7 +90,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         metadata.Has<ValueTypeAttribute>()
                     ),
                 component: () => B.Text(),
-                order: Order.At.Ux.Min
+                order: Order.At.Theme.Min
             );
 
             // Method Defaults
@@ -215,14 +215,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.Is<string>() ||
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
                 component: (c, cc) => ParameterInputText(c.Parameter, cc),
-                order: Order.At.Ux.Min
+                order: Order.At.Theme.Min
             );
             conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<long>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
-                order: Order.At.Ux.Min
+                order: Order.At.Theme.Min
             );
 
             // `PageTitle` defaults

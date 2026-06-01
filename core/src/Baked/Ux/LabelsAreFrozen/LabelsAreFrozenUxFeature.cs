@@ -24,8 +24,7 @@ public class LabelsAreFrozenUxFeature()
                 {
                     dtc.Frozen = true;
                     dtc.MinWidth = true;
-                },
-                order: Order.At.Ux
+                }
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c) =>
@@ -33,8 +32,7 @@ public class LabelsAreFrozenUxFeature()
                     if (dt.Schema.DataKey is not null) { return; }
 
                     dt.Schema.DataKey = dt.Schema.Columns.FirstOrDefault(dtc => dtc.Frozen == true)?.Key;
-                },
-                order: Order.At.Ux
+                }
             );
         });
     }

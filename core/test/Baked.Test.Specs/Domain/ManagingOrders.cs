@@ -82,11 +82,11 @@ public class ManagingOrders
         order.Calculate(_levels, "B").ShouldBe(-5000);
     }
 
+    // This should fail, test will be updated
     [Test]
     public void A_level_change_can_be_set_as_default_so_that_it_is_used_when_a_level_is_not_present()
     {
-        Order.At.Level("C", @default: true).Calculate(_levels, "B").ShouldBe(10000);
-        Order.At.WithLevel("B").Level("C", @default: true).Calculate(_levels, "B").ShouldBe(0);
+        true.ShouldBeFalse();
     }
 
     [Test]

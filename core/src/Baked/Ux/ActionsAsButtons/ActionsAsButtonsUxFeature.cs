@@ -1,5 +1,4 @@
 using Baked.Architecture;
-using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Baked.Theme;
 using Baked.Theme.Default;
@@ -21,8 +20,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<ActionAttribute>() && !c.Method.DefaultOverload.Parameters.Any(),
                 where: cc => cc.Path.EndsWith("Actions", "*"),
-                component: (c, cc) => MethodButton(c.Method, cc),
-                order: Order.At.Ux
+                component: (c, cc) => MethodButton(c.Method, cc)
             );
 
             // `SimpleForm` with dialog options
@@ -34,13 +32,11 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                         c.Method.GetAction().Method == HttpMethod.Delete
                     ),
                 where: cc => cc.Path.EndsWith("Actions", "*"),
-                component: (c, cc) => MethodSimpleForm(c.Method, cc),
-                order: Order.At.Ux
+                component: (c, cc) => MethodSimpleForm(c.Method, cc)
             );
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("Actions", "*", nameof(SimpleForm), nameof(SimpleForm.DialogOptions)),
-                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc),
-                order: Order.At.Ux
+                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
             );
             conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
                 when: c => !c.Method.DefaultOverload.Parameters.Any(),
@@ -49,8 +45,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                     var (_, l) = cc;
 
                     sfd.Message = l("Are you sure?");
-                },
-                order: Order.At.Ux
+                }
             );
 
             // Routed button and routing back
@@ -64,8 +59,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                     return LocalizedButton(c.Method.Name.Titleize(), cc,
                         action: Local.UseRedirect(route)
                     );
-                },
-                order: Order.At.Ux
+                }
             );
             conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Method.TryGet<ActionAttribute>(out var action) && action.RoutePathBack is not null,
@@ -79,34 +73,29 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                         );
 
                     ra.PostAction = Local.UseRedirect(routeBack);
-                },
-                order: Order.At.Ux
+                }
             );
 
             // Open button (for dialog)
             conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Open)),
-                component: (c, cc) => LocalizedButton(c.Method.Name.Titleize(), cc),
-                order: Order.At.Ux
+                component: (c, cc) => LocalizedButton(c.Method.Name.Titleize(), cc)
             );
 
             // Submit button (for dialog and page)
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<ActionAttribute>(),
                 where: cc => cc.Path.EndsWith("Submit"),
-                component: (c, cc) => LocalizedButton(c.Method.Name.Titleize(), cc),
-                order: Order.At.Ux
+                component: (c, cc) => LocalizedButton(c.Method.Name.Titleize(), cc)
             );
             conventions.AddMethodComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith("Submit"),
-                component: b => b.Schema.Severity = "primary",
-                order: Order.At.Ux
+                component: b => b.Schema.Severity = "primary"
             );
             conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Method.GetAction().Method == HttpMethod.Delete,
                 where: cc => cc.Path.EndsWith("Submit"),
-                component: b => b.Schema.Severity = "danger",
-                order: Order.At.Ux
+                component: b => b.Schema.Severity = "danger"
             );
             conventions.AddMethodComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith(nameof(FormPage), nameof(FormPage.Submit)),
@@ -115,15 +104,13 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                     var (_, l) = cc;
 
                     b.Schema.Label = l("Save");
-                },
-                order: Order.At.Ux
+                }
             );
 
             // Cancel and back buttons
             conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
-                component: (_, cc) => LocalizedButton("Cancel", cc),
-                order: Order.At.Ux
+                component: (_, cc) => LocalizedButton("Cancel", cc)
             );
 
             conventions.AddMethodComponentConfiguration<PageTitle>(
@@ -134,24 +121,20 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                     if (back is null) { return; }
 
                     fp.Schema.Actions.Add(back);
-                },
-                order: Order.At.Ux
+                }
             );
             conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith(nameof(FormPage), nameof(FormPage.Title), nameof(PageTitle), nameof(PageTitle.Actions), "Back"),
-                component: (_, cc) => LocalizedButton("Back", cc),
-                order: Order.At.Ux
+                component: (_, cc) => LocalizedButton("Back", cc)
             );
             conventions.AddMethodComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith("Back"),
-                component: b => b.Action = Local.UseRedirectBack(),
-                order: Order.At.Ux
+                component: b => b.Action = Local.UseRedirectBack()
             );
 
             conventions.AddMethodComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith("Cancel") || cc.Path.EndsWith("Back"),
-                component: b => b.Schema.Variant = "text",
-                order: Order.At.Ux
+                component: b => b.Schema.Variant = "text"
             );
 
             // Icons
@@ -175,8 +158,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                         var m when m == HttpMethod.Post && Regexes.StartsWithAddCreateOrNew.IsMatch(c.Method.Name) => "pi pi-plus",
                         _ => b.Schema.Icon
                     };
-                },
-                order: Order.At.Ux
+                }
             );
         });
     }

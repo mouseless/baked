@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Baked.Ui;
 using Humanizer;
@@ -34,8 +33,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
 
                         sp.Schema.Contents.Add(content);
                     }
-                },
-                order: Order.At.Ux
+                }
             );
             conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c =>
@@ -67,7 +65,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
 
                     tp.Schema.Tabs.AddRange(tabs.Values);
                 },
-                order: Order.At.Ux - 10
+                order: -10
             );
             conventions.AddTypeComponentConfiguration<TabbedPage>(
                component: (tp, c, cc) =>
@@ -80,8 +78,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                    {
                        tab.Title = l(tab.Id.Replace("-", "_").Titleize());
                    }
-               },
-               order: Order.At.Ux
+               }
             );
         });
     }

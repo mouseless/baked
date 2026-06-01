@@ -28,23 +28,21 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
 
                     sp.Schema.Contents.Add(content);
                 },
-                order: Order.At.Ux - 10
+                order: -10
             );
             conventions.AddTypeSchema(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
                 where: cc => cc.Path.EndsWith("Fields"),
-                schema: (c, cc) => TypeContent(c.Type, cc, "fields"),
-                order: Order.At.Ux
+                schema: (c, cc) => TypeContent(c.Type, cc, "fields")
             );
             conventions.AddTypeComponent(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
                 where: cc => cc.Path.EndsWith("Fields", nameof(Content.Component)),
-                component: (c, cc) => TypeFieldset(c.Type.GetMembers(), cc),
-                order: Order.At.Ux
+                component: (c, cc) => TypeFieldset(c.Type.GetMembers(), cc)
             );
             conventions.AddTypeComponentConfiguration<Fieldset>(
                 when: c =>
@@ -61,12 +59,10 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
 
                         f.Schema.Fields.Add(field);
                     }
-                },
-                order: Order.At.Ux
+                }
             );
             conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyField(c.Property, cc),
-                order: Order.At.Ux
+                schema: (c, cc) => PropertyField(c.Property, cc)
             );
             conventions.AddPropertySchemaConfiguration<Field>(
                 when: c =>
@@ -82,8 +78,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     var labelData = labelProperty.Get<DataAttribute>();
 
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
-                },
-                order: Order.At.Ux
+                }
             );
             conventions.AddPropertySchemaConfiguration<Field>(
                 when: c => c.Property.Has<DataAttribute>(),
