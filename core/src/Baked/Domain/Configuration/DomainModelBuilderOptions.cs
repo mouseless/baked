@@ -19,6 +19,10 @@ public class DomainModelBuilderOptions
         public IList<string> Bases { get; } = [];
         public IList<string> Levels { get; } = [];
         public IList<string> Extensions { get; } = [];
+
+        public Func<IDomainModelConvention, string> FallbackBase { get; set; } = default!;
+        public Func<IDomainModelConvention, string> FallbackLevel { get; set; } = default!;
+        public Func<IDomainModelConvention, string> FallbackExtension { get; set; } = default!;
     }
 
     public class BindingFlagOptions

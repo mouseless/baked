@@ -1,4 +1,5 @@
 using Baked.Domain.Configuration;
+
 using static Baked.Domain.Configuration.DomainModelBuilderOptions;
 
 namespace Baked.Domain;
@@ -14,9 +15,10 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
 
     void IDomainModelConventionCollection.Add(IDomainModelConvention convention, Order order)
     {
-        var calculatedOrder = order.BusinessDefault
-            .WithLevel(order.Level ?? "User")
-            .WithExtension(order.Extension ?? (convention.BeforeBuildingIndexes ? "Add" : "Configure"))
+        var calculatedOrder = order
+            .WithBase(order.Base ?? _options.ConventionMatrix.FallbackBase(convention))
+            .WithLevel(order.Level ?? _options.ConventionMatrix.FallbackLevel(convention))
+            .WithExtension(order.Extension ?? _options.ConventionMatrix.FallbackExtension(convention))
             .Calculate(_levels.Value, _options.DefaultConventionLevel);
         Add((convention, calculatedOrder));
         //Diagnostics.Current.Diagnose(() =>

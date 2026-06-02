@@ -67,6 +67,11 @@ public class DomainAssembliesBusinessFeature(
             builder.ConventionMatrix.Levels.Add("Override");
             builder.ConventionMatrix.Extensions.Add("Add");
             builder.ConventionMatrix.Extensions.Add("Configure");
+
+            builder.ConventionMatrix.FallbackBase = _ => "Business";
+            builder.ConventionMatrix.FallbackLevel = _ => "User";
+            builder.ConventionMatrix.FallbackExtension = convention => convention.BeforeBuildingIndexes ? "Add" : "Configure";
+
             builder.DefaultConventionLevel = "Business.User.Configure";
 
             builder.Index.Type.Add<ServiceAttribute>();
