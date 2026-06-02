@@ -1,10 +1,10 @@
 <template>
-  <AwaitLoading>
-    <template #loading>
-      <div class="min-w-40">
-        <Skeleton class="min-h-10" />
-      </div>
-    </template>
+  <AwaitLoading
+    :skeleton="{
+      height: label?.mode === 'ifta' ? '3.6rem' : '2.6rem',
+      class: 'min-w-40'
+    }"
+  >
     <Validation>
       <Labeler
         :label
@@ -36,7 +36,7 @@
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { Select, Skeleton } from "primevue";
+import { Select } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
 import { AwaitLoading, Labeler, Validation } from "#components";
 
