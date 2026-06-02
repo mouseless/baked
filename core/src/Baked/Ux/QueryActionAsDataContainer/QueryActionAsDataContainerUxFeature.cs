@@ -26,7 +26,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
                 component: (c, cc) => MethodDataContainer(c.Method, cc),
-                order: 10
+                order: -10
             );
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<QueryMethodAttribute>(),

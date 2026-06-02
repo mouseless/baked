@@ -18,7 +18,6 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
                 when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<LabelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
                 component: (c, cc) => TypeNavLink(c.Type, cc)
-
             );
             conventions.AddPropertyComponentConfiguration<NavLink>(
                 when: c => c.Type.Has<RouteAttribute>(),
