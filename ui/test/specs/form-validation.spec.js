@@ -76,3 +76,14 @@ test.describe("Mutable", () => {
     await expect(page.locator(primevue.tooltip.top)).toContainText("error is restricted");
   });
 });
+
+test.describe("Nested Validation", () => {
+  const id = "Nested Validation";
+
+  test("child validation hides itself in nested validations", async({ page }) => {
+    const component = page.getByTestId(id);
+    const inputGroup = component.locator(primevue.inputGroup.base).first();
+
+    await expect(inputGroup.locator(".b-Validation")).not.toBeAttached();
+  });
+});

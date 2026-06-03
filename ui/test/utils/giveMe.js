@@ -361,6 +361,17 @@ export default {
     };
   },
 
+  anExpectedInputGroup({ testId } = {}) {
+    testId = $(testId, "test-id");
+
+    return {
+      type: "ExpectedInputGroup",
+      schema: {
+        testId
+      }
+    };
+  },
+
   aField({ key, label, wide, component, testId } = {}) {
     key = $(key, "data");
     label = $(label, "Spec: Data");

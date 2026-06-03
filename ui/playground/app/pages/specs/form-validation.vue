@@ -54,6 +54,19 @@ const variants = [
         })
       ]
     })
+  },
+  {
+    name: "Nested Validation",
+    descriptor: giveMe.aSimpleForm({
+      validations: ["useFakeValidation"],
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [
+        giveMe.anInput({
+          name: "input-group",
+          component: giveMe.anExpectedInputGroup({ testId: "input-group" })
+        })
+      ]
+    })
   }
 ];
 </script>
