@@ -88,7 +88,39 @@ public class ApplyingConventions : Spec
     }
 
     [Test]
-    public void Conventions_can_have_bases()
+    public void Conventions_can_have_Order_and_apply_order_respects_base_extension_and_level_indexes()
+    {
+        var builder = GiveMe.ADomainModelBuilder(
+            conventions: c =>
+            {
+                c.Add(new TestConvention("D"), order: Order.At.WithBase("B1").WithLevel("L2").WithExtension("E2"));
+                c.Add(new TestConvention("C"), order: Order.At.WithBase("B1").WithLevel("L1").WithExtension("E2"));
+                c.Add(new TestConvention("B"), order: Order.At.WithBase("B1").WithLevel("L2").WithExtension("E1"));
+                c.Add(new TestConvention("A"), order: Order.At.WithBase("B1").WithLevel("L1").WithExtension("E1"));
+
+                c.Add(new TestConvention("H"), order: Order.At.WithBase("B2").WithLevel("L2").WithExtension("E2"));
+                c.Add(new TestConvention("G"), order: Order.At.WithBase("B2").WithLevel("L1").WithExtension("E2"));
+                c.Add(new TestConvention("F"), order: Order.At.WithBase("B2").WithLevel("L2").WithExtension("E1"));
+                c.Add(new TestConvention("E"), order: Order.At.WithBase("B2").WithLevel("L1").WithExtension("E1"));
+            },
+            conventionMatrixDefaults: false,
+            options: BuildOptions
+        );
+        var postBuilder = builder.StartBuild([typeof(string)]);
+        postBuilder.EndBuild();
+
+        _values[0].ShouldBe("A");
+        _values[1].ShouldBe("B");
+        _values[2].ShouldBe("C");
+        _values[3].ShouldBe("D");
+        _values[4].ShouldBe("E");
+        _values[5].ShouldBe("F");
+        _values[6].ShouldBe("G");
+        _values[7].ShouldBe("H");
+    }
+
+    [Test]
+    public void Conventions_can_define_base_only_order__level_and_extension_are_fallback_values()
     {
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
@@ -107,7 +139,7 @@ public class ApplyingConventions : Spec
     }
 
     [Test]
-    public void Conventions_can_have_level_based_orders()
+    public void Conventions_can_define_level_only_order__base_and_extension_are_fallback_values()
     {
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
@@ -126,7 +158,7 @@ public class ApplyingConventions : Spec
     }
 
     [Test]
-    public void Conventions_can_have_level_extension_orders()
+    public void Conventions_can_define_extension_only_order__base_and_level_are_fallback_values()
     {
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
