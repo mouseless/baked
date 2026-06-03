@@ -30,12 +30,12 @@ const variants = [
                   data: giveMe.aContextData({ key: "parent", prop: "data.child" })
                 }),
                 giveMe.anExpected({
-                  testId: "grant-parent",
-                  data: giveMe.aContextData({ key: "parent", prop: "grant.data" })
+                  testId: "grand-parent",
+                  data: giveMe.aContextData({ key: "parent", prop: "grand.data" })
                 }),
                 giveMe.anExpected({
-                  testId: "grant-grant-parent",
-                  data: giveMe.aContextData({ key: "parent", prop: "grant.grant.data" })
+                  testId: "grand-grand-parent",
+                  data: giveMe.aContextData({ key: "parent", prop: "grand.grand.data" })
                 }),
                 giveMe.anExpected({
                   testId: "child-remote",
@@ -48,10 +48,10 @@ const variants = [
               data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
             })
           ],
-          data: giveMe.anInlineData("GRANT PARENT VALUE")
+          data: giveMe.anInlineData("GRAND PARENT VALUE")
         })
       ],
-      data: giveMe.anInlineData("GRANT GRANT PARENT VALUE")
+      data: giveMe.anInlineData("GRAND GRAND PARENT VALUE")
     })
   },
   {

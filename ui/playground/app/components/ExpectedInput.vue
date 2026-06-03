@@ -3,20 +3,20 @@
     <InputNumber
       v-if="number"
       v-model="model"
+      v-bind="$attrs"
       :name="testId"
       :data-testid="testId"
       :placeholder="testId"
-      :invalid="$attrs.invalid"
       class="w-32"
       @input="onInput"
     />
     <InputText
       v-else
       v-model="model"
+      v-bind="$attrs"
       :name="testId"
       :data-testid="testId"
       :placeholder="testId"
-      :invalid="$attrs.invalid"
       class="w-32"
     />
   </Validation>
