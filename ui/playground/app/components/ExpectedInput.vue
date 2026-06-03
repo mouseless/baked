@@ -39,7 +39,7 @@ const { testId, defaultValue, number, restrictedValue } = schema;
 const mutableValidation = validation.injectMutable();
 
 watch(model, newValue => {
-  if(newValue === "") {
+  if(newValue === "" && !defaultValue) {
     model.value = null;
 
     return;
@@ -49,10 +49,12 @@ watch(model, newValue => {
     model.value = newValue = defaultValue;
   }
 
-  if(newValue === restrictedValue) {
-    mutableValidation?.setError(`${restrictedValue} is restricted`);
-  } else {
-    mutableValidation?.clear();
+  if(restrictedValue) {
+    if(newValue === restrictedValue) {
+      mutableValidation?.setError(`${restrictedValue} is restricted`);
+    } else {
+      mutableValidation?.clear();
+    }
   }
 });
 
