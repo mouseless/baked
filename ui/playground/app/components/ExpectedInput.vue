@@ -45,7 +45,7 @@ watch(model, newValue => {
     return;
   }
 
-  if(!newValue) {
+  if(newValue === null || newValue === undefined) {
     model.value = newValue = defaultValue;
   }
 
