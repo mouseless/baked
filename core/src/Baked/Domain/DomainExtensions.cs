@@ -65,6 +65,7 @@ public static class DomainExtensions
         public static DiagnosticCode AttributeDoesNotAllow => new(302, "attribute-does-not-allow");
         public static DiagnosticCode OrderOutOfBounds => new(303, "order-out-of-bounds");
         public static DiagnosticCode UndefinedLevel => new(304, "undefined-level");
+        public static DiagnosticCode InvalidOrder => new(305, "invalid-order");
     }
 
     extension(ApplicationContext application)

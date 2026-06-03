@@ -6,7 +6,11 @@ namespace Baked.Test.Domain;
 [TestFixture]
 public class ManagingOrders
 {
-    ICollection<string> _levelCollection = ["A", "B", "C"];
+    ICollection<string> _levelCollection = [
+        "BaseA.LevelA.ExtA",
+        "BaseB.LevelB.ExtB",
+        "BaseC.LevelC.ExtC",
+    ];
     IReadOnlyDictionary<string, int> _levels = default!;
     IDisposable _diagnostics = default!;
 
@@ -28,100 +32,161 @@ public class ManagingOrders
     [Test]
     public void Usages()
     {
+        var orderA = Order.At.WithBase("BaseA").WithLevel("LevelA").WithExtension("ExtA");
+        var orderB = Order.At.WithBase("BaseB").WithLevel("LevelB").WithExtension("ExtB");
+        var orderC = Order.At.WithBase("BaseC").WithLevel("LevelC").WithExtension("ExtC");
+
         // Global Level
-        Order.At.Global.AbsoluteMin.Calculate(_levels, "B").ShouldBe(int.MinValue);
-        Order.At.Global.Min.Calculate(_levels, "B").ShouldBe(int.MinValue + 10);
+        Order.At.Global.AbsoluteMin.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(int.MinValue);
+        Order.At.Global.Min.Calculate(_levels, "BaseB.LevelB.Ext.B").ShouldBe(int.MinValue + 10);
 
         // Pre Level
-        Order.At.WithLevel("A").AbsoluteMin.Calculate(_levels, "B").ShouldBe(-15000);
-        Order.At.WithLevel("A").Min.Calculate(_levels, "B").ShouldBe(-14990);
-        Order.At.WithLevel("A").Calculate(_levels, "B").ShouldBe(-10000);
-        Order.At.WithLevel("A").Max.Calculate(_levels, "B").ShouldBe(-5011);
-        Order.At.WithLevel("A").AbsoluteMax.Calculate(_levels, "B").ShouldBe(-5001);
+        orderA.AbsoluteMin.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(-15000);
+        orderA.Min.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(-14990);
+        orderA.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(-10000);
+        orderA.Max.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(-5011);
+        orderA.AbsoluteMax.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(-5001);
 
         // Default Level
-        Order.At.WithLevel("B").AbsoluteMin.Calculate(_levels, "B").ShouldBe(-5000);
-        Order.At.AbsoluteMin.Calculate(_levels, "B").ShouldBe(-5000);
-        Order.At.WithLevel("B").Min.Calculate(_levels, "B").ShouldBe(-4990);
-        Order.At.Min.Calculate(_levels, "B").ShouldBe(-4990);
+        orderB.AbsoluteMin.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(-5000);
+        orderB.Min.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(-4990);
 
-        Order.At.Global.Calculate(_levels, "B").ShouldBe(0);
-        Order.At.WithLevel("B").Calculate(_levels, "B").ShouldBe(0);
-        Order.At.Zero.Calculate(_levels, "B").ShouldBe(0);
+        Order.At.Global.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(0);
 
-        Order.At.WithLevel("B").Max.Calculate(_levels, "B").ShouldBe(4989);
-        Order.At.Max.Calculate(_levels, "B").ShouldBe(4989);
-        Order.At.WithLevel("B").AbsoluteMax.Calculate(_levels, "B").ShouldBe(4999);
-        Order.At.AbsoluteMax.Calculate(_levels, "B").ShouldBe(4999);
+        orderB.Max.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(4989);
+        orderB.AbsoluteMax.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(4999);
 
         // Post Level
-        Order.At.WithLevel("C").AbsoluteMin.Calculate(_levels, "B").ShouldBe(5000);
-        Order.At.WithLevel("C").Min.Calculate(_levels, "B").ShouldBe(5010);
-        Order.At.WithLevel("C").Calculate(_levels, "B").ShouldBe(10000);
-        Order.At.WithLevel("C").Max.Calculate(_levels, "B").ShouldBe(14989);
-        Order.At.WithLevel("C").AbsoluteMax.Calculate(_levels, "B").ShouldBe(14999);
+        orderC.AbsoluteMin.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(5000);
+        orderC.Min.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(5010);
+        orderC.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(10000);
+        orderC.Max.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(14989);
+        orderC.AbsoluteMax.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(14999);
 
         // Global Level
-        Order.At.Global.Max.Calculate(_levels, "B").ShouldBe(int.MaxValue - 10);
-        Order.At.Global.AbsoluteMax.Calculate(_levels, "B").ShouldBe(int.MaxValue);
+        Order.At.Global.Max.Calculate(_levels, "BaseB.LevelB.Ext.B").ShouldBe(int.MaxValue - 10);
+        Order.At.Global.AbsoluteMax.Calculate(_levels, "BaseB.LevelB.Ext.B").ShouldBe(int.MaxValue);
+    }
+
+    [Test]
+    public void Order_value_is_calculated_relative_to_default_level()
+    {
+        var orderA = Order.At.WithBase("BaseA").WithLevel("LevelA").WithExtension("ExtA");
+        var orderB = Order.At.WithBase("BaseB").WithLevel("LevelB").WithExtension("ExtB");
+        var orderC = Order.At.WithBase("BaseC").WithLevel("LevelC").WithExtension("ExtC");
+
+        orderA.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(-10000);
+        orderB.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(0);
+        orderC.Calculate(_levels, "BaseB.LevelB.ExtB").ShouldBe(10000);
     }
 
     [Test]
     public void Order_can_be_created_from_int_as_order_with_offset()
     {
         Order order = 10;
+        order = order
+            .WithBase("BaseA")
+            .WithLevel("LevelA")
+            .WithExtension("ExtA");
 
-        order.Calculate(_levels, "B").ShouldBe(10);
+        order.Calculate(_levels, "BaseA.LevelA.ExtA").ShouldBe(10);
     }
 
     [Test]
-    public void Setting_level_defaults_global_flag_to_false()
+    public void Order_mutators_have_no_effect_when_global()
     {
-        var order = Order.At.Global.WithLevel("B").AbsoluteMin;
+        Order order = Order.At.Global.AbsoluteMin;
+        order = order
+            .WithBase("BaseA")
+            .WithLevel("LevelA")
+            .WithExtension("ExtA");
 
-        order.Calculate(_levels, "B").ShouldBe(-5000);
-    }
-
-    // This should fail, test will be updated
-    [Test]
-    public void A_level_change_can_be_set_as_default_so_that_it_is_used_when_a_level_is_not_present()
-    {
-        true.ShouldBeFalse();
+        order.Calculate(_levels, "BaseA.LevelA.ExtA").ShouldBe(int.MinValue);
     }
 
     [Test]
-    public void Order_cannot_be_below_absolute_min_value()
+    public void Calculate_throws_exception_when_order_base_is_not_defined()
     {
-        var order = Order.At.WithLevel("A").AbsoluteMin - 1;
+        var order = Order.At
+            .WithLevel("LevelA")
+            .WithExtension("ExtA");
 
-        var action = () => { order.Calculate(_levels, "B"); };
+        var action = () => { order.Calculate(_levels, "BaseA.LevelA.ExtA"); };
 
         var exception = action.ShouldThrow<DiagnosticException>();
-        exception.Code.ShouldBe(DiagnosticCode.OrderOutOfBounds);
-        exception.Message.ShouldBe("Order (A: -5001) must be between -5000 - 4999");
+        exception.Code.ShouldBe(DiagnosticCode.InvalidOrder);
+        exception.Message.ShouldBe($"Order 'base' cannot be null");
     }
 
     [Test]
-    public void Order_cannot_exceed_absolute_max_value()
+    public void Calculate_throws_exception_when_order_level_is_not_defined()
     {
-        var order = Order.At.WithLevel("A").AbsoluteMax + 1;
+        var order = Order.At
+            .WithBase("BaseA")
+            .WithExtension("ExtA");
 
-        var action = () => { order.Calculate(_levels, "B"); };
+        var action = () => { order.Calculate(_levels, "BaseA.LevelA.ExtA"); };
 
         var exception = action.ShouldThrow<DiagnosticException>();
-        exception.Code.ShouldBe(DiagnosticCode.OrderOutOfBounds);
-        exception.Message.ShouldBe("Order (A: 5000) must be between -5000 - 4999");
+        exception.Code.ShouldBe(DiagnosticCode.InvalidOrder);
+        exception.Message.ShouldBe($"Order 'level' cannot be null");
     }
 
     [Test]
-    public void Throws_exception_when_default_layer_is_not_defined()
+    public void Calculate_throws_exception_when_order_extension_is_not_defined()
     {
-        var order = Order.At.WithLevel("A");
+        var order = Order.At
+            .WithBase("BaseA")
+            .WithLevel("LevelA");
+
+        var action = () => { order.Calculate(_levels, "BaseA.LevelA.ExtA"); };
+
+        var exception = action.ShouldThrow<DiagnosticException>();
+        exception.Code.ShouldBe(DiagnosticCode.InvalidOrder);
+        exception.Message.ShouldBe($"Order 'extension' cannot be null");
+    }
+
+    [Test]
+    public void Calculate_throws_exception_when_default_layer_is_not_defined()
+    {
+        var order = Order.At.WithBase("Base").WithLevel("Level").WithExtension("Extension");
 
         var action = () => { order.Calculate(_levels, "not-existing"); };
 
         var exception = action.ShouldThrow<DiagnosticException>();
         exception.Code.ShouldBe(DiagnosticCode.UndefinedLevel);
         exception.Message.ShouldBe($"Default level (not-existing) must be defined in levels");
+    }
+
+    [Test]
+    public void Calculate_throws_exception_when_offset_is_below_absolute_min_value()
+    {
+        var order = Order.At
+            .WithBase("BaseA")
+            .WithLevel("LevelA")
+            .WithExtension("ExtA")
+            .AbsoluteMin - 1;
+
+        var action = () => { order.Calculate(_levels, "BaseA.LevelA.ExtA"); };
+
+        var exception = action.ShouldThrow<DiagnosticException>();
+        exception.Code.ShouldBe(DiagnosticCode.OrderOutOfBounds);
+        exception.Message.ShouldBe("Order (BaseA.LevelA.ExtA: -5001) must be between -5000 - 4999");
+    }
+
+    [Test]
+    public void Calculate_throws_exception_when_offset_exceeds_absolute_max_value()
+    {
+        var order = Order.At
+            .WithBase("BaseA")
+            .WithLevel("LevelA")
+            .WithExtension("ExtA")
+            .AbsoluteMax + 1;
+
+        var action = () => { order.Calculate(_levels, "BaseA.LevelA.ExtA"); };
+
+        var exception = action.ShouldThrow<DiagnosticException>();
+        exception.Code.ShouldBe(DiagnosticCode.OrderOutOfBounds);
+        exception.Message.ShouldBe("Order (BaseA.LevelA.ExtA: 5000) must be between -5000 - 4999");
     }
 }

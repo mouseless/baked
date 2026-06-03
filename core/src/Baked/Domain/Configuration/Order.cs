@@ -55,17 +55,14 @@ public readonly struct Order
     public Order Offset(int value) =>
         Clone(offset: _offset + value);
 
-    public Order WithBase(string @base) => Clone(
-        @base: @base
-    );
+    public Order WithBase(string @base) =>
+        Clone(@base: @base);
 
-    public Order WithLevel(string level) => Clone(
-        level: level
-    );
+    public Order WithLevel(string level) =>
+        Clone(level: level);
 
-    public Order WithExtension(string extension) => Clone(
-        extension: extension
-    );
+    public Order WithExtension(string extension) =>
+        Clone(extension: extension);
 
     Order Clone(
         int? offset = default,
@@ -91,16 +88,16 @@ public readonly struct Order
     {
         if (_global) { return _offset; }
 
+        if (_base is null) { throw DiagnosticCode.InvalidOrder.Exception($"Order 'base' cannot be null"); }
+        if (_level is null) { throw DiagnosticCode.InvalidOrder.Exception($"Order 'level' cannot be null"); }
+        if (_extension is null) { throw DiagnosticCode.InvalidOrder.Exception($"Order 'extension' cannot be null"); }
+
         if (!levels.TryGetValue(defaultLevel, out var defaultLevelIndex))
         {
             throw DiagnosticCode.UndefinedLevel.Exception(
                 $"Default level ({defaultLevel}) must be defined in levels"
             );
         }
-
-        if (_base is null) { throw new("no base"); }
-        if (_level is null) { throw new("no level"); }
-        if (_extension is null) { throw new("no extension"); }
 
         var level = $"{_base}.{_level}.{_extension}";
         if (_offset < _lowerBound || _offset > _upperBound)
