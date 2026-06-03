@@ -26,14 +26,18 @@ export default function() {
       }), {})
     );
 
+    const mutableValidations = {};
+
     context.provideValidations(validations);
+    context.provideMutableValidations(mutableValidations);
 
     const isValid = computed(() =>
-      Object.values(validations.value).every(v => v.valid)
+      Object.values(validations.value).every(v => v.valid) &&
+      Object.values(mutableValidations).every(v => v.value.valid)
     );
 
     const messages = computed(() =>
-      Object.values(validations.value)
+      [...Object.values(validations.value), ...Object.values(mutableValidations).map(v => v.value)]
         .filter(v => v.message)
         .map((v, i) => `${i > 0 ? "\n" : ""} - ${v.message}`)
         .join("")
@@ -42,7 +46,34 @@ export default function() {
     return { isValid, messages, validations };
   }
 
+  function injectMutable() {
+    const ref = context.injectMutableValidation();
+    if(!ref) { return null; }
+
+    return MutableValidation(ref);
+  }
+
   return {
-    validate
+    validate,
+    injectMutable
+  };
+}
+
+function MutableValidation(ref) {
+  function clear() {
+    ref.value.valid = true;
+    delete ref.value.message;
+    delete ref.value.severity;
+  }
+
+  function setError(message) {
+    ref.value.valid = false;
+    ref.value.message = message;
+    ref.value.severity = "error";
+  }
+
+  return {
+    clear,
+    setError
   };
 }

@@ -131,12 +131,12 @@ const allVariants = computed(() => {
     result.push({
       name: "Validation",
       model: ref(),
-      validation: {
+      validation: computed(() => ({
         valid: false,
         persist: true,
         message: "this is an error message",
         severity: "error"
-      },
+      })),
       descriptor: { ...variants[0].descriptor }
     });
   }

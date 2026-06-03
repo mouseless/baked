@@ -31,6 +31,9 @@ export default {
   iftaLabel: {
     base: ".p-iftalabel"
   },
+  inputGroup: {
+    base: ".p-inputgroup"
+  },
   inputNumber: {
     base: ".p-inputnumber"
   },

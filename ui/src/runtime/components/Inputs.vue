@@ -4,29 +4,27 @@
     :key="input.name"
     v-model="models[input.name]"
     :schema="input"
+    :form-mode
     :class="inputClass"
-    :invalid="invalid(input.name)"
-    @blur="() => touched(input.name)"
   />
 </template>
 <script setup>
-import { computed, reactive, ref, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 import { useContext, useRoute } from "#imports";
 import { Input } from "#components";
 
 const context = useContext();
 const route = useRoute();
 
-const { inputs } = defineProps({
+const { inputs, formMode } = defineProps({
   inputs: { type: Array, required: true },
+  formMode: { type: Boolean },
   inputClass: { type: String, default: "" }
 });
 const emit = defineEmits(["ready", "changed"]);
 
 const parentPath = context.injectPath();
-const validations = context.injectValidations();
 
-const inputEvents = ref({});
 const models = reactive({});
 const values = computed(() =>
   inputs.reduce((result, input) => {
@@ -39,7 +37,7 @@ const values = computed(() =>
 context.providePath(`${parentPath}/inputs`);
 
 watch(values, newValues => {
-  if(inputs
+  if(!formMode && inputs
     .filter(i => i.default || i.defaultSelfManaged)
     .some(i => !checkValue(newValues[i.name]))
   ) { return; }
@@ -83,19 +81,5 @@ function getValue(input) {
   } else {
     return models[input.name];
   }
-}
-
-function touched(key) {
-  inputEvents.value[key] = { touched: true };
-}
-
-function invalid(input) {
-  if(!Object.values(validations.value).length) { return; }
-
-  if(!validations.value[input]?.valid && validations.value[input]?.persist) {
-    return true;
-  }
-
-  return !validations.value[input]?.valid && inputEvents.value[input]?.touched || false;
 }
 </script>

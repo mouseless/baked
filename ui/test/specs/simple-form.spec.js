@@ -43,39 +43,35 @@ test.describe("Base", () => {
 
   test("button is disabled when inputs are not ready", async({ page }) => {
     const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
+
+    await input.fill("");
 
     await expect(button).toBeDisabled();
   });
 
   test("button is enabled when inputs are ready", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
-
-    await input.fill("text");
 
     await expect(button).not.toBeDisabled();
   });
 
   test("action", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
 
-    await input.fill("text");
     await button.click();
 
     await expect(page.locator(primevue.toast.base)).toBeVisible();
-    await expect(page.locator(primevue.toast.summary)).toHaveText("text");
+    await expect(page.locator(primevue.toast.summary)).toHaveText("default");
   });
 
   test("button is disabled until action is completed", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
 
-    await input.fill("text");
     await button.click();
 
     await expect(button).toBeDisabled();
@@ -83,6 +79,15 @@ test.describe("Base", () => {
     await expect(spinner).toBeVisible();
     await expect(page.locator(primevue.toast.base)).toBeVisible();
     await expect(button).not.toBeDisabled();
+  });
+
+  test("inputs are in form mode", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("");
+
+    await expect(input).toHaveValue("");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -239,17 +244,5 @@ test.describe("Validation", () => {
     await input2.focus();
 
     await expect(input1).toContainClass("p-invalid");
-  });
-
-  test("disabled submit button when input-1 bigger then input-2", async({ page }) => {
-    const component = page.getByTestId(id);
-    const input1 = component.getByTestId("input-1");
-    const input2 = component.getByTestId("input-2");
-    const button = component.locator(primevue.button.base);
-
-    await input1.fill("2");
-    await input2.fill("1");
-
-    await expect(button).toBeDisabled();
   });
 });

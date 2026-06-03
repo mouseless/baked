@@ -27,6 +27,18 @@ const variants = [
         ])
       })
     })
+  },
+  {
+    name: "Dynamic",
+    descriptor: giveMe.aButton({
+      action: giveMe.aLocalAction({
+        redirect: "/page/with/route/[id]",
+        options: giveMe.aCompositeData([
+          giveMe.anInlineData({ route: "/page/with/route/[id]" }),
+          giveMe.anInlineData({ id: "42" })
+        ])
+      })
+    })
   }
 ];
 </script>

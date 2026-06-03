@@ -46,6 +46,12 @@ test.describe("Base", () => {
 test.describe("Dynamic", () => {
   const id = "Dynamic";
 
+  test("text", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveText("Dynamic");
+  });
+
   test("address", async({ page }) => {
     const component = page.getByTestId(id);
 

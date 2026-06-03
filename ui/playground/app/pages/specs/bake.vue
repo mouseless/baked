@@ -17,23 +17,41 @@ const variants = [
     name: "Parent Data",
     descriptor: giveMe.aContainer({
       contents: [
-        giveMe.anExpected({
-          testId: "child-root",
-          data: giveMe.aContextData({ key: "parent", prop: "data" })
-        }),
-        giveMe.anExpected({
-          testId: "child-prop",
-          data: giveMe.aContextData({ key: "parent", prop: "data.child" })
-        }),
-        giveMe.anExpected({
-          testId: "child-remote",
-          data: giveMe.aRemoteData({
-            path: "/method-samples/async?ms=5",
-            headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
-          })
+        giveMe.aContainer({
+          contents: [
+            giveMe.aContainer({
+              contents: [
+                giveMe.anExpected({
+                  testId: "child-root",
+                  data: giveMe.aContextData({ key: "parent", prop: "data" })
+                }),
+                giveMe.anExpected({
+                  testId: "child-prop",
+                  data: giveMe.aContextData({ key: "parent", prop: "data.child" })
+                }),
+                giveMe.anExpected({
+                  testId: "grand-parent",
+                  data: giveMe.aContextData({ key: "parent", prop: "grand.data" })
+                }),
+                giveMe.anExpected({
+                  testId: "grand-grand-parent",
+                  data: giveMe.aContextData({ key: "parent", prop: "grand.grand.data" })
+                }),
+                giveMe.anExpected({
+                  testId: "child-remote",
+                  data: giveMe.aRemoteData({
+                    path: "/method-samples/async?ms=5",
+                    headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
+                  })
+                })
+              ],
+              data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
+            })
+          ],
+          data: giveMe.anInlineData("GRAND PARENT VALUE")
         })
       ],
-      data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
+      data: giveMe.anInlineData("GRAND GRAND PARENT VALUE")
     })
   },
   {

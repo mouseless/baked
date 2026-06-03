@@ -29,6 +29,44 @@ const variants = [
         })
       ]
     })
+  },
+  {
+    name: "Mutable",
+    descriptor: giveMe.aSimpleForm({
+      validations: ["useFakeValidation"],
+      showValidateSummary: true,
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [
+        giveMe.anInput({
+          required: false,
+          name: "input-1",
+          component: giveMe.anExpectedInput({
+            testId: "input-1",
+            restrictedValue: "error"
+          })
+        }),
+        giveMe.anInput({
+          required: true,
+          name: "input-2",
+          component: giveMe.anExpectedInput({
+            testId: "input-2"
+          })
+        })
+      ]
+    })
+  },
+  {
+    name: "Nested Validation",
+    descriptor: giveMe.aSimpleForm({
+      validations: ["useFakeValidation"],
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [
+        giveMe.anInput({
+          name: "input-group",
+          component: giveMe.anExpectedInputGroup({ testId: "input-group" })
+        })
+      ]
+    })
   }
 ];
 </script>

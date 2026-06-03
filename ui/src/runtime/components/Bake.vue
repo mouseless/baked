@@ -77,7 +77,7 @@ const error = normalizeError(rawError);
 
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
-context.provideParentContext({ ...contextData.parent, data });
+context.provideParentContext({ ...contextData.parent, data, grand: contextData.parent });
 
 if(shouldLoad) {
   context.provideLoading(loading);

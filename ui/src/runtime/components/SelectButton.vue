@@ -1,10 +1,10 @@
 <template>
-  <AwaitLoading>
-    <template #loading>
-      <div class="min-w-60">
-        <Skeleton class="min-h-10" />
-      </div>
-    </template>
+  <AwaitLoading
+    :skeleton="{
+      height: label?.mode === 'ifta' ? '3.6rem' : '2.6rem',
+      class: 'min-w-60'
+    }"
+  >
     <Validation>
       <Labeler
         :label="{
@@ -45,7 +45,7 @@
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { SelectButton, Skeleton } from "primevue";
+import { SelectButton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
 import { AwaitLoading, Labeler, Validation } from "#components";
 
@@ -129,6 +129,7 @@ function setSelected(value) {
   @apply whitespace-nowrap;
 }
 .p-popover-content {
+  .b-component--SelectButton.p-selectbutton,
   .b-component--SelectButton .p-selectbutton {
     @apply max-sm:flex max-sm:flex-col;
 

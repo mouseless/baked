@@ -39,3 +39,16 @@ test.describe("Conditional", () => {
     await expect(page).toHaveURL("/page/with/route/pageWithRoute");
   });
 });
+
+test.describe("Dynamic", () => {
+  const id = "Dynamic";
+
+  test("redirects to given dynamic route", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await button.click();
+
+    await expect(page).toHaveURL("/page/with/route/42");
+  });
+});

@@ -57,6 +57,8 @@
   "/specs/input-number:Title": "Input Number",
   "/specs/input-text:Description": "Allows regular text input",
   "/specs/input-text:Title": "Input Text",
+  "/specs/inputs--form-mode:Description": "Manages inputs in form mode",
+  "/specs/inputs--form-mode:Title": "Inputs - Form Mode",
   "/specs/inputs--query-bound:Description": "Manages inputs in sync with query string",
   "/specs/inputs--query-bound:Title": "Inputs - Query Bound",
   "/specs/inputs:Description": "Manages inputs through emits",

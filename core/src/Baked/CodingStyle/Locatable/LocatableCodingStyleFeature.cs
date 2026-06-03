@@ -17,9 +17,9 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             builder.Conventions.Add(new ReplaceTargetWithIdParameterConvention());
             builder.Conventions.Add(new InitializeLocatablesConvention());
-            builder.Conventions.Add(new LookupLocatableParameterConvention(), order: RestApiLayer.MaxConventionOrder - 20);
-            builder.Conventions.Add(new LookupLocatableParametersConvention(), order: RestApiLayer.MaxConventionOrder - 20);
-            builder.Conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+            builder.Conventions.Add(new LookupLocatableParameterConvention(), order: RestApiLayer.MaxConventionOrder - 30);
+            builder.Conventions.Add(new LookupLocatableParametersConvention(), order: RestApiLayer.MaxConventionOrder - 30);
+            builder.Conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 20);
         });
 
         configurator.Domain.ConfigureExportConfigurations(exports =>
@@ -83,7 +83,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                 contractResolver.SetValueProvider((property, _) =>
                 {
-                    property.ValueProvider = new ProxyAwareValueProvider(locatableContext.IdPropertyNames, property.PropertyName, property.ValueProvider);
+                    property.ValueProvider = new ProxyAwareValueProvider(contractResolver, locatableContext.IdPropertyNames, property.PropertyName, property.ValueProvider);
                 });
             });
         });

@@ -25,6 +25,7 @@ const variants = [
       inputs: [
         giveMe.anInput({
           name: "input",
+          defaultValue: "default",
           required: true
         })
       ],

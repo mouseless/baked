@@ -64,6 +64,7 @@
         <Inputs
           v-if="inputs"
           :inputs
+          form-mode
           input-class="w-full"
           @ready="onReady"
           @changed="onChanged"
@@ -71,7 +72,7 @@
       </div>
       <Button
         ref="submitRef"
-        v-tooltip.left="{
+        v-tooltip.top="{
           disabled: !showValidationSummary,
           value: messages,
           pt: { text: 'text-sm' }

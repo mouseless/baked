@@ -46,39 +46,35 @@ test.describe("Base", () => {
 
   test("button is disabled when inputs are not ready", async({ page }) => {
     const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
+
+    await input.fill("");
 
     await expect(button).toBeDisabled();
   });
 
   test("button is enabled when inputs are ready", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
-
-    await input.fill("text");
 
     await expect(button).not.toBeDisabled();
   });
 
   test("action", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
 
-    await input.fill("text");
     await button.click();
 
     await expect(page.locator(primevue.toast.base)).toBeVisible();
-    await expect(page.locator(primevue.toast.summary)).toHaveText("text");
+    await expect(page.locator(primevue.toast.summary)).toHaveText("default");
   });
 
   test("button is disabled until action is completed", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
 
-    await input.fill("text");
     await button.click();
 
     await expect(button).toBeDisabled();
@@ -92,6 +88,15 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
 
     await expect(component).not.toHaveText(/Default/);
+  });
+
+  test("inputs are in form mode", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("");
+
+    await expect(input).toHaveValue("");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
