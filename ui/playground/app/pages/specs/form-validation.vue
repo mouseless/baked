@@ -33,6 +33,8 @@ const variants = [
   {
     name: "Mutable",
     descriptor: giveMe.aSimpleForm({
+      validations: ["useFakeValidation"],
+      showValidateSummary: true,
       action: giveMe.aLocalAction({ showMessage: "ok" }),
       inputs: [
         giveMe.anInput({

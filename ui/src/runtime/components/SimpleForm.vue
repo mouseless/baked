@@ -72,7 +72,7 @@
       </div>
       <Button
         ref="submitRef"
-        v-tooltip.left="{
+        v-tooltip.top="{
           disabled: !showValidationSummary,
           value: messages,
           pt: { text: 'text-sm' }
