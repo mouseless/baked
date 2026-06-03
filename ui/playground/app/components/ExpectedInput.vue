@@ -7,6 +7,7 @@
       :data-testid="testId"
       :placeholder="testId"
       :invalid="$attrs.invalid"
+      class="w-32"
       @input="onInput"
     />
     <InputText
@@ -16,6 +17,7 @@
       :data-testid="testId"
       :placeholder="testId"
       :invalid="$attrs.invalid"
+      class="w-32"
     />
   </Validation>
 </template>
