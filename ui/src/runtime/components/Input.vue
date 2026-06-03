@@ -3,6 +3,7 @@
     v-model="model"
     :name="schema.name"
     :descriptor="schema.component"
+    :invalid
   />
 </template>
 <script setup>
@@ -16,9 +17,10 @@ const { mount: mountData, onAfterMount: onAfterMountData } = useDataMounter();
 const route = useRoute();
 const router = useRouter();
 
-const { schema, formMode } = defineProps({
+const { schema, formMode, invalid: invalidForm } = defineProps({
   schema: { type: Object, required: true },
-  formMode: { type: Boolean }
+  formMode: { type: Boolean },
+  invalid: { type: Boolean }
 });
 const model = defineModel({ type: null, required: true });
 
@@ -27,8 +29,9 @@ const mutableValidations = context.injectMutableValidations();
 
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
-const validation = computed(() => validations.value[schema.name] || {});
-const mutableValidation = ref({});
+const validation = computed(() => validations.value[schema.name] || { valid: true });
+const mutableValidation = ref({ valid: true });
+const invalid = computed(() => !mutableValidation.value.valid || invalidForm);
 mutableValidations[schema.name] = mutableValidation;
 
 context.provideValidation(validation);

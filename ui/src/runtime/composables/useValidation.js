@@ -33,7 +33,7 @@ export default function() {
 
     const isValid = computed(() =>
       Object.values(validations.value).every(v => v.valid) &&
-      Object.values(mutableValidations).every(v => v.valid)
+      Object.values(mutableValidations).every(v => v.value.valid)
     );
 
     const messages = computed(() =>

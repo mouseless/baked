@@ -37,9 +37,17 @@ const variants = [
       inputs: [
         giveMe.anInput({
           required: false,
+          name: "input-1",
           component: giveMe.anExpectedInput({
             testId: "input-1",
             restrictedValue: "make error"
+          })
+        }),
+        giveMe.anInput({
+          required: true,
+          name: "input-2",
+          component: giveMe.anExpectedInput({
+            testId: "input-2"
           })
         })
       ]
