@@ -43,7 +43,7 @@ const message = computed(() => {
     return mutableValidation.value.message;
   }
 
-  if(validation?.value.message && validation.value.persist) {
+  if(validation.value?.message && validation.value?.persist) {
     return validation.value.message;
   }
 
