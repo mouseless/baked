@@ -27,8 +27,7 @@ const variants = [
         ])
       })
     })
-  }
-  ,
+  },
   {
     name: "Dynamic",
     descriptor: giveMe.aButton({
