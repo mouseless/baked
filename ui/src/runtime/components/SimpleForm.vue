@@ -64,6 +64,7 @@
         <Inputs
           v-if="inputs"
           :inputs
+          form-mode
           input-class="w-full"
           @ready="onReady"
           @changed="onChanged"
