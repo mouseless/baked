@@ -29,6 +29,21 @@ const variants = [
         })
       ]
     })
+  },
+  {
+    name: "Mutable",
+    descriptor: giveMe.aSimpleForm({
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [
+        giveMe.anInput({
+          required: false,
+          component: giveMe.anExpectedInput({
+            testId: "input-1",
+            restrictedValue: "make error"
+          })
+        })
+      ]
+    })
   }
 ];
 </script>

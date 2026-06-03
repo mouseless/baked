@@ -346,15 +346,16 @@ export default {
     };
   },
 
-  anExpectedInput({ testId, defaultValue, number, action } = {}) {
+  anExpectedInput({ action, defaultValue, number, restrictedValue, testId } = {}) {
     testId = $(testId, "test-id");
 
     return {
       type: "ExpectedInput",
       schema: {
-        testId,
         defaultValue,
-        number
+        number,
+        restrictedValue,
+        testId
       },
       action
     };

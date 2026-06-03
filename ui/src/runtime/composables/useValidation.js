@@ -25,6 +25,7 @@ export default function() {
         })
       }), {})
     );
+
     const mutableValidations = {};
 
     context.provideValidations(validations);

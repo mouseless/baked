@@ -48,7 +48,7 @@ watch(model, newValue => {
   }
 
   if(newValue === restrictedValue) {
-    mutableValidation?.addError(`${restrictedValue} is restricted`);
+    mutableValidation?.setError(`${restrictedValue} is restricted`);
   } else {
     mutableValidation?.clear();
   }
