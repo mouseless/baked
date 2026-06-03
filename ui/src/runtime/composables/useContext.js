@@ -71,6 +71,22 @@ export default function() {
     provide("__bake_loading", value);
   }
 
+  function injectMutableValidations() {
+    return inject("__bake_mutable_validations", {});
+  }
+
+  function provideMutableValidations(value) {
+    provide("__bake_mutable_validations", value);
+  }
+
+  function injectMutableValidation() {
+    return inject("__bake_mutable_validation", null);
+  }
+
+  function provideMutableValidation(value) {
+    provide("__bake_mutable_validation", value);
+  }
+
   function injectPageContext() {
     return inject("__bake_page_context");
   }
@@ -103,6 +119,14 @@ export default function() {
     provide("__bake_validation", value);
   }
 
+  function injectValidationHandled() {
+    return inject("__bake_validation_handled", false);
+  }
+
+  function provideValidationHandled(value) {
+    provide("__bake_validation_handled", value);
+  }
+
   return {
     injectPath,
     providePath,
@@ -117,6 +141,10 @@ export default function() {
     provideExecuting,
     injectLoading,
     provideLoading,
+    injectMutableValidations,
+    provideMutableValidations,
+    injectMutableValidation,
+    provideMutableValidation,
     injectPageContext,
     providePageContext,
     injectParentContext,
@@ -124,6 +152,8 @@ export default function() {
     injectValidations,
     provideValidations,
     injectValidation,
-    provideValidation
+    provideValidation,
+    injectValidationHandled,
+    provideValidationHandled
   };
 }

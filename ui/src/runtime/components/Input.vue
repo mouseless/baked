@@ -23,12 +23,16 @@ const { schema, formMode } = defineProps({
 const model = defineModel({ type: null, required: true });
 
 const validations = context.injectValidations();
+const mutableValidations = context.injectMutableValidations();
 
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
 const validation = computed(() => validations.value[schema.name] || {});
+const mutableValidation = ref({});
+mutableValidations[schema.name] = mutableValidation;
 
 context.provideValidation(validation);
+context.provideMutableValidation(mutableValidation);
 
 onAfterMountData(async() => {
   // parent component might set model to null during setup, because of that on
