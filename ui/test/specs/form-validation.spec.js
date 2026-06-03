@@ -32,4 +32,33 @@ test.describe("Base", () => {
 
     await expect(label).toHaveText("Test Label (Optional)");
   });
+
+});
+
+test.describe("Mutable", () => {
+  const id = "Mutable";
+
+  test("enable submit button when required input is valid", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("input-1");
+    const input2 = component.getByTestId("input-2");
+    const button = component.locator(primevue.button.base);
+
+    await input1.fill("its not restircted");
+    await input2.fill("required");
+
+    await expect(button).toBeEnabled();
+  });
+
+  test("disable submit button when mutableValidation is not valid", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("input-1");
+    const input2 = component.getByTestId("input-2");
+    const button = component.locator(primevue.button.base);
+
+    await input1.fill("error");
+    await input2.fill("required");
+
+    await expect(button).toBeDisabled();
+  });
 });
