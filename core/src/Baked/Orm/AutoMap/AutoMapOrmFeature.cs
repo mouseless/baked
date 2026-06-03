@@ -118,6 +118,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
+            model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Fetch.Join()));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
         });
 
