@@ -129,6 +129,7 @@ function setSelected(value) {
   @apply whitespace-nowrap;
 }
 .p-popover-content {
+  .b-component--SelectButton.p-selectbutton,
   .b-component--SelectButton .p-selectbutton {
     @apply max-sm:flex max-sm:flex-col;
 

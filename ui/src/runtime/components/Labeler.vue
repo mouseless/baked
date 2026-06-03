@@ -13,7 +13,7 @@
     <template #default>
       <slot />
       <label
-        class="max-sm:truncate max-sm:w-5/6"
+        class="max-sm:truncate"
         :for="path"
       >
         {{ localizedText }}

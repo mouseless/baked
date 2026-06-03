@@ -29,16 +29,26 @@ const mutableValidations = context.injectMutableValidations();
 
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
-const validation = computed(() => validations.value[schema.name]);
-const mutableValidation = ref({ valid: true });
-const touched = ref(false);
-const invalidInForm = computed(() => !validation.value?.valid && (validation.value?.persist || touched.value));
-const invalid = computed(() => !mutableValidation.value.valid || invalidInForm.value);
 
-mutableValidations[schema.name] = mutableValidation;
+let validation = undefined;
+let mutableValidation = undefined;
+let touched = undefined;
+let invalidInForm = undefined;
+let invalid = undefined;
+let onBlur = undefined;
+if(validations) {
+  validation = computed(() => validations.value[schema.name]);
+  mutableValidation = ref({ valid: true });
+  touched = ref(false);
+  invalidInForm = computed(() => !validation.value?.valid && (validation.value?.persist || touched.value));
+  invalid = computed(() => !mutableValidation.value.valid || invalidInForm.value);
+  onBlur = () => touched.value = true;
 
-context.provideValidation(validation);
-context.provideMutableValidation(mutableValidation);
+  mutableValidations[schema.name] = mutableValidation;
+
+  context.provideValidation(validation);
+  context.provideMutableValidation(mutableValidation);
+}
 
 onAfterMountData(async() => {
   // parent component might set model to null during setup, because of that on
@@ -117,9 +127,5 @@ function setModel(value) {
     const numericValue = Number(value);
     model.value = Number.isNaN(numericValue) ? undefined : value;
   }
-}
-
-function onBlur() {
-  touched.value = true;
 }
 </script>

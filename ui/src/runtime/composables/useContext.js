@@ -104,7 +104,7 @@ export default function() {
   }
 
   function injectValidations() {
-    return inject("__bake_validations", ref({}));
+    return inject("__bake_validations", null);
   }
 
   function provideValidations(value) {

@@ -21,7 +21,6 @@
           :auto-filter-focus="filter"
           :filter-fields="[optionLabel]"
           reset-filter-on-hide
-          class="w-full"
         >
           <template #value="slotProps">
             <span>{{ getValueLabel(slotProps) }}</span>
@@ -127,6 +126,12 @@ function setSelected(value) {
   }
   .p-select-label {
     font-size: inherit;
+  }
+}
+
+.p-popover-content {
+  .b-component--Select {
+    @apply max-md:w-full;
   }
 }
 </style>
