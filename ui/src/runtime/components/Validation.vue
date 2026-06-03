@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!validation || validationHandled">
+  <template v-if="validationHandled || !validation">
     <slot />
   </template>
   <div
@@ -32,8 +32,8 @@ import { Message } from "#components";
 
 const context = useContext();
 
-const validation = context.injectValidation();
 const validationHandled = context.injectValidationHandled();
+const validation = context.injectValidation();
 const mutableValidation = context.injectMutableValidation();
 
 context.provideValidationHandled(true);

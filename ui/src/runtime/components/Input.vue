@@ -4,6 +4,7 @@
     :name="schema.name"
     :descriptor="schema.component"
     :invalid
+    @blur="onBlur"
   />
 </template>
 <script setup>
@@ -17,10 +18,9 @@ const { mount: mountData, onAfterMount: onAfterMountData } = useDataMounter();
 const route = useRoute();
 const router = useRouter();
 
-const { schema, formMode, invalid: invalidForm } = defineProps({
+const { schema, formMode } = defineProps({
   schema: { type: Object, required: true },
-  formMode: { type: Boolean },
-  invalid: { type: Boolean }
+  formMode: { type: Boolean }
 });
 const model = defineModel({ type: null, required: true });
 
@@ -29,9 +29,12 @@ const mutableValidations = context.injectMutableValidations();
 
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
-const validation = computed(() => validations.value[schema.name] || { valid: true });
+const validation = computed(() => validations.value[schema.name]);
 const mutableValidation = ref({ valid: true });
-const invalid = computed(() => !mutableValidation.value.valid || invalidForm);
+const touched = ref(false);
+const invalidInForm = computed(() => !validation.value?.valid && (validation.value?.persist || touched.value));
+const invalid = computed(() => !mutableValidation.value.valid || invalidInForm.value);
+
 mutableValidations[schema.name] = mutableValidation;
 
 context.provideValidation(validation);
@@ -114,5 +117,9 @@ function setModel(value) {
     const numericValue = Number(value);
     model.value = Number.isNaN(numericValue) ? undefined : value;
   }
+}
+
+function onBlur() {
+  touched.value = true;
 }
 </script>

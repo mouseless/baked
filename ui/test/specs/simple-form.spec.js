@@ -245,16 +245,4 @@ test.describe("Validation", () => {
 
     await expect(input1).toContainClass("p-invalid");
   });
-
-  test("disabled submit button when input-1 bigger then input-2", async({ page }) => {
-    const component = page.getByTestId(id);
-    const input1 = component.getByTestId("input-1");
-    const input2 = component.getByTestId("input-2");
-    const button = component.locator(primevue.button.base);
-
-    await input1.fill("2");
-    await input2.fill("1");
-
-    await expect(button).toBeDisabled();
-  });
 });

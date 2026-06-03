@@ -42,7 +42,7 @@ const variants = [
           name: "input-1",
           component: giveMe.anExpectedInput({
             testId: "input-1",
-            restrictedValue: "make error"
+            restrictedValue: "error"
           })
         }),
         giveMe.anInput({

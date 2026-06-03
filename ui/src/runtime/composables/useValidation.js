@@ -31,10 +31,7 @@ export default function() {
     context.provideValidations(validations);
     context.provideMutableValidations(mutableValidations);
 
-    const isValid = computed(() =>
-      Object.values(validations.value).every(v => v.valid) &&
-      Object.values(mutableValidations).every(v => v.value.valid)
-    );
+    const isValid = computed(() => Object.values(validations.value).every(v => v.valid) && Object.values(mutableValidations).every(v => v.value.valid));
 
     const messages = computed(() =>
       [...Object.values(validations.value), ...Object.values(mutableValidations).map(v => v.value)]
@@ -61,15 +58,15 @@ export default function() {
 
 function MutableValidation(ref) {
   function clear() {
-    ref.valid = true;
-    delete ref.message;
-    delete ref.severity;
+    ref.value.valid = true;
+    delete ref.value.message;
+    delete ref.value.severity;
   }
 
   function setError(message) {
-    ref.valid = false;
-    ref.message = message;
-    ref.severity = "error";
+    ref.value.valid = false;
+    ref.value.message = message;
+    ref.value.severity = "error";
   }
 
   return {
