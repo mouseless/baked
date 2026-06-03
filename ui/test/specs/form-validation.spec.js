@@ -32,7 +32,6 @@ test.describe("Base", () => {
 
     await expect(label).toHaveText("Test Label (Optional)");
   });
-
 });
 
 test.describe("Mutable", () => {
