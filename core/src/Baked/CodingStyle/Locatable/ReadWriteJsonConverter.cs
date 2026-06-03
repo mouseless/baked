@@ -1,6 +1,6 @@
 ﻿using Baked.Business;
+using Baked.RestApi;
 using Newtonsoft.Json;
-using NHibernate.Proxy;
 
 namespace Baked.CodingStyle.Locatable;
 
@@ -22,6 +22,7 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
             return;
         }
 
+        var contractResolver = serializer.ContractResolver as ExtendedContractResolver;
         writer.WriteStartObject();
 
         if (serializer.TypeNameHandling == TypeNameHandling.All ||
@@ -29,7 +30,9 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
             serializer.TypeNameHandling == TypeNameHandling.Objects
         )
         {
-            var actualType = value.GetType();
+            var actualType = contractResolver is not null
+                ? contractResolver.ClearProxyType(value.GetType())
+                : value.GetType();
             writer.WritePropertyName("$type");
 
             serializer.SerializationBinder.BindToName(actualType, out var assemblyName, out var typeName);
@@ -41,7 +44,7 @@ public abstract class ReadWriteJsonConverter<TLocatable>(ILocator<TLocatable> _l
         writer.WritePropertyName(IdProp);
         writer.WriteValue(GetId(value));
 
-        if (value is INHibernateProxy proxy && proxy.HibernateLazyInitializer.IsUninitialized)
+        if (contractResolver is not null && contractResolver.IsUnitializedProxy(value))
         {
             writer.WriteEndObject();
 

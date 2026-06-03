@@ -163,7 +163,13 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 
-            contractResolver.ProxyType = typeof(INHibernateProxy);
+            contractResolver.SetClearProxyType(type =>
+            {
+                if (!type.IsAssignableTo(typeof(INHibernateProxy))) { return type; }
+
+                return type.BaseType ?? throw new($"Proxy type `{type.FullName}` should have a base type");
+            });
+            contractResolver.SetIsUnitializedProxy(value => value is INHibernateProxy proxy && proxy.HibernateLazyInitializer.IsUninitialized);
         });
     }
 }

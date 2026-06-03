@@ -9,8 +9,8 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
     readonly Dictionary<string, Action<JsonContract, IServiceProvider>> _typeConfigureMap = [];
     readonly Dictionary<string, Action<JsonProperty, IServiceProvider>> _propertyConfigureMap = [];
     Action<JsonProperty, IServiceProvider?> _valueProvider = (property, _) => { };
-
-    public Type? ProxyType { get; set; }
+    Func<object, bool> _isUnitializedProxy = _ => false;
+    Func<Type, Type> _clearProxyType = t => t;
 
     IServiceProvider? _serviceProvider;
     IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException("ServiceProvider is required but not set");
@@ -65,12 +65,21 @@ public class ExtendedContractResolver : CamelCasePropertyNamesContractResolver, 
     public void SetValueProvider(Action<JsonProperty, IServiceProvider?> valueProvider) =>
         _valueProvider = valueProvider;
 
+    public void SetIsUnitializedProxy(Func<object, bool> isUnitializedProxy) =>
+        _isUnitializedProxy = isUnitializedProxy;
+
+    public bool IsUnitializedProxy(object value) =>
+        _isUnitializedProxy(value);
+
+    public void SetClearProxyType(Func<Type, Type> clearProxyType) =>
+        _clearProxyType = clearProxyType;
+
+    public Type ClearProxyType(Type type) =>
+        _clearProxyType(type);
+
     public override JsonContract ResolveContract(Type type)
     {
-        if (type.IsAssignableTo(ProxyType))
-        {
-            type = type.BaseType ?? throw new($"Proxy type `{type.FullName}` should have a base type");
-        }
+        type = ClearProxyType(type);
 
         var result = base.ResolveContract(type);
         if (_typeConfigureMap.TryGetValue(GetTypeKey(type), out var configure))
