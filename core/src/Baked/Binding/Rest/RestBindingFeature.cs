@@ -47,12 +47,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     !c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
-                order: Order.At.AbsoluteMax // TODO consider using Max
+                order: Order.At.Max
             );
             conventions.SetParameterAttribute(
                 attribute: c => new ParameterModelAttribute(),
                 when: c => c.Parameter.IsApiInput,
-                order: Order.At.AbsoluteMax // TODO consider using Max
+                order: Order.At.Max
             );
 
             // init before any domain convention
