@@ -44,7 +44,7 @@ test.describe("Mutable", () => {
     const input2 = component.getByTestId("input-2");
     const button = component.locator(primevue.button.base);
 
-    await input1.fill("its not restircted");
+    await input1.fill("its not restricted");
     await input2.fill("required");
 
     await expect(button).toBeEnabled();
@@ -60,5 +60,19 @@ test.describe("Mutable", () => {
     await input2.fill("required");
 
     await expect(button).toBeDisabled();
+  });
+
+  test("show validation result on submit button with tooltip", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("input-1");
+    const button = component.locator(primevue.button.base);
+
+    await input1.fill("error");
+    await button.scrollIntoViewIfNeeded();
+    await button.hover();
+
+    await expect(button).toBeDisabled();
+    await expect(page.locator(primevue.tooltip.top)).toBeVisible();
+    await expect(page.locator(primevue.tooltip.top)).toContainText("error is restricted");
   });
 });
