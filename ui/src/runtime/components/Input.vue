@@ -16,8 +16,9 @@ const { mount: mountData, onAfterMount: onAfterMountData } = useDataMounter();
 const route = useRoute();
 const router = useRouter();
 
-const { schema } = defineProps({
-  schema: { type: Object, required: true }
+const { schema, formMode } = defineProps({
+  schema: { type: Object, required: true },
+  formMode: { type: Boolean }
 });
 const model = defineModel({ type: null, required: true });
 
@@ -58,7 +59,7 @@ onAfterMountData(async() => {
   }
 
   watch(model, async newValue => {
-    if(!checkValue(newValue)) {
+    if(!checkValue(newValue) && !formMode) {
       newValue = schema.required ? defaultValue.value : undefined;
     }
 

@@ -29,6 +29,12 @@ const model = defineModel({ type: null, required: true });
 const { testId, defaultValue, number } = schema;
 
 watch(model, newValue => {
+  if(newValue === "") {
+    model.value = null;
+
+    return;
+  }
+
   if(newValue !== undefined && newValue !== null) { return; }
   if(newValue === defaultValue) { return; }
 

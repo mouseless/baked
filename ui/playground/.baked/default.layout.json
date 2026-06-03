@@ -119,6 +119,12 @@
             "title": "/specs/inputs:Title",
             "parentRoute": "/specs"
           },
+          "/specs/inputs--form-mode": {
+            "route": "/specs/inputs--form-mode",
+            "icon": "pi pi-microchip",
+            "title": "/specs/inputs--form-mode:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/inputs--query-bound": {
             "route": "/specs/inputs--query-bound",
             "icon": "pi pi-microchip",

@@ -74,6 +74,7 @@
               >
                 <Inputs
                   :inputs="inputGroup.inputs"
+                  form-mode
                   input-class="w-full"
                   @ready="(value) => onReady(`${section.key}_${inputGroup.key}`, value)"
                   @changed="onChanged"

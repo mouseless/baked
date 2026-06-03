@@ -4,6 +4,7 @@
     :key="input.name"
     v-model="models[input.name]"
     :schema="input"
+    :form-mode
     :class="inputClass"
     :invalid="invalid(input.name)"
     @blur="() => touched(input.name)"
@@ -17,8 +18,9 @@ import { Input } from "#components";
 const context = useContext();
 const route = useRoute();
 
-const { inputs } = defineProps({
+const { inputs, formMode } = defineProps({
   inputs: { type: Array, required: true },
+  formMode: { type: Boolean },
   inputClass: { type: String, default: "" }
 });
 const emit = defineEmits(["ready", "changed"]);
@@ -39,7 +41,7 @@ const values = computed(() =>
 context.providePath(`${parentPath}/inputs`);
 
 watch(values, newValues => {
-  if(inputs
+  if(!formMode && inputs
     .filter(i => i.default || i.defaultSelfManaged)
     .some(i => !checkValue(newValues[i.name]))
   ) { return; }

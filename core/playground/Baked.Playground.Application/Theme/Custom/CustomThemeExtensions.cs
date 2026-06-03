@@ -31,6 +31,7 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/contents", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/custom-css", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/inputs", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
+                r => r.Child("/specs/inputs--form-mode", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/inputs--query-bound", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/layout", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/redirect", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
