@@ -23,6 +23,22 @@ public class ApplyingConventions : Spec
         _values.Clear();
     }
 
+    void BuildOptions(DomainModelBuilderOptions options)
+    {
+        options.ConventionMatrix.Bases.Add("B1");
+        options.ConventionMatrix.Bases.Add("B2");
+        options.ConventionMatrix.Levels.Add("L1");
+        options.ConventionMatrix.Levels.Add("L2");
+        options.ConventionMatrix.Extensions.Add("E1");
+        options.ConventionMatrix.Extensions.Add("E2");
+
+        options.ConventionMatrix.FallbackBase = _ => "B1";
+        options.ConventionMatrix.FallbackLevel = _ => "L1";
+        options.ConventionMatrix.FallbackExtension = _ => "E1";
+
+        options.DefaultConventionLevel = "B1.L1.E1";
+    }
+
     public class TestConvention(string _value) : IDomainModelConvention<TypeModelContext>
     {
         public void Apply(TypeModelContext context)
@@ -41,7 +57,9 @@ public class ApplyingConventions : Spec
             {
                 c.Add(new TestConvention("C1"));
                 c.Add(new TestConvention("C2"));
-            }
+            },
+            conventionMatrixDefaults: false,
+            options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
@@ -58,7 +76,9 @@ public class ApplyingConventions : Spec
             {
                 c.Add(new TestConvention("C1"), order: 2);
                 c.Add(new TestConvention("C2"), order: 1);
-            }
+            },
+            conventionMatrixDefaults: false,
+            options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
@@ -73,14 +93,11 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.At.WithBase("B"));
-                c.Add(new TestConvention("A"), order: Order.At.WithBase("A"));
+                c.Add(new TestConvention("B"), order: Order.At.WithBase("B2"));
+                c.Add(new TestConvention("A"), order: Order.At.WithBase("B1"));
             },
-            options: o =>
-            {
-                o.ConventionMatrix.Bases.Add("A");
-                o.ConventionMatrix.Bases.Add("B");
-            }
+            conventionMatrixDefaults: false,
+            options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
@@ -95,14 +112,11 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.At.WithLevel("B"));
-                c.Add(new TestConvention("A"), order: Order.At.WithLevel("A"));
+                c.Add(new TestConvention("B"), order: Order.At.WithLevel("L2"));
+                c.Add(new TestConvention("A"), order: Order.At.WithLevel("L1"));
             },
-            options: o =>
-            {
-                o.ConventionMatrix.Levels.Add("A");
-                o.ConventionMatrix.Levels.Add("B");
-            }
+            conventionMatrixDefaults: false,
+            options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
@@ -117,14 +131,11 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.At.WithExtension("B"));
-                c.Add(new TestConvention("A"), order: Order.At.WithExtension("A"));
+                c.Add(new TestConvention("B"), order: Order.At.WithExtension("E2"));
+                c.Add(new TestConvention("A"), order: Order.At.WithExtension("E1"));
             },
-            options: o =>
-            {
-                o.ConventionMatrix.Levels.Add("A");
-                o.ConventionMatrix.Levels.Add("B");
-            }
+            conventionMatrixDefaults: false,
+            options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
@@ -140,20 +151,17 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.At.WithLevel("B"));
+                c.Add(new TestConvention("B"), order: Order.At.WithLevel("not existing"));
                 c.Add(new TestConvention("B"), order: Order.At.Zero);
             },
-            options: o =>
-            {
-                o.ConventionMatrix.Levels.Add("A");
-                o.DefaultConventionLevel = "A";
-            },
+            conventionMatrixDefaults: false,
+            options: BuildOptions,
             onConventionsFinalized: r => messages.AddRange(r.Messages)
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
 
         messages.Count.ShouldBe(1);
-        messages.Single().Message.ShouldBe("Given level 'B' was not found in configured levels, defaulting to 'A'");
+        messages.Single().Message.ShouldBe("Given level 'not existing' was not found in configured levels, defaulting to 'B1.L1.E1'");
     }
 }

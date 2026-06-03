@@ -10,7 +10,7 @@ namespace Baked.Test;
 
 public static class DomainModelExtensions
 {
-    extension(Stubber _)
+    extension(Stubber giveMe)
     {
         public AttributeCollection AnAttributeCollection(
             string? name = default,
@@ -51,13 +51,12 @@ public static class DomainModelExtensions
 
         public DomainModelBuilder ADomainModelBuilder(
             Action<DomainModelBuilderOptions>? options = default,
+            bool conventionMatrixDefaults = true,
             Action<IDomainModelConventionCollection>? conventions = default,
             Action<DiagnosticsResult>? onConventionsFinalized = default
         )
         {
-            var optionsInstance = new DomainModelBuilderOptions();
-            optionsInstance.BuildLevels.Add(BuildLevels.Metadata);
-            optionsInstance.OnComplete = _ => { };
+            var optionsInstance = giveMe.ADomainModelBuilderOptions(conventionMatrixDefaults: conventionMatrixDefaults);
 
             if (options is not null)
             {
@@ -74,6 +73,30 @@ public static class DomainModelExtensions
             }
 
             return new DomainModelBuilder(optionsInstance, conventionsInstance);
+        }
+
+        public DomainModelBuilderOptions ADomainModelBuilderOptions(
+            bool conventionMatrixDefaults = true
+        )
+        {
+            var options = new DomainModelBuilderOptions();
+            options.BuildLevels.Add(BuildLevels.Metadata);
+            options.OnComplete = _ => { };
+
+            if (conventionMatrixDefaults)
+            {
+                options.ConventionMatrix.Bases.Add("B1");
+                options.ConventionMatrix.Levels.Add("L1");
+                options.ConventionMatrix.Extensions.Add("E1");
+
+                options.ConventionMatrix.FallbackBase = _ => "B1";
+                options.ConventionMatrix.FallbackLevel = _ => "L1";
+                options.ConventionMatrix.FallbackExtension = _ => "E1";
+
+                options.DefaultConventionLevel = "B1.L1.E1";
+            }
+
+            return options;
         }
     }
 
