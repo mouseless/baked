@@ -58,7 +58,6 @@ public class ApplyingConventions : Spec
                 c.Add(new TestConvention("C1"));
                 c.Add(new TestConvention("C2"));
             },
-            conventionMatrixDefaults: false,
             options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
@@ -77,7 +76,6 @@ public class ApplyingConventions : Spec
                 c.Add(new TestConvention("C1"), order: 2);
                 c.Add(new TestConvention("C2"), order: 1);
             },
-            conventionMatrixDefaults: false,
             options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
@@ -103,7 +101,6 @@ public class ApplyingConventions : Spec
                 c.Add(new TestConvention("F"), order: Order.At.WithBase("B2").WithLevel("L2").WithExtension("E1"));
                 c.Add(new TestConvention("E"), order: Order.At.WithBase("B2").WithLevel("L1").WithExtension("E1"));
             },
-            conventionMatrixDefaults: false,
             options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
@@ -128,7 +125,6 @@ public class ApplyingConventions : Spec
                 c.Add(new TestConvention("B"), order: Order.At.WithBase("B2"));
                 c.Add(new TestConvention("A"), order: Order.At.WithBase("B1"));
             },
-            conventionMatrixDefaults: false,
             options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
@@ -147,7 +143,6 @@ public class ApplyingConventions : Spec
                 c.Add(new TestConvention("B"), order: Order.At.WithLevel("L2"));
                 c.Add(new TestConvention("A"), order: Order.At.WithLevel("L1"));
             },
-            conventionMatrixDefaults: false,
             options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
@@ -166,7 +161,6 @@ public class ApplyingConventions : Spec
                 c.Add(new TestConvention("B"), order: Order.At.WithExtension("E2"));
                 c.Add(new TestConvention("A"), order: Order.At.WithExtension("E1"));
             },
-            conventionMatrixDefaults: false,
             options: BuildOptions
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
@@ -186,7 +180,6 @@ public class ApplyingConventions : Spec
                 c.Add(new TestConvention("B"), order: Order.At.WithLevel("not existing"));
                 c.Add(new TestConvention("B"), order: Order.At.Zero);
             },
-            conventionMatrixDefaults: false,
             options: BuildOptions,
             onConventionsFinalized: r => messages.AddRange(r.Messages)
         );

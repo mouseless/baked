@@ -12,7 +12,7 @@ public class DomainModelBuilderOptions
     public Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> DefaultOverloadSelector { get; set; } = overloads => overloads.First();
     public Action<DiagnosticsResult>? OnComplete { get; set; }
     public ConventionMatrixOptions ConventionMatrix { get; } = new();
-    public string DefaultConventionLevel { get; set; } = default!;
+    public string DefaultConventionLevel { get; set; } = "BaseDefault.LevelDefault.ExtensionDefault";
 
     public class ConventionMatrixOptions
     {
@@ -20,9 +20,9 @@ public class DomainModelBuilderOptions
         public IList<string> Levels { get; } = [];
         public IList<string> Extensions { get; } = [];
 
-        public Func<IDomainModelConvention, string> FallbackBase { get; set; } = default!;
-        public Func<IDomainModelConvention, string> FallbackLevel { get; set; } = default!;
-        public Func<IDomainModelConvention, string> FallbackExtension { get; set; } = default!;
+        public Func<IDomainModelConvention, string> FallbackBase { get; set; } = _ => "BaseDefault";
+        public Func<IDomainModelConvention, string> FallbackLevel { get; set; } = _ => "LevelDefault";
+        public Func<IDomainModelConvention, string> FallbackExtension { get; set; } = _ => "ExtensionDefault";
     }
 
     public class BindingFlagOptions
