@@ -12,10 +12,7 @@
   >
     <template #default>
       <slot />
-      <label
-        class="max-sm:truncate"
-        :for="path"
-      >
+      <label :for="path">
         {{ localizedText }}
       </label>
     </template>
