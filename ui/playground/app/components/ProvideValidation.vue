@@ -2,6 +2,7 @@
   <slot />
 </template>
 <script setup>
+import { ref } from "vue";
 import { useContext } from "#imports";
 
 const context = useContext();
@@ -12,5 +13,6 @@ const { validation } = defineProps({
 
 if(validation) {
   context.provideValidation(validation);
+  context.provideMutableValidation(ref({ value: true }));
 }
 </script>
