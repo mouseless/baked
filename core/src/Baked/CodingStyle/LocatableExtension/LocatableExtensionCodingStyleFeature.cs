@@ -71,8 +71,8 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 order: Order.At.Defaults + 20
             );
 
-            conventions.Add(new ExtensionsUnderLocatablesConvention(), order: Order.At.AbsoluteMax); // TODO consider using Order.At.Max
-            conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: Order.At.AbsoluteMax); // TODO consider using Order.At.Max
+            conventions.Add(new ExtensionsUnderLocatablesConvention(), order: Order.At.Max);
+            conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: Order.At.Max);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
