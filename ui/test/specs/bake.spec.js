@@ -91,6 +91,18 @@ test.describe("Parent Data", () => {
     await expect(component.getByTestId("child-prop")).toHaveText("CHILD VALUE");
   });
 
+  test("reads data from grant parent", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("grant-parent")).toHaveText("GRANT PARENT VALUE");
+  });
+
+  test("reads data from grant grant parent", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("grant-grant-parent")).toHaveText("GRANT GRANT PARENT VALUE");
+  });
+
   test("child data waits for parent to load to avoid double fetch", async({ page }) => {
     const component = page.getByTestId(id);
 

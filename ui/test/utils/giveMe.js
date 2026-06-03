@@ -580,13 +580,13 @@ export default {
     };
   },
 
-  aNavLink({ icon, path, query, params, data } = {}) {
+  aNavLink({ icon, labelProp, path, query, params, data } = {}) {
     path = $(path, "/some-object/{0}");
     data = $(data, this.anInlineData("Test"));
 
     return {
       type: "NavLink",
-      schema: { icon, path, query, params },
+      schema: { icon, labelProp, path, query, params },
       data: data
     };
   },
