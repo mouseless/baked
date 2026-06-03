@@ -88,7 +88,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
 
                     f.Component.Data ??= Context.Parent(options: cd => cd.Prop = $"data.{prop}");
                 },
-                order: Order.At.Theme.Max // TODO consider using Order.At.Ux
+                order: Order.At.Theme.Max
             );
         });
     }

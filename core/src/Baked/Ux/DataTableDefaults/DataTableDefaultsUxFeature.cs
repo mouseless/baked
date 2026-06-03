@@ -66,7 +66,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
                 },
-                order: Order.At.Theme.Max // TODO Consider using Order.At.Ux
+                order: Order.At.Theme.Max
             );
 
             // Export

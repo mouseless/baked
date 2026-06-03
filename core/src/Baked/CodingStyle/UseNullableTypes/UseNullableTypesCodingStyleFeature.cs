@@ -21,7 +21,7 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
                     genericArgumentMetadata.Has<ApiInputAttribute>(),
                 attribute: () => new ApiInputAttribute(),
-                order: Order.At.Defaults.AbsoluteMin // TODO consider using Order.At.Infra.Min
+                order: Order.At.Defaults.Min
             );
 
             conventions.SetParameterAttribute(

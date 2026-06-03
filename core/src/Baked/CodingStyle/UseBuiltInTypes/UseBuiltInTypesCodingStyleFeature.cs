@@ -22,7 +22,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                   c.Type.Is<Uri>() ||
                   c.Type.IsAssignableTo(typeof(IParsable<>)) ||
                   c.Type.IsAssignableTo(typeof(string)),
-              order: Order.At.Defaults.AbsoluteMin // TODO consider using Order.At.Infra.Min
+              order: Order.At.Defaults.Min
             );
             conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
