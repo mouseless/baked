@@ -31,7 +31,10 @@ export default function() {
     context.provideValidations(validations);
     context.provideMutableValidations(mutableValidations);
 
-    const isValid = computed(() => Object.values(validations.value).every(v => v.valid) && Object.values(mutableValidations).every(v => v.value.valid));
+    const isValid = computed(() =>
+      Object.values(validations.value).every(v => v.valid) &&
+      Object.values(mutableValidations).every(v => v.value.valid)
+    );
 
     const messages = computed(() =>
       [...Object.values(validations.value), ...Object.values(mutableValidations).map(v => v.value)]
