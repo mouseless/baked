@@ -944,13 +944,10 @@ export default {
     };
   },
 
-  aTrigger({ on, when, key, parts, constraint } = {}) {
-    key = $(key, "page");
-
+  aTrigger({ on, when, parts, constraint } = {}) {
     if(when) {
       return {
         type: "When",
-        key,
         when,
         constraint
       };

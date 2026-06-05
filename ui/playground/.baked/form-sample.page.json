@@ -90,7 +90,6 @@
             "content": {
               "type": "DataContainer",
               "schema": {
-                "actions": [],
                 "inputs": [
                   {
                     "name": "sort",

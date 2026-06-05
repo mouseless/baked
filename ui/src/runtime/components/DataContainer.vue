@@ -78,7 +78,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { actions, content, earlyWrapActionsAt, inputs } = schema;
+const { actions = [], content, earlyWrapActionsAt, inputs } = schema;
 
 const contextData = context.injectContextData();
 

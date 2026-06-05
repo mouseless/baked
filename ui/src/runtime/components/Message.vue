@@ -31,11 +31,11 @@
     </div>
     <div
       v-if="action"
-      class="b-message-action"
+      class="b-message-action px-2"
     >
       <Bake
         name="action"
-        :descriptor="{...action, schema: { ...action.schema, severity } }"
+        :descriptor="{ ...action, schema: { ...action.schema, severity } }"
       />
     </div>
   </div>
@@ -65,9 +65,6 @@ const sizeClass = computed(() => {
 });
 </script>
 <style scoped>
-.b-message-action {
-  @apply px-2;
-}
 .message-outlined {
   @apply border rounded-md;
 
