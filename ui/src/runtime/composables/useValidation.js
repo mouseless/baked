@@ -72,8 +72,15 @@ function MutableValidation(ref) {
     ref.value.severity = "error";
   }
 
+  function setMessage(message, { severity = "info", persist = false }) {
+    ref.value.message = message;
+    ref.value.severity = severity;
+    ref.value.persist = persist;
+  }
+
   return {
     clear,
-    setError
+    setError,
+    setMessage
   };
 }
