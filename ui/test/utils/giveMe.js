@@ -944,7 +944,7 @@ export default {
     };
   },
 
-  aTrigger({ on, key, when, parts, constraint } = {}) {
+  aTrigger({ on, when, key, parts, constraint } = {}) {
     key = $(key, "page");
 
     if(when) {

@@ -53,8 +53,8 @@ public class BuildingReactions : TestSpec
         var descriptor = B.Text();
 
         descriptor.ReloadOn(GiveMe.AString());
-        descriptor.ReloadWhen(GiveMe.AString(), GiveMe.AString());
-        descriptor.ReloadWhen(GiveMe.AString(), GiveMe.AString());
+        descriptor.ReloadWhen(GiveMe.AString());
+        descriptor.ReloadWhen(GiveMe.AString());
 
         descriptor.Reactions.ShouldNotBeNull();
         var composite = descriptor.Reactions["reload"].ShouldBeOfType<CompositeTrigger>();

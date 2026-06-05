@@ -98,8 +98,8 @@ const reactor = giveMe.anExpected({
   reactions: {
     reload: giveMe.aTrigger({
       parts: [
-        giveMe.aTrigger({ when: "page.required-with-default" }),
-        giveMe.aTrigger({ when: "page.optional" })
+        giveMe.aTrigger({ when: "required-with-default" }),
+        giveMe.aTrigger({ when: "optional" })
       ]
     })
   }

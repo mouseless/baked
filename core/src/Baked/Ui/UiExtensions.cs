@@ -59,18 +59,18 @@ public static class UiExtensions
         ) => source.AddReaction("reload", new OnTrigger(@event) { Constraint = constraint });
 
         public void ReloadWhen(string prop,
-            string key = "page",
+            string? key = default,
             IConstraint? constraint = default
-        ) => source.AddReaction("reload", new WhenTrigger(key, prop) { Constraint = constraint });
+        ) => source.AddReaction("reload", new WhenTrigger(prop) { Constraint = constraint, Key = key });
 
         public void ShowOn(string @event,
             IConstraint? constraint = default
         ) => source.AddReaction("show", new OnTrigger(@event) { Constraint = constraint });
 
         public void ShowWhen(string prop,
-            string key = "page",
+            string? key = default,
             IConstraint? constraint = default
-        ) => source.AddReaction("show", new WhenTrigger(key, prop) { Constraint = constraint });
+        ) => source.AddReaction("show", new WhenTrigger(prop) { Constraint = constraint, Key = key });
 
         public void AddReaction(string reaction, ITrigger trigger)
         {

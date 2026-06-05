@@ -147,9 +147,9 @@ const variants = [
               parts: [
                 giveMe.aTrigger({ on: "clicked" }),
                 giveMe.aTrigger({ on: "input-changed", constraint: giveMe.aConstraint({ is: "event" }) }),
-                giveMe.aTrigger({ when: "page.input", constraint: giveMe.aConstraint({ is: "page-context" }) }),
+                giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ is: "page-context" }) }),
                 giveMe.aTrigger({
-                  when: "page.input",
+                  when: "input",
                   constraint: giveMe.aConstraint({
                     composable: "useFakeValidator",
                     options: giveMe.anInlineData({ expected: "validate" })
@@ -158,7 +158,7 @@ const variants = [
               ]
             }),
             show: giveMe.aTrigger({
-              when: "page.input",
+              when: "input",
               constraint: giveMe.aConstraint({
                 composable: "useFakeValidator",
                 options: giveMe.aDelayedData({ expected: "show" }, { ms: 200 })
