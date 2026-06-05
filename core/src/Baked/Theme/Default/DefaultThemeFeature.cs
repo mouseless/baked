@@ -29,7 +29,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Index.Method.Add<ActionAttribute>();
             builder.Index.Method.Add<RouteAttribute>();
 
-            builder.ConventionMatrix.Bases.Add("Theme");
+            builder.ConventionOrderMatrix.Bases.Add("Theme");
         });
 
         configurator.Domain.ConfigureConventions(conventions =>

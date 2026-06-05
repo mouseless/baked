@@ -61,16 +61,16 @@ public class DomainAssembliesBusinessFeature(
             builder.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
             builder.BuildLevels.Add(BuildLevels.Metadata);
 
-            builder.ConventionMatrix.Bases.Add("Business");
-            builder.ConventionMatrix.Levels.Add("Defaults");
-            builder.ConventionMatrix.Levels.Add("User");
-            builder.ConventionMatrix.Levels.Add("Override");
-            builder.ConventionMatrix.Extensions.Add("Add");
-            builder.ConventionMatrix.Extensions.Add("Configure");
+            builder.ConventionOrderMatrix.Bases.Add("Business");
+            builder.ConventionOrderMatrix.Levels.Add("Defaults");
+            builder.ConventionOrderMatrix.Levels.Add("User");
+            builder.ConventionOrderMatrix.Levels.Add("Override");
+            builder.ConventionOrderMatrix.Extensions.Add("Add");
+            builder.ConventionOrderMatrix.Extensions.Add("Configure");
 
-            builder.ConventionMatrix.FallbackBase = _ => "Business";
-            builder.ConventionMatrix.FallbackLevel = _ => "User";
-            builder.ConventionMatrix.FallbackExtension = convention => convention.BeforeBuildingIndexes ? "Add" : "Configure";
+            builder.ConventionOrderMatrix.FallbackBase = _ => "Business";
+            builder.ConventionOrderMatrix.FallbackLevel = _ => "User";
+            builder.ConventionOrderMatrix.FallbackExtension = convention => convention.BeforeBuildingIndexes ? "Add" : "Configure";
 
             builder.DefaultConventionLevel = "Business.User.Configure";
 

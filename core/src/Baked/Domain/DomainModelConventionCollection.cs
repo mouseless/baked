@@ -7,40 +7,69 @@ namespace Baked.Domain;
 public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
     : List<(IDomainModelConvention Convention, int Order)>, IDomainModelConventionCollection
 {
-    readonly Lazy<IReadOnlyDictionary<string, int>> _levels = new(() => BuildLevels(_options.ConventionMatrix, _options.DefaultConventionLevel));
+    readonly Lazy<OrderMatrix> _orderMatrix = new(() => new(_options.ConventionOrderMatrix, _options.DefaultConventionLevel));
 
     void IDomainModelConventionCollection.Add(IDomainModelConvention convention, Order order) =>
         Diagnostics.Current.Diagnose(() =>
         {
+            var orderMatrix = _orderMatrix.Value;
             var calculatedOrder = order
-                .WithBase(order.Base ?? _options.ConventionMatrix.FallbackBase(convention))
-                .WithLevel(order.Level ?? _options.ConventionMatrix.FallbackLevel(convention))
-                .WithExtension(order.Extension ?? _options.ConventionMatrix.FallbackExtension(convention))
-                .Calculate(_levels.Value, _options.DefaultConventionLevel);
+                .WithBase(order.Base ?? orderMatrix.FallbackBase(convention))
+                .WithLevel(order.Level ?? orderMatrix.FallbackLevel(convention))
+                .WithExtension(order.Extension ?? orderMatrix.FallbackExtension(convention))
+                .Calculate(orderMatrix.Levels, orderMatrix.DefaultConventionLevel);
 
             Add((convention, calculatedOrder));
         });
 
-    static Dictionary<string, int> BuildLevels(ConventionMatrixOptions options, string defaultConventionLevel)
+    public class OrderMatrix
     {
-        var levels = new List<string>();
-        foreach (var @base in options.Bases)
+        const string BASE_DEFAULT = "BASE_DEFAULT";
+        const string LEVEL_DEFAULT = "LEVEL_DEFAULT";
+        const string EXTENSION_DEFAULT = "EXTENSION_DEFAULT";
+
+        readonly string _defaultConventionLevel = $"{BASE_DEFAULT}.{LEVEL_DEFAULT}.{EXTENSION_DEFAULT}";
+        readonly IReadOnlyDictionary<string, int> _levels = default!;
+        readonly Func<IDomainModelConvention, string> _fallbackBase = default!;
+        readonly Func<IDomainModelConvention, string> _fallbackLevel = default!;
+        readonly Func<IDomainModelConvention, string> _fallbackExtension = default!;
+
+        public OrderMatrix(ConventionOrderMatrixOptions options, string? defaultConventionLevel)
         {
-            foreach (var extension in options.Extensions)
+            _defaultConventionLevel = defaultConventionLevel ?? _defaultConventionLevel;
+            _levels = BuildLevels(options);
+
+            _fallbackBase = options.FallbackBase ?? (_ => options.Bases.First());
+            _fallbackLevel = options.FallbackLevel ?? (_ => options.Levels.First());
+            _fallbackExtension = options.FallbackExtension ?? (_ => options.Extensions.First());
+        }
+
+        public string DefaultConventionLevel => _defaultConventionLevel;
+        public IReadOnlyDictionary<string, int> Levels => _levels;
+        public Func<IDomainModelConvention, string> FallbackBase => _fallbackBase;
+        public Func<IDomainModelConvention, string> FallbackLevel => _fallbackLevel;
+        public Func<IDomainModelConvention, string> FallbackExtension => _fallbackExtension;
+
+        static Dictionary<string, int> BuildLevels(ConventionOrderMatrixOptions options)
+        {
+            if (!options.Bases.Any()) { options.Bases.Add(BASE_DEFAULT); }
+            if (!options.Levels.Any()) { options.Levels.Add(LEVEL_DEFAULT); }
+            if (!options.Extensions.Any()) { options.Extensions.Add(EXTENSION_DEFAULT); }
+
+            var levels = new List<string>();
+            foreach (var @base in options.Bases)
             {
-                foreach (var level in options.Levels)
+                foreach (var extension in options.Extensions)
                 {
-                    levels.Add($"{@base}.{level}.{extension}");
+                    foreach (var level in options.Levels)
+                    {
+                        levels.Add($"{@base}.{level}.{extension}");
+                    }
                 }
             }
-        }
 
-        if (!levels.Any())
-        {
-            levels.Add(defaultConventionLevel);
+            return levels.Select((name, index) => (name, index))
+                .ToDictionary(x => x.name, x => x.index);
         }
-
-        return levels.Select((name, index) => (name, index))
-            .ToDictionary(x => x.name, x => x.index);
     }
 }

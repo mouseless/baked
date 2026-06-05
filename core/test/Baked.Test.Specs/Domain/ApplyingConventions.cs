@@ -25,16 +25,16 @@ public class ApplyingConventions : Spec
 
     void BuildOptions(DomainModelBuilderOptions options)
     {
-        options.ConventionMatrix.Bases.Add("B1");
-        options.ConventionMatrix.Bases.Add("B2");
-        options.ConventionMatrix.Levels.Add("L1");
-        options.ConventionMatrix.Levels.Add("L2");
-        options.ConventionMatrix.Extensions.Add("E1");
-        options.ConventionMatrix.Extensions.Add("E2");
+        options.ConventionOrderMatrix.Bases.Add("B1");
+        options.ConventionOrderMatrix.Bases.Add("B2");
+        options.ConventionOrderMatrix.Levels.Add("L1");
+        options.ConventionOrderMatrix.Levels.Add("L2");
+        options.ConventionOrderMatrix.Extensions.Add("E1");
+        options.ConventionOrderMatrix.Extensions.Add("E2");
 
-        options.ConventionMatrix.FallbackBase = _ => "B1";
-        options.ConventionMatrix.FallbackLevel = _ => "L1";
-        options.ConventionMatrix.FallbackExtension = _ => "E1";
+        options.ConventionOrderMatrix.FallbackBase = _ => "B1";
+        options.ConventionOrderMatrix.FallbackLevel = _ => "L1";
+        options.ConventionOrderMatrix.FallbackExtension = _ => "E1";
 
         options.DefaultConventionLevel = "B1.L1.E1";
     }
