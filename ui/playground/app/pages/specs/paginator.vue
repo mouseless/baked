@@ -38,8 +38,8 @@ const variants = [
       reactions: {
         reload: giveMe.aTrigger({
           parts: [
-            giveMe.aTrigger({ when: "length" }),
-            giveMe.aTrigger({ when: "take" })
+            giveMe.aTrigger({ when: "page.length" }),
+            giveMe.aTrigger({ when: "page.take" })
           ]
         })
       }

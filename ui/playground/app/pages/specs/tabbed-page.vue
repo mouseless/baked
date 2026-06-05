@@ -67,7 +67,7 @@ const variants = [
                 testId: "content-1",
                 value: "CONTENT 1" ,
                 reactions: {
-                  show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
+                  show: giveMe.aTrigger({ when: "page.selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
                 }
               })
             })
@@ -77,7 +77,7 @@ const variants = [
           id: "tab-2",
           title: "Spec: Tab 2",
           reactions: {
-            show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
+            show: giveMe.aTrigger({ when: "page.selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
           },
           contents: [
             giveMe.aContent({
