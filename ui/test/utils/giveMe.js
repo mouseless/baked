@@ -164,13 +164,14 @@ export default {
     };
   },
 
-  aDataContainer({ inputs, content } = {}) {
+  aDataContainer({ actions, inputs, content } = {}) {
+    actions = $(actions, []);
     inputs = $(inputs, []);
     content = $(content, this.anExpected());
 
     return {
       type: "DataContainer",
-      schema: { inputs, content }
+      schema: { actions, inputs, content }
     };
   },
 

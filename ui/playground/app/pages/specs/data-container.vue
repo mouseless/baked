@@ -38,6 +38,19 @@ const variants = [
         data: giveMe.theParentContext()
       })
     })
+  },
+  {
+    name: "Actions",
+    descriptor: giveMe.aDataContainer({
+      actions: [
+        giveMe.aButton({ label: "ACTION_1" }),
+        giveMe.aButton({ label: "ACTION_2", icon: "pi pi-heart" })
+      ],
+      content: giveMe.anExpected({
+        testId: "content",
+        data: giveMe.theParentContext()
+      })
+    })
   }
 ];
 </script>

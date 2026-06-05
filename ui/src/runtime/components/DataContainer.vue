@@ -7,6 +7,34 @@
     "
   >
     <div
+      class="
+        py-2 px-4
+        w-full flex justify-end
+        max-2xs:flex-col gap-2
+      "
+      :class="{
+        'max-2xs:flex-col': actions.length < earlyWrapActionsAt,
+        'max-xs:flex-col': actions.length >= earlyWrapActionsAt
+      }"
+    >
+      <div
+        v-if="actions.length"
+        class="
+          actions
+          min-w-min flex gap-2 row-span-2 items-end text-nowrap
+          max-xs:text-xs max-md:text-sm
+          md:max-md:items-center md:pt-6
+        "
+      >
+        <Bake
+          v-for="action in actions"
+          :key="action.schema.name"
+          :name="`actions/${action.schema.name}`"
+          :descriptor="action"
+        />
+      </div>
+    </div>
+    <div
       v-if="inputs.length > 0"
       class="
         py-2 px-4
@@ -51,7 +79,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { content, inputs } = schema;
+const { actions, content, inputs } = schema;
 
 const contextData = context.injectContextData();
 
