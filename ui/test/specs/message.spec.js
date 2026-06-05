@@ -1,5 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import baked from "../utils/locators/baked";
+import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
   await goto("/specs/message", { waitUntil: "hydration" });
@@ -11,7 +12,8 @@ test.describe("Base", () => {
   test("Base", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(baked.message.body)).toHaveText("Message");
+    await expect(component.locator(baked.message.body)).toContainText("Message");
+    await expect(component.locator(baked.message.body)).toContainText("This is a content slot for message");
     await expect(component.locator(baked.message.icon)).toHaveClass(/pi pi-info-circle/);
   });
 
@@ -39,6 +41,16 @@ test.describe("No data", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(baked.message.body)).toHaveText("-");
+  });
+});
+
+test.describe("Action", () => {
+  const id = "Action";
+
+  test("displays action button", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(baked.message.action).locator(primevue.button.base)).toBeAttached();
   });
 });
 

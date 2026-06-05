@@ -1,6 +1,10 @@
 <template>
   <div
-    class="b-message grid"
+    class="
+      b-message
+      grid grid-cols-[1fr_auto] gap-2
+      items-center
+    "
     :class="[`message-${severity}`, `message-${variant}`]"
   >
     <div class="min-h-0">
@@ -25,11 +29,20 @@
         <slot name="content" />
       </div>
     </div>
+    <div
+      v-if="action"
+      class="b-message-action"
+    >
+      <Bake
+        name="action"
+        :descriptor="{...action, schema: { ...action.schema, severity } }"
+      />
+    </div>
   </div>
 </template>
 <script setup>
 import { computed, useLocalization } from "#imports";
-import { AwaitLoading } from "#components";
+import { AwaitLoading, Bake } from "#components";
 
 const { localize: l } = useLocalization();
 
@@ -38,7 +51,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { icon, localizeMessage, severity = "info", size, variant = "outlined" } = schema;
+const { action, icon, localizeMessage, severity = "info", size, variant = "outlined" } = schema;
 
 const sizeClass = computed(() => {
   switch (size) {
@@ -52,6 +65,9 @@ const sizeClass = computed(() => {
 });
 </script>
 <style scoped>
+.b-message-action {
+  @apply px-2;
+}
 .message-outlined {
   @apply border rounded-md;
 

@@ -14,7 +14,8 @@ export default {
   message: {
     base: ".b-message",
     body: ".b-message-body",
-    icon: ".b-message-icon"
+    icon: ".b-message-icon",
+    action: ".b-message-action"
   },
   money:{
     base: ".b-component--Money"
