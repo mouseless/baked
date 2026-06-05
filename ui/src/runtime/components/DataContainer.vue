@@ -7,22 +7,14 @@
     "
   >
     <div
-      v-if="actions.length"
-      class="
-        py-2 px-4
-        w-full flex justify-end
-        max-2xs:flex-col gap-2
-      "
-      :class="{
-        'max-2xs:flex-col': actions.length < earlyWrapActionsAt,
-        'max-xs:flex-col': actions.length >= earlyWrapActionsAt
-      }"
+      v-if="actions.length || inputs.length"
+      class="w-full flex justify-between  py-2 px-4"
     >
       <div
         class="
           min-w-min flex gap-2 row-span-2 items-end text-nowrap
           max-xs:text-xs max-md:text-sm
-          md:max-md:items-center md:pt-6
+          md:max-md:items-center
         "
       >
         <Bake
@@ -32,21 +24,19 @@
           :descriptor="action"
         />
       </div>
+      <div
+        class="
+          bg-transparent
+          rounded-none text-sm
+          flex gap-2 items-center justify-end
+        "
+      >
+        <Inputs
+          :inputs="inputs"
+          @ready="onReady"
+          @changed="onChanged"
+        />
     </div>
-    <div
-      v-if="inputs.length > 0"
-      class="
-        py-2 px-4
-        bg-transparent
-        rounded-none text-sm
-        flex gap-2 items-center justify-end
-      "
-    >
-      <Inputs
-        :inputs="inputs"
-        @ready="onReady"
-        @changed="onChanged"
-      />
     </div>
     <div
       class="p-4 [contain:inline-size]"
@@ -78,7 +68,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { actions = [], content, earlyWrapActionsAt, inputs } = schema;
+const { actions = [], content, inputs } = schema;
 
 const contextData = context.injectContextData();
 

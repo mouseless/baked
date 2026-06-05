@@ -15,7 +15,7 @@ const variants = [
     })
   },
   {
-    name: "Inputs",
+    name: "Inputs and Actions",
     descriptor: giveMe.aDataContainer({
       inputs: [
         giveMe.anInput({
@@ -36,21 +36,11 @@ const variants = [
       content: giveMe.anExpected({
         testId: "content",
         data: giveMe.theParentContext()
-      })
-    })
-  },
-  {
-    name: "Actions",
-    descriptor: giveMe.aDataContainer({
+      }),
       actions: [
         giveMe.aButton({ label: "ACTION_1" }),
         giveMe.aButton({ label: "ACTION_2", icon: "pi pi-heart" })
-      ],
-      earlyWrapActionsAt: 1,
-      content: giveMe.anExpected({
-        testId: "content",
-        data: giveMe.theParentContext()
-      })
+      ]
     })
   }
 ];

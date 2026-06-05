@@ -23,8 +23,8 @@ test.describe("Base", () => {
   });
 });
 
-test.describe("Inputs", () => {
-  const id = "Inputs";
+test.describe("Inputs and Actions", () => {
+  const id = "Inputs and Actions";
 
   test("inputs rendered", async({ page }) => {
     const component = page.getByTestId(id);
@@ -59,10 +59,6 @@ test.describe("Inputs", () => {
 
     await expect(component.getByTestId("content")).toHaveText(/value/);
   });
-});
-
-test.describe("Actions", () => {
-  const id = "Actions";
 
   test("actions rendered", async({ page }) => {
     const component = page.getByTestId(id);
@@ -87,15 +83,6 @@ test.describe("Actions", () => {
 
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
-
-    await expect(component).toHaveScreenshot();
-  });
-
-  test("visual (early wraps actions)", { tag: "@visual" }, async({ page }) => {
-    const component = page.getByTestId(id);
-    const screen = giveMe.aScreenSize({ name: "2xs" });
-
-    await page.setViewportSize({ ...screen });
 
     await expect(component).toHaveScreenshot();
   });
