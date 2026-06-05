@@ -133,9 +133,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        sf.Schema.Inputs.Add(
-                            parameter.GenerateRequiredSchema<Input>(cc)
-                        );
+                        var input = parameter.GenerateSchema<Input>(cc);
+                        if (input is null) { continue; }
+
+                        sf.Schema.Inputs.Add(input);
                     }
                 }
             );
@@ -154,11 +155,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                             fp.Schema.Sections.Add(section);
                         }
 
-                        section.InputGroups.Add(
-                            parameter.GenerateRequiredSchema<FormPage.InputGroup>(
-                                cc.Drill(parameter.SectionKey, nameof(FormPage.Section.InputGroups))
-                            )
-                        );
+                        var inputGroup = parameter.GenerateSchema<FormPage.InputGroup>(cc.Drill(parameter.SectionKey, nameof(FormPage.Section.InputGroups)));
+                        if (inputGroup is null) { continue; }
+
+                        section.InputGroups.Add(inputGroup);
                     }
                 }
             );
