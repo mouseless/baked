@@ -46,6 +46,7 @@ const variants = [
         giveMe.aButton({ label: "ACTION_1" }),
         giveMe.aButton({ label: "ACTION_2", icon: "pi pi-heart" })
       ],
+      earlyWrapActionsAt: 1,
       content: giveMe.anExpected({
         testId: "content",
         data: giveMe.theParentContext()

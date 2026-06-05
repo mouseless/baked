@@ -8,4 +8,5 @@ public record Button(string Label)
     public string? Variant { get; set; }
     public string? Severity { get; set; }
     public bool? Rounded { get; set; }
+    public string? Size { get; set; }
 }

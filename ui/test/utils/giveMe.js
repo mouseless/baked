@@ -28,13 +28,13 @@ export default {
     return { sample: "response" };
   },
 
-  aButton({ action, icon, label, variant, severity, rounded } = {}) {
+  aButton({ action, icon, label, variant, severity, size, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
 
     return {
       type: "Button",
-      schema: { icon, label, variant, severity, rounded },
+      schema: { icon, label, variant, severity, size, rounded },
       action
     };
   },
@@ -164,14 +164,15 @@ export default {
     };
   },
 
-  aDataContainer({ actions, inputs, content } = {}) {
+  aDataContainer({ actions, earlyWrapActionsAt, inputs, content } = {}) {
     actions = $(actions, []);
+    earlyWrapActionsAt = $(earlyWrapActionsAt, 2);
     inputs = $(inputs, []);
     content = $(content, this.anExpected());
 
     return {
       type: "DataContainer",
-      schema: { actions, inputs, content }
+      schema: { actions, earlyWrapActionsAt, inputs, content }
     };
   },
 

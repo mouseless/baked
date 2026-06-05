@@ -7,6 +7,7 @@
     "
   >
     <div
+      v-if="actions.length"
       class="
         py-2 px-4
         w-full flex justify-end
@@ -18,9 +19,7 @@
       }"
     >
       <div
-        v-if="actions.length"
         class="
-          actions
           min-w-min flex gap-2 row-span-2 items-end text-nowrap
           max-xs:text-xs max-md:text-sm
           md:max-md:items-center md:pt-6
@@ -79,7 +78,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { actions, content, inputs } = schema;
+const { actions, content, earlyWrapActionsAt, inputs } = schema;
 
 const contextData = context.injectContextData();
 
@@ -111,6 +110,14 @@ function onChanged(event) {
 .b-component--DataContainer {
   div {
     @apply [&:has(.p-datatable)]:p-0;
+  }
+
+  .p-button {
+    @apply self-stretch;
+
+    .p-button-icon+.p-button-label {
+      @apply max-sm:hidden;
+    }
   }
 }
 </style>

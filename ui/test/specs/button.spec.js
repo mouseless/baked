@@ -45,3 +45,35 @@ test.describe("Base", () => {
     await expect(component).toHaveScreenshot();
   });
 });
+
+test.describe("Small", () => {
+  const id = "Small";
+
+  test("size ", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.button.base)).toHaveClass(/b--small/);
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Large", () => {
+  const id = "Large";
+
+  test("size", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.button.base)).toHaveClass(/b--large/);
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+});
