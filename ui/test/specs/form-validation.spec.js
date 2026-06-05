@@ -32,6 +32,19 @@ test.describe("Base", () => {
 
     await expect(label).toHaveText("Test Label (Optional)");
   });
+
+  test("only show error messages on tooltip", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("param-3");
+    const button = component.locator(primevue.button.base);
+
+    await input.fill("info");
+    await button.scrollIntoViewIfNeeded();
+    await button.hover();
+
+    await expect(page.locator(primevue.tooltip.top)).toBeVisible();
+    await expect(page.locator(primevue.tooltip.top)).not.toContainText("Param-3 value is info");
+  });
 });
 
 test.describe("Mutable", () => {

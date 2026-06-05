@@ -26,6 +26,12 @@ const variants = [
               showOptionality: true
             })
           })
+        }),
+        giveMe.anInput({
+          name: "param-3",
+          component: giveMe.anExpectedInput({
+            testId: "param-3"
+          })
         })
       ]
     })
