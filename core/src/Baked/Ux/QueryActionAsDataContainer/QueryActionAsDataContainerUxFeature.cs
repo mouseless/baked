@@ -127,7 +127,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                         o.TargetProp = "length";
                     });
 
-                    p.ReloadWhenPage(_lengthContextKey);
+                    p.ReloadWhen(_lengthContextKey);
                 }
             );
             // When there is no take parameter, set take to 10
@@ -145,7 +145,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                         o.Prop = _takeContextKey;
                         o.TargetProp = "take";
                     });
-                    p.ReloadWhenPage(_takeContextKey);
+                    p.ReloadWhen(_takeContextKey);
                 }
             );
 

@@ -1,9 +1,10 @@
 ﻿namespace Baked.Ui;
 
-public record WhenTrigger(string When)
+public record WhenTrigger(string Key, string When)
     : ITrigger
 {
-    public string Type => "When";
+    public string Type => nameof(When);
+    public string Key { get; set; } = Key;
     public string When { get; set; } = When;
     public IConstraint? Constraint { get; set; }
 }
