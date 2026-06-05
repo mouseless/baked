@@ -74,7 +74,11 @@ function On({ evaluate, eventId, events }) {
 
 function When({ contextData, evaluate }) {
   function bind({ trigger, react }) {
-    watch(() => contextData.page[trigger.when], async value => {
+    const contextDataPath = trigger.when.split(".");
+    const key = contextDataPath[0];
+    const data = contextDataPath[1];
+
+    watch(() => contextData[key][data], async value => {
       react(await evaluate(trigger.constraint, value));
     }, { immediate: true });
 

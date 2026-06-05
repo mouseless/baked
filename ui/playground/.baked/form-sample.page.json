@@ -183,11 +183,11 @@
                           "parts": [
                             {
                               "type": "When",
-                              "when": "length-context-key"
+                              "when": "page.length-context-key"
                             },
                             {
                               "type": "When",
-                              "when": "take-context-key"
+                              "when": "page.take-context-key"
                             }
                           ]
                         }
