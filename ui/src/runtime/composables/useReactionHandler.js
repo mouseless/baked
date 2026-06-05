@@ -80,7 +80,6 @@ function When({ contextData, evaluate }) {
 
     watch(() => contextData[key][data], async value => {
       react(false);
-      
       react(await evaluate(trigger.constraint, value));
     }, { immediate: true });
 
