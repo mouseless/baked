@@ -49,6 +49,15 @@ const variants = [
     })
   },
   {
+    name: "Horizontal",
+    descriptor: giveMe.aSimpleForm({
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [ giveMe.anInput() ],
+      submit: giveMe.aButton().schema,
+      horizontal: true
+    })
+  },
+  {
     name: "Multiple Inputs",
     descriptor: giveMe.aSimpleForm({
       action: giveMe.aLocalAction({ showMessage: "ok" }),

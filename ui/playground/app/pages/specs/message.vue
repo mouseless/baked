@@ -1,5 +1,9 @@
 <template>
-  <UiSpec :variants />
+  <UiSpec :variants>
+    <template #content>
+      <p>This is a content slot for message</p>
+    </template>
+  </UiSpec>
 </template>
 <script setup>
 import giveMe from "@utils/giveMe";
@@ -11,7 +15,8 @@ const variants = [
       message: "Message",
       icon: "pi pi-info-circle",
       severity: "info"
-    })
+    }),
+    forwardSlots: true
   },
   {
     name: "No icon",
@@ -66,6 +71,23 @@ const variants = [
     descriptor: giveMe.aMessage({
       variant: "simple"
     })
+  },
+  {
+    name: "Action",
+    descriptor: giveMe.aMessage({
+      message: "Message",
+      icon: "pi pi-info-circle",
+      severity: "success",
+      action: giveMe.aButton({
+        action: giveMe.aCompositeAction([
+          giveMe.aLocalAction({ delay: 100 }),
+          giveMe.aLocalAction({ showMessage: "Execute Action" })
+        ]),
+        label: "Spec: Button",
+        icon: "pi pi-play-circle"
+      })
+    }),
+    forwardSlots: true
   }
 ];
 </script>

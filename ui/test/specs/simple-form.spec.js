@@ -21,7 +21,7 @@ test.describe("Base", () => {
 
   test("title", async({ page }) => {
     const component = page.getByTestId(id);
-    const title = component.locator("h1");
+    const title = component.locator("h2");
 
     await expect(title).toBeAttached();
     await expect(title).toHaveText("Simple Form");
@@ -112,6 +112,16 @@ test.describe("Error", () => {
     await expect(popover.locator(baked.message.base)).toHaveClass(/message-error/);
     await expect(popover.locator(baked.message.base)).toHaveText(/Test Service Handled/);
     await expect(popover.locator(baked.message.base)).toHaveText(/A handled exception was thrown/);
+  });
+});
+
+test.describe("Horizontal", () => {
+  const id = "Horizontal";
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
   });
 });
 

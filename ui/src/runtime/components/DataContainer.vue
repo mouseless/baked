@@ -7,19 +7,36 @@
     "
   >
     <div
-      v-if="inputs.length > 0"
-      class="
-        py-2 px-4
-        bg-transparent
-        rounded-none text-sm
-        flex gap-2 items-center justify-end
-      "
+      v-if="actions.length || inputs.length"
+      class="w-full flex justify-between  py-2 px-4"
     >
-      <Inputs
-        :inputs="inputs"
-        @ready="onReady"
-        @changed="onChanged"
-      />
+      <div
+        class="
+          min-w-min flex gap-2 row-span-2 items-end text-nowrap
+          max-xs:text-xs max-md:text-sm
+          md:max-md:items-center
+        "
+      >
+        <Bake
+          v-for="action in actions"
+          :key="action.schema.name"
+          :name="`actions/${action.schema.name}`"
+          :descriptor="action"
+        />
+      </div>
+      <div
+        class="
+          bg-transparent
+          rounded-none text-sm
+          flex gap-2 items-center justify-end
+        "
+      >
+        <Inputs
+          :inputs="inputs"
+          @ready="onReady"
+          @changed="onChanged"
+        />
+      </div>
     </div>
     <div
       class="p-4 [contain:inline-size]"
@@ -51,7 +68,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { content, inputs } = schema;
+const { actions = [], content, inputs } = schema;
 
 const contextData = context.injectContextData();
 
@@ -83,6 +100,14 @@ function onChanged(event) {
 .b-component--DataContainer {
   div {
     @apply [&:has(.p-datatable)]:p-0;
+  }
+
+  .p-button {
+    @apply self-stretch;
+
+    .p-button-icon+.p-button-label {
+      @apply max-sm:hidden;
+    }
   }
 }
 </style>

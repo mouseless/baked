@@ -28,13 +28,13 @@ export default {
     return { sample: "response" };
   },
 
-  aButton({ action, icon, label, variant, severity, rounded } = {}) {
+  aButton({ action, icon, label, variant, severity, size, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
 
     return {
       type: "Button",
-      schema: { icon, label, variant, severity, rounded },
+      schema: { icon, label, variant, severity, size, rounded },
       action
     };
   },
@@ -164,13 +164,14 @@ export default {
     };
   },
 
-  aDataContainer({ inputs, content } = {}) {
+  aDataContainer({ actions, inputs, content } = {}) {
+    actions = $(actions, []);
     inputs = $(inputs, []);
     content = $(content, this.anExpected());
 
     return {
       type: "DataContainer",
-      schema: { inputs, content }
+      schema: { actions, inputs, content }
     };
   },
 
@@ -346,13 +347,14 @@ export default {
     };
   },
 
-  anExpectedInput({ action, defaultValue, number, restrictedValue, testId } = {}) {
+  anExpectedInput({ action, defaultValue, hint, number, restrictedValue, testId } = {}) {
     testId = $(testId, "test-id");
 
     return {
       type: "ExpectedInput",
       schema: {
         defaultValue,
+        hint,
         number,
         restrictedValue,
         testId
@@ -603,7 +605,7 @@ export default {
     };
   },
 
-  aMessage({ message, icon, severity, localizeMessage, data, variant } = {}) {
+  aMessage({ message, icon, severity, localizeMessage, action, data, variant } = {}) {
     message = $(message, "Spec: This is a message");
     localizeMessage = $(localizeMessage, true);
     data = $(data, this.anInlineData(message));
@@ -615,7 +617,8 @@ export default {
         icon,
         severity,
         localizeMessage,
-        variant
+        variant,
+        action
       },
       data
     };
@@ -876,7 +879,7 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogOptions, inputs, submit, title, action, validations, showValidationSummary }) {
+  aSimpleForm({ dialogOptions, horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
@@ -887,6 +890,7 @@ export default {
       type: "SimpleForm",
       schema: {
         dialogOptions,
+        horizontal,
         inputs,
         submit,
         title,

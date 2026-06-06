@@ -38,7 +38,7 @@ export default function() {
 
     const messages = computed(() =>
       [...Object.values(validations.value), ...Object.values(mutableValidations).map(v => v.value)]
-        .filter(v => v.message)
+        .filter(v => v.message && v.severity === "error")
         .map((v, i) => `${i > 0 ? "\n" : ""} - ${v.message}`)
         .join("")
     );
@@ -67,13 +67,20 @@ function MutableValidation(ref) {
   }
 
   function setError(message) {
-    ref.value.valid = false;
+    setMessage(message, { persist: true, severity: "error" });
+  }
+
+  function setMessage(message, { persist = false, severity = "secondary", icon } = {}) {
+    ref.value.valid = severity !== "error";
     ref.value.message = message;
-    ref.value.severity = "error";
+    ref.value.persist = persist;
+    ref.value.severity = severity;
+    ref.value.icon = icon;
   }
 
   return {
     clear,
-    setError
+    setError,
+    setMessage
   };
 }

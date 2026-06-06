@@ -74,7 +74,8 @@ function On({ evaluate, eventId, events }) {
 
 function When({ contextData, evaluate }) {
   function bind({ trigger, react }) {
-    watch(() => contextData.page[trigger.when], async value => {
+    watch(() => contextData[trigger.key ?? "page"][trigger.when], async value => {
+      react(false);
       react(await evaluate(trigger.constraint, value));
     }, { immediate: true });
 

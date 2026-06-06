@@ -14,10 +14,13 @@
     >
       <Message
         v-if="message"
+        :key="`${severity}:${icon}`"
+        icon="pi pi-info-circle"
         :schema="{
-          severity: severity,
+          severity,
           variant: 'simple',
-          size: 'small'
+          size: 'small',
+          icon
         }"
         :data="message || ''"
         class="ml-3"
@@ -50,4 +53,5 @@ const message = computed(() => {
   return null;
 });
 const severity = computed(() => mutableValidation?.value.severity || validation?.value.severity);
+const icon = computed(() => mutableValidation?.value.icon || validation?.value.icon);
 </script>

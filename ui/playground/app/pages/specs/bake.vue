@@ -157,7 +157,13 @@ const variants = [
                 })
               ]
             }),
-            show: giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ isNot: "hide" }) })
+            show: giveMe.aTrigger({
+              when: "input",
+              constraint: giveMe.aConstraint({
+                composable: "useFakeValidator",
+                options: giveMe.aDelayedData({ expected: "show" }, { ms: 200 })
+              })
+            })
           }
         })
       ]

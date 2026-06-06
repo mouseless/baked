@@ -34,9 +34,11 @@ const { schema } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { testId, defaultValue, number, restrictedValue } = schema;
+const { testId, defaultValue, number, restrictedValue, hint } = schema;
 
 const mutableValidation = validation.injectMutable();
+
+clearError();
 
 watch(model, newValue => {
   if(newValue === "" && !defaultValue) {
@@ -49,12 +51,10 @@ watch(model, newValue => {
     model.value = newValue = defaultValue;
   }
 
-  if(restrictedValue) {
-    if(newValue === restrictedValue) {
-      mutableValidation?.setError(`${restrictedValue} is restricted`);
-    } else {
-      mutableValidation?.clear();
-    }
+  if(restrictedValue && newValue === restrictedValue) {
+    showError();
+  } else {
+    clearError();
   }
 });
 
@@ -66,5 +66,17 @@ onMounted(() => {
 
 function onInput(event) {
   model.value = event.value;
+}
+
+function showError() {
+  mutableValidation?.setError(`${restrictedValue} is restricted`);
+}
+
+function clearError() {
+  if(hint) {
+    mutableValidation?.setMessage(hint, { severity: "secondary", icon: "pi pi-lightbulb" });
+  } else {
+    mutableValidation?.clear();
+  }
 }
 </script>

@@ -26,6 +26,12 @@ const variants = [
               showOptionality: true
             })
           })
+        }),
+        giveMe.anInput({
+          name: "param-3",
+          component: giveMe.anExpectedInput({
+            testId: "param-3"
+          })
         })
       ]
     })
@@ -42,7 +48,8 @@ const variants = [
           name: "input-1",
           component: giveMe.anExpectedInput({
             testId: "input-1",
-            restrictedValue: "error"
+            restrictedValue: "error",
+            hint: "Type 'error' to see error message"
           })
         }),
         giveMe.anInput({

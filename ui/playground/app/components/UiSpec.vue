@@ -45,7 +45,17 @@
             <Bake
               :name="`variants/${camelize(variant.name)}`"
               :descriptor="prepareDescriptor(variant)"
-            />
+            >
+              <template
+                v-for="(_, slotName) in (variant.forwardSlots ? $slots : {})"
+                #[slotName]="slotProps"
+              >
+                <slot
+                  :name="slotName"
+                  v-bind="slotProps ?? {}"
+                />
+              </template>
+            </Bake>
           </div>
           <div
             v-else
@@ -64,14 +74,34 @@
                   v-model="variant.model.value"
                   :name="`variants/${camelize(variant.name)}`"
                   :descriptor="prepareDescriptor(variant)"
-                />
+                >
+                  <template
+                    v-for="(_, slotName) in (variant.forwardSlots ? $slots : {})"
+                    #[slotName]="slotProps"
+                  >
+                    <slot
+                      :name="slotName"
+                      v-bind="slotProps ?? {}"
+                    />
+                  </template>
+                </Bake>
               </ProvideValidation>
               <!-- draws remaining variant, e.g., loading variant -->
               <Bake
                 v-else
                 :name="`variants/${camelize(variant.name)}`"
                 :descriptor="prepareDescriptor(variant)"
-              />
+              >
+                <template
+                  v-for="(_, slotName) in (variant.forwardSlots ? $slots : {})"
+                  #[slotName]="slotProps"
+                >
+                  <slot
+                    :name="slotName"
+                    v-bind="slotProps ?? {}"
+                  />
+                </template>
+              </Bake>
             </div>
             <div
               v-if="variant.model"

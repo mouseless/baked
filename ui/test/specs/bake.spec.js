@@ -325,10 +325,10 @@ test.describe.serial("Reaction", () => {
   test("show/hide reaction with isNot constraint", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
-    await expect(component.getByTestId("output")).toBeAttached();
-
-    await input.fill("hide");
-
     await expect(component.getByTestId("output")).not.toBeAttached();
+
+    await input.fill("show");
+
+    await expect(component.getByTestId("output")).toBeAttached();
   });
 });
