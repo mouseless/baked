@@ -37,6 +37,7 @@ const model = defineModel({ type: null, required: true });
 const { testId, defaultValue, number, restrictedValue, hint } = schema;
 
 const mutableValidation = validation.injectMutable();
+
 clearError();
 
 watch(model, newValue => {
