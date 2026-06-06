@@ -67,15 +67,15 @@ function MutableValidation(ref) {
   }
 
   function setError(message) {
-    ref.value.valid = false;
-    ref.value.message = message;
-    ref.value.severity = "error";
+    setMessage(message, { persist: true, severity: "error" });
   }
 
-  function setMessage(message, { severity = "info", persist = false }) {
+  function setMessage(message, { persist = false, severity = "secondary", icon } = {}) {
+    ref.value.valid = severity !== "error";
     ref.value.message = message;
-    ref.value.severity = severity;
     ref.value.persist = persist;
+    ref.value.severity = severity;
+    ref.value.icon = icon;
   }
 
   return {

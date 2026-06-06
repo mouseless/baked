@@ -55,12 +55,16 @@
   <template v-else>
     <div
       v-bind="$attrs"
-      class="flex flex-col gap-8"
+      class="flex flex-col gap-4"
+      :class="{ 'gap-8': !horizontal }"
     >
-      <h1 class="font-bold text-xl truncate">
+      <h2 class="font-bold text-xl truncate">
         {{ l(title) }}
-      </h1>
-      <div class="flex flex-col gap-4">
+      </h2>
+      <div
+        class="flex gap-4"
+        :class="{ 'flex-col': !horizontal }"
+      >
         <Inputs
           v-if="inputs"
           :inputs
@@ -69,21 +73,23 @@
           @ready="onReady"
           @changed="onChanged"
         />
+        <Button
+          ref="submitRef"
+          v-tooltip.top="{
+            disabled: !showValidationSummary,
+            value: messages,
+            pt: { text: 'text-sm' }
+          }"
+          :schema="submit"
+          :ready
+          class="min-w-min"
+          :class="{ 'mt-4': !horizontal && inputs.length }"
+          @submit="$emit('submit', model)"
+        />
+        <ErrorPopover ref="errorPopoverRef">
+          <InlineError :error />
+        </ErrorPopover>
       </div>
-      <Button
-        ref="submitRef"
-        v-tooltip.top="{
-          disabled: !showValidationSummary,
-          value: messages,
-          pt: { text: 'text-sm' }
-        }"
-        :schema="submit"
-        :ready
-        @submit="$emit('submit', model)"
-      />
-      <ErrorPopover ref="errorPopoverRef">
-        <InlineError :error />
-      </ErrorPopover>
     </div>
   </template>
 </template>
@@ -102,7 +108,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { dialogOptions, inputs, submit, title, validations = [], showValidationSummary = false } = schema;
+const { dialogOptions, inputs, horizontal, submit, title, validations = [], showValidationSummary = false } = schema;
 
 const model = ref({});
 const readyData = ref({});

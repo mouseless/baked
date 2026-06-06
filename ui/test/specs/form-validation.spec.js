@@ -33,7 +33,7 @@ test.describe("Base", () => {
     await expect(label).toHaveText("Test Label (Optional)");
   });
 
-  test("only show error messages on tooltip", async({ page }) => {
+  test("doesn't show error messages on tooltip", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("param-3");
     const button = component.locator(primevue.button.base);
@@ -86,6 +86,21 @@ test.describe("Mutable", () => {
     await expect(button).toBeDisabled();
     await expect(page.locator(primevue.tooltip.top)).toBeVisible();
     await expect(page.locator(primevue.tooltip.top)).toContainText("error is restricted");
+  });
+
+  test("shows error using mutable validation", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("input-1");
+
+    await input1.fill("error");
+
+    await expect(component.locator(".b-Validation.b--input-1 .b-message")).toHaveText("error is restricted");
+  });
+
+  test("shows hint below component using mutable validation", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(".b-Validation.b--input-1 .b-message")).toHaveText("Type 'error' to see error message");
   });
 });
 

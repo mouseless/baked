@@ -347,13 +347,14 @@ export default {
     };
   },
 
-  anExpectedInput({ action, defaultValue, number, restrictedValue, testId } = {}) {
+  anExpectedInput({ action, defaultValue, hint, number, restrictedValue, testId } = {}) {
     testId = $(testId, "test-id");
 
     return {
       type: "ExpectedInput",
       schema: {
         defaultValue,
+        hint,
         number,
         restrictedValue,
         testId
@@ -878,7 +879,7 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogOptions, inputs, submit, title, action, validations, showValidationSummary }) {
+  aSimpleForm({ dialogOptions, horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
@@ -889,6 +890,7 @@ export default {
       type: "SimpleForm",
       schema: {
         dialogOptions,
+        horizontal,
         inputs,
         submit,
         title,

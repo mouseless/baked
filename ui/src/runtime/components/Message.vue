@@ -74,6 +74,10 @@ const sizeClass = computed(() => {
 }
 .message-simple {
   @apply !bg-transparent;
+
+  .b-message-icon {
+    @apply text-sm;
+  }
 }
 .message-simple .b-message-body {
   @apply  px-0;

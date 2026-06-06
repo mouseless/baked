@@ -3,18 +3,19 @@ export default function({ model }) {
 
   if(model["param-2"] === "error") {
     result["param-2"] = {
-      message: "Param-2 value is error",
-      severity: "error",
       valid: false,
-      persist: true
+      message: "Param-2 value is error",
+      persist: true,
+      severity: "error"
     };
   }
 
   if(model["param-3"] === "info") {
     result["param-3"] = {
+      valid: true,
       message: "Param-3 value is info",
-      severity: "info",
-      persist: true
+      persist: true,
+      severity: "info"
     };
   }
 
