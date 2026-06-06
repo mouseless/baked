@@ -36,7 +36,7 @@
           @ready="onReady"
           @changed="onChanged"
         />
-    </div>
+      </div>
     </div>
     <div
       class="p-4 [contain:inline-size]"
