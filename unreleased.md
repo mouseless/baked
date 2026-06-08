@@ -4,6 +4,32 @@
 
 - `Domain` layer now introduces a level system to improve managing convention
   execution orders.
+  ```csharp
+  configurator.Domain.ConfigureDomainModelBuilder(builder =>
+  {
+    builder.ConventionOrderMatrix.Bases.Add("Base");
+    ...
+    builder.ConventionOrderMatrix.Levels.Add("Level");
+    ...
+    builder.ConventionOrderMatrix.Extensions.Add("Ext");
+    ...
+
+    builder.ConventionOrderMatrix.FallbackBase = convention => ...;
+    builder.ConventionOrderMatrix.FallbackLevel = convention => ...;
+    builder.ConventionOrderMatrix.FallbackExtension = convention => ...;
+
+    builder.DefaultConventionLevel = "...";
+  });
+
+  configurator.Domain.ConfigureDomainConventions(conventions => 
+  {
+    conventions.SetTypeAttribute(
+      when: _ => true,
+      attribute: () => new GroupAttribute(),
+      order: Order.At.WithBase("Base").WithLevel("Level").WithExtension("Ext")
+    );
+  });
+  ```
 
 ## Breaking Changes
 
