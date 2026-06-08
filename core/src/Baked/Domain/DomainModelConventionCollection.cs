@@ -24,9 +24,9 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
 
     class OrderMatrix(ConventionOrderMatrixOptions options, string? defaultConventionLevel)
     {
-        const string BASE_DEFAULT = "BASE_DEFAULT";
-        const string LEVEL_DEFAULT = "LEVEL_DEFAULT";
-        const string EXTENSION_DEFAULT = "EXTENSION_DEFAULT";
+        const string BASE_DEFAULT = "Default";
+        const string LEVEL_DEFAULT = "Default";
+        const string EXTENSION_DEFAULT = "Default";
         const string DEFAULT_LEVEL = $"{BASE_DEFAULT}.{LEVEL_DEFAULT}.{EXTENSION_DEFAULT}";
 
         public string DefaultConventionLevel { get; } = defaultConventionLevel ?? DEFAULT_LEVEL;
@@ -50,7 +50,6 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
                     {
                         calculatedLevels.Add($"{@base}.{level}.{extension}");
                     }
-
                 }
             }
 
