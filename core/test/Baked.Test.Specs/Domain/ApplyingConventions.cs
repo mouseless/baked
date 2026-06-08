@@ -57,8 +57,7 @@ public class ApplyingConventions : Spec
             {
                 c.Add(new TestConvention("C1"));
                 c.Add(new TestConvention("C2"));
-            },
-            options: BuildOptions
+            }
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
@@ -75,8 +74,7 @@ public class ApplyingConventions : Spec
             {
                 c.Add(new TestConvention("C1"), order: 2);
                 c.Add(new TestConvention("C2"), order: 1);
-            },
-            options: BuildOptions
+            }
         );
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
