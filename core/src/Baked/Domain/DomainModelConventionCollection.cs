@@ -22,7 +22,7 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
             Add((convention, calculatedOrder));
         });
 
-    public class OrderMatrix(ConventionOrderMatrixOptions options, string? defaultConventionLevel)
+    class OrderMatrix(ConventionOrderMatrixOptions options, string? defaultConventionLevel)
     {
         const string BASE_DEFAULT = "BASE_DEFAULT";
         const string LEVEL_DEFAULT = "LEVEL_DEFAULT";
