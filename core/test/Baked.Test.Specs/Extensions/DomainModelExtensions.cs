@@ -10,7 +10,7 @@ namespace Baked.Test;
 
 public static class DomainModelExtensions
 {
-    extension(Stubber giveMe)
+    extension(Stubber _)
     {
         public AttributeCollection AnAttributeCollection(
             string? name = default,
