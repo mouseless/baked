@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -65,7 +66,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
                 },
-                order: UiLayer.MaxConventionOrder - 10
+                order: Order.At.Theme.Max
             );
 
             // Export

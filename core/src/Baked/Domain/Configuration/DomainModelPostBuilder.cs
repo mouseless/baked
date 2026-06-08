@@ -14,36 +14,36 @@ public class DomainModelPostBuilder(DomainModelBuilderOptions options, IDomainMo
         using (Diagnostics.Start(nameof(DomainModelPostBuilder), onDispose: _options.OnComplete))
         {
             var contexts = new DomainModelConventionContexts(Model);
-            var conventionsRequiringIndex = new List<IDomainModelConvention>();
-            var restOfTheConventions = new List<IDomainModelConvention>();
+            var conventionsBeforeBuildingIndexes = new List<IDomainModelConvention>();
+            var conventionsAfterBuildingIndexes = new List<IDomainModelConvention>();
 
             foreach (var convention in _conventions.OrderBy(c => c.Order).Select(c => c.Convention))
             {
-                if (convention is IAddRemoveAttributeConvention addRemove && addRemove.AttributeRequiresIndex)
+                if (convention.BeforeBuildingIndexes)
                 {
-                    conventionsRequiringIndex.Add(convention);
+                    conventionsBeforeBuildingIndexes.Add(convention);
                 }
                 else
                 {
-                    restOfTheConventions.Add(convention);
+                    conventionsAfterBuildingIndexes.Add(convention);
                 }
             }
 
-            foreach (var convention in conventionsRequiringIndex)
+            foreach (var convention in conventionsBeforeBuildingIndexes)
             {
                 contexts.Apply(convention);
             }
 
-            BuildIndices();
+            BuildIndexes();
 
-            foreach (var convention in restOfTheConventions)
+            foreach (var convention in conventionsAfterBuildingIndexes)
             {
                 contexts.Apply(convention);
             }
         }
     }
 
-    void BuildIndices()
+    void BuildIndexes()
     {
         foreach (var index in _options.Index.Type)
         {

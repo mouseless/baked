@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.RestApi.Conventions;
 using Humanizer;
@@ -26,13 +27,13 @@ public class QueryCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     var locatable = c.Type.Get<LocatableAttribute>();
                     queryType.Apply(qt => locatable.QueryType = qt);
                 },
-                order: 30
+                order: Order.At.Defaults + 30
             );
 
-            conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
+            conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: Order.At.Defaults - 10);
             conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
                 _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
-            ));
+            ), order: Order.At.Defaults);
         });
     }
 }

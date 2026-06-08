@@ -199,7 +199,6 @@ public abstract class MonolithRecipe
                     c => c.PropertiesAsFieldset(),
                     c => c.RoutedTypesAsNavLinks()
                 ]);
-
                 app.Features.AddTheme(_theme);
             }
 

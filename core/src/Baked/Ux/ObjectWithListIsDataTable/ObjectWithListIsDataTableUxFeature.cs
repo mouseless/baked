@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
@@ -31,14 +32,16 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                             !p.PropertyType.Is<string>() &&
                             p.PropertyType.IsAssignableTo<IEnumerable>()
                         ).Name
-                )
+                ),
+                order: Order.At.Defaults
             );
 
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c =>
                     c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
                     c.Property.Name == objectWithList.ListPropertyName,
-                attribute: data => data.Visible = false
+                attribute: data => data.Visible = false,
+                order: Order.At.Defaults
             );
 
             conventions.AddMethodComponent(

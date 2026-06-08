@@ -1,5 +1,5 @@
 using Baked.Architecture;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 
 namespace Baked.CodingStyle.NamespaceAsRoute;
 
@@ -9,7 +9,7 @@ public class NamespaceAsRouteCodingStyleFeature : IFeature<CodingStyleConfigurat
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.Add(new UseNamespaceForBaseRouteConvention(), order: RestApiLayer.MaxConventionOrder - 10);
+            conventions.Add(new UseNamespaceForBaseRouteConvention(), order: Order.At.Max);
         });
     }
 }

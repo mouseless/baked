@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Playground.Orm;
 using Baked.Playground.Theme;
 using Baked.Theme;
@@ -18,17 +19,20 @@ public class FormSampleDomainOverrideFeature : IFeature
         {
             conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
-                attribute: (a, c) => a.RoutePathBack = "/form-sample"
+                attribute: (a, c) => a.RoutePathBack = "/form-sample",
+                order: Order.At.Override
             );
 
             conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
-                attribute: a => a.HideInLists = true
+                attribute: a => a.HideInLists = true,
+                order: Order.At.Override
             );
 
             conventions.SetMethodAttribute(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
-                attribute: () => new QueryMethodAttribute()
+                attribute: () => new QueryMethodAttribute(),
+                order: Order.At.Defaults
             );
 
             conventions.AddMethodComponentConfiguration<FormPage>(
@@ -37,14 +41,16 @@ public class FormSampleDomainOverrideFeature : IFeature
                 {
                     fp.Schema.ForEachInputGroup(g => g.Wide = true);
                     fp.Schema.Sections[0].InputGroups.Move("name", toTop: true);
-                }
+                },
+                order: Order.At.Override
             );
 
             // Properties
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().IsEnum,
                 where: cc => cc.Path.StartsWith(nameof(Page), nameof(FormSample)),
-                component: () => B.Text()
+                component: () => B.Text(),
+                order: Order.At.Override
             );
         });
     }

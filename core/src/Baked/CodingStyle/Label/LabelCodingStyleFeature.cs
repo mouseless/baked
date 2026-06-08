@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 
 namespace Baked.CodingStyle.Label;
 
@@ -20,7 +21,7 @@ public class LabelCodingStyleFeature(IEnumerable<string> propertyNames)
                     ) &&
                     _propertyNames.Contains(c.Property.Name),
                 attribute: () => new LabelAttribute(),
-                order: 10
+                order: Order.At.Defaults + 10
             );
         });
     }

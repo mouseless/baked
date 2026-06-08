@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
@@ -22,12 +23,14 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
         {
             conventions.SetPropertyAttribute(
                 when: c => c.Property.Name.EndsWith("Description"),
-                attribute: () => new DescriptionAttribute()
+                attribute: () => new DescriptionAttribute(),
+                order: Order.At.Defaults
             );
 
             conventions.SetParameterAttribute(
                 when: c => c.Parameter.Name.Pascalize().EndsWith("Description"),
-                attribute: () => new DescriptionAttribute()
+                attribute: () => new DescriptionAttribute(),
+                order: Order.At.Defaults
             );
 
             conventions.AddPropertySchemaConfiguration<Field>(

@@ -1,6 +1,9 @@
 ﻿namespace Baked.Domain.Configuration;
 
-public interface IDomainModelConvention;
+public interface IDomainModelConvention
+{
+    public bool BeforeBuildingIndexes => false;
+}
 
 public interface IDomainModelConvention<TModel> : IDomainModelConvention
 {

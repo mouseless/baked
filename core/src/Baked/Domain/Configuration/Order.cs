@@ -9,7 +9,9 @@ public readonly struct Order
     public static readonly Order At = new();
 
     readonly int _offset;
+    readonly string? _base;
     readonly string? _level;
+    readonly string? _extension;
     readonly bool _global;
     readonly int _lowerBound;
     readonly int _upperBound;
@@ -21,6 +23,11 @@ public readonly struct Order
     public readonly Order Max => Clone(offset: _upperBound - ABSOLUTE_OFFSET);
     public readonly Order AbsoluteMax => Clone(offset: _upperBound);
 
+    public readonly string? Base => _base;
+    public readonly string? Level => _level;
+    public readonly string? Extension => _extension;
+    public readonly bool IsGlobal => _global;
+
     public Order()
     {
         _lowerBound = -LEVEL_SPAN / 2;
@@ -29,12 +36,16 @@ public readonly struct Order
 
     Order(
         int offset = 0,
+        string? @base = default,
         string? level = default,
+        string? extension = default,
         bool global = false
     ) : this()
     {
         _offset = offset;
+        _base = @base;
         _level = level;
+        _extension = extension;
         _global = global;
 
         _lowerBound = _global ? int.MinValue : _lowerBound;
@@ -44,22 +55,42 @@ public readonly struct Order
     public Order Offset(int value) =>
         Clone(offset: _offset + value);
 
-    public Order Level(string level) =>
-        Clone(level: level, global: false);
+    public Order WithBase(string @base) =>
+        Clone(@base: @base);
+
+    public Order WithLevel(string level) =>
+        Clone(level: level);
+
+    public Order WithExtension(string extension) =>
+        Clone(extension: extension);
 
     Order Clone(
         int? offset = default,
+        string? @base = default,
         string? level = default,
-        bool? global = default
-    ) => new(
+        string? extension = default
+    )
+    {
+        if (_global)
+        {
+            return new(offset: offset ?? _offset, global: true);
+        }
+
+        return new(
             offset: offset ?? _offset,
+            @base: @base ?? _base,
             level: level ?? _level,
-            global: global ?? _global
+            extension: extension ?? _extension
         );
+    }
 
     public int Calculate(IReadOnlyDictionary<string, int> levels, string defaultLevel)
     {
         if (_global) { return _offset; }
+
+        if (_base is null) { throw DiagnosticCode.InvalidOrder.Exception($"Order 'base' cannot be null"); }
+        if (_level is null) { throw DiagnosticCode.InvalidOrder.Exception($"Order 'level' cannot be null"); }
+        if (_extension is null) { throw DiagnosticCode.InvalidOrder.Exception($"Order 'extension' cannot be null"); }
 
         if (!levels.TryGetValue(defaultLevel, out var defaultLevelIndex))
         {
@@ -68,15 +99,16 @@ public readonly struct Order
             );
         }
 
+        var level = $"{_base}.{_level}.{_extension}";
         if (_offset < _lowerBound || _offset > _upperBound)
         {
             throw DiagnosticCode.OrderOutOfBounds.Exception(
-                $"Order ({_level ?? defaultLevel}: {_offset}) must be between {_lowerBound} - {_upperBound}"
+                $"Order ({level}: {_offset}) must be between {_lowerBound} - {_upperBound}"
             );
         }
 
         var levelIndex = defaultLevelIndex;
-        if (_level is not null && !levels.TryGetValue(_level, out levelIndex))
+        if (level is not null && !levels.TryGetValue(level, out levelIndex))
         {
             Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel,
                 $"Given level '{_level}' was not found in configured levels, defaulting to '{defaultLevel}'"

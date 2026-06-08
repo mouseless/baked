@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
@@ -87,7 +88,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
 
                     f.Component.Data ??= Context.Parent(options: cd => cd.Prop = $"data.{prop}");
                 },
-                order: UiLayer.MaxConventionOrder - 10
+                order: Order.At.Theme.Max
             );
         });
     }

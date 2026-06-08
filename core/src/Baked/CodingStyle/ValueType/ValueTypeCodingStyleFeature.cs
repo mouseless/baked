@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
@@ -25,7 +26,8 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Type.Namespace is not null &&
                     !c.Type.Namespace.StartsWith("System") &&
                     c.Type.IsAssignableTo(typeof(IParsable<>)),
-                attribute: () => new ValueTypeAttribute()
+                attribute: () => new ValueTypeAttribute(),
+                order: Order.At.Defaults
             );
         });
 

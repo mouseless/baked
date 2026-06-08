@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
@@ -14,7 +15,8 @@ public class LabelsAreFrozenUxFeature()
         {
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<LabelAttribute>(),
-                attribute: data => data.Order = -10
+                attribute: data => data.Order = -10,
+                order: Order.At.Defaults
             );
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 when: c => c.Property.Has<LabelAttribute>(),

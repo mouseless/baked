@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
@@ -21,10 +22,11 @@ public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator
                 },
                 when: (_, action) =>
                     (action.Method == HttpMethod.Delete && action.RouteParts.Count >= 2) ||
-                    (action.Method == HttpMethod.Post && Regexes.StartsWithAddCreateOrNew.IsMatch(action.Name) && action.RouteParts.Count >= 2)
+                    (action.Method == HttpMethod.Post && Regexes.StartsWithAddCreateOrNew.IsMatch(action.Name) && action.RouteParts.Count >= 2),
+                order: Order.At.Defaults
             );
-            conventions.Add(new OnlyLocatableParameterIsInRouteForDeleteChildConvention());
-            conventions.Add(new RemoveFromRouteConvention(["Add", "Create", "New"]));
+            conventions.Add(new OnlyLocatableParameterIsInRouteForDeleteChildConvention(), order: Order.At.Defaults);
+            conventions.Add(new RemoveFromRouteConvention(["Add", "Create", "New"]), order: Order.At.Defaults);
         });
     }
 }

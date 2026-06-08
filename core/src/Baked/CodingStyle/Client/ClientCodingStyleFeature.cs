@@ -1,5 +1,5 @@
 using Baked.Architecture;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.Client;
@@ -17,11 +17,13 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.IsInterface && c.Type.Name.EndsWith("Client"),
-                attribute: () => new ClientAttribute()
+                attribute: () => new ClientAttribute(),
+                order: Order.At.Defaults
             );
+
             conventions.RemoveTypeAttribute<ControllerModelAttribute>(
                 when: c => c.Type.Name.EndsWith("Client"),
-                order: RestApiLayer.MaxConventionOrder - 10
+                order: Order.At.Max - 10
             );
         });
 

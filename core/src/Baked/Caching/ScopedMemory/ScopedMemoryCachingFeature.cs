@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Runtime;
 using Baked.Ui;
 using Microsoft.Extensions.Caching.Memory;
@@ -15,7 +16,8 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
         {
             conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "user"),
-                when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "user"
+                when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "user",
+                order: Order.At.Defaults
             );
         });
 

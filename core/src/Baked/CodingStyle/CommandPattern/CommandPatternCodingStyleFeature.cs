@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Binding;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Lifetime;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
@@ -26,31 +27,31 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                         m.DefaultOverload.AllParametersAreApiInput() &&
                         m.DefaultOverload.IsPublicInstanceWithNoSpecialName
                     ),
-                order: 40
+                order: Order.At.Defaults + 40
             );
             conventions.RemoveTypeAttribute<ControllerModelAttribute>(
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     !c.Type.Has<LocatableAttribute>() &&
                     !c.Type.Has<PubliclyInitializableAttribute>(),
-                order: 40
+                order: Order.At.Defaults + 40
             );
 
-            conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: -10);
-            conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: -10);
-            conventions.Add(new RemoveFromRouteConvention(_methodNames));
-            conventions.Add(new RemoveFromRouteConvention(["Sync", "Create"]));
-            conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention());
+            conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: Order.At.Defaults - 10);
+            conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: Order.At.Defaults - 10);
+            conventions.Add(new RemoveFromRouteConvention(_methodNames), order: Order.At.Defaults);
+            conventions.Add(new RemoveFromRouteConvention(["Sync", "Create"]), order: Order.At.Defaults);
+            conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention(), order: Order.At.Defaults);
 
             conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
                 _when: action => action.Name.StartsWith("Sync"),
                 _method: HttpMethod.Put
-            ), order: -10);
+            ), order: Order.At.Defaults - 10);
 
             conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
                 _when: action => action.Name.StartsWith("Create"),
                 _method: HttpMethod.Patch
-            ), order: -10);
+            ), order: Order.At.Defaults - 10);
         });
 
         configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>

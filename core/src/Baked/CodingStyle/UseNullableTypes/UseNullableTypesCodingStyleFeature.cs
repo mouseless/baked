@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
@@ -21,7 +21,7 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
                     genericArgumentMetadata.Has<ApiInputAttribute>(),
                 attribute: () => new ApiInputAttribute(),
-                order: RestApiLayer.MinConventionOrder
+                order: Order.At.Defaults.Min
             );
 
             conventions.SetParameterAttribute(
@@ -36,16 +36,17 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                     return !nullable;
                 },
                 attribute: () => new NotNullAttribute(),
-                order: RestApiLayer.MinConventionOrder
+                order: Order.At.Defaults.Min
             );
 
             conventions.SetParameterAttribute(
                 when: c => !c.Parameter.IsOptional && !c.Parameter.IsNullable,
-                attribute: () => new RequiredAttribute()
+                attribute: () => new RequiredAttribute(),
+                order: Order.At.Defaults
             );
 
-            conventions.Add(new RequiredParametersAreRequiredInApiModelConvention());
-            conventions.Add(new SetDefaultValueForNullableEnumConvention());
+            conventions.Add(new RequiredParametersAreRequiredInApiModelConvention(), order: Order.At.Defaults);
+            conventions.Add(new SetDefaultValueForNullableEnumConvention(), order: Order.At.Defaults);
         });
 
         configurator.RestApi.ConfigureApiModel(api =>

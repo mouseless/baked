@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
@@ -40,7 +41,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     set(c.Type, new ApiInputAttribute());
                     set(c.Type, new LocatableAttribute());
                 },
-                order: 10
+                order: Order.At.Defaults + 10
             );
             conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
                 when: c => c.Type.Has<RichTransientAttribute>(),
@@ -56,7 +57,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                     locatable.IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
                 },
-                order: 10
+                order: Order.At.Defaults + 10
             );
             conventions.SetMethodAttribute(
                 when: c =>
@@ -66,11 +67,11 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublic,
                 attribute: c => new ActionModelAttribute(),
-                order: 20
+                order: Order.At.Defaults + 20
             );
 
-            conventions.Add(new RichTransientUnderPluralGroupConvention());
-            conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
+            conventions.Add(new RichTransientUnderPluralGroupConvention(), order: Order.At.Defaults);
+            conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: Order.At.Defaults + 10);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

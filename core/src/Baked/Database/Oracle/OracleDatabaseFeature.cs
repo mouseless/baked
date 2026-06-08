@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Runtime;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +39,7 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.Add(new AddFlatTransactionToActionConvention());
+            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Defaults);
         });
     }
 }

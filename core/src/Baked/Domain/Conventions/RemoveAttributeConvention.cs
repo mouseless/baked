@@ -6,10 +6,10 @@ namespace Baked.Domain.Conventions;
 public class RemoveAttributeConvention<TModelContext, TAttribute>(
     Action<TModelContext, Action<ICustomAttributesModel>> _apply,
     Func<TModelContext, bool> _when,
-    bool attributeRequiresIndex = true
-) : IDomainModelConvention<TModelContext>, IAddRemoveAttributeConvention where TAttribute : Attribute
+    bool beforeBuildingIndexes = true
+) : IDomainModelConvention<TModelContext> where TAttribute : Attribute
 {
-    bool IAddRemoveAttributeConvention.AttributeRequiresIndex => attributeRequiresIndex;
+    bool IDomainModelConvention.BeforeBuildingIndexes => beforeBuildingIndexes;
 
     public void Apply(TModelContext model)
     {
