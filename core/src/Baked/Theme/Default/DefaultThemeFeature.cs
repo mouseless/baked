@@ -91,7 +91,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 attribute: () => new ActionAttribute(),
-                order: Order.At.Theme
+                order: Order.At.Theme.AbsoluteMin
             );
             conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*"),
