@@ -1357,17 +1357,21 @@ public static class ThemeExtensions
         }
 #pragma warning restore IDE0051
 
-        public T CaptureDescriptor<T>(DomainModelContext c, ComponentContext cc, Func<T> create)
+        public T CaptureDescriptor<T>(DomainModelContext c, ComponentContext cc, Func<T> create,
+            string? orderInfo = default
+        )
         {
             if (!ShouldCapture(c, cc, out var inspection))
             {
                 return create();
             }
 
-            return new Capture<T>(inspection, trace.StackTrace, create, new DescriptorCaptureType(cc)).Execute();
+            return new Capture<T>(inspection, trace.StackTrace, create, new DescriptorCaptureType(cc, orderInfo)).Execute();
         }
 
-        public T CaptureDescriptor<T>(DomainModelContext c, ComponentContext cc, T target, Action update)
+        public T CaptureDescriptor<T>(DomainModelContext c, ComponentContext cc, T target, Action update,
+            string? orderInfo = default
+        )
         {
             if (!ShouldCapture(c, cc, out var inspection))
             {
@@ -1376,7 +1380,7 @@ public static class ThemeExtensions
                 return target;
             }
 
-            return new Capture<T>(inspection, trace.StackTrace, update, new DescriptorCaptureType(cc), target).Execute();
+            return new Capture<T>(inspection, trace.StackTrace, update, new DescriptorCaptureType(cc, orderInfo), target).Execute();
         }
     }
 

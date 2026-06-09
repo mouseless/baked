@@ -454,4 +454,18 @@ public class InspectingAttributes : TestSpec
             ), customMessage: _messages.Join(Environment.NewLine)
         );
     }
+
+    [Test]
+    public void Reports_order_info_when_provided()
+    {
+        _inspect.Attribute<CustomAttribute>();
+        var c = GiveMe.ATypeModelContext<Parent>();
+
+        using (_diagnostics)
+        {
+            new StubFeature(c).Configure(() => new CustomAttribute(), orderInfo: "orderInfo");
+        }
+
+        _messages.ShouldContain(m => Regex.IsMatch(m.Message, @"\[gray].*Order: orderInfo.*"), customMessage: _messages.Join(Environment.NewLine));
+    }
 }

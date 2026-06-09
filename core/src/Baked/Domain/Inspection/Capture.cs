@@ -63,8 +63,8 @@ internal class Capture<T>
         if (!_initial && Equals(value, previousValue)) { return target; }
 
         var source = TryFindFeatureSource(out var featureSource)
-            ? $"[magenta]{featureSource}[/]"
-            : $"[magenta]<unknown>[/]{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]";
+            ? $"[magenta]{featureSource}[/] {OrderInfo()}"
+            : $"[magenta]<unknown>[/] {OrderInfo()}{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]";
         Diagnostics.Current.ReportInfo($"  [darkgoldenrod]{Property}:[/] {FormatValue(value)} [gray]«[/] {source}", group: _captureType.Id);
 
         return target;
@@ -119,4 +119,7 @@ internal class Capture<T>
 
         return true;
     }
+
+    string OrderInfo() =>
+        $"{(_captureType.OrderInfo == null ? string.Empty : $"[gray] Order: {_captureType.OrderInfo}[/]")}";
 }

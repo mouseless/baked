@@ -7,6 +7,8 @@ public class StubFeature(DomainModelContext c)
 {
     readonly Trace _trace = Trace.Here();
 
-    public TSchema Configure<TSchema>(Func<TSchema> create) =>
-        _trace.CaptureAttribute(c, create);
+    public TSchema Configure<TSchema>(Func<TSchema> create,
+        string? orderInfo = default
+    ) =>
+        _trace.CaptureAttribute(c, create, orderInfo: orderInfo);
 }
