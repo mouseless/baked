@@ -231,6 +231,7 @@ public static class BusinessExtensions
             parameter.Has<RequiredAttribute>().ShouldBeFalse($"{parameter.Name} should not have `[RequiredAttribute]`");
     }
 
+    // TODO convert extensions to block body
     extension(IDomainModelConventionCollection conventions)
     {
         public void SetTypeAttribute(Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
