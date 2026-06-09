@@ -175,7 +175,7 @@ public static class ThemeExtensions
             conventions.AddTypeAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
                 {
-                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc)),
+                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc), orderInfo: $"+{order}"),
                     Filter = where,
                     Trace = c.Trace
                 },
@@ -229,7 +229,7 @@ public static class ThemeExtensions
             conventions.AddPropertyAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
                 {
-                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc)),
+                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc), orderInfo: $"+{order}"),
                     Filter = where,
                     Trace = c.Trace
                 },
@@ -283,7 +283,7 @@ public static class ThemeExtensions
             conventions.AddMethodAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
                 {
-                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc)),
+                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc), orderInfo: $"+{order}"),
                     Filter = where,
                     Trace = c.Trace
                 },
@@ -337,7 +337,7 @@ public static class ThemeExtensions
             conventions.AddParameterAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
                 {
-                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc)),
+                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc), orderInfo: $"+{order}"),
                     Filter = where,
                     Trace = c.Trace
                 },
@@ -390,7 +390,8 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
-                    where: where
+                    where: where,
+                    order: order.ThemeDefault
                 ),
                 when: c => when(c),
                 order: order.ThemeDefault
@@ -430,7 +431,8 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
-                    where: where
+                    where: where,
+                    order: order.ThemeDefault
                 ),
                 when: c => when(c),
                 order: order.ThemeDefault
@@ -470,7 +472,8 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
-                    where: where
+                    where: where,
+                    order: order.ThemeDefault
                 ),
                 when: c => when(c),
                 order: order.ThemeDefault
@@ -510,7 +513,8 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
-                    where: where
+                    where: where,
+                    order: order.ThemeDefault
                 ),
                 when: c => when(c),
                 order: order.ThemeDefault
@@ -555,7 +559,7 @@ public static class ThemeExtensions
                 {
                     add(c.Type, new ComponentGeneratorAttribute<TSchema>
                     {
-                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc)),
+                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc), orderInfo: $"+{order}"),
                         Filter = where,
                         Trace = c.Trace
                     });
@@ -618,7 +622,7 @@ public static class ThemeExtensions
                 {
                     add(c.Property, new ComponentGeneratorAttribute<TSchema>
                     {
-                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc)),
+                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc), orderInfo: $"+{order}"),
                         Filter = where,
                         Trace = c.Trace
                     });
@@ -681,7 +685,7 @@ public static class ThemeExtensions
                 {
                     add(c.Method, new ComponentGeneratorAttribute<TSchema>
                     {
-                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc)),
+                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc), orderInfo: $"+{order}"),
                         Filter = where,
                         Trace = c.Trace
                     });
@@ -744,7 +748,7 @@ public static class ThemeExtensions
                 {
                     add(c.Parameter, new ComponentGeneratorAttribute<TSchema>
                     {
-                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc)),
+                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc), orderInfo: $"+{order}"),
                         Filter = where,
                         Trace = c.Trace
                     });
@@ -804,7 +808,8 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
-                    where: where
+                    where: where,
+                    order: order.ThemeDefault
                 ),
                 when: c => when(c),
                 order: order.ThemeDefault
@@ -846,7 +851,8 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
-                    where: where
+                    where: where,
+                    order: order.ThemeDefault
                 ),
                 when: c => when(c),
                 order: order.ThemeDefault
@@ -888,7 +894,8 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
-                    where: where
+                    where: where,
+                    order: order.ThemeDefault
                 ),
                 when: c => when(c),
                 order: order.ThemeDefault
@@ -930,7 +937,8 @@ public static class ThemeExtensions
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
-                    where: where
+                    where: where,
+                    order: order.ThemeDefault
                 ),
                 when: c => when(c),
                 order: order.ThemeDefault
@@ -1088,7 +1096,8 @@ public static class ThemeExtensions
         void WrapGenerator(
             DomainModelContext context,
             Func<ComponentContext, bool> where,
-            Action<TSchema, ComponentContext> apply
+            Action<TSchema, ComponentContext> apply,
+            Order order
         )
         {
             var prev = attribute.Generator;
@@ -1099,7 +1108,7 @@ public static class ThemeExtensions
                 var result = prev(cc);
                 if (!where(cc)) { return result; }
 
-                return trace.CaptureDescriptor(context, cc, result, () => apply(result, cc));
+                return trace.CaptureDescriptor(context, cc, result, () => apply(result, cc), orderInfo: $"+{order}");
             };
         }
 #pragma warning restore IDE0051
