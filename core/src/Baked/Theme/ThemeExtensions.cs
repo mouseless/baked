@@ -474,16 +474,17 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
+            order = order.ThemeDefault;
 
             conventions.AddMethodAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
                     where: where,
-                    order: order.ThemeDefault
+                    order: order
                 ),
                 when: c => when(c),
-                order: order.ThemeDefault
+                order: order
             );
         }
 
@@ -689,6 +690,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= cc => true;
+            order = order.ThemeDefault;
 
             conventions.AddMethodAttribute(
                 apply: (c, add) =>
@@ -706,7 +708,7 @@ public static class ThemeExtensions
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order
             );
         }
 
