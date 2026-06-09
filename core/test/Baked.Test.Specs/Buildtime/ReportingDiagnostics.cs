@@ -13,8 +13,22 @@ public class ReportingDiagnostics
             diagnostics.Diagnose(() => throw new("test"));
         }
 
-        messages[0].ToString().ShouldBe(
+        messages[0].ToString().ShouldContain(
             "[bold maroon]error [link=https://baked.mouseless.codes/errors#unknown]B9999[/][/]: test"
+        );
+    }
+
+    [Test]
+    public void Diagnostic_exceptions_includes_code_and_line_number()
+    {
+        var messages = new List<DiagnosticMessage>();
+        using (var diagnostics = Diagnostics.Start("test", result => messages.AddRange(result.Messages)))
+        {
+            diagnostics.Diagnose(() => throw DiagnosticCode.UndefinedLevel.Exception("test"));
+        }
+
+        messages[0].ToString().ShouldContain(
+            "[gray]«[/] $\"[magenta]ReportingDiagnostics:27[/]"
         );
     }
 
@@ -41,8 +55,22 @@ public class ReportingDiagnostics
             diagnostics.Diagnose(() => diagnostics.ReportWarning(DiagnosticCode.Unknown, "test"));
         }
 
-        messages[0].ToString().ShouldBe(
+        messages[0].ToString().ShouldContain(
             "[bold darkorange3]warning [link=https://baked.mouseless.codes/errors#unknown]B9999[/][/]: test"
+        );
+    }
+
+    [Test]
+    public void Warning_includes_code_and_line_number()
+    {
+        var messages = new List<DiagnosticMessage>();
+        using (var diagnostics = Diagnostics.Start("test", result => messages.AddRange(result.Messages)))
+        {
+            diagnostics.Diagnose(() => diagnostics.ReportWarning(DiagnosticCode.Unknown, "test"));
+        }
+
+        messages[0].ToString().ShouldContain(
+            "[gray]«[/] $\"[magenta]ReportingDiagnostics:69[/]"
         );
     }
 
