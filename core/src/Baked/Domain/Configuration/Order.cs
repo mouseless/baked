@@ -118,6 +118,16 @@ public readonly struct Order
         return (levelIndex - defaultLevelIndex) * LEVEL_SPAN + _offset;
     }
 
+    public override string ToString()
+    {
+        var baseCode = $"{_base}?"[0];
+        var levelCode = $"{_level}?"[0];
+        var extCode = $"{_extension}?"[0];
+        var offset = _offset >= 0 ? $"+{_offset:D4}" : $"{_offset:D4}";
+
+        return $"{baseCode}{levelCode}{extCode}{offset}";
+    }
+
     public static implicit operator Order(int value) =>
         new(offset: value);
 
