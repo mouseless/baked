@@ -72,7 +72,20 @@
   // use below instead
   conventions.Add(..., order: Order.At.Global.Min);
   ```
+- `Inpect` is now moved to `DomainModelBuilderOptions`
+  ```csharp
+  // old usage
+  configurator.Domain.ConfigureInspect(inspect =>
+  {
+      inspect.Attribute<...>();
+  });
 
+  // new usage
+  configurator.Domain.ConfigureDomainModelBuilder(builder =>
+  {
+      builder.Inspect.Attribute<...>();
+  });
+  ```
 ## Bugfixes
 
 - Adding locate action by conventions was missing claim requirements, fixed

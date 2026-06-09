@@ -1,4 +1,5 @@
 ﻿using Baked.Buildtime.Diagnostics;
+using Baked.Domain.Inspection;
 using Baked.Domain.Model;
 using System.Reflection;
 
@@ -13,6 +14,7 @@ public class DomainModelBuilderOptions
     public Action<DiagnosticsResult>? OnComplete { get; set; }
     public ConventionOrderMatrixOptions ConventionOrderMatrix { get; } = new();
     public string? DefaultConventionLevel { get; set; }
+    public Inspect Inspect { get; } = new();
 
     public class ConventionOrderMatrixOptions
     {

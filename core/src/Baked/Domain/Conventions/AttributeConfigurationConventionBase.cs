@@ -5,13 +5,14 @@ using Baked.Domain.Model;
 namespace Baked.Domain.Conventions;
 
 public abstract class AttributeConfigurationConventionBase<TModelContext, TAttribute>(Action<TAttribute, TModelContext> apply,
+    Order order,
     Func<TModelContext, TAttribute, bool>? when = default
 ) : IDomainModelConvention<TModelContext>
     where TAttribute : Attribute
     where TModelContext : DomainModelContext
 {
     readonly Trace _trace = Trace.Here();
-
+    readonly string _orderInfo = $"+{order}";
     protected abstract ICustomAttributesModel GetMetadata(TModelContext context);
 
     public void Apply(TModelContext context)
@@ -35,7 +36,7 @@ public abstract class AttributeConfigurationConventionBase<TModelContext, TAttri
         {
             if (when is not null && !when(context, attribute)) { continue; }
 
-            _trace.CaptureAttribute(context, attribute, () => apply(attribute, context));
+            _trace.CaptureAttribute(context, attribute, () => apply(attribute, context), orderInfo: _orderInfo);
         }
     }
 }

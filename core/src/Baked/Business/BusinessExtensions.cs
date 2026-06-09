@@ -399,7 +399,7 @@ public static class BusinessExtensions
             Func<TypeModelMetadataContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new TypeAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order.BusinessDefault.Configure);
+            conventions.Add(new TypeAttributeConfigurationConvention<TAttribute>(attribute, order.BusinessDefault.Configure, when: when), order: order.BusinessDefault.Configure);
 
         public void AddPropertyAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<PropertyModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -423,7 +423,7 @@ public static class BusinessExtensions
             Func<PropertyModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new PropertyAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order.BusinessDefault.Configure);
+            conventions.Add(new PropertyAttributeConfigurationConvention<TAttribute>(attribute, order.BusinessDefault.Configure, when: when), order: order.BusinessDefault.Configure);
 
         public void AddMethodAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<MethodModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -447,7 +447,7 @@ public static class BusinessExtensions
             Func<MethodModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new MethodAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order.BusinessDefault.Configure);
+            conventions.Add(new MethodAttributeConfigurationConvention<TAttribute>(attribute, order.BusinessDefault.Configure, when: when), order: order.BusinessDefault.Configure);
 
         public void AddParameterAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<ParameterModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -471,7 +471,7 @@ public static class BusinessExtensions
             Func<ParameterModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.Add(new ParameterAttributeConfigurationConvention<TAttribute>(attribute, when: when), order: order.BusinessDefault.Configure);
+            conventions.Add(new ParameterAttributeConfigurationConvention<TAttribute>(attribute, order.BusinessDefault.Configure, when: when), order: order.BusinessDefault.Configure);
     }
 
     extension(Stubber _)

@@ -2,7 +2,6 @@
 using Baked.Buildtime;
 using Baked.Domain.Configuration;
 using Baked.Domain.Export;
-using Baked.Domain.Inspection;
 using Humanizer;
 
 using static Baked.Buildtime.BuildtimeLayer;
@@ -13,7 +12,6 @@ namespace Baked.Domain;
 
 public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
 {
-    readonly Inspect _inspect = new();
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
     readonly IDomainModelConventionCollection _conventions;
@@ -31,7 +29,6 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
         IDisposable diagnostics = Diagnostics.Start(nameof(DomainLayer));
 
         return phase.CreateContextBuilder()
-            .Add(_inspect)
             .Add(_domainTypes)
             .Add(_builderOptions)
             .Add(_conventions)
