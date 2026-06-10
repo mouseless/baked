@@ -30,12 +30,13 @@ public class RespectingAttributeUsage : TestSpec
     [AttributeUsage(AttributeTargets.Property)]
     public class TargetPropertyAttribute : Attribute;
 
-    void Add(TypeModel type, Attribute attribue)
+    void Add(TypeModel type, Attribute attribute)
     {
         var domain = GiveMe.TheDomainModel();
         var convention = new AddAttributeConvention<TypeModelContext>(
             _when: _ => true,
-            _apply: (c, set) => set(c.Type.GetMetadata(), attribue)
+            _apply: (c, set) => set(c.Type.GetMetadata(), attribute),
+            _order: Order.At
         );
         convention.Apply(new TypeModelContext()
         {
@@ -44,12 +45,13 @@ public class RespectingAttributeUsage : TestSpec
         });
     }
 
-    void Set(TypeModel type, Attribute attribue)
+    void Set(TypeModel type, Attribute attribute)
     {
         var domain = GiveMe.TheDomainModel();
         var convention = new SetAttributeConvention<TypeModelContext>(
             _when: _ => true,
-            _apply: (c, set) => set(c.Type.GetMetadata(), attribue)
+            _apply: (c, set) => set(c.Type.GetMetadata(), attribute),
+            _order: Order.At
         );
         convention.Apply(new TypeModelContext()
         {

@@ -3,10 +3,11 @@ using Baked.Ui;
 
 namespace Baked.Theme;
 
-public class DescriptorCaptureType(ComponentContext _context)
+public class DescriptorCaptureType(ComponentContext _context, string? _orderInfo)
     : ICaptureType
 {
     public string Id => $"{_context.Path}";
+    public string? OrderInfo => _orderInfo;
 
     public string BuildTitle(Type type) =>
         $"<{type.GetName(includeDeclaringTypes: true)}>";

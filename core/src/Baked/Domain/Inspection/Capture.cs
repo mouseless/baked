@@ -57,15 +57,15 @@ internal class Capture<T>
 
         if (_initial)
         {
-            Diagnostics.Current.ReportInfo($"[steelblue3]{_captureType.BuildTitle(type)}[/] [gray]{_captureType.Id}[/]", group: _captureType.Id);
+            Diagnostics.Current.ReportInfo($"[steelblue3]{_captureType.BuildTitle(type)}[/] [gray]»[/] [magenta]{_captureType.Id}[/]", group: _captureType.Id);
         }
 
         if (!_initial && Equals(value, previousValue)) { return target; }
 
-        var source = TryFindFeatureSource(out var featureSource)
-            ? $"[magenta]{featureSource}[/]"
-            : $"[magenta]<unknown>[/]{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]";
-        Diagnostics.Current.ReportInfo($"  [darkgoldenrod]{Property}:[/] {FormatValue(value)} [gray]«[/] {source}", group: _captureType.Id);
+        var source = _stackTrace.TryFindFeatureSource(out var featureSource)
+            ? $"[gray]{featureSource}[/]"
+            : $"[gray]<unknown>[/]{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]";
+        Diagnostics.Current.ReportInfo($"  [gray]{OrderInfo()} »[/] [darkgoldenrod]{Property}:[/] {FormatValue(value)} [gray]«[/] {source}", group: _captureType.Id);
 
         return target;
     }
@@ -84,39 +84,6 @@ internal class Capture<T>
         return true;
     }
 
-    bool TryFindFeatureSource([NotNullWhen(true)] out string? source)
-    {
-        source = null;
-
-        var frames = _stackTrace.GetFrames();
-        var featureFrame =
-            frames.FirstOrDefault(f => f.GetMethod()?.ReflectedType?.DeclaringType?.Name.EndsWith("Feature") == true) ??
-            frames.FirstOrDefault(f => f.GetMethod()?.DeclaringType?.Name.EndsWith("Feature") == true);
-        if (featureFrame is null) { return false; }
-
-        source =
-            featureFrame.GetMethod()?.ReflectedType?.DeclaringType?.Name ??
-            featureFrame.GetMethod()?.DeclaringType?.Name ??
-            string.Empty;
-
-        var fileName = featureFrame.GetFileName();
-        if (fileName is null)
-        {
-            source += " [bold red]⠕[/]";
-
-            return true;
-        }
-
-        var title = source;
-        var url = new Uri(fileName).AbsoluteUri;
-        source = $"[link={url}]{title}[/]";
-
-        var lineNumber = featureFrame.GetFileLineNumber();
-        if (lineNumber > 0)
-        {
-            source += $":{lineNumber}";
-        }
-
-        return true;
-    }
+    string OrderInfo() =>
+        $"{(_captureType.OrderInfo == null ? string.Empty : $"[gray]{_captureType.OrderInfo}[/]")}";
 }

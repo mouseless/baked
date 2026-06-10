@@ -189,4 +189,27 @@ public class ManagingOrders
         exception.Code.ShouldBe(DiagnosticCode.OrderOutOfBounds);
         exception.Message.ShouldBe("Order (BaseA.LevelA.ExtA: 5000) must be between -5000 - 4999");
     }
+
+    [Test]
+    public void To_string_returns_base_level_ext_and_offset_info()
+    {
+        var order = Order.At
+            .WithBase("BaseA")
+            .WithLevel("LevelA")
+            .WithExtension("ExtA");
+        var orderWithPositiveOffset = order + 10;
+        var orderWithNegativeOffset = order - 10;
+
+        order.ToString().ShouldBe("BLE+0000");
+        orderWithPositiveOffset.ToString().ShouldBe("BLE+0010");
+        orderWithNegativeOffset.ToString().ShouldBe("BLE-0010");
+    }
+
+    [Test]
+    public void ToString_returns_question_mark_for_unknown_order_parts()
+    {
+        var order = Order.At.WithBase("BaseA");
+
+        order.ToString().ShouldBe("B??+0000");
+    }
 }

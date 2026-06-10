@@ -7,11 +7,13 @@ namespace Baked.Domain.Conventions;
 public class AddAttributeConvention<TModelContext>(
     Action<TModelContext, Action<ICustomAttributesModel, Attribute>> _apply,
     Func<TModelContext, bool> _when,
+    Order _order,
     bool beforeBuildingIndexes = true
 ) : IDomainModelConvention<TModelContext>
     where TModelContext : DomainModelContext
 {
     readonly Trace _trace = Trace.Here();
+    readonly string _orderInfo = $"{(beforeBuildingIndexes ? "+" : "-")}{_order}";
 
     bool IDomainModelConvention.BeforeBuildingIndexes => beforeBuildingIndexes;
 
@@ -27,7 +29,7 @@ public class AddAttributeConvention<TModelContext>(
                 Add(model, attribute);
 
                 return attribute;
-            })
+            }, orderInfo: _orderInfo)
         );
     }
 

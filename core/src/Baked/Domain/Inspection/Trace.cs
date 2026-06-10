@@ -26,19 +26,21 @@ public class Trace(StackTrace? stackTrace)
 
     public StackTrace StackTrace => stackTrace ?? new();
 
-    public TTarget CaptureAttribute<TModelContext, TTarget>(TModelContext context, Func<TTarget> create)
-        where TModelContext : DomainModelContext
+    public TTarget CaptureAttribute<TModelContext, TTarget>(TModelContext context, Func<TTarget> create,
+        string? orderInfo = default
+    ) where TModelContext : DomainModelContext
     {
         if (!ShouldCapture(context, out var inspection))
         {
             return create();
         }
 
-        return new Capture<TTarget>(inspection, StackTrace, create, new AttributeCaptureType(context)).Execute();
+        return new Capture<TTarget>(inspection, StackTrace, create, new AttributeCaptureType(context, orderInfo)).Execute();
     }
 
-    public TTarget CaptureAttribute<TModelContext, TTarget>(TModelContext context, TTarget target, Action update)
-        where TModelContext : DomainModelContext
+    public TTarget CaptureAttribute<TModelContext, TTarget>(TModelContext context, TTarget target, Action update,
+        string? orderInfo = default
+    ) where TModelContext : DomainModelContext
     {
         if (!ShouldCapture(context, out var inspection))
         {
@@ -47,6 +49,6 @@ public class Trace(StackTrace? stackTrace)
             return target;
         }
 
-        return new Capture<TTarget>(inspection, StackTrace, update, new AttributeCaptureType(context), target).Execute();
+        return new Capture<TTarget>(inspection, StackTrace, update, new AttributeCaptureType(context, orderInfo), target).Execute();
     }
 }

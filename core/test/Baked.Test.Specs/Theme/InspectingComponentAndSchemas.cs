@@ -319,7 +319,7 @@ public class InspectingComponentAndSchemas : TestSpec
     }
 
     [Test]
-    public void Reports_path_in_gray_for_readability()
+    public void Reports_path_in_magenta_for_readability()
     {
         _inspect.Component<Text>();
         var c = GiveMe.ATypeModelContext<Parent>();
@@ -330,7 +330,7 @@ public class InspectingComponentAndSchemas : TestSpec
             _trace.CaptureDescriptor(c, cc, () => B.Text());
         }
 
-        _messages.ShouldContain(m => m.Message.Contains("[gray]/test/path[/]"));
+        _messages.ShouldContain(m => m.Message.Contains("[magenta]/test/path[/]"));
     }
 
     [Test]

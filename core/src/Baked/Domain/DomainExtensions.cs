@@ -2,12 +2,12 @@
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Export;
-using Baked.Domain.Inspection;
 using Baked.Domain.Model;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -19,9 +19,6 @@ public static class DomainExtensions
 {
     public class Configurator(LayerConfigurator _configurator)
     {
-        public void ConfigureInspect(Action<Inspect> configuration) =>
-            _configurator.Configure(configuration);
-
         public void ConfigureDomainTypeCollection(Action<IDomainTypeCollection> configuration) =>
             _configurator.Configure(configuration);
 
@@ -65,6 +62,45 @@ public static class DomainExtensions
         public static DiagnosticCode OrderOutOfBounds => new(303, "order-out-of-bounds");
         public static DiagnosticCode UndefinedLevel => new(304, "undefined-level");
         public static DiagnosticCode InvalidOrder => new(305, "invalid-order");
+    }
+
+    extension(StackTrace stackTrace)
+    {
+        public bool TryFindFeatureSource([NotNullWhen(true)] out string? source)
+        {
+            source = null;
+
+            var frames = stackTrace.GetFrames();
+            var featureFrame =
+                frames.FirstOrDefault(f => f.GetMethod()?.ReflectedType?.DeclaringType?.Name.EndsWith("Feature") == true) ??
+                frames.FirstOrDefault(f => f.GetMethod()?.DeclaringType?.Name.EndsWith("Feature") == true);
+            if (featureFrame is null) { return false; }
+
+            source =
+                featureFrame.GetMethod()?.ReflectedType?.DeclaringType?.Name ??
+                featureFrame.GetMethod()?.DeclaringType?.Name ??
+                string.Empty;
+
+            var fileName = featureFrame.GetFileName();
+            if (fileName is null)
+            {
+                source += " [bold red]⠕[/]";
+
+                return true;
+            }
+
+            var title = source;
+            var url = new Uri(fileName).AbsoluteUri;
+            source = $"[link={url}]{title}[/]";
+
+            var lineNumber = featureFrame.GetFileLineNumber();
+            if (lineNumber > 0)
+            {
+                source += $":{lineNumber}";
+            }
+
+            return true;
+        }
     }
 
     extension(ApplicationContext application)

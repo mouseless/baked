@@ -208,38 +208,38 @@ Configure an inspect to watch a property value of a component or a schema so
 that you can see which UX or Theme feature sets what value and in which order.
 
 ```csharp
-configurator.Domain.ConfigureInspect(inspect =>
+configurator.Domain.ConfigureBuilder(builder =>
 {
     // To inspect a component or a schema on types
-    inspect.TypeCompnent<MyComponent>( // or inspect.TypeSchema
+    builder.Inspect.TypeCompnent<MyComponent>( // or inspect.TypeSchema
         when: c => c.Type..., // optional to inspect specific type models
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value
     );
 
     // To inspect a component or a schema on properties
-    inspect.PropertyComponent<MyComponent>( // or inspect.PropertySchema
+    builder.Inspect.PropertyComponent<MyComponent>( // or inspect.PropertySchema
         when: c => c.Property..., // optional to inspect specific property models
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value
     );
 
     // To inspect a component or a schema on methods
-    inspect.MethodComponent<MyComponent>( // or inspect.MethodSchema
+    builder.Inspect.MethodComponent<MyComponent>( // or inspect.MethodSchema
         when: c => c.Method..., // optional to inspect specific method models
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value
     );
 
     // To inspect a component or a schema on parameters
-    inspect.ParameterComponent<MyComponent>( // or inspect.ParameterSchema
+    builder.Inspect.ParameterComponent<MyComponent>( // or inspect.ParameterSchema
         when: c => c.Parameter..., // optional to inspect specific parameter models
         where: cc => cc.Path..., // optional to inspect specific component path
         component: mc => mc.Value // optional to inspect just this value
     );
 
     // To inspect a component or a schema on any member
-    inspect.Component<MyComponent>( // or inspect.Schema
+    builder.Inspect.Component<MyComponent>( // or inspect.Schema
         when: c => c..., // optional to inspect specific members
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value

@@ -1,5 +1,6 @@
 using Baked.Buildtime.Diagnostics;
 using Spectre.Console;
+using System.Diagnostics;
 
 // NOTE namespace is at root for a better experience in Coding Style & UX
 // development
@@ -84,7 +85,15 @@ public class Diagnostics : IDisposable
         catch (DiagnosticException ex)
         {
             _exceptions.Add(ex);
-            ReportError(ex.Code, ex.Message);
+            var stackTrace = new StackTrace(ex, true);
+            if (stackTrace.TryFindFeatureSource(out var source))
+            {
+                ReportError(ex.Code, $"{ex.Message} [gray]{source}[/]");
+            }
+            else
+            {
+                ReportError(ex.Code, ex.Message);
+            }
 
             return default;
         }

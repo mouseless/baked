@@ -1,6 +1,5 @@
 ﻿using Baked.Caching;
 using Baked.Caching.ScopedMemory;
-using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.Caching.Memory;
 using NUnit.Framework;
@@ -11,9 +10,8 @@ public static class ScopedMemoryCachingExtensions
 {
     extension(CachingConfigurator _)
     {
-        public ScopedMemoryCachingFeature ScopedMemory(
-            Setting<TimeSpan>? clientExpiration = default
-        ) => new(clientExpiration ?? TimeSpan.FromHours(1));
+        public ScopedMemoryCachingFeature ScopedMemory() =>
+            new();
     }
 
     extension(Stubber giveMe)
