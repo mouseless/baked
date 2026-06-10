@@ -142,7 +142,7 @@ public class Diagnostics : IDisposable
             string fileName = filePath.Split(@"\").Last().Replace(".cs", string.Empty);
             int lineNumber = int.Parse(match.Groups["line"].Value);
 
-            source = $"[gray][bold red]⠕[/][link={filePath}]{fileName}[/]:{lineNumber}[/]";
+            source = $"[gray][link={filePath}]{fileName}[/]:{lineNumber}[/]";
         }
 
         return source != null;
