@@ -139,7 +139,7 @@ public class Diagnostics : IDisposable
         if (match is not null)
         {
             string filePath = match.Groups["file"].Value;
-            string fileName = filePath.Split(@"\").Last().Replace(".cs", string.Empty);
+            string fileName = Path.GetFileName(filePath).Replace(".cs", string.Empty);
             int lineNumber = int.Parse(match.Groups["line"].Value);
 
             source = $"[gray][link={filePath}]{fileName}[/]:{lineNumber}[/]";

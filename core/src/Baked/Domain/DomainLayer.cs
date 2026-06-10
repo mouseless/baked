@@ -75,6 +75,8 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
                         generatedFiles.Add($"{fileName.Kebaberize()}", content, extension: "kdl", outdir: Path.Join("Export", $"{key.Kebaberize()}"));
                     }
                 }
+
+                Inspection.Inspection.Clear();
             })
             .Build();
     }
