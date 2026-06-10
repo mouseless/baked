@@ -48,7 +48,7 @@ const variants = [
               data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
             })
           ],
-          data: giveMe.anInlineData({ value: "GRAND PARENT VALUE"})
+          data: giveMe.anInlineData({ value: "GRAND PARENT VALUE" })
         })
       ],
       data: giveMe.anInlineData("GRAND GRAND PARENT VALUE")
