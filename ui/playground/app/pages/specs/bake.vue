@@ -31,7 +31,7 @@ const variants = [
                 }),
                 giveMe.anExpected({
                   testId: "grand-parent",
-                  data: giveMe.aContextData({ key: "parent", prop: "grand.data.value" })
+                  data: giveMe.aContextData({ key: "parent", prop: "grand.data" })
                 }),
                 giveMe.anExpected({
                   testId: "grand-grand-parent",
@@ -48,7 +48,7 @@ const variants = [
               data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
             })
           ],
-          data: giveMe.anInlineData({ value: "GRAND PARENT VALUE" })
+          data: giveMe.anInlineData("GRAND PARENT VALUE")
         })
       ],
       data: giveMe.anInlineData("GRAND GRAND PARENT VALUE")
