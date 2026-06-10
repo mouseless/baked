@@ -1,5 +1,7 @@
 using Baked.Buildtime.Diagnostics;
 using Spectre.Console;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 // NOTE namespace is at root for a better experience in Coding Style & UX
 // development
@@ -85,6 +87,17 @@ public class Diagnostics : IDisposable
         {
             _exceptions.Add(ex);
             ReportError(ex.Code, ex.Message);
+            if (ex.StackTrace is not null)
+            {
+                if (TryFindFeatureSource(ex.StackTrace, out var source))
+                {
+                    ReportInfo(source);
+                }
+                else
+                {
+                    ReportInfo(Markup.Escape(ex.StackTrace));
+                }
+            }
 
             return default;
         }
@@ -116,6 +129,24 @@ public class Diagnostics : IDisposable
         DiagnosticCode? code = default,
         string? group = default
     ) => _messages.Add(new(message, level, code, group));
+
+    bool TryFindFeatureSource(string stackTrace, [NotNullWhen(true)] out string? source)
+    {
+        source = null;
+
+        var matches = Regex.Matches(stackTrace, @"in (?<file>.*?Feature\.cs):line (?<line>\d+)");
+        var match = matches.FirstOrDefault();
+        if (match is not null)
+        {
+            string filePath = match.Groups["file"].Value;
+            string fileName = filePath.Split(@"\").Last().Replace(".cs", string.Empty);
+            int lineNumber = int.Parse(match.Groups["line"].Value);
+
+            source = $"[gray][bold red]⠕[/][link={filePath}]{fileName}[/]:{lineNumber}[/]";
+        }
+
+        return source != null;
+    }
 
     public void OnDispose(Action<DiagnosticsResult> handler) =>
         _dispose = handler;

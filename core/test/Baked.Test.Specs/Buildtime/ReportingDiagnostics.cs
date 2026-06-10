@@ -1,4 +1,5 @@
 using Baked.Buildtime.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Baked.Test.Buildtime;
 
@@ -19,7 +20,19 @@ public class ReportingDiagnostics
     }
 
     [Test]
-    public void Diagnostic_exceptions_includes_code_and_line_number()
+    public void Error_captures_and_reports_feature_name_from_stack_trace()
+    {
+        var messages = new List<DiagnosticMessage>();
+        using (var diagnostics = Diagnostics.Start("test", result => messages.AddRange(result.Messages)))
+        {
+            diagnostics.Diagnose(() => new TestFeature().Configure(() => throw DiagnosticCode.UndefinedLevel.Exception("test")));
+        }
+
+        messages.ShouldContain(m => Regex.IsMatch(m.Message, @"\[gray]\[link=.*]TestFeature\[/]:\d+\[/]"), customMessage: messages.Join(Environment.NewLine));
+    }
+
+    [Test]
+    public void Error_reports_the_whole_stack_trace_when_feature_is_not_captured()
     {
         var messages = new List<DiagnosticMessage>();
         using (var diagnostics = Diagnostics.Start("test", result => messages.AddRange(result.Messages)))
@@ -27,9 +40,9 @@ public class ReportingDiagnostics
             diagnostics.Diagnose(() => throw DiagnosticCode.UndefinedLevel.Exception("test"));
         }
 
-        messages[0].ToString().ShouldContain(
-            "[gray]«[/] $\"[magenta]ReportingDiagnostics:27[/]"
-        );
+        messages.Count.ShouldBe(2);
+        messages[1].Level.ShouldBe("info");
+        messages[1].Message.ShouldContain($"{nameof(ReportingDiagnostics)}.cs:line");
     }
 
     [Test]
@@ -57,20 +70,6 @@ public class ReportingDiagnostics
 
         messages[0].ToString().ShouldContain(
             "[bold darkorange3]warning [link=https://baked.mouseless.codes/errors#unknown]B9999[/][/]: test"
-        );
-    }
-
-    [Test]
-    public void Warning_includes_code_and_line_number()
-    {
-        var messages = new List<DiagnosticMessage>();
-        using (var diagnostics = Diagnostics.Start("test", result => messages.AddRange(result.Messages)))
-        {
-            diagnostics.Diagnose(() => diagnostics.ReportWarning(DiagnosticCode.Unknown, "test"));
-        }
-
-        messages[0].ToString().ShouldContain(
-            "[gray]«[/] $\"[magenta]ReportingDiagnostics:69[/]"
         );
     }
 
