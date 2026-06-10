@@ -54,13 +54,11 @@
       "resolver": "MetaUrl"
     },
     {
-      "expirationInMinutes": 60,
       "basePath": "./runtime/plugins/",
       "name": "cacheApplication",
       "resolver": "MetaUrl"
     },
     {
-      "expirationInMinutes": 60,
       "basePath": "./runtime/plugins/",
       "name": "cacheUser",
       "resolver": "MetaUrl"

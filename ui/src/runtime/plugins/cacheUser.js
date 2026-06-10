@@ -5,8 +5,8 @@ export default defineNuxtPlugin({
   name: "cache-user",
   enforce: "pre",
   setup(nuxtApp) {
-    const { public: { cacheUser } } = useRuntimeConfig();
-    const { expirationInMinutes } = cacheUser;
+    const { public: { plugins: { cacheUser = { } } = { } } } = useRuntimeConfig();
+    const { expirationInMinutes = 60 } = cacheUser;
     const cache = useCache("cache:user", { expirationInMinutes });
     const { $fetchInterceptors } = nuxtApp;
 

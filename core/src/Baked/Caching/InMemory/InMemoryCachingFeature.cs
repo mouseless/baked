@@ -1,13 +1,12 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Configuration;
-using Baked.Runtime;
 using Baked.Ui;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Caching.InMemory;
 
-public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting<TimeSpan> clientExpiration)
+public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options)
     : IFeature<CachingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -28,9 +27,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
 
         configurator.Ui.ConfigureAppDescriptor(app =>
         {
-            app.Plugins.Add(
-                new CacheApplicationPlugin { ExpirationInMinutes = (int)clientExpiration.GetValue().TotalMinutes }
-            );
+            app.Plugins.Add(new CacheApplicationPlugin());
         });
 
         configurator.Testing.ConfigureTestConfiguration(test =>

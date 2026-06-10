@@ -1,6 +1,5 @@
 ﻿using Baked.Caching;
 using Baked.Caching.InMemory;
-using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.Caching.Memory;
 using NUnit.Framework;
@@ -12,9 +11,8 @@ public static class InMemoryCachingExtensions
     extension(CachingConfigurator _)
     {
         public InMemoryCachingFeature InMemory(
-            Action<MemoryCacheOptions>? options = default,
-            Setting<TimeSpan>? clientExpiration = default
-        ) => new(options ?? (_ => { }), clientExpiration ?? TimeSpan.FromHours(1));
+            Action<MemoryCacheOptions>? options = default
+        ) => new(options ?? (_ => { }));
     }
 
     extension(Stubber giveMe)
