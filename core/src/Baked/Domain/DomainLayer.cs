@@ -76,6 +76,8 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
                     }
                 }
 
+                // NOTE
+                // This code is added to fix test run all error
                 Inspection.Inspection.Clear();
             })
             .Build();
