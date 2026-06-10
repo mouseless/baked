@@ -247,7 +247,12 @@ public static class BusinessExtensions
         public void SetTypeAttribute(Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, order.BusinessDefault.Add, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
+        )
+        {
+            order = order.BusinessDefault.Add;
+
+            conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, order, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        }
 
         public void AddTypeAttribute(Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -262,7 +267,12 @@ public static class BusinessExtensions
         public void AddTypeAttribute(Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new AddAttributeConvention<TypeModelMetadataContext>(apply, when, order.BusinessDefault.Add, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
+        )
+        {
+            order = order.BusinessDefault.Add;
+
+            conventions.Add(new AddAttributeConvention<TypeModelMetadataContext>(apply, when, order, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        }
 
         public void RemoveTypeAttribute<TAttribute>(Func<TypeModelMetadataContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -283,7 +293,12 @@ public static class BusinessExtensions
         public void SetPropertyAttribute(Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, order.BusinessDefault.Add, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
+        )
+        {
+            order = order.BusinessDefault.Add;
+
+            conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, order, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        }
 
         public void AddPropertyAttribute(Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -298,7 +313,12 @@ public static class BusinessExtensions
         public void AddPropertyAttribute(Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new AddAttributeConvention<PropertyModelContext>(apply, when, order.BusinessDefault.Add, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
+        )
+        {
+            order = order.BusinessDefault.Add;
+
+            conventions.Add(new AddAttributeConvention<PropertyModelContext>(apply, when, order, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        }
 
         public void RemovePropertyAttribute<TAttribute>(Func<PropertyModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -319,7 +339,12 @@ public static class BusinessExtensions
         public void SetMethodAttribute(Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, order.BusinessDefault.Add, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
+        )
+        {
+            order = order.BusinessDefault.Add;
+
+            conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, order, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        }
 
         public void AddMethodAttribute(Func<Attribute> attribute, Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -334,7 +359,12 @@ public static class BusinessExtensions
         public void AddMethodAttribute(Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new AddAttributeConvention<MethodModelContext>(apply, when, order.BusinessDefault.Add, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
+        )
+        {
+            order = order.BusinessDefault.Add;
+
+            conventions.Add(new AddAttributeConvention<MethodModelContext>(apply, when, order, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        }
 
         public void RemoveMethodAttribute<TAttribute>(Func<MethodModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -355,7 +385,12 @@ public static class BusinessExtensions
         public void SetParameterAttribute(Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, order.BusinessDefault.Add, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
+        )
+        {
+            order = order.BusinessDefault.Add;
+
+            conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, order, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        }
 
         public void AddParameterAttribute(Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -370,7 +405,12 @@ public static class BusinessExtensions
         public void AddParameterAttribute(Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
             Order order = default
-        ) => conventions.Add(new AddAttributeConvention<ParameterModelContext>(apply, when, order.BusinessDefault.Add, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
+        )
+        {
+            order = order.BusinessDefault.Add;
+
+            conventions.Add(new AddAttributeConvention<ParameterModelContext>(apply, when, order, beforeBuildingIndexes: beforeBuildingIndexes), order);
+        }
 
         public void RemoveParameterAttribute<TAttribute>(Func<ParameterModelContext, bool> when,
             bool beforeBuildingIndexes = true,
@@ -399,8 +439,12 @@ public static class BusinessExtensions
         public void AddTypeAttributeConfiguration<TAttribute>(Action<TAttribute, TypeModelMetadataContext> attribute,
             Func<TypeModelMetadataContext, TAttribute, bool>? when = default,
             Order order = default
-        ) where TAttribute : Attribute =>
-            conventions.Add(new TypeAttributeConfigurationConvention<TAttribute>(attribute, order.BusinessDefault.Configure, when: when), order: order.BusinessDefault.Configure);
+        ) where TAttribute : Attribute
+        {
+            order = order.BusinessDefault.Configure;
+
+            conventions.Add(new TypeAttributeConfigurationConvention<TAttribute>(attribute, order, when: when), order: order);
+        }
 
         public void AddPropertyAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<PropertyModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -423,8 +467,12 @@ public static class BusinessExtensions
         public void AddPropertyAttributeConfiguration<TAttribute>(Action<TAttribute, PropertyModelContext> attribute,
             Func<PropertyModelContext, TAttribute, bool>? when = default,
             Order order = default
-        ) where TAttribute : Attribute =>
-            conventions.Add(new PropertyAttributeConfigurationConvention<TAttribute>(attribute, order.BusinessDefault.Configure, when: when), order: order.BusinessDefault.Configure);
+        ) where TAttribute : Attribute
+        {
+            order = order.BusinessDefault.Configure;
+
+            conventions.Add(new PropertyAttributeConfigurationConvention<TAttribute>(attribute, order, when: when), order: order);
+        }
 
         public void AddMethodAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<MethodModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -447,8 +495,12 @@ public static class BusinessExtensions
         public void AddMethodAttributeConfiguration<TAttribute>(Action<TAttribute, MethodModelContext> attribute,
             Func<MethodModelContext, TAttribute, bool>? when = default,
             Order order = default
-        ) where TAttribute : Attribute =>
-            conventions.Add(new MethodAttributeConfigurationConvention<TAttribute>(attribute, order.BusinessDefault.Configure, when: when), order: order.BusinessDefault.Configure);
+        ) where TAttribute : Attribute
+        {
+            order = order.BusinessDefault.Configure;
+
+            conventions.Add(new MethodAttributeConfigurationConvention<TAttribute>(attribute, order, when: when), order: order);
+        }
 
         public void AddParameterAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
             Func<ParameterModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -471,8 +523,12 @@ public static class BusinessExtensions
         public void AddParameterAttributeConfiguration<TAttribute>(Action<TAttribute, ParameterModelContext> attribute,
             Func<ParameterModelContext, TAttribute, bool>? when = default,
             Order order = default
-        ) where TAttribute : Attribute =>
-            conventions.Add(new ParameterAttributeConfigurationConvention<TAttribute>(attribute, order.BusinessDefault.Configure, when: when), order: order.BusinessDefault.Configure);
+        ) where TAttribute : Attribute
+        {
+            order = order.BusinessDefault.Configure;
+
+            conventions.Add(new ParameterAttributeConfigurationConvention<TAttribute>(attribute, order, when: when), order: order);
+        }
     }
 
     extension(Stubber _)

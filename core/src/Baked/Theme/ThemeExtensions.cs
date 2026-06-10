@@ -10,7 +10,6 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Baked.Ui.Configuration;
-using Microsoft.OpenApi;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
