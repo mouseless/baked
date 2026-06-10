@@ -86,17 +86,13 @@ public class Diagnostics : IDisposable
         catch (DiagnosticException ex)
         {
             _exceptions.Add(ex);
-            ReportError(ex.Code, ex.Message);
-            if (ex.StackTrace is not null)
+            if (TryFindFeatureSource(ex.StackTrace, out var source))
             {
-                if (TryFindFeatureSource(ex.StackTrace, out var source))
-                {
-                    ReportInfo(source);
-                }
-                else
-                {
-                    ReportInfo(Markup.Escape(ex.StackTrace));
-                }
+                ReportError(ex.Code, $"{ex.Message}{Environment.NewLine}{source}");
+            }
+            else
+            {
+                ReportError(ex.Code, ex.Message);
             }
 
             return default;
@@ -130,9 +126,10 @@ public class Diagnostics : IDisposable
         string? group = default
     ) => _messages.Add(new(message, level, code, group));
 
-    bool TryFindFeatureSource(string stackTrace, [NotNullWhen(true)] out string? source)
+    bool TryFindFeatureSource(string? stackTrace, [NotNullWhen(true)] out string? source)
     {
         source = null;
+        if (stackTrace is null) { return false; }
 
         var matches = Regex.Matches(stackTrace, @"in (?<file>.*?Feature\.cs):line (?<line>\d+)");
         var match = matches.FirstOrDefault();

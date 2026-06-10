@@ -32,20 +32,6 @@ public class ReportingDiagnostics
     }
 
     [Test]
-    public void Error_reports_the_whole_stack_trace_when_feature_is_not_captured()
-    {
-        var messages = new List<DiagnosticMessage>();
-        using (var diagnostics = Diagnostics.Start("test", result => messages.AddRange(result.Messages)))
-        {
-            diagnostics.Diagnose(() => throw DiagnosticCode.UndefinedLevel.Exception("test"));
-        }
-
-        messages.Count.ShouldBe(2);
-        messages[1].Level.ShouldBe("info");
-        messages[1].Message.ShouldContain($"{nameof(ReportingDiagnostics)}.cs:line");
-    }
-
-    [Test]
     public void Non_diagnostics_exceptions_are_reported_along_with_their_stack_trace()
     {
         var messages = new List<DiagnosticMessage>();
