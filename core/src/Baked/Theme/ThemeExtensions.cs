@@ -171,7 +171,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Add;
 
             conventions.AddTypeAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -192,7 +192,7 @@ public static class ThemeExtensions
         {
             conventions.RemoveTypeAttribute<GeneratorAttribute<TSchema>>(when: when,
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order.ThemeDefault.Add
             );
         }
 
@@ -226,7 +226,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Add;
 
             conventions.AddPropertyAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -247,7 +247,7 @@ public static class ThemeExtensions
         {
             conventions.RemovePropertyAttribute<GeneratorAttribute<TSchema>>(when: when,
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order.ThemeDefault.Add
             );
         }
 
@@ -281,7 +281,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Add;
 
             conventions.AddMethodAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -302,7 +302,7 @@ public static class ThemeExtensions
         {
             conventions.RemoveMethodAttribute<GeneratorAttribute<TSchema>>(when: when,
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order.ThemeDefault.Add
             );
         }
 
@@ -336,7 +336,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Add;
 
             conventions.AddParameterAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
@@ -357,7 +357,7 @@ public static class ThemeExtensions
         {
             conventions.RemoveParameterAttribute<GeneratorAttribute<TSchema>>(when: when,
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order.ThemeDefault.Add
             );
         }
 
@@ -389,7 +389,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddTypeAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -431,7 +431,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddPropertyAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -473,7 +473,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddMethodAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -515,7 +515,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddParameterAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -561,7 +561,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Add;
 
             conventions.AddTypeAttribute(
                 apply: (c, add) =>
@@ -589,7 +589,7 @@ public static class ThemeExtensions
         {
             conventions.RemoveTypeAttribute<ComponentGeneratorAttribute<TSchema>>(when,
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order.ThemeDefault.Add
             );
         }
 
@@ -625,7 +625,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Add;
 
             conventions.AddPropertyAttribute(
                 apply: (c, add) =>
@@ -653,7 +653,7 @@ public static class ThemeExtensions
         {
             conventions.RemovePropertyAttribute<ComponentGeneratorAttribute<TSchema>>(when,
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order.ThemeDefault.Add
             );
         }
 
@@ -689,7 +689,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= cc => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Add;
 
             conventions.AddMethodAttribute(
                 apply: (c, add) =>
@@ -717,7 +717,7 @@ public static class ThemeExtensions
         {
             conventions.RemoveMethodAttribute<ComponentGeneratorAttribute<TSchema>>(when,
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order.ThemeDefault.Add
             );
         }
 
@@ -753,7 +753,7 @@ public static class ThemeExtensions
         {
             when ??= c => true;
             where ??= c => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Add;
 
             conventions.AddParameterAttribute(
                 apply: (c, add) =>
@@ -781,7 +781,7 @@ public static class ThemeExtensions
         {
             conventions.RemoveParameterAttribute<ComponentGeneratorAttribute<TSchema>>(when,
                 beforeBuildingIndexes: false,
-                order: order.ThemeDefault
+                order: order.ThemeDefault.Add
             );
         }
 
@@ -815,7 +815,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddTypeAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -859,7 +859,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddPropertyAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -903,7 +903,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddMethodAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
@@ -947,7 +947,7 @@ public static class ThemeExtensions
         {
             when ??= _ => true;
             where ??= _ => true;
-            order = order.ThemeDefault;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddParameterAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(

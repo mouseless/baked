@@ -57,15 +57,15 @@ internal class Capture<T>
 
         if (_initial)
         {
-            Diagnostics.Current.ReportInfo($"[steelblue3]{_captureType.BuildTitle(type)}[/] [gray]{_captureType.Id}[/]", group: _captureType.Id);
+            Diagnostics.Current.ReportInfo($"[steelblue3]{_captureType.BuildTitle(type)}[/] [gray]»[/] [magenta]{_captureType.Id}[/]", group: _captureType.Id);
         }
 
         if (!_initial && Equals(value, previousValue)) { return target; }
 
         var source = _stackTrace.TryFindFeatureSource(out var featureSource)
-            ? $"[magenta]{featureSource}[/] {OrderInfo()}"
-            : $"[magenta]<unknown>[/] {OrderInfo()}{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]";
-        Diagnostics.Current.ReportInfo($"  [darkgoldenrod]{Property}:[/] {FormatValue(value)} [gray]«[/] {source}", group: _captureType.Id);
+            ? $"[gray]{featureSource}[/]"
+            : $"[gray]<unknown>[/]{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]";
+        Diagnostics.Current.ReportInfo($"  [gray]{OrderInfo()} »[/] [darkgoldenrod]{Property}:[/] {FormatValue(value)} [gray]«[/] {source}", group: _captureType.Id);
 
         return target;
     }
@@ -85,5 +85,5 @@ internal class Capture<T>
     }
 
     string OrderInfo() =>
-        $"{(_captureType.OrderInfo == null ? string.Empty : $"[gray] Order: {_captureType.OrderInfo}[/]")}";
+        $"{(_captureType.OrderInfo == null ? string.Empty : $"[gray]{_captureType.OrderInfo}[/]")}";
 }

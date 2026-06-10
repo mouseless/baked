@@ -88,7 +88,7 @@ public class Diagnostics : IDisposable
             var stackTrace = new StackTrace(ex, true);
             if (stackTrace.TryFindFeatureSource(out var source))
             {
-                ReportError(ex.Code, $"{ex.Message}{Environment.NewLine}[gray]{source}[/]");
+                ReportError(ex.Code, $"{ex.Message} [gray]{source}[/]");
             }
             else
             {

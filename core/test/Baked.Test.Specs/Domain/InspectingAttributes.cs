@@ -227,7 +227,7 @@ public class InspectingAttributes : TestSpec
     }
 
     [Test]
-    public void Reports_member_in_gray_for_readability()
+    public void Reports_member_in_magenta_for_readability()
     {
         _inspect.Attribute<CustomAttribute>();
         var c = GiveMe.ATypeModelContext<Parent>();
@@ -237,7 +237,7 @@ public class InspectingAttributes : TestSpec
             _trace.CaptureAttribute(c, () => new CustomAttribute());
         }
 
-        _messages.ShouldContain(m => m.Message.Contains("[gray]Baked.Playground.Orm.Parent[/]"));
+        _messages.ShouldContain(m => m.Message.Contains("[magenta]Baked.Playground.Orm.Parent[/]"));
     }
 
     [Test]
@@ -432,7 +432,7 @@ public class InspectingAttributes : TestSpec
             new StubFeature(c).Configure(() => new CustomAttribute());
         }
 
-        _messages.ShouldContain(m => Regex.IsMatch(m.Message, @"\[magenta]\[link=.*]StubFeature\[/]:\d+\[/]"), customMessage: _messages.Join(Environment.NewLine));
+        _messages.ShouldContain(m => Regex.IsMatch(m.Message, @"\[gray]\[link=.*]StubFeature\[/]:\d+\[/]"), customMessage: _messages.Join(Environment.NewLine));
     }
 
     [Test]
@@ -466,6 +466,6 @@ public class InspectingAttributes : TestSpec
             new StubFeature(c).Configure(() => new CustomAttribute(), orderInfo: "orderInfo");
         }
 
-        _messages.ShouldContain(m => Regex.IsMatch(m.Message, @"\[gray].*Order: orderInfo.*"), customMessage: _messages.Join(Environment.NewLine));
+        _messages.ShouldContain(m => Regex.IsMatch(m.Message, @"\[gray].*orderInfo.*"), customMessage: _messages.Join(Environment.NewLine));
     }
 }
