@@ -62,7 +62,7 @@ internal class Capture<T>
 
         if (!_initial && Equals(value, previousValue)) { return target; }
 
-        var source = TryFindFeatureSource(out var featureSource)
+        var source = _stackTrace.TryFindFeatureSource(out var featureSource)
             ? $"[magenta]{featureSource}[/] {OrderInfo()}"
             : $"[magenta]<unknown>[/] {OrderInfo()}{Environment.NewLine}[gray]{Markup.Escape($"{_stackTrace}")}[/]";
         Diagnostics.Current.ReportInfo($"  [darkgoldenrod]{Property}:[/] {FormatValue(value)} [gray]«[/] {source}", group: _captureType.Id);
@@ -80,42 +80,6 @@ internal class Capture<T>
 
         value = _inspection.Evaluate(targetObject);
         concreteTypeOfTarget = targetObject.GetType();
-
-        return true;
-    }
-
-    bool TryFindFeatureSource([NotNullWhen(true)] out string? source)
-    {
-        source = null;
-
-        var frames = _stackTrace.GetFrames();
-        var featureFrame =
-            frames.FirstOrDefault(f => f.GetMethod()?.ReflectedType?.DeclaringType?.Name.EndsWith("Feature") == true) ??
-            frames.FirstOrDefault(f => f.GetMethod()?.DeclaringType?.Name.EndsWith("Feature") == true);
-        if (featureFrame is null) { return false; }
-
-        source =
-            featureFrame.GetMethod()?.ReflectedType?.DeclaringType?.Name ??
-            featureFrame.GetMethod()?.DeclaringType?.Name ??
-            string.Empty;
-
-        var fileName = featureFrame.GetFileName();
-        if (fileName is null)
-        {
-            source += " [bold red]⠕[/]";
-
-            return true;
-        }
-
-        var title = source;
-        var url = new Uri(fileName).AbsoluteUri;
-        source = $"[link={url}]{title}[/]";
-
-        var lineNumber = featureFrame.GetFileLineNumber();
-        if (lineNumber > 0)
-        {
-            source += $":{lineNumber}";
-        }
 
         return true;
     }

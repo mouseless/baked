@@ -1,7 +1,6 @@
 using Baked.Buildtime.Diagnostics;
 using Spectre.Console;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 // NOTE namespace is at root for a better experience in Coding Style & UX
 // development
@@ -86,9 +85,10 @@ public class Diagnostics : IDisposable
         catch (DiagnosticException ex)
         {
             _exceptions.Add(ex);
-            if (TryFindFeatureSource(ex.StackTrace, out var source))
+            var stackTrace = new StackTrace(ex, true);
+            if (stackTrace.TryFindFeatureSource(out var source))
             {
-                ReportError(ex.Code, $"{ex.Message}{Environment.NewLine}{source}");
+                ReportError(ex.Code, $"{ex.Message}{Environment.NewLine}[gray]{source}[/]");
             }
             else
             {
@@ -125,25 +125,6 @@ public class Diagnostics : IDisposable
         DiagnosticCode? code = default,
         string? group = default
     ) => _messages.Add(new(message, level, code, group));
-
-    bool TryFindFeatureSource(string? stackTrace, [NotNullWhen(true)] out string? source)
-    {
-        source = null;
-        if (stackTrace is null) { return false; }
-
-        var matches = Regex.Matches(stackTrace, @"in (?<file>.*?Feature\.cs):line (?<line>\d+)");
-        var match = matches.FirstOrDefault();
-        if (match is not null)
-        {
-            string filePath = match.Groups["file"].Value;
-            string fileName = Path.GetFileName(filePath).Replace(".cs", string.Empty);
-            int lineNumber = int.Parse(match.Groups["line"].Value);
-
-            source = $"[gray][link={filePath}]{fileName}[/]:{lineNumber}[/]";
-        }
-
-        return source != null;
-    }
 
     public void OnDispose(Action<DiagnosticsResult> handler) =>
         _dispose = handler;
