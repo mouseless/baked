@@ -9,6 +9,5 @@ public class StubFeature(DomainModelContext c)
 
     public TSchema Configure<TSchema>(Func<TSchema> create,
         string? orderInfo = default
-    ) =>
-        _trace.CaptureAttribute(c, create, orderInfo: orderInfo);
+    ) => _trace.CaptureAttribute(c, create, orderInfo: orderInfo);
 }

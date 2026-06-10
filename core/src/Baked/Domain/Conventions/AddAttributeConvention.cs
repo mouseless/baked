@@ -13,7 +13,7 @@ public class AddAttributeConvention<TModelContext>(
     where TModelContext : DomainModelContext
 {
     readonly Trace _trace = Trace.Here();
-    readonly string _orderInfo = (beforeBuildingIndexes ? "+" : "-") + $"{_order}";
+    readonly string _orderInfo = $"{(beforeBuildingIndexes ? "+" : "-")}{_order}";
 
     bool IDomainModelConvention.BeforeBuildingIndexes => beforeBuildingIndexes;
 
