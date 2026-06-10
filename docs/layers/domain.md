@@ -32,56 +32,6 @@ also provides `DomainServiceCollection` configuration target for features to add
 `IServiceAdder` implementation. The generated `IServiceAdder` is then used in
 `Start` mode for auto registering domain types to service collection.
 
-### `Inspect`
-
-> [!WARNING]
->
-> This feature is still in experimentation and might print false-negative
-> output, meaning it might not capture every change of the inspected attribute.
-
-This target is provided from `DomainModelBuilderOptions` in `AddDomainTypes` 
-phase. To configure it in a feature;
-
-```csharp
-configurator.Domain.ConfigureBuilder(builder =>
-{
-    // To inspect an attribute on types
-    builder.Inspect.TypeAttribute<MyAttribute>(
-        when: c => c.Type..., // optional to inspect specific type models
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-
-    // To inspect an attribute properties
-    builder.Inspect.PropertyAttribute<MyAttribute>(
-        when: c => c.Property..., // optional to inspect specific property models
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-
-    // To inspect an attribute methods
-    builder.Inspect.MethodAttribute<MyAttribute>(
-        when: c => c.Method..., // optional to inspect specific method models
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-
-    // To inspect an attribute parameters
-    builder.Inspect.ParameterAttribute<MyAttribute>(
-        when: c => c.Parameter..., // optional to inspect specific parameter models
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-
-    // To inspect an attribute any member
-    builder.Inspect.Attribute<MyAttribute>(
-        when: c => c..., // optional to inspect specific members
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-});
-```
-
-> [!NOTE]
->
-> Only one inspect is allowed. If you configure more than one,
-> `InvalidOperationException` will be thrown
-
 ### `IDomainTypeCollection`
 
 This target is provided in `AddDomainTypes` phase. To configure it in a feature;
@@ -210,3 +160,57 @@ Add versions to `Directory.Packages.props`;
 >   <Virtuosity />
 > </Weavers>
 > ```
+
+### Debugging Domain Model Generation
+
+We provide a tool to debug domain model generation process during a generate phase.
+
+#### `Inspect`
+
+> [!WARNING]
+>
+> This feature is still in experimentation and might print false-negative
+> output, meaning it might not capture every change of the inspected attribute.
+
+This target is provided from `DomainModelBuilderOptions` in `AddDomainTypes` 
+phase. To configure it in a feature;
+
+```csharp
+configurator.Domain.ConfigureBuilder(builder =>
+{
+    // To inspect an attribute on types
+    builder.Inspect.TypeAttribute<MyAttribute>(
+        when: c => c.Type..., // optional to inspect specific type models
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+
+    // To inspect an attribute properties
+    builder.Inspect.PropertyAttribute<MyAttribute>(
+        when: c => c.Property..., // optional to inspect specific property models
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+
+    // To inspect an attribute methods
+    builder.Inspect.MethodAttribute<MyAttribute>(
+        when: c => c.Method..., // optional to inspect specific method models
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+
+    // To inspect an attribute parameters
+    builder.Inspect.ParameterAttribute<MyAttribute>(
+        when: c => c.Parameter..., // optional to inspect specific parameter models
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+
+    // To inspect an attribute any member
+    builder.Inspect.Attribute<MyAttribute>(
+        when: c => c..., // optional to inspect specific members
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+});
+```
+
+> [!NOTE]
+>
+> Only one inspect is allowed. If you configure more than one,
+> `InvalidOperationException` will be thrown
