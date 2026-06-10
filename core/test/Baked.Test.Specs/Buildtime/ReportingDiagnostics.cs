@@ -68,7 +68,7 @@ public class ReportingDiagnostics
             diagnostics.Diagnose(() => diagnostics.ReportWarning(DiagnosticCode.Unknown, "test"));
         }
 
-        messages[0].ToString().ShouldContain(
+        messages[0].ToString().ShouldBe(
             "[bold darkorange3]warning [link=https://baked.mouseless.codes/errors#unknown]B9999[/][/]: test"
         );
     }
