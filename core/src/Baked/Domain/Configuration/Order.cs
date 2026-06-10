@@ -120,9 +120,9 @@ public readonly struct Order
 
     public override string ToString()
     {
-        var baseCode = $"{_base}?"[0];
-        var levelCode = $"{_level}?"[0];
-        var extCode = $"{_extension}?"[0];
+        var baseCode = _base?[0] ?? '?';
+        var levelCode = _level?[0] ?? '?';
+        var extCode = _extension?[0] ?? '?';
         var offset = _offset >= 0 ? $"+{_offset:D4}" : $"{_offset:D4}";
 
         return $"{baseCode}{levelCode}{extCode}{offset}";
