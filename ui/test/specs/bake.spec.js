@@ -276,11 +276,11 @@ test.describe.serial("Reaction", () => {
 
   test("reaction is filtered out when published event value doesn't match constraint", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const react = component.getByTestId("react");
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    await input.fill("something else");
+    await react.fill("something else");
 
     await expect(request).rejects.toThrow();
     expect(asyncCount).toBe(before);
@@ -288,11 +288,11 @@ test.describe.serial("Reaction", () => {
 
   test("reaction occurs when published event value matches constraint", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const react = component.getByTestId("react");
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    await input.pressSequentially("event");
+    await react.pressSequentially("event");
 
     await request;
     expect(asyncCount).toBe(before + 1);
@@ -300,11 +300,11 @@ test.describe.serial("Reaction", () => {
 
   test("page context action and trigger", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const react = component.getByTestId("react");
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    await input.pressSequentially("page-context");
+    await react.pressSequentially("page-context");
 
     await request;
     expect(asyncCount).toBe(before + 1);
@@ -312,11 +312,11 @@ test.describe.serial("Reaction", () => {
 
   test("composable constraint", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const react = component.getByTestId("react");
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    await input.pressSequentially("validate");
+    await react.pressSequentially("validate");
 
     await request;
     expect(asyncCount).toBe(before + 1);
@@ -324,11 +324,22 @@ test.describe.serial("Reaction", () => {
 
   test("show/hide reaction with isNot constraint", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const visibility = component.getByTestId("visibility");
     await expect(component.getByTestId("output")).not.toBeAttached();
 
-    await input.fill("show");
+    await visibility.fill("show");
 
     await expect(component.getByTestId("output")).toBeAttached();
+  });
+
+  test("show SHOWN value when parent data is expected", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("show")).toBeAttached();
+  });
+  test("hide HIDDEN value when parent data is expected", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("hide")).not.toBeAttached();
   });
 });

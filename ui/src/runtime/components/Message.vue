@@ -31,7 +31,7 @@
     </div>
     <div
       v-if="action"
-      class="b-message-action px-2"
+      class="b-message-action p-2"
     >
       <Bake
         name="action"

@@ -4,6 +4,7 @@
       v-if="number"
       v-model="model"
       v-bind="$attrs"
+      v-tooltip.bottom="hint"
       :name="testId"
       :data-testid="testId"
       :placeholder="testId"
@@ -14,6 +15,7 @@
       v-else
       v-model="model"
       v-bind="$attrs"
+      v-tooltip.bottom="hint"
       :name="testId"
       :data-testid="testId"
       :placeholder="testId"

@@ -201,8 +201,13 @@ public static class CoreExtensions
 
     extension<T>(T? valueType) where T : struct, IParsable<T>
     {
-        public void ShouldBe(string? @string) =>
-            valueType?.ToString().ShouldBe(@string);
+        public void ShouldBe(string? @string)
+        {
+            if (valueType is null && @string is null) { return; }
+
+            valueType.ShouldNotBeNull();
+            valueType.ToString().ShouldBe(@string);
+        }
     }
 
     extension(object? payload)
