@@ -99,7 +99,7 @@
             :data="row.$getRow()"
             data-key="row"
           >
-            <div class="flex">
+            <div class="flex text-nowrap">
               <Bake
                 :name="`rows/${index}/actions`"
                 :descriptor="actions.component"
