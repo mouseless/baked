@@ -125,15 +125,46 @@ const variants = [
     name: "Reaction",
     descriptor: giveMe.aContainer({
       contents: [
+        giveMe.anExpected({
+          testId: "show",
+          value: "SHOWN",
+          reactions: {
+            show: giveMe.aTrigger({
+              key: "parent",
+              when: "data.key",
+              constraint: giveMe.aConstraint({ is: "expected" })
+            })
+          }
+        }),
+        giveMe.anExpected({
+          testId: "hide",
+          value: "HIDDEN",
+          reactions: {
+            show: giveMe.aTrigger({
+              key: "parent",
+              when: "data.key",
+              constraint: giveMe.aConstraint({ isNot: "expected" })
+            })
+          }
+        }),
         giveMe.aButton({
           label: "Spec: Reload",
           action: giveMe.aPublishAction({ event: "clicked" })
         }),
         giveMe.anExpectedInput({
-          testId: "input",
+          testId: "react",
+          hint: "validate | event | page-context",
           action: giveMe.aCompositeAction([
             giveMe.aPublishAction({ event: "input-changed" }),
             giveMe.aPublishAction({ pageContextKey: "input" })
+          ])
+        }),
+        giveMe.anExpectedInput({
+          testId: "visibility",
+          hint: "show",
+          action: giveMe.aCompositeAction([
+            giveMe.aPublishAction({ event: "visibility-changed" }),
+            giveMe.aPublishAction({ pageContextKey: "visibility" })
           ])
         }),
         giveMe.anExpected({
@@ -158,7 +189,7 @@ const variants = [
               ]
             }),
             show: giveMe.aTrigger({
-              when: "input",
+              when: "visibility",
               constraint: giveMe.aConstraint({
                 composable: "useFakeValidator",
                 options: giveMe.aDelayedData({ expected: "show" }, { ms: 200 })
@@ -166,7 +197,8 @@ const variants = [
             })
           }
         })
-      ]
+      ],
+      data: giveMe.anInlineData({ key: "expected" })
     })
   }
 ];

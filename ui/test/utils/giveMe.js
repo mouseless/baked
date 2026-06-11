@@ -945,10 +945,11 @@ export default {
     };
   },
 
-  aTrigger({ on, when, parts, constraint } = {}) {
+  aTrigger({ on, when, parts, constraint, key } = {}) {
     if(when) {
       return {
         type: "When",
+        key,
         when,
         constraint
       };
