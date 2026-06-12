@@ -34,7 +34,7 @@ c => c.DomainAssemblies([typeof(MyClass).Assembly])
 
 ## Convention Extensions
 
-Following `DomainModelConventionCollection` in extensions are provided;
+Following `DomainModelConventionCollection` extensions are provided;
 
 ```csharp
 // Executes `beforeBuildingIndex`

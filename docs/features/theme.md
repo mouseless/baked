@@ -290,19 +290,30 @@ conventions.AddPropertySchemaConfiguration(...);
 conventions.AddMethodSchemaConfiguration(...);
 conventions.AddParameterSchemaConfiguration(...);
 
-// Adding convention using extensions
 configurator.Domain.ConfigureConventions(conventions =>
 {
     // Adding component via extensions
-    conventions.SetPropertyComponent(
+    conventions.AddPropertyComponent(
         when: c => c.Property.Name == "Id"
         component: () => ...
     );
 
+    // Adding component configuration via extensions
+    conventions.AddPropertyComponentConfiguration<Button>(
+        when: c => c.Property.Name == "Id"
+        component: button => ...
+    );
+
     // Adding schema via extensions
-    conventions.SetPropertySchema(
+    conventions.AddPropertySchema(
         when: c => c.Property.Name == "Id"
         schema: () => ...
+    );
+
+    // Adding schema configuration via extensions
+    conventions.AddPropertySchemaConfiguration<Input>(
+        when: c => c.Property.Name == "Id"
+        schema: input => ...
     );
 }
 ```
