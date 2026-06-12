@@ -137,21 +137,52 @@ flowchart LR;
   Generate --> Start
 ```
 
-## Convention Levels
+## Convention Order Matrix
 
 ```mermaid
-flowchart
-  I(Infra)
-  D(Domain)
-  UX(UX)
-  T(Theme)
-  O(Override)
+flowchart LR
 
-  subgraph Level Order
+  BDA(Business.Defaults.Add)
+  BCA(Business.Custom.Add)
+  BOA(Business.Override.Add)
+
+  BDC(Business.Defaults.Configure)
+  BCC(Business.Custom.Configure)
+  BOC(Business.Override.Configure)
+
+  TDA(Theme.Defaults.Add)
+  TCA(Theme.Custom.Add)
+  TOA(Theme.Override.Add)
+
+  TDC(Theme.Defaults.Configure)
+  TCC(Theme.Custom.Configure)
+  TOC(Theme.Override.Configure)
+
+  subgraph Business
     direction LR
-    I --> D
-    D --> UX
-    UX --> T
-    T --> O
-  end
+    subgraph BA[ ]
+      direction TD
+      BDA --> BCA --> BOA
+    end
+    subgraph BC[ ]
+      direction TD
+      BDC --> BCC --> BOC
+    end
+  end  
+
+  subgraph Theme
+    direction LR
+    subgraph TA[ ]
+      direction TD
+      TDA --> TCA --> TOA
+    end
+    subgraph TC[ ]
+      direction TD
+      TDC --> TCC --> TOC
+    end
+  end  
+
+  BA --> BC 
+  TA --> TC
+  Business --> Theme
 ```
