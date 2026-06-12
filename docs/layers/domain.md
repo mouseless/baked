@@ -203,14 +203,7 @@ public class IdConvention : IDomainModelConvention<PropertyModelContext>
 
 configurator.Domain.ConfigureConventions(conventions =>
 {
-    // Adding an implemented convention
     conventions.Add(new IdConvention());
-
-    // Adding convention via extensions
-    conventions.SetPropertyAttribute(
-        when: c => c.Property.Name == "Id"
-        attribute: () => new IdAttribute()
-    );
 }
 ```
 
@@ -229,21 +222,21 @@ public class FeatureA : IFeature
 {
     // this convention wil apply before conventions
     // in feature B with default order
-    conventions.SetPropertyAttribute(...);
+    conventions.Add(...);
 }
 
 public class FeatureB : IFeature 
 {
     // This convention will apply first since a
     // global order is given
-    conventions.SetPropertyAttribute(
+    conventions.Add(
         ...,
         order: -10  
     );
 
     // This convention will apply after conventions
     // in feature A
-    conventions.SetPropertyAttribute(...);
+    conventions.Add(...);
 }
 ```
 
@@ -272,15 +265,13 @@ remaining conventions.
 
 ```csharp
 // This convention will apply before the indexes are built
-conventions.SetPropertyAttribute(
-    ...,
-    beforeBuildingIndexes: true
+conventions.Add(
+    new DomainConvention(beforeBuildingIndexes: true)
 );
 
 // This convention will apply after the indexes are built
-conventions.SetPropertyAttribute(
-    ...,
-    beforeBuildingIndexes: false
+conventions.Add(
+    new DomainConvention(beforeBuildingIndexes: false)
 );
 ```
 
@@ -309,7 +300,7 @@ configurator.Domain.ConfigureBuilder(builder =>
 configurator.Domain.ConfigureConventions(conventions => 
 {
     conventions.Add(
-        convention: new DemoConvention(),
+        ...,
         order: Order.At.WithBase("Base").WithLevel("Level").WithExtension("Ext")
     );
 });
@@ -342,6 +333,12 @@ configurator.Domain.ConfigureBuilder(builder =>
     ...
 });
 ```
+
+> [!NOTE]
+>
+> For empty order matrix parts lists, a default value will be used in order
+> to generate a complete lists so that every value in the collection will have
+> exactly three parts
 
 A convention with given level order will be added to the median, in other words
 will have 0 as its offset relative to its level. It is also possible to specify 

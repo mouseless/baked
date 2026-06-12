@@ -31,3 +31,47 @@ Additionally, it registers types that implement `ICasts<,>` interface under
 ```csharp
 c => c.DomainAssemblies([typeof(MyClass).Assembly])
 ```
+
+## Convention Extensions
+
+Following `DomainModelConventionCollection` in extensions are provided;
+
+```csharp
+// Executes `beforeBuildingIndex`
+// `Order` parts will be defaulted to `Business.Defaults.Add`
+conventions.AddTypeAttribute(...);
+conventions.AddPropertyAttribute(...);
+conventions.AddMethodAttribute(...);
+conventions.AddParametereAttribute(...);
+
+// Executes `beforeBuildingIndex`
+// `Order` parts will be defaulted to `Business.Defaults.Add`
+conventions.SetTypeAttribute(...);
+conventions.SetPropertyAttribute(...);
+conventions.SetMethodAttribute(...);
+conventions.SetParametereAttribute(...);
+
+// Executes `beforeBuildingIndex`
+// `Order` parts will be defaulted to `Business.Defaults.Add`
+conventions.RemoveTypeAttribute(...);
+conventions.RemovePropertyAttribute(...);
+conventions.RemoveMethodAttribute(...);
+conventions.RemoveParametereAttribute(...);
+
+// Executes after `beforeBuildingIndex`
+// `Order` parts will be defaulted to `Business.Defaults.Configure`
+conventions.AddTypeAttributeConfiguration(...);
+conventions.AddPropertyAttributeConfiguration(...);
+conventions.AddMethodAttributeConfiguration(...);
+conventions.AddParametereAttributeConfiguration(...);
+
+// Adding convention using extensions
+configurator.Domain.ConfigureConventions(conventions =>
+{
+    // Adding convention via extensions
+    conventions.SetPropertyAttribute(
+        when: c => c.Property.Name == "Id"
+        attribute: () => new IdAttribute()
+    );
+}
+```

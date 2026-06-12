@@ -251,3 +251,58 @@ configurator.Domain.ConfigureBuilder(builder =>
 >
 > Only one inspect is allowed. If you configure more than one,
 > `InvalidOperationException` will be thrown
+
+### Convention Extensions
+
+Following `DomainModelConventionCollection` in extensions are provided;
+
+```csharp
+// Executes after `beforeBuildingIndex`
+// `Order` parts will be defaulted to `Theme.Defaults.Add`
+conventions.AddTypeComponent(...);
+conventions.AddPropertyComponent(...);
+conventions.AddMethodComponent(...);
+conventions.AddParameterComponent(...);
+conventions.AddTypeSchema(...);
+conventions.AddPropertySchema(...);
+conventions.AddMethodSchema(...);
+conventions.AddParameterSchema(...);
+
+// Executes after `beforeBuildingIndex`
+// `Order` parts will be defaulted to `Theme.Defaults.Add`
+conventions.RemoveTypeComponent(...);
+conventions.RemovePropertyComponent(...);
+conventions.RemoveMethodComponent(...);
+conventions.RemoveParameterComponent(...);
+conventions.RemoveTypeSchema(...);
+conventions.RemovePropertySchema(...);
+conventions.RemoveMethodSchema(...);
+conventions.RemoveParameterSchema(...);
+
+// Executes after `beforeBuildingIndex`
+// `Order` parts will be defaulted to `Theme.Defaults.Configure`
+conventions.AddTypeComponentConfiguration(...);
+conventions.AddPropertyComponentConfiguration(...);
+conventions.AddMethodComponentConfiguration(...);
+conventions.AddParameterComponentConfiguration(...);
+conventions.AddTypeSchemaConfiguration(...);
+conventions.AddPropertySchemaConfiguration(...);
+conventions.AddMethodSchemaConfiguration(...);
+conventions.AddParameterSchemaConfiguration(...);
+
+// Adding convention using extensions
+configurator.Domain.ConfigureConventions(conventions =>
+{
+    // Adding component via extensions
+    conventions.SetPropertyComponent(
+        when: c => c.Property.Name == "Id"
+        component: () => ...
+    );
+
+    // Adding schema via extensions
+    conventions.SetPropertySchema(
+        when: c => c.Property.Name == "Id"
+        schema: () => ...
+    );
+}
+```
