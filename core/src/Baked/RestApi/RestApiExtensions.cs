@@ -162,7 +162,7 @@ public static class RestApiExtensions
                     if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
                     if (parameter is not null) { parameter(action.Parameter); }
                 }),
-                order: Order.At.Defaults.Min
+                order: Order.At.Infra.Min
             );
         }
 

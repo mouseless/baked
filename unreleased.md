@@ -86,6 +86,24 @@
       builder.Inspect.Attribute<...>();
   });
   ```
+- `CacheApplicationPlugin` and `CacheUserPlugin`no longer has 
+  `ExpirationInMinutes` property and are now configured in options exposed 
+  through `baked` module options
+  ```js
+  export default defineNuxtConfig({
+    baked: {
+      plugins: {
+        cacheApplication: {
+          expirationInMinutes: 40
+        },
+        cacheUser: {
+          expirationInMinutes: 40
+        },
+      }
+    }
+  }
+  ```
+  
 ## Bugfixes
 
 - Adding locate action by conventions was missing claim requirements, fixed

@@ -22,7 +22,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     entityContextParameter.ParameterType.TryGetGenerics(out var entityContextGenerics) &&
                     entityContextGenerics.GenericTypeArguments.First().Model == c.Type,
                 attribute: () => new EntityAttribute(),
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
             conventions.SetTypeAttribute(
                 when: c => c.Type.Has<EntityAttribute>(),
@@ -31,17 +31,17 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     set(c.Type, new ApiInputAttribute());
                     set(c.Type, new LocatableAttribute());
                 },
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
             conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
                 attribute: c => new ActionModelAttribute(),
-                order: Order.At.Defaults + 30
+                order: Order.At.Infra + 30
             );
 
-            conventions.Add(new EntityInitializerIsPostResourceConvention(), order: Order.At.Defaults);
+            conventions.Add(new EntityInitializerIsPostResourceConvention(), order: Order.At.Infra);
         });
 
         configurator.DataAccess.ConfigureNHibernateInterceptor(interceptor =>

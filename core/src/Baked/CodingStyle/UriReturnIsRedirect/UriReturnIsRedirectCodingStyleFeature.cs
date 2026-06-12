@@ -9,9 +9,9 @@ public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigu
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.Add(new UriReturnIsRedirectConvention(), order: Order.At.Defaults);
-            conventions.Add(new UriReturnWithoutParameterIsGetConvention(), order: Order.At.Defaults);
-            conventions.Add(new UriReturnWithParameterIsFormPostConvention(), order: Order.At.Defaults - 10);
+            conventions.Add(new UriReturnIsRedirectConvention(), order: Order.At.Infra);
+            conventions.Add(new UriReturnWithoutParameterIsGetConvention(), order: Order.At.Infra);
+            conventions.Add(new UriReturnWithParameterIsFormPostConvention(), order: Order.At.Infra - 10);
         });
 
         configurator.RestApi.ConfigureApiModel(api =>

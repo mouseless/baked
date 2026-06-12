@@ -24,13 +24,13 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
             conventions.SetPropertyAttribute(
                 when: c => c.Property.Name.EndsWith("Description"),
                 attribute: () => new DescriptionAttribute(),
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
 
             conventions.SetParameterAttribute(
                 when: c => c.Parameter.Name.Pascalize().EndsWith("Description"),
                 attribute: () => new DescriptionAttribute(),
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
 
             conventions.AddPropertySchemaConfiguration<Field>(

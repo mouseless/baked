@@ -54,7 +54,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     r.Params[idAttribute.RouteName] = idAttribute.RouteName;
                 },
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
 
             // Enum Data
@@ -67,12 +67,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
-                order: Order.At.Defaults - 10
+                order: Order.At.Infra - 10
             );
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
                 attribute: data => data.Visible = false,
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
             conventions.AddPropertyComponent(
                 when: c =>

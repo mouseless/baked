@@ -32,7 +32,7 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
 
                     return entityType.Apply(t => new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
                 },
-                order: Order.At.Defaults + 10
+                order: Order.At.Infra + 10
             );
             conventions.SetTypeAttribute(
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
@@ -54,20 +54,20 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
 
                     set(c.Type, new LocatableAttribute());
                 },
-                order: Order.At.Defaults + 40
+                order: Order.At.Infra + 40
             );
             conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
-                order: Order.At.Defaults + 30
+                order: Order.At.Infra + 30
             );
 
             conventions.Add(new UniqueIdParameterConvention(), order: Order.At.Max - 20);
-            conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
-            conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
-            conventions.Add(new AddSubclassNameToRouteConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
+            conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: Order.At.AbsoluteMax);
+            conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: Order.At.AbsoluteMax);
+            conventions.Add(new AddSubclassNameToRouteConvention(), order: Order.At.AbsoluteMax);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

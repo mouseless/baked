@@ -287,11 +287,11 @@ public static class DomainExtensions
 
     extension(Order order)
     {
+        public Order Infra =>
+            order.WithLevel("Infra");
+
         public Order Defaults =>
             order.WithLevel("Defaults");
-
-        public Order Custom =>
-            order.WithLevel("Custom");
 
         public Order Override =>
             order.WithLevel("Override");

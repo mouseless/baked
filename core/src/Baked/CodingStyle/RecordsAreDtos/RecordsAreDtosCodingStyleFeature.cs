@@ -15,7 +15,7 @@ public class RecordsAreDtosCodingStyleFeature : IFeature<CodingStyleConfigurator
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Contains("<Clone>$"), // if type is record
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
         });
     }
