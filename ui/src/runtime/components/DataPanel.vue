@@ -71,19 +71,17 @@
       />
       <Message
         v-else-if="!ready"
-        severity="info"
-      >
-        <i class="pi pi-info-circle" />
-        <span class="ml-3">{{ lc("Select required values to view this data") }}</span>
-      </Message>
+        :schema="{ severity: 'info', icon: 'pi pi-info-circle' }"
+        :data="lc('Select required values to view this data')"
+      />
     </template>
   </Panel>
 </template>
 <script setup>
 import { computed, ref, useTemplateRef } from "vue";
-import { Message, Panel, Button } from "primevue";
+import { Panel, Button } from "primevue";
 import { useBreakpoints, useContext, useDataMounter, useUiStates, useLocalization } from "#imports";
-import { Bake, Inputs, PersistentPopover } from "#components";
+import { Bake, Inputs, PersistentPopover, Message } from "#components";
 
 const { value: { panelStates } } = useUiStates();
 const { isMd } = useBreakpoints();

@@ -3,25 +3,52 @@
     v-model="model"
     :name="schema.name"
     :descriptor="schema.component"
+    :invalid
+    @blur="onBlur"
   />
 </template>
 <script setup>
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "#app";
-import { useDataMounter } from "#imports";
+import { useDataMounter, useContext } from "#imports";
 import { Bake } from "#components";
 
+const context = useContext();
 const { mount: mountData, onAfterMount: onAfterMountData } = useDataMounter();
 const route = useRoute();
 const router = useRouter();
 
-const { schema } = defineProps({
-  schema: { type: Object, required: true }
+const { schema, formMode } = defineProps({
+  schema: { type: Object, required: true },
+  formMode: { type: Boolean }
 });
 const model = defineModel({ type: null, required: true });
 
+const validations = context.injectValidations();
+const mutableValidations = context.injectMutableValidations();
+
 const defaultValue = mountData(schema.default);
 const query = schema.queryBound ? computed(() => route.query[schema.name]) : undefined;
+
+let validation = undefined;
+let mutableValidation = undefined;
+let touched = undefined;
+let invalidInForm = undefined;
+let invalid = undefined;
+let onBlur = undefined;
+if(validations) {
+  validation = computed(() => validations.value[schema.name]);
+  mutableValidation = ref({ valid: true });
+  touched = ref(false);
+  invalidInForm = computed(() => !validation.value?.valid && (validation.value?.persist || touched.value));
+  invalid = computed(() => !mutableValidation.value.valid || invalidInForm.value);
+  onBlur = () => touched.value = true;
+
+  mutableValidations[schema.name] = mutableValidation;
+
+  context.provideValidation(validation);
+  context.provideMutableValidation(mutableValidation);
+}
 
 onAfterMountData(async() => {
   // parent component might set model to null during setup, because of that on
@@ -52,7 +79,7 @@ onAfterMountData(async() => {
   }
 
   watch(model, async newValue => {
-    if(!checkValue(newValue)) {
+    if(!checkValue(newValue) && !formMode) {
       newValue = schema.required ? defaultValue.value : undefined;
     }
 
@@ -66,8 +93,7 @@ async function set(value) {
     if(!checkValue(value)) { return; }
 
     setModel(value);
-  }
-  else {
+  } else {
     // prevents an unnecessary router push to avoid cancelation on other
     // inputs' router pushes
     if(String(value) === String(query.value)) { return; }
@@ -93,6 +119,8 @@ function checkValue(value) {
 }
 
 function setModel(value) {
+  if(value === model.value) { return; }
+
   if(!schema.numeric) {
     model.value = value;
   } else {

@@ -6,6 +6,7 @@
     :label="l(label)"
     :rounded
     :severity
+    :size
     :variant
     @click="$emit('submit')"
   />
@@ -23,7 +24,7 @@ const { schema } = defineProps({
 });
 defineEmits(["submit"]);
 
-const { icon, label, rounded, severity = "secondary", variant } = schema;
+const { icon, label, rounded, severity = "secondary", size, variant } = schema;
 
 const executing = context.injectExecuting();
 </script>

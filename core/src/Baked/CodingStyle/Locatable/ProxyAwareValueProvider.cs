@@ -1,20 +1,21 @@
+using Baked.RestApi;
 using Humanizer;
 using Newtonsoft.Json.Serialization;
-using NHibernate.Proxy;
 
 namespace Baked.CodingStyle.Locatable;
 
-public class ProxyAwareValueProvider(Dictionary<Type, string> _idPropertyNames, string? _propertyName, IValueProvider? _valueProvider)
+public class ProxyAwareValueProvider(ExtendedContractResolver _contractResolver, Dictionary<Type, string> _idPropertyNames, string? _propertyName, IValueProvider? _valueProvider)
     : IValueProvider
 {
     object? IValueProvider.GetValue(object target)
     {
-        if (target is not INHibernateProxy proxy || !proxy.HibernateLazyInitializer.IsUninitialized)
+        if (!_contractResolver.IsUnitializedProxy(target))
         {
             return _valueProvider?.GetValue(target);
         }
 
-        if (!_idPropertyNames.TryGetValue(proxy.HibernateLazyInitializer.PersistentClass, out var idName)) { return default; }
+        var type = _contractResolver.ClearProxyType(target.GetType());
+        if (!_idPropertyNames.TryGetValue(type, out var idName)) { return default; }
         if (_propertyName != idName.Camelize()) { return default; }
 
         return _valueProvider?.GetValue(target);

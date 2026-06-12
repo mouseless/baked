@@ -1,27 +1,49 @@
 <template>
-  <component
-    :is="componentTemplate"
-    v-if="visible"
-    :key="loading"
-    :class="classes"
-    v-bind="getComponentProps()"
-  >
-    <template
-      v-for="(_, slotName) in $slots"
-      #[slotName]="slotProps"
+  <template v-if="!error || errorHandled || errorCausedByAction">
+    <component
+      :is="component"
+      v-if="visible"
+      ref="componentRef"
+      :key="loading"
+      :class="classes"
+      v-bind="{
+        ...$attrs,
+        ...baseAttrs,
+        ...dataAttrs(),
+        ...modelAttrs()
+      }"
     >
-      <slot
-        :name="slotName"
-        v-bind="slotProps ?? {}"
-      />
-    </template>
-  </component>
+      <template
+        v-for="(_, slotName) in $slots"
+        #[slotName]="slotProps"
+      >
+        <slot
+          :name="slotName"
+          v-bind="slotProps ?? {}"
+        />
+      </template>
+    </component>
+    <ErrorPopover
+      v-if="descriptor.action && !errorHandled"
+      ref="errorPopoverRef"
+    >
+      <InlineError :error />
+    </ErrorPopover>
+  </template>
+  <InlineError
+    v-else
+    :class="$attrs.class"
+    :style="$attrs.style"
+    :error
+  />
 </template>
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, ref } from "vue";
-import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useActionExecuter, useBakeError, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
+import { ErrorPopover, InlineError } from "#components";
 
 const actionExecuter = useActionExecuter();
+const { normalize: normalizeError } = useBakeError();
 const componentResolver = useComponentResolver();
 const context = useContext();
 const dataFetcher = useDataFetcher();
@@ -37,32 +59,77 @@ const emit = defineEmits(["loaded"]);
 
 const parentPath = context.injectPath();
 const parentLoading = context.injectLoading();
-const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
 const contextData = context.injectContextData();
-const componentTemplate = componentResolver.resolve(descriptor.type, "MissingComponent");
-const componentProps = buildComponentProps();
+
+const component = componentResolver.resolve(descriptor.type, "MissingComponent");
+const componentRef = ref();
+const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = !parentLoading.value && dataFetcher.shouldLoad(descriptor.data);
 const loading = ref(shouldLoad);
-let executing = null;
 const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
-let reactions = null;
+const baseAttrs = { };
+const rawError = ref();
+const errorHandled = context.provideError(rawError);
+const error = normalizeError(rawError);
 
 context.providePath(path);
 context.provideDataDescriptor(descriptor.data);
-context.provideParentContext({ ...contextData.parent, data });
+context.provideParentContext({ ...contextData.parent, data, grand: contextData.parent });
 
 if(shouldLoad) {
   context.provideLoading(loading);
 }
 
+let errorPopoverRef = null;
+let errorCausedByAction = null;
+let executing = null;
 if(descriptor.action) {
+  errorPopoverRef = ref();
+  errorCausedByAction = ref(false);
   executing = ref(false);
   context.provideExecuting(executing);
+
+  watch([executing, error], ([newExecuting, newError], [oldExecuting, oldError]) => {
+    if(newExecuting) {
+      rawError.value = null;
+      errorCausedByAction.value = false;
+    } else if(oldExecuting && newError && !oldError) {
+      errorCausedByAction.value = true;
+    }
+  });
+
+  watch(error, newError => {
+    if(newError) {
+      errorPopoverRef.value?.show(componentRef);
+    } else {
+      errorPopoverRef.value?.hide();
+    }
+  });
 }
 
+if(descriptor.schema) {
+  baseAttrs.schema = descriptor.schema;
+}
+
+if(component.emits?.includes("submit")) {
+  baseAttrs.onSubmit = executeAction;
+}
+
+let dataAttrs = () => ({});
+if(descriptor.data) {
+  dataAttrs = () => ({ data: data.value });
+}
+
+let modelAttrs = () => ({});
+if(component.props?.modelValue) {
+  modelAttrs = () => ({ modelValue: model.value, "onUpdate:modelValue": value => model.value = value });
+  watch(model, executeAction);
+}
+
+let reactions = null;
 if(descriptor.reactions) {
   reactions = reactionHandler.create(`${path}:bake`, {
     reload(success) {
@@ -91,49 +158,21 @@ onBeforeUnmount(() => {
 
 async function load() {
   loading.value = true;
-  data.value = await dataFetcher.fetch({
-    data: descriptor.data,
-    contextData
-  });
+  try {
+    data.value = await dataFetcher.fetch({
+      data: descriptor.data,
+      contextData
+    });
+  } catch (err) {
+    if(err?.status !== 400) { throw err; }
+
+    rawError.value = err;
+  }
   loading.value = false;
   emit("loaded");
 }
 
-function buildComponentProps() {
-  const result = {};
-
-  if(descriptor.schema) { result.schema = descriptor.schema; }
-  if(componentTemplate.emits?.includes("submit")) { result.onSubmit = onModelUpdate; }
-  if(componentTemplate.props?.modelValue) { result["onUpdate:modelValue"] = onModelUpdate; }
-
-  return result;
-}
-
-let __BIND_COUNT__ = 0; // NOTE A work-around for query bound model problem
-function getComponentProps() {
-  const result = { ...componentProps };
-
-  if(descriptor.data) { result.data = data.value; }
-  if(componentTemplate.props?.modelValue) {
-    result.modelValue = model.value;
-
-    // restrict model update during v-bind by 2, to prevent duplicated event publish
-    // first during mount, second to refresh model from query
-    if(__BIND_COUNT__ < 2) {
-      __BIND_COUNT__++;
-
-      nextTick(() => onModelUpdate(model.value));
-    }
-  }
-
-  return result;
-}
-
-async function onModelUpdate(newModel) {
-  if(componentTemplate.props?.modelValue) {
-    model.value = newModel;
-  }
-
+async function executeAction(newModel) {
   if(!descriptor.action) { return; }
 
   try {
@@ -143,6 +182,10 @@ async function onModelUpdate(newModel) {
       contextData: { ...contextData, model: newModel },
       events
     });
+  } catch (err) {
+    if(err?.status !== 400) { throw err; }
+
+    rawError.value = err;
   } finally {
     executing.value = false;
   }

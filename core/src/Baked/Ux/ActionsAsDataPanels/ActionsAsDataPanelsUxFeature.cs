@@ -27,21 +27,20 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        dp.Schema.Inputs.Add(
-                            parameter.GenerateRequiredSchema<Input>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Inputs)))
-                        );
+                        var input = parameter.GenerateSchema<Input>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Inputs)));
+                        if (input is null) { continue; }
+
+                        dp.Schema.Inputs.Add(input);
                     }
                 }
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs)),
-                schema: (i, c, cc) =>
+            conventions.AddParameterSchemaConfiguration<Label>(
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(ILabeler.Label)),
+                schema: (label, c, cc) =>
                 {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
-
                     var (_, l) = cc;
 
-                    labeler.LabelFloatOn(labeler.Label ?? l(c.Parameter.Name.Titleize()));
+                    label.FloatOn(() => l(c.Parameter.Name.Titleize()));
                 }
             );
         });

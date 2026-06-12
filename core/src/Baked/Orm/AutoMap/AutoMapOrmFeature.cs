@@ -124,6 +124,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
+            model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Fetch.Join()));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
         });
 
@@ -168,7 +169,13 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             if (options.SerializerSettings.ContractResolver is not ExtendedContractResolver contractResolver) { return; }
 
-            contractResolver.ProxyType = typeof(INHibernateProxy);
+            contractResolver.SetClearProxyType(type =>
+            {
+                if (!type.IsAssignableTo(typeof(INHibernateProxy))) { return type; }
+
+                return type.BaseType ?? throw new($"Proxy type `{type.FullName}` should have a base type");
+            });
+            contractResolver.SetIsUnitializedProxy(value => value is INHibernateProxy proxy && proxy.HibernateLazyInitializer.IsUninitialized);
         });
     }
 }

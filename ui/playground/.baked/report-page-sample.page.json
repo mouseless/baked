@@ -25,12 +25,14 @@
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required With Default",
-            "labelMode": "float",
-            "labelVariant": "on",
+            "label": {
+              "text": "Required With Default",
+              "mode": "float",
+              "variant": "on"
+            },
+            "localizeOptionLabels": true,
             "optionLabel": "label",
-            "optionValue": "value",
-            "localizeLabel": true
+            "optionValue": "value"
           },
           "data": {
             "type": "Inline",
@@ -54,12 +56,14 @@
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required",
-            "labelMode": "float",
-            "labelVariant": "on",
+            "label": {
+              "text": "Required",
+              "mode": "float",
+              "variant": "on"
+            },
+            "localizeOptionLabels": true,
             "optionLabel": "label",
-            "optionValue": "value",
-            "localizeLabel": true
+            "optionValue": "value"
           },
           "data": {
             "type": "Inline",
@@ -83,9 +87,9 @@
           "type": "SelectButton",
           "schema": {
             "allowEmpty": true,
+            "localizeOptionLabels": true,
             "optionLabel": "label",
-            "optionValue": "value",
-            "localizeLabel": true
+            "optionValue": "value"
           },
           "data": {
             "type": "Inline",
@@ -267,12 +271,14 @@
                     "component": {
                       "type": "Select",
                       "schema": {
-                        "label": "Count",
-                        "labelMode": "float",
-                        "labelVariant": "on",
+                        "label": {
+                          "text": "Count",
+                          "mode": "float",
+                          "variant": "on"
+                        },
+                        "localizeOptionLabels": true,
                         "optionLabel": "label",
                         "optionValue": "value",
-                        "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
@@ -427,9 +433,9 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
+                        "localizeOptionLabels": true,
                         "optionLabel": "label",
                         "optionValue": "value",
-                        "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {

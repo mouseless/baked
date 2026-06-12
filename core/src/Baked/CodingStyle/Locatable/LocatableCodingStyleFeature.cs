@@ -87,7 +87,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                 contractResolver.SetValueProvider((property, _) =>
                 {
-                    property.ValueProvider = new ProxyAwareValueProvider(locatableContext.IdPropertyNames, property.PropertyName, property.ValueProvider);
+                    property.ValueProvider = new ProxyAwareValueProvider(contractResolver, locatableContext.IdPropertyNames, property.PropertyName, property.ValueProvider);
                 });
             });
         });

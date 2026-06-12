@@ -28,6 +28,18 @@
           "path": "children/{id}/"
         },
         {
+          "method": "POST",
+          "path": "exception-samples/throw"
+        },
+        {
+          "method": "GET",
+          "path": "exception-samples/handled"
+        },
+        {
+          "method": "POST",
+          "path": "exception-samples/handled"
+        },
+        {
           "method": "GET",
           "path": "cache-samples/scoped"
         },
@@ -189,6 +201,13 @@
     "data": {
       "type": "Computed",
       "composable": "useNuxtError"
+    }
+  },
+  "inlineError": {
+    "type": "Message",
+    "schema": {
+      "severity": "error",
+      "icon": "pi pi-exclamation-circle"
     }
   },
   "i18n": {

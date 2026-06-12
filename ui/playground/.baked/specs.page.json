@@ -34,6 +34,18 @@
         "title": "Behavior",
         "links": [
           {
+            "title": "/specs/await-loading:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/await-loading",
+                "icon": "pi pi-microchip",
+                "title": "/specs/await-loading:Title",
+                "description": "/specs/await-loading:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/bake:Title",
             "component": {
               "type": "CardLink",
@@ -90,6 +102,18 @@
                 "icon": "pi pi-microchip",
                 "title": "/specs/inputs:Title",
                 "description": "/specs/inputs:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/inputs--form-mode:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/inputs--form-mode",
+                "icon": "pi pi-microchip",
+                "title": "/specs/inputs--form-mode:Title",
+                "description": "/specs/inputs--form-mode:Description"
               }
             }
           },
@@ -304,6 +328,18 @@
                 "icon": "pi pi-microchip",
                 "title": "/specs/simple-form:Title",
                 "description": "/specs/simple-form:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/form-validation:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/form-validation",
+                "icon": "pi pi-microchip",
+                "title": "/specs/form-validation:Title",
+                "description": "/specs/form-validation:Description"
               }
             }
           }

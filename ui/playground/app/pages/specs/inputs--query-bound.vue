@@ -1,10 +1,9 @@
 <template>
   <UiSpec>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬆️  Check if values sync with query string above ⬆️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬆️  Check if values sync with query string above ⬆️"
+    />
     <div
       class="flex border-4 border-gray-500 rounded p-4 space-x-4"
       data-testid="component"
@@ -15,29 +14,26 @@
         @changed="onChanged"
       />
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if ready is true when all required inputs are set ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if ready is true when all required inputs are set ⬇️"
+    />
     <div class="border-4 border-gray-500 rounded p-4">
       <span class="text-gray-500">ready=</span>
       <span data-testid="ready">{{ ready }}</span>
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if unique key changes when any parameter changes ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if unique key changes when any parameter changes ⬇️"
+    />
     <div class="border-4 border-gray-500 rounded p-4">
       <span class="text-gray-500">unique-key=</span>
       <span data-testid="unique-key">{{ uniqueKey }}</span>
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Click and check if resets all inputs except required with default ⬆️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Click and check if resets all inputs except required with default ⬆️"
+    />
     <div class="border-4 border-gray-500 rounded p-4 flex gap-4">
       <Button
         as="router-link"
@@ -55,7 +51,8 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { Button, Message } from "primevue";
+import { Message } from "#components";
+import { Button } from "primevue";
 import giveMe from "@utils/giveMe";
 
 const ready = ref();

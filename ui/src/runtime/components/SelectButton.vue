@@ -1,46 +1,53 @@
 <template>
-  <AwaitLoading>
-    <template #loading>
-      <div class="min-w-60">
-        <Skeleton class="min-h-10" />
-      </div>
-    </template>
-    <Labeler
-      :label
-      :path
-      :mode="labelMode == 'ifta' ? labelMode : null"
-      :dt="{
-        colorScheme: {
-          light: {
-            top: '-1rem',
-          },
-          dark: {
-            top: '-1rem'
+  <AwaitLoading
+    :skeleton="{
+      height: label?.mode === 'ifta' ? '3.6rem' : '2.6rem',
+      class: 'min-w-60'
+    }"
+  >
+    <Validation>
+      <Labeler
+        :label="{
+          ...label,
+          mode: label?.mode === 'ifta' ? label.mode : null,
+          text: label?.mode === 'ifta' ? label.text : null
+        }"
+        :path
+        :dt="{
+          colorScheme: {
+            light: {
+              top: '-1rem',
+            },
+            dark: {
+              top: '-1rem'
+            }
           }
-        }
-      }"
-    >
-      <SelectButton
-        v-if="data"
-        v-model="selected"
-        :options="data"
-        :allow-empty
-        :data-key="optionValue"
-        :option-label
-        :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
+        }"
       >
-        <template #option="slotProps">
-          <span>{{ getOptionLabel(slotProps) }}</span>
-        </template>
-      </SelectButton>
-    </Labeler>
+        <SelectButton
+          v-if="data"
+          v-bind="$attrs"
+          v-model="selected"
+          :options="data"
+          :allow-empty
+          :data-key="optionValue"
+          :option-label
+          class="!w-auto"
+          pt:pc-toggle-button:root="text-[length:inherit]"
+        >
+          <template #option="slotProps">
+            <span>{{ getOptionLabel(slotProps) }}</span>
+          </template>
+        </SelectButton>
+      </Labeler>
+    </Validation>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { SelectButton, Skeleton } from "primevue";
+import { SelectButton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
-import { AwaitLoading, Labeler } from "#components";
+import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -55,8 +62,7 @@ const model = defineModel({ type: null, required: true });
 const {
   allowEmpty = false,
   label,
-  labelMode,
-  localizeLabel,
+  localizeOptionLabels,
   optionLabel,
   optionValue,
   stateful,
@@ -64,6 +70,7 @@ const {
 } = schema;
 
 const path = context.injectPath();
+
 const selected = ref();
 
 watch(
@@ -81,7 +88,7 @@ watch(selected, newSelected => setModel(newSelected));
 function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
 
-  return localizeLabel ? l(result) : result;
+  return localizeOptionLabels ? l(result) : result;
 }
 
 function getModel() {
@@ -121,8 +128,8 @@ function setSelected(value) {
 .p-togglebutton-content {
   @apply whitespace-nowrap;
 }
-
 .p-popover-content {
+  .b-component--SelectButton.p-selectbutton,
   .b-component--SelectButton .p-selectbutton {
     @apply max-sm:flex max-sm:flex-col;
 
@@ -138,9 +145,7 @@ function setSelected(value) {
 }
 </style>
 <style scoped>
-&:has(.p-iftalabel) {
-  .p-iftalabel {
-    @apply mt-4;
-  }
+.p-iftalabel:has(.p-selectbutton) {
+  @apply mt-4;
 }
 </style>

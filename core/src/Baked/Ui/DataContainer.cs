@@ -5,4 +5,5 @@ public record DataContainer(IComponentDescriptor Content)
 {
     public List<Input> Inputs { get; init; } = [];
     public IComponentDescriptor Content { get; set; } = Content;
+    public List<IComponentDescriptor>? Actions { get; set; }
 }

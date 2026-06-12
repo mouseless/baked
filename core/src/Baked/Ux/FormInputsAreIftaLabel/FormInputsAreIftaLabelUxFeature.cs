@@ -10,17 +10,15 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.AddParameterSchemaConfiguration<Label>(
                 where: cc =>
-                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs)) ||
-                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs)),
-                schema: (i, c, cc) =>
+                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs), "*", nameof(ILabeler.Label)) ||
+                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs), "*", nameof(ILabeler.Label)),
+                schema: (label, c, cc) =>
                 {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
-
                     var (_, l) = cc;
 
-                    labeler.LabelIfta(labeler.Label ?? l(c.Parameter.Name.Titleize()));
+                    label.Ifta(() => l(c.Parameter.Name.Titleize()));
                 }
             );
         });

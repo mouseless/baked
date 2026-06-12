@@ -29,7 +29,23 @@ const variants = [
         giveMe.anInput({
           name: "text",
           component: giveMe.anExpectedInput({ testId: "input" }),
+          defaultValue: "default",
           required: true
+        })
+      ]
+    })
+  },
+  {
+    name: "Error",
+    descriptor: giveMe.aFormPage({
+      action: giveMe.aRemoteAction({ path: "/exception-samples/handled" }),
+      title: "Spec: Title",
+      description: "Spec: Description",
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
+      inputs: [
+        giveMe.anInput({
+          name: "text",
+          component: giveMe.anExpectedInput({ testId: "input" })
         })
       ]
     })
@@ -58,6 +74,16 @@ const variants = [
           key: "section-2",
           label: "Spec: Section 2"
         })
+      ]
+    })
+  },
+  {
+    name: "Validations",
+    descriptor: giveMe.aFormPage({
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      inputs: [
+        giveMe.anInput({ name: "param-1", required: true }),
+        giveMe.anInput({ name: "param-2" })
       ]
     })
   },
@@ -94,22 +120,23 @@ const variants = [
                 giveMe.anInput({
                   name: "narrow-trailing",
                   component: giveMe.anInputText( {
-                    labeler: giveMe.aLabeler({ label: "Narrow-trailing", labelMode: "ifta" })
+                    label: giveMe.aLabel({ text: "Narrow-trailing", mode: "ifta" })
                   })
                 }),
                 giveMe.anInput({
                   name: "select",
                   component: giveMe.aSelect({
-                    labeler: giveMe.aLabeler({ label: "Select Button", labelMode: "ifta" })
+                    label: giveMe.aLabel({ text: "Select", mode: "ifta" })
                   })
                 }),
                 giveMe.anInput({
                   name: "select-button",
                   component: giveMe.aSelectButton({
-                    labeler: giveMe.aLabeler({ label: "Select Button", labelMode: "ifta" })
+                    label: giveMe.aLabel({ text: "Select Button", mode: "ifta" })
                   })
                 })
-              ]
+              ],
+              wide: true
             })
           ]
         })

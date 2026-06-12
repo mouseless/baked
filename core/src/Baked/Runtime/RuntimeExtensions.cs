@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace Baked;
@@ -79,6 +80,15 @@ public static class RuntimeExtensions
             services.AddKeyedSingleton(RuntimeLayer.FileProvidersKey, implementation);
             services.AddSingleton(implementation);
         }
+
+        public void Configure<TOptions, TService>(Action<TOptions, TService> action)
+            where TOptions : class
+            where TService : notnull =>
+            services.AddSingleton<IConfigureOptions<TOptions>>(sp =>
+                new ConfigureOptions<TOptions>(opts =>
+                    action(opts, sp.GetRequiredService<TService>())
+                )
+            );
     }
 
     extension(IConfigurationBuilder builder)

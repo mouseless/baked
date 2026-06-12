@@ -1,10 +1,9 @@
 <template>
   <UiSpec test-id="layout">
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if below button displays `Report` page with `Default` layout ⬆️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if below button displays `Report` page with `Default` layout ⬆️"
+    />
     <div
       class="border-4 border-gray-500 rounded"
       data-testid="component"
@@ -18,11 +17,10 @@
       />
     </div>
     <Divider />
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if below button displays `Login` page with `Modal` layout ⬆️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if below button displays `Login` page with `Modal` layout ⬆️"
+    />
     <div
       class="border-4 border-gray-500 rounded"
       data-testid="component"
@@ -38,7 +36,8 @@
   </UiSpec>
 </template>
 <script setup>
-import { Button, Divider, Message } from "primevue";
+import { Message } from "#components";
+import { Button, Divider } from "primevue";
 import { useLocalization, useLoginRedirect } from "#imports";
 
 const { localize: l } = useLocalization();

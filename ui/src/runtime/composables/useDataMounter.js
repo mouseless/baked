@@ -1,10 +1,13 @@
 import { onMounted, ref } from "vue";
 import { useContext, useDataFetcher } from "#imports";
 
-export default function() {
+export default function({ defaultInlineError } = {}) {
   const context = useContext();
   const dataFetcher = useDataFetcher();
+
   const contextData = context.injectContextData();
+  const error = context.injectError();
+
   const mounts = [];
   let onAfterMountCallback = null;
   let onBeforeMountCallback = null;
@@ -15,8 +18,14 @@ export default function() {
     }
 
     await Promise.all(
-      mounts.map(async({ value, schema }) => {
-        value.value = await dataFetcher.fetch({ data: schema, contextData });
+      mounts.map(async({ value, schema, inlineError }) => {
+        try {
+          value.value = await dataFetcher.fetch({ data: schema, contextData });
+        } catch (err) {
+          if(!inlineError || err.statusCode !== 400) { throw err; }
+
+          error.value = err;
+        }
       })
     );
 
@@ -25,7 +34,7 @@ export default function() {
     }
   });
 
-  function mount(schema) {
+  function mount(schema, { inlineError = defaultInlineError } = {}) {
     const value = ref(null);
 
     if(!schema) {
@@ -36,7 +45,7 @@ export default function() {
 
     const shouldLoad = dataFetcher.shouldLoad(schema);
     if(shouldLoad) {
-      mounts.push({ value, schema });
+      mounts.push({ value, schema, inlineError });
     }
 
     return value;

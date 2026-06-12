@@ -1,17 +1,14 @@
 <template>
   <UiSpec test-id="auth">
-    <Message severity="warn">
-      <span class="text-xl">
-        This test requires authentication, make sure you are logged in if you
-        see this page
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large', severity: 'warn' }"
+      data="This test requires authentication, make sure you are logged in if you see this page"
+    />
     <Divider />
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if below button makes a successful request to backend ⬆️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if below button makes a successful request to backend ⬆️"
+    />
     <div
       class="border-4 border-gray-500 rounded"
       data-testid="component"
@@ -24,11 +21,10 @@
         @click="async() => requestWithToken()"
       />
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if below button redirects you to login page with an error ⬆️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if below button redirects you to login page with an error ⬆️"
+    />
     <div
       class="border-4 border-gray-500 rounded"
       data-testid="component"
@@ -41,11 +37,10 @@
         @click="authenticationException"
       />
     </div>
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Check if below button logs you out and redirects to login page ➡️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Check if below button logs you out and redirects to login page ➡️"
+    />
     <div
       class="border-4 border-gray-500 rounded"
       data-testid="component"
@@ -61,7 +56,8 @@
   </UiSpec>
 </template>
 <script setup>
-import { Button, Divider, Message } from "primevue";
+import { Message } from "#components";
+import { Button, Divider } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { createError, useToast, useToken } from "#imports";
 

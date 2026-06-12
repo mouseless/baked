@@ -58,17 +58,19 @@ public static class UiExtensions
             IConstraint? constraint = default
         ) => source.AddReaction("reload", new OnTrigger(@event) { Constraint = constraint });
 
-        public void ReloadWhen(string key,
+        public void ReloadWhen(string prop,
+            string? key = default,
             IConstraint? constraint = default
-        ) => source.AddReaction("reload", new WhenTrigger(key) { Constraint = constraint });
+        ) => source.AddReaction("reload", new WhenTrigger(prop) { Constraint = constraint, Key = key });
 
         public void ShowOn(string @event,
             IConstraint? constraint = default
         ) => source.AddReaction("show", new OnTrigger(@event) { Constraint = constraint });
 
-        public void ShowWhen(string key,
+        public void ShowWhen(string prop,
+            string? key = default,
             IConstraint? constraint = default
-        ) => source.AddReaction("show", new WhenTrigger(key) { Constraint = constraint });
+        ) => source.AddReaction("show", new WhenTrigger(prop) { Constraint = constraint, Key = key });
 
         public void AddReaction(string reaction, ITrigger trigger)
         {
@@ -148,36 +150,9 @@ public static class UiExtensions
         }
     }
 
-    extension(ILabeler labeler)
+    extension(List<ValidationComposable> validations)
     {
-        public void LabelFloatIn(string label) =>
-            labeler.LabelMode("float", label, variant: "in");
-
-        public void LabelFloatOn(string label) =>
-            labeler.LabelMode("float", label, variant: "on");
-
-        public void LabelFLoatOver(string label) =>
-            labeler.LabelMode("float", label, variant: "over");
-
-        public void LabelIfta(string label) =>
-            labeler.LabelMode("ifta", label);
-
-        public void LabelNone() =>
-            labeler.LabelMode(null, null);
-
-        // WARNING
-        //
-        // Do NOT remove this warning disable section unintentionally.
-        // Without this, GitHub Actions fails on dotnet format
-#pragma warning disable IDE0051
-        void LabelMode(string? mode, string? label,
-            string? variant = default
-        )
-        {
-            labeler.LabelMode = mode;
-            labeler.Label = label;
-            labeler.LabelVariant = variant;
-        }
-#pragma warning restore IDE0051
+        public void AddComposable(string name) =>
+            validations.Add(new(name));
     }
 }

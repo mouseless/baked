@@ -77,8 +77,7 @@ test("when reacting, bake should respect initial values", async({ page }) => {
   const reactor = page.getByTestId(id.reactor);
 
   await expect(reactor).toBeAttached();
-  await expect(reactor).toContainText("\"required-with-default\": \"default value\"");
-  await expect(reactor).toContainText("\"optional\": null");
+  await expect(reactor).toHaveText("{ \"required-with-default\": \"default value\" }");
 
   await component.getByTestId("optional").fill("value 3");
 

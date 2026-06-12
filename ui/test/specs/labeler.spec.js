@@ -5,6 +5,16 @@ test.beforeEach(async({ goto }) => {
   await goto("/specs/labeler", { waitUntil: "hydration" });
 });
 
+test.describe("Base", () => {
+  const id = "Base";
+
+  test("show (Optional) field is not required", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByText("(Optional)")).toBeVisible();
+  });
+});
+
 test.describe("Select Input Label Mode", () => {
   [
     { id: "Select: No Label Mode", expected: null },
@@ -40,7 +50,7 @@ test.describe("Select Input Label Mode", () => {
 
 test.describe("SelectButton Input Label Mode", () => {
   [
-    { id: "Select: No Label Mode", expected: null },
+    { id: "SelectButton: No Label Mode", expected: null },
     { id: "SelectButton: Ifta Mode", expected: "Ifta Mode" }
   ].forEach(({ id, expected }) => {
     test(`testing correct label text ${expected}`, async({ page }) => {

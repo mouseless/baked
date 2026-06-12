@@ -1,0 +1,57 @@
+<template>
+  <template v-if="validationHandled || !validation">
+    <slot />
+  </template>
+  <div
+    v-else
+    class="b-Validation flex flex-col gap-2"
+  >
+    <slot />
+    <slot
+      name="message"
+      :validation
+      :mutable-validation
+    >
+      <Message
+        v-if="message"
+        :key="`${severity}:${icon}`"
+        icon="pi pi-info-circle"
+        :schema="{
+          severity,
+          variant: 'simple',
+          size: 'small',
+          icon
+        }"
+        :data="message || ''"
+        class="ml-3"
+      />
+    </slot>
+  </div>
+</template>
+<script setup>
+import { computed } from "vue";
+import { useContext } from "#imports";
+import { Message } from "#components";
+
+const context = useContext();
+
+const validationHandled = context.injectValidationHandled();
+const validation = context.injectValidation();
+const mutableValidation = context.injectMutableValidation();
+
+context.provideValidationHandled(true);
+
+const message = computed(() => {
+  if(mutableValidation?.value.message) {
+    return mutableValidation.value.message;
+  }
+
+  if(validation.value?.message && validation.value?.persist) {
+    return validation.value.message;
+  }
+
+  return null;
+});
+const severity = computed(() => mutableValidation?.value.severity || validation?.value.severity);
+const icon = computed(() => mutableValidation?.value.icon || validation?.value.icon);
+</script>

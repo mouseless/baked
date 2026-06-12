@@ -1,3 +1,4 @@
+using Baked.Playground.Orm;
 using Microsoft.Extensions.Localization;
 
 namespace Baked.Playground.Localization;
@@ -9,4 +10,8 @@ public class LocalizationSamples(IStringLocalizer _l)
 
     public string GetParameterized(string param) =>
         _l["Parameter value is '{0}'", param];
+
+    public void GetModelBindingErrors(int number,
+        Enumeration? enumeration = default
+    ) => Console.WriteLine($"{nameof(number)}: {number}, {nameof(enumeration)}: {enumeration}");
 }

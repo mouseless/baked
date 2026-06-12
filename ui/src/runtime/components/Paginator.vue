@@ -42,9 +42,7 @@ const allowPrevious = computed(() => !Number.isNaN(page.value) && page.value > 1
 const allowNext = computed(() => !Number.isNaN(page.value) && data.length >= data.take);
 const page = computed({
   get: () => Number(model.value) / Number(data.take) + 1,
-  set: value => {
-    model.value = (value - 1) * Number(data.take);
-  }
+  set: value => model.value = (value - 1) * Number(data.take)
 });
 
 const path = context.injectPath();

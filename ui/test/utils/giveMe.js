@@ -28,13 +28,13 @@ export default {
     return { sample: "response" };
   },
 
-  aButton({ action, icon, label, variant, severity, rounded } = {}) {
+  aButton({ action, icon, label, variant, severity, size, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
 
     return {
       type: "Button",
-      schema: { icon, label, variant, severity, rounded },
+      schema: { icon, label, variant, severity, size, rounded },
       action
     };
   },
@@ -138,12 +138,12 @@ export default {
     };
   },
 
-  aContent({ component, narrow, key } = {}) {
+  aContent({ component, narrow, key, side } = {}) {
     component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
     narrow = $(narrow, false);
     key = $(key, "content");
 
-    return { component, narrow, key };
+    return { component, narrow, key, side };
   },
 
   aContextData({ key, prop, targetProp, parent } = {}) {
@@ -164,13 +164,14 @@ export default {
     };
   },
 
-  aDataContainer({ inputs, content } = {}) {
+  aDataContainer({ actions, inputs, content } = {}) {
+    actions = $(actions, []);
     inputs = $(inputs, []);
     content = $(content, this.anExpected());
 
     return {
       type: "DataContainer",
-      schema: { inputs, content }
+      schema: { actions, inputs, content }
     };
   },
 
@@ -275,12 +276,26 @@ export default {
     };
   },
 
+  anError({ name, title, detail, statusCode } = {}) {
+    name = $(name, "FetchError");
+    title = $(title, "Test Error");
+    detail = $(detail, "A test error detail");
+    statusCode = $(statusCode, 500);
+
+    const result = new Error(title);
+    result.name = name;
+    result.statusCode = statusCode;
+    result.data = { title, detail };
+
+    return result;
+  },
+
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}) {
     errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");
     safeLinks = $(safeLinks, [this.anExpected()]);
     safeLinksMessage = $(safeLinksMessage, "Test links message");
-    data = $(data, new Error("Test Error", { status: 500 }));
+    data = $(data, this.anError());
 
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
@@ -332,17 +347,30 @@ export default {
     };
   },
 
-  anExpectedInput({ testId, defaultValue, number, action } = {}) {
+  anExpectedInput({ action, defaultValue, hint, number, restrictedValue, testId } = {}) {
     testId = $(testId, "test-id");
 
     return {
       type: "ExpectedInput",
       schema: {
-        testId,
         defaultValue,
-        number
+        hint,
+        number,
+        restrictedValue,
+        testId
       },
       action
+    };
+  },
+
+  anExpectedInputGroup({ testId } = {}) {
+    testId = $(testId, "test-id");
+
+    return {
+      type: "ExpectedInputGroup",
+      schema: {
+        testId
+      }
     };
   },
 
@@ -395,18 +423,22 @@ export default {
     };
   },
 
-  aFormPage({ action, title, description, submit, inputs, sections } = {}) {
+  aFormPage({ action, title, description, submit, inputs, sections, validations, showValidationSummary } = {}) {
     title = this.aPageTitle({ title, description });
     submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
     sections = $(sections, [this.aFormPageSection({ inputs })]);
+    validations = $(validations, ["useFakeValidation"]);
+    showValidationSummary = $(showValidationSummary, true);
 
     return {
       type: "FormPage",
       schema: {
         title,
         submit,
-        sections
+        sections,
+        validations: validations.map(name => ({ name })),
+        showValidationSummary
       },
       action
     };
@@ -487,40 +519,46 @@ export default {
     return { name, required, default: default_, defaultSelfManaged, numeric, queryBound, component };
   },
 
-  anInputText({ label, labeler, targetProp } = {}) {
+  anInputText({ label, targetProp } = {}) {
     targetProp = $(targetProp, undefined);
-    labeler = $(labeler, this.aLabeler({ label }));
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
 
     return {
       type: "InputText",
       schema: {
-        ...labeler,
+        label,
         targetProp
       }
     };
   },
 
-  anInputNumber({ label, labeler, noGrouping } = {}) {
-    labeler = $(labeler, this.aLabeler({ label }));
+  anInputNumber({ label, noGrouping } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
 
     return {
       type: "InputNumber",
       schema: {
-        ...labeler,
+        label,
         noGrouping
       }
     };
   },
 
-  aLabeler({ label, labelMode, labelVariant } = {}) {
-    label = $(label, "Test Label");
-    labelMode = $(labelMode, "float");
-    labelVariant = $(labelVariant, "on");
+  aLabel({ text, mode, variant, showOptionality } = {}) {
+    text = $(text, mode !== null ? "Test Label" : null);
+    mode = $(mode, text ? "float" : null);
+    variant = $(variant, "on");
+    showOptionality = $(showOptionality, false);
 
     return {
-      label,
-      labelMode,
-      labelVariant
+      text,
+      mode,
+      variant,
+      showOptionality
     };
   },
 
@@ -556,28 +594,31 @@ export default {
     };
   },
 
-  aNavLink({ icon, path, query, params, data } = {}) {
+  aNavLink({ icon, labelProp, path, query, params, data } = {}) {
     path = $(path, "/some-object/{0}");
     data = $(data, this.anInlineData("Test"));
 
     return {
       type: "NavLink",
-      schema: { icon, path, query, params },
+      schema: { icon, labelProp, path, query, params },
       data: data
     };
   },
 
-  aMessage({ message, icon, severity, localizeMessage, data } = {}) {
+  aMessage({ message, icon, severity, localizeMessage, action, data, variant } = {}) {
     message = $(message, "Spec: This is a message");
     localizeMessage = $(localizeMessage, true);
     data = $(data, this.anInlineData(message));
+    variant = $(variant, "outlined");
 
     return {
       type: "Message",
       schema: {
         icon,
         severity,
-        localizeMessage
+        localizeMessage,
+        variant,
+        action
       },
       data
     };
@@ -699,6 +740,7 @@ export default {
 
   aRemoteAction({ path, method, headers, query, params, body, postAction } = {}) {
     path = $(path, "/fake-remote");
+    method = $(method, "POST");
 
     return {
       type: "Remote",
@@ -764,12 +806,14 @@ export default {
     return screens.find(screen => screen.name === name) || null;
   },
 
-  aSelect({ action, data, filter, inline, label, labeler, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = {}) {
+  aSelect({ action, data, filter, inline, label, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     label = $(label, "Spec: Test");
-    labeler = $(labeler, this.aLabeler({ label }));
-    localizeLabel = $(localizeLabel, false);
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    localizeOptionLabels = $(localizeOptionLabels, false);
     showClear = $(showClear, false);
     stateful = $(stateful, false);
     data = inline
@@ -782,19 +826,21 @@ export default {
 
     return {
       type: "Select",
-      schema: { ...labeler, filter, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp },
+      schema: { label, filter, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp },
       data,
       action
     };
   },
 
-  aSelectButton({ action, allowEmpty, data, inline, label, labeler, localizeLabel, optionLabel, optionValue, stateful, targetProp } = {}) {
+  aSelectButton({ action, allowEmpty, data, inline, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
-    labeler = $(labeler, this.aLabeler({ label }));
-    localizeLabel = $(localizeLabel, false);
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    localizeOptionLabels = $(localizeOptionLabels, false);
     data = inline
       ? this.anInlineData(data)
       : this.aComputedData({
@@ -805,7 +851,7 @@ export default {
 
     return {
       type: "SelectButton",
-      schema: { ...labeler, localizeLabel, allowEmpty, optionLabel, optionValue, stateful, targetProp },
+      schema: { label, localizeOptionLabels, allowEmpty, optionLabel, optionValue, stateful, targetProp },
       data,
       action
     };
@@ -833,18 +879,23 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogOptions, inputs, submit, title, action }) {
+  aSimpleForm({ dialogOptions, horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
+    validations = $(validations, ["useFakeValidation"]);
+    showValidationSummary = $(showValidationSummary, true);
 
     return {
       type: "SimpleForm",
       schema: {
         dialogOptions,
+        horizontal,
         inputs,
         submit,
-        title
+        title,
+        validations: validations.map(name => ({ name })),
+        showValidationSummary
       },
       action
     };
@@ -894,10 +945,11 @@ export default {
     };
   },
 
-  aTrigger({ on, when, parts, constraint } = {}) {
+  aTrigger({ on, when, parts, constraint, key } = {}) {
     if(when) {
       return {
         type: "When",
+        key,
         when,
         constraint
       };

@@ -142,8 +142,7 @@ test("when reacting, bake should respect initial values", async({ page, goto }) 
   await page.waitForURL(/requiredWithDefault=default\+value/); // wait for above fills to take effect
 
   await expect(reactor).toBeAttached();
-  await expect(reactor).toContainText("\"required-with-default\": \"default value\"");
-  await expect(reactor).toContainText("\"optional\": null");
+  await expect(reactor).toHaveText("{ \"required-with-default\": \"default value\" }");
 
   await goto("/specs/inputs--query-bound?optional=react", { waitUntil: "hydration" });
 
