@@ -291,7 +291,7 @@ convention groups.
 
 ```csharp
 configurator.Domain.ConfigureBuilder(builder =>
-  {
+{
     builder.ConventionOrderMatrix.Bases.Add("Base");
     ...
     builder.ConventionOrderMatrix.Levels.Add("Level");
@@ -304,34 +304,90 @@ configurator.Domain.ConfigureBuilder(builder =>
     builder.ConventionOrderMatrix.FallbackExtension = convention => ...;
 
     builder.DefaultConventionLevel = "...";
-  });
+});
 
-  configurator.Domain.ConfigureConventions(conventions => 
-  {
+configurator.Domain.ConfigureConventions(conventions => 
+{
     conventions.Add(
-      convention: new DemoConvention(),
-      order: Order.At.WithBase("Base").WithLevel("Level").WithExtension("Ext")
+        convention: new DemoConvention(),
+        order: Order.At.WithBase("Base").WithLevel("Level").WithExtension("Ext")
     );
-  });
+});
+```
+
+When building the order matrix, cnofigured values will be looped in `Base`, 
+`Extension` and `Level` sequence to build the final collection which will be
+used when calculating exact values of give `Order` values.
+
+```csharp
+// This will output the following collection
+// [
+//     "BaseA.LevelA.ExtA",
+//     "BaseA.LevelB.ExtA",
+//     "BaseA.LevelA.ExtB",
+//     "BaseA.LevelB.ExtB",
+//     "BaseB.LevelA.ExtB",
+//     "BaseB.LevelB.ExtB",
+//     "BaseB.LevelA.ExtB",
+//     "BaseB.LevelB.ExtB"
+// ]
+configurator.Domain.ConfigureBuilder(builder =>
+{
+    builder.ConventionOrderMatrix.Bases.Add("BaseA");
+    builder.ConventionOrderMatrix.Bases.Add("BaseB");
+    builder.ConventionOrderMatrix.Levels.Add("LevelA");
+    builder.ConventionOrderMatrix.Levels.Add("LevelB");
+    builder.ConventionOrderMatrix.Extensions.Add("ExtA");
+    builder.ConventionOrderMatrix.Extensions.Add("ExtB");
+    ...
+});
 ```
 
 A convention with given level order will be added to the median, in other words
-will have 0 as its order relative to its level. It is also possible to specify 
+will have 0 as its offset relative to its level. It is also possible to specify 
 min/max values or a specific position within the level.
 
 ```csharp
 conventions.Add(
     ...,
-    order: Order.Level("LevelA").Min
+    order: Order.WithLevel("LevelA").Min
 );
 
 conventions.Add(
     ...,
-    order: Order.Level("LevelA") + 10
+    order: Order.WithLevel("LevelA") + 10
 );
 ```
 
-Prior a convention is added to collection, given `Order` will be 
+Prior a convention is added to collection, if a given `Order` has its `Base`, 
+`Level` or `Extension` values null, they will be set using configured fallback
+values, because calculating an `Order`value in the matrix will requires exact
+base point.
+
+```csharp
+configurator.Domain.ConfigureBuilder(builder =>
+{
+    builder.ConventionOrderMatrix.FallbackBase = _ => "BaseB";
+    builder.ConventionOrderMatrix.FallbackLevel = _ => "LevelB";
+    builder.ConventionOrderMatrix.FallbackExtension = _ => "ExtB";
+
+    builder.DefaultConventionLevel = "...";
+});
+
+// The values of the given order will overridden as 'BaseB.LevelA.ExtB'
+configurator.Domain.ConfigureConventions(conventions => {
+    conventions.Add(
+        ...,
+        order: Order.Level("LevelA").Min
+    );
+});
+```
+
+> [!NOTE]
+>
+> All returned fallback values must be added in their corresponding lists,
+> if a fallback `Base` is `BaseA`, it must be included in 
+> `builder.ConventionOrderMatrix.Bases` collection
 
 #### `Order`
 
