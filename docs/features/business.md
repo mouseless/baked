@@ -6,6 +6,53 @@ Add this feature implementations using `AddBusiness()` extension;
 app.Features.AddBusiness(...);
 ```
 
+This feature abstraction provides following extensions to
+`DomainModelConventionCollection`;
+
+- Executes before building index and `Order` is defaulted to
+  `Business.Custom.Add`
+  ```csharp
+  conventions.SetTypeAttribute(...);
+  conventions.SetPropertyAttribute(...);
+  conventions.SetMethodAttribute(...);
+  conventions.SetParametereAttribute(...);
+
+  conventions.AddTypeAttribute(...);
+  conventions.AddPropertyAttribute(...);
+  conventions.AddMethodAttribute(...);
+  conventions.AddParametereAttribute(...);
+
+  conventions.RemoveTypeAttribute(...);
+  conventions.RemovePropertyAttribute(...);
+  conventions.RemoveMethodAttribute(...);
+  conventions.RemoveParametereAttribute(...);
+  ```
+- Executes after building index and `Order` is defaulted to
+  `Business.Custom.Configure`
+  ```csharp
+  conventions.AddTypeAttributeConfiguration(...);
+  conventions.AddPropertyAttributeConfiguration(...);
+  conventions.AddMethodAttributeConfiguration(...);
+  conventions.AddParametereAttributeConfiguration(...);
+  ```
+
+> [!TIP]
+>
+> See [Layers / Domain / Ordering Conventions](../layers/domain.md#ordering-conventions)
+> for more information on convention order mechanism
+
+Below you can find sample for adding convention using extensions;
+
+```csharp
+configurator.Domain.ConfigureConventions(conventions =>
+{
+    conventions.SetPropertyAttribute(
+        when: c => c.Property.Name == "Id"
+        attribute: () => new IdAttribute()
+    );
+}
+```
+
 ## Domain Assemblies
 
 Adds domain types from given assemblies, configures domain model builder with
@@ -30,48 +77,4 @@ Additionally, it registers types that implement `ICasts<,>` interface under
 
 ```csharp
 c => c.DomainAssemblies([typeof(MyClass).Assembly])
-```
-
-## Convention Extensions
-
-Following `DomainModelConventionCollection` extensions are provided;
-
-```csharp
-// Executes `beforeBuildingIndex`
-// `Order` parts will be defaulted to `Business.Defaults.Add`
-conventions.AddTypeAttribute(...);
-conventions.AddPropertyAttribute(...);
-conventions.AddMethodAttribute(...);
-conventions.AddParametereAttribute(...);
-
-// Executes `beforeBuildingIndex`
-// `Order` parts will be defaulted to `Business.Defaults.Add`
-conventions.SetTypeAttribute(...);
-conventions.SetPropertyAttribute(...);
-conventions.SetMethodAttribute(...);
-conventions.SetParametereAttribute(...);
-
-// Executes `beforeBuildingIndex`
-// `Order` parts will be defaulted to `Business.Defaults.Add`
-conventions.RemoveTypeAttribute(...);
-conventions.RemovePropertyAttribute(...);
-conventions.RemoveMethodAttribute(...);
-conventions.RemoveParametereAttribute(...);
-
-// Executes after `beforeBuildingIndex`
-// `Order` parts will be defaulted to `Business.Defaults.Configure`
-conventions.AddTypeAttributeConfiguration(...);
-conventions.AddPropertyAttributeConfiguration(...);
-conventions.AddMethodAttributeConfiguration(...);
-conventions.AddParametereAttributeConfiguration(...);
-
-// Adding convention using extensions
-configurator.Domain.ConfigureConventions(conventions =>
-{
-    // Adding convention via extensions
-    conventions.SetPropertyAttribute(
-        when: c => c.Property.Name == "Id"
-        attribute: () => new IdAttribute()
-    );
-}
 ```

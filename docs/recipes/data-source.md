@@ -109,25 +109,25 @@ flowchart LR;
 ```mermaid
 flowchart LR
 
-  BDA(Business.Defaults.Add)
-  BCA(Business.Custom.Add)
-  BOA(Business.Override.Add)
+  BDA(Defaults)
+  BCA(Custom)
+  BOA(Override)
 
-  BDC(Business.Defaults.Configure)
-  BCC(Business.Custom.Configure)
-  BOC(Business.Override.Configure)
+  BDC(Defaults)
+  BCC(Custom)
+  BOC(Override)
 
   subgraph Business
     direction LR
-    subgraph BA[ ]
+    subgraph BA[Add]
       direction TD
       BDA --> BCA --> BOA
     end
-    subgraph BC[ ]
+    subgraph BC[Configure]
       direction TD
       BDC --> BCC --> BOC
     end
-  end  
+  end
 
-  BA --> BC 
+  BA --> BC
 ```

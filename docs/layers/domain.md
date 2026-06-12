@@ -133,27 +133,27 @@ This layer introduces following `Generate` phases to the application it is added
 ## Domain Model
 
 `DomainModel` is a reflection cache that stores and reuses type metadata,
-properties, methods, parameters, and attribute information. Since baked relies 
-on dynamic code generation based on certain set of rules or conventions, 
-`DomainModel` serves as the core foundation of the system by providing 
+properties, methods, parameters, and attribute information. Since baked relies
+on dynamic code generation based on certain set of rules or conventions,
+`DomainModel` serves as the core foundation of the system by providing
 a reusable and extendable reflection metadata.
 
 ### Extending Domain Model
 
 Baked utilizes the `Attribute` system to mark or add additional metadata to
-reflected types, members, or parameters. All models defined within the 
+reflected types, members, or parameters. All models defined within the
 `DomainModel` has their own attributes collection initialized with dotnet
-or user provided attributes, which allows layers and features to define custom 
+or user provided attributes, which allows layers and features to define custom
 behaviors, metadata, or runtime behaviours.
 
-In order to create a specific set of rules or behaviors, `DomainLayer` provides 
-convention based configuration mechanism which are configured using 
-`DomainModelBuilder` configuration target's `Conventions`. 
+In order to create a specific set of rules or behaviors, `DomainLayer` provides
+[convention system](#convention-system) which are configured using
+`DomainModelBuilder` configuration target's `Conventions`.
 
 ### Indexing Models
 
-Baked provides indexing mechanism of domain models according to their owned 
-or added attributes to improve performance. Indexes of a model in domain can 
+Baked provides indexing mechanism of domain models according to their owned
+or added attributes to improve performance. Indexes of a model in domain can
 be specified from its builder options.
 
 ```csharp
@@ -182,18 +182,18 @@ foreach(var type in domain.Types.Having<MyTypeAttribute>())
 }
 ```
 
-## Convention System
+### Convention System
 
 Attributes can be directly added to types or members as well as using built-in
 convetion system of baked. A convention can be used to add/remove or configure
 an attribute. Baked provides `IDomainModelConvention<TModel>` to create custom
-convention classes and extension methods for `DomainModelConventionCollection` 
+convention classes and extension methods for `DomainModelConventionCollection`
 to manage attributes.
 
 ```csharp
 public class IdConvention : IDomainModelConvention<PropertyModelContext>
 {
-    public void Apply(PropertyModelContext context) 
+    public void Apply(PropertyModelContext context)
     {
         if(c.Property.Name != "Id") { continue; }
 
@@ -211,27 +211,27 @@ configurator.Domain.ConfigureConventions(conventions =>
 
 By deault a convention is applied in the order which it is added with respect to
 its feature order. A global value can be also set when a specific convention is
-required to execute at the exact order. 
+required to execute at the exact order.
 
 ```csharp
 // program.cs
 app.Features.Add(new FeatureA());
 app.Features.Add(new FeatureB());
 
-public class FeatureA : IFeature 
+public class FeatureA : IFeature
 {
     // this convention wil apply before conventions
     // in feature B with default order
     conventions.Add(...);
 }
 
-public class FeatureB : IFeature 
+public class FeatureB : IFeature
 {
     // This convention will apply first since a
     // global order is given
     conventions.Add(
         ...,
-        order: -10  
+        order: -10
     );
 
     // This convention will apply after conventions
@@ -241,10 +241,10 @@ public class FeatureB : IFeature
 ```
 
 Another key factor that affects convention execution order is whether a
-convention should execute before or after indexes are built. Some conventions
-may need to modify metadata or add attributes before the indexing stage begins,
-so that the attributes they add can be using in `.Having<T>()` clauses in
-conventions that run after building indexes. 
+convention should execute before or after attribute indexes are built. Some
+conventions may need to modify metadata and/or add attributes before the
+indexing, so that the attributes they add can be using in `.Having<T>()` clauses
+in conventions that run after building indexes.
 
 ```mermaid
 flowchart
@@ -258,27 +258,31 @@ flowchart
   end
 ```
 
-To support this behavior, conventions can be marked with the 
-`beforeBuildingIndexes` flag. These conventions are grouped and executed in a 
-separate stage, guaranteeing that they run before index generation and all 
-remaining conventions.
+To support this behavior, conventions can be marked with the
+`IDomainModelConvention.BeforeBuildingIndexes` flag. These conventions are
+grouped and executed in a separate stage, guaranteeing that they run before
+index generation and rest of the conventions.
 
 ```csharp
+public class MyConvention(bool before)
+    : IDomainModelConvention<MethodModel>
+{
+    public bool BeforeBuildingIndexes => before;
+
+    public void Apply(MethodModel model) { ... }
+}
+
 // This convention will apply before the indexes are built
-conventions.Add(
-    new DomainConvention(beforeBuildingIndexes: true)
-);
+conventions.Add(new MyConvention(true));
 
 // This convention will apply after the indexes are built
-conventions.Add(
-    new DomainConvention(beforeBuildingIndexes: false)
-);
+conventions.Add(new MyConvention(false));
 ```
 
-Baked also provides an order matrix system that allows conventions to be grouped 
-and executed within a specific stage. This helps organize convention execution 
-accross multiple features and provide a predictable ordering between related 
-convention groups.
+In addition, baked also provides a convention order matrix that allows
+conventions to be grouped and executed within specific stages. This helps
+organize convention execution accross multiple features and provide a
+predictable ordering between related convention groups.
 
 ```csharp
 configurator.Domain.ConfigureBuilder(builder =>
@@ -297,7 +301,7 @@ configurator.Domain.ConfigureBuilder(builder =>
     builder.DefaultConventionLevel = "...";
 });
 
-configurator.Domain.ConfigureConventions(conventions => 
+configurator.Domain.ConfigureConventions(conventions =>
 {
     conventions.Add(
         ...,
@@ -306,22 +310,11 @@ configurator.Domain.ConfigureConventions(conventions =>
 });
 ```
 
-When building the order matrix, cnofigured values will be looped in `Base`, 
+When building the order matrix, configured values will be looped in `Base`,
 `Extension` and `Level` sequence to build the final collection which will be
 used when calculating exact values of give `Order` values.
 
 ```csharp
-// This will output the following collection
-// [
-//     "BaseA.LevelA.ExtA",
-//     "BaseA.LevelB.ExtA",
-//     "BaseA.LevelA.ExtB",
-//     "BaseA.LevelB.ExtB",
-//     "BaseB.LevelA.ExtB",
-//     "BaseB.LevelB.ExtB",
-//     "BaseB.LevelA.ExtB",
-//     "BaseB.LevelB.ExtB"
-// ]
 configurator.Domain.ConfigureBuilder(builder =>
 {
     builder.ConventionOrderMatrix.Bases.Add("BaseA");
@@ -332,6 +325,18 @@ configurator.Domain.ConfigureBuilder(builder =>
     builder.ConventionOrderMatrix.Extensions.Add("ExtB");
     ...
 });
+
+// This results the matrix to be in the following order
+// [
+//     "BaseA.LevelA.ExtA",
+//     "BaseA.LevelB.ExtA",
+//     "BaseA.LevelA.ExtB",
+//     "BaseA.LevelB.ExtB",
+//     "BaseB.LevelA.ExtB",
+//     "BaseB.LevelB.ExtB",
+//     "BaseB.LevelA.ExtB",
+//     "BaseB.LevelB.ExtB"
+// ]
 ```
 
 > [!NOTE]
@@ -341,7 +346,7 @@ configurator.Domain.ConfigureBuilder(builder =>
 > exactly three parts
 
 A convention with given level order will be added to the median, in other words
-will have 0 as its offset relative to its level. It is also possible to specify 
+will have 0 as its offset relative to its level. It is also possible to specify
 min/max values or a specific position within the level.
 
 ```csharp
@@ -356,7 +361,7 @@ conventions.Add(
 );
 ```
 
-Prior a convention is added to collection, if a given `Order` has its `Base`, 
+Prior a convention is added to collection, if a given `Order` has its `Base`,
 `Level` or `Extension` values null, they will be set using configured fallback
 values, because calculating an `Order`value in the matrix will requires exact
 base point.
@@ -383,12 +388,10 @@ configurator.Domain.ConfigureConventions(conventions => {
 > [!NOTE]
 >
 > All returned fallback values must be added in their corresponding lists,
-> if a fallback `Base` is `BaseA`, it must be included in 
+> if a fallback `Base` is `BaseA`, it must be included in
 > `builder.ConventionOrderMatrix.Bases` collection
 
-#### `Order`
-
-Possible order usages;
+### Possible Order Usages
 
 ```csharp
 Order.Global.AbsoluteMin
@@ -424,18 +427,70 @@ order: 10 // Order.Zero + 10
 
 > [!NOTE]
 >
-> Levels does not allow values exceeding their absolute boundaries, absolute 
+> Levels does not allow values exceeding their absolute boundaries, absolute
 > values should be avaoided unless it is requried to override exceptional cases
 
 > [!NOTE]
 >
-> `Global` order is only affected by its offset value, it cannot be overridden 
+> `Global` order is only affected by its offset value, it cannot be overridden
 > using `With` methods
 
 > [!CAUTION]
 >
 > Order has range between int.MinValue and int.MaxValue, any
 > values exceeding will throw error
+
+### Inspecting Conventions
+
+> [!WARNING]
+>
+> This feature is still in experimentation and might print false-negative
+> output, meaning it might not capture every change of the inspected attribute.
+
+We provide a tool to debug domain model generation process during a generate phase.
+
+This target is provided from `DomainModelBuilderOptions` in `AddDomainTypes`
+phase. To configure it in a feature;
+
+```csharp
+configurator.Domain.ConfigureBuilder(builder =>
+{
+    // To inspect an attribute on types
+    builder.Inspect.TypeAttribute<MyAttribute>(
+        when: c => c.Type..., // optional to inspect specific type models
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+
+    // To inspect an attribute properties
+    builder.Inspect.PropertyAttribute<MyAttribute>(
+        when: c => c.Property..., // optional to inspect specific property models
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+
+    // To inspect an attribute methods
+    builder.Inspect.MethodAttribute<MyAttribute>(
+        when: c => c.Method..., // optional to inspect specific method models
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+
+    // To inspect an attribute parameters
+    builder.Inspect.ParameterAttribute<MyAttribute>(
+        when: c => c.Parameter..., // optional to inspect specific parameter models
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+
+    // To inspect an attribute any member
+    builder.Inspect.Attribute<MyAttribute>(
+        when: c => c..., // optional to inspect specific members
+        attribute: ma => ma.Value // optional to inspect just this value
+    );
+});
+```
+
+> [!NOTE]
+>
+> Only one inspect is allowed. If you configure more than one,
+> `InvalidOperationException` will be thrown
 
 ## Proxifying Entities
 
@@ -480,58 +535,4 @@ Add versions to `Directory.Packages.props`;
 >   <Publicize />
 >   <Virtuosity />
 > </Weavers>
-> 
-
-### Debugging Domain Model Generation
-
-We provide a tool to debug domain model generation process during a generate phase.
-
-#### `Inspect`
-
-> [!WARNING]
 >
-> This feature is still in experimentation and might print false-negative
-> output, meaning it might not capture every change of the inspected attribute.
-
-This target is provided from `DomainModelBuilderOptions` in `AddDomainTypes` 
-phase. To configure it in a feature;
-
-```csharp
-configurator.Domain.ConfigureBuilder(builder =>
-{
-    // To inspect an attribute on types
-    builder.Inspect.TypeAttribute<MyAttribute>(
-        when: c => c.Type..., // optional to inspect specific type models
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-
-    // To inspect an attribute properties
-    builder.Inspect.PropertyAttribute<MyAttribute>(
-        when: c => c.Property..., // optional to inspect specific property models
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-
-    // To inspect an attribute methods
-    builder.Inspect.MethodAttribute<MyAttribute>(
-        when: c => c.Method..., // optional to inspect specific method models
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-
-    // To inspect an attribute parameters
-    builder.Inspect.ParameterAttribute<MyAttribute>(
-        when: c => c.Parameter..., // optional to inspect specific parameter models
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-
-    // To inspect an attribute any member
-    builder.Inspect.Attribute<MyAttribute>(
-        when: c => c..., // optional to inspect specific members
-        attribute: ma => ma.Value // optional to inspect just this value
-    );
-});
-```
-
-> [!NOTE]
->
-> Only one inspect is allowed. If you configure more than one,
-> `InvalidOperationException` will be thrown

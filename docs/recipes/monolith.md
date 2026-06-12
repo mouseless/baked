@@ -142,47 +142,47 @@ flowchart LR;
 ```mermaid
 flowchart LR
 
-  BDA(Business.Defaults.Add)
-  BCA(Business.Custom.Add)
-  BOA(Business.Override.Add)
+  BDA(Defaults)
+  BCA(Custom)
+  BOA(Override)
 
-  BDC(Business.Defaults.Configure)
-  BCC(Business.Custom.Configure)
-  BOC(Business.Override.Configure)
+  BDC(Defaults)
+  BCC(Custom)
+  BOC(Override)
 
-  TDA(Theme.Defaults.Add)
-  TCA(Theme.Custom.Add)
-  TOA(Theme.Override.Add)
+  TDA(Defaults)
+  TCA(Custom)
+  TOA(Override)
 
-  TDC(Theme.Defaults.Configure)
-  TCC(Theme.Custom.Configure)
-  TOC(Theme.Override.Configure)
+  TDC(Defaults)
+  TCC(Custom)
+  TOC(Override)
 
   subgraph Business
     direction LR
-    subgraph BA[ ]
+    subgraph BA[Add]
       direction TD
       BDA --> BCA --> BOA
     end
-    subgraph BC[ ]
+    subgraph BC[Configure]
       direction TD
       BDC --> BCC --> BOC
     end
-  end  
+  end
 
   subgraph Theme
     direction LR
-    subgraph TA[ ]
+    subgraph TA[Add]
       direction TD
       TDA --> TCA --> TOA
     end
-    subgraph TC[ ]
+    subgraph TC[Configure]
       direction TD
       TDC --> TCC --> TOC
     end
-  end  
+  end
 
-  BA --> BC 
+  BA --> BC
   TA --> TC
   Business --> Theme
 ```
