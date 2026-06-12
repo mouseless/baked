@@ -21,9 +21,9 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             conventions.Add(new ReplaceTargetWithIdParameterConvention(), order: Order.At.Infra);
             conventions.Add(new InitializeLocatablesConvention(), order: Order.At.Infra);
-            conventions.Add(new LookupLocatableParameterConvention(), order: Order.At.Max - 10);
-            conventions.Add(new LookupLocatableParametersConvention(), order: Order.At.Max - 10);
-            conventions.Add(new TargetFromLocatorConvention(), order: Order.At.Max);
+            conventions.Add(new LookupLocatableParameterConvention(), order: Order.At.Max - 20);
+            conventions.Add(new LookupLocatableParametersConvention(), order: Order.At.Max - 20);
+            conventions.Add(new TargetFromLocatorConvention(), order: Order.At.Max - 10);
         });
 
         configurator.Domain.ConfigureExportConfigurations(exports =>
