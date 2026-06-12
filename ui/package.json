@@ -1,6 +1,6 @@
 {
   "name": "@mouseless/baked",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "Baked is an opinionated framework for .NET and Vue. This is the UI package of Baked project.",
   "keywords": [
     "baked",
@@ -52,7 +52,7 @@
     "primevue": "4.5.5"
   },
   "devDependencies": {
-    "@nuxt/eslint": "1.16.0",
+    "@nuxt/eslint": "1.15.2",
     "@nuxt/module-builder": "1.0.2",
     "@nuxt/test-utils": "4.0.3",
     "@playwright/test": "1.60.0",
