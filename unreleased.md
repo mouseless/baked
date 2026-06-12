@@ -5,7 +5,7 @@
 - `Domain` layer now introduces a level system to improve managing convention
   execution orders.
   ```csharp
-  configurator.Domain.ConfigureDomainModelBuilder(builder =>
+  configurator.Domain.ConfigureBuilder(builder =>
   {
     builder.ConventionOrderMatrix.Bases.Add("Base");
     ...
@@ -21,7 +21,7 @@
     builder.DefaultConventionLevel = "...";
   });
 
-  configurator.Domain.ConfigureDomainConventions(conventions => 
+  configurator.Domain.ConfigureConventions(conventions => 
   {
     conventions.SetTypeAttribute(
       when: _ => true,
@@ -51,7 +51,7 @@
 - `IDomainModelConventionCollection` is now provided as a configuration target
   ```csharp
   // old usage
-  configurator.Domain.ConfigureDomainModelBuilder(builder =>
+  configurator.Domain.ConfigureBuilder(builder =>
   {
       builder.Conventions.Add(...);
   });
@@ -81,7 +81,7 @@
   });
 
   // new usage
-  configurator.Domain.ConfigureDomainModelBuilder(builder =>
+  configurator.Domain.ConfigurBuilder(builder =>
   {
       builder.Inspect.Attribute<...>();
   });
