@@ -65,9 +65,9 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
             );
 
             conventions.Add(new UniqueIdParameterConvention(), order: Order.At.Max - 20);
-            conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
-            conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
-            conventions.Add(new AddSubclassNameToRouteConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
+            conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: Order.At.AbsoluteMax);
+            conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: Order.At.AbsoluteMax);
+            conventions.Add(new AddSubclassNameToRouteConvention(), order: Order.At.AbsoluteMax);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

@@ -33,7 +33,7 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
 
             conventions.Add(new AddInitializerParametersToQueryConvention(), order: Order.At.Defaults);
             conventions.Add(new TargetUsingInitializerConvention(), order: Order.At.Max);
-            conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: Order.At.AbsoluteMax); // TODO consider using Max
+            conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: Order.At.AbsoluteMax);
         });
     }
 }
