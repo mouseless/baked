@@ -1,21 +1,21 @@
 ﻿using Baked.Architecture;
-using Baked.Runtime;
+using Baked.Domain.Configuration;
 using Baked.Ui;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Caching.ScopedMemory;
 
-public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
-    : IFeature<CachingConfigurator>
+public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "user"),
-                when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "user"
+                when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "user",
+                order: Order.At.Infra
             );
         });
 
@@ -27,9 +27,7 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
 
         configurator.Ui.ConfigureAppDescriptor(app =>
         {
-            app.Plugins.Add(
-                new CacheUserPlugin { ExpirationInMinutes = (int)clientExpiration.GetValue().TotalMinutes }
-            );
+            app.Plugins.Add(new CacheUserPlugin());
         });
 
         configurator.Testing.ConfigureTestConfiguration(test =>

@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,14 +11,15 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new ApiInputAttribute(),
-                when: c => c.Type.Is<object>()
+                when: c => c.Type.Is<object>(),
+                order: Order.At.Infra
             );
 
-            builder.Conventions.Add(new SingleObjectParametersDontUseRequestClassConvention());
+            conventions.Add(new SingleObjectParametersDontUseRequestClassConvention(), order: Order.At.Infra);
         });
 
         configurator.DataAccess.ConfigureAutoPersistenceModel(model =>

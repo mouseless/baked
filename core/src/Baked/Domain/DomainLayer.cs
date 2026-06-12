@@ -2,7 +2,6 @@
 using Baked.Buildtime;
 using Baked.Domain.Configuration;
 using Baked.Domain.Export;
-using Baked.Domain.Inspection;
 using Humanizer;
 
 using static Baked.Buildtime.BuildtimeLayer;
@@ -13,19 +12,29 @@ namespace Baked.Domain;
 
 public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
 {
-    readonly Inspect _inspect = new();
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
+    readonly IDomainModelConventionCollection _conventions;
     readonly DomainServiceCollection _domainServiceCollection = new();
     readonly AttributeProperties _attributeProperties = new();
     readonly ExportConfigurations _attributeExportConfigurations = new();
 
-    protected override PhaseContext GetContext(AddDomainTypes phase) =>
-        phase.CreateContextBuilder()
-            .Add(_inspect)
+    public DomainLayer()
+    {
+        _conventions = new DomainModelConventionCollection(_builderOptions);
+    }
+
+    protected override PhaseContext GetContext(AddDomainTypes phase)
+    {
+        IDisposable diagnostics = Diagnostics.Start(nameof(DomainLayer));
+
+        return phase.CreateContextBuilder()
             .Add(_domainTypes)
             .Add(_builderOptions)
+            .Add(_conventions)
+            .OnDispose(() => diagnostics.Dispose())
             .Build();
+    }
 
     protected override PhaseContext GetContext(Generate phase)
     {
@@ -66,6 +75,10 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
                         generatedFiles.Add($"{fileName.Kebaberize()}", content, extension: "kdl", outdir: Path.Join("Export", $"{key.Kebaberize()}"));
                     }
                 }
+
+                // NOTE
+                // This code is added to fix test run all error
+                Inspection.Inspection.Clear();
             })
             .Build();
     }
@@ -81,7 +94,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
     protected override IEnumerable<IPhase> GetGeneratePhases()
     {
         yield return new AddDomainTypes(_domainTypes);
-        yield return new BuildDomainModel(_builderOptions);
+        yield return new BuildDomainModel(_builderOptions, _conventions);
     }
 
     public class AddDomainTypes(IDomainTypeCollection _domainTypes)
@@ -93,12 +106,12 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
         }
     }
 
-    public class BuildDomainModel(DomainModelBuilderOptions _builderOptions)
+    public class BuildDomainModel(DomainModelBuilderOptions _builderOptions, IDomainModelConventionCollection _conventions)
         : PhaseBase<IDomainTypeCollection>(PhaseOrder.Latest)
     {
         protected override void Initialize(IDomainTypeCollection domainTypes)
         {
-            var builder = new DomainModelBuilder(_builderOptions).StartBuild(domainTypes);
+            var builder = new DomainModelBuilder(_builderOptions, _conventions).StartBuild(domainTypes);
             Context.Add(builder.Model);
             builder.EndBuild();
         }

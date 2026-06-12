@@ -7,13 +7,15 @@ namespace Baked.Domain.Conventions;
 public class SetAttributeConvention<TModelContext>(
     Action<TModelContext, Action<ICustomAttributesModel, Attribute>> _apply,
     Func<TModelContext, bool> _when,
-    bool attributeRequiresIndex = true
-) : IDomainModelConvention<TModelContext>, IAddRemoveAttributeConvention
+    Order _order,
+    bool beforeBuildingIndexes = true
+) : IDomainModelConvention<TModelContext>
     where TModelContext : DomainModelContext
 {
     readonly Trace _trace = Trace.Here();
+    readonly string _orderInfo = $"{(beforeBuildingIndexes ? "-" : "+")}{_order}";
 
-    bool IAddRemoveAttributeConvention.AttributeRequiresIndex => attributeRequiresIndex;
+    bool IDomainModelConvention.BeforeBuildingIndexes => beforeBuildingIndexes;
 
     public void Apply(TModelContext context)
     {
@@ -27,7 +29,7 @@ public class SetAttributeConvention<TModelContext>(
                 Set(model, attribute);
 
                 return attribute;
-            })
+            }, orderInfo: _orderInfo)
         );
     }
 

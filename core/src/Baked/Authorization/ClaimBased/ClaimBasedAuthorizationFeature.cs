@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -11,21 +12,23 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
+                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>(),
                 attribute: c => c.Type.Get<AllowAnonymousAttribute>(),
-                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>()
+                order: Order.At.Infra
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
+                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>(),
                 attribute: c => c.Type.Get<RequireUserAttribute>(),
-                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>()
+                order: Order.At.Infra
             );
 
-            builder.Conventions.Add(new AllowAnonymousIsAllowAnonymousConvention());
-            builder.Conventions.Add(new RequireUserIsAuthorizeConvention());
-            builder.Conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims));
-            builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
+            conventions.Add(new AllowAnonymousIsAllowAnonymousConvention(), order: Order.At.Max);
+            conventions.Add(new RequireUserIsAuthorizeConvention(), order: Order.At.Max);
+            conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims), order: Order.At.Max);
+            conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention(), order: Order.At.Max);
         });
 
         configurator.Domain.ConfigureExportConfigurations(exports =>

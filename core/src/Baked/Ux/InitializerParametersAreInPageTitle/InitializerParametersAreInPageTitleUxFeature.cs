@@ -10,9 +10,9 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c =>
                     c.Type.Has<TransientAttribute>() && c.Type.HasMembers() &&
                     !c.Type.Has<LocatableAttribute>(),
@@ -35,12 +35,12 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                 }
             );
 
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.AddParameterSchemaConfiguration<Input>(
                 where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
                 schema: i => i.QueryBound = true
             );
 
-            builder.Conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.AddParameterSchemaConfiguration<Label>(
                 where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs), "*", nameof(ILabeler.Label)),
                 schema: (label, c, cc) =>
                 {

@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Lifetime;
-using Baked.RestApi;
 using NHibernate.Util;
 
 namespace Baked.CodingStyle.Initializable;
@@ -13,24 +13,27 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
                     _initializerNames.Any(i => members.Methods.Contains(i)),
-                attribute: () => new TransientAttribute()
-            );
-            builder.Conventions.SetMethodAttribute(
-                when: c => _initializerNames.Contains(c.Method.Name),
-                attribute: () => new InitializerAttribute()
+                attribute: () => new TransientAttribute(),
+                order: Order.At.Infra
             );
 
-            builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
-            builder.Conventions.Add(new TargetUsingInitializerConvention(), order: RestApiLayer.MaxConventionOrder - 10);
-            builder.Conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.SetMethodAttribute(
+                when: c => _initializerNames.Contains(c.Method.Name),
+                attribute: () => new InitializerAttribute(),
+                order: Order.At.Infra
+            );
+
+            conventions.Add(new AddInitializerParametersToQueryConvention(), order: Order.At.Infra);
+            conventions.Add(new TargetUsingInitializerConvention(), order: Order.At.Max);
+            conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: Order.At.AbsoluteMax);
         });
     }
 }

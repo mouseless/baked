@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
@@ -11,18 +12,22 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<ValueTypeAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsValueType &&
                     !c.Type.IsEnum &&
                     c.Type.Namespace is not null &&
                     !c.Type.Namespace.StartsWith("System") &&
                     c.Type.IsAssignableTo(typeof(IParsable<>)),
-                attribute: () => new ValueTypeAttribute()
+                attribute: () => new ValueTypeAttribute(),
+                order: Order.At.Infra
             );
         });
 

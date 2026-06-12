@@ -1,7 +1,9 @@
+using Baked.Buildtime.Diagnostics;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Export;
 using Baked.Domain.Model;
+using Baked.Test.Domain;
 using Baked.Testing;
 
 namespace Baked.Test;
@@ -48,7 +50,9 @@ public static class DomainModelExtensions
         }
 
         public DomainModelBuilder ADomainModelBuilder(
-            Action<DomainModelBuilderOptions>? options = default
+            Action<DomainModelBuilderOptions>? options = default,
+            Action<IDomainModelConventionCollection>? conventions = default,
+            Action<DiagnosticsResult>? onConventionsFinalized = default
         )
         {
             var optionsInstance = new DomainModelBuilderOptions();
@@ -60,7 +64,16 @@ public static class DomainModelExtensions
                 options(optionsInstance);
             }
 
-            return new DomainModelBuilder(optionsInstance);
+            var conventionsInstance = new DomainModelConventionCollection(optionsInstance);
+            using (var diagnostics = Diagnostics.Start(nameof(ReportingErrorsInConventions), onDispose: onConventionsFinalized))
+            {
+                if (conventions is not null)
+                {
+                    conventions(conventionsInstance);
+                }
+            }
+
+            return new DomainModelBuilder(optionsInstance, conventionsInstance);
         }
     }
 

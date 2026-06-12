@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Playground.Theme;
 using Baked.Theme;
 using Baked.Ui;
@@ -14,50 +15,58 @@ public class TestPageDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddTypeComponent(
+            conventions.AddTypeComponent(
                 when: c => c.Type.Is<TestPage>(),
                 where: cc => cc.Path.EndsWith(nameof(Page)),
-                component: () => B.TabbedPage("test-page", B.PageTitle("Test Page"))
+                component: () => B.TabbedPage("test-page", B.PageTitle("Test Page")),
+                order: Order.At.Override
             );
-            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c => c.Type.Is<TestPage>(),
                 component: (tp, c, cc) => tp.Schema.Tabs.AddRange(
                     c.Type.GenerateSchemas<Tab>(cc.Drill(nameof(TabbedPage.Tabs)))
-                )
+                ),
+                order: Order.At.Override
             );
-            builder.Conventions.AddTypeSchema(
+            conventions.AddTypeSchema(
                 when: c => c.Type.Is<TestPage>(),
                 where: cc => cc.Path.EndsWith(nameof(TabbedPage.Tabs)),
-                schema: (c, cc) => B.Tab("default")
+                schema: (c, cc) => B.Tab("default"),
+                order: Order.At.Override
             );
-            builder.Conventions.AddTypeSchemaConfiguration<Tab>(
+            conventions.AddTypeSchemaConfiguration<Tab>(
                 when: c => c.Type.Is<TestPage>(),
                 schema: (t, c, cc) => t.Contents.Add(
                     c.Type
                         .GetMethod(nameof(TestPage.GetData))
                         .GenerateRequiredSchema<Content>(cc.Drill(t.Id, nameof(Tab.Contents), 0))
-                )
+                ),
+                order: Order.At.Override
             );
 
-            builder.Conventions.AddMethodSchema(
+            conventions.AddMethodSchema(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 where: cc => cc.Path.EndsWith(nameof(Tab.Contents), 0),
-                schema: (c, cc) => B.Content(component: c.Method.GenerateRequiredComponent(cc.Drill(nameof(Content.Component))), c.Method.Name.Kebaberize())
+                schema: (c, cc) => B.Content(component: c.Method.GenerateRequiredComponent(cc.Drill(nameof(Content.Component))), c.Method.Name.Kebaberize()),
+                order: Order.At.Override
             );
-            builder.Conventions.AddMethodSchemaConfiguration<Content>(
+            conventions.AddMethodSchemaConfiguration<Content>(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                schema: tabContent => tabContent.Narrow = true
+                schema: tabContent => tabContent.Narrow = true,
+                order: Order.At.Override
             );
-            builder.Conventions.AddMethodComponent(
+            conventions.AddMethodComponent(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 where: cc => cc.Path.EndsWith(nameof(Content.Component)),
-                component: (c, cc) => MethodText(c.Method, cc)
+                component: (c, cc) => MethodText(c.Method, cc),
+                order: Order.At.Override
             );
-            builder.Conventions.AddMethodComponentConfiguration<Text>(
+            conventions.AddMethodComponentConfiguration<Text>(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                component: t => t.Schema.MaxLength = 20
+                component: t => t.Schema.MaxLength = 20,
+                order: Order.At.Override
             );
         });
     }

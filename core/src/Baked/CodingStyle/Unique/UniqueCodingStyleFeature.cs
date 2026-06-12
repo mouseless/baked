@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Orm;
 
 namespace Baked.CodingStyle.Unique;
@@ -8,9 +9,9 @@ public class UniqueCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Type.TryGet<LocatableAttribute>(out var locatable) &&
@@ -21,7 +22,7 @@ public class UniqueCodingStyleFeature : IFeature<CodingStyleConfigurator>
                         query.Methods.Contains($"AnyBy{c.Property.Name}")
                     ),
                 attribute: c => new UniqueAttribute(),
-                order: 30
+                order: Order.At.Infra + 30
             );
         });
     }

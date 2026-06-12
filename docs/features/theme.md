@@ -4,6 +4,82 @@ This feature implementations configures `DomainModel` metadata attributes and
 extracts component descriptors for ui theme pages and components of an
 application.
 
+This feature abstraction provides following extensions to
+`DomainModelConventionCollection`;
+
+- Executes before building index and `Order` is defaulted to
+  `Theme.Defaults.Add`
+  ```csharp
+  conventions.AddTypeComponent(...);
+  conventions.AddPropertyComponent(...);
+  conventions.AddMethodComponent(...);
+  conventions.AddParameterComponent(...);
+
+  conventions.AddTypeSchema(...);
+  conventions.AddPropertySchema(...);
+  conventions.AddMethodSchema(...);
+  conventions.AddParameterSchema(...);
+
+  conventions.RemoveTypeComponent(...);
+  conventions.RemovePropertyComponent(...);
+  conventions.RemoveMethodComponent(...);
+  conventions.RemoveParameterComponent(...);
+
+  conventions.RemoveTypeSchema(...);
+  conventions.RemovePropertySchema(...);
+  conventions.RemoveMethodSchema(...);
+  conventions.RemoveParameterSchema(...);
+  ```
+- Executes after building index and `Order` is defaulted to
+  `Theme.Defaults.Configure`
+  ```csharp
+  conventions.AddTypeComponentConfiguration(...);
+  conventions.AddPropertyComponentConfiguration(...);
+  conventions.AddMethodComponentConfiguration(...);
+  conventions.AddParameterComponentConfiguration(...);
+
+  conventions.AddTypeSchemaConfiguration(...);
+  conventions.AddPropertySchemaConfiguration(...);
+  conventions.AddMethodSchemaConfiguration(...);
+  conventions.AddParameterSchemaConfiguration(...);
+  ```
+
+> [!TIP]
+>
+> See [Layers / Domain / Ordering Conventions](../layers/domain.md#ordering-conventions)
+> for more information on convention order mechanism
+
+Below you can find sample for adding convention using extensions;
+
+```csharp
+configurator.Domain.ConfigureConventions(conventions =>
+{
+    // Adding component via extensions
+    conventions.AddPropertyComponent(
+        when: c => c.Property.Name == "Id"
+        component: () => ...
+    );
+
+    // Adding component configuration via extensions
+    conventions.AddPropertyComponentConfiguration<Button>(
+        when: c => c.Property.Name == "Id"
+        component: button => ...
+    );
+
+    // Adding schema via extensions
+    conventions.AddPropertySchema(
+        when: c => c.Property.Name == "Id"
+        schema: () => ...
+    );
+
+    // Adding schema configuration via extensions
+    conventions.AddPropertySchemaConfiguration<Input>(
+        when: c => c.Property.Name == "Id"
+        schema: input => ...
+    );
+}
+```
+
 ## Default
 
 Default Theme feature introduces many components and sets defaults for the
@@ -45,7 +121,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         // Applies default theme rules
         base.Configure(configurator);
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Your custom conventions and page overrides
         });
@@ -208,38 +284,38 @@ Configure an inspect to watch a property value of a component or a schema so
 that you can see which UX or Theme feature sets what value and in which order.
 
 ```csharp
-configurator.Domain.ConfigureInspect(inspect =>
+configurator.Domain.ConfigureBuilder(builder =>
 {
     // To inspect a component or a schema on types
-    inspect.TypeCompnent<MyComponent>( // or inspect.TypeSchema
+    builder.Inspect.TypeCompnent<MyComponent>( // or inspect.TypeSchema
         when: c => c.Type..., // optional to inspect specific type models
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value
     );
 
     // To inspect a component or a schema on properties
-    inspect.PropertyComponent<MyComponent>( // or inspect.PropertySchema
+    builder.Inspect.PropertyComponent<MyComponent>( // or inspect.PropertySchema
         when: c => c.Property..., // optional to inspect specific property models
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value
     );
 
     // To inspect a component or a schema on methods
-    inspect.MethodComponent<MyComponent>( // or inspect.MethodSchema
+    builder.Inspect.MethodComponent<MyComponent>( // or inspect.MethodSchema
         when: c => c.Method..., // optional to inspect specific method models
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value
     );
 
     // To inspect a component or a schema on parameters
-    inspect.ParameterComponent<MyComponent>( // or inspect.ParameterSchema
+    builder.Inspect.ParameterComponent<MyComponent>( // or inspect.ParameterSchema
         when: c => c.Parameter..., // optional to inspect specific parameter models
         where: cc => cc.Path..., // optional to inspect specific component path
         component: mc => mc.Value // optional to inspect just this value
     );
 
     // To inspect a component or a schema on any member
-    inspect.Component<MyComponent>( // or inspect.Schema
+    builder.Inspect.Component<MyComponent>( // or inspect.Schema
         when: c => c..., // optional to inspect specific members
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value

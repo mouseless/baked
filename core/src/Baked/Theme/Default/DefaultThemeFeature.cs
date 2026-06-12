@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Baked.Ui;
 using Humanizer;
@@ -22,19 +22,28 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 {
     public virtual void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
+        {
+            builder.Index.Type.Add<RouteAttribute>();
+            builder.Index.Property.Add<DataAttribute>();
+            builder.Index.Method.Add<ActionAttribute>();
+            builder.Index.Method.Add<RouteAttribute>();
+
+            builder.ConventionOrderMatrix.Bases.Add("Theme");
+        });
+
+        configurator.Domain.ConfigureConventions(conventions =>
         {
             // Type defaults
-            builder.Index.Type.Add<RouteAttribute>();
-            builder.Conventions.AddTypeComponent(
+            conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*"),
                 component: (c, cc) => TypeTabbedPage(c.Type, cc)
             );
-            builder.Conventions.AddTypeComponent(
+            conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*"),
                 component: (c, cc) => TypeSimplePage(c.Type, cc)
             );
-            builder.Conventions.AddTypeAttributeConfiguration<RouteAttribute>(
+            conventions.AddTypeAttributeConfiguration<RouteAttribute>(
                 when: (c, r) =>
                     r.Path.Contains("[id]") &&
                     c.Type.TryGetMembers(out var members) &&
@@ -44,27 +53,28 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     var idAttribute = c.Type.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
 
                     r.Params[idAttribute.RouteName] = idAttribute.RouteName;
-                }
+                },
+                order: Order.At.Infra
             );
 
             // Enum Data
-            builder.Conventions.AddTypeSchema(
+            conventions.AddTypeSchema(
                 when: c => c.Type.SkipNullable().IsEnum,
                 schema: (c, cc) => EnumInline(c.Type, cc)
             );
 
             // Property defaults
-            builder.Index.Property.Add<DataAttribute>();
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
-                order: -10
+                order: Order.At.Infra - 10
             );
-            builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
-                attribute: data => data.Visible = false
+                attribute: data => data.Visible = false,
+                order: Order.At.Infra
             );
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c =>
                     c.Property.PropertyType.Is<string>() ||
                     c.Property.PropertyType.SkipNullable().Is<Guid>() ||
@@ -74,40 +84,38 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         metadata.Has<ValueTypeAttribute>()
                     ),
                 component: () => B.Text(),
-                order: UiLayer.MinConventionOrder + 10
+                order: Order.At.Theme.Min
             );
 
-            // Method defaults
-            builder.Index.Method.Add<ActionAttribute>();
-            builder.Index.Method.Add<RouteAttribute>();
-            builder.Conventions.SetMethodAttribute(
+            // Method Defaults
+            conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 attribute: () => new ActionAttribute(),
-                order: RestApiLayer.MaxConventionOrder + 10
+                order: Order.At.Theme.AbsoluteMin
             );
-            builder.Conventions.AddMethodComponent(
+            conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*"),
                 component: (c, cc) => MethodFormPage(c.Method, cc)
             );
-            builder.Conventions.AddMethodSchema(
+            conventions.AddMethodSchema(
                 schema: (c, cc) => MethodContent(c.Method, cc)
             );
-            builder.Conventions.AddMethodSchema(
+            conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method)
             );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.AddMethodSchemaConfiguration<RemoteData>(
                 when: c => c.Type.Has<LocatableAttribute>(),
                 schema: rd => rd.Params = Computed.UseRoute("params")
             );
-            builder.Conventions.AddMethodSchema(
+            conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionAttribute>(),
                 schema: (c, cc) => DomainActions.MethodRemote(c.Method)
             );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+            conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
                 schema: ra => ra.Body = Context.Model()
             );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+            conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Has<LocatableAttribute>(),
                 where: cc => cc.Path.StartsWith(nameof(Page), "*", "*Page"),
                 schema: (ra, c, cc) =>
@@ -118,7 +126,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
 
-            builder.Conventions.AddMethodComponent(
+            conventions.AddMethodComponent(
                 when: c =>
                     c.Method.TryGet<ActionModelAttribute>(out var action) &&
                     action.Method != HttpMethod.Get,
@@ -126,7 +134,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: (c, cc) => MethodSimpleForm(c.Method, cc)
             );
 
-            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+            conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
                     cc = cc.Drill(nameof(SimpleForm), nameof(SimpleForm.Inputs));
@@ -140,7 +148,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     }
                 }
             );
-            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+            conventions.AddMethodComponentConfiguration<FormPage>(
                 component: (fp, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -164,20 +172,20 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // Parameter defaults
-            builder.Conventions.AddParameterAttributeConfiguration<GroupAttribute>(
+            conventions.AddParameterAttributeConfiguration<GroupAttribute>(
                 attribute: (group, c) => group.InputGroupKey = c.Parameter.Name
             );
 
-            builder.Conventions.AddParameterSchema(
+            conventions.AddParameterSchema(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (c, cc) => ParameterFormPageInputGroup(c.Parameter, cc)
             );
 
-            builder.Conventions.AddParameterSchema(
+            conventions.AddParameterSchema(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (c, cc) => ParameterInput(c.Parameter, cc)
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.AddParameterSchemaConfiguration<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<decimal>() ||
@@ -187,7 +195,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.SkipNullable().Is<short>(),
                 schema: input => input.Numeric = true
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.AddParameterSchemaConfiguration<Input>(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (p, c) =>
                 {
@@ -195,7 +203,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     p.DefaultValue = c.Parameter.DefaultValue;
                 }
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.AddParameterSchemaConfiguration<Input>(
                 schema: (i, c, cc) =>
                 {
                     if (i.Component.Schema is not ILabeler labeler) { return; }
@@ -203,7 +211,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, nameof(ILabeler.Label)));
                 }
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.AddParameterSchemaConfiguration<Input>(
                 schema: i =>
                 {
                     if (i.Component.Schema is not ILabeler labeler) { return; }
@@ -211,39 +219,39 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     labeler.Label = null;
                 },
-                order: UiLayer.MaxConventionOrder - 10
+                order: Order.At.Max
             );
-            builder.Conventions.AddParameterSchema(
+            conventions.AddParameterSchema(
                 schema: () => new Label()
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.AddParameterSchemaConfiguration<Label>(
                 where: cc =>
                     cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs), "*", nameof(ILabeler.Label)) ||
                     cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs), "*", nameof(ILabeler.Label)),
                 schema: label => label.ShowOptionality = true
             );
 
-            builder.Conventions.AddParameterComponent(
+            conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.Is<string>() ||
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
                 component: (c, cc) => ParameterInputText(c.Parameter, cc),
-                order: UiLayer.MinConventionOrder + 10
+                order: Order.At.Theme.Min
             );
-            builder.Conventions.AddParameterComponent(
+            conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<long>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
-                order: UiLayer.MinConventionOrder + 10
+                order: Order.At.Theme.Min
             );
 
             // `PageTitle` defaults
-            builder.Conventions.AddTypeComponent(
+            conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
                 component: (c, cc) => TypePageTitle(c.Type, cc)
             );
-            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+            conventions.AddTypeComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
                     cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
@@ -252,11 +260,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
 
-            builder.Conventions.AddMethodComponent(
+            conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
                 component: (c, cc) => MethodPageTitle(c.Method, cc)
             );
-            builder.Conventions.AddMethodComponentConfiguration<PageTitle>(
+            conventions.AddMethodComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
                     cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
@@ -265,7 +273,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
 
-            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+            conventions.AddTypeComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
                     foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
@@ -283,15 +291,15 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // `Select` defaults
-            builder.Conventions.AddParameterComponentConfiguration<Select>(
+            conventions.AddParameterComponentConfiguration<Select>(
                 component: (s, c) => s.Schema.ShowClear = c.Parameter.IsNullable ? true : null
             );
 
             // `SelectButton` defaults
-            builder.Conventions.AddParameterComponentConfiguration<SelectButton>(
+            conventions.AddParameterComponentConfiguration<SelectButton>(
                 component: (s, c) => s.Schema.AllowEmpty = c.Parameter.IsNullable ? true : null
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.AddParameterSchemaConfiguration<Label>(
                 where: cc => cc.Path.EndsWith(nameof(SelectButton), nameof(ILabeler.Label)),
                 schema: label =>
                 {
@@ -299,7 +307,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     label.None();
                 },
-                order: UiLayer.MaxConventionOrder - 20
+                order: Order.At.Max
             );
         });
 

@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Orm;
-using Baked.RestApi;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.EntitySubclass;
@@ -10,11 +10,14 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<EntitySubclassAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
@@ -29,9 +32,9 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
 
                     return entityType.Apply(t => new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
                 },
-                order: 10
+                order: Order.At.Infra + 10
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
                 apply: (c, set) =>
                 {
@@ -51,20 +54,20 @@ public class EntitySubclassCodingStyleFeature : IFeature<CodingStyleConfigurator
 
                     set(c.Type, new LocatableAttribute());
                 },
-                order: 40
+                order: Order.At.Infra + 40
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
-                order: 30
+                order: Order.At.Infra + 30
             );
 
-            builder.Conventions.Add(new UniqueIdParameterConvention(), order: RestApiLayer.MaxConventionOrder - 30);
-            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new AddSubclassNameToRouteConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new UniqueIdParameterConvention(), order: Order.At.Max - 20);
+            conventions.Add(new EntitySubclassUnderEntitiesConvention(), order: Order.At.AbsoluteMax);
+            conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(), order: Order.At.AbsoluteMax);
+            conventions.Add(new AddSubclassNameToRouteConvention(), order: Order.At.AbsoluteMax);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

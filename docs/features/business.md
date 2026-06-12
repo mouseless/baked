@@ -6,6 +6,53 @@ Add this feature implementations using `AddBusiness()` extension;
 app.Features.AddBusiness(...);
 ```
 
+This feature abstraction provides following extensions to
+`DomainModelConventionCollection`;
+
+- Executes before building index and `Order` is defaulted to
+  `Business.Defaults.Add`
+  ```csharp
+  conventions.SetTypeAttribute(...);
+  conventions.SetPropertyAttribute(...);
+  conventions.SetMethodAttribute(...);
+  conventions.SetParametereAttribute(...);
+
+  conventions.AddTypeAttribute(...);
+  conventions.AddPropertyAttribute(...);
+  conventions.AddMethodAttribute(...);
+  conventions.AddParametereAttribute(...);
+
+  conventions.RemoveTypeAttribute(...);
+  conventions.RemovePropertyAttribute(...);
+  conventions.RemoveMethodAttribute(...);
+  conventions.RemoveParametereAttribute(...);
+  ```
+- Executes after building index and `Order` is defaulted to
+  `Business.Defaults.Configure`
+  ```csharp
+  conventions.AddTypeAttributeConfiguration(...);
+  conventions.AddPropertyAttributeConfiguration(...);
+  conventions.AddMethodAttributeConfiguration(...);
+  conventions.AddParametereAttributeConfiguration(...);
+  ```
+
+> [!TIP]
+>
+> See [Layers / Domain / Ordering Conventions](../layers/domain.md#ordering-conventions)
+> for more information on convention order mechanism
+
+Below you can find sample for adding convention using extensions;
+
+```csharp
+configurator.Domain.ConfigureConventions(conventions =>
+{
+    conventions.SetPropertyAttribute(
+        when: c => c.Property.Name == "Id"
+        attribute: () => new IdAttribute()
+    );
+}
+```
+
 ## Domain Assemblies
 
 Adds domain types from given assemblies, configures domain model builder with

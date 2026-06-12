@@ -104,3 +104,30 @@ flowchart LR;
 
   Generate --> Start
 ```
+## Convention Order Matrix
+
+```mermaid
+flowchart LR
+
+  BIA(Infra)
+  BDA(Defaults)
+  BOA(Override)
+
+  BIC(Infra)
+  BDC(Defaults)
+  BOC(Override)
+
+  subgraph Business
+    direction LR
+    subgraph BA[Add]
+      direction TD
+      BIA --> BDA --> BOA
+    end
+    subgraph BC[Configure]
+      direction TD
+      BIC --> BDC --> BOC
+    end
+  end
+
+  BA --> BC
+```

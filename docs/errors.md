@@ -100,6 +100,18 @@ type for the domain member at the indicated path.
 > indicated path. This is because a SPECIFIC type of component, not ANY type, is
 > required for that domain member.
 
+## `order-out-of-bounds`
+
+This error occurs when given `Order` instance exceeds its boundary values.
+
+> [!NOTE]
+>
+> Lower and upper bound for an order is -5000 and 4999 respectively unless it is
+> a global order
+
+To fix this, make sure defined convention orders stays within the given
+boundaries.
+
 ## `parameter-with-attribute`
 
 It indicates that the type is required to have a parameter with the given
@@ -177,6 +189,13 @@ It indicates that the type is required to have the given attribute.
 
 To fix this, either add the given attribute to the type or remove the convention
 that causes this requirement.
+
+## `undefined-convention-level`
+
+It indicates that given convention level does not exist in `ConventionLevels`
+
+To fix this, add specified level to `ConventionLevels` from 
+`DomainModelBuilderOptions`.
 
 ## `unknown`
 

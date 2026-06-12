@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
@@ -10,9 +11,9 @@ public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action =>
                 {
                     var newName = action.Name.Pluralize();
@@ -21,10 +22,11 @@ public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator
                 },
                 when: (_, action) =>
                     (action.Method == HttpMethod.Delete && action.RouteParts.Count >= 2) ||
-                    (action.Method == HttpMethod.Post && Regexes.StartsWithAddCreateOrNew.IsMatch(action.Name) && action.RouteParts.Count >= 2)
+                    (action.Method == HttpMethod.Post && Regexes.StartsWithAddCreateOrNew.IsMatch(action.Name) && action.RouteParts.Count >= 2),
+                order: Order.At.Infra
             );
-            builder.Conventions.Add(new OnlyLocatableParameterIsInRouteForDeleteChildConvention());
-            builder.Conventions.Add(new RemoveFromRouteConvention(["Add", "Create", "New"]));
+            conventions.Add(new OnlyLocatableParameterIsInRouteForDeleteChildConvention(), order: Order.At.Infra);
+            conventions.Add(new RemoveFromRouteConvention(["Add", "Create", "New"]), order: Order.At.Infra);
         });
     }
 }

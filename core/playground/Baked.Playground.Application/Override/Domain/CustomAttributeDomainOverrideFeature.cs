@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Playground.Business;
 
 namespace Baked.Playground.Override.Domain;
@@ -7,56 +8,64 @@ public class CustomAttributeDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new CustomAttribute(),
-                when: c => c.Type.Is<Class>()
+                when: c => c.Type.Is<Class>(),
+                order: Order.At.Override
             );
-            builder.Conventions.AddTypeAttributeConfiguration<CustomAttribute>(
+            conventions.AddTypeAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
-                when: c => c.Type.Is<Class>()
+                when: c => c.Type.Is<Class>(),
+                order: Order.At.Override
             );
 
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Record>() &&
-                    c.Property.Name == nameof(Record.Text)
+                    c.Property.Name == nameof(Record.Text),
+                    order: Order.At.Override
             );
-            builder.Conventions.AddPropertyAttributeConfiguration<CustomAttribute>(
+            conventions.AddPropertyAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<Record>() &&
-                    c.Property.Name == nameof(Record.Text)
+                    c.Property.Name == nameof(Record.Text),
+                    order: Order.At.Override
             );
 
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Class>() &&
-                    c.Method.Name == nameof(Class.Method)
+                    c.Method.Name == nameof(Class.Method),
+                    order: Order.At.Override
             );
-            builder.Conventions.AddMethodAttributeConfiguration<CustomAttribute>(
+            conventions.AddMethodAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<Class>() &&
-                    c.Method.Name == nameof(Class.Method)
+                    c.Method.Name == nameof(Class.Method),
+                    order: Order.At.Override
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
-                    c.Parameter.Name == "string"
+                    c.Parameter.Name == "string",
+                    order: Order.At.Override
             );
-            builder.Conventions.AddParameterAttributeConfiguration<CustomAttribute>(
+            conventions.AddParameterAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
-                    c.Parameter.Name == "string"
+                    c.Parameter.Name == "string",
+                    order: Order.At.Override
             );
         });
     }

@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
@@ -12,11 +13,14 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<RichTransientAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
@@ -37,9 +41,9 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     set(c.Type, new ApiInputAttribute());
                     set(c.Type, new LocatableAttribute());
                 },
-                order: 10
+                order: Order.At.Infra + 10
             );
-            builder.Conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
+            conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
                 when: c => c.Type.Has<RichTransientAttribute>(),
                 attribute: (locatable, c) =>
                 {
@@ -53,9 +57,9 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                     locatable.IsAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
                 },
-                order: 10
+                order: Order.At.Infra + 10
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<RichTransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
@@ -63,11 +67,11 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublic,
                 attribute: c => new ActionModelAttribute(),
-                order: 20
+                order: Order.At.Infra + 20
             );
 
-            builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());
-            builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: 10);
+            conventions.Add(new RichTransientUnderPluralGroupConvention(), order: Order.At.Infra);
+            conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: Order.At.Infra + 10);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

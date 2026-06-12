@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
@@ -32,24 +33,29 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             """);
         });
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add(typeof(EntityAttribute));
             builder.Index.Property.Add(typeof(UniqueAttribute));
+        });
 
-            builder.Conventions.SetPropertyAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Property.IsAutoProperty,
-                attribute: () => new ColumnAttribute()
+                attribute: () => new ColumnAttribute(),
+                order: Order.At.Infra
             );
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<EntityAttribute>() &&
                     c.Property.Has<ColumnAttribute>() &&
                     c.Property.PropertyType.TryGetMetadata(out var metadata) &&
                     metadata.Has<EntityAttribute>(),
-                attribute: () => new ForeignKeyAttribute()
+                attribute: () => new ForeignKeyAttribute(),
+                order: Order.At.Infra
             );
         });
 

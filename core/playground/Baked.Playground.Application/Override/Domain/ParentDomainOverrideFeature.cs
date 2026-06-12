@@ -1,7 +1,7 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Playground.Orm;
-using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -13,24 +13,25 @@ public class ParentDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddLocateAction<Parent>();
-            builder.Conventions.AddEntityRemoteData<Parent>();
+            conventions.AddLocateAction<Parent>();
+            conventions.AddEntityRemoteData<Parent>();
 
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c => c.Type.Is<Parent>() && c.Property.Name == nameof(Parent.Surname),
-                attribute: () => new LabelAttribute()
+                attribute: () => new LabelAttribute(),
+                order: Order.At.Override
             );
 
-            builder.Conventions.RemoveMethodAttribute<ActionAttribute>(
+            conventions.RemoveMethodAttribute<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.RemoveChild),
-                order: RestApiLayer.MaxConventionOrder + 15
+                order: Order.At.Theme.Override
             );
 
             // Move `AddChild` action to contents
             {
-                builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+                conventions.AddTypeComponentConfiguration<PageTitle>(
                     when: c => c.Type.Is<Parent>(),
                     component: (pt, c) =>
                     {
@@ -38,10 +39,11 @@ public class ParentDomainOverrideFeature : IFeature
                         var addChildRoute = addChild.Get<ActionModelAttribute>().GetRoute();
 
                         pt.Schema.Actions.RemoveAll(a => a.Action is RemoteAction ra && ra.Path == addChildRoute);
-                    }
+                    },
+                    order: Order.At.Override
                 );
 
-                builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+                conventions.AddTypeComponentConfiguration<SimplePage>(
                     when: c => c.Type.Is<Parent>(),
                     component: (dp, c, cc) =>
                     {
@@ -50,23 +52,27 @@ public class ParentDomainOverrideFeature : IFeature
                         dp.Schema.Contents.Add(
                             addChild.GenerateRequiredSchema<Content>(cc.Drill(nameof(SimplePage), nameof(SimplePage.Contents)))
                         );
-                    }
+                    },
+                    order: Order.At.Override
                 );
             }
 
-            builder.Conventions.AddMethodSchemaConfiguration<Content>(
+            conventions.AddMethodSchemaConfiguration<Content>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.AddChild),
-                schema: s => s.Side = true
+                schema: s => s.Side = true,
+                order: Order.At.Override
             );
 
-            builder.Conventions.AddTypeComponentConfiguration<Fieldset>(
+            conventions.AddTypeComponentConfiguration<Fieldset>(
                 when: c => c.Type.Is<Parent>(),
-                component: dt => dt.ReloadOn(nameof(Parent.Update).Kebaberize())
+                component: dt => dt.ReloadOn(nameof(Parent.Update).Kebaberize()),
+                order: Order.At.Override
             );
 
-            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.GetChildren),
-                component: dt => dt.ReloadOn(nameof(Parent.AddChild).Kebaberize())
+                component: dt => dt.ReloadOn(nameof(Parent.AddChild).Kebaberize()),
+                order: Order.At.Override
             );
         });
     }

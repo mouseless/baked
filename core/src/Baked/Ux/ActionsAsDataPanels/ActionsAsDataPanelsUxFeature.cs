@@ -11,17 +11,17 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddMethodComponent(
+            conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
                 component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
-            builder.Conventions.AddMethodSchema(
+            conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title)),
                 schema: (c, cc) => MethodNameInline(c.Method, cc)
             );
-            builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
+            conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Method.GetAction().Method == HttpMethod.Get,
                 component: (dp, c, cc) =>
                 {
@@ -34,7 +34,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                     }
                 }
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.AddParameterSchemaConfiguration<Label>(
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(ILabeler.Label)),
                 schema: (label, c, cc) =>
                 {

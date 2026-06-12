@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 
 namespace Baked.CodingStyle.Label;
 
@@ -10,9 +11,9 @@ public class LabelCodingStyleFeature(IEnumerable<string> propertyNames)
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c =>
                     (
                         c.Property.PropertyType.Is<string>() ||
@@ -20,7 +21,7 @@ public class LabelCodingStyleFeature(IEnumerable<string> propertyNames)
                     ) &&
                     _propertyNames.Contains(c.Property.Name),
                 attribute: () => new LabelAttribute(),
-                order: 10
+                order: Order.At.Infra + 10
             );
         });
     }

@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Playground.Orm;
 using Baked.Playground.Theme;
 using Baked.Theme;
@@ -14,24 +15,27 @@ public class FormSampleDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+            conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
-                attribute: (a, c) => a.RoutePathBack = "/form-sample"
+                attribute: (a, c) => a.RoutePathBack = "/form-sample",
+                order: Order.At.Override
             );
 
-            builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+            conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
-                attribute: a => a.HideInLists = true
+                attribute: a => a.HideInLists = true,
+                order: Order.At.Override
             );
 
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
-                attribute: () => new QueryMethodAttribute()
+                attribute: () => new QueryMethodAttribute(),
+                order: Order.At.Infra
             );
 
-            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+            conventions.AddMethodComponentConfiguration<FormPage>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
                 component: fp =>
                 {
@@ -39,14 +43,16 @@ public class FormSampleDomainOverrideFeature : IFeature
                     fp.Schema.Sections[0].InputGroups.Move("name", toTop: true);
                     fp.Schema.Validations ??= [];
                     fp.Schema.Validations.AddFormSampleValidation();
-                }
+                },
+                order: Order.At.Override
             );
 
             // Properties
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().IsEnum,
                 where: cc => cc.Path.StartsWith(nameof(Page), nameof(FormSample)),
-                component: () => B.Text()
+                component: () => B.Text(),
+                order: Order.At.Override
             );
         });
     }

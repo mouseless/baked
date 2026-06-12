@@ -4,7 +4,6 @@ using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Inspection;
 using Baked.Domain.Model;
-using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Testing;
 using Baked.Theme;
@@ -112,6 +111,15 @@ public static class ThemeExtensions
             router.Create(path, title) with { ParentPath = parentPath, ErrorSafeLink = false, SideMenu = false };
     }
 
+    extension(Order order)
+    {
+        public Order Theme =>
+            order.WithBase("Theme");
+
+        internal Order ThemeDefault =>
+            order.WithBase(order.Base ?? "Theme");
+    }
+
     extension(IDomainModelConventionCollection conventions)
     {
         public void AddEntityRemoteData<TEntity>()
@@ -128,14 +136,15 @@ public static class ThemeExtensions
                     }
 
                     return Remote(locate.GetRoute(), o => o.Params = Computed.UseRoute("params"));
-                }
+                },
+                order: Order.At.Override
             );
         }
 
         public void AddTypeSchema<TSchema>(Func<TSchema> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddTypeSchema(
             schema: _ => schema(),
             when: when,
@@ -146,7 +155,7 @@ public static class ThemeExtensions
         public void AddTypeSchema<TSchema>(Func<TypeModelMetadataContext, TSchema> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddTypeSchema(
             schema: (c, _) => schema(c),
             when: when,
@@ -157,42 +166,40 @@ public static class ThemeExtensions
         public void AddTypeSchema<TSchema>(Func<TypeModelMetadataContext, ComponentContext, TSchema> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         )
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault.Add;
 
             conventions.AddTypeAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
                 {
-                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc)),
+                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc), orderInfo: $"+{order}"),
                     Filter = where,
                     Trace = c.Trace
                 },
                 when: when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
 
         public void RemoveTypeSchema<TSchema>(Func<TypeModelMetadataContext, bool> when,
-            int order = default
+            Order order = default
         )
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
-
             conventions.RemoveTypeAttribute<GeneratorAttribute<TSchema>>(when: when,
-                requiresIndex: false,
-                order: order
+                beforeBuildingIndexes: false,
+                order: order.ThemeDefault.Add
             );
         }
 
         public void AddPropertySchema<TSchema>(Func<TSchema> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddPropertySchema(
             schema: _ => schema(),
             when: when,
@@ -203,7 +210,7 @@ public static class ThemeExtensions
         public void AddPropertySchema<TSchema>(Func<PropertyModelContext, TSchema> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddPropertySchema(
             schema: (c, _) => schema(c),
             when: when,
@@ -214,42 +221,40 @@ public static class ThemeExtensions
         public void AddPropertySchema<TSchema>(Func<PropertyModelContext, ComponentContext, TSchema> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         )
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault.Add;
 
             conventions.AddPropertyAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
                 {
-                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc)),
+                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc), orderInfo: $"+{order}"),
                     Filter = where,
                     Trace = c.Trace
                 },
                 when: when,
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
 
         public void RemovePropertySchema<TSchema>(Func<PropertyModelContext, bool> when,
-            int order = default
+            Order order = default
         )
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
-
             conventions.RemovePropertyAttribute<GeneratorAttribute<TSchema>>(when: when,
-                requiresIndex: false,
-                order: order
+                beforeBuildingIndexes: false,
+                order: order.ThemeDefault.Add
             );
         }
 
         public void AddMethodSchema<TSchema>(Func<TSchema> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddMethodSchema(
             schema: _ => schema(),
             when: when,
@@ -260,7 +265,7 @@ public static class ThemeExtensions
         public void AddMethodSchema<TSchema>(Func<MethodModelContext, TSchema> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddMethodSchema(
             schema: (c, _) => schema(c),
             when: when,
@@ -271,42 +276,40 @@ public static class ThemeExtensions
         public void AddMethodSchema<TSchema>(Func<MethodModelContext, ComponentContext, TSchema> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         )
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault.Add;
 
             conventions.AddMethodAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
                 {
-                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc)),
+                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc), orderInfo: $"+{order}"),
                     Filter = where,
                     Trace = c.Trace
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
 
         public void RemoveMethodSchema<TSchema>(Func<MethodModelContext, bool> when,
-            int order = default
+            Order order = default
         )
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
-
             conventions.RemoveMethodAttribute<GeneratorAttribute<TSchema>>(when: when,
-                requiresIndex: false,
-                order: order
+                beforeBuildingIndexes: false,
+                order: order.ThemeDefault.Add
             );
         }
 
         public void AddParameterSchema<TSchema>(Func<TSchema> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddParameterSchema(
             schema: _ => schema(),
             when: when,
@@ -317,7 +320,7 @@ public static class ThemeExtensions
         public void AddParameterSchema<TSchema>(Func<ParameterModelContext, TSchema> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddParameterSchema(
             schema: (c, _) => schema(c),
             when: when,
@@ -328,42 +331,40 @@ public static class ThemeExtensions
         public void AddParameterSchema<TSchema>(Func<ParameterModelContext, ComponentContext, TSchema> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         )
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault.Add;
 
             conventions.AddParameterAttribute(
                 attribute: c => new GeneratorAttribute<TSchema>
                 {
-                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc)),
+                    Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => schema(c, cc), orderInfo: $"+{order}"),
                     Filter = where,
                     Trace = c.Trace
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
 
         public void RemoveParameterSchema<TSchema>(Func<ParameterModelContext, bool> when,
-            int order = default
+            Order order = default
         )
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
-
             conventions.RemoveParameterAttribute<GeneratorAttribute<TSchema>>(when: when,
-                requiresIndex: false,
-                order: order
+                beforeBuildingIndexes: false,
+                order: order.ThemeDefault.Add
             );
         }
 
         public void AddTypeSchemaConfiguration<TSchema>(Action<TSchema> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddTypeSchemaConfiguration<TSchema>((s, _) => schema(s),
             when: when,
             where: where,
@@ -373,7 +374,7 @@ public static class ThemeExtensions
         public void AddTypeSchemaConfiguration<TSchema>(Action<TSchema, TypeModelMetadataContext> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddTypeSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
             when: when,
             where: where,
@@ -383,18 +384,19 @@ public static class ThemeExtensions
         public void AddTypeSchemaConfiguration<TSchema>(Action<TSchema, TypeModelMetadataContext, ComponentContext> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         )
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddTypeAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
-                    where: where
+                    where: where,
+                    order: order
                 ),
                 when: c => when(c),
                 order: order
@@ -404,7 +406,7 @@ public static class ThemeExtensions
         public void AddPropertySchemaConfiguration<TSchema>(Action<TSchema> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddPropertySchemaConfiguration<TSchema>((s, _) => schema(s),
             when: when,
             where: where,
@@ -414,7 +416,7 @@ public static class ThemeExtensions
         public void AddPropertySchemaConfiguration<TSchema>(Action<TSchema, PropertyModelContext> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddPropertySchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
             when: when,
             where: where,
@@ -424,18 +426,19 @@ public static class ThemeExtensions
         public void AddPropertySchemaConfiguration<TSchema>(Action<TSchema, PropertyModelContext, ComponentContext> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         )
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddPropertyAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
-                    where: where
+                    where: where,
+                    order: order
                 ),
                 when: c => when(c),
                 order: order
@@ -445,7 +448,7 @@ public static class ThemeExtensions
         public void AddMethodSchemaConfiguration<TSchema>(Action<TSchema> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddMethodSchemaConfiguration<TSchema>((s, _) => schema(s),
             when: when,
             where: where,
@@ -455,7 +458,7 @@ public static class ThemeExtensions
         public void AddMethodSchemaConfiguration<TSchema>(Action<TSchema, MethodModelContext> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddMethodSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
             when: when,
             where: where,
@@ -465,18 +468,19 @@ public static class ThemeExtensions
         public void AddMethodSchemaConfiguration<TSchema>(Action<TSchema, MethodModelContext, ComponentContext> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         )
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddMethodAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
-                    where: where
+                    where: where,
+                    order: order
                 ),
                 when: c => when(c),
                 order: order
@@ -486,7 +490,7 @@ public static class ThemeExtensions
         public void AddParameterSchemaConfiguration<TSchema>(Action<TSchema> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddParameterSchemaConfiguration<TSchema>((s, _) => schema(s),
             when: when,
             where: where,
@@ -496,7 +500,7 @@ public static class ThemeExtensions
         public void AddParameterSchemaConfiguration<TSchema>(Action<TSchema, ParameterModelContext> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) => conventions.AddParameterSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
             when: when,
             where: where,
@@ -506,18 +510,19 @@ public static class ThemeExtensions
         public void AddParameterSchemaConfiguration<TSchema>(Action<TSchema, ParameterModelContext, ComponentContext> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         )
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddParameterAttributeConfiguration<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
-                    where: where
+                    where: where,
+                    order: order
                 ),
                 when: c => when(c),
                 order: order
@@ -527,7 +532,7 @@ public static class ThemeExtensions
         public void AddTypeComponent<TSchema>(Func<ComponentDescriptor<TSchema>> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddTypeComponent(
                 component: _ => component(),
@@ -539,7 +544,7 @@ public static class ThemeExtensions
         public void AddTypeComponent<TSchema>(Func<TypeModelMetadataContext, ComponentDescriptor<TSchema>> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddTypeComponent(
                 component: (c, _) => component(c),
@@ -551,19 +556,19 @@ public static class ThemeExtensions
         public void AddTypeComponent<TSchema>(Func<TypeModelMetadataContext, ComponentContext, ComponentDescriptor<TSchema>> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault.Add;
 
             conventions.AddTypeAttribute(
                 apply: (c, add) =>
                 {
                     add(c.Type, new ComponentGeneratorAttribute<TSchema>
                     {
-                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc)),
+                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc), orderInfo: $"+{order}"),
                         Filter = where,
                         Trace = c.Trace
                     });
@@ -573,27 +578,25 @@ public static class ThemeExtensions
                     });
                 },
                 when: c => when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
 
         public void RemoveTypeComponent<TSchema>(Func<TypeModelMetadataContext, bool> when,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
-
             conventions.RemoveTypeAttribute<ComponentGeneratorAttribute<TSchema>>(when,
-                requiresIndex: false,
-                order: order
+                beforeBuildingIndexes: false,
+                order: order.ThemeDefault.Add
             );
         }
 
         public void AddPropertyComponent<TSchema>(Func<ComponentDescriptor<TSchema>> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddPropertyComponent(
                 component: _ => component(),
@@ -605,7 +608,7 @@ public static class ThemeExtensions
         public void AddPropertyComponent<TSchema>(Func<PropertyModelContext, ComponentDescriptor<TSchema>> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddPropertyComponent(
                 component: (c, _) => component(c),
@@ -617,19 +620,19 @@ public static class ThemeExtensions
         public void AddPropertyComponent<TSchema>(Func<PropertyModelContext, ComponentContext, ComponentDescriptor<TSchema>> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault.Add;
 
             conventions.AddPropertyAttribute(
                 apply: (c, add) =>
                 {
                     add(c.Property, new ComponentGeneratorAttribute<TSchema>
                     {
-                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc)),
+                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc), orderInfo: $"+{order}"),
                         Filter = where,
                         Trace = c.Trace
                     });
@@ -639,27 +642,25 @@ public static class ThemeExtensions
                     });
                 },
                 when: c => when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
 
         public void RemovePropertyComponent<TSchema>(Func<PropertyModelContext, bool> when,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
-
             conventions.RemovePropertyAttribute<ComponentGeneratorAttribute<TSchema>>(when,
-                requiresIndex: false,
-                order: order
+                beforeBuildingIndexes: false,
+                order: order.ThemeDefault.Add
             );
         }
 
         public void AddMethodComponent<TSchema>(Func<ComponentDescriptor<TSchema>> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddMethodComponent(
                 component: _ => component(),
@@ -671,7 +672,7 @@ public static class ThemeExtensions
         public void AddMethodComponent<TSchema>(Func<MethodModelContext, ComponentDescriptor<TSchema>> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddMethodComponent(
                 component: (c, _) => component(c),
@@ -683,19 +684,19 @@ public static class ThemeExtensions
         public void AddMethodComponent<TSchema>(Func<MethodModelContext, ComponentContext, ComponentDescriptor<TSchema>> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
             when ??= c => true;
             where ??= cc => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault.Add;
 
             conventions.AddMethodAttribute(
                 apply: (c, add) =>
                 {
                     add(c.Method, new ComponentGeneratorAttribute<TSchema>
                     {
-                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc)),
+                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc), orderInfo: $"+{order}"),
                         Filter = where,
                         Trace = c.Trace
                     });
@@ -705,27 +706,25 @@ public static class ThemeExtensions
                     });
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
 
         public void RemoveMethodComponent<TSchema>(Func<MethodModelContext, bool> when,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
-
             conventions.RemoveMethodAttribute<ComponentGeneratorAttribute<TSchema>>(when,
-                requiresIndex: false,
-                order: order
+                beforeBuildingIndexes: false,
+                order: order.ThemeDefault.Add
             );
         }
 
         public void AddParameterComponent<TSchema>(Func<ComponentDescriptor<TSchema>> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddParameterComponent(
                 component: _ => component(),
@@ -737,7 +736,7 @@ public static class ThemeExtensions
         public void AddParameterComponent<TSchema>(Func<ParameterModelContext, ComponentDescriptor<TSchema>> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddParameterComponent(
                 component: (c, _) => component(c),
@@ -749,19 +748,19 @@ public static class ThemeExtensions
         public void AddParameterComponent<TSchema>(Func<ParameterModelContext, ComponentContext, ComponentDescriptor<TSchema>> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
             when ??= c => true;
             where ??= c => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
+            order = order.ThemeDefault.Add;
 
             conventions.AddParameterAttribute(
                 apply: (c, add) =>
                 {
                     add(c.Parameter, new ComponentGeneratorAttribute<TSchema>
                     {
-                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc)),
+                        Generator = cc => cc.Trace.CaptureDescriptor(c, cc, () => component(c, cc), orderInfo: $"+{order}"),
                         Filter = where,
                         Trace = c.Trace
                     });
@@ -771,27 +770,25 @@ public static class ThemeExtensions
                     });
                 },
                 when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
-                requiresIndex: false,
+                beforeBuildingIndexes: false,
                 order: order
             );
         }
 
         public void RemoveParameterComponent<TSchema>(Func<ParameterModelContext, bool> when,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
-
             conventions.RemoveParameterAttribute<ComponentGeneratorAttribute<TSchema>>(when,
-                requiresIndex: false,
-                order: order
+                beforeBuildingIndexes: false,
+                order: order.ThemeDefault.Add
             );
         }
 
         public void AddTypeComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddTypeComponentConfiguration<TSchema>((s, _) => component(s),
                 when: when,
@@ -802,7 +799,7 @@ public static class ThemeExtensions
         public void AddTypeComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddTypeComponentConfiguration<TSchema>((s, c, _) => component(s, c),
                 when: when,
@@ -813,18 +810,19 @@ public static class ThemeExtensions
         public void AddTypeComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext, ComponentContext> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddTypeAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
-                    where: where
+                    where: where,
+                    order: order
                 ),
                 when: c => when(c),
                 order: order
@@ -834,7 +832,7 @@ public static class ThemeExtensions
         public void AddPropertyComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddPropertyComponentConfiguration<TSchema>((s, _) => component(s),
                 when: when,
@@ -845,7 +843,7 @@ public static class ThemeExtensions
         public void AddPropertyComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, PropertyModelContext> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddPropertyComponentConfiguration<TSchema>((s, c, _) => component(s, c),
                 when: when,
@@ -856,18 +854,19 @@ public static class ThemeExtensions
         public void AddPropertyComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, PropertyModelContext, ComponentContext> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddPropertyAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
-                    where: where
+                    where: where,
+                    order: order
                 ),
                 when: c => when(c),
                 order: order
@@ -877,7 +876,7 @@ public static class ThemeExtensions
         public void AddMethodComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddMethodComponentConfiguration<TSchema>((s, _) => component(s),
                 when: when,
@@ -888,7 +887,7 @@ public static class ThemeExtensions
         public void AddMethodComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, MethodModelContext> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddMethodComponentConfiguration<TSchema>((s, c, _) => component(s, c),
                 when: when,
@@ -899,18 +898,19 @@ public static class ThemeExtensions
         public void AddMethodComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, MethodModelContext, ComponentContext> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddMethodAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
-                    where: where
+                    where: where,
+                    order: order
                 ),
                 when: c => when(c),
                 order: order
@@ -920,7 +920,7 @@ public static class ThemeExtensions
         public void AddParameterComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddParameterComponentConfiguration<TSchema>((s, _) => component(s),
                 when: when,
@@ -931,7 +931,7 @@ public static class ThemeExtensions
         public void AddParameterComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, ParameterModelContext> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema =>
             conventions.AddParameterComponentConfiguration<TSchema>((s, c, _) => component(s, c),
                 when: when,
@@ -942,18 +942,19 @@ public static class ThemeExtensions
         public void AddParameterComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, ParameterModelContext, ComponentContext> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
-            int order = default
+            Order order = default
         ) where TSchema : IComponentSchema
         {
             when ??= _ => true;
             where ??= _ => true;
-            order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit * 2;
+            order = order.ThemeDefault.Configure;
 
             conventions.AddParameterAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
-                    where: where
+                    where: where,
+                    order: order
                 ),
                 when: c => when(c),
                 order: order
@@ -1111,7 +1112,8 @@ public static class ThemeExtensions
         void WrapGenerator(
             DomainModelContext context,
             Func<ComponentContext, bool> where,
-            Action<TSchema, ComponentContext> apply
+            Action<TSchema, ComponentContext> apply,
+            Order order
         )
         {
             var prev = attribute.Generator;
@@ -1122,7 +1124,7 @@ public static class ThemeExtensions
                 var result = prev(cc);
                 if (!where(cc)) { return result; }
 
-                return trace.CaptureDescriptor(context, cc, result, () => apply(result, cc));
+                return trace.CaptureDescriptor(context, cc, result, () => apply(result, cc), orderInfo: $"+{order}");
             };
         }
 #pragma warning restore IDE0051
@@ -1380,17 +1382,21 @@ public static class ThemeExtensions
         }
 #pragma warning restore IDE0051
 
-        public T CaptureDescriptor<T>(DomainModelContext c, ComponentContext cc, Func<T> create)
+        public T CaptureDescriptor<T>(DomainModelContext c, ComponentContext cc, Func<T> create,
+            string? orderInfo = default
+        )
         {
             if (!ShouldCapture(c, cc, out var inspection))
             {
                 return create();
             }
 
-            return new Capture<T>(inspection, trace.StackTrace, create, new DescriptorCaptureType(cc)).Execute();
+            return new Capture<T>(inspection, trace.StackTrace, create, new DescriptorCaptureType(cc, orderInfo)).Execute();
         }
 
-        public T CaptureDescriptor<T>(DomainModelContext c, ComponentContext cc, T target, Action update)
+        public T CaptureDescriptor<T>(DomainModelContext c, ComponentContext cc, T target, Action update,
+            string? orderInfo = default
+        )
         {
             if (!ShouldCapture(c, cc, out var inspection))
             {
@@ -1399,7 +1405,7 @@ public static class ThemeExtensions
                 return target;
             }
 
-            return new Capture<T>(inspection, trace.StackTrace, update, new DescriptorCaptureType(cc), target).Execute();
+            return new Capture<T>(inspection, trace.StackTrace, update, new DescriptorCaptureType(cc, orderInfo), target).Execute();
         }
     }
 

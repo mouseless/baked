@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +12,18 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<LocatableAttribute>();
+        });
 
-            builder.Conventions.Add(new ReplaceTargetWithIdParameterConvention());
-            builder.Conventions.Add(new InitializeLocatablesConvention());
-            builder.Conventions.Add(new LookupLocatableParameterConvention(), order: RestApiLayer.MaxConventionOrder - 30);
-            builder.Conventions.Add(new LookupLocatableParametersConvention(), order: RestApiLayer.MaxConventionOrder - 30);
-            builder.Conventions.Add(new TargetFromLocatorConvention(), order: RestApiLayer.MaxConventionOrder - 20);
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.Add(new ReplaceTargetWithIdParameterConvention(), order: Order.At.Infra);
+            conventions.Add(new InitializeLocatablesConvention(), order: Order.At.Infra);
+            conventions.Add(new LookupLocatableParameterConvention(), order: Order.At.Max - 20);
+            conventions.Add(new LookupLocatableParametersConvention(), order: Order.At.Max - 20);
+            conventions.Add(new TargetFromLocatorConvention(), order: Order.At.Max - 10);
         });
 
         configurator.Domain.ConfigureExportConfigurations(exports =>

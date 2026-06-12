@@ -24,6 +24,10 @@
           "path": "route-parameters-samples/{id}/items"
         },
         {
+          "method": "PUT",
+          "path": "children/{id}/"
+        },
+        {
           "method": "POST",
           "path": "exception-samples/throw"
         },
@@ -62,13 +66,11 @@
       "resolver": "MetaUrl"
     },
     {
-      "expirationInMinutes": 60,
       "basePath": "./runtime/plugins/",
       "name": "cacheApplication",
       "resolver": "MetaUrl"
     },
     {
-      "expirationInMinutes": 60,
       "basePath": "./runtime/plugins/",
       "name": "cacheUser",
       "resolver": "MetaUrl"

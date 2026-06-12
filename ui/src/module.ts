@@ -7,6 +7,7 @@ export interface ModuleOptions {
   apiBaseURL: String,
   components?: Components,
   composables: Composables,
+  plugins?: Plugins,
   primevue: PrimeVueOptions,
   i18n: NuxtI18nOptions
 }
@@ -28,6 +29,15 @@ export interface Composables {
   useBreakpoints?: UseBreakpointsOptions,
   useDataFetcher: UseDataFetcherOptions,
   useFormat?: UseFormatOptions
+}
+
+export interface Plugins {
+  cacheApplication?: CacheOptions,
+  cacheUser?: CacheOptions
+}
+
+export interface CacheOptions {
+  expirationInMinutes: any
 }
 
 export interface UseDataFetcherOptions {

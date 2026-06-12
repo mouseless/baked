@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 
 namespace Baked.CodingStyle.UriReturnIsRedirect;
 
@@ -6,11 +7,11 @@ public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigu
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.Add(new UriReturnIsRedirectConvention());
-            builder.Conventions.Add(new UriReturnWithoutParameterIsGetConvention());
-            builder.Conventions.Add(new UriReturnWithParameterIsFormPostConvention(), order: -10);
+            conventions.Add(new UriReturnIsRedirectConvention(), order: Order.At.Infra);
+            conventions.Add(new UriReturnWithoutParameterIsGetConvention(), order: Order.At.Infra);
+            conventions.Add(new UriReturnWithParameterIsFormPostConvention(), order: Order.At.Infra - 10);
         });
 
         configurator.RestApi.ConfigureApiModel(api =>

@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Lifetime;
 
 namespace Baked.CodingStyle.ScopedBySuffix;
@@ -9,15 +10,16 @@ public class ScopedBySuffixCodingStyleFeature(IEnumerable<string> _suffixes)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: () => new ScopedAttribute(),
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMetadata(out var metadata) &&
                     metadata.Has<ServiceAttribute>() &&
-                    _suffixes.Any(suffix => c.Type.Name.EndsWith(suffix))
+                    _suffixes.Any(suffix => c.Type.Name.EndsWith(suffix)),
+                order: Order.At.Infra
             );
         });
     }

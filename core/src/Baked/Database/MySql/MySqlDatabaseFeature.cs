@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Runtime;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,9 +32,9 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
                     .Dialect<CustomMySQL57Dialect>();
         });
 
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.Add(new AddFlatTransactionToActionConvention());
+            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }

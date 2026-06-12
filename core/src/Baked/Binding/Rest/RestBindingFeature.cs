@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
@@ -16,16 +17,19 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             // domain attribute indices
             builder.Index.Type.Add<ControllerModelAttribute>();
             builder.Index.Type.Add<ApiInputAttribute>();
             builder.Index.Method.Add<ActionModelAttribute>();
             builder.Index.Parameter.Add<ParameterModelAttribute>();
+        });
 
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
             // domain attribute mutations
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 attribute: c => new ControllerModelAttribute(),
                 when: c =>
                   c.Type.Has<ServiceAttribute>() &&
@@ -34,56 +38,57 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   !c.Type.IsGenericType &&
                   c.Type.TryGetMembers(out var members) &&
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName),
-              order: 10
+              order: Order.At.Infra + 10
             );
-            builder.Conventions.SetMethodAttribute(
+            conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     !c.Method.Has<ExternalAttribute>() &&
                     !c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
-                order: RestApiLayer.MaxConventionOrder
+                order: Order.At.Max
             );
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 attribute: c => new ParameterModelAttribute(),
                 when: c => c.Parameter.IsApiInput,
-                order: RestApiLayer.MaxConventionOrder
+                order: Order.At.Max
             );
 
             // init before any domain convention
-            builder.Conventions.Add(new InitApiModelConvention(), order: int.MinValue);
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.Add(new InitApiModelConvention(), order: Order.At.Global.AbsoluteMin);
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: (action, context) =>
                     action.Parameter[ParameterModelAttribute.TargetParameterName] =
                         new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
-                order: int.MinValue
+                order: Order.At.Global.AbsoluteMin
             );
 
             // rest api conventions
-            builder.Conventions.Add(new AutoHttpMethodConvention([
+            conventions.Add(new AutoHttpMethodConvention([
                 (Regexes.StartsWithGet, HttpMethod.Get),
                 (Regexes.IsUpdateChangeOrSet, HttpMethod.Put),
                 (Regexes.StartsWithUpdateChangeOrSet, HttpMethod.Patch),
                 (Regexes.StartsWithDeleteRemoveOrClear, HttpMethod.Delete)
-            ]));
-            builder.Conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
-            builder.Conventions.Add(new RemoveFromRouteConvention(["Get"]));
-            builder.Conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
-            builder.Conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            ]), order: Order.At.Infra);
+            conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention(), order: Order.At.Infra);
+            conventions.Add(new RemoveFromRouteConvention(["Get"]), order: Order.At.Infra);
+            conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]), order: Order.At.Infra);
+            conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]), order: Order.At.Infra);
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
                 when: (_, action) => action.HasBody,
-                order: 10
+                order: Order.At.Infra + 10
             );
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
                 when: (_, action) => !action.ReturnIsVoid,
-                order: 10
+                order: Order.At.Infra + 10
             );
-            builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: 10);
-            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
-                action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")")
+            conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: Order.At.Infra + 10);
+            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
+                action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")"),
+                order: Order.At.Infra
             );
         });
 

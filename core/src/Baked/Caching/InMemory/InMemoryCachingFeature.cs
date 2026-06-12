@@ -1,21 +1,22 @@
 ﻿using Baked.Architecture;
-using Baked.Runtime;
+using Baked.Domain.Configuration;
 using Baked.Ui;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Caching.InMemory;
 
-public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting<TimeSpan> clientExpiration)
+public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options)
     : IFeature<CachingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "application"),
-                when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "application"
+                when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "application",
+                order: Order.At.Infra
             );
         });
 
@@ -26,9 +27,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
 
         configurator.Ui.ConfigureAppDescriptor(app =>
         {
-            app.Plugins.Add(
-                new CacheApplicationPlugin { ExpirationInMinutes = (int)clientExpiration.GetValue().TotalMinutes }
-            );
+            app.Plugins.Add(new CacheApplicationPlugin());
         });
 
         configurator.Testing.ConfigureTestConfiguration(test =>

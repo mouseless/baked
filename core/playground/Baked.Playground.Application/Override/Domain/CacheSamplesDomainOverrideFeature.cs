@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Playground.Caching;
 using Baked.Ui;
 
@@ -8,15 +9,16 @@ public class CacheSamplesDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c => c.Type.Is<CacheSamples>(),
                 component: tp =>
                 {
                     tp.Schema.Tabs[0].Contents[0].Narrow = true;
                     tp.Schema.Tabs[0].Contents[1].Narrow = true;
-                }
+                },
+                order: Order.At.Override
             );
         });
     }

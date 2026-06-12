@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.LocatableExtension;
@@ -9,11 +9,14 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Type.Add<LocatableExtensionAttribute>();
+        });
 
-            builder.Conventions.SetTypeAttribute(
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
@@ -29,9 +32,9 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     return locatableType.Apply(t => new LocatableExtensionAttribute(t));
                 },
-                order: 20
+                order: Order.At.Infra + 20
             );
-            builder.Conventions.SetPropertyAttribute(
+            conventions.SetPropertyAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 attribute: c =>
                 {
@@ -39,9 +42,9 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     return c.Domain.Types[locatableExtensionAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
                 },
-                order: 20
+                order: Order.At.Infra + 20
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 apply: (c, set) =>
                 {
@@ -51,9 +54,9 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     set(c.Type, namespaceAttribute);
                 },
-                order: 20
+                order: Order.At.Infra + 20
             );
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c => c.Type.Has<LocatableExtensionAttribute>(),
                 apply: (c, set) =>
                 {
@@ -65,11 +68,11 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
 
                     set(c.Type, new LocatableAttribute());
                 },
-                order: 20
+                order: Order.At.Infra + 20
             );
 
-            builder.Conventions.Add(new ExtensionsUnderLocatablesConvention(), order: RestApiLayer.MaxConventionOrder);
-            builder.Conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: RestApiLayer.MaxConventionOrder);
+            conventions.Add(new ExtensionsUnderLocatablesConvention(), order: Order.At.Max);
+            conventions.Add(new ExtensionsAreServedUnderLocatableRoutesConvention(), order: Order.At.Max);
         });
 
         configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>

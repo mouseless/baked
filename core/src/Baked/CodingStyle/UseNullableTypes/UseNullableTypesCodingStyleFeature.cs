@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.RestApi;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
@@ -13,18 +13,18 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.SetTypeAttribute(
+            conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.IsAssignableTo(typeof(Nullable<>)) &&
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
                     genericArgumentMetadata.Has<ApiInputAttribute>(),
                 attribute: () => new ApiInputAttribute(),
-                order: RestApiLayer.MinConventionOrder
+                order: Order.At.Infra.Min
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: c =>
                 {
                     var nullable = c.Parameter.ParameterType.IsAssignableTo(typeof(Nullable<>));
@@ -36,16 +36,17 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                     return !nullable;
                 },
                 attribute: () => new NotNullAttribute(),
-                order: RestApiLayer.MinConventionOrder
+                order: Order.At.Infra.Min
             );
 
-            builder.Conventions.SetParameterAttribute(
+            conventions.SetParameterAttribute(
                 when: c => !c.Parameter.IsOptional && !c.Parameter.IsNullable,
-                attribute: () => new RequiredAttribute()
+                attribute: () => new RequiredAttribute(),
+                order: Order.At.Infra
             );
 
-            builder.Conventions.Add(new RequiredParametersAreRequiredInApiModelConvention());
-            builder.Conventions.Add(new SetDefaultValueForNullableEnumConvention());
+            conventions.Add(new RequiredParametersAreRequiredInApiModelConvention(), order: Order.At.Infra);
+            conventions.Add(new SetDefaultValueForNullableEnumConvention(), order: Order.At.Infra);
         });
 
         configurator.RestApi.ConfigureApiModel(api =>

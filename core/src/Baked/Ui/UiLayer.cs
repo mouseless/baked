@@ -11,9 +11,6 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<Generate>
 {
-    public const int MinConventionOrder = -ConventionOrderLimit;
-    public const int MaxConventionOrder = ConventionOrderLimit;
-
     static bool NoUi => Environment.GetCommandLineArgs().Contains("--no-ui");
     static JsonSerializerSettings JsonSettings { get; } = new()
     {

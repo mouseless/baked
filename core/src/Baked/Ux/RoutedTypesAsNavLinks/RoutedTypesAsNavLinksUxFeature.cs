@@ -12,14 +12,14 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.Domain.ConfigureDomainModelBuilder(builder =>
+        configurator.Domain.ConfigureConventions(conventions =>
         {
-            builder.Conventions.AddPropertyComponent(
+            conventions.AddPropertyComponent(
                 when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<LabelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
                 component: (c, cc) => TypeNavLink(c.Type, cc)
             );
-            builder.Conventions.AddPropertyComponentConfiguration<NavLink>(
+            conventions.AddPropertyComponentConfiguration<NavLink>(
                 when: c => c.Type.Has<RouteAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
                 component: (link, c) =>
