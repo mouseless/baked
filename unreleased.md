@@ -92,7 +92,7 @@
   ```js
   export default defineNuxtConfig({
     baked: {
-      plugins:{
+      plugins: {
         cacheApplication: {
           expirationInMinutes: 40
         },
