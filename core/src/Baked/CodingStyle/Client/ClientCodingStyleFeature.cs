@@ -23,7 +23,7 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             conventions.RemoveTypeAttribute<ControllerModelAttribute>(
                 when: c => c.Type.Name.EndsWith("Client"),
-                order: Order.At.Max - 10
+                order: Order.At.Max
             );
         });
 
