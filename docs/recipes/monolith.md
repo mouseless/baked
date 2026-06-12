@@ -142,19 +142,19 @@ flowchart LR;
 ```mermaid
 flowchart LR
 
-  BDA(Defaults)
+  BIA(Infra)
   BCA(Custom)
   BOA(Override)
 
-  BDC(Defaults)
+  BIC(Infra)
   BCC(Custom)
   BOC(Override)
 
-  TDA(Defaults)
+  TIA(Infra)
   TCA(Custom)
   TOA(Override)
 
-  TDC(Defaults)
+  TIC(Infra)
   TCC(Custom)
   TOC(Override)
 
@@ -162,11 +162,11 @@ flowchart LR
     direction LR
     subgraph BA[Add]
       direction TD
-      BDA --> BCA --> BOA
+      BIA --> BCA --> BOA
     end
     subgraph BC[Configure]
       direction TD
-      BDC --> BCC --> BOC
+      BIC --> BCC --> BOC
     end
   end
 
@@ -174,11 +174,11 @@ flowchart LR
     direction LR
     subgraph TA[Add]
       direction TD
-      TDA --> TCA --> TOA
+      TIA --> TCA --> TOA
     end
     subgraph TC[Configure]
       direction TD
-      TDC --> TCC --> TOC
+      TIC --> TCC --> TOC
     end
   end
 

@@ -16,7 +16,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options)
             conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "application"),
                 when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "application",
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
         });
 

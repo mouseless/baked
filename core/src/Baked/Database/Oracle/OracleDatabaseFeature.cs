@@ -39,7 +39,7 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Defaults);
+            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }

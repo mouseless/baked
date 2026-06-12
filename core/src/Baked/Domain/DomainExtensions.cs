@@ -287,8 +287,8 @@ public static class DomainExtensions
 
     extension(Order order)
     {
-        public Order Defaults =>
-            order.WithLevel("Defaults");
+        public Order Infra =>
+            order.WithLevel("Infra");
 
         public Order Custom =>
             order.WithLevel("Custom");

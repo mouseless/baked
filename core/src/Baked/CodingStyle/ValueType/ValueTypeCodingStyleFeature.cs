@@ -27,7 +27,7 @@ public class ValueTypeCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     !c.Type.Namespace.StartsWith("System") &&
                     c.Type.IsAssignableTo(typeof(IParsable<>)),
                 attribute: () => new ValueTypeAttribute(),
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
         });
 

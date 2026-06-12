@@ -41,7 +41,7 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Defaults);
+            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }

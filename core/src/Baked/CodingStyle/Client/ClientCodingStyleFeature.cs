@@ -18,7 +18,7 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             conventions.SetTypeAttribute(
                 when: c => c.Type.IsInterface && c.Type.Name.EndsWith("Client"),
                 attribute: () => new ClientAttribute(),
-                order: Order.At.Defaults
+                order: Order.At.Infra
             );
 
             conventions.RemoveTypeAttribute<ControllerModelAttribute>(
