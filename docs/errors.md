@@ -38,6 +38,12 @@ attribute is not in your codebase, it means you'll have to create a similar
 custom attribute with a proper target list and use this new attribute instead of
 the one you're trying to add/set.
 
+## `invalid-order`
+
+This error occurs when an `Order` with  a null `Base`, `Level` or `Extension` 
+tries to calculate its value. Make sure your `Order` is built with all three 
+parts.
+
 ## `invalid-state`
 
 This error occurs when a convention filters out a condition but still encounters
@@ -190,12 +196,13 @@ It indicates that the type is required to have the given attribute.
 To fix this, either add the given attribute to the type or remove the convention
 that causes this requirement.
 
-## `undefined-convention-level`
+## `undefined-level`
 
-It indicates that given convention level does not exist in `ConventionLevels`
+It indicates that given convention level does not exist in generated convention
+order matrix with given base, level or extensions.
 
-To fix this, add specified level to `ConventionLevels` from 
-`DomainModelBuilderOptions`.
+To fix this, make sure `ConventionMatrixOptions` in
+`DomainModelBuilderOptions` have required parts to create the specified level.
 
 ## `unknown`
 
