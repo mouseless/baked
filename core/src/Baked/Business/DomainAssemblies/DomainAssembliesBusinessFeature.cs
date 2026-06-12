@@ -63,16 +63,16 @@ public class DomainAssembliesBusinessFeature(
 
             builder.ConventionOrderMatrix.Bases.Add("Business");
             builder.ConventionOrderMatrix.Levels.Add("Infra");
-            builder.ConventionOrderMatrix.Levels.Add("Custom");
+            builder.ConventionOrderMatrix.Levels.Add("Defaults");
             builder.ConventionOrderMatrix.Levels.Add("Override");
             builder.ConventionOrderMatrix.Extensions.Add("Add");
             builder.ConventionOrderMatrix.Extensions.Add("Configure");
 
             builder.ConventionOrderMatrix.FallbackBase = _ => "Business";
-            builder.ConventionOrderMatrix.FallbackLevel = _ => "Custom";
+            builder.ConventionOrderMatrix.FallbackLevel = _ => "Defaults";
             builder.ConventionOrderMatrix.FallbackExtension = convention => convention.BeforeBuildingIndexes ? "Add" : "Configure";
 
-            builder.DefaultConventionLevel = "Business.Custom.Configure";
+            builder.DefaultConventionLevel = "Business.Defaults.Configure";
 
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<CasterAttribute>();

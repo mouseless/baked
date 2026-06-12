@@ -290,8 +290,8 @@ public static class DomainExtensions
         public Order Infra =>
             order.WithLevel("Infra");
 
-        public Order Custom =>
-            order.WithLevel("Custom");
+        public Order Defaults =>
+            order.WithLevel("Defaults");
 
         public Order Override =>
             order.WithLevel("Override");

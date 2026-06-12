@@ -10,7 +10,7 @@ This feature abstraction provides following extensions to
 `DomainModelConventionCollection`;
 
 - Executes before building index and `Order` is defaulted to
-  `Business.Custom.Add`
+  `Business.Defaults.Add`
   ```csharp
   conventions.SetTypeAttribute(...);
   conventions.SetPropertyAttribute(...);
@@ -28,7 +28,7 @@ This feature abstraction provides following extensions to
   conventions.RemoveParametereAttribute(...);
   ```
 - Executes after building index and `Order` is defaulted to
-  `Business.Custom.Configure`
+  `Business.Defaults.Configure`
   ```csharp
   conventions.AddTypeAttributeConfiguration(...);
   conventions.AddPropertyAttributeConfiguration(...);

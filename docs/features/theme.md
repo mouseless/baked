@@ -8,7 +8,7 @@ This feature abstraction provides following extensions to
 `DomainModelConventionCollection`;
 
 - Executes before building index and `Order` is defaulted to
-  `Theme.Custom.Add`
+  `Theme.Defaults.Add`
   ```csharp
   conventions.AddTypeComponent(...);
   conventions.AddPropertyComponent(...);
@@ -31,7 +31,7 @@ This feature abstraction provides following extensions to
   conventions.RemoveParameterSchema(...);
   ```
 - Executes after building index and `Order` is defaulted to
-  `Theme.Custom.Configure`
+  `Theme.Defaults.Configure`
   ```csharp
   conventions.AddTypeComponentConfiguration(...);
   conventions.AddPropertyComponentConfiguration(...);
