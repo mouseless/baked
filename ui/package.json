@@ -56,20 +56,20 @@
     "@nuxt/module-builder": "1.0.2",
     "@nuxt/test-utils": "4.0.3",
     "@playwright/test": "1.60.0",
-    "@types/node": "25.9.1",
+    "@types/node": "25.9.3",
     "changelogen": "0.6.2",
-    "nuxt": "4.4.6",
-    "sass": "1.100.0",
+    "nuxt": "4.4.8",
+    "sass": "1.101.0",
     "typescript": "6.0.3",
-    "vitest": "4.1.7",
-    "vue-tsc": "3.3.2"
+    "vitest": "4.1.8",
+    "vue-tsc": "3.3.4"
   },
   "optionalDependencies": {
-    "@oxc-parser/binding-darwin-arm64": "0.133.0",
-    "@oxc-parser/binding-linux-arm64-gnu": "0.133.0",
-    "@oxc-parser/binding-linux-arm64-musl": "0.133.0",
-    "@oxc-parser/binding-linux-x64-gnu": "0.133.0",
-    "@oxc-parser/binding-linux-x64-musl": "0.133.0",
-    "@oxc-parser/binding-win32-x64-msvc": "0.133.0"
+    "@oxc-parser/binding-darwin-arm64": "0.135.0",
+    "@oxc-parser/binding-linux-arm64-gnu": "0.135.0",
+    "@oxc-parser/binding-linux-arm64-musl": "0.135.0",
+    "@oxc-parser/binding-linux-x64-gnu": "0.135.0",
+    "@oxc-parser/binding-linux-x64-musl": "0.135.0",
+    "@oxc-parser/binding-win32-x64-msvc": "0.135.0"
   }
 }
