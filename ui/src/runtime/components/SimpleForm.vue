@@ -1,6 +1,7 @@
 <template>
   <template v-if="dialogOptions">
     <Button
+      ref="submitRef"
       :schema="dialogOptions.open"
       v-bind="$attrs"
       @click="visible = true"
@@ -30,6 +31,7 @@
         <Inputs
           v-if="inputs"
           :inputs
+          form-mode
           input-class="w-full"
           @ready="onReady"
           @changed="onChanged"
@@ -47,69 +49,111 @@
         />
       </template>
     </Dialog>
+    <ErrorPopover ref="errorPopoverRef">
+      <InlineError :error />
+    </ErrorPopover>
   </template>
   <template v-else>
     <div
       v-bind="$attrs"
-      class="flex flex-col gap-8"
+      class="flex flex-col gap-4"
+      :class="{ 'gap-8': !horizontal }"
     >
-      <h1 class="font-bold text-xl truncate">
+      <h2 class="font-bold text-xl truncate">
         {{ l(title) }}
-      </h1>
-      <div class="flex flex-col gap-4">
+      </h2>
+      <div
+        class="flex gap-4"
+        :class="{ 'flex-col': !horizontal }"
+      >
         <Inputs
           v-if="inputs"
           :inputs
+          form-mode
           input-class="w-full"
           @ready="onReady"
           @changed="onChanged"
         />
+        <Button
+          ref="submitRef"
+          v-tooltip.top="{
+            disabled: !showValidationSummary,
+            value: messages,
+            pt: { text: 'text-sm' }
+          }"
+          :schema="submit"
+          :ready
+          class="min-w-min"
+          :class="{ 'mt-4': !horizontal && inputs.length }"
+          @submit="$emit('submit', model)"
+        />
+        <ErrorPopover ref="errorPopoverRef">
+          <InlineError :error />
+        </ErrorPopover>
       </div>
-      <Button
-        :schema="submit"
-        :ready
-        @submit="$emit('submit', formData)"
-      />
     </div>
   </template>
 </template>
 <script setup>
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { Dialog } from "primevue";
-import { useLocalization } from "#imports";
-import { Button, Inputs } from "#components";
+import { useBakeError, useLocalization, useValidation } from "#imports";
+import { Button, ErrorPopover, InlineError, Inputs } from "#components";
 
+const { handle: handleError } = useBakeError();
 const { localize: l } = useLocalization();
+const { validate } = useValidation();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const emit = defineEmits(["submit"]);
 
-const { dialogOptions, inputs, submit, title } = schema;
+const { dialogOptions, inputs, horizontal, submit, title, validations = [], showValidationSummary = false } = schema;
 
-const formData = ref({});
-const ready = ref(inputs.length === 0);
+const model = ref({});
+const readyData = ref({});
 const submitted = ref(false);
 const visible = ref(false);
+const submitRef = ref();
+const errorPopoverRef = ref();
+const { error } = handleError();
+
+const ready = computed(() => Object.values(readyData.value).every(v => v) && isValid.value);
+
+const { isValid, messages } = validate({
+  inputs,
+  model,
+  composables: validations
+});
+
+watch(error, newError => {
+  if(newError) {
+    errorPopoverRef.value.show(submitRef);
+  } else {
+    errorPopoverRef.value.hide();
+  }
+});
 
 function onReady(value) {
-  ready.value = value;
+  readyData.value = value;
 }
 
 function onChanged({ values }) {
-  formData.value = values;
+  model.value = values;
 }
 
 function execute() {
+  if(!ready.value) { return; }
+
   submitted.value = true;
   visible.value = false;
 }
 
 function emitSubmit() {
-  if(submitted.value) {
+  if(submitted.value && ready.value) {
     submitted.value = false;
-    emit("submit", formData.value);
+    emit("submit", model.value);
   }
 }
 </script>

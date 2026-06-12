@@ -2,7 +2,17 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
-test.beforeEach(async({ goto }) => {
+test.beforeEach(async({ goto, page }) => {
+  await page.route("*/**/exception-samples/handled", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
+  });
+
   await goto("/specs/form-page", { waitUntil: "hydration" });
 });
 
@@ -36,39 +46,35 @@ test.describe("Base", () => {
 
   test("button is disabled when inputs are not ready", async({ page }) => {
     const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
+
+    await input.fill("");
 
     await expect(button).toBeDisabled();
   });
 
   test("button is enabled when inputs are ready", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
-
-    await input.fill("text");
 
     await expect(button).not.toBeDisabled();
   });
 
   test("action", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
 
-    await input.fill("text");
     await button.click();
 
     await expect(page.locator(primevue.toast.base)).toBeVisible();
-    await expect(page.locator(primevue.toast.summary)).toHaveText("text");
+    await expect(page.locator(primevue.toast.summary)).toHaveText("default");
   });
 
   test("button is disabled until action is completed", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
 
-    await input.fill("text");
     await button.click();
 
     await expect(button).toBeDisabled();
@@ -84,9 +90,47 @@ test.describe("Base", () => {
     await expect(component).not.toHaveText(/Default/);
   });
 
+  test("inputs are in form mode", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("");
+
+    await expect(input).toHaveValue("");
+  });
+
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
+    await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Error", () => {
+  const id = "Error";
+
+  test("shows error using inline error in a popover", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(1);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toBeAttached();
+    await expect(popover.locator(baked.message.base)).toHaveClass(/b--error/);
+    await expect(popover.locator(baked.message.base)).toHaveClass(/message-error/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/Test Service Handled/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/A handled exception was thrown/);
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(1);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toBeVisible();
     await expect(component).toHaveScreenshot();
   });
 });
@@ -110,6 +154,72 @@ test.describe("Sections", () => {
     await expect(component).toHaveText(/Section 1/);
     await expect(component).toHaveText(/Section 2/);
   });
+});
+
+test.describe("Validations", () => {
+  const id = "Validations";
+
+  test("show a red border on required fields when the user leaves without entry", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("param-1");
+    const input2 = component.getByTestId("param-2");
+
+    await input1.focus();
+    await input2.focus();
+
+    await expect(input1).toContainClass("p-invalid");
+  });
+
+  test("remove red border on required fields when the user focus again ", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("param-1");
+    const input2 = component.getByTestId("param-2");
+
+    await input1.focus();
+    await input2.focus();
+    await input1.focus();
+
+    await expect(input1).toContainClass("p-invalid");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("param-1");
+    const input2 = component.getByTestId("param-2");
+
+    await input1.focus();
+    await input2.focus();
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("disable form submitting when return invalid state by non-required input", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input1 = component.getByTestId("param-1");
+    const input2 = component.getByTestId("param-2");
+    const button = component.locator(primevue.button.base).nth(1);
+
+    await input1.fill("text");
+    await input2.fill("error");
+
+    await expect(button).toBeDisabled();
+  });
+
+  test("show validation result on submit button with tooltip", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input2 = component.getByTestId("param-2");
+    const button = component.locator(primevue.button.base).nth(1);
+
+    await input2.fill("error");
+    await button.scrollIntoViewIfNeeded();
+    await button.hover();
+
+    await expect(button).toBeDisabled();
+    await expect(page.locator(primevue.tooltip.left)).toBeVisible();
+    await expect(page.locator(primevue.tooltip.left)).toContainText("Param-1 cannot be empty");
+    await expect(page.locator(primevue.tooltip.left)).toContainText("Param-2 value is error");
+  });
+
 });
 
 test.describe("Layout Options", () => {

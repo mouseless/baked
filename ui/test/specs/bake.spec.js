@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
 let asyncCount = 0;
@@ -7,8 +8,29 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
+
   await page.route("*/**/rich-transient-with-datas/**/*", async route => {
     await route.fulfill({ body: "fake-response" });
+  });
+
+  await page.route("*/**/exception-samples/throw?handled=true", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
+  });
+
+  await page.route("*/**/exception-samples/handled", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
   });
 
   await page.route("*/**/method-samples/async?ms=10", async route => {
@@ -69,6 +91,18 @@ test.describe("Parent Data", () => {
     await expect(component.getByTestId("child-prop")).toHaveText("CHILD VALUE");
   });
 
+  test("reads data from grand parent", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("grand-parent")).toHaveText("GRAND PARENT VALUE");
+  });
+
+  test("reads data from grand grand parent", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("grand-grand-parent")).toHaveText("GRAND GRAND PARENT VALUE");
+  });
+
   test("child data waits for parent to load to avoid double fetch", async({ page }) => {
     const component = page.getByTestId(id);
 
@@ -100,6 +134,21 @@ test.describe("Data Descriptor", () => {
 
     const request = await requestPromise;
     expect(request.url()).toContain("/route-parameters-samples");
+  });
+});
+
+test.describe("Data Error", () => {
+  const id = "Data Error";
+
+  test("shows error when not handled using inline error", async({ page }) => {
+    const component = page.getByTestId(id);
+    const message = component.locator(baked.message.base);
+
+    await expect(message).toBeAttached();
+    await expect(message).toHaveClass(/b--error/);
+    await expect(message).toHaveClass(/message-error/);
+    await expect(message).toHaveText(/Test Service Handled/);
+    await expect(message).toHaveText(/A handled exception was thrown/);
   });
 });
 
@@ -157,6 +206,59 @@ test.describe("Action", () =>{
   });
 });
 
+test.describe("Action Error", () => {
+  const id = "Action Error";
+
+  test("shows error when not handled using inline error in a popover", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toBeAttached();
+    await expect(popover.locator(baked.message.base)).toHaveClass(/b--error/);
+    await expect(popover.locator(baked.message.base)).toHaveClass(/message-error/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/Test Service Handled/);
+    await expect(popover.locator(baked.message.base)).toHaveText(/A handled exception was thrown/);
+  });
+
+  test("doesn't remove the component", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toBeAttached();
+    await expect(button).toBeVisible();
+  });
+
+  test("popover is cleared of visual styles", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toHaveClass(/bg-transparent/);
+    await expect(popover).toHaveClass(/border-none/);
+    await expect(popover).toHaveClass(/before:content-none/);
+    await expect(popover).toHaveClass(/after:content-none/);
+    await expect(popover.locator(primevue.popover.content)).toHaveClass(/p-0/);
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.base);
+
+    await button.click();
+
+    await expect(popover).toHaveScreenshot();
+  });
+});
+
 test.describe.serial("Reaction", () => {
   const id = "Reaction";
 
@@ -174,11 +276,11 @@ test.describe.serial("Reaction", () => {
 
   test("reaction is filtered out when published event value doesn't match constraint", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const react = component.getByTestId("react");
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    await input.fill("something else");
+    await react.fill("something else");
 
     await expect(request).rejects.toThrow();
     expect(asyncCount).toBe(before);
@@ -186,12 +288,11 @@ test.describe.serial("Reaction", () => {
 
   test("reaction occurs when published event value matches constraint", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const react = component.getByTestId("react");
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    // await input.fill("event"); // NOTE uncomment this act after fixing issue #571
-    await input.pressSequentially("event"); // NOTE remove below act after fixing issue #571
+    await react.pressSequentially("event");
 
     await request;
     expect(asyncCount).toBe(before + 1);
@@ -199,12 +300,11 @@ test.describe.serial("Reaction", () => {
 
   test("page context action and trigger", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const react = component.getByTestId("react");
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    // await input.fill("page-context"); // NOTE uncomment this act after fixing issue #571
-    await input.pressSequentially("page-context"); // NOTE remove below act after fixing issue #571
+    await react.pressSequentially("page-context");
 
     await request;
     expect(asyncCount).toBe(before + 1);
@@ -212,12 +312,11 @@ test.describe.serial("Reaction", () => {
 
   test("composable constraint", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
+    const react = component.getByTestId("react");
     const before = asyncCount;
     const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
-    // await input.fill("validate"); // NOTE uncomment this act after fixing issue #571
-    await input.pressSequentially("validate"); // NOTE remove below act after fixing issue #571
+    await react.pressSequentially("validate");
 
     await request;
     expect(asyncCount).toBe(before + 1);
@@ -225,11 +324,22 @@ test.describe.serial("Reaction", () => {
 
   test("show/hide reaction with isNot constraint", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("input");
-    await expect(component.getByTestId("output")).toBeAttached();
-
-    await input.fill("hide");
-
+    const visibility = component.getByTestId("visibility");
     await expect(component.getByTestId("output")).not.toBeAttached();
+
+    await visibility.fill("show");
+
+    await expect(component.getByTestId("output")).toBeAttached();
+  });
+
+  test("show SHOWN value when parent data is expected", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("show")).toBeAttached();
+  });
+  test("hide HIDDEN value when parent data is expected", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("hide")).not.toBeAttached();
   });
 });

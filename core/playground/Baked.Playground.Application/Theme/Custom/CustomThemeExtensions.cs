@@ -25,11 +25,13 @@ public static class CustomThemeExtensions
                 r => r.RootDynamic<RouteParametersSample, SimplePage>("/route-parameters-sample/[id]"),
 
                 // Behavior
+                r => r.Child("/specs/await-loading", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/bake", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/composite", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/contents", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/custom-css", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/inputs", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
+                r => r.Child("/specs/inputs--form-mode", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/inputs--query-bound", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/layout", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
                 r => r.Child("/specs/redirect", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
@@ -51,6 +53,7 @@ public static class CustomThemeExtensions
 
                 // Form
                 r => r.Child("/specs/simple-form", "/specs") with { Icon = "pi pi-microchip", Section = "Form" },
+                r => r.Child("/specs/form-validation", "/specs") with { Icon = "pi pi-microchip", Section = "Form" },
 
                 // Input
                 r => r.Child("/specs/button", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
@@ -83,5 +86,11 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/locale", "/specs") with { Icon = "pi pi-microchip", Section = "Plugins" },
                 r => r.Child("/specs/error-handling", "/specs") with { Icon = "pi pi-microchip", Section = "Plugins" },
             ]);
+    }
+
+    extension(List<ValidationComposable> validations)
+    {
+        public void AddFormSampleValidation() =>
+            validations.Add(new("useFormSampleValidation"));
     }
 }

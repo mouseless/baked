@@ -17,23 +17,41 @@ const variants = [
     name: "Parent Data",
     descriptor: giveMe.aContainer({
       contents: [
-        giveMe.anExpected({
-          testId: "child-root",
-          data: giveMe.aContextData({ key: "parent", prop: "data" })
-        }),
-        giveMe.anExpected({
-          testId: "child-prop",
-          data: giveMe.aContextData({ key: "parent", prop: "data.child" })
-        }),
-        giveMe.anExpected({
-          testId: "child-remote",
-          data: giveMe.aRemoteData({
-            path: "/method-samples/async?ms=5",
-            headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
-          })
+        giveMe.aContainer({
+          contents: [
+            giveMe.aContainer({
+              contents: [
+                giveMe.anExpected({
+                  testId: "child-root",
+                  data: giveMe.aContextData({ key: "parent", prop: "data" })
+                }),
+                giveMe.anExpected({
+                  testId: "child-prop",
+                  data: giveMe.aContextData({ key: "parent", prop: "data.child" })
+                }),
+                giveMe.anExpected({
+                  testId: "grand-parent",
+                  data: giveMe.aContextData({ key: "parent", prop: "grand.data" })
+                }),
+                giveMe.anExpected({
+                  testId: "grand-grand-parent",
+                  data: giveMe.aContextData({ key: "parent", prop: "grand.grand.data" })
+                }),
+                giveMe.anExpected({
+                  testId: "child-remote",
+                  data: giveMe.aRemoteData({
+                    path: "/method-samples/async?ms=5",
+                    headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
+                  })
+                })
+              ],
+              data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
+            })
+          ],
+          data: giveMe.anInlineData("GRAND PARENT VALUE")
         })
       ],
-      data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
+      data: giveMe.anInlineData("GRAND GRAND PARENT VALUE")
     })
   },
   {
@@ -61,6 +79,13 @@ const variants = [
     })
   },
   {
+    name: "Data Error",
+    descriptor: giveMe.anExpected({
+      testId: "test",
+      data: giveMe.aRemoteData({ path: "/exception-samples/handled" })
+    })
+  },
+  {
     name: "Model",
     descriptor: giveMe.anExpectedInput({ testId: "input" }),
     model: ref("Model Data")
@@ -73,7 +98,6 @@ const variants = [
         giveMe.aLocalAction({ delay: 300 }),
         giveMe.aRemoteAction({
           path: "/rich-transient-with-datas/{id}/method",
-          method: "POST",
           headers: giveMe.anInlineData({ Authorization: "token-admin-ui" }),
           query: giveMe.theQueryData(),
           params: giveMe.anInlineData({ id: 12 }),
@@ -89,18 +113,58 @@ const variants = [
     })
   },
   {
+    name: "Action Error",
+    descriptor: giveMe.aButton({
+      action: giveMe.aRemoteAction({
+        path: "/exception-samples/throw",
+        query: giveMe.anInlineData({ handled: true })
+      })
+    })
+  },
+  {
     name: "Reaction",
     descriptor: giveMe.aContainer({
       contents: [
+        giveMe.anExpected({
+          testId: "show",
+          value: "SHOWN",
+          reactions: {
+            show: giveMe.aTrigger({
+              key: "parent",
+              when: "data.key",
+              constraint: giveMe.aConstraint({ is: "expected" })
+            })
+          }
+        }),
+        giveMe.anExpected({
+          testId: "hide",
+          value: "HIDDEN",
+          reactions: {
+            show: giveMe.aTrigger({
+              key: "parent",
+              when: "data.key",
+              constraint: giveMe.aConstraint({ isNot: "expected" })
+            })
+          }
+        }),
         giveMe.aButton({
           label: "Spec: Reload",
           action: giveMe.aPublishAction({ event: "clicked" })
         }),
         giveMe.anExpectedInput({
-          testId: "input",
+          testId: "react",
+          hint: "validate | event | page-context",
           action: giveMe.aCompositeAction([
             giveMe.aPublishAction({ event: "input-changed" }),
             giveMe.aPublishAction({ pageContextKey: "input" })
+          ])
+        }),
+        giveMe.anExpectedInput({
+          testId: "visibility",
+          hint: "show",
+          action: giveMe.aCompositeAction([
+            giveMe.aPublishAction({ event: "visibility-changed" }),
+            giveMe.aPublishAction({ pageContextKey: "visibility" })
           ])
         }),
         giveMe.anExpected({
@@ -124,10 +188,17 @@ const variants = [
                 })
               ]
             }),
-            show: giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ isNot: "hide" }) })
+            show: giveMe.aTrigger({
+              when: "visibility",
+              constraint: giveMe.aConstraint({
+                composable: "useFakeValidator",
+                options: giveMe.aDelayedData({ expected: "show" }, { ms: 200 })
+              })
+            })
           }
         })
-      ]
+      ],
+      data: giveMe.anInlineData({ key: "expected" })
     })
   }
 ];

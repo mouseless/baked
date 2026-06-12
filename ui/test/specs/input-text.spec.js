@@ -1,5 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
+import baked from "../utils/locators/baked";
 
 test.beforeEach(async({ goto }) => {
   await goto("/specs/input-text", { waitUntil: "hydration" });
@@ -59,5 +60,16 @@ test.describe("Target Prop", () => {
     await input.fill("1");
 
     await expect(model).toHaveText(/\{\s*"id": "1"\s*\}/);
+  });
+});
+
+test.describe("Validation", () => {
+  const id = "Validation";
+
+  test("component shows the message component under the input text", async({ page }) => {
+    const component = page.getByTestId(id);
+    const message = component.locator(baked.message.base);
+
+    await expect(message).toHaveText("this is an error message");
   });
 });

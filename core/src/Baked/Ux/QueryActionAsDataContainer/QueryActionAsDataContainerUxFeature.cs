@@ -48,7 +48,9 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        var input = parameter.GenerateRequiredSchema<Input>(cc.Drill(nameof(DataContainer), nameof(DataContainer.Inputs)));
+                        var input = parameter.GenerateSchema<Input>(cc.Drill(nameof(DataContainer), nameof(DataContainer.Inputs)));
+                        if (input is null) { continue; }
+
                         dc.Schema.Inputs.Add(input);
                     }
                 }

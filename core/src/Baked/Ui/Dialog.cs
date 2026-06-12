@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public class Dialog(Button Open, string Header, IComponentDescriptor Content)
+public record Dialog(Button Open, string Header, IComponentDescriptor Content)
     : IComponentSchema
 {
     public IComponentDescriptor Content { get; set; } = Content;

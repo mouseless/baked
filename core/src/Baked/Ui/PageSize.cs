@@ -7,9 +7,9 @@ public record PageSize : Select, IComponentOverride<Select>
         set
         {
             Label = value.Label;
+            LocalizeOptionLabels = value.LocalizeOptionLabels;
             OptionLabel = value.OptionLabel;
             OptionValue = value.OptionValue;
-            LocalizeLabel = value.LocalizeLabel;
             ShowClear = value.ShowClear;
             Stateful = value.Stateful;
             Filter = value.Filter;

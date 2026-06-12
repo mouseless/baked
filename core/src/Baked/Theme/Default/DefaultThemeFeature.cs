@@ -141,9 +141,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        sf.Schema.Inputs.Add(
-                            parameter.GenerateRequiredSchema<Input>(cc)
-                        );
+                        var input = parameter.GenerateSchema<Input>(cc);
+                        if (input is null) { continue; }
+
+                        sf.Schema.Inputs.Add(input);
                     }
                 }
             );
@@ -162,11 +163,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                             fp.Schema.Sections.Add(section);
                         }
 
-                        section.InputGroups.Add(
-                            parameter.GenerateRequiredSchema<FormPage.InputGroup>(
-                                cc.Drill(parameter.SectionKey, nameof(FormPage.Section.InputGroups))
-                            )
-                        );
+                        var inputGroup = parameter.GenerateSchema<FormPage.InputGroup>(cc.Drill(parameter.SectionKey, nameof(FormPage.Section.InputGroups)));
+                        if (inputGroup is null) { continue; }
+
+                        section.InputGroups.Add(inputGroup);
                     }
                 }
             );
@@ -202,6 +202,33 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     p.Required = !c.Parameter.IsNullable ? true : null;
                     p.DefaultValue = c.Parameter.DefaultValue;
                 }
+            );
+            conventions.AddParameterSchemaConfiguration<Input>(
+                schema: (i, c, cc) =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+
+                    labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, nameof(ILabeler.Label)));
+                }
+            );
+            conventions.AddParameterSchemaConfiguration<Input>(
+                schema: i =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+                    if (labeler.Label?.Text != null) { return; }
+
+                    labeler.Label = null;
+                },
+                order: Order.At.Max
+            );
+            conventions.AddParameterSchema(
+                schema: () => new Label()
+            );
+            conventions.AddParameterSchemaConfiguration<Label>(
+                where: cc =>
+                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs), "*", nameof(ILabeler.Label)) ||
+                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs), "*", nameof(ILabeler.Label)),
+                schema: label => label.ShowOptionality = true
             );
 
             conventions.AddParameterComponent(
@@ -272,13 +299,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.AddParameterComponentConfiguration<SelectButton>(
                 component: (s, c) => s.Schema.AllowEmpty = c.Parameter.IsNullable ? true : null
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
-                schema: i =>
+            conventions.AddParameterSchemaConfiguration<Label>(
+                where: cc => cc.Path.EndsWith(nameof(SelectButton), nameof(ILabeler.Label)),
+                schema: label =>
                 {
-                    if (i.Component.Schema is not SelectButton sb) { return; }
-                    if (sb.LabelMode == "ifta") { return; }
+                    if (label.Mode == "ifta") { return; }
 
-                    sb.LabelNone();
+                    label.None();
                 },
                 order: Order.At.Max
             );
@@ -313,6 +340,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         _errorPageOptions.Apply(ep);
                     },
                     data: Computed.UseError()
+                );
+                app.InlineError = B.Message(
+                    data: default(IData),
+                    options: m =>
+                    {
+                        m.Icon = "pi pi-exclamation-circle";
+                        m.Severity = "error";
+                    }
                 );
             });
         });

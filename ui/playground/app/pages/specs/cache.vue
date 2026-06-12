@@ -3,11 +3,10 @@
     :variants
     no-loading-variant
   >
-    <Message severity="info">
-      <span class="text-xl">
-        ⬇️  Use query parameters to test this page ⬇️
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large' }"
+      data="⬇️  Use query parameters to test this page ⬇️"
+    />
     <div class="border-4 border-gray-500 rounded p-4 space-x-4">
       <Button
         type="button"
@@ -22,15 +21,15 @@
         to="/specs/cache?parameter=value_b"
       />
     </div>
-    <Message severity="success">
-      <span class="text-xl">
-        💡 Refresh after clicking a button to reload below test variants 💡
-      </span>
-    </Message>
+    <Message
+      :schema="{ size: 'large', severity: 'success' }"
+      data="💡 Refresh after clicking a button to reload below test variants 💡"
+    />
   </UiSpec>
 </template>
 <script setup>
-import { Button, Message } from "primevue";
+import { Message } from "#components";
+import { Button } from "primevue";
 import giveMe from "@utils/giveMe";
 
 const variants = [

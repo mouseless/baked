@@ -1,38 +1,63 @@
 <template>
-  <InputNumber
-    v-if="number"
-    v-model="model"
-    :name="testId"
-    :data-testid="testId"
-    :placeholder="testId"
-    class="w-32"
-    @input="onInput"
-  />
-  <InputText
-    v-else
-    v-model="model"
-    :name="testId"
-    :data-testid="testId"
-    :placeholder="testId"
-    class="w-32"
-  />
+  <Validation>
+    <InputNumber
+      v-if="number"
+      v-model="model"
+      v-bind="$attrs"
+      v-tooltip.bottom="hint"
+      :name="testId"
+      :data-testid="testId"
+      :placeholder="testId"
+      class="w-32"
+      @input="onInput"
+    />
+    <InputText
+      v-else
+      v-model="model"
+      v-bind="$attrs"
+      v-tooltip.bottom="hint"
+      :name="testId"
+      :data-testid="testId"
+      :placeholder="testId"
+      class="w-32"
+    />
+  </Validation>
 </template>
 <script setup>
 import { onMounted, watch } from "vue";
 import { InputNumber, InputText } from "primevue";
+import { useValidation } from "#imports";
+import { Validation } from "#components";
+
+const validation = useValidation();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const model = defineModel({ type: null, required: true });
 
-const { testId, defaultValue, number } = schema;
+const { testId, defaultValue, number, restrictedValue, hint } = schema;
+
+const mutableValidation = validation.injectMutable();
+
+clearError();
 
 watch(model, newValue => {
-  if(newValue !== undefined && newValue !== null) { return; }
-  if(newValue === defaultValue) { return; }
+  if(newValue === "" && !defaultValue) {
+    model.value = null;
 
-  model.value = defaultValue;
+    return;
+  }
+
+  if(newValue === null || newValue === undefined) {
+    model.value = newValue = defaultValue;
+  }
+
+  if(restrictedValue && newValue === restrictedValue) {
+    showError();
+  } else {
+    clearError();
+  }
 });
 
 onMounted(() => {
@@ -43,5 +68,17 @@ onMounted(() => {
 
 function onInput(event) {
   model.value = event.value;
+}
+
+function showError() {
+  mutableValidation?.setError(`${restrictedValue} is restricted`);
+}
+
+function clearError() {
+  if(hint) {
+    mutableValidation?.setMessage(hint, { severity: "secondary", icon: "pi pi-lightbulb" });
+  } else {
+    mutableValidation?.clear();
+  }
 }
 </script>

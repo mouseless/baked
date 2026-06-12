@@ -1,44 +1,43 @@
 <template>
-  <AwaitLoading>
-    <template #loading>
-      <div class="min-w-40">
-        <Skeleton class="min-h-10" />
-      </div>
-    </template>
-    <Labeler
-      :label
-      :path
-      :mode="labelMode"
-      :variant="labelVariant"
-    >
-      <Select
-        v-bind="$attrs"
-        v-model="selected"
-        :input-id="path"
-        :options="data"
-        :placeholder="l(label)"
-        :show-clear
-        :filter
-        :auto-filter-focus="filter"
-        :filter-fields="[optionLabel]"
-        reset-filter-on-hide
-        class="w-full"
+  <AwaitLoading
+    :skeleton="{
+      height: label?.mode === 'ifta' ? '3.6rem' : '2.6rem',
+      class: 'min-w-40'
+    }"
+  >
+    <Validation>
+      <Labeler
+        :label
+        :path
       >
-        <template #value="slotProps">
-          <span>{{ getValueLabel(slotProps) }}</span>
-        </template>
-        <template #option="slotProps">
-          <span>{{ getOptionLabel(slotProps) }}</span>
-        </template>
-      </Select>
-    </Labeler>
+        <Select
+          v-bind="$attrs"
+          v-model="selected"
+          :input-id="path"
+          :options="data"
+          :placeholder
+          :show-clear
+          :filter
+          :auto-filter-focus="filter"
+          :filter-fields="[optionLabel]"
+          reset-filter-on-hide
+        >
+          <template #value="slotProps">
+            <span>{{ getValueLabel(slotProps) }}</span>
+          </template>
+          <template #option="slotProps">
+            <span>{{ getOptionLabel(slotProps) }}</span>
+          </template>
+        </Select>
+      </Labeler>
+    </Validation>
   </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { Select, Skeleton } from "primevue";
+import { Select } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
-import { AwaitLoading, Labeler } from "#components";
+import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -50,10 +49,12 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { filter, label, labelMode, labelVariant, localizeLabel, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
+const { filter, label, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
+
 const selected = ref();
+const placeholder = label?.text ? l(label.text) : null;
 
 // two way binding between model and selected
 watch(
@@ -71,14 +72,14 @@ watch(selected, newSelected => setModel(newSelected));
 function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
 
-  return localizeLabel ? l(result) : result;
+  return localizeOptionLabels ? l(result) : result;
 }
 
 function getValueLabel(slotProps) {
-  const result = slotProps.value?.[optionLabel] ?? slotProps.value ?? label;
+  const result = slotProps.value?.[optionLabel] ?? slotProps.value ?? placeholder;
 
   // return "\u00A0" to display full height
-  return (localizeLabel ? l(result) : result) ?? "\u00A0";
+  return (localizeOptionLabels ? l(result) : result) ?? "\u00A0";
 }
 
 function getModel() {
@@ -123,9 +124,14 @@ function setSelected(value) {
   .p-placeholder {
     opacity: 0;
   }
-
   .p-select-label {
     font-size: inherit;
+  }
+}
+
+.p-popover-content {
+  .b-component--Select {
+    @apply max-md:w-full;
   }
 }
 </style>

@@ -1,10 +1,12 @@
 using Baked.Authorization;
+using Baked.Playground.ExceptionHandling;
 using Baked.Playground.Orm;
+using Microsoft.Extensions.Localization;
 
 namespace Baked.Playground.Theme;
 
 [AllowAnonymous]
-public class FormSample(Parents _parents, Func<Parent> _newParent)
+public class FormSample(IStringLocalizer _l, Parents _parents, Func<Parent> _newParent)
 {
     public void NewParent(string surname,
         string? name = default,
@@ -14,6 +16,11 @@ public class FormSample(Parents _parents, Func<Parent> _newParent)
     )
     {
         name ??= "Dr.";
+
+        if (name.Length < 3)
+        {
+            throw new TestServiceHandledException(_l["Name must contain at least 3 chars"]);
+        }
 
         _newParent().With(name, surname, status, role).Update(description: description);
     }

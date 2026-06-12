@@ -29,7 +29,8 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                     tp.Schema.Inputs.AddRange(
                         initializer
                             .DefaultOverload.Parameters
-                            .Select(p => p.GenerateRequiredSchema<Input>(cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Inputs))))
+                            .Select(p => p.GenerateSchema<Input>(cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Inputs))))
+                            .Where(i => i is not null)
                     );
                 }
             );
@@ -39,15 +40,13 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                 schema: i => i.QueryBound = true
             );
 
-            conventions.AddParameterSchemaConfiguration<Input>(
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
-                schema: (i, c, cc) =>
+            conventions.AddParameterSchemaConfiguration<Label>(
+                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs), "*", nameof(ILabeler.Label)),
+                schema: (label, c, cc) =>
                 {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
-
                     var (_, l) = cc;
 
-                    labeler.LabelFloatOn(labeler.Label ?? l(c.Parameter.Name.Titleize()));
+                    label.FloatOn(() => l(c.Parameter.Name.Titleize()));
                 }
             );
         });

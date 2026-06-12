@@ -5,5 +5,6 @@ public record WhenTrigger(string When)
 {
     public string Type => nameof(When);
     public string When { get; set; } = When;
+    public string? Key { get; set; }
     public IConstraint? Constraint { get; set; }
 }

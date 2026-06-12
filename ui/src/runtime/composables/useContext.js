@@ -24,6 +24,29 @@ export default function() {
     return provide("__bake_data_descriptor", value);
   }
 
+  function injectError({ handle = false } = {}) {
+    const { error, handled } = inject("__bake_error", {
+      error: ref({}),
+      handled: ref(false)
+    });
+
+    if(handle) {
+      handled.value = true;
+    }
+
+    return error;
+  }
+
+  function provideError(error) {
+    const handled = ref(false);
+    provide("__bake_error", {
+      error,
+      handled
+    });
+
+    return handled;
+  }
+
   function injectEvents() {
     return inject("__bake_events");
   }
@@ -48,6 +71,22 @@ export default function() {
     provide("__bake_loading", value);
   }
 
+  function injectMutableValidations() {
+    return inject("__bake_mutable_validations", {});
+  }
+
+  function provideMutableValidations(value) {
+    provide("__bake_mutable_validations", value);
+  }
+
+  function injectMutableValidation() {
+    return inject("__bake_mutable_validation", null);
+  }
+
+  function provideMutableValidation(value) {
+    provide("__bake_mutable_validation", value);
+  }
+
   function injectPageContext() {
     return inject("__bake_page_context");
   }
@@ -64,21 +103,57 @@ export default function() {
     provide("__bake_parent_context", value);
   }
 
+  function injectValidations() {
+    return inject("__bake_validations", null);
+  }
+
+  function provideValidations(value) {
+    provide("__bake_validations", value);
+  }
+
+  function injectValidation() {
+    return inject("__bake_validation", null);
+  }
+
+  function provideValidation(value) {
+    provide("__bake_validation", value);
+  }
+
+  function injectValidationHandled() {
+    return inject("__bake_validation_handled", false);
+  }
+
+  function provideValidationHandled(value) {
+    provide("__bake_validation_handled", value);
+  }
+
   return {
     injectPath,
     providePath,
     injectContextData,
     injectDataDescriptor,
     provideDataDescriptor,
+    injectError,
+    provideError,
     injectEvents,
     provideEvents,
     injectExecuting,
     provideExecuting,
     injectLoading,
     provideLoading,
+    injectMutableValidations,
+    provideMutableValidations,
+    injectMutableValidation,
+    provideMutableValidation,
     injectPageContext,
     providePageContext,
     injectParentContext,
-    provideParentContext
+    provideParentContext,
+    injectValidations,
+    provideValidations,
+    injectValidation,
+    provideValidation,
+    injectValidationHandled,
+    provideValidationHandled
   };
 }

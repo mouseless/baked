@@ -45,7 +45,17 @@
             <Bake
               :name="`variants/${camelize(variant.name)}`"
               :descriptor="prepareDescriptor(variant)"
-            />
+            >
+              <template
+                v-for="(_, slotName) in (variant.forwardSlots ? $slots : {})"
+                #[slotName]="slotProps"
+              >
+                <slot
+                  :name="slotName"
+                  v-bind="slotProps ?? {}"
+                />
+              </template>
+            </Bake>
           </div>
           <div
             v-else
@@ -56,18 +66,42 @@
               :class="`variantClass ${variant.class || ''}`"
             >
               <!-- renders given variants -->
-              <Bake
+              <ProvideValidation
                 v-if="variant.model"
-                v-model="variant.model.value"
-                :name="`variants/${camelize(variant.name)}`"
-                :descriptor="prepareDescriptor(variant)"
-              />
+                :validation="variant.validation"
+              >
+                <Bake
+                  v-model="variant.model.value"
+                  :name="`variants/${camelize(variant.name)}`"
+                  :descriptor="prepareDescriptor(variant)"
+                >
+                  <template
+                    v-for="(_, slotName) in (variant.forwardSlots ? $slots : {})"
+                    #[slotName]="slotProps"
+                  >
+                    <slot
+                      :name="slotName"
+                      v-bind="slotProps ?? {}"
+                    />
+                  </template>
+                </Bake>
+              </ProvideValidation>
               <!-- draws remaining variant, e.g., loading variant -->
               <Bake
                 v-else
                 :name="`variants/${camelize(variant.name)}`"
                 :descriptor="prepareDescriptor(variant)"
-              />
+              >
+                <template
+                  v-for="(_, slotName) in (variant.forwardSlots ? $slots : {})"
+                  #[slotName]="slotProps"
+                >
+                  <slot
+                    :name="slotName"
+                    v-bind="slotProps ?? {}"
+                  />
+                </template>
+              </Bake>
             </div>
             <div
               v-if="variant.model"
@@ -96,36 +130,54 @@
   </div>
 </template>
 <script setup>
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { Divider } from "primevue";
 import { useContext, useEvents } from "#imports";
 
 const context = useContext();
 const events = useEvents();
 
-const { variants, noLoadingVariant } = defineProps({
+const { variants, noLoadingVariant, useModel, noValidationVariant } = defineProps({
   variants: { type: Array, default: () => [] },
   noLoadingVariant: { type: Boolean, default: false },
   vertical: { type: Boolean, default: false },
   testId: { type: String, default: "test" },
   fullPage: { type: Boolean, default: false },
   useModel: { type: Boolean, default: false },
+  noValidationVariant: { type: Boolean, default: null },
   variantClass: { type: String, default: "inline-block" }
 });
 
+const useValidationVariant = noValidationVariant ? !noValidationVariant : useModel;
+const useLoadingVariant = !noLoadingVariant;
+
 const pageContext = reactive({});
 const allVariants = computed(() => {
-  if(noLoadingVariant) { return variants; }
   if(variants.length === 0) { return variants; }
 
-  const result = [
-    ...variants,
-    {
+  const result = [ ...variants ];
+
+  if(useValidationVariant) {
+    result.push({
+      name: "Validation",
+      model: ref(),
+      validation: computed(() => ({
+        valid: false,
+        persist: true,
+        message: "this is an error message",
+        severity: "error"
+      })),
+      descriptor: { ...variants[0].descriptor }
+    });
+  }
+
+  if(useLoadingVariant) {
+    result.push({
       name: "Loading",
       delay: 60 * 1000,
       descriptor: { ...variants[0].descriptor }
-    }
-  ];
+    });
+  }
 
   return result;
 });

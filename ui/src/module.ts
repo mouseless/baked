@@ -71,7 +71,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: { },
   moduleDependencies: {
     "@nuxtjs/i18n": {
-      version: "10.3.0",
+      version: "10.4.0",
       defaults: {
         strategy: "no_prefix",
         detectBrowserLanguage: {
@@ -129,6 +129,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = app?.error;
+    _nuxt.options.runtimeConfig.public.inlineError = app?.inlineError;
     _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
     _nuxt.options.runtimeConfig.public.composables = _options.composables;

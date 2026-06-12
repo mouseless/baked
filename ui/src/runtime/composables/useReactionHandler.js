@@ -1,4 +1,4 @@
-import { watch } from "vue";
+import { watch, unref } from "vue";
 import { useConstraintEvaluator, useContext } from "#imports";
 
 export default function() {
@@ -74,11 +74,21 @@ function On({ evaluate, eventId, events }) {
 
 function When({ contextData, evaluate }) {
   function bind({ trigger, react }) {
-    watch(() => contextData.page[trigger.when], async value => {
+    watch(() => access(contextData[trigger.key ?? "page"], trigger.when), async value => {
+      react(false);
       react(await evaluate(trigger.constraint, value));
     }, { immediate: true });
 
     return [];
+  }
+  function access(data, propChain) {
+    data = unref(data);
+    for(const prop of propChain.split(".")) {
+      data = data?.[prop];
+      data = unref(data);
+    }
+
+    return data;
   }
 
   return {

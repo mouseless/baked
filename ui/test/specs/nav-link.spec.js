@@ -1,7 +1,17 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
-test.beforeEach(async({ goto }) => {
+test.beforeEach(async({ goto, page }) => {
+  await page.route("*/**/exception-samples/handled", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
+  });
+
   await goto("/specs/nav-link", { waitUntil: "hydration" });
 });
 
@@ -36,9 +46,25 @@ test.describe("Base", () => {
 test.describe("Dynamic", () => {
   const id = "Dynamic";
 
+  test("text", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveText("Dynamic");
+  });
+
   test("address", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.button.base)).toHaveAttribute("href", "/test-path/test-id?query=value");
+  });
+});
+
+test.describe("Inline Error", () => {
+  const id = "Inline Error";
+
+  test("inline error", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveText("Test Service Handled");
   });
 });

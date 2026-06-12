@@ -40,11 +40,9 @@
     </Bake>
     <Message
       v-if="showRequiredMessage"
-      severity="info"
-    >
-      <i class="pi pi-info-circle" />
-      <span class="ml-3">{{ lc("Select required values to view this page") }}</span>
-    </Message>
+      :schema="{ severity: 'info', icon: 'pi pi-info-circle' }"
+      :data="lc('Select required values to view this page')"
+    />
     <div
       v-if="ready"
       class="pt-4 flex flex-col gap-4 items-center"
@@ -69,9 +67,9 @@
 </template>
 <script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
-import { Message, Tab, TabList, Tabs } from "primevue";
+import { Tab, TabList, Tabs } from "primevue";
 import { useContext, useLocalization, useReactionHandler } from "#imports";
-import { Bake, Contents, DeferredTabContent, Inputs } from "#components";
+import { Bake, Contents, DeferredTabContent, Inputs, Message } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
