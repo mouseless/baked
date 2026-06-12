@@ -238,7 +238,7 @@ public class FeatureB : IFeature
     // global order is given
     conventions.SetPropertyAttribute(
         ...,
-        order: Order.Earliest
+        order: -10  
     );
 
     // This convention will apply after conventions
@@ -274,39 +274,45 @@ remaining conventions.
 // This convention will apply before the indexes are built
 conventions.SetPropertyAttribute(
     ...,
-    order: Order.Latest;
     beforeBuildingIndexes: true
 );
 
 // This convention will apply after the indexes are built
 conventions.SetPropertyAttribute(
     ...,
-    order: Order.Earliest,
+    beforeBuildingIndexes: false
 );
 ```
 
-Baked also provides a level system that allows conventions to be grouped and 
-executed within a specific stage. This helps organize convention execution 
+Baked also provides an order matrix system that allows conventions to be grouped 
+and executed within a specific stage. This helps organize convention execution 
 accross multiple features and provide a predictable ordering between related 
 convention groups.
 
 ```csharp
-configurator.Domain.ConfigureConventions(builder =>
-{
-    conventions.Levels.Add("LevelA");
-    conventions.Levels.Add("LevelB");
+configurator.Domain.ConfigureBuilder(builder =>
+  {
+    builder.ConventionOrderMatrix.Bases.Add("Base");
+    ...
+    builder.ConventionOrderMatrix.Levels.Add("Level");
+    ...
+    builder.ConventionOrderMatrix.Extensions.Add("Ext");
+    ...
 
-    conventions.SetPropertyAttribute(
-        ...,
-        order: Order.Level("LevelB")
-    );
+    builder.ConventionOrderMatrix.FallbackBase = convention => ...;
+    builder.ConventionOrderMatrix.FallbackLevel = convention => ...;
+    builder.ConventionOrderMatrix.FallbackExtension = convention => ...;
 
-    // This convention executes first
-    conventions.SetPropertyAttribute(
-        ...,
-        order: Order.Level("LevelA")
+    builder.DefaultConventionLevel = "...";
+  });
+
+  configurator.Domain.ConfigureConventions(conventions => 
+  {
+    conventions.Add(
+      convention: new DemoConvention(),
+      order: Order.At.WithBase("Base").WithLevel("Level").WithExtension("Ext")
     );
-}
+  });
 ```
 
 A convention with given level order will be added to the median, in other words
@@ -314,16 +320,18 @@ will have 0 as its order relative to its level. It is also possible to specify
 min/max values or a specific position within the level.
 
 ```csharp
-conventions.SetPropertyAttribute(
+conventions.Add(
     ...,
     order: Order.Level("LevelA").Min
 );
 
-conventions.SetPropertyAttribute(
+conventions.Add(
     ...,
     order: Order.Level("LevelA") + 10
 );
 ```
+
+Prior a convention is added to collection, given `Order` will be 
 
 #### `Order`
 
@@ -332,23 +340,22 @@ Possible order usages;
 ```csharp
 Order.Global.AbsoluteMin
 Order.Global.Min
-Order.Level("prior-level").AbsoluteMin
-Order.Level("prior-level").Min
-Order.Level("prior-level") // .Zero
-Order.Level("prior-level").Max
-Order.Level("prior-level").AbsoluteMax
-Order.AbsoluteMin
-Order.Min
-Order.Zero // 0
-Order.Max
-Order.AbsoluteMax
-Order.Level("posterior-level").AbsoluteMin
-Order.Level("posterior-level").Min
-Order.Level("posterior-level") // .Zero
-Order.Level("posterior-level").Max
-Order.Level("posterior-level").AbsoluteMax
+Order.At.AbsoluteMin
+Order.At.Min
+Order.At.Zero
+Order.At.Max
+Order.At.AbsoluteMax
 Order.Global.Max
 Order.Global.AbsoluteMax
+
+Order.At.WithBase("BaseA");
+Order.At.WithBase("BaseA").WithLevel("LevelA");
+Order.At.WithBase("BaseA").WithLevel("LevelA").WithExtension("ExtA");
+Order.At.WithBase("BaseA").WithExtension("ExtA");
+Order.At.WithLevel("LevelA");
+Order.At.WithExtension("ExtA");
+Order.At.WithBase("BaseA").Min;
+Order.At.WithLevel("LevelA").Max;
 ```
 
 Following operatior overloads are implemented
@@ -357,7 +364,7 @@ Following operatior overloads are implemented
 {Order} = {int}
 
 // e.g.
-order: Order.Level("my-level") + 10
+order: Order.WithLevel("my-level") + 10
 order: Order.Max - 10
 order: 10 // Order.Zero + 10
 ```
@@ -366,6 +373,11 @@ order: 10 // Order.Zero + 10
 >
 > Levels does not allow values exceeding their absolute boundaries, absolute 
 > values should be avaoided unless it is requried to override exceptional cases
+
+> [!NOTE]
+>
+> `Global` order is only affected by its offset value, it cannot be overridden 
+> using `With` methods
 
 > [!CAUTION]
 >
