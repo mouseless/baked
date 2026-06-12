@@ -143,30 +143,30 @@ flowchart LR;
 flowchart LR
 
   BIA(Infra)
-  BCA(Custom)
+  BDA(Defaults)
   BOA(Override)
 
   BIC(Infra)
-  BCC(Custom)
+  BDC(Defaults)
   BOC(Override)
 
   TIA(Infra)
-  TCA(Custom)
+  TDA(Defaults)
   TOA(Override)
 
   TIC(Infra)
-  TCC(Custom)
+  TDC(Defaults)
   TOC(Override)
 
   subgraph Business
     direction LR
     subgraph BA[Add]
       direction TD
-      BIA --> BCA --> BOA
+      BIA --> BDA --> BOA
     end
     subgraph BC[Configure]
       direction TD
-      BIC --> BCC --> BOC
+      BIC --> BDC --> BOC
     end
   end
 
@@ -174,11 +174,11 @@ flowchart LR
     direction LR
     subgraph TA[Add]
       direction TD
-      TIA --> TCA --> TOA
+      TIA --> TDA --> TOA
     end
     subgraph TC[Configure]
       direction TD
-      TIC --> TCC --> TOC
+      TIC --> TDC --> TOC
     end
   end
 
