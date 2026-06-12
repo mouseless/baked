@@ -55,7 +55,7 @@ public static class LocatableCodingStyleExtensions
     extension(IDomainModelConventionCollection conventions)
     {
         public void AddLocateAction<TLocatable>() =>
-            conventions.Add(new AddLocateActionConvention<TLocatable>(), order: Order.At.Infra.Max - 10);
+            conventions.Add(new AddLocateActionConvention<TLocatable>(), order: Order.At.Infra.Max - 20);
     }
 
     extension(ParameterModelAttribute parameter)
