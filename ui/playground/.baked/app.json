@@ -24,10 +24,6 @@
           "path": "route-parameters-samples/{id}/items"
         },
         {
-          "method": "POST",
-          "path": "children"
-        },
-        {
           "method": "PUT",
           "path": "children/{id}/"
         },

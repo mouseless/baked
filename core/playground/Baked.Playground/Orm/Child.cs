@@ -5,7 +5,7 @@ using Baked.Orm;
 namespace Baked.Playground.Orm;
 
 [AllowAnonymous]
-public class Child(IEntityContext<Child> _context, Func<Parent> _newParent)
+public class Child(IEntityContext<Child> _context)
 {
     public Id Id { get; private set; } = default!;
     public string Name { get; private set; } = default!;
@@ -13,19 +13,6 @@ public class Child(IEntityContext<Child> _context, Func<Parent> _newParent)
     internal Parent? InternalParent { get; private set; } = default!;
     public ParentWrapper ParentWrapper => new(Parent);
     public IParentInterface ParentInterface => Parent;
-
-    public Child With(string name, string parentName, string parentSurname)
-    {
-        Parent = _newParent().With(parentName, parentSurname, Status.Active, Role.Admin);
-        Name = name;
-
-        if (parentName == "wrong" || parentSurname == "wrong")
-        {
-            throw new("Test exception for transaction rollback, expect no inserted parent");
-        }
-
-        return _context.Insert(this);
-    }
 
     internal Child With(string name, Parent parent)
     {

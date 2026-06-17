@@ -18,11 +18,5 @@ transaction-samples @controller-model {
       @parameter-model required=#true
     }
   }
-  rollback-multiple {
-    @action-model route="POST /transaction-samples/rollback-multiple" required-claims="BaseA, BaseB"
-    string {
-      @parameter-model required=#true
-    }
-  }
 }
 

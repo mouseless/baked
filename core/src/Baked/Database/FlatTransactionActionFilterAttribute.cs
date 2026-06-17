@@ -6,28 +6,26 @@ using ISession = NHibernate.ISession;
 
 namespace Baked.Database;
 
+// TODO requires review
 public class FlatTransactionActionFilterAttribute : ActionFilterAttribute
 {
     public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        using var session = context.HttpContext.RequestServices.GetRequiredService<ISession>();
+        var session = context.HttpContext.RequestServices.GetRequiredService<ISession>();
 
         session.BeginTransaction();
 
-        try
-        {
-            await next();
-            await session.GetCurrentTransaction().CommitAsync();
-        }
-        catch
+        var actionExecutedContext = await next();
+
+        if (actionExecutedContext.Exception != null)
         {
             await session.GetCurrentTransaction().RollbackAsync();
-
-            throw;
         }
-        finally
+        else
         {
-            session.GetCurrentTransaction()?.Dispose();
+            await session.GetCurrentTransaction().CommitAsync();
         }
+
+        session.GetCurrentTransaction()?.Dispose();
     }
 }
