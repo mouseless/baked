@@ -44,14 +44,31 @@ public class TransactionRollback : TestNfr
     }
 
     [Test]
-    public async Task Multiple_entities_created_within_a_transaction_does_not_persists_when_an_error_occurs()
+    public async Task Entities_created_within_request_transaction_does_not_persists_when_an_error_occurs()
     {
         var response = await Client.PostAsync("/children", JsonContent.Create(new { name = "test", parentName = "wrong", parentSurname = "wrong" }));
         response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
 
         var parentResponse = await Client.GetAsync("/parents");
-        dynamic? parents = await parentResponse.Content.Deserialize() ?? new { };
+        dynamic? parents = await parentResponse.Content.Deserialize() ?? throw new("Expected content to be not null");
 
         ((IEnumerable<dynamic>)parents).Count().ShouldBe(0);
+    }
+
+    [Test]
+    public async Task Multiple_entities_created_within_request_transaction_does_not_persists_when_an_error_occurs()
+    {
+        var response = await Client.PostAsync("/transaction-samples/rollback-multiple", JsonContent.Create(new { @string = "test" }));
+        response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
+
+        var parentResponse = await Client.GetAsync("/parents");
+        dynamic? parents = await parentResponse.Content.Deserialize() ?? throw new("Expected content to be not null");
+
+        ((IEnumerable<dynamic>)parents).Count().ShouldBe(0);
+
+        var childrenResponse = await Client.GetAsync("/children");
+        dynamic? children = await childrenResponse.Content.Deserialize() ?? throw new("Expected content to be not null");
+
+        ((IEnumerable<dynamic>)children).Count().ShouldBe(0);
     }
 }
