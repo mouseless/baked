@@ -57,7 +57,10 @@
     <div
       v-bind="$attrs"
       class="flex flex-col gap-4"
-      :class="{ 'gap-8': !horizontal }"
+      :class="[
+        { 'gap-8': !horizontal },
+        { 'horizontal': horizontal }
+      ]"
     >
       <h2 class="font-bold text-xl truncate">
         {{ l(title) }}
@@ -84,7 +87,10 @@
           :schema="submit"
           :ready
           class="min-w-min"
-          :class="{ 'mt-4': !horizontal && inputs.length }"
+          :class="[
+            { 'mt-4': !horizontal && inputs.length },
+            { 'text-nowrap self-start': horizontal }
+          ]"
           @submit="$emit('submit', model)"
         />
         <ErrorPopover ref="errorPopoverRef">
@@ -157,3 +163,16 @@ function emitSubmit() {
   }
 }
 </script>
+<style scoped>
+.horizontal {
+  :has(.p-iftalabel) {
+    .p-button[data-p="large"] {
+      @apply mt-1;
+    }
+
+    .p-button:not([data-p="large"]) {
+      @apply mt-2;
+    }
+  }
+}
+</style>
