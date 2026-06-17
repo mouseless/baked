@@ -9,7 +9,7 @@
     <div
       class="
         w-full
-        grid grid-cols-1 items-start gap-4
+        grid grid-cols-1 items-start content-start gap-4
         lg:grid-cols-2
       "
     >
