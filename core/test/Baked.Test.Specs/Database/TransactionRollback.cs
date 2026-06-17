@@ -42,4 +42,16 @@ public class TransactionRollback : TestNfr
         response.StatusCode.ShouldNotBe(HttpStatusCode.NotFound);
         ((string?)result?.Last.String)?.ShouldBe("transaction func");
     }
+
+    [Test]
+    public async Task Multiple_entities_created_within_a_transaction_does_not_persists_when_an_error_occurs()
+    {
+        var response = await Client.PostAsync("/children", JsonContent.Create(new { name = "test", parentName = "wrong", parentSurname = "wrong" }));
+        response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
+
+        var parentResponse = await Client.GetAsync("/parents");
+        dynamic? parents = await parentResponse.Content.Deserialize() ?? new { };
+
+        ((IEnumerable<dynamic>)parents).Count().ShouldBe(0);
+    }
 }

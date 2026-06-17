@@ -1,5 +1,17 @@
 child {
   @controller-model locate-route="GET /children/{id}"
+  with {
+    @action-model route="POST /children" anonymous=#true
+    name {
+      @parameter-model required=#true
+    }
+    parent-name {
+      @parameter-model required=#true
+    }
+    parent-surname {
+      @parameter-model required=#true
+    }
+  }
   update {
     @action-model route="PUT /children/{id}/" anonymous=#true
     name @parameter-model
