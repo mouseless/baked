@@ -25,7 +25,7 @@
     <div
       v-if="sideContents.length"
       class="
-        w-[30rem] gap-2 flex flex-col
+        w-[30rem] gap-2 flex flex-col mt-2
         max-md:w-full
         max-lg:w-80
       "
