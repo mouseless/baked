@@ -17,8 +17,8 @@ public class TransactionRollback : TestNfr
         var entitiesResponse = await Client.GetAsync("entities");
         response.StatusCode.ShouldNotBe(HttpStatusCode.NotFound);
 
-        var result = JsonConvert.DeserializeObject<IEnumerable<JObject>>(await entitiesResponse.Content.ReadAsStringAsync()) ?? [];
-        result.LastOrDefault()?.Value<string>("string").ShouldNotBe(@string);
+        var entities = JsonConvert.DeserializeObject<IEnumerable<JObject>>(await entitiesResponse.Content.ReadAsStringAsync()) ?? [];
+        entities.LastOrDefault()?.Value<string>("string").ShouldNotBe(@string);
     }
 
     [Test]
