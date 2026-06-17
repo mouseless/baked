@@ -111,7 +111,7 @@ public readonly struct Order
         if (level is not null && !levels.TryGetValue(level, out levelIndex))
         {
             Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel,
-                $"Given level '{_level}' was not found in configured levels, defaulting to '{defaultLevel}'"
+                $"Given level '{level}' was not found in configured levels, defaulting to '{defaultLevel}'"
             );
         }
 

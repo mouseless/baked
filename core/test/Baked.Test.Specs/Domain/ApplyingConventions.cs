@@ -175,7 +175,7 @@ public class ApplyingConventions : Spec
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.At.WithLevel("not existing"));
+                c.Add(new TestConvention("B"), order: Order.At.WithLevel("NA"));
                 c.Add(new TestConvention("B"), order: Order.At.Zero);
             },
             options: BuildOptions,
@@ -185,6 +185,6 @@ public class ApplyingConventions : Spec
         postBuilder.EndBuild();
 
         messages.Count.ShouldBe(1);
-        messages.Single().Message.ShouldBe("Given level 'not existing' was not found in configured levels, defaulting to 'B1.L1.E1'");
+        messages.Single().Message.ShouldBe("Given level 'B1.NA.E1' was not found in configured levels, defaulting to 'B1.L1.E1'");
     }
 }
