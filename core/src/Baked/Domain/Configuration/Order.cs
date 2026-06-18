@@ -84,7 +84,7 @@ public readonly struct Order
         );
     }
 
-    public int Calculate(IReadOnlyDictionary<string, int> levels, string defaultLevel)
+    public int? Calculate(IReadOnlyDictionary<string, int> levels, string defaultLevel)
     {
         if (_global) { return _offset; }
 
@@ -100,18 +100,11 @@ public readonly struct Order
         }
 
         var level = $"{_base}.{_level}.{_extension}";
+        if (!levels.TryGetValue(level, out var levelIndex)) { return null; }
         if (_offset < _lowerBound || _offset > _upperBound)
         {
             throw DiagnosticCode.OrderOutOfBounds.Exception(
                 $"Order ({level}: {_offset}) must be between {_lowerBound} - {_upperBound}"
-            );
-        }
-
-        var levelIndex = defaultLevelIndex;
-        if (level is not null && !levels.TryGetValue(level, out levelIndex))
-        {
-            Diagnostics.Current.ReportWarning(DiagnosticCode.UndefinedLevel,
-                $"Given level '{level}' was not found in configured levels, defaulting to '{defaultLevel}'"
             );
         }
 

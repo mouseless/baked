@@ -169,13 +169,13 @@ public class ApplyingConventions : Spec
     }
 
     [Test]
-    public void Prompts_diagnostic_warning_on_default_layer_fallback()
+    public void Skips_convention_when_level_does_not_exist()
     {
         var messages = new List<DiagnosticMessage>();
         var builder = GiveMe.ADomainModelBuilder(
             conventions: c =>
             {
-                c.Add(new TestConvention("B"), order: Order.At.WithLevel("NA"));
+                c.Add(new TestConvention("A"), order: Order.At.WithLevel("NA"));
                 c.Add(new TestConvention("B"), order: Order.At.Zero);
             },
             options: BuildOptions,
@@ -184,7 +184,9 @@ public class ApplyingConventions : Spec
         var postBuilder = builder.StartBuild([typeof(string)]);
         postBuilder.EndBuild();
 
+        _values.Count.ShouldBe(1);
+        _values[0].ShouldBe("B");
         messages.Count.ShouldBe(1);
-        messages.Single().Message.ShouldBe("Given level 'B1.NA.E1' was not found in configured levels, defaulting to 'B1.L1.E1'");
+        messages.Single().Message.ShouldStartWith($"Convention '{typeof(TestConvention).FullName}' is skipped due to unrecognized order: 'BNE+0000'.");
     }
 }
