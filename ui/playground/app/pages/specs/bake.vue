@@ -147,6 +147,28 @@ const variants = [
             })
           }
         }),
+        giveMe.anExpected({
+          testId: "null",
+          value: "NULL",
+          reactions: {
+            show: giveMe.aTrigger({
+              key: "parent",
+              when: "data.key",
+              constraint: giveMe.aConstraint({ is: null })
+            })
+          }
+        }),
+        giveMe.anExpected({
+          testId: "not null",
+          value: "NOT NULL",
+          reactions: {
+            show: giveMe.aTrigger({
+              key: "parent",
+              when: "data.key",
+              constraint: giveMe.aConstraint({ isNot: null })
+            })
+          }
+        }),
         giveMe.aButton({
           label: "Spec: Reload",
           action: giveMe.aPublishAction({ event: "clicked" })

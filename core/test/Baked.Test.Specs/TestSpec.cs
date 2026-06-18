@@ -1,3 +1,4 @@
+using Baked.Architecture;
 using Baked.Monolith;
 using Baked.Playground.Communication;
 using Baked.Playground.Orm;
@@ -20,6 +21,7 @@ public abstract class TestSpec : MonolithSpec
                 recipe.Configure(app =>
                 {
                     app.Features.AddReporting(c => c.Mock());
+                    app.Features.Add(new AddThemeForTestingFeature());
                     app.Features.AddOverrides();
                 });
             }
@@ -32,4 +34,15 @@ public abstract class TestSpec : MonolithSpec
             _ when key == "Int" => $"{GiveMe.AnInteger()}",
             _ => GiveMe.AString()
         };
+
+    class AddThemeForTestingFeature : IFeature
+    {
+        public void Configure(LayerConfigurator configurator)
+        {
+            configurator.Domain.ConfigureBuilder(builder =>
+            {
+                builder.ConventionOrderMatrix.Bases.Add("Theme");
+            });
+        }
+    }
 }

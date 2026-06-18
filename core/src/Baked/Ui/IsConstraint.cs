@@ -1,8 +1,9 @@
 ﻿namespace Baked.Ui;
 
-public record IsConstraint(string Is)
+public record IsConstraint(object? Is)
     : IConstraint
 {
     public string Type => nameof(Is);
-    public string Is { get; set; } = Is;
+    public object? Is { get; set; } = Is;
+    public bool? Null => Is is null ? true : null;
 }

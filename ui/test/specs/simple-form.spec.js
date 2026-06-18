@@ -51,6 +51,18 @@ test.describe("Base", () => {
     await expect(button).toBeDisabled();
   });
 
+  test("button shows validation tooltip when inputs are not ready", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+    const button = component.locator(primevue.button.base);
+    const tooltip = page.locator(".p-tooltip");
+
+    await input.fill("");
+    await button.hover();
+
+    await expect(tooltip.locator(".p-tooltip-text")).toContainText("- Input cannot be empty");
+  });
+
   test("button is enabled when inputs are ready", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
@@ -185,6 +197,19 @@ test.describe("Dialog", () => {
 
     await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(0)).toHaveText("Cancel");
     await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(1)).toHaveText("Submit");
+  });
+
+  test("validation tooltip", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const footerButton = dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(1);
+    const tooltip = page.locator(".p-tooltip");
+
+    await button.click();
+    await footerButton.hover();
+
+    await expect(tooltip.locator(".p-tooltip-text")).toContainText("- Input cannot be empty");
   });
 
   test("executes action after close", async({ page }) => {

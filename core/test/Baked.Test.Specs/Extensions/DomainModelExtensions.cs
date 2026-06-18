@@ -58,6 +58,10 @@ public static class DomainModelExtensions
             var optionsInstance = new DomainModelBuilderOptions();
             optionsInstance.BuildLevels.Add(BuildLevels.Metadata);
             optionsInstance.OnComplete = _ => { };
+            optionsInstance.ConventionOrderMatrix.Bases.Add("Business");
+            optionsInstance.ConventionOrderMatrix.Levels.Add("Defaults");
+            optionsInstance.ConventionOrderMatrix.Extensions.Add("Add");
+            optionsInstance.ConventionOrderMatrix.Extensions.Add("Configure");
 
             if (options is not null)
             {

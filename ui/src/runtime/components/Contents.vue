@@ -9,7 +9,7 @@
     <div
       class="
         w-full
-        grid grid-cols-1 items-start gap-4
+        grid grid-cols-1 items-start content-start gap-4
         lg:grid-cols-2
       "
     >
@@ -25,7 +25,7 @@
     <div
       v-if="sideContents.length"
       class="
-        w-[30rem] gap-2 flex flex-col
+        w-[30rem] gap-2 flex flex-col mt-2
         max-md:w-full
         max-lg:w-80
       "

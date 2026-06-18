@@ -13,9 +13,15 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.Add(new AddTransactionFilterToActionConvention(), order: Order.At.Global.Max);
+        });
+
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
+            services.AddScoped<TransactionFilter>();
         });
 
         configurator.DataAccess.ConfigurePersistence(persistence =>
@@ -35,11 +41,6 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
             }
 
             fluent.ExposeConfiguration(c => c.SetProperty(NHibernate.Cfg.Environment.OracleSuppressDecimalInvalidCastException, "true"));
-        });
-
-        configurator.Domain.ConfigureConventions(conventions =>
-        {
-            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }

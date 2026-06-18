@@ -5,6 +5,8 @@ namespace Baked.Playground.Database;
 
 public class TransactionSamples(
     Func<Entity> _newEntity,
+    Func<Parent> _newParent,
+    Func<Child> _newChild,
     ITransaction _transaction
 )
 {
@@ -40,6 +42,14 @@ public class TransactionSamples(
     public void Rollback(string @string)
     {
         _newEntity().With(@string: @string);
+
+        throw new();
+    }
+
+    public void RollbackMultiple(string @string)
+    {
+        var parent = _newParent().With("ParentName: " + @string, "ParentSurname: " + @string, Status.Active, Role.Admin);
+        _newChild().With(parent.Name + " Child", parent);
 
         throw new();
     }

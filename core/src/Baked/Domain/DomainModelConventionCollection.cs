@@ -1,5 +1,7 @@
 using Baked.Domain.Configuration;
 using NHibernate.Util;
+using Spectre.Console;
+
 using static Baked.Domain.Configuration.DomainModelBuilderOptions;
 
 namespace Baked.Domain;
@@ -13,13 +15,22 @@ public class DomainModelConventionCollection(DomainModelBuilderOptions _options)
         Diagnostics.Current.Diagnose(() =>
         {
             var orderMatrix = _orderMatrix.Value;
-            var calculatedOrder = order
+            order = order
                 .WithBase(order.Base ?? orderMatrix.FallbackBase(convention))
                 .WithLevel(order.Level ?? orderMatrix.FallbackLevel(convention))
-                .WithExtension(order.Extension ?? orderMatrix.FallbackExtension(convention))
-                .Calculate(orderMatrix.Levels, orderMatrix.DefaultConventionLevel);
+                .WithExtension(order.Extension ?? orderMatrix.FallbackExtension(convention));
+            var calculation = order.Calculate(orderMatrix.Levels, orderMatrix.DefaultConventionLevel);
+            if (calculation is null)
+            {
+                Diagnostics.Current.ReportInfo(
+                    $"Convention '{Markup.Escape($"{convention}")}' is skipped due to unrecognized order: '{order}'." +
+                    " Make sure convention order matrix contains the required base, level and/or extension."
+                );
 
-            Add((convention, calculatedOrder));
+                return;
+            }
+
+            Add((convention, calculation.Value));
         });
 
     class OrderMatrix(ConventionOrderMatrixOptions options, string? defaultConventionLevel)

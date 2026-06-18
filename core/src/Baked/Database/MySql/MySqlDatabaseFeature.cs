@@ -11,9 +11,15 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.Add(new AddTransactionFilterToActionConvention(), order: Order.At.Global.Max);
+        });
+
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
+            services.AddScoped<TransactionFilter>();
         });
 
         configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
@@ -30,11 +36,6 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
                 MySQLConfiguration.Standard
                     .ConnectionString(_connectionString)
                     .Dialect<CustomMySQL57Dialect>();
-        });
-
-        configurator.Domain.ConfigureConventions(conventions =>
-        {
-            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }

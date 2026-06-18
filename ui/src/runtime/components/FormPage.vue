@@ -57,6 +57,7 @@
             <div
               v-if="inputGroups.length > 0"
               class="
+                b-input-groups
                 grid grid-cols-2 grid-flow-col
                 gap-4 items-start
                 max-md:flex max-md:flex-col
@@ -69,7 +70,7 @@
                 class="w-full flex gap-4 max-md:flex-col"
                 :class="{
                   'col-span-2': inputGroup.wide,
-                  'reset-min-w': inputGroup.inputs.length > 1
+                  'b-input-group reset-min-w': inputGroup.inputs.length > 1
                 }"
               >
                 <Inputs
