@@ -4,11 +4,11 @@ public static class Constraints
 {
     public static Composables Composable { get; } = new();
 
-    public static IsConstraint Is(string value,
+    public static IsConstraint Is(object value,
         Action<IsConstraint>? options = default
     ) => options.Apply(new(value));
 
-    public static IsNotConstraint IsNot(string value,
+    public static IsNotConstraint IsNot(object value,
         Action<IsNotConstraint>? options = default
     ) => options.Apply(new(value));
 
