@@ -49,7 +49,7 @@ function Is() {
 
 function IsNot() {
   async function evaluate({ constraint, value }) {
-    return constraint.null ? value != null : constraint.isNot !== value;
+    return (constraint.null && value != null) || constraint.isNot !== value;
   }
 
   return {

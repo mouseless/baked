@@ -337,16 +337,19 @@ test.describe.serial("Reaction", () => {
 
     await expect(component.getByTestId("show")).toBeAttached();
   });
+
   test("show 'NOT NULL' value when parent data is not null", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("not null")).toBeAttached();
   });
+
   test("hide HIDDEN value when parent data is expected", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("hide")).not.toBeAttached();
   });
+
   test("hide NULL value when parent data is not null", async({ page }) => {
     const component = page.getByTestId(id);
 
