@@ -15,9 +15,15 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
 
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.Add(new AddTransactionFilterToActionConvention(), order: Order.At.Global.Max);
+        });
+
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
+            services.AddScoped<TransactionFilter>();
         });
 
         configurator.DataAccess.ConfigurePersistence(persistence =>
@@ -37,11 +43,6 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
                     }
                 }
             });
-        });
-
-        configurator.Domain.ConfigureConventions(conventions =>
-        {
-            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }

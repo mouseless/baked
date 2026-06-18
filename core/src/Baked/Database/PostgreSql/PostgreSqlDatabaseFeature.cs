@@ -11,9 +11,15 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.Domain.ConfigureConventions(conventions =>
+        {
+            conventions.Add(new AddTransactionFilterToActionConvention(), order: Order.At.Global.Max);
+        });
+
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<ITransaction, FlatTransaction>();
+            services.AddScoped<TransactionFilter>();
         });
 
         configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
@@ -31,11 +37,6 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
                     .ConnectionString(_connectionString)
                     .Dialect<CustomPostgreSQL83Dialect>()
             ;
-        });
-
-        configurator.Domain.ConfigureConventions(conventions =>
-        {
-            conventions.Add(new AddFlatTransactionToActionConvention(), order: Order.At.Infra);
         });
     }
 }
