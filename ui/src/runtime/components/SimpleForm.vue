@@ -43,6 +43,11 @@
           @submit="() => visible = false"
         />
         <Button
+          v-tooltip.top="{
+            disabled: !showValidationSummary,
+            value: messages,
+            pt: { text: 'text-sm' }
+          }"
           :schema="submit"
           :ready
           @submit="execute"
