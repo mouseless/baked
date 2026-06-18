@@ -114,7 +114,8 @@ export default {
     if(isNot) {
       return {
         type: "IsNot",
-        isNot
+        isNot,
+        null: isNot === null
       };
     }
 
@@ -122,7 +123,8 @@ export default {
 
     return {
       type: "Is",
-      is
+      is,
+      null: is === null
     };
   },
 
