@@ -67,7 +67,10 @@
         { 'horizontal': horizontal }
       ]"
     >
-      <h2 class="font-bold text-xl truncate">
+      <h2
+        v-if="alwaysShowTitle"
+        class="font-bold text-xl truncate"
+      >
         {{ l(title) }}
       </h2>
       <div
@@ -120,7 +123,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { dialogOptions, inputs, horizontal, submit, title, validations = [], showValidationSummary = false } = schema;
+const { alwaysShowTitle, dialogOptions, inputs, horizontal, submit, title, validations = [], showValidationSummary } = schema;
 
 const model = ref({});
 const readyData = ref({});

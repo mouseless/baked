@@ -893,7 +893,7 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogOptions, horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
+  aSimpleForm({ alwaysShowTitle, dialogOptions, horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
@@ -903,6 +903,7 @@ export default {
     return {
       type: "SimpleForm",
       schema: {
+        alwaysShowTitle,
         dialogOptions,
         horizontal,
         inputs,

@@ -63,6 +63,12 @@ public class ParentDomainOverrideFeature : IFeature
                 order: Order.At.Override
             );
 
+            conventions.AddMethodComponentConfiguration<SimpleForm>(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.AddChild),
+                component: sf => sf.Schema.AlwaysShowTitle = true,
+                order: Order.At.Override
+            );
+
             conventions.AddTypeComponentConfiguration<Fieldset>(
                 when: c => c.Type.Is<Parent>(),
                 component: dt => dt.ReloadOn(nameof(Parent.Update).Kebaberize()),
