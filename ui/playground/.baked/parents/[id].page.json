@@ -355,7 +355,8 @@
                   }
                 }
               }
-            ]
+            ],
+            "alwaysShowTitle": true
           },
           "action": {
             "type": "Remote",

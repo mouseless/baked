@@ -30,7 +30,8 @@ const variants = [
         })
       ],
       submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
-      title: "Spec: Simple Form"
+      title: "Spec: Simple Form",
+      alwaysShowTitle: true
     })
   },
   {

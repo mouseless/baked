@@ -102,7 +102,7 @@ export default {
     return result;
   },
 
-  aConstraint({ is, isNot, composable, options }) {
+  aConstraint({ is, isNull, isNot, isNotNull, composable, options }) {
     if(composable) {
       return {
         type: "Composable",
@@ -111,11 +111,24 @@ export default {
       };
     }
 
+    if(isNotNull) {
+      return {
+        type: "IsNot",
+        "null": true
+      };
+    }
+
     if(isNot) {
       return {
         type: "IsNot",
-        isNot,
-        null: isNot === null
+        isNot
+      };
+    }
+
+    if(isNull) {
+      return {
+        type: "Is",
+        "null": true
       };
     }
 
@@ -123,8 +136,7 @@ export default {
 
     return {
       type: "Is",
-      is,
-      null: is === null
+      is
     };
   },
 
@@ -881,7 +893,7 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogOptions, horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
+  aSimpleForm({ alwaysShowTitle, dialogOptions, horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
@@ -891,6 +903,7 @@ export default {
     return {
       type: "SimpleForm",
       schema: {
+        alwaysShowTitle,
         dialogOptions,
         horizontal,
         inputs,

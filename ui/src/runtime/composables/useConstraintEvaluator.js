@@ -39,7 +39,9 @@ function Composable() {
 
 function Is() {
   async function evaluate({ constraint, value }) {
-    return (constraint.null && value == null) || constraint.is === value;
+    if(constraint["null"]) { return value == null; }
+
+    return constraint.is === value;
   }
 
   return {
@@ -49,7 +51,9 @@ function Is() {
 
 function IsNot() {
   async function evaluate({ constraint, value }) {
-    return (constraint.null && value != null) || constraint.isNot !== value;
+    if(constraint["null"]) { return value != null; }
+
+    return constraint.isNot !== value;
   }
 
   return {

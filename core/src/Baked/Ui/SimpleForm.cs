@@ -9,6 +9,7 @@ public record SimpleForm(string Title, Button Submit) : IComponentSchema
     public Dialog? DialogOptions { get; set; }
     public List<ValidationComposable>? Validations { get; set; }
     public bool? ShowValidationSummary { get; set; }
+    public bool? AlwaysShowTitle { get; set; }
 
     public record Dialog(Button Open, Button Cancel)
     {

@@ -14,6 +14,8 @@ public class Child(IEntityContext<Child> _context)
     public ParentWrapper ParentWrapper => new(Parent);
     public IParentInterface ParentInterface => Parent;
 
+    internal string Title => Name;
+
     internal Child With(string name, Parent parent)
     {
         Name = name;

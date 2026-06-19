@@ -154,7 +154,7 @@ const variants = [
             show: giveMe.aTrigger({
               key: "parent",
               when: "data.key",
-              constraint: giveMe.aConstraint({ is: null })
+              constraint: giveMe.aConstraint({ isNull: true })
             })
           }
         }),
@@ -165,7 +165,7 @@ const variants = [
             show: giveMe.aTrigger({
               key: "parent",
               when: "data.key",
-              constraint: giveMe.aConstraint({ isNot: null })
+              constraint: giveMe.aConstraint({ isNotNull: true })
             })
           }
         }),
