@@ -1,38 +1,60 @@
 <template>
-  <div class="top">
-    <header class="flex m-auto flex-row items-center justify-between">
+  <div class="border-b-2 border-[color:var(--color-bg-soft)]">
+    <header
+      class="
+        flex m-auto flex-row items-center justify-between
+        max-w-[82%]
+        box-border
+        min-w-[var(--page-min)]
+        xl:max-w-[var(--max-content-width-xl)]
+        lg:max-w-[var(--max-content-width-lg)]
+        md:max-w-[var(--max-content-width-md)]
+        sm:max-w-[var(--max-content-width-sm)]
+      "
+    >
       <div class="logo my-[var(--space-sm)] mx-0">
-        <NuxtLink to="/" class="block h-6">
-          <img class="baked logo inline-block h-6">
+        <NuxtLink to="/" class="block h-6 xl:h-[20px]">
+          <img class="baked logo inline-block h-6 xl:h-[20px]">
         </NuxtLink>
       </div>
       <div
         v-if="menuShown"
         class="
-          overlay fixed hidden
+          overlay fixed block md:hidden
           w-full h-full
           bg-[color:var(--color-darkgreen-900)] opacity-50
-          z-[98] m-0 p-0 left-0 top-0
+          z-[98] left-0 top-0
         "
         @click="close"
       />
       <a
-        class="bars hidden"
+        class="bars block md:hidden"
         @click="toggle"
       ><i class="fa-solid fa-bars" /></a>
-      <nav :class="{ active: menuShown }">
+      <nav
+        :class="{ 'block': menuShown, 'hidden': !menuShown }"
+        class="
+          fixed top-0 right-0 z-[99]
+          bg-[color:var(--color-bg)]
+          h-full w-[calc(var(--page-min)-var(--space-md))]
+          p-5 border-l-2 border-[color:var(--color-bg-second)]
+          md:static md:flex md:flex-row md:items-center md:gap-[var(--space-md)]
+          md:bg-transparent md:h-auto md:w-auto md:p-0 md:border-0
+        "
+      >
         <a
-          class="close hidden"
+          class="close block md:hidden mb-[var(--space-sm)] h-[2em]"
           @click="toggle"
-        ><i class="fa-solid fa-close" /></a>
+        ><i class="fa-solid fa-close text-lg" /></a>
         <NuxtLink
           v-for="menu in menus"
           :key="menu.title"
           :to="menu.path"
           :class="{
-            'border-b-2 border-[color:var(--color-logo-mark)] pb-[calc(var(--space-sm)+2px)]': menu.path === root
+            'md:border-b-2 md:border-[color:var(--color-logo-mark)] md:pb-[calc(var(--space-sm)+2px)] md:xl:pb-[calc(var(--space-sm)+1px)]': menu.path === root,
+            'max-md:border-l-2 max-md:border-l-[color:var(--color-brand)] max-md:pb-0 max-md:pl-[calc(20px+var(--space-sm))] max-md:ml-[-22px]': menu.path === root
           }"
-          class="m-[var(--space-sm)] no-underline last:mr-0"
+          class="block h-[2em] m-[var(--space-sm)] no-underline last:mr-0"
           @click="close"
         >
           {{ menu.title }}
@@ -47,7 +69,7 @@
         <NuxtLink
           :to="`https://matrix.to/#/${runtimeConfig.public.matrixURL}`"
           target="_blank"
-          class="matrix"
+          class="text-[color:var(--color-fg-second)] cursor-pointer"
           @click="close"
         >
           <Icon.Matrix />
@@ -73,14 +95,6 @@ function toggle() { menuShown.value = !menuShown.value; }
 function close() { menuShown.value = false; }
 </script>
 <style lang="scss" scoped>
-div.top {
-  @include border(bottom);
-}
-
-header {
-  @include width;
-}
-
 @media (max-width: $width-page-xl) {
   div.logo {
     a:has(img.logo) {
@@ -99,26 +113,7 @@ header {
 }
 
 @media (max-width: $width-page-m) {
-  a.bars {
-    display: block;
-  }
-
-  .overlay {
-    display: block;
-  }
-
   nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 99;
-    background: $color-bg;
-    height: 100%;
-    width: calc($width-page-min - $space-md);
-    padding: 20px;
-    border-left: solid 2px $color-bg-second;
-    display: none;
-
     &.active {
       display: block;
     }
@@ -134,16 +129,6 @@ header {
         i {
           font-size: larger;
         }
-      }
-
-      &.active {
-        border: 0;
-        @include border(left);
-        border-left-color: $color-brand;
-
-        padding-bottom: 0;
-        padding-left: calc(20px + $space-sm);
-        margin-left: -22px;
       }
     }
   }
