@@ -1,3 +1,0 @@
-[submodule "docs/.theme/prebuild/.prebuild"]
-	path = docs/.theme/prebuild/.prebuild
-	url = https://github.com/mouseless/prebuild.git
