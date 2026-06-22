@@ -16,7 +16,7 @@
     "local": "npx http-server .output/public -p 3000"
   },
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "11.15.0",
+    "@mouseless/prebuild": "mouseless/prebuild#v0.1.10",
     "@nuxt/content": "3.14.0",
     "@nuxt/eslint": "1.16.0",
     "@pinia/nuxt": "0.11.3",
