@@ -1,30 +1,38 @@
 <template>
   <div class="top">
-    <header>
-      <div class="logo">
-        <NuxtLink to="/">
-          <img class="baked logo">
+    <header class="flex m-auto flex-row items-center justify-between">
+      <div class="logo my-[var(--space-sm)] mx-0">
+        <NuxtLink to="/" class="block h-6">
+          <img class="baked logo inline-block h-6">
         </NuxtLink>
       </div>
       <div
         v-if="menuShown"
-        class="overlay"
+        class="
+          overlay fixed hidden
+          w-full h-full
+          bg-[color:var(--color-darkgreen-900)] opacity-50
+          z-[98] m-0 p-0 left-0 top-0
+        "
         @click="close"
       />
       <a
-        class="bars"
+        class="bars hidden"
         @click="toggle"
       ><i class="fa-solid fa-bars" /></a>
       <nav :class="{ active: menuShown }">
         <a
-          class="close"
+          class="close hidden"
           @click="toggle"
         ><i class="fa-solid fa-close" /></a>
         <NuxtLink
           v-for="menu in menus"
           :key="menu.title"
           :to="menu.path"
-          :class="{ active: menu.path === root }"
+          :class="{
+            'border-b-2 border-[color:var(--color-logo-mark)] pb-[calc(var(--space-sm)+2px)]': menu.path === root
+          }"
+          class="m-[var(--space-sm)] no-underline last:mr-0"
           @click="close"
         >
           {{ menu.title }}
@@ -71,68 +79,6 @@ div.top {
 
 header {
   @include width;
-
-  & {
-    margin: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .bars {
-    display: none;
-  }
-}
-
-.overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-darkgreen-900);
-  opacity: 0.5;
-  padding: 0;
-  margin: 0;
-  top: 0;
-  left: 0;
-  display: none;
-  z-index: 98;
-}
-
-div.logo {
-  margin: $space-sm 0;
-
-  a:has(img.logo) {
-    display: block;
-    height: 24px;
-
-    img.baked {
-      &:is(.logo) {
-        height: 24px;
-        display: inline-block;
-      }
-    }
-  }
-}
-
-nav a {
-  margin: $space-sm;
-  text-decoration: none;
-
-  &.close {
-    display: none;
-  }
-
-  &.active {
-    @include border(bottom);
-
-    border-bottom-color: $color-brand;
-    padding-bottom: calc($space-sm + 2px);
-  }
-
-  &:last-child {
-    margin-right: 0;
-  }
 }
 
 @media (max-width: $width-page-xl) {
