@@ -2,6 +2,16 @@
   --width-content: 100ch;
   --font-size: 16px;
   --border-radius: var(--space-xs);
+
+  --color-mermaid-primary: var(--color-red-500);
+  --color-mermaid-primary-text: var(--color-gray-100);
+  --color-mermaid-primary-border: var(--color-red-500);
+  --color-mermaid-primary-line: var(--color-gray-300);
+  --color-mermaid-secondary: var(--color-darkgreen-900);
+  --color-mermaid-secondary-text: var(--color-gray-200);
+  --color-mermaid-secondary-border: var(--color-darkgreen-900);
+  --color-mermaid-tertiary: var(--color-darkgreen-700);
+  --color-mermaid-fill1: var(--color-darkgreen-600);
 }
 
 $border-radius: var(--border-radius);
