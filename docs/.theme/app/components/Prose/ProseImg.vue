@@ -5,6 +5,7 @@
     :width="width"
     :height="height"
     :class="[ alt ]"
+    class="max-w-full"
   >
 </template>
 <script setup>
@@ -57,8 +58,3 @@ function parsePath(path) {
     : pieces[0];
 }
 </script>
-<style lang="scss" scoped>
-img {
-  max-width: 100%;
-}
-</style>

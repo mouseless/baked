@@ -1,37 +1,16 @@
 <template>
-  <div class="table-container">
-    <table>
+  <div class="rounded-xs overflow-x-auto mt-(--space-sm) mb-(--space-md)">
+    <table
+      class="
+        border-spacing-0 w-full
+        [&_tr_td]:p-(--space-sm)
+        [&_tr_th]:p-(--space-sm)
+        [&_tr_th]:bg-(--color-bg-table-nth-child)
+        [&_tr:nth-child(even)_td]:bg-(--color-bg-table-nth-child)
+        [&_*]:text-left
+      "
+    >
       <slot />
     </table>
   </div>
 </template>
-<style lang="scss" scoped>
-.table-container {
-  border-radius: $space-xs;
-  overflow-x: auto;
-  margin-top: $space-sm;
-  margin-bottom: $space-md;
-
-  table {
-    border-spacing: 0;
-    width: 100%;
-  }
-}
-</style>
-<style lang="scss">
-table {
-  tr {
-    td, th {
-      padding: $space-sm;
-    }
-
-    th, &:nth-child(even) td {
-      background-color: $color-bg-table-nth-child;
-    }
-  }
-
-  * {
-    text-align: left;
-  }
-}
-</style>

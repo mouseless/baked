@@ -2,12 +2,13 @@
   <NuxtLink
     :href="manipulatedHref"
     :target="manipulatedHref.startsWith('http') ? '_blank' : target"
+    class="font-default"
     :class="{ 'external': external }"
   >
     <slot />
     <i
       v-if="external"
-      class="fa-solid fa-arrow-up-right-from-square"
+      class="fa-solid fa-arrow-up-right-from-square ml-(--space-xs)"
     />
   </NuxtLink>
 </template>
@@ -27,12 +28,3 @@ const manipulatedHref = props.href
 
 const external = manipulatedHref.startsWith("http");
 </script>
-<style lang="scss" scoped>
-a {
-  font-family: $font-default;
-}
-
-i {
-  margin-left: $space-xs;
-}
-</style>
