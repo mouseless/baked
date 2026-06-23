@@ -5,6 +5,32 @@
 @import "tailwindcss/utilities" layer(utilities);
 
 :root {
+  --width-content: 100ch;
+  --font-size: 16px;
+  --border-radius: var(--space-xs);
+
+  --color-brand: var(--color-logo-mark);
+
+  --color-bg-second: var(--color-bg-soft);
+  --color-bg-third: var(--color-bg-mute);
+  --color-bg-nav: var(--color-bg-soft);
+  --color-bg-nav-active: var(--color-bg-soft);
+  --color-bg-box: var(--color-bg-box);
+  --color-bg-code: var(--color-bg-soft);
+
+  --color-fg-heading: var(--color-logo-text);
+  --color-fg-second: var(--color-fg-soft);
+  --color-fg-third: var(--color-fg-mute);
+  --color-fg-code: var(--color-fg-soft);
+
+  --color-bg-table-nth-child: var(--color-bg-soft);
+
+  --color-box-danger: var(--color-red-600);
+  --color-box-default: var(--color-fg);
+  --color-box-info: var(--color-blue-0);
+  --color-box-tip: var(--color-green-n1);
+  --color-box-warning: var(--color-orange-n1);
+
   --color-dark-link: var(--color-darkgreen-900);
   --color-dark-link-hover: var(--color-red-700);
   --color-dark-box-bg: var(--color-darkgreen-800);
@@ -42,11 +68,14 @@
 
   --width-tolerance: 50px;
   --width-side: 15em;
-
-  --max-content-width-xl: calc(var(--page) - var(--width-tolerance));
-  --max-content-width-lg: calc(var(--page) - var(--width-tolerance));
-  --max-content-width-md: calc(var(--page) - var(--width-side) - var(--width-tolerance));
-  --max-content-width-sm: calc(var(--page) - (2 * var(--width-side)) - var(--space-md) - var(--width-tolerance));
+  --width-content-margin: var(--space-md);
+  --width-page: calc(var(--width-content) + (2 * var(--width-side)) + var(--width-content-margin) + var(--width-tolerance));
+  --width-page-xl: calc(var(--width-page) - var(--width-tolerance));
+  --width-page-l: calc(var(--width-page) - var(--width-side) - var(--width-tolerance));
+  --width-page-m: calc(var(--width-page) - (2 * var(--width-side)) - var(--width-content-margin) - var(--width-tolerance));
+  --width-page-s: 82%;
+  --width-page-min: 270px;
+  --width-nav-side: calc(var(--width-page-min) - var(--space-md));
 
   --font-size: 18px;
   --font-h1: 3em;

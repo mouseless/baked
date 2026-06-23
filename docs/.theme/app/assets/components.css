@@ -2,4 +2,8 @@
 
 @layer utilities {
 
+  /* column */
+  .c--column:has(img.prose:only-child) {
+    @apply max-md:hidden;
+  }
 }

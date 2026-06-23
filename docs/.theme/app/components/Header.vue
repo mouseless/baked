@@ -2,19 +2,18 @@
   <div class="border-b-2 border-[color:var(--color-bg-soft)]">
     <header
       class="
-        flex m-auto flex-row items-center justify-between
-        max-w-[82%]
-        box-border
-        min-w-[var(--page-min)]
-        xl:max-w-[var(--max-content-width-xl)]
-        lg:max-w-[var(--max-content-width-lg)]
-        md:max-w-[var(--max-content-width-md)]
-        sm:max-w-[var(--max-content-width-sm)]
+        flex flex-row items-center justify-between
+        box-border mx-auto
+        min-w-(--width-page-min) max-w-(--width-page-xl)
+        max-xl:max-w-(--width-page-xl)
+        max-lg:max-w-(--width-page-l)
+        max-md:max-w-(--width-page-m)
+        max-sm:max-w-(--width-page-s)
       "
     >
       <div class="logo my-[var(--space-sm)] mx-0">
         <NuxtLink to="/" class="h-6">
-          <img class="baked logo h-6">
+          <img class="baked logo h-5 xl:h-6">
         </NuxtLink>
       </div>
       <div
@@ -32,18 +31,22 @@
         @click="toggle"
       ><i class="fa-solid fa-bars" /></a>
       <nav
-        :class="{ 'block': menuShown, 'hidden': !menuShown }"
+        :class="menuShown ? 'block' : 'hidden'"
         class="
           fixed top-0 right-0 z-[99]
-          bg-[color:var(--color-bg)]
-          h-full w-[calc(var(--page-min)-var(--space-md))]
-          p-5 border-l-2 border-[color:var(--color-bg-second)]
+          bg-(color:--color-bg)
+          h-full w-(--width-nav-side)
+          p-5 border-l-2 border-(color:--color-bg-second)
           md:static md:flex md:flex-row md:items-center
           md:bg-transparent md:h-auto md:w-auto md:p-0 md:border-0
+          md:block
         "
       >
         <a
-          class="close block md:hidden mb-[var(--space-sm)] h-[2em]"
+          class="
+            block hidden
+            m-(--space-sm) h-[2em]
+          "
           @click="toggle"
         ><i class="fa-solid fa-close text-lg" /></a>
         <NuxtLink
@@ -51,17 +54,19 @@
           :key="menu.title"
           :to="menu.path"
           :class="{
-            'md:border-b-2 md:border-[color:var(--color-logo-mark)] md:pb-[calc(var(--space-sm)+2px)] md:xl:pb-[calc(var(--space-sm)+1px)]': menu.path === root,
-            'max-md:border-l-2 max-md:border-l-[color:var(--color-brand)] max-md:pb-0 max-md:pl-[calc(20px+var(--space-sm))] max-md:ml-[-22px]': menu.path === root
+            'md:border-b-2 md:border-(color:--color-brand) md:pb-[calc(var(--space-sm)+2px)] xl:pb-[calc(var(--space-sm)+1px)]': menu.path === root,
+            'max-md:border-l-2 max-md:border-l-(color:--color-brand) max-md:pb-0 max-md:pl-[calc(20px+var(--space-sm))] max-md:ml-[-22px]': menu.path === root
           }"
-          class="block h-[2em] mx-[var(--space-sm)] no-underline"
+          class="
+            block no-underline
+            h-[2em] md:mx-(--space-sm) max-md:m-(--space-sm)"
           @click="close"
         >
           {{ menu.title }}
         </NuxtLink>
         <NuxtLink
           :to="`https://github.com${runtimeConfig.public.githubURL}`"
-          class="mx-[var(--space-sm)]"
+          class="md:mx-(--space-sm) max-md:m-(--space-sm)"
           target="_blank"
           @click="close"
         >
@@ -70,7 +75,10 @@
         <NuxtLink
           :to="`https://matrix.to/#/${runtimeConfig.public.matrixURL}`"
           target="_blank"
-          class="text-[color:var(--color-fg-second)] cursor-pointer ml-[var(--space-sm)]"
+          class="
+            text-(color:--color-fg-second) cursor-pointer
+            md:ml-(--space-sm) max-md:m-(--space-sm)
+          "
           @click="close"
         >
           <Icon.Matrix />
@@ -95,43 +103,3 @@ const menus = { ...store.sections };
 function toggle() { menuShown.value = !menuShown.value; }
 function close() { menuShown.value = false; }
 </script>
-<style lang="scss" scoped>
-@media (max-width: $width-page-xl) {
-  div.logo {
-    a:has(img.logo) {
-      height: 20px;
-
-      img.baked {
-        &:is(.logo) {
-          height: 20px;
-        }
-      }
-    }
-  }
-  nav a.active {
-    padding-bottom: calc($space-sm + 1px);
-  }
-}
-
-@media (max-width: $width-page-m) {
-  nav {
-    &.active {
-      display: block;
-    }
-
-    a {
-      display: block;
-      height: 2em;
-
-      &.close {
-        display: block;
-        margin-bottom: $space-sm;
-
-        i {
-          font-size: larger;
-        }
-      }
-    }
-  }
-}
-</style>
