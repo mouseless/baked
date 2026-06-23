@@ -77,6 +77,10 @@
   --width-page-min: 270px;
   --width-nav-side: calc(var(--width-page-min) - var(--space-md));
 
+  --link-active-pb-md: calc(var(--space-sm) + 2px);
+  --link-active-pb-xl: calc(var(--space-sm) + 1px);
+  --link-active-pl-max-md: calc(var(--space-sm) + 20px);
+
   --font-size: 18px;
   --font-h1: 3em;
   --font-h2: 2em;

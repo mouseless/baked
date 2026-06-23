@@ -1,6 +1,9 @@
 @reference "./theme.css";
 
 @layer utilities {
+  nav .matrix {
+    @apply inline;
+  }
 
   /* column */
   .c--column:has(img.prose:only-child) {

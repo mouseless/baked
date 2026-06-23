@@ -31,22 +31,16 @@
         @click="toggle"
       ><i class="fa-solid fa-bars" /></a>
       <nav
-        :class="menuShown ? 'block' : 'hidden'"
+        :class="menuShown ? 'max-md:block': 'max-md:hidden'"
         class="
-          fixed top-0 right-0 z-[99]
-          bg-(color:--color-bg)
-          h-full w-(--width-nav-side)
-          p-5 border-l-2 border-(color:--color-bg-second)
-          md:static md:flex md:flex-row md:items-center
-          md:bg-transparent md:h-auto md:w-auto md:p-0 md:border-0
-          md:block
+          max-md:fixed max-md:top-0 max-md:right-0 max-md:z-[99]
+          max-md:bg-(color:--color-bg)
+          max-md:h-full max-md:w-(--width-nav-side)
+          max-md:p-5 max-md:border-l-2 max-md:border-(color:--color-bg-second)
         "
       >
         <a
-          class="
-            block hidden
-            m-(--space-sm) h-[2em]
-          "
+          class="hidden m-(--space-sm) h-[2em] max-md:block"
           @click="toggle"
         ><i class="fa-solid fa-close text-lg" /></a>
         <NuxtLink
@@ -54,19 +48,21 @@
           :key="menu.title"
           :to="menu.path"
           :class="{
-            'md:border-b-2 md:border-(color:--color-brand) md:pb-[calc(var(--space-sm)+2px)] xl:pb-[calc(var(--space-sm)+1px)]': menu.path === root,
-            'max-md:border-l-2 max-md:border-l-(color:--color-brand) max-md:pb-0 max-md:pl-[calc(20px+var(--space-sm))] max-md:ml-[-22px]': menu.path === root
+            'md:border-b-2 md:pb-(--link-active-pb-md) xl:pb-(--link-active-pb-xl)': menu.path === root,
+            'max-md:border-l-2 max-md:pb-0 max-md:pl-(--link-active-pl-max-md) max-md:ml-[-22px]': menu.path === root
           }"
           class="
-            block no-underline
-            h-[2em] md:mx-(--space-sm) max-md:m-(--space-sm)"
+            max-md:block no-underline
+            h-[2em] md:mx-(--space-sm) max-md:m-(--space-sm)
+            border-(color:--color-brand)
+          "
           @click="close"
         >
           {{ menu.title }}
         </NuxtLink>
         <NuxtLink
           :to="`https://github.com${runtimeConfig.public.githubURL}`"
-          class="md:mx-(--space-sm) max-md:m-(--space-sm)"
+          class="md:mx-(--space-sm) max-md:m-(--space-sm) max-md:block"
           target="_blank"
           @click="close"
         >
@@ -77,7 +73,7 @@
           target="_blank"
           class="
             text-(color:--color-fg-second) cursor-pointer
-            md:ml-(--space-sm) max-md:m-(--space-sm)
+            md:ml-(--space-sm) max-md:m-(--space-sm) max-md:block
           "
           @click="close"
         >
