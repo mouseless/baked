@@ -13,8 +13,8 @@
       "
     >
       <div class="logo my-[var(--space-sm)] mx-0">
-        <NuxtLink to="/" class="block h-6 xl:h-[20px]">
-          <img class="baked logo inline-block h-6 xl:h-[20px]">
+        <NuxtLink to="/" class="h-6">
+          <img class="baked logo h-6">
         </NuxtLink>
       </div>
       <div
@@ -38,7 +38,7 @@
           bg-[color:var(--color-bg)]
           h-full w-[calc(var(--page-min)-var(--space-md))]
           p-5 border-l-2 border-[color:var(--color-bg-second)]
-          md:static md:flex md:flex-row md:items-center md:gap-[var(--space-md)]
+          md:static md:flex md:flex-row md:items-center
           md:bg-transparent md:h-auto md:w-auto md:p-0 md:border-0
         "
       >
@@ -54,13 +54,14 @@
             'md:border-b-2 md:border-[color:var(--color-logo-mark)] md:pb-[calc(var(--space-sm)+2px)] md:xl:pb-[calc(var(--space-sm)+1px)]': menu.path === root,
             'max-md:border-l-2 max-md:border-l-[color:var(--color-brand)] max-md:pb-0 max-md:pl-[calc(20px+var(--space-sm))] max-md:ml-[-22px]': menu.path === root
           }"
-          class="block h-[2em] m-[var(--space-sm)] no-underline last:mr-0"
+          class="block h-[2em] mx-[var(--space-sm)] no-underline"
           @click="close"
         >
           {{ menu.title }}
         </NuxtLink>
         <NuxtLink
           :to="`https://github.com${runtimeConfig.public.githubURL}`"
+          class="mx-[var(--space-sm)]"
           target="_blank"
           @click="close"
         >
@@ -69,7 +70,7 @@
         <NuxtLink
           :to="`https://matrix.to/#/${runtimeConfig.public.matrixURL}`"
           target="_blank"
-          class="text-[color:var(--color-fg-second)] cursor-pointer"
+          class="text-[color:var(--color-fg-second)] cursor-pointer ml-[var(--space-sm)]"
           @click="close"
         >
           <Icon.Matrix />
