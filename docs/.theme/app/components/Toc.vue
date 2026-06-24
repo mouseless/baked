@@ -1,32 +1,77 @@
 <template>
-  <nav>
-    <h4 class="mb-xs">
-      <a v-if="value.links.length > 0" @click="toggle">On This Page</a>
+  <nav
+    class="
+      sticky self-start top-sm
+      min-w-side mt-md text-[0.9em]
+      font-default whitespace-nowrap
+      max-lg:text-right max-lg:text-[0.9em]
+      max-lg:w-full max-lg:top-0
+      max-lg:m-0 max-lg:mb-[-52px]
+      max-lg:bg-bg
+    "
+  >
+    <h4 class="mb-xs pl-sm text-[1em]">
+      <a
+        v-if="value.links.length > 0"
+        class="
+          max-lg:inline-block! max-lg:pr-0! max-lg:pl-0!
+          hover:max-lg:text-brand!
+        "
+        @click="toggle"
+      >On This Page</a>
       <a v-else>&nbsp;</a>
     </h4>
     <ul
       v-if="value.links.length > 0"
-      :class="{ active: shown }"
+      :class="{ 'max-lg:block!': shown }"
+      class="
+        max-h-[calc(100vh-5rem)] overflow-y-auto
+        [&::-webkit-scrollbar]:hidden
+        m-0 pl-0!
+        max-lg:rounded-sm max-lg:bg-bg-nav
+        max-lg:hidden max-lg:text-left max-lg:p-sm
+        max-lg:pl-0 max-lg:mb-md max-lg:max-h-[calc(100vh-10rem)]
+      "
     >
       <li
         v-for="link in value.links"
         :key="link.id"
+        class="m-0 list-none"
       >
         <NuxtLink
           :to="`#${link.id}`"
-          :class="{ active: link.id === activePageId }"
+          :class="{ 'border-l-brand! max-lg:before:left-0': link.id === activePageId }"
+          class="
+            block no-underline pointer
+            text-fg-second text-ellipsis
+            mt-xs pl-sm overflow-hidden
+            border-l-2 border-l-transparent
+            hover:text-brand max-lg:pl-sm
+          "
           @click="close"
         >
           {{ link.text }}
         </NuxtLink>
-        <ul v-show="link.id === activePageId || link.children?.some(c => c.id === activePageId)">
+        <ul
+          v-show="link.id === activePageId || link.children?.some(c => c.id === activePageId)"
+          class="m-0 pl-0! mb-xs"
+        >
           <li
             v-for="child in link.children"
             :key="child.id"
           >
             <NuxtLink
               :to="`#${child.id}`"
-              :class="{ active: child.id === activePageId }"
+              :class="{ 'border-l-brand! max-lg:before:left-0': child.id === activePageId }"
+              class="
+                pl-[calc(var(--space-sm)+1em)]!
+                block no-underline pointer
+                text-fg-second text-ellipsis
+                mt-xs pl-sm overflow-hidden
+                border-l-2 border-l-transparent
+                hover:text-brand max-lg:pl-sm
+                max-lg:pl-sm
+              "
               @click="close"
             >
               {{ child.text }}
@@ -34,9 +79,15 @@
           </li>
         </ul>
       </li>
-      <li>
+      <li class="m-0 list-none">
         <a
-          class="return-to-top"
+          class="
+            block no-underline pointer
+            text-fg-third text-ellipsis
+            mt-sm pl-sm overflow-hidden
+            border-l-2 border-l-transparent
+            max-lg:pl-sm
+          "
           href="#"
           @click="close"
         >Return to top</a>
@@ -125,123 +176,3 @@ onBeforeUnmount(() => {
   observer.disconnect();
 });
 </script>
-<style lang="scss" scoped>
-h4 {
-  padding-left: $space-sm;
-  font-size: 1em;
-}
-
-nav {
-  position: sticky;
-  align-self: start;
-  top: $space-sm;
-  min-width: $width-side;
-  margin-top: $space-md;
-  font-size: 0.9em;
-  font-family: $font-default;
-  white-space: nowrap;
-
-  & > ul {
-    max-height: calc(100vh - 5rem);
-    overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  ul {
-    margin: 0;
-    padding-left: 0;
-
-    li {
-      margin: 0;
-      list-style: none;
-
-      a {
-        color: $color-fg-second;
-        text-decoration: none;
-        cursor: pointer;
-        display: block;
-        margin-top: $space-xs;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding-left: $space-sm;
-        border-left: solid 2px transparent;
-
-        &:hover {
-          color: $color-brand;
-        }
-
-        &.active {
-          border-left-color: $color-brand;
-        }
-
-        &.return-to-top {
-          margin-top: $space-sm;
-          color: $color-fg-third;
-        }
-      }
-
-      ul {
-        margin-bottom: $space-xs;
-
-        a {
-          padding-left: calc($space-sm + 1em);
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: $width-page-l) {
-  nav {
-    text-align: right;
-    width: 100%;
-    top: 0;
-    background-color: $color-bg;
-    margin: 0;
-    margin-bottom: -52px;
-    font-size: 0.9em;
-
-    h4 a {
-      display: inline-block;
-      padding-right: 0;
-      padding-left: 0;
-
-      &:hover {
-        color: $color-brand;
-      }
-    }
-
-    & > ul {
-      border-radius: $space-sm;
-      background-color: $color-bg-nav;
-      display: none;
-      text-align: left;
-      padding: $space-sm;
-      padding-left: 0;
-      margin-bottom: $space-md;
-      max-height: calc(100vh - 10rem);
-
-      &.active {
-        display: block;
-      }
-    }
-
-    ul li {
-      a {
-        padding-left: $space-sm;
-
-        &.active:before {
-          left: 0;
-        }
-      }
-
-      ul li a {
-        padding-left: calc($space-sm + 1em);
-      }
-    }
-  }
-}
-</style>
