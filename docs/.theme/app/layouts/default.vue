@@ -2,7 +2,15 @@
   <Header />
   <div
     v-if="$route.path === '/'"
-    class="full"
+    class="
+      full
+      box-border m-auto mt-0
+      min-w-page-min max-w-page-xl
+      max-xl:max-w-page-xl
+      max-lg:max-w-page-l
+      max-md:max-w-page-m
+      max-sm:max-w-page-s
+    "
    >
     <article>
       <slot />
@@ -10,9 +18,17 @@
   </div>
   <div
     v-else
-    class="content"
+    class="
+      c--content content
+      box-border m-auto mt-0
+      min-w-page-min max-w-page-xl
+      max-xl:max-w-page-xl
+      max-lg:max-w-page-l max-lg:mt-0
+      max-md:max-w-page-m
+      max-sm:max-w-page-s max-sm:block
+    "
   >
-    <Side class="side" />
+    <Side class="side max-md:z-[2]" />
     <article>
       <slot />
     </article>
@@ -34,54 +50,3 @@ menus.forEach(menu => {
 
 useSectionStore().setSections(menus);
 </script>
-<style lang="scss" scoped>
-.content, .full {
-  @include width;
-
-  & {
-    margin: auto;
-    margin-top: 0;
-    margin-bottom: auto;
-  }
-}
-
-.content {
-  display: grid;
-  grid-template-areas:
-      "side content"
-      "side content";
-  grid-template-rows: 65px 1fr;
-  grid-template-columns: $width-side;
-}
-
-.side {
-  grid-area: side;
-}
-
-article {
-  grid-area: content;
-}
-
-@media (max-width: $width-page-l) {
-  .content {
-    margin-top: 0;
-  }
-}
-
-@media (max-width: $width-page-m) {
-  .side {
-    z-index: 2;
-    grid-column-end: content;
-  }
-
-  article {
-    grid-column-start: side;
-  }
-}
-
-@media (max-width: $width-page-s) {
-  .content {
-    display: block;
-  }
-}
-</style>

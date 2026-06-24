@@ -5,6 +5,24 @@
     @apply inline;
   }
 
+  /* content */
+  .c--content {
+    @apply grid grid-rows-[65px_1fr] grid-cols-[var(--width-side)];
+    grid-template-areas:
+      "side content"
+      "side content";
+  }
+
+  .c--content .side {
+    @apply max-md:col-end-[content]!;
+    grid-area: side;
+  }
+
+  .c--content article {
+    @apply max-md:col-start-[side]!;
+    grid-area: content;
+  }
+
   /* side */
   .c--side li:not(:first-child) a::before {
     @apply content-[">\00A0"] text-brand font-bold;
