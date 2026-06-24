@@ -5,6 +5,11 @@
     @apply inline;
   }
 
+  /* side */
+  .c--side li:not(:first-child) a::before {
+    @apply content-[">\00A0"] text-brand font-bold;
+  }
+
   /* column */
   .c--column:has(img.prose:only-child) {
     @apply max-md:hidden;

@@ -131,6 +131,7 @@
 
   --color-white: var(--color-white);
   --color-black: var(--color-black);
+  --color-brand: var(--color-brand);
   --color-red-100: var(--color-red-100);
   --color-red-200: var(--color-red-200);
   --color-red-300: var(--color-red-300);
@@ -196,11 +197,18 @@
   --color-gray-900: var(--color-gray-900);
 
   --color-logo-mark: var(--color-logo-mark);
+  --color-logo-text: var(--color-logo-text);
 
   --color-bg-box: var(--color-bg-box);
   --color-fg-box: var(--color-fg-box);
 
-  --color-logo-text: var(--color-logo-text);
+  --color-bg-second: var(--color-bg-second);
+  --color-bg-third: var(--color-bg-third);
+
+  --color-bg-nav: var(--color-bg-nav);
+  --color-bg-nav-active: var(--color-bg-nav-active);
+
+  --color-bg-code: var(--color-bg-code);
 
   --color-bg: var(--color-bg);
   --color-bg-soft: var(--color-bg-soft);
@@ -209,6 +217,10 @@
   --color-fg: var(--color-fg);
   --color-fg-soft: var(--color-fg-soft);
   --color-fg-mute: var(--color-fg-mute);
+  --color-fg-second: var(--color-fg-second);
+  --color-fg-third: var(--color-fg-third);
+  --color-fg-heading: var(--color-fg-heading);
+  --color-fg-code: var(--color-fg-code);
 
   --color-red-n4: var(--color-red-n4);
   --color-red-n3: var(--color-red-n3);
@@ -330,6 +342,17 @@
   --spacing-md: var(--space-md);
   --spacing-lg: var(--space-lg);
   --spacing-xl: var(--space-xl);
+  --spacing-content: var(--width-content);
+  --spacing-content-margin: var(--width-content-margin);
+  --spacing-tolerance: var(--width-tolerance);
+  --spacing-side: var(--width-side);
+  --spacing-page: var(--width-page);
+  --spacing-page-xl: var(--width-page-xl);
+  --spacing-page-l: var(--width-page-l);
+  --spacing-page-m: var(--width-page-m);
+  --spacing-page-s: var(--width-page-s);
+  --spacing-page-min: var(--width-page-min);
+  --spacing-nav-side: var(--width-nav-side);
 
   /* ------- */
   /* radius */

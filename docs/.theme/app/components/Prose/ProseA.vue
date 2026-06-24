@@ -8,7 +8,7 @@
     <slot />
     <i
       v-if="external"
-      class="fa-solid fa-arrow-up-right-from-square ml-(--space-xs)"
+      class="fa-solid fa-arrow-up-right-from-square ml-xs"
     />
   </NuxtLink>
 </template>

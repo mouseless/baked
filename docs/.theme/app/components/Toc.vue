@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <h4>
+    <h4 class="mb-xs">
       <a v-if="value.links.length > 0" @click="toggle">On This Page</a>
       <a v-else>&nbsp;</a>
     </h4>
@@ -127,7 +127,6 @@ onBeforeUnmount(() => {
 </script>
 <style lang="scss" scoped>
 h4 {
-  margin-bottom: $space-xs;
   padding-left: $space-sm;
   font-size: 1em;
 }

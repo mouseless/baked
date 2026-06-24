@@ -1,13 +1,13 @@
 <template>
-  <div v-if="prev != null || next != null" class="max-w-(--width-content) mt-(--space-md)">
+  <div v-if="prev != null || next != null" class="max-w-content mt-md">
     <div v-if="prev != null" class="text-left float-left">
       <NuxtLink :to="prev.path" class="group no-underline">
-        <div class="text-(--color-brand)">
+        <div class="text-brand">
           <span class="text-[0.8em]"><i class="fa-solid fa-caret-left" /> Previous</span>
           <h3
             class="
               mt-[-0.25em]
-              text-(--color-fg-second) text-[1.125em] group-hover:text-(--color-brand)
+              text-fg-second text-[1.125em] group-hover:text-brand
             "
           >
             {{ prev?.title }}
@@ -17,12 +17,12 @@
     </div>
     <div v-if="next != null" class="text-end float-right">
       <NuxtLink :to="next?.path" class="group no-underline">
-        <div class="text-(--color-brand)">
+        <div class="text-brand">
           <span class="text-[0.8em]">Next <i class="fa-solid fa-caret-right" /></span>
           <h3
             class="
               mt-[-0.25em]
-              text-(--color-fg-second) text-[1.125em] group-hover:text-(--color-brand)
+              text-fg-second text-[1.125em] group-hover:text-brand
             "
           >
             {{ next?.title }}
