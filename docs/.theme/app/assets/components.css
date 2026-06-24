@@ -5,6 +5,47 @@
     @apply inline;
   }
 
+  /* full */
+  .c--full .container {
+    @apply justify-center;
+    @apply max-lg:flex-row! max-lg:ml-0!;
+  }
+
+  .c--full .container .content {
+    @apply w-page mx-0;
+    @apply max-sm:w-full;
+  }
+
+  .c--full .container .content h1 + h2 {
+    @apply mt-[-0.5em];
+  }
+
+  .c--full .container .content h1,
+  .c--full .container .content h2 {
+    @apply leading-[1.2em];
+  }
+
+  .c--full .container .content h1 {
+    @apply text-red-0;
+  }
+
+  .c--full .container .content h2 {
+    @apply text-red-n3;
+  }
+
+  .c--full .container .content h3 {
+    @apply text-red-n1;
+  }
+
+  .c--full .container .content a:not(.external) {
+    @apply bg-darkgreen-700 text-gray-200 hover:text-green-0;
+    @apply inline-block px-sm py-xs rounded-xs no-underline;
+  }
+
+  .c--full .container .content a:not(.external):not(:first-child) {
+    @apply ml-xs;
+  }
+
   /* content */
   .c--content {
     @apply grid grid-rows-[65px_1fr] grid-cols-[var(--width-side)];

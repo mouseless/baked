@@ -3,7 +3,7 @@
   <div
     v-if="$route.path === '/'"
     class="
-      full
+      c--full
       box-border m-auto mt-0
       min-w-page-min max-w-page-xl
       max-xl:max-w-page-xl
@@ -25,7 +25,7 @@
       max-xl:max-w-page-xl
       max-lg:max-w-page-l max-lg:mt-0
       max-md:max-w-page-m
-      max-sm:max-w-page-s max-sm:block
+      max-sm:max-w-page-s max-sm:block!
     "
   >
     <Side class="side max-md:z-[2]" />
