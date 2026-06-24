@@ -3,17 +3,21 @@
     class="
       c--side sticky self-start top-sm mt-md
       max-md:mt-0 max-md:w-1/2 max-md:top-0
+      max-sm:mb-[-54px]
     "
   >
     <h4 class="md:hidden block uppercase text-[0.9em]">
       <a class="pl-0! hover:text-brand!" @click="toggle">Pages</a>
     </h4>
     <ul
-      :class="{ active: shown }"
+      :class="{ 'max-md:block!': shown }"
       class="
-        m-0 p-0 overflow-y-auto
+        m-0 p-0 overflow-y-auto max-h-[calc(100vh-8rem)]
         [&::-webkit-scrollbar]:hidden
-        max-h-[calc(100vh-8rem)]
+        max-md:hidden max-md:absolute
+        max-md:w-[200%] max-md:bg-bg-nav
+        max-md:rounded-sm max-md:p-sm
+        max-md:box-border max-md:max-h-[calc(100vh-10rem)]
       "
     >
       <li
@@ -23,7 +27,7 @@
       >
         <NuxtLink
           :to="menu.path"
-          :class="{ 'bg-bg-nav-active': menu.path == $route.path }"
+          :class="{ 'bg-bg-nav-active max-md:bg-bg-third': menu.path == $route.path }"
           class="
             block rounded-xs no-underline
             text-fg-second text-[0.9em]
@@ -54,35 +58,3 @@ watch(usePageStore(), () => {
 function close() { shown.value = false; }
 function toggle() { shown.value = !shown.value; }
 </script>
-<style lang="scss" scoped>
-@media (max-width: $width-page-m) {
-  nav {
-    ul {
-      display: none;
-      position: absolute;
-      width: 200%;
-      background-color: $color-bg-nav;
-      border-radius: $space-sm;
-      padding: $space-sm;
-      box-sizing: border-box;
-      max-height: calc(100vh - 10rem);
-
-      &.active {
-        display: block;
-      }
-
-      li a {
-        &.active {
-          background-color: $color-bg-third;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: $width-page-s) {
-  nav {
-    margin-bottom: -54px;
-  }
-}
-</style>
