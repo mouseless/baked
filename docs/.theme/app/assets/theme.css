@@ -3,6 +3,7 @@
 @import "tailwindcss/preflight" layer(base);
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
+@import "./primary.css";
 
 :root {
   --width-content: 100ch;
@@ -81,7 +82,6 @@
   --link-active-pb-xl: calc(var(--space-sm) + 1px);
   --link-active-pl-max-md: calc(var(--space-sm) + 20px);
 
-  --font-size: 18px;
   --font-h1: 3em;
   --font-h2: 2em;
   --font-h3: 1.75em;

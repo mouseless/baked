@@ -1,6 +1,107 @@
 @reference "./theme.css";
 
 @layer utilities {
+  html,
+  body {
+    @apply m-0 p-0 h-full;
+  }
+
+  body {
+    @apply text-[calc(var(--font-size)*1.2)] min-w-[calc(var(--width-page-min)+var(--space-md))];
+    @apply max-xl:text-(--font-size) max-xl:leading-(--line-height);
+  }
+
+  #__nuxt {
+    @apply flex flex-col h-full;
+  }
+
+  img.baked:is(.logo),
+  img.baked:is(.logo:is(.full)) {
+    @apply content-(--url-logo-full);
+  }
+
+  img.baked:is(.logo):is(.mono),
+  img.baked:is(.logo:is(.full)):is(.mono) {
+    @apply content-(--url-logo-full-mono);
+  }
+
+  img.baked:is(.logo:is(.mark)) {
+    @apply content-(--url-logo-mark);
+  }
+
+  img.baked:is(.logo:is(.mark)):is(.mono) {
+    @apply content-(--url-logo-mark-mono);
+  }
+
+  .content nav h4 {
+    @apply mt-0 mb-xs uppercase;
+  }
+
+  /* TODO i think this is unnecessary */
+  .content nav h4 a {
+    @apply text-fg-second no-underline inline-block;
+  }
+
+  .content nav h4 a:hover {
+    @apply text-fg-second;
+  }
+
+  .content h1 > code,
+  .content h2 > code,
+  .content h3 > code,
+  .content h4 > code,
+  .content h5 > code,
+  .content h6 > code {
+    @apply text-sm;
+  }
+
+  .content h2,
+  .content h3 {
+    @apply max-lg:scroll-mt-md;
+  }
+
+  .content code {
+    @apply bg-bg-code rounded-xs px-xs py-[calc(var(--space-xs)/2)] text-fg-code wrap-anywhere text-sm;
+  }
+
+  .content pre {
+    @apply overflow-auto p-sm;
+  }
+
+  .content pre code {
+    @apply p-0 bg-transparent block max-w-0 max-xl:leading-[1em];
+  }
+
+  .content pre code span {
+    @apply leading-[1.5em];
+  }
+
+  .content ul,
+  .content ol {
+    @apply ps-sm list-inside;
+  }
+
+  .content li {
+    @apply mb-xs;
+  }
+
+  .content li ul,
+  .content li ol {
+    @apply mt-xs;
+  }
+
+  .content hr {
+    @apply border-2 border-solid border-bg-second my-[2em];
+  }
+
+  nav h4 a {
+    @apply max-lg:cursor-pointer max-lg:p-sm;
+  }
+
+  nav h4 a:hover {
+    @apply max-lg:text-brand;
+  }
+
   nav .matrix {
     @apply inline;
   }
@@ -16,7 +117,7 @@
     @apply max-sm:w-full;
   }
 
-  .c--full .container .content h1 + h2 {
+  .c--full .container .content h1+h2 {
     @apply mt-[-0.5em];
   }
 

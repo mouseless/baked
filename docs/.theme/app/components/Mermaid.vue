@@ -1,5 +1,13 @@
 <template>
-  <div ref="mermaidContainer" class="mermaid">
+  <div
+    ref="mermaidContainer"
+    class="
+      mermaid flex justify-center p-sm bg-darkgreen-800
+      rounded-xs [&:not([data-processed])]:text-transparent
+      bg-bg-box border-bg-second
+      pt-[30px] pb-[18px]
+    "
+  >
     <slot />
   </div>
 </template>
@@ -27,15 +35,3 @@ onMounted(async() => {
   }
 });
 </script>
-<style scoped>
-.mermaid:not([data-processed]) {
-  color: transparent;
-}
-
-.mermaid {
-  text-align: center;
-  padding: var(--space-sm);
-  background-color: var(--color-darkgreen-800);
-  border-radius: var(--border-radius);
-}
-</style>

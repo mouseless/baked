@@ -106,7 +106,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  css: ["~/assets/styles.scss", "~/assets/theme.css", "~/assets/components.css"],
+  css: ["~/assets/theme.css", "~/assets/components.css"],
   devtools: { enabled: false },
   dir: {
     public: ".public"
@@ -135,17 +135,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [
       tailwindcss()
-    ],
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: `
-            @use "@/assets/variables.scss" as *;
-            @use "@/assets/mixins.scss" as *;
-          `
-        }
-      }
-    }
+    ]
   },
   compatibilityDate: "2024-08-15"
 });
