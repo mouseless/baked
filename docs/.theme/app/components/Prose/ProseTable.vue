@@ -1,15 +1,6 @@
 <template>
-  <div class="rounded-xs overflow-x-auto mt-sm mb-md">
-    <table
-      class="
-        border-spacing-0 w-full
-        [&_tr_td]:p-sm
-        [&_tr_th]:p-sm
-        [&_tr_th]:bg-(--color-bg-table-nth-child)
-        [&_tr:nth-child(even)_td]:bg-(--color-bg-table-nth-child)
-        [&_*]:text-left
-      "
-    >
+  <div class="c--prose-table rounded-xs overflow-x-auto mt-sm mb-md">
+    <table class="border-spacing-0 w-full">
       <slot />
     </table>
   </div>

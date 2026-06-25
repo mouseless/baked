@@ -16,7 +16,7 @@
         [&::-webkit-scrollbar]:hidden
         max-md:hidden max-md:absolute
         max-md:w-[200%] max-md:bg-bg-nav
-        max-md:rounded-sm max-md:p-sm
+        max-md:rounded-sm max-md:p-sm!
         max-md:box-border max-md:max-h-[calc(100vh-10rem)]
       "
     >

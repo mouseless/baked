@@ -60,6 +60,8 @@
 
   --height-logo: 30px;
 
+  --min-width-body: calc(var(--width-page-min)+var(--space-md));
+
   --page-xl: 1930px;
   --page-l: 1530px;
   --page-m: 1330px;

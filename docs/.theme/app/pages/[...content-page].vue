@@ -2,7 +2,7 @@
   <div
     v-if="doc"
     class="
-      container flex
+      doc flex
       max-lg:flex-col-reverse max-lg:ml-content-margin
       max-md:ml-0
     "
