@@ -60,6 +60,7 @@
 
   --height-logo: 30px;
 
+  --max-height-list: calc(100vh-10rem);
   --min-width-body: calc(var(--width-page-min)+var(--space-md));
 
   --page-xl: 1930px;
@@ -84,6 +85,7 @@
   --link-active-pb-xl: calc(var(--space-sm) + 1px);
   --link-active-pl-max-md: calc(var(--space-sm) + 20px);
 
+  --font-body: calc(var(--font-size)*1.2);
   --font-h1: 3em;
   --font-h2: 2em;
   --font-h3: 1.75em;

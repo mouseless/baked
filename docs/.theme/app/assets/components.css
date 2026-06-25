@@ -8,7 +8,7 @@
 
   body {
     @apply
-      text-[calc(var(--font-size)*1.2)]
+      text-(length:--font-body)
       min-w-(--min-width-body)
       max-xl:text-(length:--font-size) max-xl:leading-(--line-height);
   }
@@ -145,7 +145,7 @@
 
   /* OUTER CONTENT */
   .c--outer-content {
-    @apply grid grid-rows-[65px_1fr] grid-cols-[var(--width-side)];
+    @apply grid grid-rows-[65px_1fr] grid-cols-(--width-side);
     grid-template-areas:
       "side content"
       "side content";

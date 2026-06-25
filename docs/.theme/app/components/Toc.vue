@@ -30,7 +30,7 @@
         m-0 pl-0!
         max-lg:rounded-sm max-lg:bg-bg-nav
         max-lg:hidden max-lg:text-left max-lg:p-sm
-        max-lg:pl-0 max-lg:mb-md max-lg:max-h-[calc(100vh-10rem)]
+        max-lg:pl-0 max-lg:mb-md max-lg:max-h-(--max-height-list)
       "
     >
       <li
