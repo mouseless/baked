@@ -4,7 +4,7 @@
     class="
       mermaid flex justify-center p-sm
       bg-darkgreen-800 rounded-xs bg-bg-box border-bg-second
-      pt-[30px] pb-[18px]
+      pt-[30px] pb-[28px]
     "
   >
     <slot />

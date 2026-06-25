@@ -107,7 +107,11 @@
     }
 
     code {
-      @apply bg-bg-code rounded-xs px-xs py-[calc(var(--space-xs)/2)] text-fg-code wrap-anywhere text-[smaller];
+      @apply bg-bg-code rounded-xs px-xs py-xs-half text-fg-code wrap-anywhere text-[smaller];
+
+      .line {
+        @apply block;
+      }
     }
 
     pre {

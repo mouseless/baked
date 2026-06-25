@@ -340,6 +340,7 @@
   /* spacing */
   /* ------- */
   --spacing-xs: var(--space-xs);
+  --spacing-xs-half: calc(var(--space-xs) / 2);
   --spacing-sm: var(--space-sm);
   --spacing-md: var(--space-md);
   --spacing-lg: var(--space-lg);
