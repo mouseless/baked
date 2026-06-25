@@ -2,9 +2,8 @@
   <div
     ref="mermaidContainer"
     class="
-      mermaid flex justify-center p-sm bg-darkgreen-800
-      rounded-xs [&:not([data-processed])]:text-transparent
-      bg-bg-box border-bg-second
+      mermaid flex justify-center p-sm
+      bg-darkgreen-800 rounded-xs bg-bg-box border-bg-second
       pt-[30px] pb-[18px]
     "
   >
@@ -13,23 +12,19 @@
 </template>
 <script setup>
 import { useNuxtApp } from "nuxt/app";
-import { onMounted, ref, useSlots } from "vue";
+import { onMounted, ref } from "vue";
 
 const { $mermaid } = useNuxtApp();
-const slots = useSlots();
-
 const mermaidContainer = ref(null);
-const slot = slots.default;
+const diagramId = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
 
 onMounted(async() => {
-  const content = slot()[0].children;
-  if(!$mermaid) { return; }
-  if(!content) { return; }
+  const content = mermaidContainer.value.textContent?.trim();
+  if(!$mermaid || !content) { return; }
 
   try {
-    mermaidContainer.value.textContent = content;
-
-    await $mermaid.run({ nodes: [mermaidContainer.value] });
+    const { svg } = await $mermaid.render(diagramId, content);
+    mermaidContainer.value.innerHTML = svg;
   } catch {
     mermaidContainer.value.innerHTML = "";
   }
