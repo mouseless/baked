@@ -3,7 +3,7 @@
     class="
       c--side sticky self-start top-sm mt-md
       max-md:mt-0 max-md:w-1/2 max-md:top-0
-      max-sm:mb-[-54px]
+      max-sm:mb-[-62px]
     "
   >
     <h4 class="md:hidden block uppercase text-[0.9em]">
