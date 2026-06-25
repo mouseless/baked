@@ -1,5 +1,5 @@
 <template>
-  <pre v-if="language !== 'mermaid'" v-bind="props"><slot/></pre>
+  <pre v-if="language !== 'mermaid'" v-bind="props" class="my-[1em]"><slot/></pre>
   <Mermaid v-else>{{ code }}</Mermaid>
 </template>
 <script setup>

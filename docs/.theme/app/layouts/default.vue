@@ -19,7 +19,7 @@
   <div
     v-else
     class="
-      c--content content
+      c--outer-content
       box-border m-auto mt-0
       min-w-page-min max-w-page-xl
       max-xl:max-w-page-xl

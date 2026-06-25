@@ -9,7 +9,7 @@
   >
     <div
       class="
-        content
+        c--inner-content
         w-content my-0 mx-content-margin
         max-lg:mt-sm max-lg:mb-0 max-lg:mx-0
         max-sm:w-full

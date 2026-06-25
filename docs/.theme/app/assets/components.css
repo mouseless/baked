@@ -7,14 +7,31 @@
   }
 
   body {
-    @apply text-[calc(var(--font-size)*1.2)] min-w-[calc(var(--width-page-min)+var(--space-md))];
-    @apply max-xl:text-(--font-size) max-xl:leading-(--line-height);
+    @apply
+      text-[calc(var(--font-size)*1.2)]
+      min-w-[calc(var(--width-page-min)+var(--space-md))]
+      max-xl:text-(length:--font-size) max-xl:leading-(--line-height);
   }
 
   #__nuxt {
     @apply flex flex-col h-full;
   }
 
+  nav {
+    h4 a {
+      @apply max-lg:cursor-pointer max-lg:p-sm;
+
+      &:hover {
+        @apply max-lg:text-brand;
+      }
+    }
+
+    .matrix {
+      @apply inline;
+    }
+  }
+
+  /* LOGO */
   img.baked:is(.logo),
   img.baked:is(.logo:is(.full)) {
     @apply content-(--url-logo-full);
@@ -33,144 +50,126 @@
     @apply content-(--url-logo-mark-mono);
   }
 
-  .content nav h4 {
-    @apply mt-0 mb-xs uppercase;
-  }
-
-  /* TODO i think this is unnecessary */
-  .content nav h4 a {
-    @apply text-fg-second no-underline inline-block;
-  }
-
-  .content nav h4 a:hover {
-    @apply text-fg-second;
-  }
-
-  .content h1 > code,
-  .content h2 > code,
-  .content h3 > code,
-  .content h4 > code,
-  .content h5 > code,
-  .content h6 > code {
-    @apply text-sm;
-  }
-
-  .content h2,
-  .content h3 {
-    @apply max-lg:scroll-mt-md;
-  }
-
-  .content code {
-    @apply bg-bg-code rounded-xs px-xs py-[calc(var(--space-xs)/2)] text-fg-code wrap-anywhere text-sm;
-  }
-
-  .content pre {
-    @apply overflow-auto p-sm;
-  }
-
-  .content pre code {
-    @apply p-0 bg-transparent block max-w-0 max-xl:leading-[1em];
-  }
-
-  .content pre code span {
-    @apply leading-[1.5em];
-  }
-
-  .content ul,
-  .content ol {
-    @apply ps-sm list-inside;
-  }
-
-  .content li {
-    @apply mb-xs;
-  }
-
-  .content li ul,
-  .content li ol {
-    @apply mt-xs;
-  }
-
-  .content hr {
-    @apply border-2 border-solid border-bg-second my-[2em];
-  }
-
-  nav h4 a {
-    @apply max-lg:cursor-pointer max-lg:p-sm;
-  }
-
-  nav h4 a:hover {
-    @apply max-lg:text-brand;
-  }
-
-  nav .matrix {
-    @apply inline;
-  }
-
-  /* full */
-  .c--full .container {
-    @apply justify-center;
-    @apply max-lg:flex-row! max-lg:ml-0!;
-  }
-
-  .c--full .container .content {
-    @apply w-page mx-0;
-    @apply max-sm:w-full;
-  }
-
-  .c--full .container .content h1+h2 {
-    @apply mt-[-0.5em];
-  }
-
-  .c--full .container .content h1,
-  .c--full .container .content h2 {
-    @apply leading-[1.2em];
-  }
-
-  .c--full .container .content h1 {
-    @apply text-red-0;
-  }
-
-  .c--full .container .content h2 {
-    @apply text-red-n3;
-  }
-
-  .c--full .container .content h3 {
-    @apply text-red-n1;
-  }
-
-  .c--full .container .content a:not(.external) {
-    @apply bg-darkgreen-700 text-gray-200 hover:text-green-0;
-    @apply inline-block px-sm py-xs rounded-xs no-underline;
-  }
-
-  .c--full .container .content a:not(.external):not(:first-child) {
-    @apply ml-xs;
-  }
-
-  /* content */
-  .c--content {
+  /* OUTER CONTENT */
+  .c--outer-content {
     @apply grid grid-rows-[65px_1fr] grid-cols-[var(--width-side)];
     grid-template-areas:
       "side content"
       "side content";
+
+    nav h4 {
+      @apply mt-0 mb-xs uppercase;
+
+      a {
+        @apply text-fg-second no-underline inline-block;
+
+        &:hover {
+          @apply text-fg-second;
+        }
+      }
+    }
+
+    .side {
+      @apply max-md:col-end-[content]!;
+      grid-area: side;
+    }
+
+    article {
+      @apply max-md:col-start-[side]!;
+      grid-area: content;
+    }
   }
 
-  .c--content .side {
-    @apply max-md:col-end-[content]!;
-    grid-area: side;
+  /* INNER CONTENT */
+  .c--inner-content {
+    h1, h2, h3, h4, h5, h6 {
+      > code {
+        @apply text-[smaller];
+      }
+    }
+
+    h2, h3 {
+      @apply max-lg:scroll-mt-md;
+    }
+
+    code {
+      @apply bg-bg-code rounded-xs px-xs py-[calc(var(--space-xs)/2)] text-fg-code wrap-anywhere text-[smaller];
+    }
+
+    pre {
+      @apply overflow-auto p-sm;
+
+      code {
+        @apply p-0 bg-transparent block max-w-0 max-xl:leading-[1em];
+
+        span {
+          @apply leading-[1.5em];
+        }
+      }
+    }
+
+    ul, ol {
+      @apply ps-sm list-inside;
+    }
+
+    li {
+      @apply mb-xs;
+
+      ul, ol {
+        @apply mt-xs;
+      }
+    }
+
+    hr {
+      @apply border-2 border-solid border-bg-second my-[2em];
+    }
   }
 
-  .c--content article {
-    @apply max-md:col-start-[side]!;
-    grid-area: content;
+  /* FULL */
+  .c--full .container {
+    @apply justify-center max-lg:flex-row! max-lg:ml-0!;
+
+    .c--inner-content {
+      @apply w-page mx-0 max-sm:w-full;
+
+      h1+h2 {
+        @apply mt-[-0.5em];
+      }
+
+      h1, h2 {
+        @apply leading-[1.2em];
+      }
+
+      h1 {
+        @apply text-red-0;
+      }
+
+      h2 {
+        @apply text-red-n3;
+      }
+
+      h3 {
+        @apply text-red-n1;
+      }
+
+      a:not(.external) {
+        @apply
+          bg-darkgreen-700 text-gray-200 hover:text-green-0
+          inline-block px-sm py-xs rounded-xs no-underline;
+
+        &:not(:first-child) {
+          @apply ml-xs;
+        }
+      }
+    }
   }
 
-  /* side */
+  /* SIDE */
   .c--side li:not(:first-child) a::before {
     @apply content-[">\00A0"] text-brand font-bold;
   }
 
-  /* column */
+  /* COLUMN */
   .c--column:has(img.prose:only-child) {
     @apply max-md:hidden;
   }

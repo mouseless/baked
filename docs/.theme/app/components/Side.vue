@@ -12,7 +12,7 @@
     <ul
       :class="{ 'max-md:block!': shown }"
       class="
-        m-0 p-0 overflow-y-auto max-h-[calc(100vh-8rem)]
+        m-0 p-0! overflow-y-auto max-h-[calc(100vh-8rem)]
         [&::-webkit-scrollbar]:hidden
         max-md:hidden max-md:absolute
         max-md:w-[200%] max-md:bg-bg-nav
