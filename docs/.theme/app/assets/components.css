@@ -127,7 +127,19 @@
     }
 
     ul, ol {
-      @apply ps-sm list-inside list-disc;
+      @apply ps-sm list-inside;
+    }
+
+    ul {
+      @apply list-disc;
+
+      ul {
+        @apply list-[circle];
+      }
+    }
+
+    ol {
+      @apply list-decimal;
     }
 
     li {
