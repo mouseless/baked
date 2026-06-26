@@ -99,8 +99,10 @@ flowchart
     end
   end
 
+  HS ~~~ A
   D -.uses.-> A
   D -.uses.-> Db
+  DA ~~~ Db
 ```
 
 ### Implementation
