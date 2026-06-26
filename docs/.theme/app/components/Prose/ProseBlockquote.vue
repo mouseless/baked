@@ -1,9 +1,19 @@
 <template>
   <blockquote
-    :class="type.class"
+    :class="[
+      type.class,
+      {
+        'border-blue-p3 bg-blue-p3/10': type.class === 'info',
+        'border-orange-p2 bg-orange-p2/10': type.class === 'warning',
+        'border-green-p2 bg-green-p1/10 dark:bg-darkgreen-p2/30': type.class === 'tip',
+        'border-red-p3 bg-red-p3/20': type.class === 'danger',
+        'border-gray-p2 bg-gray-p2/10': type.class === 'default',
+      }
+    ]"
     class="
       flex flex-row items-start justify-start
-      p-0 my-sm mx-0 max-w-content
+      p-0 my-sm mx-0 max-w-content px-sm
+      rounded border-1 dark:border-0
     "
   >
     <i

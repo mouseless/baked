@@ -1,9 +1,10 @@
-@import "https://brand.mouseless.codes/assets/css/primary.css";
+@import "https://brand.mouseless.codes/assets/css/default.css";
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" layer(theme);
 @import "tailwindcss/preflight" layer(base);
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
-@import "./primary.css";
+@import "./primary.css" (prefers-color-scheme: dark);
+@import "./secondary.css" (prefers-color-scheme: light);
 
 :root {
   --width-content: 100ch;
