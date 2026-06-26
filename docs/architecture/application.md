@@ -110,7 +110,7 @@ Bake.New
     .Run();
 ```
 
-Application runs in phases provided by its layers. These phases come from 
+Application runs in phases provided by its layers. These phases come from
 `GetStartPhases()` or `GetGeneratePhases()` methods of `ILayer`.
 
 For example `HttpServerLayer` uses ASP.NET Core to build a web application which typically
@@ -127,7 +127,7 @@ flowchart TB
 
 > [!TIP]
 >
-> Application has `Generate` and `Start` mode which is configured with `RunFlags` 
+> Application has `Generate` and `Start` mode which is configured with `RunFlags`
 > parameter. `RunFlags` enables running `Generate` and `Start` modes
 > modes individually or respectively. `Generate` mode calls `GetGeneratePhases()` and
 > `Start` mode calls `GetStartPhases()` methods to collect phases

@@ -1,20 +1,30 @@
 <template>
-  <div v-if="prev != null || next != null" class="navigation-buttons-container">
-    <div v-if="prev != null" class="button left">
-      <NuxtLink :to="prev.path">
-        <div class="link-text">
-          <span><i class="fa-solid fa-caret-left" /> Previous</span>
-          <h3>
+  <div v-if="prev != null || next != null" class="max-w-content mt-md">
+    <div v-if="prev != null" class="text-left float-left">
+      <NuxtLink :to="prev.path" class="group no-underline">
+        <div class="text-brand">
+          <span class="text-[0.8em]"><i class="fa-solid fa-caret-left" /> Previous</span>
+          <h3
+            class="
+              mt-[-0.25em]
+              text-fg-second text-[1.125em] group-hover:text-brand
+            "
+          >
             {{ prev?.title }}
           </h3>
         </div>
       </NuxtLink>
     </div>
-    <div v-if="next != null" class="button right">
-      <NuxtLink :to="next?.path">
-        <div class="link-text">
-          <span>Next <i class="fa-solid fa-caret-right" /></span>
-          <h3>
+    <div v-if="next != null" class="text-end float-right">
+      <NuxtLink :to="next?.path" class="group no-underline">
+        <div class="text-brand">
+          <span class="text-[0.8em]">Next <i class="fa-solid fa-caret-right" /></span>
+          <h3
+            class="
+              mt-[-0.25em]
+              text-fg-second text-[1.125em] group-hover:text-brand
+            "
+          >
             {{ next?.title }}
           </h3>
         </div>
@@ -41,45 +51,3 @@ menus.forEach((menu, index) => {
 const prev = currentPageNumber > 0 ? menus[currentPageNumber - 1] : null;
 const next = currentPageNumber < menus.length + 1 ? menus[currentPageNumber + 1] : null;
 </script>
-<style lang="scss" scoped>
-.navigation-buttons-container {
-  max-width: $width-content;
-  margin-top: $space-md;
-
-  .button {
-    a {
-      text-decoration: none;
-
-      .link-text {
-        color: $color-brand;
-
-        span {
-          font-size: .8em;
-        }
-
-        h3 {
-          color: $color-fg-second;
-          margin-top: -0.25em;
-          font-size: 1.125em;
-        }
-      }
-
-      &:hover {
-        h3 {
-          color: $color-brand;
-        }
-      }
-    }
-
-    &.left {
-      text-align: left;
-      float: left;
-    }
-
-    &.right {
-      text-align: end;
-      float: right;
-    }
-  }
-}
-</style>

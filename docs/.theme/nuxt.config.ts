@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from "nuxt/config";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
   app: {
@@ -49,12 +50,7 @@ export default defineNuxtConfig({
         {
           rel: "stylesheet",
           type: "text/css",
-          href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        },
-        {
-          rel: "stylesheet",
-          type: "text/css",
-          href: "https://brand.mouseless.codes/assets/css/default.css"
+          href: `${import.meta.env.BASE_URL ?? ""}/layers.css`
         }
       ]
     }
@@ -100,7 +96,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  css: ["~/assets/styles.scss"],
+  css: ["~/assets/theme.css", "~/assets/components.css"],
   devtools: { enabled: false },
   dir: {
     public: ".public"
@@ -127,16 +123,9 @@ export default defineNuxtConfig({
     }
   },
   vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: `
-            @use "@/assets/variables.scss" as *;
-            @use "@/assets/mixins.scss" as *;
-          `
-        }
-      }
-    }
+    plugins: [
+      tailwindcss()
+    ]
   },
   compatibilityDate: "2024-08-15"
 });

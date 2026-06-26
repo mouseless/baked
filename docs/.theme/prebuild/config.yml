@@ -11,47 +11,22 @@ tasks:
   - clean:
       directories:
         - ./.theme/.public
-        - ./.theme/.temp
         - ./.theme/content
   - touch:
       path: ./.theme/.env.local
-
-  # process and move markdowns to content
-  - extractDiagrams:
+  - copy:
+      extension: .md
       source: ./
-      target: ./.theme/.temp
-      config:
-        backgroundColor: '#092C2E'
-        theme: base
-        headless: new
-        deviceScaleFactor: 1
-        outputFormat: 'svg'
-        flowchart:
-          useMaxWidth: false
-        themeVariables:
-          fontSize: '16px'
-          primaryColor: '#FA465B'
-          primaryTextColor: '#F7F7F7'
-          primaryBorderColor': '#FA465B'
-          lineColor: '#D5DBDB'
-          secondaryColor: '#031819'
-          secondaryTextColor: '#E9EBEB'
-          secondaryBorderColor: '#031819'
-          tertiaryColor: '#154245'
-          activationBkgColor: '#FA465B'
+      target: ./.theme/content
   - rename:
-      source: ./.theme/.temp
+      source: ./.theme/content
       find: README.md
       replace: index.md
   - replaceContent:
       extension: .md
-      source: ./.theme/.temp
+      source: ./.theme/content
       oldText: README.md
       newText: index.md
-  - move:
-      extension: .md
-      source: ./.theme/.temp
-      target: ./.theme/content
 
   # copy all assets to .public
   - copy:
@@ -60,12 +35,4 @@ tasks:
   - copy:
       extension: .png
       source: ./
-      target: ./.theme/.public
-  - move:
-      extension: .png
-      source: ./.theme/.temp
-      target: ./.theme/.public
-  - move:
-      extension: .svg
-      source: ./.theme/.temp
       target: ./.theme/.public

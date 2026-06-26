@@ -1,6 +1,20 @@
 <template>
-  <div v-if="doc" class="container">
-    <div class="content">
+  <div
+    v-if="doc"
+    class="
+      doc flex
+      max-lg:flex-col-reverse max-lg:ml-content-margin
+      max-md:ml-0
+    "
+  >
+    <div
+      class="
+        c--inner-content
+        w-content my-0 mx-content-margin
+        max-lg:mt-sm max-lg:mb-0 max-lg:mx-0
+        max-sm:w-full
+      "
+    >
       <ContentRenderer
         :value="doc"
         class="toc-root"
@@ -49,91 +63,3 @@ if(index?.pages)
 
 usePageStore().setPages([index, ...unorderedMenu]);
 </script>
-<style lang="scss">
-.container {
-  display: flex;
-
-  .content {
-    width: $width-content;
-    margin: 0 $width-content-margin;
-  }
-}
-
-.full {
-  .container {
-    justify-content: center;
-
-    .content {
-      width: $width-page;
-      margin-left: 0;
-      margin-right: 0;
-
-      h1+h2 {
-        margin-top: -0.5em;
-      }
-
-      h1, h2 { line-height: 1.2em; }
-
-      h1 { color: var(--color-red-0); }
-      h2 { color: var(--color-red-n3); }
-      h3 { color: var(--color-red-n1); }
-
-      a:not(.external) {
-        display: inline-block;
-        padding: var(--space-xs) var(--space-sm);
-        background-color: var(--color-darkgreen-700);
-        color: var(--color-gray-200);
-        border-radius: var(--space-xs);
-        text-decoration: none;
-
-        &:hover {
-          color: var(--color-green-0);
-        }
-
-        &:not(:first-child) {
-          margin-left: $space-xs;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: $width-page-l) {
-  .container {
-    flex-direction: column-reverse;
-    margin-left: $width-content-margin;
-
-    .content {
-      margin: $space-sm 0 0 0;
-    }
-  }
-
-  .full {
-    .container {
-      flex-direction: row;
-      margin-left: 0;
-    }
-  }
-}
-
-@media (max-width: $width-page-m) {
-  .container {
-    margin-left: 0;
-  }
-}
-
-@media (max-width: $width-page-s) {
-  .container {
-    .content {
-      width: 100%;
-    }
-  }
-  .full {
-    .container {
-      .content {
-        width: 100%;
-      }
-    }
-  }
-}
-</style>

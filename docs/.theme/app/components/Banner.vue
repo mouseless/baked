@@ -1,5 +1,5 @@
 <template>
-  <div class="f f--xl">
+  <div class="text-xl">
     <slot />
   </div>
 </template>

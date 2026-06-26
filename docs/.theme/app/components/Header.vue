@@ -1,36 +1,68 @@
 <template>
-  <div class="top">
-    <header>
-      <div class="logo">
-        <NuxtLink to="/">
-          <img class="baked logo">
+  <div class="border-b-2 border-bg-soft">
+    <header
+      class="
+        flex flex-row items-center justify-between
+        box-border mx-auto
+        min-w-page-min max-w-page-xl
+        max-xl:max-w-page-xl
+        max-lg:max-w-page-l
+        max-md:max-w-page-m
+        max-sm:max-w-page-s
+      "
+    >
+      <div class="logo my-sm mx-0">
+        <NuxtLink to="/" class="h-6">
+          <img class="baked logo h-5 xl:h-6">
         </NuxtLink>
       </div>
       <div
         v-if="menuShown"
-        class="overlay"
+        class="
+          overlay fixed block md:hidden
+          w-full h-full
+          bg-darkgreen-900 opacity-50
+          z-[98] left-0 top-0
+        "
         @click="close"
       />
       <a
-        class="bars"
+        class="bars block md:hidden"
         @click="toggle"
       ><i class="fa-solid fa-bars" /></a>
-      <nav :class="{ active: menuShown }">
+      <nav
+        :class="menuShown ? 'max-md:block': 'max-md:hidden'"
+        class="
+          max-md:fixed max-md:top-0 max-md:right-0 max-md:z-[99]
+          max-md:bg-bg
+          max-md:h-full max-md:w-nav-side
+          max-md:p-5 max-md:border-l-2 max-md:border-bg-second
+        "
+      >
         <a
-          class="close"
+          class="hidden m-sm h-[2em] max-md:block"
           @click="toggle"
-        ><i class="fa-solid fa-close" /></a>
+        ><i class="fa-solid fa-close text-lg" /></a>
         <NuxtLink
           v-for="menu in menus"
           :key="menu.title"
           :to="menu.path"
-          :class="{ active: menu.path === root }"
+          :class="{
+            'md:border-b-2 md:pb-(--link-active-pb-md) xl:pb-(--link-active-pb-xl)': menu.path === root,
+            'max-md:border-l-2 max-md:pb-0 max-md:pl-(--link-active-pl-max-md) max-md:ml-[-22px]': menu.path === root
+          }"
+          class="
+            max-md:block no-underline
+            h-[2em] md:mx-sm max-md:m-sm
+            border-brand
+          "
           @click="close"
         >
           {{ menu.title }}
         </NuxtLink>
         <NuxtLink
           :to="`https://github.com${runtimeConfig.public.githubURL}`"
+          class="md:mx-sm max-md:m-sm max-md:block"
           target="_blank"
           @click="close"
         >
@@ -39,7 +71,10 @@
         <NuxtLink
           :to="`https://matrix.to/#/${runtimeConfig.public.matrixURL}`"
           target="_blank"
-          class="matrix"
+          class="
+            text-fg-second cursor-pointer
+            md:ml-sm max-md:m-sm max-md:block
+          "
           @click="close"
         >
           <Icon.Matrix />
@@ -64,142 +99,3 @@ const menus = { ...store.sections };
 function toggle() { menuShown.value = !menuShown.value; }
 function close() { menuShown.value = false; }
 </script>
-<style lang="scss" scoped>
-div.top {
-  @include border(bottom);
-}
-
-header {
-  @include width;
-
-  & {
-    margin: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .bars {
-    display: none;
-  }
-}
-
-.overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-darkgreen-900);
-  opacity: 0.5;
-  padding: 0;
-  margin: 0;
-  top: 0;
-  left: 0;
-  display: none;
-  z-index: 98;
-}
-
-div.logo {
-  margin: $space-sm 0;
-
-  a:has(img.logo) {
-    display: block;
-    height: 24px;
-
-    img.baked {
-      &:is(.logo) {
-        height: 24px;
-        display: inline-block;
-      }
-    }
-  }
-}
-
-nav a {
-  margin: $space-sm;
-  text-decoration: none;
-
-  &.close {
-    display: none;
-  }
-
-  &.active {
-    @include border(bottom);
-
-    border-bottom-color: $color-brand;
-    padding-bottom: calc($space-sm + 2px);
-  }
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-@media (max-width: $width-page-xl) {
-  div.logo {
-    a:has(img.logo) {
-      height: 20px;
-
-      img.baked {
-        &:is(.logo) {
-          height: 20px;
-        }
-      }
-    }
-  }
-  nav a.active {
-    padding-bottom: calc($space-sm + 1px);
-  }
-}
-
-@media (max-width: $width-page-m) {
-  a.bars {
-    display: block;
-  }
-
-  .overlay {
-    display: block;
-  }
-
-  nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 99;
-    background: $color-bg;
-    height: 100%;
-    width: calc($width-page-min - $space-md);
-    padding: 20px;
-    border-left: solid 2px $color-bg-second;
-    display: none;
-
-    &.active {
-      display: block;
-    }
-
-    a {
-      display: block;
-      height: 2em;
-
-      &.close {
-        display: block;
-        margin-bottom: $space-sm;
-
-        i {
-          font-size: larger;
-        }
-      }
-
-      &.active {
-        border: 0;
-        @include border(left);
-        border-left-color: $color-brand;
-
-        padding-bottom: 0;
-        padding-left: calc(20px + $space-sm);
-        margin-left: -22px;
-      }
-    }
-  }
-}
-</style>

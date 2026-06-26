@@ -150,8 +150,6 @@ jobs:
       version: ${{ needs.check-version.outputs.version }}
     steps:
       - uses: actions/checkout@v6
-        with:
-          submodules: recursive
       - name: Setup NodeJS
         uses: actions/setup-node@v6
         with:
