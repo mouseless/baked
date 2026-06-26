@@ -2,7 +2,7 @@
   <NuxtLink
     :href="manipulatedHref"
     :target="manipulatedHref.startsWith('http') ? '_blank' : target"
-    class="font-default"
+    class="font-default underline"
     :class="{ 'external': external }"
   >
     <slot />
