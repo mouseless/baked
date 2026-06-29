@@ -167,19 +167,3 @@ function togglePopoverInputs(event) {
   popoverInputs.value.toggle(event);
 }
 </script>
-<!-- <style scoped>
-.sticky {
-  top: -1px;
-}
-</style>
-<style>
-.b-component--PageTitle {
-  .p-button {
-    @apply self-stretch;
-
-    .p-button-icon+.p-button-label {
-      @apply max-sm:hidden;
-    }
-  }
-}
-</style> -->
