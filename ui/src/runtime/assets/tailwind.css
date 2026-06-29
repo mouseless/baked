@@ -1,7 +1,12 @@
 @import "tailwindcss";
-@import "tailwindcss/theme" layer(theme);
-@import "tailwindcss/utilities" layer(utilities);
 @import "tailwindcss-primeui";
+
+/*
+ Look here https://primevue.dev/tailwind/
+ To see primevue variables
+*/
+
+@source "../components/**/*.vue";
 
 @theme {
   --breakpoint-2xs: 340px;

@@ -17,7 +17,7 @@ export default defineNuxtPlugin({
         options: {
           cssLayer: {
             name: "primevue",
-            order: "theme, base, primevue, components, utilities"
+            order: "theme, base, primevue, utilities"
           }
         }
       }
