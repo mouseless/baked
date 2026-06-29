@@ -287,7 +287,7 @@ function exportFunction({ data, field }) {
   return formatter.format(data.value, { prop: field, row: data.$getRow() });
 }
 </script>
-<style>
+<!-- <style>
 /* If Datatable in a DataPanel or DataContainer, clear border and radius */
 .p-panel-content:has(.b-component--DataTable),
 .b-component--DataContainer:has(.b-component--DataTable) {
@@ -350,4 +350,4 @@ function exportFunction({ data, field }) {
     @apply z-[2];
   }
 }
-</style>
+</style> -->

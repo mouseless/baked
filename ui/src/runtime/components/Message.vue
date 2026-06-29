@@ -64,7 +64,7 @@ const sizeClass = computed(() => {
   }
 });
 </script>
-<style scoped>
+<!-- <style scoped>
 .message-outlined {
   @apply border rounded-md;
 
@@ -106,4 +106,4 @@ const sizeClass = computed(() => {
   @apply bg-transparent text-slate-950 border-slate-950
     dark:text-white dark:border-white;
 }
-</style>
+</style> -->

@@ -139,10 +139,10 @@ function onChanged(event) {
   values.value = event.values;
 }
 </script>
-<style>
+<!-- <style>
 .b-component--DataPanel {
   .p-panel-content {
     @apply [&:has(.p-datatable)]:p-0;
   }
 }
-</style>
+</style> -->

@@ -171,7 +171,7 @@ function emitSubmit() {
   }
 }
 </script>
-<style scoped>
+<!-- <style scoped>
 .horizontal {
   :has(.p-iftalabel) {
     .p-button[data-p="large"] {
@@ -183,4 +183,4 @@ function emitSubmit() {
     }
   }
 }
-</style>
+</style> -->

@@ -115,7 +115,7 @@ function setSelected(value) {
   }
 }
 </script>
-<style>
+<!-- <style>
 .b-component--Select {
   /*
   placeholder gives select the initial width, but it overlaps with label and
@@ -134,4 +134,4 @@ function setSelected(value) {
     @apply max-md:w-full;
   }
 }
-</style>
+</style> -->

@@ -23,10 +23,10 @@ defineProps({
 });
 const model = defineModel({ type: null, required: true });
 </script>
-<style>
+<!-- <style>
 .b-component--PageSize {
   .p-select-label {
     font-size: inherit;
   }
 }
-</style>
+</style> -->

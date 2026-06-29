@@ -167,7 +167,7 @@ function togglePopoverInputs(event) {
   popoverInputs.value.toggle(event);
 }
 </script>
-<style scoped>
+<!-- <style scoped>
 .sticky {
   top: -1px;
 }
@@ -182,4 +182,4 @@ function togglePopoverInputs(event) {
     }
   }
 }
-</style>
+</style> -->

@@ -44,11 +44,11 @@ const { schema } = defineProps({
 const { header, sideMenu } = schema;
 const scrollTopOptions = { threshold: 250, ...schema.scrollTopOptions };
 </script>
-<style>
+<!-- <style>
 .p-scrolltop {
   padding-top: calc(var(--p-button-icon-only-width) / 2);
   padding-bottom: calc(var(--p-button-icon-only-width) / 2);
 
   @apply right-6 bottom-6 max-md:bottom-24;
 }
-</style>
+</style> -->

@@ -90,7 +90,7 @@ function onChanged(event) {
   values.value = event.values;
 }
 </script>
-<style>
+<!-- <style>
 /* If DataContainer in a DataPanel, clear border and radius */
 .p-panel-content:has(.b-component--DataContainer) {
   .b-component--DataContainer {
@@ -110,4 +110,4 @@ function onChanged(event) {
     }
   }
 }
-</style>
+</style> -->

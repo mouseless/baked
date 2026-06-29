@@ -47,7 +47,7 @@ const variants = [
   }
 ];
 </script>
-<style lang="scss">
+<!-- <style lang="scss">
 .ui-spec {
   .b-component--SideMenu {
     @apply relative md:h-[inherit];
@@ -56,4 +56,4 @@ const variants = [
     @apply hidden;
   }
 }
-</style>
+</style> -->

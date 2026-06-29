@@ -200,7 +200,7 @@ function highlightJson(src) {
   return s;
 }
 </script>
-<style>
+<!-- <style>
 code:not(:has(pre)) {
   @apply rounded p-1 text-xs bg-zinc-50 text-orange-700 dark:bg-zinc-950 dark:text-orange-400;
 }
@@ -214,4 +214,4 @@ pre {
   .c--code-type { @apply text-blue-400; }
   .c--code-method { @apply text-yellow-100; }
 }
-</style>
+</style> -->

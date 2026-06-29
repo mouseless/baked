@@ -124,7 +124,7 @@ function setSelected(value) {
   }
 }
 </script>
-<style>
+<!-- <style>
 .p-togglebutton-content {
   @apply whitespace-nowrap;
 }
@@ -148,4 +148,4 @@ function setSelected(value) {
 .p-iftalabel:has(.p-selectbutton) {
   @apply mt-4;
 }
-</style>
+</style> -->
