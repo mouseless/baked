@@ -1,0 +1,276 @@
+@reference "./tailwind.css";
+
+@layer utilities {
+  html {
+    @apply max-xs:text-[smaller];
+  }
+
+  html,
+  .bg-body {
+    @apply bg-white;
+  }
+
+  @media (prefers-color-scheme: dark) {
+
+    html,
+    .bg-body {
+      @apply bg-zinc-925;
+    }
+  }
+
+  /* DATA CONTAINER */
+  /* If DataContainer in a DataPanel, clear border and radius */
+  .p-panel-content:has(.b-component--DataContainer) {
+    .b-component--DataContainer {
+      @apply border-none rounded-none;
+    }
+  }
+
+  .b-component--DataContainer {
+    div {
+      @apply [&:has(.p-datatable)]:p-0;
+    }
+
+    .p-button {
+      @apply self-stretch;
+
+      .p-button-icon+.p-button-label {
+        @apply max-sm:hidden;
+      }
+    }
+  }
+
+  /* DATA TABLE */
+  .p-datatable-tbody td.p-datatable-frozen-column {
+    background: inherit;
+  }
+
+  /* If Datatable in a DataPanel or DataContainer, clear border and radius */
+  .p-panel-content:has(.b-component--DataTable),
+  .b-component--DataContainer:has(.b-component--DataTable) {
+    .b-component--DataTable {
+      @apply border-none rounded-none;
+
+      .p-datatable-table-container {
+        @apply border-none;
+      }
+    }
+  }
+
+  /* Datatable standalone styles */
+  .b-component--DataTable {
+    @apply border border-slate-200 dark:border-zinc-700 justify-self-center w-full rounded-[--p-border-radius-md];
+
+    .p-datatable-table-container {
+      @apply border-none rounded-[--p-border-radius-md];
+    }
+
+    &:has(.p-datatable-paginator-bottom) {
+      .p-datatable-paginator-bottom {
+        @apply border-t rounded-t-none rounded-b-[--p-border-radius-md] border-b-0;
+      }
+
+      .p-datatable-table-container {
+        @apply rounded-b-none;
+      }
+    }
+
+    /* we clear the last tr border because of double border with
+      dt and row. and add tfoot border if has any */
+    tbody>tr:last-child>td {
+      @apply border-b-0;
+    }
+
+    tfoot>tr>td {
+      @apply border-t;
+    }
+
+    .b-label-column--wide {
+      @apply 3xl:w-[30%] 2xl:w-[20%] xl:w-[15%];
+    }
+
+    .b-label-column--narrow {
+      @apply 3xl:w-[40%] 2xl:w-[30%] xl:w-[20%];
+    }
+
+    a {
+      @apply text-sm;
+    }
+
+    .p-button {
+      @apply -my-2;
+    }
+
+    td.p-datatable-frozen-column {
+      @apply z-[1];
+    }
+
+    .p-datatable-thead {
+      @apply z-[2];
+    }
+  }
+
+  /* DATA PANEL */
+  .b-component--DataPanel {
+    .p-panel-content {
+      @apply [&:has(.p-datatable)]:p-0;
+    }
+  }
+
+  /* FORM PAGE */
+  .b-component--FormPage {
+    .reset-min-w * {
+      @apply min-w-0;
+    }
+  }
+
+  /* LAYOUT */
+  .p-scrolltop {
+    padding-top: calc(var(--p-button-icon-only-width) / 2);
+    padding-bottom: calc(var(--p-button-icon-only-width) / 2);
+
+    @apply right-6 bottom-6 max-md:bottom-24;
+  }
+
+  /* MESSAGE */
+  .message-outlined {
+    @apply border rounded-md;
+
+    .b-message-body {
+      @apply py-[0.50rem] px-[0.75rem] min-w-[10rem] min-h-[1.5rem];
+    }
+  }
+
+  .message-simple {
+    @apply !bg-transparent;
+
+    .b-message-icon {
+      @apply text-sm;
+    }
+  }
+
+  .message-simple .b-message-body {
+    @apply px-0;
+  }
+
+  .message-info {
+    @apply bg-blue-50/95 text-blue-600 border-blue-200 dark:bg-blue-950/95 dark:text-blue-500 dark:border-blue-700/65;
+  }
+
+  .message-error {
+    @apply bg-red-50/95 text-red-600 border-red-200 dark:bg-red-950/95 dark:text-red-500 dark:border-red-700/65;
+  }
+
+  .message-warn {
+    @apply bg-yellow-50/95 text-yellow-600 border-yellow-200 dark:bg-yellow-950/95 dark:text-yellow-500 dark:border-yellow-700/65;
+  }
+
+  .message-success {
+    @apply bg-green-50/95 text-green-600 border-green-200 dark:bg-green-950/95 dark:text-green-500 dark:border-green-700/65;
+  }
+
+  .message-secondary {
+    @apply bg-transparent text-slate-500 border-slate-500 dark:text-slate-400 dark:border-slate-400;
+  }
+
+  .message-contrast {
+    @apply bg-transparent text-slate-950 border-slate-950 dark:text-white dark:border-white;
+  }
+
+  /* MISSING COMPONENT */
+  code:not(:has(pre)) {
+    @apply rounded p-1 text-xs bg-zinc-50 text-orange-700 dark:bg-zinc-950 dark:text-orange-400;
+  }
+  pre {
+    @apply block rounded-lg overflow-auto max-h-[20em] bg-zinc-950 p-4 text-xs text-sky-300;
+
+    .c--code-comment { @apply text-green-800; }
+    .c--code-string { @apply text-orange-400; }
+    .c--code-keyword { @apply text-purple-400; }
+    .c--code-symbol { @apply text-gray-100; }
+    .c--code-type { @apply text-blue-400; }
+    .c--code-method { @apply text-yellow-100; }
+  }
+
+  /* SELECT */
+  .b-component--Select {
+    /*
+    placeholder gives select the initial width, but it overlaps with label and
+    tab key skip select if placeholder is hidden so it is opacity zero
+    */
+    .p-placeholder {
+      opacity: 0;
+    }
+    .p-select-label {
+      font-size: inherit;
+    }
+  }
+
+  .p-popover-content {
+    .b-component--Select {
+      @apply max-md:w-full;
+    }
+  }
+
+  /* SELECT BUTTON */
+  .p-togglebutton-content {
+    @apply whitespace-nowrap;
+  }
+  .p-popover-content {
+    .b-component--SelectButton.p-selectbutton,
+    .b-component--SelectButton .p-selectbutton {
+      @apply max-sm:flex max-sm:flex-col;
+
+      .p-togglebutton {
+        &:first-child {
+          @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
+        }
+        &:last-child {
+          @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
+        }
+      }
+    }
+  }
+
+  .p-iftalabel:has(.p-selectbutton) {
+    @apply mt-4;
+  }
+
+  /* SIMPLE FORM */
+  .horizontal {
+    :has(.p-iftalabel) {
+      .p-button[data-p="large"] {
+        @apply mt-1;
+      }
+
+      .p-button:not([data-p="large"]) {
+        @apply mt-2;
+      }
+    }
+  }
+
+  /* PAGE SIZE */
+  .b-component--PageSize {
+    .p-select-label {
+      font-size: inherit;
+    }
+  }
+
+  /* PAGE TITLE */
+  .b-component--PageTitle {
+    .p-button {
+      @apply self-stretch;
+
+      .p-button-icon+.p-button-label {
+        @apply max-sm:hidden;
+      }
+    }
+  }
+
+  /* POPOVER */
+  .p-popover-content {
+    &>div {
+      @apply max-sm:p-0;
+    }
+  }
+}

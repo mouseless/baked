@@ -124,7 +124,7 @@ export default defineNuxtModule<ModuleOptions>({
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
     _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/tailwind.css"));
-    _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/overrides.css"));
+    _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/components.css"));
 
     // below settings cannot be overriden
     _nuxt.options.devtools = { enabled: false };

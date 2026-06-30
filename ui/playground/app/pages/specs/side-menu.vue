@@ -47,13 +47,3 @@ const variants = [
   }
 ];
 </script>
-<!-- <style lang="scss">
-.ui-spec {
-  .b-component--SideMenu {
-    @apply relative md:h-[inherit];
-  }
-  .b-component--SideMenu--placeholder {
-    @apply hidden;
-  }
-}
-</style> -->

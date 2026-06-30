@@ -115,23 +115,3 @@ function setSelected(value) {
   }
 }
 </script>
-<!-- <style>
-.b-component--Select {
-  /*
-  placeholder gives select the initial width, but it overlaps with label and
-  tab key skip select if placeholder is hidden so it is opacity zero
-  */
-  .p-placeholder {
-    opacity: 0;
-  }
-  .p-select-label {
-    font-size: inherit;
-  }
-}
-
-.p-popover-content {
-  .b-component--Select {
-    @apply max-md:w-full;
-  }
-}
-</style> -->

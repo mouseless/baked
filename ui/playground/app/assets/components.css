@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .custom-css-visible {
+    @apply block!;
+  }
+
+  .custom-css-hidden {
+    @apply hidden!;
+  }
+
+  .b-route--data-table {
+    .b--tabs.b--contents.b--0 {
+      .b-component--DataTable {
+        th:last-child {
+          .flex {
+            @apply gap-24;
+          }
+
+          .p-button {
+            @apply px-5 border border-zinc-200 dark:border-zinc-700 rounded;
+          }
+        }
+      }
+    }
+  }
+
+  .p-inputwrapper>.p-inputnumber-input {
+    @apply w-0;
+  }
+
+  /* SIDE MENU */
+  .ui-spec {
+    .b-component--SideMenu {
+      @apply relative md:h-[inherit];
+    }
+
+    .b-component--SideMenu--placeholder {
+      @apply hidden;
+    }
+  }
+}

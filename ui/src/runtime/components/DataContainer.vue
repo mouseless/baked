@@ -90,24 +90,3 @@ function onChanged(event) {
   values.value = event.values;
 }
 </script>
-<!-- <style>
-/* If DataContainer in a DataPanel, clear border and radius */
-.p-panel-content:has(.b-component--DataContainer) {
-  .b-component--DataContainer {
-    @apply border-none rounded-none;
-  }
-}
-.b-component--DataContainer {
-  div {
-    @apply [&:has(.p-datatable)]:p-0;
-  }
-
-  .p-button {
-    @apply self-stretch;
-
-    .p-button-icon+.p-button-label {
-      @apply max-sm:hidden;
-    }
-  }
-}
-</style> -->

@@ -160,10 +160,3 @@ function onSubmit() {
   emit("submit", model.value);
 }
 </script>
-<!-- <style>
-.b-component--FormPage {
-  .reset-min-w * {
-    @apply min-w-0;
-  }
-}
-</style> -->
