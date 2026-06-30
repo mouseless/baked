@@ -257,6 +257,10 @@
   }
 
   /* PAGE TITLE */
+  #page-title.sticky {
+    @apply top-[-1px];
+  }
+
   .b-component--PageTitle {
     .p-button {
       @apply self-stretch;
