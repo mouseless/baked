@@ -7,7 +7,7 @@
 
 @source "../components/**/*.vue";
 
-@theme inline {
+@theme {
   --breakpoint-2xs: 340px;
   --breakpoint-xs: 480px;
   --breakpoint-sm: 640px;
