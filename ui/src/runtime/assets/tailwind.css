@@ -16,6 +16,7 @@
   --radius-datatable: var(--p-border-radius-md);
 
   --spacing-icon-only-width: calc(var(--p-button-icon-only-width) / 2);
+
   /* zinc-925 custom color */
   --color-zinc-925: #121214;
 }
