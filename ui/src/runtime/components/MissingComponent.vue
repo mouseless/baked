@@ -200,18 +200,3 @@ function highlightJson(src) {
   return s;
 }
 </script>
-<style>
-code:not(:has(pre)) {
-  @apply rounded p-1 text-xs bg-zinc-50 text-orange-700 dark:bg-zinc-950 dark:text-orange-400;
-}
-pre {
-  @apply block rounded-lg overflow-auto max-h-[20em] bg-zinc-950 p-4 text-xs text-sky-300;
-
-  .c--code-comment { @apply text-green-800; }
-  .c--code-string { @apply text-orange-400; }
-  .c--code-keyword { @apply text-purple-400; }
-  .c--code-symbol { @apply text-gray-100; }
-  .c--code-type { @apply text-blue-400; }
-  .c--code-method { @apply text-yellow-100; }
-}
-</style>

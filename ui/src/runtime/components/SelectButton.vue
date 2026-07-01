@@ -124,28 +124,3 @@ function setSelected(value) {
   }
 }
 </script>
-<style>
-.p-togglebutton-content {
-  @apply whitespace-nowrap;
-}
-.p-popover-content {
-  .b-component--SelectButton.p-selectbutton,
-  .b-component--SelectButton .p-selectbutton {
-    @apply max-sm:flex max-sm:flex-col;
-
-    .p-togglebutton {
-      &:first-child {
-        @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
-      }
-      &:last-child {
-        @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
-      }
-    }
-  }
-}
-</style>
-<style scoped>
-.p-iftalabel:has(.p-selectbutton) {
-  @apply mt-4;
-}
-</style>

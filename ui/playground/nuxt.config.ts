@@ -46,7 +46,7 @@ export default defineNuxtConfig({
   components: {
     dirs: ["~/components"]
   },
-  css: [ "~/assets/styles.scss" ],
+  css: [ "~/assets/components.css" ],
   // Do NOT remove this line, auto imports are disabled for consistency
   // between local and published package behaviour
   imports: { autoImport: false },

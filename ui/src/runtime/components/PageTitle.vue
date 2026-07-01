@@ -1,7 +1,7 @@
 <template>
   <div
     id="page-title"
-    class="sticky -top-1 z-10 space-y-4 bg-body"
+    class="sticky z-10 space-y-4 bg-body"
   >
     <div class="flex justify-between items-center gap-2">
       <div
@@ -167,19 +167,3 @@ function togglePopoverInputs(event) {
   popoverInputs.value.toggle(event);
 }
 </script>
-<style scoped>
-.sticky {
-  top: -1px;
-}
-</style>
-<style>
-.b-component--PageTitle {
-  .p-button {
-    @apply self-stretch;
-
-    .p-button-icon+.p-button-label {
-      @apply max-sm:hidden;
-    }
-  }
-}
-</style>
