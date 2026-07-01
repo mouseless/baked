@@ -1,10 +1,6 @@
 @import "tailwindcss";
 
-/*
- Look here https://primevue.dev/tailwind/
- To see primevue variables
-*/
-
+/* for tailwind to scan module components */
 @source "../components/**/*.vue";
 
 @theme {
