@@ -16,3 +16,5 @@
 | npm Package         | Old Version | New Version |
 | ---                 | ---         | ---         |
 | @nuxtjs/tailwindcss | 6.14.0      | removed     |
+| @tailwindcss/vite   | new         | 4.3.1       |
+| tailwindcss         | new         | 4.3.1       |
