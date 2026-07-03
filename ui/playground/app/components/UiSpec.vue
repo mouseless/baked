@@ -1,12 +1,19 @@
 <template>
   <div class="space-y-4 mb-40">
-    <PageTitle
-      :schema="{
-        description: `${$route.path}:Description`,
-        localizeTitle: true,
-        actions: []
+    <Bake
+      name="page-title"
+      :descriptor="{
+        type: 'PageTitle',
+        schema: {
+          description: `${$route.path}:Description`,
+          localizeTitle: true,
+          actions: []
+        },
+        data: {
+          type: 'Inline',
+          value: `${$route.path}:Title`
+        }
       }"
-      :data="`${$route.path}:Title`"
     />
     <div class="flex justify-center w-full">
       <div

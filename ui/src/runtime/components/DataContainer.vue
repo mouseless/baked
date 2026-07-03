@@ -48,10 +48,20 @@
         name="content"
         :descriptor="content"
       />
-      <Message
+      <Bake
         v-else-if="!ready"
-        :schema="{ severity: 'info', icon: 'pi pi-info-circle' }"
-        :data="lc('Select required values to view this data')"
+        name="message"
+        :descriptor="{
+          type: 'Message',
+          schema: {
+            severity: 'info',
+            icon: 'pi pi-info-circle'
+          },
+          data: {
+            type: 'Inline',
+            value: lc('Select required values to view this data')
+          }
+        }"
       />
     </div>
   </div>
@@ -59,7 +69,7 @@
 <script setup>
 import { ref } from "vue";
 import { useContext, useLocalization } from "#imports";
-import { Bake, Inputs, Message } from "#components";
+import { Bake, Inputs } from "#components";
 
 const context = useContext();
 const { localize: lc } = useLocalization({ group: "DataContainer" });

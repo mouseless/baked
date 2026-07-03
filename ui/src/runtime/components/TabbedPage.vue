@@ -38,10 +38,20 @@
         </Tabs>
       </template>
     </Bake>
-    <Message
+    <Bake
       v-if="showRequiredMessage"
-      :schema="{ severity: 'info', icon: 'pi pi-info-circle' }"
-      :data="lc('Select required values to view this page')"
+      name="message"
+      :descriptor="{
+        type: 'Message',
+        schema: {
+          severity: 'info',
+          icon: 'pi pi-info-circle'
+        },
+        data: {
+          type: 'Inline',
+          value: lc('Select required values to view this page')
+        }
+      }"
     />
     <div
       v-if="ready"
@@ -69,7 +79,7 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { Tab, TabList, Tabs } from "primevue";
 import { useContext, useLocalization, useReactionHandler } from "#imports";
-import { Bake, Contents, DeferredTabContent, Inputs, Message } from "#components";
+import { Bake, Contents, DeferredTabContent, Inputs } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
