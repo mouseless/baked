@@ -30,20 +30,15 @@
   - Tailwind breakpoints must now be defined in `theme.css` using `@theme`
 ```
 
-## Improvements
-
-- `@nuxtjs/tailwindcss` package is no longer required by the module
-  - Configurations are no longer needed
-- Tailwind 4 is now supported and automatically installed
-
 ## Breaking Changes
 
-- Tailwind `screens` must now be configured via Tailwind's `@theme`
-- PrimeVue layer order is changed, new order is
-  `theme, base, primevue, utilities`
-- `override.scss` is renamed to `component.css`
-- Existing styles may break after Tailwind 4 upgrade
-  - Follow the `tailwindcss` Upgrade guide above to migrate
+- Tailwind CSS has been upgraded from v3 to v4
+  - `@nuxtjs/tailwindcss` is no longer required
+  - Tailwind `screens` must now be configured via `@theme`
+  - PrimeVue layer order is now `theme, base, primevue, utilities`
+  - Existing styles may require migration
+    - Follow the Tailwind CSS upgrade guide above
+- `override.scss` has been renamed to `component.css`
 
 ## Library Upgrades
 
