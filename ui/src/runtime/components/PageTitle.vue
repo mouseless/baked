@@ -1,7 +1,7 @@
 <template>
   <div
     id="page-title"
-    class="sticky z-10 space-y-4 bg-body"
+    class="sticky top-[-1px] z-10 space-y-4 bg-body"
   >
     <div class="flex justify-between items-center gap-2">
       <div

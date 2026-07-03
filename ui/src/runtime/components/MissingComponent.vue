@@ -24,7 +24,7 @@
     header="Missing Component"
     modal
     dismissable-mask
-    class="min-w-[500px] max-w-[750px] mx-4"
+    class="c--missing-component-dialog min-w-[500px] max-w-[750px] mx-4"
   >
     <div class="flex flex-col gap-4 w-full">
       <code v-if="path">{{ path.join('/') }}</code>
