@@ -1,5 +1,6 @@
-import { addComponentsDir, addImportsDir, addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
+import { addComponentsDir, addImportsDir, addPlugin, addVitePlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
+import tailwindcss from "@tailwindcss/vite";
 import { pathToFileURL } from "url";
 import { join } from "path";
 
@@ -79,21 +80,6 @@ export default defineNuxtModule<ModuleOptions>({
           cookieKey: "i18n_cookie"
         }
       }
-    },
-    "@nuxtjs/tailwindcss": {
-      version: "6.14.0",
-      defaults: {
-        exposeConfig: true,
-        cssPath: metaUrlResolver.resolve("./runtime/assets/tailwind.css"),
-        config: {
-          content: {
-            files: [
-              metaUrlResolver.resolve("./runtime/components/**/*.{vue,mjs,ts}"),
-              metaUrlResolver.resolve("./runtime/*.{mjs,js,ts}")
-            ]
-          }
-        }
-      }
     }
   },
   onInstall() {
@@ -137,7 +123,8 @@ export default defineNuxtModule<ModuleOptions>({
 
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
-    _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/overrides.css"));
+    _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/tailwind.css"));
+    _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/components.css"));
 
     // below settings cannot be overriden
     _nuxt.options.devtools = { enabled: false };
@@ -163,6 +150,9 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.metaUrl.resolve("./runtime/plugins/primeVue"));
     addPlugin(resolver.metaUrl.resolve("./runtime/plugins/fetch"), {});
 
+    // tailwind engine
+    addVitePlugin(tailwindcss());
+
     // module overrides
     _nuxt.options.vite.optimizeDeps ||= {};
     _nuxt.options.vite.optimizeDeps.noDiscovery = true;
@@ -183,21 +173,6 @@ export default defineNuxtModule<ModuleOptions>({
         };
       }),
       defaultLocale: app?.i18n?.defaultLanguage?.code
-    };
-
-    (_nuxt.options as any).tailwindcss = {
-      config: {
-        theme: {
-          screens: _options.composables.useBreakpoints.screens,
-          extend: {
-            colors: {
-              zinc: {
-                925: "#121214"
-              }
-            }
-          }
-        }
-      }
     };
   }
 });

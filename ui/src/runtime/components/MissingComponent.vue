@@ -24,7 +24,7 @@
     header="Missing Component"
     modal
     dismissable-mask
-    class="min-w-[500px] max-w-[750px] mx-4"
+    class="c--missing-component-dialog min-w-[500px] max-w-[750px] mx-4"
   >
     <div class="flex flex-col gap-4 w-full">
       <code v-if="path">{{ path.join('/') }}</code>
@@ -200,18 +200,3 @@ function highlightJson(src) {
   return s;
 }
 </script>
-<style>
-code:not(:has(pre)) {
-  @apply rounded p-1 text-xs bg-zinc-50 text-orange-700 dark:bg-zinc-950 dark:text-orange-400;
-}
-pre {
-  @apply block rounded-lg overflow-auto max-h-[20em] bg-zinc-950 p-4 text-xs text-sky-300;
-
-  .c--code-comment { @apply text-green-800; }
-  .c--code-string { @apply text-orange-400; }
-  .c--code-keyword { @apply text-purple-400; }
-  .c--code-symbol { @apply text-gray-100; }
-  .c--code-type { @apply text-blue-400; }
-  .c--code-method { @apply text-yellow-100; }
-}
-</style>

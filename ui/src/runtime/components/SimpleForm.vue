@@ -171,16 +171,3 @@ function emitSubmit() {
   }
 }
 </script>
-<style scoped>
-.horizontal {
-  :has(.p-iftalabel) {
-    .p-button[data-p="large"] {
-      @apply mt-1;
-    }
-
-    .p-button:not([data-p="large"]) {
-      @apply mt-2;
-    }
-  }
-}
-</style>

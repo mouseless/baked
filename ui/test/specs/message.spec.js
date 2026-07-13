@@ -56,12 +56,12 @@ test.describe("Action", () => {
 
 test.describe("Severity", () => {
   [
-    { id: "Info", expected: "rgb(37, 99, 235)" },
-    { id: "Warning", expected:  "rgb(202, 138, 4)" },
-    { id: "Error", expected: "rgb(220, 38, 38)" },
-    { id: "Success", expected: "rgb(22, 163, 74)" },
-    { id: "Contrast", expected: "rgb(2, 6, 23)" },
-    { id: "Secondary", expected: "rgb(100, 116, 139)" }
+    { id: "Info", expected: "oklch(0.546 0.245 262.881)" }, // blue-600
+    { id: "Warning", expected: "oklch(0.681 0.162 75.834)" }, // yellow-600
+    { id: "Error", expected: "oklch(0.577 0.245 27.325)" }, // red-600
+    { id: "Success", expected: "oklch(0.627 0.194 149.214)" }, // green-600
+    { id: "Contrast", expected: "oklch(0.129 0.042 264.695)" }, // slate-950
+    { id: "Secondary", expected: "oklch(0.554 0.046 257.417)" } // slate-500
   ].forEach(({ id, expected }) => {
     test(`Severity ${id}`, async({ page }) => {
       const component = page.getByTestId(id);

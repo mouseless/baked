@@ -69,10 +69,20 @@
         name="content"
         :descriptor="content"
       />
-      <Message
+      <Bake
         v-else-if="!ready"
-        :schema="{ severity: 'info', icon: 'pi pi-info-circle' }"
-        :data="lc('Select required values to view this data')"
+        name="message"
+        :descriptor="{
+          type: 'Message',
+          schema: {
+            severity: 'info',
+            icon: 'pi pi-info-circle'
+          },
+          data: {
+            type: 'Inline',
+            value: lc('Select required values to view this data')
+          }
+        }"
       />
     </template>
   </Panel>
@@ -81,7 +91,7 @@
 import { computed, ref, useTemplateRef } from "vue";
 import { Panel, Button } from "primevue";
 import { useBreakpoints, useContext, useDataMounter, useUiStates, useLocalization } from "#imports";
-import { Bake, Inputs, PersistentPopover, Message } from "#components";
+import { Bake, Inputs, PersistentPopover } from "#components";
 
 const { value: { panelStates } } = useUiStates();
 const { isMd } = useBreakpoints();
@@ -139,10 +149,3 @@ function onChanged(event) {
   values.value = event.values;
 }
 </script>
-<style>
-.b-component--DataPanel {
-  .p-panel-content {
-    @apply [&:has(.p-datatable)]:p-0;
-  }
-}
-</style>

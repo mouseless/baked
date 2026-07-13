@@ -9,9 +9,7 @@
     "generate": "nuxi generate --log-level silent --dotenv .env.production"
   },
   "devDependencies": {
-    "@nuxt/eslint": "$@nuxt/eslint",
-    "@nuxtjs/tailwindcss": "$@nuxtjs/tailwindcss",
-    "sass": "$sass"
+    "@nuxt/eslint": "$@nuxt/eslint"
   },
   "dependencies": {
     "@mouseless/baked": "$@mouseless/baked",

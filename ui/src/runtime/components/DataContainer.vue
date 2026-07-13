@@ -48,10 +48,20 @@
         name="content"
         :descriptor="content"
       />
-      <Message
+      <Bake
         v-else-if="!ready"
-        :schema="{ severity: 'info', icon: 'pi pi-info-circle' }"
-        :data="lc('Select required values to view this data')"
+        name="message"
+        :descriptor="{
+          type: 'Message',
+          schema: {
+            severity: 'info',
+            icon: 'pi pi-info-circle'
+          },
+          data: {
+            type: 'Inline',
+            value: lc('Select required values to view this data')
+          }
+        }"
       />
     </div>
   </div>
@@ -59,7 +69,7 @@
 <script setup>
 import { ref } from "vue";
 import { useContext, useLocalization } from "#imports";
-import { Bake, Inputs, Message } from "#components";
+import { Bake, Inputs } from "#components";
 
 const context = useContext();
 const { localize: lc } = useLocalization({ group: "DataContainer" });
@@ -90,24 +100,3 @@ function onChanged(event) {
   values.value = event.values;
 }
 </script>
-<style>
-/* If DataContainer in a DataPanel, clear border and radius */
-.p-panel-content:has(.b-component--DataContainer) {
-  .b-component--DataContainer {
-    @apply border-none rounded-none;
-  }
-}
-.b-component--DataContainer {
-  div {
-    @apply [&:has(.p-datatable)]:p-0;
-  }
-
-  .p-button {
-    @apply self-stretch;
-
-    .p-button-icon+.p-button-label {
-      @apply max-sm:hidden;
-    }
-  }
-}
-</style>

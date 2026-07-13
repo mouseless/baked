@@ -12,17 +12,24 @@
       :validation
       :mutable-validation
     >
-      <Message
+      <Bake
         v-if="message"
         :key="`${severity}:${icon}`"
+        name="message"
         icon="pi pi-info-circle"
-        :schema="{
-          severity,
-          variant: 'simple',
-          size: 'small',
-          icon
+        :descriptor="{
+          type: 'Message',
+          schema: {
+            severity,
+            variant: 'simple',
+            size: 'small',
+            icon
+          },
+          data: {
+            type: 'Inline',
+            value: message || ''
+          }
         }"
-        :data="message || ''"
         class="ml-3"
       />
     </slot>
@@ -31,7 +38,6 @@
 <script setup>
 import { computed } from "vue";
 import { useContext } from "#imports";
-import { Message } from "#components";
 
 const context = useContext();
 
