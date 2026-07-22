@@ -209,6 +209,9 @@ public class Entities(IQueryContext<Entity> _context)
     internal bool AnyByUnique(string unique) =>
         _context.AnyBy(e => e.Unique == unique);
 
+    internal Entity? SingleByUnique(string unique) =>
+        _context.SingleBy(e => e.Unique == unique);
+
     internal bool AnyByEnum(Enumeration @enum) =>
         _context.AnyBy(e => e.Enum == @enum);
 

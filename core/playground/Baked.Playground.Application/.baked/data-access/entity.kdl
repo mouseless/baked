@@ -6,7 +6,7 @@ entity @entity {
   string @column
   string-data @column
   int32 @column
-  unique @column
+  unique @column @unique
   uri @column
   dynamic @column
   enum @column
