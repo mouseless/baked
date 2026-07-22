@@ -8,6 +8,7 @@ FROM node:24-alpine as init
 
 COPY --parents ui/package.json .
 COPY --parents ui/package-lock.json .
+COPY --parents ui/playground/package.json .
 RUN cd ui; npm install
 
 # ---

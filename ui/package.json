@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
-    "postinstall": "nuxt prepare && cd playground && npx nuxi prepare",
+    "postinstall": "nuxt prepare && nuxi prepare playground",
     "build": "npm run lint && nuxt-module-build build --stub && nuxt-module-build prepare",
     "dev": "npm run lint && nuxi dev playground --dotenv .env.development --host",
     "test": "npm run lint && playwright test",
