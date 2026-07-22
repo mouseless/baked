@@ -6,10 +6,10 @@ entity @entity {
   string @column
   string-data @column
   int32 @column
-  unique @column @unique
+  unique @column
   uri @column
   dynamic @column
-  enum @column @unique
+  enum @column
   date-time @column
   date-only @column
   time-only @column

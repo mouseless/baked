@@ -17,10 +17,7 @@ public class UniqueCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Type.TryGet<LocatableAttribute>(out var locatable) &&
                     locatable.QueryType is not null &&
                     c.Domain.Types[locatable.QueryType].TryGetMembers(out var query) &&
-                    (
-                        query.Methods.Contains($"SingleBy{c.Property.Name}") ||
-                        query.Methods.Contains($"AnyBy{c.Property.Name}")
-                    ),
+                    query.Methods.Contains($"SingleBy{c.Property.Name}"),
                 attribute: c => new UniqueAttribute(),
                 order: Order.At.Infra + 30
             );
