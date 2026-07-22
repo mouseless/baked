@@ -57,7 +57,7 @@ parents @controller-model {
     }
   }
   by-name {
-    @action-model route="GET /parents/name" required-claims="BaseA, BaseB"
+    @action-model route="GET /parents/by-name" required-claims="BaseA, BaseB"
     contains {
       @parameter-model required=#true in="query"
     }

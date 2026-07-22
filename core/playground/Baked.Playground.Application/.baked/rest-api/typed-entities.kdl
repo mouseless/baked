@@ -27,7 +27,7 @@ typed-entities @controller-model {
     @action-model route="GET /typed-entities" required-claims="BaseA, BaseB"
   }
   single-by-type {
-    @action-model route="GET /typed-entities/single-type" required-claims="BaseA, BaseB"
+    @action-model route="GET /typed-entities/single-by-type" required-claims="BaseA, BaseB"
     type {
       @parameter-model required=#true in="query"
     }
