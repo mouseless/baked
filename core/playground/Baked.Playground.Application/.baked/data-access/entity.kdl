@@ -9,7 +9,7 @@ entity @entity {
   unique @column @unique
   uri @column
   dynamic @column
-  enum @column
+  enum @column @unique
   date-time @column
   date-only @column
   time-only @column
