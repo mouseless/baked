@@ -56,14 +56,6 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                 ),
                 x => x.CustomSqlType("TEXT")
             ));
-            model.Conventions.Add(ConventionBuilder.Property.When(
-                x => x.Expect(p => p.Property.PropertyType.SkipNullable() == typeof(DateOnly)),
-                x => x.CustomType<DateOnlyUserType>()
-            ));
-            model.Conventions.Add(ConventionBuilder.Property.When(
-                x => x.Expect(p => p.Property.PropertyType.SkipNullable() == typeof(TimeOnly)),
-                x => x.CustomType<TimeOnlyUserType>()
-            ));
         });
 
         configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
