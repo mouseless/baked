@@ -30,13 +30,18 @@ public class QueryCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 order: Order.At.Infra + 30
             );
 
-            var suffixes = new[] { "FirstBy", "SingleBy", "By" };
             conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: Order.At.Infra - 10);
-            conventions.Add(new RemoveFromRouteConvention(suffixes,
+            conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy"],
+                _whenContext: c =>
+                    c.Type.TryGetMetadata(out var metadata) &&
+                    metadata.Has<QueryAttribute>()
+            ),
+            order: Order.At.Infra);
+            conventions.Add(new RemoveFromRouteConvention(["By"],
                 _whenContext: c =>
                     c.Type.TryGetMetadata(out var metadata) &&
                     metadata.Has<QueryAttribute>() &&
-                    suffixes.Any(s => c.Method.Name.EndsWith(s))
+                    c.Method.Name.EndsWith("By")
             ),
             order: Order.At.Infra);
         });
