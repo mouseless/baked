@@ -5,6 +5,7 @@ namespace Baked.CodingStyle.CommandPattern;
 
 public class NoRequestBodyForSingleEnumerableParametersConvention(
     Func<ActionModelAttribute, bool>? _when = default,
+    Func<MethodModelContext, bool>? _whenContext = default,
     HttpMethod? _method = default
 ) : IDomainModelConvention<MethodModelContext>
 {
@@ -12,6 +13,7 @@ public class NoRequestBodyForSingleEnumerableParametersConvention(
     {
         if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (_when is not null && !_when(action)) { return; }
+        if (_whenContext is not null && !_whenContext(context)) { return; }
         if (action.InvokedMethodParameters.Count() != 1) { return; }
 
         var onlyParameter = action.InvokedMethodParameters.Single();

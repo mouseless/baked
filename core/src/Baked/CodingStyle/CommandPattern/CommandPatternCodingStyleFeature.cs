@@ -2,6 +2,7 @@
 using Baked.Binding;
 using Baked.Business;
 using Baked.Domain.Configuration;
+using Baked.Domain.Model;
 using Baked.Lifetime;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
@@ -12,44 +13,89 @@ namespace Baked.CodingStyle.CommandPattern;
 public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
     : IFeature<CodingStyleConfigurator>
 {
+    readonly HashSet<string> _methodNames = [.. _methodNames];
+    // TODO - command'in private ve/veya internal method'u olduğunda da command olabilmesini test edilecek
     public void Configure(LayerConfigurator configurator)
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
+            bool IsAction(MethodModel m, TypeModelMetadataContext c)
+            {
+                return !m.Has<InitializerAttribute>() &&
+                    m.DefaultOverload.DeclaringType == c.Type &&
+                    m.DefaultOverload.IsPublicInstanceWithNoSpecialName;
+            }
+
             conventions.SetTypeAttribute(
-                attribute: () => new PubliclyInitializableAttribute(),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
-                    members.Has<TransientAttribute>() &&
-                    !members.Has<LocatableAttribute>() &&
-                    members.Methods.Any(m =>
+                    (
+                        !members.Has<TransientAttribute>() ||
+                        members.Has<TransientAttribute>() && !members.Has<LocatableAttribute>()
+                    ) &&
+                    members.Methods.Count(m => IsAction(m, c)) == 1 &&
+                    _methodNames.Contains(members.Methods.Single(m => IsAction(m, c)).Name),
+                apply: (c, set) =>
+                {
+                    set(c.Type, new CommandAttribute());
+
+                    var members = c.Type.GetMembers();
+                    foreach (var method in members.Methods)
+                    {
+                        if (!_methodNames.Contains(method.Name)) { continue; }
+
+                        set(method, new CommandMethodAttribute());
+                    }
+                },
+                order: Order.At.Infra + 40
+            );
+            // TODO - Burası yanlış. Değişmeli.
+            conventions.RemoveTypeAttribute<ControllerModelAttribute>(
+                when: c =>
+                    c.Type.Has<CommandAttribute>() &&
+                    c.Type.TryGetMembers(out var members) &&
+                    !members.Methods.Any(m =>
                         m.Has<InitializerAttribute>() &&
                         m.DefaultOverload.AllParametersAreApiInput() &&
-                        m.DefaultOverload.IsPublicInstanceWithNoSpecialName
+                        m.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
+                        m.DefaultOverload.DeclaringType == c.Type
                     ),
                 order: Order.At.Infra + 40
             );
-            conventions.RemoveTypeAttribute<ControllerModelAttribute>(
-                when: c =>
-                    c.Type.Has<TransientAttribute>() &&
-                    !c.Type.Has<LocatableAttribute>() &&
-                    !c.Type.Has<PubliclyInitializableAttribute>(),
-                order: Order.At.Infra + 40
-            );
 
-            conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: Order.At.Infra - 10);
-            conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: Order.At.Infra - 10);
-            conventions.Add(new RemoveFromRouteConvention(_methodNames), order: Order.At.Infra);
-            conventions.Add(new RemoveFromRouteConvention(["Sync", "Create"]), order: Order.At.Infra);
-            conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention(), order: Order.At.Infra);
+            conventions.Add(new IncludeClassDocsForActionNamesConvention(
+                _whenContext: c => c.Method.Has<CommandMethodAttribute>()
+            ), order: Order.At.Infra - 10);
+
+            conventions.Add(new UseClassNameInsteadOfActionNamesConvention(
+                _whenContext: c => c.Method.Has<CommandMethodAttribute>()
+            ), order: Order.At.Infra - 10);
+
+            conventions.Add(new RemoveFromRouteConvention(
+                _parts: _methodNames,
+                _whenContext: c => c.Method.Has<CommandMethodAttribute>()
+            ), order: Order.At.Infra);
+
+            conventions.Add(new RemoveFromRouteConvention(
+                _parts: ["Sync", "Create"],
+                _whenContext: c => c.Method.Has<CommandMethodAttribute>()
+            ), order: Order.At.Infra);
+
+            conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention(
+                _whenContext: c =>
+                    c.Type.TryGetMembers(out var members) &&
+                    members.Has<CommandAttribute>()
+            ), order: Order.At.Infra);
 
             conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
                 _when: action => action.Name.StartsWith("Sync"),
+                _whenContext: c => c.Method.Has<CommandMethodAttribute>(),
                 _method: HttpMethod.Put
             ), order: Order.At.Infra - 10);
 
             conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
                 _when: action => action.Name.StartsWith("Create"),
+                _whenContext: c => c.Method.Has<CommandMethodAttribute>(),
                 _method: HttpMethod.Patch
             ), order: Order.At.Infra - 10);
         });

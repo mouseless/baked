@@ -1,0 +1,18 @@
+clear-commanded @controller-model {
+  execute {
+    @action-model route="DELETE /commanded" required-claims="BaseA, BaseB"
+    execute-param {
+      @parameter-model in="query"
+    }
+  }
+}
+
+commanded @controller-model {
+  method {
+    @action-model route="POST /commanded/method" required-claims="BaseA, BaseB"
+    body {
+      @parameter-model required=#true
+    }
+  }
+}
+

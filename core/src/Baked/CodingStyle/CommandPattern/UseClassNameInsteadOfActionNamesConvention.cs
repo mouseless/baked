@@ -3,15 +3,14 @@ using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.CommandPattern;
 
-public class UseClassNameInsteadOfActionNamesConvention(IEnumerable<string> actionNames)
-    : IDomainModelConvention<MethodModelContext>
+public class UseClassNameInsteadOfActionNamesConvention(
+    Func<MethodModelContext, bool>? _whenContext = default
+) : IDomainModelConvention<MethodModelContext>
 {
-    readonly HashSet<string> _actionNames = [.. actionNames];
-
     public void Apply(MethodModelContext context)
     {
+        if (_whenContext is not null && !_whenContext(context)) { return; }
         if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
-        if (!_actionNames.Contains(action.Name)) { return; }
 
         action.RouteParts.RemoveAll(action.Name);
         action.Name = context.Type.Name;

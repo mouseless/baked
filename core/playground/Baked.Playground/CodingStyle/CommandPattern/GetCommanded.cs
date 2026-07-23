@@ -1,6 +1,6 @@
 ﻿namespace Baked.Playground.CodingStyle.CommandPattern;
 
-public class UpdateCommand
+public class GetCommanded
 {
     public void Execute() { }
 }

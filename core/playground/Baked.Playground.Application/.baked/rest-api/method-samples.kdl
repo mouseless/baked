@@ -1,6 +1,6 @@
 method-samples @controller-model {
   execute {
-    @action-model route="POST /method-samples" required-claims="BaseA, BaseB"
+    @action-model route="POST /method-samples/execute" required-claims="BaseA, BaseB"
   }
   update {
     @action-model route="PUT /method-samples" required-claims="BaseA, BaseB"
