@@ -8,7 +8,7 @@ rich-transient-with-custom-id-property @controller-model {
   get-test-custom-id-property-name {
     @action-model route="GET /rich-transient-with-custom-id-properties/{uid}/test-custom-id-property-name" required-claims="BaseA, BaseB"
     other {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="otherUid"
     }
   }
   test-custom-id-property-name {

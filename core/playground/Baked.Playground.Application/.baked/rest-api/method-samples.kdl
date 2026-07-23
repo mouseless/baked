@@ -147,13 +147,13 @@ method-samples @controller-model {
   get-entity-parameters {
     @action-model route="GET /method-samples/entity-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="singleId"
     }
     enumerable {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="enumerableIds"
     }
     array {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="arrayIds"
     }
   }
   entity-parameters {
@@ -177,13 +177,13 @@ method-samples @controller-model {
   get-transient-parameters {
     @action-model route="GET /method-samples/transient-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="singleId"
     }
     enumerable {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="enumerableIds"
     }
     array {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="arrayIds"
     }
   }
   transient-parameters {
@@ -207,13 +207,13 @@ method-samples @controller-model {
   get-transient-async-parameters {
     @action-model route="GET /method-samples/transient-async-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="singleId"
     }
     enumerable {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="enumerableIds"
     }
     array {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="arrayIds"
     }
   }
   transient-async-parameters {

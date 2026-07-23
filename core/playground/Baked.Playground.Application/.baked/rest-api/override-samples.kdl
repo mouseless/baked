@@ -5,7 +5,7 @@ override-samples @controller-model {
   parameter {
     @action-model route="POST /override-samples/parameter/{id}" required-claims="BaseA, BaseB"
     parameter {
-      @parameter-model required=#true in="route"
+      @parameter-model required=#true in="route" name="id"
     }
   }
   request-class {
