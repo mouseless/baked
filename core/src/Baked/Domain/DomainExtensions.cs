@@ -135,13 +135,13 @@ public static class DomainExtensions
             types.Add(typeof(T));
     }
 
-    static AttributeUsageAttribute? GetAttributeUsage(Type attributeType) =>
-        _cacheForAttributeUsages.GetOrAdd(attributeType, static t =>
-            t.GetCustomAttribute<AttributeUsageAttribute>(inherit: false)
-        );
-
     extension(Type type)
     {
+        public AttributeUsageAttribute? AttributeUsage =>
+            _cacheForAttributeUsages.GetOrAdd(type, static t =>
+                t.GetCustomAttribute<AttributeUsageAttribute>(inherit: false)
+            );
+
         public string GetCSharpFriendlyFullName() =>
             type.IsArray ? $"{type.GetElementType()?.GetCSharpFriendlyFullName()}[]" :
             !type.IsGenericType ? type.FullName ?? type.Name :
@@ -151,7 +151,7 @@ public static class DomainExtensions
 
         public bool AllowsMultiple() =>
             type.IsAssignableTo(typeof(Attribute)) &&
-            GetAttributeUsage(type)?.AllowMultiple == true;
+            type.AttributeUsage?.AllowMultiple == true;
 
         public bool IsAnonymous =>
             type.Namespace == null &&
@@ -249,7 +249,7 @@ public static class DomainExtensions
 
         public void ThrowIfNotTarget(ICustomAttributesModel model)
         {
-            var validOn = GetAttributeUsage(attribute.GetType())?.ValidOn ?? AttributeTargets.All;
+            var validOn = attribute.GetType().AttributeUsage?.ValidOn ?? AttributeTargets.All;
             if (validOn.HasFlag(model.Target)) { return; }
 
             throw DiagnosticCode.AttributeTargetMismatch.Exception(
