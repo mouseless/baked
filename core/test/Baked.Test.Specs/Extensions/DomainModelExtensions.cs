@@ -35,7 +35,7 @@ public static class DomainModelExtensions
 
             void AddOrSet(Attribute attribute)
             {
-                if (attribute.AllowsMultiple())
+                if (attribute.AllowsMultiple)
                 {
                     ((IMutableAttributeCollection)result).Add(attribute);
                 }
