@@ -6,6 +6,7 @@ using Baked.Domain.Model;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -17,6 +18,8 @@ namespace Baked;
 
 public static class DomainExtensions
 {
+    static readonly ConcurrentDictionary<Type, AttributeUsageAttribute?> _cacheForAttributeUsages = new();
+
     public class Configurator(LayerConfigurator _configurator)
     {
         public void ConfigureDomainTypeCollection(Action<IDomainTypeCollection> configuration) =>
@@ -132,6 +135,11 @@ public static class DomainExtensions
             types.Add(typeof(T));
     }
 
+    static AttributeUsageAttribute? GetAttributeUsage(Type attributeType) =>
+        _cacheForAttributeUsages.GetOrAdd(attributeType, static t =>
+            t.GetCustomAttribute<AttributeUsageAttribute>(inherit: false)
+        );
+
     extension(Type type)
     {
         public string GetCSharpFriendlyFullName() =>
@@ -143,10 +151,7 @@ public static class DomainExtensions
 
         public bool AllowsMultiple() =>
             type.IsAssignableTo(typeof(Attribute)) &&
-            type.GetCustomAttributes(typeof(AttributeUsageAttribute), false)
-                .Cast<AttributeUsageAttribute>()
-                .FirstOrDefault()
-                ?.AllowMultiple == true;
+            GetAttributeUsage(type)?.AllowMultiple == true;
 
         public bool IsAnonymous =>
             type.Namespace == null &&
@@ -244,8 +249,7 @@ public static class DomainExtensions
 
         public void ThrowIfNotTarget(ICustomAttributesModel model)
         {
-            var usages = (AttributeUsageAttribute?)Attribute.GetCustomAttribute(attribute.GetType(), typeof(AttributeUsageAttribute));
-            var validOn = usages?.ValidOn ?? AttributeTargets.All;
+            var validOn = GetAttributeUsage(attribute.GetType())?.ValidOn ?? AttributeTargets.All;
             if (validOn.HasFlag(model.Target)) { return; }
 
             throw DiagnosticCode.AttributeTargetMismatch.Exception(
