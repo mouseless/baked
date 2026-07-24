@@ -1,3 +1,3 @@
 ﻿namespace Baked.Playground.CodingStyle.CommandPattern;
 
-public record CommandedDescriptor(string Name);
+public record BulkCommandedDescriptor(string Name);

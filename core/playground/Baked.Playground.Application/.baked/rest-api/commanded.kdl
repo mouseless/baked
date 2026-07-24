@@ -16,15 +16,6 @@ commanded @controller-model {
   }
 }
 
-create-commanded @controller-model {
-  execute {
-    @action-model route="PATCH /commanded" flat-request-body=#true required-claims="BaseA, BaseB"
-    descriptors {
-      @parameter-model required=#true
-    }
-  }
-}
-
 execute-commanded @controller-model {
   execute {
     @action-model route="POST /commanded" required-claims="BaseA, BaseB"
@@ -34,15 +25,6 @@ execute-commanded @controller-model {
 get-commanded @controller-model {
   execute {
     @action-model route="GET /commanded" required-claims="BaseA, BaseB"
-  }
-}
-
-sync-commanded @controller-model {
-  execute {
-    @action-model route="PUT /commanded" flat-request-body=#true required-claims="BaseA, BaseB"
-    descriptors {
-      @parameter-model required=#true
-    }
   }
 }
 

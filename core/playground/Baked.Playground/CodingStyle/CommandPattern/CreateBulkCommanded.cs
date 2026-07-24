@@ -2,9 +2,9 @@
 
 namespace Baked.Playground.CodingStyle.CommandPattern;
 
-public class CreateCommanded(ILogger<CreateCommanded> _logger)
+public class CreateBulkCommanded(ILogger<CreateBulkCommanded> _logger)
 {
-    public string Execute(List<CommandedDescriptor> descriptors)
+    public string Execute(List<BulkCommandedDescriptor> descriptors)
     {
         _logger.LogInformation($"Creating {descriptors.Join(", ")}");
 

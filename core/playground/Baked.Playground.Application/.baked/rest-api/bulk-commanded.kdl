@@ -1,0 +1,18 @@
+create-bulk-commanded @controller-model {
+  execute {
+    @action-model route="PATCH /bulk-commanded" flat-request-body=#true required-claims="BaseA, BaseB"
+    descriptors {
+      @parameter-model required=#true
+    }
+  }
+}
+
+sync-bulk-commanded @controller-model {
+  execute {
+    @action-model route="PUT /bulk-commanded" flat-request-body=#true required-claims="BaseA, BaseB"
+    descriptors {
+      @parameter-model required=#true
+    }
+  }
+}
+
