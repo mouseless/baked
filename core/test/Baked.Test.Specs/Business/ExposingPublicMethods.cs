@@ -16,7 +16,7 @@ public class ExposingPublicMethods : TestNfr
     [Test]
     public async Task Post()
     {
-        var response = await Client.PostAsync($"/method-samples", null);
+        var response = await Client.PostAsync($"/method-samples/execute", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }

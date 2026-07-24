@@ -14,18 +14,11 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
     : IFeature<CodingStyleConfigurator>
 {
     readonly HashSet<string> _methodNames = [.. _methodNames];
-    // TODO - command'in private ve/veya internal method'u olduğunda da command olabilmesini test edilecek
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            bool IsAction(MethodModel m, TypeModelMetadataContext c)
-            {
-                return !m.Has<InitializerAttribute>() &&
-                    m.DefaultOverload.DeclaringType == c.Type &&
-                    m.DefaultOverload.IsPublicInstanceWithNoSpecialName;
-            }
-
             conventions.SetTypeAttribute(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
@@ -33,8 +26,8 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                         !members.Has<TransientAttribute>() ||
                         members.Has<TransientAttribute>() && !members.Has<LocatableAttribute>()
                     ) &&
-                    members.Methods.Count(m => IsAction(m, c)) == 1 &&
-                    _methodNames.Contains(members.Methods.Single(m => IsAction(m, c)).Name),
+                    members.Methods.Count(m => IsPotentialAction(m, c)) == 1 &&
+                    _methodNames.Contains(members.Methods.Single(m => IsPotentialAction(m, c)).Name),
                 apply: (c, set) =>
                 {
                     set(c.Type, new CommandAttribute());
@@ -52,6 +45,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
             conventions.RemoveTypeAttribute<ControllerModelAttribute>(
                 when: c =>
                     c.Type.Has<CommandAttribute>() &&
+                    c.Type.Has<TransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Any(m =>
                         m.Has<InitializerAttribute>() &&
@@ -108,4 +102,9 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
             });
         });
     }
+
+    bool IsPotentialAction(MethodModel m, TypeModelMetadataContext c) =>
+        !m.Has<InitializerAttribute>() &&
+        m.DefaultOverload.DeclaringType == c.Type &&
+        m.DefaultOverload.IsPublicInstanceWithNoSpecialName;
 }

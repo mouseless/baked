@@ -3,4 +3,6 @@
 public class UpdateCommanded
 {
     public void Execute() { }
+
+    internal void InternalMethod() { }
 }

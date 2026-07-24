@@ -2,5 +2,10 @@
 
 public class GetCommanded
 {
-    public void Execute() { }
+    public void Execute()
+    {
+        PrivateMethod();
+    }
+
+    void PrivateMethod() { }
 }
