@@ -1,4 +1,13 @@
 documentation-samples @controller-model {
+  execute {
+    @action-model route="POST /documentation-samples" required-claims="BaseA, BaseB"
+    parameter {
+      @parameter-model required=#true
+    }
+  }
+}
+
+documentation-samples @controller-model {
   method {
     @action-model route="POST /documentation-samples/method" required-claims="BaseA, BaseB"
     parameter1 {

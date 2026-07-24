@@ -54,11 +54,13 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                 when: c =>
                     c.Type.Has<CommandAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
-                    !members.Methods.Any(m =>
+                    members.Methods.Any(m =>
                         m.Has<InitializerAttribute>() &&
-                        m.DefaultOverload.AllParametersAreApiInput() &&
-                        m.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
-                        m.DefaultOverload.DeclaringType == c.Type
+                        m.DefaultOverload.DeclaringType == c.Type &&
+                        (
+                            !m.DefaultOverload.AllParametersAreApiInput() ||
+                            m.DefaultOverload.IsPublicInstanceWithNoSpecialName
+                        )
                     ),
                 order: Order.At.Infra + 40
             );
