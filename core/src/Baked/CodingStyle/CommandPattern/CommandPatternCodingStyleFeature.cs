@@ -49,7 +49,6 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                 },
                 order: Order.At.Infra + 40
             );
-            // TODO - Burası yanlış. Değişmeli.
             conventions.RemoveTypeAttribute<ControllerModelAttribute>(
                 when: c =>
                     c.Type.Has<CommandAttribute>() &&
@@ -57,10 +56,8 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                     members.Methods.Any(m =>
                         m.Has<InitializerAttribute>() &&
                         m.DefaultOverload.DeclaringType == c.Type &&
-                        (
-                            !m.DefaultOverload.AllParametersAreApiInput() ||
-                            m.DefaultOverload.IsPublicInstanceWithNoSpecialName
-                        )
+                        m.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
+                        !m.DefaultOverload.AllParametersAreApiInput()
                     ),
                 order: Order.At.Infra + 40
             );
