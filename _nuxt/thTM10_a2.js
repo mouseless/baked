@@ -1,0 +1,1 @@
+import{n as e}from"./-NyAU2Gm.js";var t=e(`sectionStore`,{state:()=>({sections:{}}),actions:{setSections(e){this.sections=e}}});export{t};

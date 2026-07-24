@@ -1,0 +1,1 @@
+import"./Dj-OpFgW2.js";import{n as e}from"./bsj7McFv2.js";export{e as createArchitectureServices};
