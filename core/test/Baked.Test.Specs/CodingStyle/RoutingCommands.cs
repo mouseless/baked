@@ -11,7 +11,7 @@ public class RoutingCommands : TestNfr
     [TestCase("Get", "commanded")]
     [TestCase("Patch", "commanded")]
     [TestCase("Delete", "commanded")]
-    public async Task Class_name_is_used_to_decide_http_methods_for_single_action_commandeds(string method, string action)
+    public async Task Class_name_is_used_to_decide_http_methods_for_single_action_commands(string method, string action)
     {
         var response = await Client.SendAsync(new(HttpMethod.Parse(method), $"/{action}"));
 
@@ -31,7 +31,7 @@ public class RoutingCommands : TestNfr
     }
 
     [Test]
-    public async Task Delete_commandeds_use_query_for_both_init_and_execute_parameters()
+    public async Task Delete_commands_use_query_for_both_init_and_execute_parameters()
     {
         var response = await Client.DeleteAsync("/commanded?initParam=i&executeParam=e");
 
@@ -41,7 +41,7 @@ public class RoutingCommands : TestNfr
     }
 
     [Test]
-    public async Task Batch_commandeds_with_one_list_argument_does_not_use_request_body_class([Values("Put", "Patch")] string method)
+    public async Task Batch_commands_with_one_list_argument_does_not_use_request_body_class([Values("Put", "Patch")] string method)
     {
         var response = await Client.SendAsync(new(HttpMethod.Parse(method), "/bulk-commanded")
         {
