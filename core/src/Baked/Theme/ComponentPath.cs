@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 
 namespace Baked.Theme;
@@ -6,6 +7,8 @@ namespace Baked.Theme;
 public readonly record struct ComponentPath(string Value)
 {
     static readonly List<string> _paths = [];
+    static readonly ConcurrentDictionary<string, Regex> _regexCache = new();
+    static readonly ConcurrentDictionary<string, string> _kebabCache = new();
 
     internal static void AddPath(ComponentPath path) =>
         _paths.Add(path.Value);
@@ -29,21 +32,59 @@ public readonly record struct ComponentPath(string Value)
     public ComponentPath(params object[] paths)
         : this($"/{Join(paths)}") { }
 
-    static string Join(object[] paths,
-        bool regexify = false
-    )
-    {
-        var result = paths.Select(p => $"{p}".Kebaberize()).Join('/');
+    static string Kebab(object value) =>
+        _kebabCache.GetOrAdd(
+            value as string ?? value.ToString() ?? string.Empty,
+            static v => v.Kebaberize()
+        );
 
-        if (regexify)
+    static string Join(object[] paths) =>
+        paths.Select(Kebab).Join('/');
+
+    static string Regexify(string joined) =>
+        joined
+            .Replace("**", "__")
+            .Replace("*", "[^/]*")
+            .Replace("__", ".*");
+
+    static Regex GetRegex(string pattern) =>
+        _regexCache.GetOrAdd(pattern, static p => new Regex(p));
+
+    enum Kind
+    {
+        Full,
+        Start,
+        Middle,
+        End
+    }
+
+    bool Matches(object[] paths, Kind kind)
+    {
+        var joined = Join(paths);
+
+        if (joined.Contains('*'))
         {
-            result = result
-                .Replace("**", "__")
-                .Replace("*", "[^/]*")
-                .Replace("__", ".*");
+            var body = Regexify(joined);
+            var pattern = kind switch
+            {
+                Kind.Full => $"^/{body}$",
+                Kind.Start => $"^/{body}",
+                Kind.Middle => $"/{body}/",
+                Kind.End => $"/{body}$",
+                _ => $"/{body}$",
+            };
+            return GetRegex(pattern).IsMatch(Value);
         }
 
-        return result;
+        var target = $"/{joined}";
+        return kind switch
+        {
+            Kind.Full => Value == target,
+            Kind.Start => Value.StartsWith(target, StringComparison.Ordinal),
+            Kind.Middle => Value.Contains($"{target}/", StringComparison.Ordinal),
+            Kind.End => Value.EndsWith(target, StringComparison.Ordinal),
+            _ => Value.EndsWith(target, StringComparison.Ordinal),
+        };
     }
 
     public ComponentPath Drill(params object[] paths) =>
@@ -53,16 +94,16 @@ public readonly record struct ComponentPath(string Value)
         regex.IsMatch(Value);
 
     public bool Is(params object[] paths) =>
-        IsMatch(new($"^/{Join(paths, regexify: true)}$"));
+        Matches(paths, Kind.Full);
 
     public bool StartsWith(params object[] paths) =>
-        IsMatch(new($"^/{Join(paths, regexify: true)}"));
+        Matches(paths, Kind.Start);
 
     public bool Contains(params object[] paths) =>
-        IsMatch(new($"/{Join(paths, regexify: true)}/"));
+        Matches(paths, Kind.Middle);
 
     public bool EndsWith(params object[] paths) =>
-        IsMatch(new($"/{Join(paths, regexify: true)}$"));
+        Matches(paths, Kind.End);
 
     public IEnumerable<string> GetParts() =>
         Value.Trim('/').Split('/');

@@ -80,7 +80,7 @@ public class ExportSetBuilder(ExportConfiguration _configuration, IAttributeProp
 
         foreach (var attributeExport in attributeExports)
         {
-            var allowsMultiple = attributeExport.Type.AllowsMultiple();
+            var allowsMultiple = attributeExport.Type.AllowsMultiple;
             if (allowsMultiple && model.TryGetAll(attributeExport.Type, out var attributes))
             {
                 result.AddRange(attributes.Where(a => attributeExport.AppliesTo(a, model)).Select(a => BuildAttribute(a, attributeExport)));

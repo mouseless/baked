@@ -2,9 +2,9 @@
 
 namespace Baked.Playground.CodingStyle.CommandPattern;
 
-public class SyncBulkCommand(ILogger<SyncBulkCommand> _logger)
+public class SyncBulkCommanded(ILogger<SyncBulkCommanded> _logger)
 {
-    public string Execute(List<BulkDescriptor> descriptors)
+    public string Execute(List<BulkCommandedDescriptor> descriptors)
     {
         _logger.LogInformation($"Syncing {descriptors.Join(", ")}");
 

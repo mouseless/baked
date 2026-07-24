@@ -3,15 +3,15 @@ using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.CommandPattern;
 
-public class IncludeClassDocsForActionNamesConvention(IEnumerable<string> actionNames)
-    : IDomainModelConvention<MethodModelContext>
+public class IncludeClassDocsForActionNamesConvention(
+    Func<MethodModelContext, bool>? _whenContext = default
+) : IDomainModelConvention<MethodModelContext>
 {
-    readonly HashSet<string> _actionNames = [.. actionNames];
-
     public void Apply(MethodModelContext context)
     {
+        if (!context.Method.Has<CommandMethodAttribute>()) { return; }
         if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
-        if (!_actionNames.Contains(action.Name)) { return; }
+        if (_whenContext is not null && !_whenContext(context)) { return; }
         if (context.Type.Documentation is null) { return; }
 
         var summary = context.Type.Documentation.Summary;

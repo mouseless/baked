@@ -82,13 +82,13 @@ nullable-samples @controller-model {
   get-entity {
     @action-model route="GET /nullable-samples/entity" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="notNullId"
     }
     nullable {
-      @parameter-model in="query"
+      @parameter-model in="query" name="nullableId"
     }
     optional-nullable {
-      @parameter-model in="query"
+      @parameter-model in="query" name="optionalNullableId"
     }
   }
   entity {
@@ -102,13 +102,13 @@ nullable-samples @controller-model {
   get-entity-extension {
     @action-model route="GET /nullable-samples/entity-extension" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="notNullId"
     }
     nullable {
-      @parameter-model in="query"
+      @parameter-model in="query" name="nullableId"
     }
     optional-nullable {
-      @parameter-model in="query"
+      @parameter-model in="query" name="optionalNullableId"
     }
   }
   entity-extension {
@@ -122,13 +122,13 @@ nullable-samples @controller-model {
   get-rich-transient {
     @action-model route="GET /nullable-samples/rich-transient" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query"
+      @parameter-model required=#true in="query" name="notNullId"
     }
     nullable {
-      @parameter-model in="query"
+      @parameter-model in="query" name="nullableId"
     }
     optional-nullable {
-      @parameter-model in="query"
+      @parameter-model in="query" name="optionalNullableId"
     }
   }
   rich-transient {

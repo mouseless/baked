@@ -5,12 +5,12 @@ namespace Baked.Test.CodingStyle;
 
 public class RoutingCommands : TestNfr
 {
-    [TestCase("Put", "bulk-command")]
-    [TestCase("Patch", "bulk-command")]
-    [TestCase("Post", "command")]
-    [TestCase("Get", "command")]
-    [TestCase("Patch", "command")]
-    [TestCase("Delete", "command")]
+    [TestCase("Put", "bulk-commanded")]
+    [TestCase("Patch", "bulk-commanded")]
+    [TestCase("Post", "commanded")]
+    [TestCase("Get", "commanded")]
+    [TestCase("Patch", "commanded")]
+    [TestCase("Delete", "commanded")]
     public async Task Class_name_is_used_to_decide_http_methods_for_single_action_commands(string method, string action)
     {
         var response = await Client.SendAsync(new(HttpMethod.Parse(method), $"/{action}"));
@@ -21,7 +21,7 @@ public class RoutingCommands : TestNfr
     [Test]
     public async Task Initialization_parameters_come_from_query()
     {
-        var response = await Client.PostAsync("/command/transient?query=q", JsonContent.Create(
+        var response = await Client.PostAsync("/commanded/method?query=q", JsonContent.Create(
             new { body = "b" }
         ));
 
@@ -33,7 +33,7 @@ public class RoutingCommands : TestNfr
     [Test]
     public async Task Delete_commands_use_query_for_both_init_and_execute_parameters()
     {
-        var response = await Client.DeleteAsync("/command?initParam=i&executeParam=e");
+        var response = await Client.DeleteAsync("/commanded?initParam=i&executeParam=e");
 
         var actual = await response.Content.ReadAsStringAsync();
 
@@ -43,7 +43,7 @@ public class RoutingCommands : TestNfr
     [Test]
     public async Task Batch_commands_with_one_list_argument_does_not_use_request_body_class([Values("Put", "Patch")] string method)
     {
-        var response = await Client.SendAsync(new(HttpMethod.Parse(method), "/bulk-command")
+        var response = await Client.SendAsync(new(HttpMethod.Parse(method), "/bulk-commanded")
         {
             Content = JsonContent.Create(new[]
             {
@@ -61,7 +61,7 @@ public class RoutingCommands : TestNfr
     [Test]
     public async Task Classes_must_have_an_initializer_overload_with_all_parameters_are_api_input()
     {
-        var response = await Client.PostAsync("/not-rendered-command/transient?query=q", JsonContent.Create(
+        var response = await Client.PostAsync("/not-rendered-commanded/transient?query=q", JsonContent.Create(
             new { body = "b" }
         ));
 

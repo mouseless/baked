@@ -148,12 +148,12 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         TimeOnly? timeOnly = default
     )
     {
-        if (unique is not null && unique != Unique && _entities.AnyByUnique(unique))
+        if (unique is not null && unique != Unique && _entities.SingleByUnique(unique) is not null)
         {
             throw new MustBeUniqueException(nameof(Unique));
         }
 
-        if (@enum is not null && @enum != Enum && _entities.AnyByEnum(@enum.Value))
+        if (@enum is not null && @enum != Enum && _entities.SingleByEnum(@enum.Value) is not null)
         {
             throw new MustBeUniqueException(nameof(Enum));
         }
@@ -206,11 +206,11 @@ public class Entities(IQueryContext<Entity> _context)
             skip: skip
         );
 
-    internal bool AnyByUnique(string unique) =>
-        _context.AnyBy(e => e.Unique == unique);
+    internal Entity? SingleByUnique(string unique) =>
+        _context.SingleBy(e => e.Unique == unique);
 
-    internal bool AnyByEnum(Enumeration @enum) =>
-        _context.AnyBy(e => e.Enum == @enum);
+    internal Entity? SingleByEnum(Enumeration @enum) =>
+        _context.SingleBy(e => e.Enum == @enum);
 
     public Entity? FirstByString(string startsWith,
         bool asc = false,

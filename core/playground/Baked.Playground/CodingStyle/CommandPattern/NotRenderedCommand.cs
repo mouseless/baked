@@ -11,6 +11,6 @@ public class NotRenderedCommand
         return this;
     }
 
-    public string Transient(string body) =>
+    public string Execute(string body) =>
         $"{_query}:{body}";
 }

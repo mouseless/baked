@@ -29,7 +29,7 @@ parent {
   remove-child {
     @action-model route="DELETE /parents/{id}/children/{childId}" required-claims="BaseA, BaseB"
     child {
-      @parameter-model required=#true in="route"
+      @parameter-model required=#true in="route" name="childId"
     }
   }
   delete {
@@ -57,7 +57,7 @@ parents @controller-model {
     }
   }
   by-name {
-    @action-model route="GET /parents/name" required-claims="BaseA, BaseB"
+    @action-model route="GET /parents/by-name" required-claims="BaseA, BaseB"
     contains {
       @parameter-model required=#true in="query"
     }

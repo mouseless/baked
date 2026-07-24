@@ -2,11 +2,11 @@
 
 namespace Baked.Playground.CodingStyle.CommandPattern;
 
-public class ClearCommand(ILogger<ClearCommand> _logger)
+public class ClearCommanded(ILogger<ClearCommanded> _logger)
 {
     string? _initParam = default!;
 
-    public ClearCommand With(string? initParam)
+    public ClearCommanded With(string? initParam)
     {
         _initParam = initParam;
 

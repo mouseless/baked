@@ -27,7 +27,7 @@ public class AttributeCollection(string name)
             _attributes[type] = [];
         }
 
-        if (!attribute.AllowsMultiple())
+        if (!attribute.AllowsMultiple)
         {
             _attributes[type].Clear();
         }
@@ -37,7 +37,7 @@ public class AttributeCollection(string name)
 
     void Set(Attribute attribute)
     {
-        if (attribute.AllowsMultiple())
+        if (attribute.AllowsMultiple)
         {
             throw DiagnosticCode.AttributeDoesNotAllow.Exception(
                 $"`{attribute.GetType().Name}` cannot be set for `{_name}` because it allows multiple."
@@ -50,7 +50,7 @@ public class AttributeCollection(string name)
 
     void Add(Attribute attribute)
     {
-        if (!attribute.AllowsMultiple())
+        if (!attribute.AllowsMultiple)
         {
             throw DiagnosticCode.AttributeDoesNotAllow.Exception(
                 $"`{attribute.GetType().Name}` cannot be added to `{_name}` because it doesn't allow multiple." +
@@ -79,7 +79,7 @@ public class AttributeCollection(string name)
 
     public Attribute Get(Type type)
     {
-        if (type.AllowsMultiple())
+        if (type.AllowsMultiple)
         {
             throw DiagnosticCode.AttributeDoesNotAllow.Exception(
                 $"Cannot use `Get` for `{type.Name}` in `{_name}` because it allows multiple." +
@@ -106,7 +106,7 @@ public class AttributeCollection(string name)
 
     public bool TryGet(Type type, [NotNullWhen(true)] out Attribute? result)
     {
-        if (type.AllowsMultiple())
+        if (type.AllowsMultiple)
         {
             throw DiagnosticCode.AttributeDoesNotAllow.Exception(
                 $"Cannot use `TryGet` for `{type.Name}` in `{_name}` because it allows multiple." +
@@ -131,7 +131,7 @@ public class AttributeCollection(string name)
 
     public IEnumerable<Attribute> GetAll(Type type)
     {
-        if (!type.AllowsMultiple())
+        if (!type.AllowsMultiple)
         {
             throw DiagnosticCode.AttributeDoesNotAllow.Exception(
                 $"Cannot use `GetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple." +
@@ -158,7 +158,7 @@ public class AttributeCollection(string name)
 
     public bool TryGetAll(Type type, [NotNullWhen(true)] out IEnumerable<Attribute>? result)
     {
-        if (!type.AllowsMultiple())
+        if (!type.AllowsMultiple)
         {
             throw DiagnosticCode.AttributeDoesNotAllow.Exception(
                 $"Cannot use `TryGetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple." +

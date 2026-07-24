@@ -88,7 +88,7 @@ public class SwaggerSchemaGeneration : TestNfr
         var response = await Client.GetAsync("/swagger/samples/swagger.json");
 
         dynamic? content = await response.Content.Deserialize();
-        var schema = content?.components.schemas["MethodRequest"];
+        var schema = content?.components.schemas["MethodRequest1"];
 
         ((string?)schema?.properties["parameter1"].description).ShouldBe("Parameter 1 documentation");
         ((string?)schema?.properties["parameter2"].description).ShouldBe("Parameter 2 documentation");

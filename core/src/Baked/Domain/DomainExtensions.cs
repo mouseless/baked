@@ -6,6 +6,7 @@ using Baked.Domain.Model;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -17,6 +18,8 @@ namespace Baked;
 
 public static class DomainExtensions
 {
+    static readonly ConcurrentDictionary<Type, AttributeUsageAttribute?> _attributeUsageCache = new();
+
     public class Configurator(LayerConfigurator _configurator)
     {
         public void ConfigureDomainTypeCollection(Action<IDomainTypeCollection> configuration) =>
@@ -134,19 +137,14 @@ public static class DomainExtensions
 
     extension(Type type)
     {
-        public string GetCSharpFriendlyFullName() =>
-            type.IsArray ? $"{type.GetElementType()?.GetCSharpFriendlyFullName()}[]" :
-            !type.IsGenericType ? type.FullName ?? type.Name :
-            type.GetGenericTypeDefinition() == typeof(Nullable<>) ? $"{type.GenericTypeArguments.First().GetCSharpFriendlyFullName()}?" :
-            type.Name.IndexOf("`") < 0 ? type.FullName ?? type.Name :
-            $"{type.Namespace}.{type.Name[..type.Name.IndexOf("`")]}<{string.Join(", ", type.GenericTypeArguments.Select(GetCSharpFriendlyFullName))}>";
+        public AttributeUsageAttribute? AttributeUsage =>
+            _attributeUsageCache.GetOrAdd(type, static t =>
+                t.IsAssignableTo(typeof(Attribute))
+                    ? t.GetCustomAttribute<AttributeUsageAttribute>(inherit: false)
+                    : null
+            );
 
-        public bool AllowsMultiple() =>
-            type.IsAssignableTo(typeof(Attribute)) &&
-            type.GetCustomAttributes(typeof(AttributeUsageAttribute), false)
-                .Cast<AttributeUsageAttribute>()
-                .FirstOrDefault()
-                ?.AllowMultiple == true;
+        public bool AllowsMultiple => type.AttributeUsage?.AllowMultiple == true;
 
         public bool IsAnonymous =>
             type.Namespace == null &&
@@ -154,6 +152,13 @@ public static class DomainExtensions
             type.IsGenericType &&
             type.Name.Contains("AnonymousType") &&
             Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute));
+
+        public string GetCSharpFriendlyFullName() =>
+            type.IsArray ? $"{type.GetElementType()?.GetCSharpFriendlyFullName()}[]" :
+            !type.IsGenericType ? type.FullName ?? type.Name :
+            type.GetGenericTypeDefinition() == typeof(Nullable<>) ? $"{type.GenericTypeArguments.First().GetCSharpFriendlyFullName()}?" :
+            type.Name.IndexOf('`') < 0 ? type.FullName ?? type.Name :
+            $"{type.Namespace}.{type.Name[..type.Name.IndexOf('`')]}<{string.Join(", ", type.GenericTypeArguments.Select(GetCSharpFriendlyFullName))}>";
     }
 
     extension(ICollection<TypeBuildLevelFilter> filters)
@@ -237,15 +242,11 @@ public static class DomainExtensions
 
     extension(Attribute attribute)
     {
-        public bool AllowsMultiple() =>
-            attribute
-                .GetType()
-                .AllowsMultiple();
+        public bool AllowsMultiple => attribute.GetType().AttributeUsage?.AllowMultiple == true;
 
         public void ThrowIfNotTarget(ICustomAttributesModel model)
         {
-            var usages = (AttributeUsageAttribute?)Attribute.GetCustomAttribute(attribute.GetType(), typeof(AttributeUsageAttribute));
-            var validOn = usages?.ValidOn ?? AttributeTargets.All;
+            var validOn = attribute.GetType().AttributeUsage?.ValidOn ?? AttributeTargets.All;
             if (validOn.HasFlag(model.Target)) { return; }
 
             throw DiagnosticCode.AttributeTargetMismatch.Exception(

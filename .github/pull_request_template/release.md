@@ -7,6 +7,7 @@
 - [ ] Check for library updates
   - [ ] NuGet packages
   - [ ] npm packages
+    - [ ] audit fix
   - [ ] Check for updates in `PrimeVue`
     - [ ] locale keys
     - [ ] compare latest `Popover.vue` and `BasePopover.vue` with

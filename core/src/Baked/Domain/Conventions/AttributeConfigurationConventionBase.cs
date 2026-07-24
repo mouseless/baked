@@ -20,7 +20,7 @@ public abstract class AttributeConfigurationConventionBase<TModelContext, TAttri
         context.Trace = _trace;
 
         var attributes = new List<TAttribute>();
-        if (typeof(TAttribute).AllowsMultiple())
+        if (typeof(TAttribute).AllowsMultiple)
         {
             if (GetMetadata(context).TryGetAll<TAttribute>(out var list))
             {

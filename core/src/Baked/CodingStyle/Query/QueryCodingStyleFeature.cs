@@ -31,8 +31,11 @@ public class QueryCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
 
             conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: Order.At.Infra - 10);
-            conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
-                _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
+            conventions.Add(new RemoveFromRouteConvention(["By"],
+                _whenContext: c =>
+                    c.Type.TryGetMetadata(out var metadata) &&
+                    metadata.Has<QueryAttribute>() &&
+                    c.Method.Name.EndsWith("By")
             ), order: Order.At.Infra);
         });
     }

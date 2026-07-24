@@ -17,19 +17,19 @@
   },
   "devDependencies": {
     "@mouseless/prebuild": "mouseless/prebuild#v0.1.10",
-    "@nuxt/content": "3.14.0",
+    "@nuxt/content": "3.15.1",
     "@nuxt/eslint": "1.16.0",
     "@pinia/nuxt": "0.11.3",
-    "better-sqlite3": "12.10.0",
+    "better-sqlite3": "12.11.1",
     "cross-env": "10.1.0",
     "log-symbols": "7.0.1",
-    "nuxt": "4.4.8",
-    "webpack": "5.107.2",
+    "nuxt": "4.5.0",
+    "webpack": "5.108.4",
     "yaml": "2.9.0"
   },
   "dependencies": {
-    "mermaid": "11.15.0",
-    "@tailwindcss/vite": "4.3.1",
-    "tailwindcss": "4.3.1"
+    "mermaid": "11.16.0",
+    "@tailwindcss/vite": "4.3.3",
+    "tailwindcss": "4.3.3"
   }
 }

@@ -1,16 +1,16 @@
 ﻿namespace Baked.Playground.CodingStyle.CommandPattern;
 
-public class Command
+public class Commanded
 {
     string _query = default!;
 
-    public Command With(string query)
+    public Commanded With(string query)
     {
         _query = query;
 
         return this;
     }
 
-    public string Transient(string body) =>
+    public string Method(string body) =>
         $"{_query}:{body}";
 }

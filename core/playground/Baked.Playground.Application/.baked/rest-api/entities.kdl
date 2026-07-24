@@ -77,7 +77,7 @@ entities @controller-model {
     }
   }
   first-by-string {
-    @action-model route="GET /entities/first-string" required-claims="BaseA, BaseB"
+    @action-model route="GET /entities/first-by-string" required-claims="BaseA, BaseB"
     starts-with {
       @parameter-model required=#true in="query"
     }
@@ -89,7 +89,7 @@ entities @controller-model {
     }
   }
   count-by-date {
-    @action-model route="POST /entities/count-date" required-claims="BaseA, BaseB"
+    @action-model route="POST /entities/count-by-date" required-claims="BaseA, BaseB"
   }
 }
 
