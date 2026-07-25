@@ -52,5 +52,14 @@ export default defineNuxtConfig({
   imports: { autoImport: false },
   logLevel: import.meta.env.BUILD_SILENT === "1" ? "silent" : "info",
   modules: ["@nuxt/eslint", "../src/module"],
-  router: { options: { strict: true } }
+  router: { options: { strict: true } },
+  vite: {
+    resolve: {
+      alias: {
+        "@baked-tailwind": import.meta.dev
+          ? resolve(fileURLToPath(new URL(".", import.meta.url)), "../src/runtime/assets/tailwind.css")
+          : "@mouseless/baked/tailwind.css"
+      }
+    }
+  }
 });

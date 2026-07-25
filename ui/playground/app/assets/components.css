@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@reference "@baked-tailwind";
+
 @layer utilities {
   /* CUSTOM CSS */
   .custom-css-visible {
