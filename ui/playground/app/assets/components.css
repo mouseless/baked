@@ -10,6 +10,10 @@
     @apply hidden!;
   }
 
+  .screen-css-visible {
+    @apply max-xs:block!;
+  }
+
   /* DATA TABLE */
   .b-route--data-table {
     .b--tabs.b--contents.b--0 {
