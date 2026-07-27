@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@import "tailwindcss/preflight" layer(base);
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
 
 /* for tailwind to scan module components */
 @source "../components/**/*.vue";
