@@ -21,17 +21,6 @@ const Mouseless = definePreset(Aura, {
   }
 });
 
-const BakedTailwindPath = () => {
-  if(process.env.TEST === "true" || import.meta.dev) {
-    return resolve(
-      fileURLToPath(new URL(".", import.meta.url)),
-      "../src/runtime/assets/tailwind.css"
-    );
-  }
-
-  return "@mouseless/baked/tailwind.css";
-};
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   alias: {
@@ -63,12 +52,5 @@ export default defineNuxtConfig({
   imports: { autoImport: false },
   logLevel: import.meta.env.BUILD_SILENT === "1" ? "silent" : "info",
   modules: ["@nuxt/eslint", "../src/module"],
-  router: { options: { strict: true } },
-  vite: {
-    resolve: {
-      alias: {
-        "@baked-tailwind": BakedTailwindPath()
-      }
-    }
-  }
+  router: { options: { strict: true } }
 });

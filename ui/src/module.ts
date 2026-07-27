@@ -123,8 +123,12 @@ export default defineNuxtModule<ModuleOptions>({
 
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
-    _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/tailwind.css"));
+    _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/theme.css"));
     _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/components.css"));
+
+    _nuxt.options.vite.resolve ||= {};
+    _nuxt.options.vite.resolve.alias ||= {};
+    (_nuxt.options.vite.resolve.alias as Record<string, string>)["@mouseless/baked/theme"] = resolver.metaUrl.resolve("./runtime/assets/theme.css");
 
     // below settings cannot be overriden
     _nuxt.options.devtools = { enabled: false };

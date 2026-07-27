@@ -1,4 +1,4 @@
-@reference "./tailwind.css";
+@reference "./theme.css";
 
 @layer utilities {
   html {

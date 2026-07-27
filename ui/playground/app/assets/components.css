@@ -1,6 +1,4 @@
-@import "tailwindcss";
-
-@reference "@baked-tailwind";
+@reference "@mouseless/baked/theme";
 
 @layer utilities {
   /* CUSTOM CSS */

@@ -21,8 +21,7 @@
     ".": {
       "types": "./dist/types.d.mts",
       "import": "./dist/module.mjs"
-    },
-    "./tailwind.css": "./dist/runtime/assets/tailwind.css"
+    }
   },
   "main": "./dist/module.mjs",
   "typesVersions": {

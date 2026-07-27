@@ -2,8 +2,6 @@ import { fileURLToPath } from "node:url";
 import { defineConfig, devices } from "@playwright/test";
 import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 
-process.env.TEST = "true";
-
 export default defineConfig<ConfigOptions>({
   testDir: "./test/specs",
   timeout: 2 * 60 * 1000,
