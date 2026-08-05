@@ -39,6 +39,18 @@ const variants = [
         ])
       })
     })
+  },
+  {
+    name: "Include query",
+    descriptor: giveMe.aButton({
+      action: giveMe.aLocalAction({
+        redirect: "/page/with/route",
+        options: giveMe.aCompositeData([
+          giveMe.anInlineData({ route: "/page/with/route", includeQuery: true }),
+          giveMe.anInlineData({ query: "test" })
+        ])
+      })
+    })
   }
 ];
 </script>

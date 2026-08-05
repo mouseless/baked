@@ -52,3 +52,16 @@ test.describe("Dynamic", () => {
     await expect(page).toHaveURL("/page/with/route/42");
   });
 });
+
+test.describe("Include query", () => {
+  const id = "Include query";
+
+  test("redirects with query parameters", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await button.click();
+
+    await expect(page).toHaveURL("/page/with/route?query=test");
+  });
+});
