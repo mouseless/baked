@@ -88,6 +88,16 @@ const variants = [
               giveMe.anInlineData({ included: "true", excluded: "true" })
             ])
           })
+        }),
+        giveMe.aButton({
+          label: "Nulls are filter out",
+          action: giveMe.aLocalAction({
+            redirect: "/page/with/route",
+            options: giveMe.aCompositeData([
+              giveMe.anInlineData({ route: "/page/with/route", query: true }),
+              giveMe.anInlineData({ nullParameter: null })
+            ])
+          })
         })
       ]
     })

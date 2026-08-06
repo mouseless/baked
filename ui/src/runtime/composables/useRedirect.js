@@ -14,11 +14,11 @@ export default function() {
 
       if(query) {
         const queryParams = Object.fromEntries(
-          Object.entries(params).filter(([key]) =>
+          Object.entries(params).filter(([key, value]) =>
             shouldInclude(key, {
               include: includeQuery,
               exclude: [...(excludeQuery ?? []), ...usedKeys]
-            })
+            }) && value !== undefined && value !== null
           )
         );
 

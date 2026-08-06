@@ -91,4 +91,13 @@ test.describe("Query", () => {
 
     await expect(page).toHaveURL("/page/with/route?excluded=true");
   });
+
+  test("null values filter out in query", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(3);
+
+    await button.click();
+
+    await expect(page).toHaveURL("/page/with/route");
+  });
 });
