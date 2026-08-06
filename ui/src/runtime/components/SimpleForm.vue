@@ -11,7 +11,6 @@
       :header="l(title)"
       :style="{ width: 'min(700px, 90vw)' }"
       :pt="{
-        header: !dialogOptions.message && inputs.length > 0 ? 'pb-0' : '',
         content: 'flex flex-col gap-8'
       }"
       closable
