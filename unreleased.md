@@ -12,3 +12,6 @@
   `DataTable.Actions` in `DataTableDefaultsUxFeature` was increased by 10
 - `ListIsDataTableUxFeature` now detects async methods when generating actions
   for data tables
+- `EnumInline` enum values use `camelCase`
+- `EnumParameterIsSelectUxFeature` configured input `DefaultValue` uses
+  `camelCase`

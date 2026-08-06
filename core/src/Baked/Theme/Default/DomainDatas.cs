@@ -1,6 +1,6 @@
 ﻿using Baked.Domain.Model;
 using Baked.Ui;
-
+using Humanizer;
 using static Baked.Ui.Datas;
 
 namespace Baked.Theme.Default;
@@ -43,7 +43,7 @@ public static class DomainDatas
                 : type
                     .SkipNullable()
                     .GetEnumNames()
-                    .Select(name => new { label = l($"{type.SkipNullable().Name}.{name}"), value = name }),
+                    .Select(name => new { label = l($"{type.SkipNullable().Name}.{name}"), value = name.Camelize() }),
             options: id => id.RequireLocalization = requireLocalization ? true : null
         );
     }

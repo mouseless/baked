@@ -20,6 +20,15 @@ public class CacheSamplesDomainOverrideFeature : IFeature
                 },
                 order: Order.At.Override
             );
+
+            // Default value of a required enum parameter is set to the first enum
+            // member (camelCase) when it is in query or route
+            conventions.AddParameterSchemaConfiguration<Input>(
+                when: c => c.Type.Is<CacheSamples>(),
+                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
+                schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
+                order: Order.At.Override
+            );
         });
     }
 }

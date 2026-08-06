@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi.Model;
 using Baked.Ui;
+using Humanizer;
 using System.ComponentModel.DataAnnotations;
 
 using static Baked.Theme.Default.DomainComponents;
@@ -53,14 +54,14 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
             );
 
             // Default value of a required enum parameter is set to the first enum
-            // member when it is in query or route
+            // member (camelCase) when it is in query or route
             conventions.AddParameterSchemaConfiguration<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.Has<RequiredAttribute>() &&
                     c.Parameter.TryGet<ParameterModelAttribute>(out var api) &&
                     (api.FromQuery || api.FromRoute),
-                schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
+                schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First().Camelize(),
                 order: 10
             );
         });
