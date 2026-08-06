@@ -1,6 +1,7 @@
 ﻿using Baked.Domain.Model;
 using Baked.Ui;
 using Humanizer;
+
 using static Baked.Ui.Datas;
 
 namespace Baked.Theme.Default;
