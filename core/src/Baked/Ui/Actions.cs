@@ -26,21 +26,21 @@ public static class Actions
 
         public LocalAction UseRedirect(string route,
             bool? query = default,
-            List<string>? includeQuery = default,
-            List<string>? excludeQuery = default,
+            IEnumerable<string>? include = default,
+            IEnumerable<string>? exclude = default,
             string? expected = null
         ) => UseRedirect(
             query: query,
-            includeQuery: includeQuery,
-            excludeQuery: excludeQuery,
+            include: include,
+            exclude: exclude,
             expected: expected,
             options: la => la.Options = Inline(new { route })
         );
 
         public LocalAction UseRedirect(Action<LocalAction>? options,
             bool? query = default,
-            List<string>? includeQuery = default,
-            List<string>? excludeQuery = default,
+            IEnumerable<string>? include = default,
+            IEnumerable<string>? exclude = default,
             string? expected = null
         ) => Use("Redirect", la =>
             {
@@ -54,7 +54,7 @@ public static class Actions
 
                 if (query is not null && query.Value)
                 {
-                    la.Options += Inline(new { query, includeQuery, excludeQuery });
+                    la.Options += Inline(new { query, include, exclude });
                 }
             });
 

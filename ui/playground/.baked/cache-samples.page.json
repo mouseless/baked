@@ -19,7 +19,7 @@
         "required": true,
         "default": {
           "type": "Inline",
-          "value": "value_a"
+          "value": "valueA"
         },
         "queryBound": true,
         "component": {
@@ -28,8 +28,8 @@
           "data": {
             "type": "Inline",
             "value": [
-              "value_a",
-              "value_b"
+              "ValueA",
+              "ValueB"
             ]
           }
         }
