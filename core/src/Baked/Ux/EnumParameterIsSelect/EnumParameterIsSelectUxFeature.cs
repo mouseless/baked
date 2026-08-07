@@ -26,11 +26,8 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
                 component: (s, c) =>
                 {
-                    if (s.Data?.RequireLocalization == true)
-                    {
-                        s.Schema.OptionLabel = "label";
-                        s.Schema.OptionValue = "value";
-                    }
+                    s.Schema.OptionLabel = "label";
+                    s.Schema.OptionValue = "value";
                 }
             );
 
@@ -45,11 +42,8 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
                 component: (s, c) =>
                 {
-                    if (s.Data?.RequireLocalization == true)
-                    {
-                        s.Schema.OptionLabel = "label";
-                        s.Schema.OptionValue = "value";
-                    }
+                    s.Schema.OptionLabel = "label";
+                    s.Schema.OptionValue = "value";
                 }
             );
 

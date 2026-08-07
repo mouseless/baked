@@ -37,14 +37,12 @@ public static class DomainDatas
     )
     {
         var (_, l) = context;
+        var names = type.SkipNullable().GetEnumNames();
 
         return Inline(
             value: !requireLocalization
-                ? type.SkipNullable().GetEnumNames()
-                : type
-                    .SkipNullable()
-                    .GetEnumNames()
-                    .Select(name => new { label = l($"{type.SkipNullable().Name}.{name}"), value = name.Camelize() }),
+                ? names.Select(name => new { label = name, value = name.Camelize() })
+                : names.Select(name => new { label = l($"{type.SkipNullable().Name}.{name}"), value = name.Camelize() }),
             options: id => id.RequireLocalization = requireLocalization ? true : null
         );
     }
