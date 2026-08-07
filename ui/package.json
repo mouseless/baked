@@ -59,7 +59,7 @@
     "@playwright/test": "1.61.1",
     "@types/node": "26.1.1",
     "changelogen": "0.6.2",
-    "nuxt": "4.5.0",
+    "nuxt": "4.5.1",
     "typescript": "6.0.3",
     "vitest": "4.1.10",
     "vue-tsc": "3.3.7"

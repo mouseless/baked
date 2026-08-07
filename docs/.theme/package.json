@@ -23,7 +23,7 @@
     "better-sqlite3": "12.11.1",
     "cross-env": "10.1.0",
     "log-symbols": "7.0.1",
-    "nuxt": "4.5.0",
+    "nuxt": "4.5.1",
     "webpack": "5.108.4",
     "yaml": "2.9.0"
   },
