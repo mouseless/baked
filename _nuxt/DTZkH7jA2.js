@@ -1,1 +1,0 @@
-import{n as e}from"./-NyAU2Gm.js";var t=e(`pageStore`,{state:()=>({pages:{}}),actions:{setPages(e){this.pages=e}}});export{t};
