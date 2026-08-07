@@ -23,12 +23,12 @@
     "better-sqlite3": "12.11.1",
     "cross-env": "10.1.0",
     "log-symbols": "7.0.1",
-    "nuxt": "4.5.0",
+    "nuxt": "4.5.2",
     "webpack": "5.108.4",
     "yaml": "2.9.0"
   },
   "dependencies": {
-    "mermaid": "11.16.0",
+    "mermaid": "11.16.1",
     "@tailwindcss/vite": "4.3.3",
     "tailwindcss": "4.3.3"
   }

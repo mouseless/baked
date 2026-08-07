@@ -5,6 +5,7 @@
 <!-- Here, the tasks to be completed before the release -->
 
 - [ ] Add release notes
+- [ ] Apply `npm audit fix`
 - [ ] Update `baked` version
     - [ ] `core/src/Directory.Build.props`
     - [ ] `ui/package.json`
