@@ -101,7 +101,7 @@ export default defineNuxtConfig({
   dir: {
     public: ".public"
   },
-  experimental: { payloadExtraction: false },
+  experimental: { payloadExtraction: true },
   features: {
     inlineStyles: false
   },
