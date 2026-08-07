@@ -106,11 +106,11 @@
                         "value": [
                           {
                             "label": "Sort.Asc",
-                            "value": "Asc"
+                            "value": "asc"
                           },
                           {
                             "label": "Sort.Desc",
-                            "value": "Desc"
+                            "value": "desc"
                           }
                         ]
                       }

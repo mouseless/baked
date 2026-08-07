@@ -19,17 +19,26 @@
         "required": true,
         "default": {
           "type": "Inline",
-          "value": "value_a"
+          "value": "valueA"
         },
         "queryBound": true,
         "component": {
           "type": "SelectButton",
-          "schema": {},
+          "schema": {
+            "optionLabel": "label",
+            "optionValue": "value"
+          },
           "data": {
             "type": "Inline",
             "value": [
-              "value_a",
-              "value_b"
+              {
+                "label": "ValueA",
+                "value": "valueA"
+              },
+              {
+                "label": "ValueB",
+                "value": "valueB"
+              }
             ]
           }
         }

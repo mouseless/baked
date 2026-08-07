@@ -80,7 +80,8 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Method.Has<ActionAttribute>(),
                 where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
+                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row"),
+                order: 10
             );
 
             conventions.AddMethodComponentConfiguration<DataTable>(

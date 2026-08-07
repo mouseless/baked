@@ -102,19 +102,19 @@
                     "value": [
                       {
                         "label": "Role.Admin",
-                        "value": "Admin"
+                        "value": "admin"
                       },
                       {
                         "label": "Role.Moderator",
-                        "value": "Moderator"
+                        "value": "moderator"
                       },
                       {
                         "label": "Role.Writer",
-                        "value": "Writer"
+                        "value": "writer"
                       },
                       {
                         "label": "Role.Maintainer",
-                        "value": "Maintainer"
+                        "value": "maintainer"
                       }
                     ]
                   }
@@ -146,11 +146,11 @@
                     "value": [
                       {
                         "label": "Status.Active",
-                        "value": "Active"
+                        "value": "active"
                       },
                       {
                         "label": "Status.Passive",
-                        "value": "Passive"
+                        "value": "passive"
                       }
                     ]
                   }

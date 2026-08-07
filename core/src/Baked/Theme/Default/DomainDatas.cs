@@ -1,5 +1,6 @@
 ﻿using Baked.Domain.Model;
 using Baked.Ui;
+using Humanizer;
 
 using static Baked.Ui.Datas;
 
@@ -36,14 +37,14 @@ public static class DomainDatas
     )
     {
         var (_, l) = context;
+        var names = type.SkipNullable().GetEnumNames();
 
         return Inline(
-            value: !requireLocalization
-                ? type.SkipNullable().GetEnumNames()
-                : type
-                    .SkipNullable()
-                    .GetEnumNames()
-                    .Select(name => new { label = l($"{type.SkipNullable().Name}.{name}"), value = name }),
+            value: names.Select(name => new
+            {
+                label = requireLocalization ? l($"{type.SkipNullable().Name}.{name}") : name,
+                value = name.Camelize()
+            }),
             options: id => id.RequireLocalization = requireLocalization ? true : null
         );
     }

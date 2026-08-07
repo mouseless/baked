@@ -45,10 +45,59 @@ test.describe("Dynamic", () => {
 
   test("redirects to given dynamic route", async({ page }) => {
     const component = page.getByTestId(id);
-    const button = component.locator(primevue.button.base);
+    const button = component.locator(primevue.button.base).nth(0);
 
     await button.click();
 
     await expect(page).toHaveURL("/page/with/route/42");
+  });
+
+  test("redirects to the given dynamic route without the route parameter in the query", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(1);
+
+    await button.click();
+
+    await expect(page).toHaveURL("/page/with/route/42?queryTest=true");
+  });
+});
+
+test.describe("Query", () => {
+  const id = "Query";
+
+  test("redirects with query parameters", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(0);
+
+    await button.click();
+
+    await expect(page).toHaveURL("/page/with/route?query1=true&query2=true");
+  });
+
+  test("redirects with only included query parameters", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(1);
+
+    await button.click();
+
+    await expect(page).toHaveURL("/page/with/route?included=true");
+  });
+
+  test("redirects without excluded query parameters", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(2);
+
+    await button.click();
+
+    await expect(page).toHaveURL("/page/with/route?excluded=true");
+  });
+
+  test("null values filter out in query", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(3);
+
+    await button.click();
+
+    await expect(page).toHaveURL("/page/with/route");
   });
 });

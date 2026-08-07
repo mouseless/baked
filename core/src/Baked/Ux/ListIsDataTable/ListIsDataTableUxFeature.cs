@@ -55,12 +55,12 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
-                    c.Method.DefaultOverload.ReturnType.TryGetElementType(out var itemType) &&
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var itemType) &&
                     itemType.HasMembers(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
                 schema: (col, c, cc) =>
                 {
-                    var itemMembers = c.Method.DefaultOverload.ReturnType.GetElementType().GetMembers();
+                    var itemMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();
                     foreach (var method in itemMembers.Methods.Having<ActionAttribute>())
                     {
                         if (method.Get<ActionAttribute>().HideInLists) { continue; }
