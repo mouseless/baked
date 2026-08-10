@@ -18,6 +18,7 @@ public class SecurityRequirementOperationFilter<T>(IEnumerable<string> _schemeId
             requirement.Add(new OpenApiSecuritySchemeReference(schemeId), []);
         }
 
-        operation.Security?.Add(requirement);
+        operation.Security ??= [];
+        operation.Security.Add(requirement);
     }
 }
