@@ -14,6 +14,7 @@ install:
 	@(cd core/test/Baked.Test.Load && npm i && npm ci)
 	@(cd docs/.theme && npm i && npm ci)
 	@(cd ui && npm i && npm ci)
+	@(cd ui && npm run dev:prepare)
 build:
 	@(cd core && dotnet build -v d /p:GenerateArgs="--warn-for-missing-component")
 	@(cd ui && npm run build)

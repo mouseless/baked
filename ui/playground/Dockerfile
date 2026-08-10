@@ -19,7 +19,7 @@ FROM init as generate
 COPY --parents ui .
 
 # build module
-RUN cd ui ; npm run postinstall ; npm run build
+RUN cd ui ; npm run dev:prepare ; npm run build
 
 # creates a .tgz package file at the root
 RUN cd ui ; npm pack --pack-destination ./playground

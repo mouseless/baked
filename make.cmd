@@ -44,6 +44,7 @@ call npm i
 cd ..\..
 cd ui
 call npm i
+call npm run dev:prepare
 cd ..
 cd core\test\Baked.Test.Load
 call npm i
