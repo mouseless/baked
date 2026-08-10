@@ -11,6 +11,7 @@
 ## Bugfixes
 
 - Inconsistent enum casing between response values and enum data, fixed
+- `OpenAPI` security definitions are not displayed on endpoints, fixed
 
 ## Breaking Changes
 
