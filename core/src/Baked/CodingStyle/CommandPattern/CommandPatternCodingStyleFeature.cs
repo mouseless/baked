@@ -26,8 +26,8 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                         !members.Has<TransientAttribute>() ||
                         members.Has<TransientAttribute>() && !members.Has<LocatableAttribute>()
                     ) &&
-                    members.Methods.Count(m => IsPotentialAction(m, c)) == 1 &&
-                    _methodNames.Contains(members.Methods.Single(m => IsPotentialAction(m, c)).Name),
+                    TryGetSinglePotentialAction(members, c, out var action) &&
+                    _methodNames.Contains(action.Name),
                 apply: (c, set) =>
                 {
                     set(c.Type, new CommandAttribute());
@@ -103,8 +103,34 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
         });
     }
 
-    bool IsPotentialAction(MethodModel m, TypeModelMetadataContext c) =>
+    static bool IsPotentialAction(MethodModel m, TypeModelMetadataContext c) =>
         !m.Has<InitializerAttribute>() &&
         m.DefaultOverload.DeclaringType == c.Type &&
         m.DefaultOverload.IsPublicInstanceWithNoSpecialName;
+
+    bool TryGetSinglePotentialAction(
+        TypeModelMembers members,
+        TypeModelMetadataContext c,
+        [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out MethodModel? action
+    )
+    {
+        action = null;
+        var found = false;
+
+        foreach (var m in members.Methods)
+        {
+            if (!IsPotentialAction(m, c)) { continue; }
+            if (found)
+            {
+                action = null;
+
+                return false;
+            }
+
+            action = m;
+            found = true;
+        }
+
+        return found;
+    }
 }
