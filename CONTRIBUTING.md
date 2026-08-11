@@ -1,7 +1,7 @@
 # Contributing
 
-This project is developed and maintained by Mouseless Software Development
-Collective. It is, and will always be, free and open source.
+This project is developed and maintained by Mouseless Developer Collective. It
+is, and will always be, free and open source.
 
 ## Project Structure
 
@@ -69,6 +69,17 @@ and consistent as possible.
   `nullable` value and reference types.
 - Refer to [Stylecop.Analyzers][] for coding standards we enforce using
   `Stylecop Analyzers`.
+
+## Development Practices
+
+### Package Scripts
+
+Document specific decisions made in package scripts when their implementation is not obvious.
+
+- `dev:prepare`: Runs `nuxi prepare playground` separately from `postinstall`.
+  Keeping the playground prepare step separate prevents the playground's
+  generated build files from being included in the package when running
+  `npm pack`. Look [628](https://github.com/mouseless/baked/issues/628)
 
 [Layer.Conventions]: https://github.com/mouseless/baked/tree/main/docs/architecture/layer.md
 [Feature.Conventions]: https://github.com/mouseless/baked/tree/main/docs/architecture/feature.md
