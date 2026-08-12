@@ -4,6 +4,7 @@
   </template>
   <div
     v-else
+    v-bind="$attrs"
     class="b-Validation flex flex-col gap-2"
   >
     <slot />
@@ -40,6 +41,10 @@ import { computed } from "vue";
 import { useContext } from "#imports";
 
 const context = useContext();
+
+defineOptions({
+  inheritAttrs: false
+});
 
 const validationHandled = context.injectValidationHandled();
 const validation = context.injectValidation();
