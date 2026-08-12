@@ -9,6 +9,7 @@
     :pt
     :variant
     :required
+    v-bind="$attrs"
   >
     <template #default>
       <slot />
@@ -26,6 +27,10 @@ import { useContext, useLocalization } from "#imports";
 const context = useContext();
 const { localize: l } = useLocalization({});
 const { localize: lc } = useLocalization({ group: "Labeler" });
+
+defineOptions({
+  inheritAttrs: false
+});
 
 const { label } = defineProps({
   label: { type: Object, default: null },
