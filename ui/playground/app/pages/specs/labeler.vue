@@ -30,7 +30,7 @@ const variants = [
     name: "Select: Float:On Mode",
     descriptor: giveMe.aSelect({
       label: giveMe.aLabel({
-        text: "Float:On Mode"
+        text: "Spec: Float:On Mode"
       })
     })
   },
@@ -38,7 +38,7 @@ const variants = [
     name: "Select: Ifta Mode",
     descriptor: giveMe.aSelect({
       label: giveMe.aLabel({
-        text: "Ifta Mode",
+        text: "Spec: Ifta Mode",
         mode: "ifta"
       })
     })
@@ -47,7 +47,7 @@ const variants = [
     name: "Select: Float:In Mode",
     descriptor: giveMe.aSelect({
       label: giveMe.aLabel({
-        text: "Float:In Mode",
+        text: "Spec: Float:In Mode",
         variant: "in"
       })
     })
@@ -56,7 +56,7 @@ const variants = [
     name: "SelectButton: Ifta Mode",
     descriptor: giveMe.aSelectButton({
       label: giveMe.aLabel({
-        text: "Ifta Mode",
+        text: "Spec: Ifta Mode",
         mode: "ifta"
       })
     })
@@ -82,7 +82,7 @@ const variants = [
     name: "InputText: Float:On Mode",
     descriptor: giveMe.anInputText({
       label: giveMe.aLabel({
-        text: "Float:On Mode"
+        text: "Spec: Float:On Mode"
       })
     })
 
@@ -91,7 +91,7 @@ const variants = [
     name: "InputText: Float:In Mode",
     descriptor: giveMe.anInputText({
       label: giveMe.aLabel({
-        text: "Float:In Mode",
+        text: "Spec: Float:In Mode",
         variant: "in"
       })
     })
@@ -100,7 +100,7 @@ const variants = [
     name: "InputText: Ifta Mode",
     descriptor: giveMe.anInputText({
       label: giveMe.aLabel({
-        text: "Ifta Mode",
+        text: "Spec: Ifta Mode",
         mode: "ifta"
       })
     })
@@ -117,7 +117,7 @@ const variants = [
     name: "InputNumber: Float:On Mode",
     descriptor: giveMe.anInputNumber({
       label: giveMe.aLabel({
-        text: "Float:On Mode"
+        text: "Spec: Float:On Mode"
       })
     })
   },
@@ -125,7 +125,7 @@ const variants = [
     name: "InputNumber: Float:In Mode",
     descriptor: giveMe.anInputNumber({
       label: giveMe.aLabel({
-        text: "Float:In Mode",
+        text: "Spec: Float:In Mode",
         variant: "in"
       })
     })
@@ -134,7 +134,7 @@ const variants = [
     name: "InputNumber: Ifta Mode",
     descriptor: giveMe.anInputNumber({
       label: giveMe.aLabel({
-        text: "Ifta Mode",
+        text: "Spec: Ifta Mode",
         mode: "ifta"
       })
     })

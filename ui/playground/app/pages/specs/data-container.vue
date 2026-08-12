@@ -38,8 +38,8 @@ const variants = [
         data: giveMe.theParentContext()
       }),
       actions: [
-        giveMe.aButton({ label: "ACTION_1" }),
-        giveMe.aButton({ label: "ACTION_2", icon: "pi pi-heart" })
+        giveMe.aButton({ label: "Spec: ACTION_1" }),
+        giveMe.aButton({ label: "Spec: ACTION_2", icon: "pi pi-heart" })
       ]
     })
   }

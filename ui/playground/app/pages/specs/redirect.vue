@@ -33,7 +33,7 @@ const variants = [
     descriptor: giveMe.aContainer({
       contents: [
         giveMe.aButton({
-          label: "Test without query",
+          label: "Spec: Test without query",
           action: giveMe.aLocalAction({
             redirect: "/page/with/route/[id]",
             options: giveMe.aCompositeData([
@@ -43,7 +43,7 @@ const variants = [
           })
         }),
         giveMe.aButton({
-          label: "Test with query",
+          label: "Spec: Test with query",
           action: giveMe.aLocalAction({
             redirect: "/page/with/route/[id]",
             options: giveMe.aCompositeData([
@@ -60,7 +60,7 @@ const variants = [
     descriptor: giveMe.aContainer({
       contents: [
         giveMe.aButton({
-          label: "All query",
+          label: "Spec: All query",
           action: giveMe.aLocalAction({
             redirect: "/page/with/route",
             options: giveMe.aCompositeData([
@@ -70,7 +70,7 @@ const variants = [
           })
         }),
         giveMe.aButton({
-          label: "Included query",
+          label: "Spec: Included query",
           action: giveMe.aLocalAction({
             redirect: "/page/with/route",
             options: giveMe.aCompositeData([
@@ -80,7 +80,7 @@ const variants = [
           })
         }),
         giveMe.aButton({
-          label: "Excluded query",
+          label: "Spec: Excluded query",
           action: giveMe.aLocalAction({
             redirect: "/page/with/route",
             options: giveMe.aCompositeData([
@@ -90,7 +90,7 @@ const variants = [
           })
         }),
         giveMe.aButton({
-          label: "Nulls are filter out",
+          label: "Spec: Nulls are filter out",
           action: giveMe.aLocalAction({
             redirect: "/page/with/route",
             options: giveMe.aCompositeData([
