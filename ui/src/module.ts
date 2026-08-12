@@ -134,6 +134,7 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.devtools = { enabled: false };
     _nuxt.options.experimental.payloadExtraction = false;
     _nuxt.options.features.inlineStyles = false;
+    _nuxt.options.pages = true;
     _nuxt.options.ssr = false;
 
     // default dirs

@@ -28,6 +28,7 @@ jobs:
       - name: Build src
         run: |
           npm i
+          npm run dev:prepare
           npm run build
   test:
     name: Test
@@ -49,6 +50,7 @@ jobs:
       - name: Build local package
         run: |
           npm i
+          npm run dev:prepare
           npm run build
       - name: Prepare
         run: |
