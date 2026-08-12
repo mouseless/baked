@@ -1,6 +1,7 @@
 <template>
   <form
     class="w-96 flex justify-center flex-col gap-4 px-4 max-2xs:w-64"
+    v-bind="$attrs"
     @submit.prevent="submit"
   >
     <div class="w-full text-center mb-6">
@@ -55,6 +56,10 @@ import { useToken, useLocalization } from "#imports";
 const { localize: lc } = useLocalization({ group: "Login" });
 const { public: { apiBaseURL } } = useRuntimeConfig();
 const token = useToken();
+
+defineProps({
+  schema: { type: null, default: null }
+});
 
 const username = ref();
 const submitted = ref(false);
