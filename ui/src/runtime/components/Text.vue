@@ -16,7 +16,7 @@ const { truncate } = useFormat();
 
 const { schema, data: rawData } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true }
+  data: { type: null, default: null }
 });
 
 const { maxLength, prop } = schema;

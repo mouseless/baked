@@ -50,6 +50,9 @@ const dataFetcher = useDataFetcher();
 const { asClasses } = useFormat();
 const reactionHandler = useReactionHandler();
 
+defineOptions({
+  inheritAttrs: false
+});
 const { name, descriptor } = defineProps({
   name: { type: String, required: true },
   descriptor: { type: null, required: true }
