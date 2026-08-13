@@ -31,7 +31,6 @@ const { localize: lc } = useLocalization({ group: "Labeler" });
 defineOptions({
   inheritAttrs: false
 });
-
 const { label } = defineProps({
   label: { type: Object, default: null },
   path: { type: String, required: true },

@@ -80,7 +80,6 @@ import { AwaitLoading } from "#components";
 defineOptions({
   inheritAttrs: false
 });
-
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
