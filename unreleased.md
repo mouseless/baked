@@ -14,6 +14,8 @@
 
 - Inconsistent enum casing between response values and enum data, fixed
 - `OpenAPI` security definitions are not displayed on endpoints, fixed
+- `$fetch` name conflict, fixed
+  - The `$fetch` in `globalThis` that we override is now accessed as `bfetch`
 
 ## Breaking Changes
 

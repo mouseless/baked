@@ -73,7 +73,7 @@ function authenticationException() {
 }
 
 async function requestWithToken() {
-  const result = await $fetch("time-provider-samples/now", {
+  const result = await bfetch("time-provider-samples/now", {
     baseURL: apiBaseURL,
     method: "GET"
   });

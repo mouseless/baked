@@ -1,5 +1,6 @@
 import { useRuntimeConfig } from "#app";
 import { useComposableResolver, usePathBuilder, useUnref } from "#imports";
+import { bfetch } from "../utils/bfetch";
 
 export default function() {
   const datas = {
@@ -195,7 +196,7 @@ function Remote({ parentFetch }) {
       return await fetchWithRetry(path, options, retry);
     }
 
-    return await $fetch(path, { ...options, retry: false });
+    return await bfetch(path, { ...options, retry: false });
   }
 
   async function fetchHeaders({ data, contextData }) {
@@ -226,7 +227,7 @@ function Remote({ parentFetch }) {
     let lastError = null;
     for(let i = -1; i < maxRetry; i++) { // i starts at -1 to allow for the first attempt
       try {
-        return await $fetch(url, { ...options, retry: false });
+        return await bfetch(url, { ...options, retry: false });
       } catch (error) {
         lastError = error;
 
