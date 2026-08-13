@@ -69,7 +69,7 @@ onUpdated(() => submitted.value = false);
 async function submit() {
   submitted.value = true;
 
-  const result = await $fetch("/authentication-samples/login",
+  const result = await bfetch("/authentication-samples/login",
     {
       baseURL: apiBaseURL,
       method: "POST",

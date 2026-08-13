@@ -140,6 +140,7 @@ export default defineNuxtModule<ModuleOptions>({
     // default dirs
     addComponentsDir({ path: resolver.metaUrl.resolve("./runtime/components") });
     addImportsDir(resolver.metaUrl.resolve("./runtime/composables"));
+    addImportsDir(resolver.metaUrl.resolve("./runtime/utils"));
 
     // plugins that comes through the app descriptor
     for(const plugin of app?.plugins ?? []) {
