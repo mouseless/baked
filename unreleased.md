@@ -19,3 +19,13 @@
 
 - The order of the remote action configuration convention for
   `DataTable.Actions` in `DataTableDefaultsUxFeature` was increased by 10
+- The global `$fetch` override is now exposed as `bfetch` to avoid conflicts
+  with Nuxt's `$fetch`
+  - To migrate, replace `$fetch` usages with `bfetch`
+  ```js
+  // old
+  const result = await $fetch("...", { method: "GET" });
+
+  // new
+  const result = await bfetch("...", { method: "GET" });
+  ```

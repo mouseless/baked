@@ -33,6 +33,11 @@ export default defineNuxtPlugin({
           component: () => import("../components/Page.vue")
         });
       });
+
+      // Routes added via addRoute() are not recognized by Vue Router during the
+      // initial navigation. Replacing the current route forces Vue Router to
+      // re evaluate the path against the newly registered routes
+      app.$nuxt.$router.replace(app.$nuxt.$router.currentRoute.value.fullPath);
     }
   }
 });

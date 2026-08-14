@@ -48,7 +48,7 @@ const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true }
+  data: { type: null, default: null }
 });
 
 const { action, icon, localizeMessage, severity = "info", size, variant = "outlined" } = schema;

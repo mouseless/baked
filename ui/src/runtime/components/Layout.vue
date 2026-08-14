@@ -11,6 +11,7 @@
     :key="descriptor.type"
     name="root"
     :descriptor="descriptor"
+    v-bind="$attrs"
   >
     <slot />
   </Bake>

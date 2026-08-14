@@ -439,7 +439,7 @@ export default {
 
   aFormPage({ action, title, description, submit, inputs, sections, validations, showValidationSummary } = {}) {
     title = this.aPageTitle({ title, description });
-    submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
+    submit = $(submit, this.aButton({ label: "Spec: Test Submit" }).schema);
     inputs = $(inputs, []);
     sections = $(sections, [this.aFormPageSection({ inputs })]);
     validations = $(validations, ["useFakeValidation"]);
@@ -563,7 +563,7 @@ export default {
   },
 
   aLabel({ text, mode, variant, showOptionality } = {}) {
-    text = $(text, mode !== null ? "Test Label" : null);
+    text = $(text, mode !== null ? "Spec: Test Label" : null);
     mode = $(mode, text ? "float" : null);
     variant = $(variant, "on");
     showOptionality = $(showOptionality, false);

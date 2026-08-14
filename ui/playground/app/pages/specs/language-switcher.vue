@@ -45,7 +45,7 @@ const { localize: l } = useLocalization();
 const { public: { apiBaseURL } } = useRuntimeConfig();
 
 async function requestWithLanguageHeader() {
-  await $fetch("time-provider-samples/now", {
+  await bfetch("time-provider-samples/now", {
     baseURL: apiBaseURL,
     method: "GET"
   }).catch(_ => { });

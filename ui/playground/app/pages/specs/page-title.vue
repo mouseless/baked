@@ -34,8 +34,8 @@ const variants = [
     name: "Actions",
     descriptor: giveMe.aPageTitle({
       actions: [
-        giveMe.aButton({ label: "ACTION_1" }),
-        giveMe.aButton({ label: "ACTION_2", icon: "pi pi-heart" })
+        giveMe.aButton({ label: "Spec: ACTION_1" }),
+        giveMe.aButton({ label: "Spec: ACTION_2", icon: "pi pi-heart" })
       ],
       earlyWrapActionsAt: 2
     })
@@ -51,7 +51,7 @@ const variants = [
         giveMe.aField({ key: "info1", label: "Spec: Info 1", testId: "info-1" }),
         giveMe.aField({ key: "info2", label: "Spec: Info 2", testId: "info-2" })
       ],
-      actions: [ giveMe.aButton({ label: "ACTION" }) ]
+      actions: [ giveMe.aButton({ label: "Spec: ACTION" }) ]
     })
   },
   {
@@ -64,7 +64,7 @@ const variants = [
 
 const inputsVariant = {
   descriptor: giveMe.aPageTitle({
-    actions: [giveMe.aButton({ label: "ACTION" })]
+    actions: [giveMe.aButton({ label: "Spec: ACTION" })]
   }),
   inputs: [giveMe.anInput()]
 };
