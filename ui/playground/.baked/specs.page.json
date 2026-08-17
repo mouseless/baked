@@ -106,18 +106,6 @@
             }
           },
           {
-            "title": "/specs/inputs--optional:Title",
-            "component": {
-              "type": "CardLink",
-              "schema": {
-                "route": "/specs/inputs--optional",
-                "icon": "pi pi-microchip",
-                "title": "/specs/inputs--optional:Title",
-                "description": "/specs/inputs--optional:Description"
-              }
-            }
-          },
-          {
             "title": "/specs/inputs--form-mode:Title",
             "component": {
               "type": "CardLink",
@@ -126,6 +114,18 @@
                 "icon": "pi pi-microchip",
                 "title": "/specs/inputs--form-mode:Title",
                 "description": "/specs/inputs--form-mode:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/inputs--optional:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/inputs--optional",
+                "icon": "pi pi-microchip",
+                "title": "/specs/inputs--optional:Title",
+                "description": "/specs/inputs--optional:Description"
               }
             }
           },
