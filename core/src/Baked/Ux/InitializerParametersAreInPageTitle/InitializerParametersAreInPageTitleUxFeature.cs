@@ -30,7 +30,7 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                         initializer
                             .DefaultOverload.Parameters
                             .Select(p => p.GenerateSchema<Input>(cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Inputs))))
-                            .Where(i => i is not null)
+                            .OfType<Input>()
                     );
                 }
             );
