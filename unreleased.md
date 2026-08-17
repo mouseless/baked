@@ -14,7 +14,7 @@
 
 - Inconsistent enum casing between response values and enum data, fixed
 - `OpenAPI` security definitions are not displayed on endpoints, fixed
-- Inputs does not emit ready for optional inputs, fixed
+- `Inputs` does not emit ready for optional inputs, fixed
 - `ContextData` does not return target properties with `null` values, fixed
 
 ## Breaking Changes
