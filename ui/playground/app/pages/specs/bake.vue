@@ -43,9 +43,17 @@ const variants = [
                     path: "/method-samples/async?ms=5",
                     headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
                   })
+                }),
+                giveMe.anExpected({
+                  testId: "missing-key-with-target-prop",
+                  data: giveMe.aContextData({ key: "doesNotExist", targetProp: "value" })
+                }),
+                giveMe.anExpected({
+                  testId: "missing-key-without-target-prop",
+                  data: giveMe.aContextData({ key: "doesNotExist" })
                 })
               ],
-              data: giveMe.aDelayedData({ child: "CHILD VALUE" }, { ms: 1 })
+              data: giveMe.aDelayedData({ child: "CHILD VALUE", falseChild: false, nullChild: null }, { ms: 1 })
             })
           ],
           data: giveMe.anInlineData("GRAND PARENT VALUE")

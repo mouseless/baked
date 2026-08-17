@@ -80,7 +80,9 @@ test.describe("Parent Data", () => {
     await expect(component.getByTestId("child-root"))
       .toHaveText(`
         {
-          "child": "CHILD VALUE"
+          "child": "CHILD VALUE",
+          "falseChild": false,
+          "nullChild": null
         }`
       );
   });
@@ -107,6 +109,22 @@ test.describe("Parent Data", () => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("child-remote")).toHaveText("fake-response-0");
+  });
+
+  test("still returns bare null when the key doesn't exist and no targetProp given", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("missing-key-without-target-prop")).toHaveText("");
+  });
+
+  test("wraps in targetProp even when the context key doesn't exist", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("missing-key-with-target-prop")).toHaveText(`
+      {
+        "value": null
+      }`
+    );
   });
 });
 
