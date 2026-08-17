@@ -38,7 +38,7 @@ context.providePath(`${parentPath}/inputs`);
 
 watch(values, newValues => {
   if(!formMode && inputs
-    .filter(i => i.default || i.defaultSelfManaged)
+    .filter(i => i.required && (i.default || i.defaultSelfManaged))
     .some(i => !checkValue(newValues[i.name]))
   ) { return; }
 
