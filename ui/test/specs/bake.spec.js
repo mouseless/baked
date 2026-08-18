@@ -308,7 +308,7 @@ test.describe.serial("Reaction", () => {
     const component = page.getByTestId(id);
     const react = component.getByTestId("react");
     const before = asyncCount;
-    const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
+    const request = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
     await react.pressSequentially("event");
 
@@ -320,7 +320,7 @@ test.describe.serial("Reaction", () => {
     const component = page.getByTestId(id);
     const react = component.getByTestId("react");
     const before = asyncCount;
-    const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
+    const request = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
     await react.pressSequentially("page-context");
 
@@ -332,7 +332,7 @@ test.describe.serial("Reaction", () => {
     const component = page.getByTestId(id);
     const react = component.getByTestId("react");
     const before = asyncCount;
-    const request = page.waitForRequest(req => req.url().includes("async?ms=10"), { timeout: 500 });
+    const request = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
     await react.pressSequentially("validate");
 
