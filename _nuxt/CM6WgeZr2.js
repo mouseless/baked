@@ -1,0 +1,1 @@
+import{n as e}from"./BrCL1FNy.js";var t=e(`sectionStore`,{state:()=>({sections:{}}),actions:{setSections(e){this.sections=e}}});export{t};

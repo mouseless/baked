@@ -1,0 +1,1 @@
+import{B as e,I as t,d as n,m as r}from"./CsjZJaMw.js";import{t as i}from"./BDNMzG2s2.js";var a={},o={class:`c--prose-table rounded-xs overflow-x-auto mt-sm mb-md`},s={class:`border-spacing-0 w-full`};function c(i,a){return t(),r(`div`,o,[n(`table`,s,[e(i.$slots,`default`)])])}var l=Object.assign(i(a,[[`render`,c]]),{__name:`ProseTable`});export{l as default};
