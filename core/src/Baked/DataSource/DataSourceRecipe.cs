@@ -20,10 +20,10 @@ using Baked.Reporting;
 
 namespace Baked.DataSource;
 
-public abstract class DataSourceRecipe
+public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> business)
 {
     // Features
-    FeatureFunc<BusinessConfigurator> _business;
+    FeatureFunc<BusinessConfigurator> _business = business;
 
     IEnumerable<FeatureFunc<BindingConfigurator>> _bindings = [c => c.Rest()];
     public void Bindings(params IEnumerable<FeatureFunc<BindingConfigurator>> bindings) => _bindings = bindings;
@@ -31,7 +31,7 @@ public abstract class DataSourceRecipe
     IEnumerable<FeatureFunc<CachingConfigurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
     public void Cachings(params IEnumerable<FeatureFunc<CachingConfigurator>> cachings) => _cachings = cachings;
 
-    IEnumerable<FeatureFunc<CodingStyleConfigurator>> _codingStyles;
+    IEnumerable<FeatureFunc<CodingStyleConfigurator>>? _codingStyles;
     public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleConfigurator>> codingStyles) => _codingStyles = codingStyles;
 
     FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
@@ -63,28 +63,24 @@ public abstract class DataSourceRecipe
     Action<ApplicationDescriptor> _configure = _ => { };
     public void Configure(Action<ApplicationDescriptor> configure) => _configure = configure;
 
-    public DataSourceRecipe(FeatureFunc<BusinessConfigurator> business)
-    {
-        _business = business;
-        _codingStyles =
-        [
-            c => c.AddRemoveChild(),
-            _commandPattern,
-            c => c.Id(),
-            _initializable,
-            _label,
-            c => c.Locatable(),
-            c => c.NamespaceAsRoute(),
-            c => c.Query(),
-            c => c.RecordsAreDtos(),
-            c => c.RemainingServicesAreSingleton(),
-            c => c.RichTransient(),
-            _scopedBySuffix,
-            _useBuiltInTypes,
-            c => c.UseNullableTypes(),
-            c => c.ValueType()
-        ];
-    }
+    IEnumerable<FeatureFunc<CodingStyleConfigurator>> GetCodingStyles() => _codingStyles ??
+    [
+        c => c.AddRemoveChild(),
+        _commandPattern,
+        c => c.Id(),
+        _initializable,
+        _label,
+        c => c.Locatable(),
+        c => c.NamespaceAsRoute(),
+        c => c.Query(),
+        c => c.RecordsAreDtos(),
+        c => c.RemainingServicesAreSingleton(),
+        c => c.RichTransient(),
+        _scopedBySuffix,
+        _useBuiltInTypes,
+        c => c.UseNullableTypes(),
+        c => c.ValueType()
+    ];
 
     public class Run(FeatureFunc<BusinessConfigurator> business)
         : DataSourceRecipe(business)
@@ -119,7 +115,7 @@ public abstract class DataSourceRecipe
             app.Features.AddBindings(_bindings);
             app.Features.AddBusiness(_business);
             app.Features.AddCachings(_cachings);
-            app.Features.AddCodingStyles(_codingStyles);
+            app.Features.AddCodingStyles(GetCodingStyles());
             app.Features.AddCore(_core);
             app.Features.AddDatabase(_database);
             app.Features.AddExceptionHandling(_exceptionHandling);
@@ -160,7 +156,7 @@ public abstract class DataSourceRecipe
             app.Features.AddBindings(_bindings);
             app.Features.AddBusiness(_business);
             app.Features.AddCachings(_cachings);
-            app.Features.AddCodingStyles(_codingStyles);
+            app.Features.AddCodingStyles(GetCodingStyles());
             app.Features.AddCore(_core);
             app.Features.AddDatabase(_database);
             app.Features.AddExceptionHandling(_exceptionHandling);

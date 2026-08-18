@@ -137,16 +137,16 @@ function Context() {
   const unref = useUnref();
 
   function get({ data, contextData }) {
-    let result = contextData[data.key];
+    let result = null;
 
-    if(!result) { return null; }
+    if(data.key in contextData) {
+      result = unref.deepUnref(contextData[data.key]);
 
-    result = unref.deepUnref(result);
-
-    if(data.prop) {
-      const path = data.prop.split(".");
-      for(const prop of path) {
-        result = result?.[prop];
+      if(data.prop) {
+        const path = data.prop.split(".");
+        for(const prop of path) {
+          result = result?.[prop];
+        }
       }
     }
 

@@ -69,8 +69,8 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
         actual?.ShouldDeeplyBe(new Dictionary<string, object>()
         {
             { "$type", "implemented" },
-            { "id", child.id },
-            { "name", $"{child.id} name" }
+            { "id", child?.id },
+            { "name", $"{child?.id} name" }
         });
     }
 }

@@ -59,6 +59,8 @@
   "/specs/input-text:Title": "Metin Girişi",
   "/specs/inputs--form-mode:Description": "Kullanıcı girdilerini form modunda yönetir",
   "/specs/inputs--form-mode:Title": "Girdiler - Form Modu",
+  "/specs/inputs--optional:Description": "İsteğe bağlı girdileri yönetir",
+  "/specs/inputs--optional:Title": "Girdiler - İsteğe bağlı",
   "/specs/inputs--query-bound:Description": "Kullanıcı girdilerini sorgu dizisi ile senkronize yönetir",
   "/specs/inputs--query-bound:Title": "Girdiler - Sorguya Bağlı",
   "/specs/inputs:Description": "Kullanıcı girdilerini sayfa çaplı yayınlarla yönetir",
