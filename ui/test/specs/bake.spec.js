@@ -308,11 +308,11 @@ test.describe.serial("Reaction", () => {
     const component = page.getByTestId(id);
     const react = component.getByTestId("react");
     const before = asyncCount;
-    const request = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
+    const response = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
     await react.pressSequentially("event");
 
-    await request;
+    await response;
     expect(asyncCount).toBe(before + 1);
   });
 
@@ -320,11 +320,11 @@ test.describe.serial("Reaction", () => {
     const component = page.getByTestId(id);
     const react = component.getByTestId("react");
     const before = asyncCount;
-    const request = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
+    const response = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
     await react.pressSequentially("page-context");
 
-    await request;
+    await response;
     expect(asyncCount).toBe(before + 1);
   });
 
@@ -332,11 +332,11 @@ test.describe.serial("Reaction", () => {
     const component = page.getByTestId(id);
     const react = component.getByTestId("react");
     const before = asyncCount;
-    const request = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
+    const response = page.waitForResponse(req => req.url().includes("async?ms=10"), { timeout: 500 });
 
     await react.pressSequentially("validate");
 
-    await request;
+    await response;
     expect(asyncCount).toBe(before + 1);
   });
 
