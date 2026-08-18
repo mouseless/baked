@@ -63,7 +63,7 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
     Action<ApplicationDescriptor> _configure = _ => { };
     public void Configure(Action<ApplicationDescriptor> configure) => _configure = configure;
 
-    IEnumerable<FeatureFunc<CodingStyleConfigurator>> GetCodingStyles() => _codingStyles ??
+    IEnumerable<FeatureFunc<CodingStyleConfigurator>> CodingStyleFeatures => _codingStyles ??
     [
         c => c.AddRemoveChild(),
         _commandPattern,
@@ -115,7 +115,7 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
             app.Features.AddBindings(_bindings);
             app.Features.AddBusiness(_business);
             app.Features.AddCachings(_cachings);
-            app.Features.AddCodingStyles(GetCodingStyles());
+            app.Features.AddCodingStyles(CodingStyleFeatures);
             app.Features.AddCore(_core);
             app.Features.AddDatabase(_database);
             app.Features.AddExceptionHandling(_exceptionHandling);
@@ -156,7 +156,7 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
             app.Features.AddBindings(_bindings);
             app.Features.AddBusiness(_business);
             app.Features.AddCachings(_cachings);
-            app.Features.AddCodingStyles(GetCodingStyles());
+            app.Features.AddCodingStyles(CodingStyleFeatures);
             app.Features.AddCore(_core);
             app.Features.AddDatabase(_database);
             app.Features.AddExceptionHandling(_exceptionHandling);

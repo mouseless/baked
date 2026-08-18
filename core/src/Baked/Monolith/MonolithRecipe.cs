@@ -78,7 +78,7 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
     Action<ApplicationDescriptor> _configure = _ => { };
     public void Configure(Action<ApplicationDescriptor> configure) => _configure = configure;
 
-    IEnumerable<FeatureFunc<CodingStyleConfigurator>> GetCodingStyles() => _codingStyles ??
+    IEnumerable<FeatureFunc<CodingStyleConfigurator>> CodingStyleFeatures => _codingStyles ??
     [
         c => c.AddRemoveChild(),
         c => c.Client(),
@@ -159,7 +159,7 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
             app.Features.AddBindings(_bindings);
             app.Features.AddBusiness(_business);
             app.Features.AddCachings(_cachings);
-            app.Features.AddCodingStyles(GetCodingStyles());
+            app.Features.AddCodingStyles(CodingStyleFeatures);
             app.Features.AddCommunication(_communication);
             app.Features.AddCore(_core);
             app.Features.AddCors(_cors);
@@ -229,7 +229,7 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
             app.Features.AddBindings(_bindings);
             app.Features.AddBusiness(_business);
             app.Features.AddCachings(_cachings);
-            app.Features.AddCodingStyles(GetCodingStyles());
+            app.Features.AddCodingStyles(CodingStyleFeatures);
             app.Features.AddCommunication(_communication);
             app.Features.AddCore(_core);
             app.Features.AddDatabase(_database);
