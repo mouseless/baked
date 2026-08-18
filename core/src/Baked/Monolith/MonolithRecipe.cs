@@ -29,10 +29,10 @@ using Baked.Ux.QueryActionAsDataContainer;
 
 namespace Baked.Monolith;
 
-public abstract class MonolithRecipe
+public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
 {
     // Features
-    FeatureFunc<BusinessConfigurator> _business;
+    FeatureFunc<BusinessConfigurator> _business = business;
 
     IEnumerable<FeatureFunc<BindingConfigurator>> _bindings = [c => c.Rest()];
     public void Bindings(params IEnumerable<FeatureFunc<BindingConfigurator>> bindings) => _bindings = bindings;
@@ -40,7 +40,7 @@ public abstract class MonolithRecipe
     IEnumerable<FeatureFunc<CachingConfigurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
     public void Cachings(params IEnumerable<FeatureFunc<CachingConfigurator>> cachings) => _cachings = cachings;
 
-    IEnumerable<FeatureFunc<CodingStyleConfigurator>> _codingStyles;
+    IEnumerable<FeatureFunc<CodingStyleConfigurator>>? _codingStyles;
     public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleConfigurator>> codingStyles) => _codingStyles = codingStyles;
 
     FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
@@ -78,36 +78,32 @@ public abstract class MonolithRecipe
     Action<ApplicationDescriptor> _configure = _ => { };
     public void Configure(Action<ApplicationDescriptor> configure) => _configure = configure;
 
-    public MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
-    {
-        _business = business;
-        _codingStyles =
-        [
-                c => c.AddRemoveChild(),
-                c => c.Client(),
-                _commandPattern,
-                c => c.EntitySubclass(),
-                c => c.Id(),
-                _initializable,
-                _label,
-                c => c.Locatable(),
-                c => c.LocatableExtension(),
-                c => c.NamespaceAsRoute(),
-                c => c.ObjectAsJson(),
-                c => c.Query(),
-                _queryMethod,
-                c => c.RecordsAreDtos(),
-                c => c.RemainingServicesAreSingleton(),
-                c => c.RichEntity(),
-                c => c.RichTransient(),
-                _scopedBySuffix,
-                c => c.Unique(),
-                c => c.UriReturnIsRedirect(),
-                _useBuiltInTypes,
-                c => c.UseNullableTypes(),
-                c => c.ValueType()
-        ];
-    }
+    IEnumerable<FeatureFunc<CodingStyleConfigurator>> GetCodingStyles() => _codingStyles ??
+    [
+        c => c.AddRemoveChild(),
+        c => c.Client(),
+        _commandPattern,
+        c => c.EntitySubclass(),
+        c => c.Id(),
+        _initializable,
+        _label,
+        c => c.Locatable(),
+        c => c.LocatableExtension(),
+        c => c.NamespaceAsRoute(),
+        c => c.ObjectAsJson(),
+        c => c.Query(),
+        _queryMethod,
+        c => c.RecordsAreDtos(),
+        c => c.RemainingServicesAreSingleton(),
+        c => c.RichEntity(),
+        c => c.RichTransient(),
+        _scopedBySuffix,
+        c => c.Unique(),
+        c => c.UriReturnIsRedirect(),
+        _useBuiltInTypes,
+        c => c.UseNullableTypes(),
+        c => c.ValueType()
+    ];
 
     public class Run(FeatureFunc<BusinessConfigurator> business)
         : MonolithRecipe(business)
@@ -163,7 +159,7 @@ public abstract class MonolithRecipe
             app.Features.AddBindings(_bindings);
             app.Features.AddBusiness(_business);
             app.Features.AddCachings(_cachings);
-            app.Features.AddCodingStyles(_codingStyles);
+            app.Features.AddCodingStyles(GetCodingStyles());
             app.Features.AddCommunication(_communication);
             app.Features.AddCore(_core);
             app.Features.AddCors(_cors);
@@ -233,7 +229,7 @@ public abstract class MonolithRecipe
             app.Features.AddBindings(_bindings);
             app.Features.AddBusiness(_business);
             app.Features.AddCachings(_cachings);
-            app.Features.AddCodingStyles(_codingStyles);
+            app.Features.AddCodingStyles(GetCodingStyles());
             app.Features.AddCommunication(_communication);
             app.Features.AddCore(_core);
             app.Features.AddDatabase(_database);
