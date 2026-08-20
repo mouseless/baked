@@ -1,5 +1,6 @@
 import { useRuntimeConfig } from "#app";
 import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from "#imports";
+import { bfetch } from "../utils/bfetch";
 
 export default function() {
   const actions = {
@@ -87,7 +88,7 @@ function Remote({ actionExecuter }) {
       ? null
       : (action.body ? unref.deepUnref(await dataFetcher.fetch({ data: action.body, contextData })) : { });
 
-    const response = await $fetch(pathBuilder.build(action.path, params), {
+    const response = await bfetch(pathBuilder.build(action.path, params), {
       baseURL: apiBaseURL,
       method: action.method,
       headers: headers,
