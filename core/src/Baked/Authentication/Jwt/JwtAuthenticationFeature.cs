@@ -33,7 +33,8 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
-                    Scheme = JwtBearerDefaults.AuthenticationScheme
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    BearerFormat = "JWT"
                 }
             );
 

@@ -41,7 +41,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
                     {
                         Type = SecuritySchemeType.Http,
                         Scheme = "Bearer",
-                        Description = _description,
+                        Description = _description
                     },
                     documentName: documentName
                 );

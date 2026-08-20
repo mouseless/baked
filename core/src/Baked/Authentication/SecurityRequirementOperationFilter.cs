@@ -15,7 +15,7 @@ public class SecurityRequirementOperationFilter<T>(IEnumerable<string> _schemeId
         var requirement = new OpenApiSecurityRequirement();
         foreach (var schemeId in _schemeIds)
         {
-            requirement.Add(new OpenApiSecuritySchemeReference(schemeId), []);
+            requirement.Add(new OpenApiSecuritySchemeReference(schemeId, context.Document), []);
         }
 
         operation.Security ??= [];
