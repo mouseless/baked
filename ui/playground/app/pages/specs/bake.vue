@@ -106,7 +106,7 @@ const variants = [
         giveMe.aLocalAction({ delay: 300 }),
         giveMe.aRemoteAction({
           path: "/rich-transient-with-datas/{id}/method",
-          headers: giveMe.anInlineData({ Authorization: "token-admin-ui" }),
+          headers: giveMe.anInlineData({ "X-TEST": "test header" }),
           query: giveMe.theQueryData(),
           params: giveMe.anInlineData({ id: 12 }),
           body: giveMe.anInlineData({ text: "text" }),

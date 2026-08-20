@@ -1,6 +1,8 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
+import mockMe from "../utils/mockMe";
+import giveMe from "../utils/giveMe";
 
 let asyncCount = 0;
 
@@ -195,6 +197,8 @@ test.describe("Action", () =>{
   const id = "Action";
 
   test("execute given composite action", async({ goto, page }) => {
+    const token = giveMe.aToken();
+    await mockMe.theSession(page, token);
     await goto("/specs/bake?val=2", { waitUntil: "load" });
 
     const component = page.getByTestId(id);
@@ -207,7 +211,9 @@ test.describe("Action", () =>{
 
     const request = await page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
     expect(request.method()).toBe("POST");
-    expect(request.headers()["authorization"]).toContain("token-admin-ui");
+
+    expect(request.headers()["x-test"]).toContain("test header");
+    expect(request.headers()["authorization"]).toContain(`Bearer ${token.access}`);
     expect(request.url()).toContain("/rich-transient-with-datas/12/method");
     expect(request.url()).toContain("?val=2");
     expect(request.postDataJSON()).toEqual({ text: "text" });

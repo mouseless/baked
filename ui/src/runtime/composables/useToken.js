@@ -1,5 +1,6 @@
 import { useRuntimeConfig } from "#app";
 import { createError, useMutex } from "#imports";
+import { bfetch } from "../utils/bfetch";
 
 export default function() {
   const mutex = useMutex();
@@ -31,7 +32,7 @@ export default function() {
       const token = await current(false);
       if(!token?.accessIsExpired()) { return; }
 
-      const result = await $fetch(auth.refreshApiRoute,
+      const result = await bfetch(auth.refreshApiRoute,
         {
           baseURL: apiBaseURL,
           method: "POST",
