@@ -121,6 +121,19 @@ const variants = [
     })
   },
   {
+    name: "Action Get",
+    descriptor: giveMe.aButton({
+      action: giveMe.aRemoteAction({
+        path: "/rich-transient-with-datas/{id}",
+        nullMethod: true,
+        params: giveMe.anInlineData({ id: 12 }),
+        body: giveMe.anInlineData({ text: "text" })
+      }),
+      label: "Spec: Button",
+      icon: "pi pi-play-circle"
+    })
+  },
+  {
     name: "Action Error",
     descriptor: giveMe.aButton({
       action: giveMe.aRemoteAction({

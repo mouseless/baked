@@ -228,6 +228,19 @@ test.describe("Action", () =>{
     await expect(page.locator(primevue.toast.base).last()).toBeVisible();
     await expect(page.locator(primevue.toast.summary).last()).toHaveText("fake-response");
   });
+
+  test("remote does not send a request body if no method is specified", async({ page }) => {
+    const component = page.getByTestId("Action Get");
+    const button = component.locator(primevue.button.base);
+
+    const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
+
+    await button.click();
+
+    const request = await requestPromise;
+    expect(request.method()).toBe("GET");
+    expect(request.postData()).toBeNull();
+  });
 });
 
 test.describe("Action Error", () => {

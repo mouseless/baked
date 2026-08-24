@@ -81,16 +81,17 @@ function Remote({ actionExecuter }) {
   const unref = useUnref();
 
   async function execute({ action, contextData, events }) {
+    const method = (action.method ?? "GET").toUpperCase();
     const headers = action.headers ? unref.deepUnref(await dataFetcher.fetch({ data: action.headers, contextData })) : { };
     const query = action.query ? unref.deepUnref(await dataFetcher.fetch({ data: action.query, contextData })) : null;
     const params = action.params ? unref.deepUnref(await dataFetcher.fetch({ data: action.params, contextData })) : { };
-    const body = action.method === "GET"
+    const body = method === "GET"
       ? null
       : (action.body ? unref.deepUnref(await dataFetcher.fetch({ data: action.body, contextData })) : { });
 
     const response = await bfetch(pathBuilder.build(action.path, params), {
       baseURL: apiBaseURL,
-      method: action.method,
+      method: method,
       headers: headers,
       query: query,
       body: body
