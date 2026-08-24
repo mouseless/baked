@@ -2,12 +2,19 @@
   <div
     class="
       b-message
-      grid grid-cols-[1fr_auto] gap-2
+      grid grid-cols-[1fr_auto]
       items-center
+      md:gap-2
+      max-md:flex max-md:flex-col max-md:space-between
     "
     :class="[`message-${severity}`, `message-${variant}`]"
   >
-    <div class="min-h-0">
+    <div
+      class="
+        min-h-0
+        max-md:w-full
+      "
+    >
       <div
         :class="sizeClass"
         class="
@@ -31,10 +38,14 @@
     </div>
     <div
       v-if="action"
-      class="b-message-action p-2"
+      class="
+        b-message-action p-2
+        max-md:w-full
+      "
     >
       <Bake
         name="action"
+        class="max-md:w-full"
         :descriptor="{ ...action, schema: { ...action.schema, severity } }"
       />
     </div>
