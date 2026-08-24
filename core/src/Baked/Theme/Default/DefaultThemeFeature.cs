@@ -67,11 +67,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 schema: (ra, c) =>
                 {
-                    if (ra.Method?.ToUpper() is null or "GET" && ra.Body is not null)
+                    var method = ra.Method?.ToUpperInvariant();
+                    if (method is null or "GET" or "DELETE" or "TRACE" && ra.Body is not null)
                     {
-                        throw DiagnosticCode.GetMethodWithBody.Exception(
-                            $"{c.Type.Name} has a Remote configuration using GET method with a body, which is not allowed." +
-                            $"Remove the body or use a method that supports a payload."
+                        var methodName = method ?? "GET";
+
+                        throw DiagnosticCode.MethodDoesNotSupportBody.Exception(
+                            $"{c.Type.Name}.{c.Method.Name}, {methodName} action with a body is not allowed. Remove the body or use a method that supports a payload."
                         );
                     }
                 },
