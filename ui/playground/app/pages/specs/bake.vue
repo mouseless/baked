@@ -100,37 +100,44 @@ const variants = [
   },
   {
     name: "Action",
-    descriptor: giveMe.aButton({
-      action: giveMe.aCompositeAction([
-        giveMe.aLocalAction({ showMessage: "Execute Action" }),
-        giveMe.aLocalAction({ delay: 300 }),
-        giveMe.aRemoteAction({
-          path: "/rich-transient-with-datas/{id}/method",
-          headers: giveMe.anInlineData({ "X-TEST": "test header" }),
-          query: giveMe.theQueryData(),
-          params: giveMe.anInlineData({ id: 12 }),
-          body: giveMe.anInlineData({ text: "text" }),
-          postAction: giveMe.aLocalAction({
-            composable: "useShowMessage",
-            options: giveMe.aContextData({ key: "response", targetProp: "message" })
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aButton({
+          action: giveMe.aCompositeAction([
+            giveMe.aLocalAction({ showMessage: "Execute Action" }),
+            giveMe.aLocalAction({ delay: 300 }),
+            giveMe.aRemoteAction({
+              path: "/rich-transient-with-datas/{id}/method",
+              headers: giveMe.anInlineData({ "X-TEST": "test header" }),
+              query: giveMe.theQueryData(),
+              params: giveMe.anInlineData({ id: 12 }),
+              body: giveMe.anInlineData({ text: "text" }),
+              postAction: giveMe.aLocalAction({
+                composable: "useShowMessage",
+                options: giveMe.aContextData({ key: "response", targetProp: "message" })
+              })
+            })
+          ]),
+          label: "Spec: Button",
+          icon: "pi pi-play-circle"
+        }),
+        giveMe.aButton({
+          action: giveMe.aRemoteAction({
+            path: "/rich-transient-with-datas/{id}",
+            nullMethod: true,
+            params: giveMe.anInlineData({ id: 12 }),
+            body: giveMe.anInlineData({ text: "text" })
+          }),
+          label: "Spec: GET Button",
+          icon: "pi pi-play-circle"
+        }),
+        giveMe.anExpectedInput({
+          testId: "ignore-on-empty",
+          action: giveMe.aRemoteAction({
+            ignoreOnEmpty: true
           })
         })
-      ]),
-      label: "Spec: Button",
-      icon: "pi pi-play-circle"
-    })
-  },
-  {
-    name: "Action Get",
-    descriptor: giveMe.aButton({
-      action: giveMe.aRemoteAction({
-        path: "/rich-transient-with-datas/{id}",
-        nullMethod: true,
-        params: giveMe.anInlineData({ id: 12 }),
-        body: giveMe.anInlineData({ text: "text" })
-      }),
-      label: "Spec: Button",
-      icon: "pi pi-play-circle"
+      ]
     })
   },
   {

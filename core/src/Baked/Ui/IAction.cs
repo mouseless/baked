@@ -3,6 +3,7 @@
 public interface IAction
 {
     string Type { get; }
+    bool? IgnoreOnEmpty { get; set; }
 
     public static IAction operator +(IAction? left, IAction right)
     {

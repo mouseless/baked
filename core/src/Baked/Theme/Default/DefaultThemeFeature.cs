@@ -63,6 +63,21 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: (c, cc) => EnumInline(c.Type, cc)
             );
 
+            // Remote Action
+            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                schema: (ra, c) =>
+                {
+                    if (ra.Method?.ToUpper() is null or "GET" && ra.Body is not null)
+                    {
+                        throw DiagnosticCode.GetMethodWithBody.Exception(
+                            $"{c.Type.Name} has a Remote configuration using GET method with a body, which is not allowed." +
+                            $"Remove the body or use a method that supports a payload."
+                        );
+                    }
+                },
+                order: Order.At.Global.Max
+            );
+
             // Property defaults
             conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,

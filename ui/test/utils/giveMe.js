@@ -752,10 +752,11 @@ export default {
     };
   },
 
-  aRemoteAction({ path, method, nullMethod, headers, query, params, body, postAction } = {}) {
+  aRemoteAction({ path, method, nullMethod, headers, query, params, body, ignoreOnEmpty, postAction } = {}) {
     path = $(path, "/fake-remote");
     method = $(method, "POST");
     nullMethod = $(nullMethod, false);
+    ignoreOnEmpty = $(ignoreOnEmpty, false);
 
     return {
       type: "Remote",
@@ -765,6 +766,7 @@ export default {
       query,
       params,
       body,
+      ignoreOnEmpty,
       postAction
     };
   },

@@ -4,6 +4,7 @@ public record RemoteAction(string Path, IAction PostAction)
     : IAction
 {
     public string Type => "Remote";
+    public bool? IgnoreOnEmpty { get; set; }
     public string Path { get; set; } = Path;
     public string Method { get; set; } = "Post";
     public IData? Headers { get; set; }

@@ -38,10 +38,19 @@ attribute is not in your codebase, it means you'll have to create a similar
 custom attribute with a proper target list and use this new attribute instead of
 the one you're trying to add/set.
 
+## `get-method-with-body`
+
+This error occurs when a `Remote` action configuration uses the `GET` method
+while also defining a `body`. Since `GET` requests must not carry a request
+payload, this combination is not allowed.
+
+To fix, either remove the `body` from the configuration or change the `method`
+to one that supports a payload (e.g., `POST`, `PUT`, `PATCH`).
+
 ## `invalid-order`
 
-This error occurs when an `Order` with  a null `Base`, `Level` or `Extension` 
-tries to calculate its value. Make sure your `Order` is built with all three 
+This error occurs when an `Order` with  a null `Base`, `Level` or `Extension`
+tries to calculate its value. Make sure your `Order` is built with all three
 parts.
 
 ## `invalid-state`
