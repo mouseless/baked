@@ -11,9 +11,18 @@ export default function() {
   };
 
   async function execute({ action, contextData, events }) {
+    if(action.ignoreOnEmpty && isEmpty(contextData.model)) { return; }
+
     const executer = actions[action?.type];
 
     await executer.execute({ action, contextData, events });
+  }
+
+  function isEmpty(value) {
+    if(value === null || value === undefined) { return true; }
+    if(typeof value === "string" && value.trim() === "") { return true; }
+
+    return false;
   }
 
   return {

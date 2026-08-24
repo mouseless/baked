@@ -3,6 +3,13 @@
 public record CompositeAction : IAction
 {
     public string Type => "Composite";
-    public bool? IgnoreOnEmpty { get; set; }
     public List<IAction> Parts { get; init; } = [];
+    public bool? IgnoreOnEmpty
+    {
+        get =>
+            Parts.Count > 0 && Parts.All(p => p.IgnoreOnEmpty == true)
+                ? true
+                : null;
+        set { }
+    }
 }
