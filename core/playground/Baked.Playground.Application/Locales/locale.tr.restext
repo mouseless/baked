@@ -208,6 +208,7 @@ GetItems=Parçalar
 GetItems.ExportFileName=parcalar-ciktisi
 GetLeft=Sol
 GetParents=Kayıtlar
+GetParentsRole=Role Kayıtları
 GetRight=Sağ
 GetScoped=Kullanıcı Kapsamı
 GetSecond=İkinci

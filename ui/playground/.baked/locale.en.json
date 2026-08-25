@@ -144,6 +144,8 @@
   "GetLeft": "Left",
   "GetParents": "Parents",
   "GetParents.ExportFileName": "GetParents.ExportFileName",
+  "GetParentsRole": "Parents Role",
+  "GetParentsRole.ExportFileName": "GetParentsRole.ExportFileName",
   "GetRight": "Right",
   "GetScoped": "Scoped",
   "GetSecond": "Second",

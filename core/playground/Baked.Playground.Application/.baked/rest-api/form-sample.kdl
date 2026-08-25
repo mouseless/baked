@@ -27,5 +27,20 @@ form-sample @controller-model {
       @parameter-model in="query"
     }
   }
+  get-parents-role {
+    @action-model route="GET /form-sample/parents-role" anonymous=#true
+    name {
+      @parameter-model in="query"
+    }
+    sort {
+      @parameter-model in="query"
+    }
+    take {
+      @parameter-model in="query"
+    }
+    skip {
+      @parameter-model in="query"
+    }
+  }
 }
 

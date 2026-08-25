@@ -14,8 +14,8 @@ namespace Baked.Ux.QueryActionAsDataContainer;
 public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
     : IFeature<UxConfigurator>
 {
-    static readonly string _lengthContextKey = "length-context-key";
-    static readonly string _takeContextKey = "take-context-key";
+    static readonly string _lengthContextKeySuffix = "length";
+    static readonly string _takeContextKeySuffix = "take";
 
     public void Configure(LayerConfigurator configurator)
     {
@@ -109,7 +109,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                     if (c.Method.DefaultOverload.Parameters.Any(p => p.TryGet<PagingAttribute>(out var paging) && paging.IsSkip))
                     {
                         dt.Schema.Paginator = default;
-                        dt.Schema.DataLengthContextKey = _lengthContextKey;
+                        dt.Schema.DataLengthContextKey = $"{c.Type.Name}:{c.Method.Name}:{_lengthContextKeySuffix}";
                     }
                 },
                 order: 10
@@ -121,15 +121,16 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 component: () => B.Paginator()
             );
             conventions.AddParameterComponentConfiguration<Paginator>(
-                component: p =>
+                component: (p, c) =>
                 {
+                    var prop = $"{c.Type.Name}:{c.Method.Name}:{_lengthContextKeySuffix}";
                     p.Data = Context.Page(o =>
                     {
-                        o.Prop = _lengthContextKey;
+                        o.Prop = prop;
                         o.TargetProp = "length";
                     });
 
-                    p.ReloadWhen(_lengthContextKey);
+                    p.ReloadWhen(prop);
                 }
             );
             // When there is no take parameter, set take to 10
@@ -142,12 +143,13 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 when: c => c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
                 component: (p, c) =>
                 {
+                    var prop = $"{c.Type.Name}:{c.Method.Name}:{_takeContextKeySuffix}";
                     p.Data += Context.Page(o =>
                     {
-                        o.Prop = _takeContextKey;
+                        o.Prop = prop;
                         o.TargetProp = "take";
                     });
-                    p.ReloadWhen(_takeContextKey);
+                    p.ReloadWhen(prop);
                 }
             );
 
@@ -168,11 +170,14 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             );
             conventions.AddParameterComponentConfiguration<Select>(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
-                component: s =>
+                component: (s, c) =>
                 {
                     s.Schema.ShowClear = null;
                     s.Schema.Stateful = true;
-                    s.Action = Publish.PageContextValue(_takeContextKey, o => o.Data = Context.Model());
+                    s.Action = Publish.PageContextValue(
+                        $"{c.Type.Name}:{c.Method.Name}:{_takeContextKeySuffix}",
+                        o => o.Data = Context.Model()
+                    );
                 },
                 order: 10
             );

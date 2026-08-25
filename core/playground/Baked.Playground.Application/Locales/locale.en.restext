@@ -170,6 +170,7 @@ GetItems=Items
 GetItems.ExportFileName=items-export
 GetLeft=Left
 GetParents=Parents
+GetParentsRole=Parents Role
 GetRight=Right
 GetScoped=Scoped
 GetSecond=Second

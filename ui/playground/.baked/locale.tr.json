@@ -144,6 +144,8 @@
   "GetLeft": "Sol",
   "GetParents": "Kayıtlar",
   "GetParents.ExportFileName": "GetParents.ExportFileName",
+  "GetParentsRole": "Role Kayıtları",
+  "GetParentsRole.ExportFileName": "GetParentsRole.ExportFileName",
   "GetRight": "Sağ",
   "GetScoped": "Kullanıcı Kapsamı",
   "GetSecond": "İkinci",

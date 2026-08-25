@@ -30,7 +30,12 @@ public class FormSampleDomainOverrideFeature : IFeature
             );
 
             conventions.SetMethodAttribute(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
+                when: c =>
+                    c.Type.Is<FormSample>() &&
+                    (
+                        c.Method.Name == nameof(FormSample.GetParents) ||
+                        c.Method.Name == nameof(FormSample.GetParentsRole)
+                    ),
                 attribute: () => new QueryMethodAttribute(),
                 order: Order.At.Infra
             );
