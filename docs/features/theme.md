@@ -7,8 +7,7 @@ application.
 This feature abstraction provides following extensions to
 `DomainModelConventionCollection`;
 
-- Executes before building index and `Order` is defaulted to
-  `Theme.Defaults.Add`
+- Executes after building index and `Order` is defaulted to `Theme.Defaults.Add`
   ```csharp
   conventions.AddTypeComponent(...);
   conventions.AddPropertyComponent(...);

@@ -48,7 +48,7 @@ export default function() {
   }
 
   function injectEvents() {
-    return inject("__bake_events");
+    return inject("__bake_events", null);
   }
 
   function provideEvents(value) {

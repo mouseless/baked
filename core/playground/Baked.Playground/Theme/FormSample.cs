@@ -46,4 +46,17 @@ public class FormSample(IStringLocalizer _l, Parents _parents, Func<Parent> _new
         asc: sort == Sort.Asc,
         desc: sort == Sort.Desc
     );
+
+    public List<NameRole> GetParentsRole(
+        string? name = default,
+        Sort? sort = default,
+        int? take = 10,
+        int? skip = 0
+    ) => [.. _parents.By(
+        name: name,
+        take: take,
+        skip: skip,
+        asc: sort == Sort.Asc,
+        desc: sort == Sort.Desc
+    ).Select(parent => new NameRole(parent.Name, parent.Role))];
 }

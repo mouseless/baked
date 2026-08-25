@@ -361,7 +361,7 @@ export default {
     };
   },
 
-  anExpectedInput({ action, defaultValue, hint, number, restrictedValue, testId } = {}) {
+  anExpectedInput({ action, defaultValue, hint, number, restrictedValue, testId, actionSkipsEmptyModel } = {}) {
     testId = $(testId, "test-id");
 
     return {
@@ -373,7 +373,8 @@ export default {
         restrictedValue,
         testId
       },
-      action
+      action,
+      actionSkipsEmptyModel
     };
   },
 
@@ -755,6 +756,7 @@ export default {
   aRemoteAction({ path, method, headers, query, params, body, postAction } = {}) {
     path = $(path, "/fake-remote");
     method = $(method, "POST");
+    postAction = $(postAction, this.aLocalAction());
 
     return {
       type: "Remote",

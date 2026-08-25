@@ -17,6 +17,10 @@
         },
         {
           "method": "GET",
+          "path": "form-sample/parents-role"
+        },
+        {
+          "method": "GET",
           "path": "route-parameters-samples/{id}"
         },
         {

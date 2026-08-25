@@ -20,7 +20,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
 */
 
 import { isRef, unref } from "vue";
@@ -29,7 +28,7 @@ const isObject = val => val !== null && typeof val === "object";
 const isArray = Array.isArray;
 
 /**
- * Deeply unref a value, recursing into objects and arrays.
+ * Deeply unref a value, recursing into objects, plain object and arrays.
  *
  * @param {Mixed} val - The value to deeply unref.
  *
@@ -38,7 +37,7 @@ const isArray = Array.isArray;
 const deepUnref = val => {
   const checkedVal = isRef(val) ? unref(val) : val;
 
-  if(! isObject(checkedVal)) {
+  if(!isObject(checkedVal)) {
     return checkedVal;
   }
 
@@ -46,7 +45,24 @@ const deepUnref = val => {
     return unrefArray(checkedVal);
   }
 
+  if(!isPlainObject(checkedVal)) {
+    return checkedVal;
+  }
+
   return unrefObject(checkedVal);
+};
+
+/**
+ * Is this value a plain object?
+ *
+ * @param {Object} val - The object to check.
+ *
+ * @return {Boolean}
+ */
+const isPlainObject = val => {
+  const proto = Object.getPrototypeOf(val);
+
+  return proto === Object.prototype || proto === null;
 };
 
 /**
@@ -58,7 +74,7 @@ const deepUnref = val => {
  */
 const smartUnref = val => {
   // Non-ref object?  Go deeper!
-  if(val !== null && ! isRef(val) && typeof val === "object") {
+  if(val !== null && !isRef(val) && typeof val === "object") {
     return deepUnref(val);
   }
 

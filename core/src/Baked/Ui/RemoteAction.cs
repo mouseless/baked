@@ -5,7 +5,7 @@ public record RemoteAction(string Path, IAction PostAction)
 {
     public string Type => "Remote";
     public string Path { get; set; } = Path;
-    public string Method { get; set; } = "Post";
+    public string Method { get; set => field = value.ToUpperInvariant(); } = "POST";
     public IData? Headers { get; set; }
     public IData? Query { get; set; }
     public IData? Params { get; set; }

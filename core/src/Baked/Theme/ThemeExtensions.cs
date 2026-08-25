@@ -35,6 +35,7 @@ public static class ThemeExtensions
         public static DiagnosticCode MethodRequired => new(105, "method-required");
         public static DiagnosticCode MissingItem => new(106, "missing-item");
         public static DiagnosticCode InvalidState => new(107, "invalid-state");
+        public static DiagnosticCode MethodDoesNotSupportBody => new(108, "method-does-not-support-body");
     }
 
     extension<T>(Action<T>? action)

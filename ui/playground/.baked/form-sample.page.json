@@ -141,7 +141,7 @@
                       },
                       "action": {
                         "type": "Publish",
-                        "pageContextKey": "take-context-key",
+                        "pageContextKey": "FormSample:GetParents:take",
                         "data": {
                           "type": "Context",
                           "key": "model"
@@ -166,13 +166,13 @@
                           {
                             "type": "Context",
                             "key": "page",
-                            "prop": "length-context-key",
+                            "prop": "FormSample:GetParents:length",
                             "targetProp": "length"
                           },
                           {
                             "type": "Context",
                             "key": "page",
-                            "prop": "take-context-key",
+                            "prop": "FormSample:GetParents:take",
                             "targetProp": "take"
                           }
                         ]
@@ -183,11 +183,11 @@
                           "parts": [
                             {
                               "type": "When",
-                              "when": "length-context-key"
+                              "when": "FormSample:GetParents:length"
                             },
                             {
                               "type": "When",
-                              "when": "take-context-key"
+                              "when": "FormSample:GetParents:take"
                             }
                           ]
                         }
@@ -450,7 +450,7 @@
                       "exportable": false,
                       "frozen": true
                     },
-                    "dataLengthContextKey": "length-context-key"
+                    "dataLengthContextKey": "FormSample:GetParents:length"
                   },
                   "data": {
                     "type": "Remote",
@@ -502,6 +502,222 @@
           }
         },
         "key": "get-parents"
+      },
+      {
+        "component": {
+          "type": "DataPanel",
+          "schema": {
+            "title": {
+              "type": "Inline",
+              "value": "GetParentsRole"
+            },
+            "localizeTitle": true,
+            "inputs": [
+              {
+                "name": "name",
+                "component": {
+                  "type": "InputText",
+                  "schema": {
+                    "label": {
+                      "text": "Name",
+                      "mode": "float",
+                      "variant": "on"
+                    }
+                  }
+                }
+              }
+            ],
+            "content": {
+              "type": "DataContainer",
+              "schema": {
+                "inputs": [
+                  {
+                    "name": "sort",
+                    "component": {
+                      "type": "SelectButton",
+                      "schema": {
+                        "allowEmpty": true,
+                        "localizeOptionLabels": true,
+                        "optionLabel": "label",
+                        "optionValue": "value"
+                      },
+                      "data": {
+                        "type": "Inline",
+                        "value": [
+                          {
+                            "label": "Sort.Asc",
+                            "value": "asc"
+                          },
+                          {
+                            "label": "Sort.Desc",
+                            "value": "desc"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "name": "take",
+                    "required": true,
+                    "default": {
+                      "type": "Inline",
+                      "value": 10
+                    },
+                    "numeric": true,
+                    "component": {
+                      "type": "PageSize",
+                      "schema": {
+                        "localizeOptionLabels": false,
+                        "stateful": true
+                      },
+                      "data": {
+                        "type": "Inline",
+                        "value": [
+                          10,
+                          20,
+                          50,
+                          100
+                        ]
+                      },
+                      "action": {
+                        "type": "Publish",
+                        "pageContextKey": "FormSample:GetParentsRole:take",
+                        "data": {
+                          "type": "Context",
+                          "key": "model"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "name": "skip",
+                    "required": true,
+                    "default": {
+                      "type": "Inline",
+                      "value": 0
+                    },
+                    "numeric": true,
+                    "component": {
+                      "type": "Paginator",
+                      "schema": {},
+                      "data": {
+                        "type": "Composite",
+                        "parts": [
+                          {
+                            "type": "Context",
+                            "key": "page",
+                            "prop": "FormSample:GetParentsRole:length",
+                            "targetProp": "length"
+                          },
+                          {
+                            "type": "Context",
+                            "key": "page",
+                            "prop": "FormSample:GetParentsRole:take",
+                            "targetProp": "take"
+                          }
+                        ]
+                      },
+                      "reactions": {
+                        "reload": {
+                          "type": "Composite",
+                          "parts": [
+                            {
+                              "type": "When",
+                              "when": "FormSample:GetParentsRole:length"
+                            },
+                            {
+                              "type": "When",
+                              "when": "FormSample:GetParentsRole:take"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ],
+                "content": {
+                  "type": "DataTable",
+                  "schema": {
+                    "columns": [
+                      {
+                        "key": "name",
+                        "component": {
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.name"
+                          }
+                        },
+                        "title": "Name",
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
+                      },
+                      {
+                        "key": "role",
+                        "component": {
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.role"
+                          }
+                        },
+                        "title": "Role",
+                        "exportable": true
+                      }
+                    ],
+                    "dataKey": "name",
+                    "rows": 5,
+                    "exportOptions": {
+                      "csvSeparator": ";",
+                      "fileName": "GetParentsRole.ExportFileName",
+                      "formatter": "useCsvFormatter",
+                      "buttonLabel": "Export as CSV",
+                      "appendParameters": true,
+                      "parameterSeparator": "_",
+                      "parameterFormatter": "useLocaleParameterFormatter"
+                    },
+                    "dataLengthContextKey": "FormSample:GetParentsRole:length"
+                  },
+                  "data": {
+                    "type": "Remote",
+                    "path": "form-sample/parents-role",
+                    "query": {
+                      "type": "Composite",
+                      "parts": [
+                        {
+                          "type": "Computed",
+                          "composable": "useNuxtRoute",
+                          "options": {
+                            "type": "Inline",
+                            "value": {
+                              "property": "query"
+                            }
+                          }
+                        },
+                        {
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "parameters"
+                        },
+                        {
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "container-parameters"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "key": "get-parents-role"
       }
     ],
     "path": "form-sample"

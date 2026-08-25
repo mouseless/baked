@@ -177,6 +177,7 @@ async function load() {
 
 async function executeAction(newModel) {
   if(!descriptor.action) { return; }
+  if(descriptor.actionSkipsEmptyModel && isEmpty(newModel)) { return; }
 
   try {
     executing.value = true;
@@ -192,5 +193,13 @@ async function executeAction(newModel) {
   } finally {
     executing.value = false;
   }
+}
+
+function isEmpty(value) {
+  if(value === null || value === undefined) { return true; }
+  if(typeof value === "string" && value.trim() === "") { return true; }
+  if(Array.isArray(value) && value.length === 0) { return true; }
+
+  return false;
 }
 </script>

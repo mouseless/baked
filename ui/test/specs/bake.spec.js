@@ -193,7 +193,7 @@ test.describe("Model", () => {
   });
 });
 
-test.describe("Action", () =>{
+test.describe("Action", () => {
   const id = "Action";
 
   test("execute given composite action", async({ goto, page }) => {
@@ -202,7 +202,7 @@ test.describe("Action", () =>{
     await goto("/specs/bake?val=2", { waitUntil: "load" });
 
     const component = page.getByTestId(id);
-    const button = component.locator(primevue.button.base);
+    const button = component.locator(primevue.button.base).nth(0);
 
     await button.click();
 
@@ -221,12 +221,34 @@ test.describe("Action", () =>{
 
   test("execute given remote post action using response", async({ page }) => {
     const component = page.getByTestId(id);
-    const button = component.locator(primevue.button.base);
+    const button = component.locator(primevue.button.base).nth(0);
 
     await button.click();
 
     await expect(page.locator(primevue.toast.base).last()).toBeVisible();
     await expect(page.locator(primevue.toast.summary).last()).toHaveText("fake-response");
+  });
+
+  test("remote does not send a request body if no method is specified", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base).nth(1);
+    const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
+
+    await button.click();
+
+    const request = await requestPromise;
+    expect(request.method()).toBe("GET");
+    expect(request.postData()).toBeNull();
+  });
+
+  test("action skips empty model", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("skip-on-empty");
+    const requestPromise = page.waitForRequest(req => req.url().includes("/fake-remote"), { timeout: 200 });
+
+    await input.fill(" ");
+
+    await expect(requestPromise).rejects.toThrow();
   });
 });
 

@@ -26,21 +26,14 @@
 <script setup>
 import { onMounted, watch } from "vue";
 import { InputNumber, InputText } from "primevue";
-import { useValidation } from "#imports";
 import { Validation } from "#components";
-
-const validation = useValidation();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const model = defineModel({ type: null, required: true });
 
-const { testId, defaultValue, number, restrictedValue, hint } = schema;
-
-const mutableValidation = validation.injectMutable();
-
-clearError();
+const { testId, defaultValue, number, hint } = schema;
 
 watch(model, newValue => {
   if(newValue === "" && !defaultValue) {
@@ -51,12 +44,6 @@ watch(model, newValue => {
 
   if(newValue === null || newValue === undefined) {
     model.value = newValue = defaultValue;
-  }
-
-  if(restrictedValue && newValue === restrictedValue) {
-    showError();
-  } else {
-    clearError();
   }
 });
 
@@ -70,15 +57,4 @@ function onInput(event) {
   model.value = event.value;
 }
 
-function showError() {
-  mutableValidation?.setError(`${restrictedValue} is restricted`);
-}
-
-function clearError() {
-  if(hint) {
-    mutableValidation?.setMessage(hint, { severity: "secondary", icon: "pi pi-lightbulb" });
-  } else {
-    mutableValidation?.clear();
-  }
-}
 </script>

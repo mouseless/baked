@@ -1,5 +1,5 @@
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from "#imports";
+import { useComposableResolver, useContext, useDataFetcher, usePathBuilder, useUnref, useValidation } from "#imports";
 import { bfetch } from "../utils/bfetch";
 
 export default function() {
@@ -36,9 +36,14 @@ function Composite({ actionExecuter }) {
 function Local() {
   const composableResolver = useComposableResolver();
   const dataFetcher = useDataFetcher();
+  const validation = useValidation();
+  const context = useContext();
+
+  const mutableValidation = validation.injectMutable();
+  const events = context.injectEvents();
 
   async function execute({ action, contextData }) {
-    const composable = composableResolver.resolve(action.composable).default();
+    const composable = composableResolver.resolve(action.composable).default({ mutableValidation, events });
 
     if(composable.run) {
       const options = action.options ? await dataFetcher.fetch({ data: action.options, contextData }) : { };
