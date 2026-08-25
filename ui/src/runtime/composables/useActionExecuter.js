@@ -1,5 +1,5 @@
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from "#imports";
+import { useComposableResolver, useContext, useDataFetcher, usePathBuilder, useUnref, useValidation } from "#imports";
 import { bfetch } from "../utils/bfetch";
 
 export default function() {
@@ -11,18 +11,9 @@ export default function() {
   };
 
   async function execute({ action, contextData, events }) {
-    if(action.ignoreOnEmpty && isEmpty(contextData.model)) { return; }
-
     const executer = actions[action?.type];
 
     await executer.execute({ action, contextData, events });
-  }
-
-  function isEmpty(value) {
-    if(value === null || value === undefined) { return true; }
-    if(typeof value === "string" && value.trim() === "") { return true; }
-
-    return false;
   }
 
   return {
@@ -45,9 +36,14 @@ function Composite({ actionExecuter }) {
 function Local() {
   const composableResolver = useComposableResolver();
   const dataFetcher = useDataFetcher();
+  const validation = useValidation();
+  const context = useContext();
+
+  const mutable = validation.injectMutable();
+  const events = context.injectEvents();
 
   async function execute({ action, contextData }) {
-    const composable = composableResolver.resolve(action.composable).default();
+    const composable = composableResolver.resolve(action.composable).default({ mutable, events });
 
     if(composable.run) {
       const options = action.options ? await dataFetcher.fetch({ data: action.options, contextData }) : { };
@@ -90,17 +86,16 @@ function Remote({ actionExecuter }) {
   const unref = useUnref();
 
   async function execute({ action, contextData, events }) {
-    const method = (action.method ?? "GET").toUpperCase();
     const headers = action.headers ? unref.deepUnref(await dataFetcher.fetch({ data: action.headers, contextData })) : { };
     const query = action.query ? unref.deepUnref(await dataFetcher.fetch({ data: action.query, contextData })) : null;
     const params = action.params ? unref.deepUnref(await dataFetcher.fetch({ data: action.params, contextData })) : { };
-    const body = method === "GET"
+    const body = action.method === "GET"
       ? null
       : (action.body ? unref.deepUnref(await dataFetcher.fetch({ data: action.body, contextData })) : { });
 
     const response = await bfetch(pathBuilder.build(action.path, params), {
       baseURL: apiBaseURL,
-      method: method,
+      method: action.method,
       headers: headers,
       query: query,
       body: body

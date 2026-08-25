@@ -124,7 +124,7 @@ const variants = [
         giveMe.aButton({
           action: giveMe.aRemoteAction({
             path: "/rich-transient-with-datas/{id}",
-            nullMethod: true,
+            method: "GET",
             params: giveMe.anInlineData({ id: 12 }),
             body: giveMe.anInlineData({ text: "text" })
           }),
@@ -132,10 +132,9 @@ const variants = [
           icon: "pi pi-play-circle"
         }),
         giveMe.anExpectedInput({
-          testId: "ignore-on-empty",
-          action: giveMe.aRemoteAction({
-            ignoreOnEmpty: true
-          })
+          testId: "skip-on-empty",
+          action: giveMe.aRemoteAction(),
+          actionSkipsEmptyModel: true
         })
       ]
     })

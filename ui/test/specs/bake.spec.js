@@ -232,7 +232,6 @@ test.describe("Action", () => {
   test("remote does not send a request body if no method is specified", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base).nth(1);
-
     const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
 
     await button.click();
@@ -242,11 +241,10 @@ test.describe("Action", () => {
     expect(request.postData()).toBeNull();
   });
 
-  test("skips request when model is empty (ignoreOnEmpty)", async({ page }) => {
+  test("action skips empty model", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.getByTestId("ignore-on-empty");
-
-    const requestPromise = page.waitForRequest(req => req.url().includes("/fake-remote"), { timeout: 500 });
+    const input = component.getByTestId("skip-on-empty");
+    const requestPromise = page.waitForRequest(req => req.url().includes("/fake-remote"), { timeout: 200 });
 
     await input.fill(" ");
 

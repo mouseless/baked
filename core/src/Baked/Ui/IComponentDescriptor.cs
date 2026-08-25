@@ -8,6 +8,7 @@ public interface IComponentDescriptor : ISupportsReaction
     IComponentSchema Schema { get; }
     IData? Data { get; set; }
     public IAction? Action { get; set; }
+    public bool? ActionSkipsEmptyModel { get; set; }
 
     public static IComponentDescriptor operator +(IComponentDescriptor? left, IComponentDescriptor right)
     {

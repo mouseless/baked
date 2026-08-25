@@ -7,6 +7,7 @@ public class ComponentDescriptor<TSchema>(TSchema schema)
     public TSchema Schema { get; set; } = schema;
     public IData? Data { get; set; }
     public IAction? Action { get; set; }
+    public bool? ActionSkipsEmptyModel { get; set; }
     public Dictionary<string, ITrigger>? Reactions { get; set; }
 
     public void Override<TNewSchema>(ComponentDescriptor<TNewSchema> component)
