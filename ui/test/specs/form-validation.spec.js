@@ -99,6 +99,9 @@ test.describe("Mutable", () => {
 
   test("shows hint below component using mutable validation", async({ page }) => {
     const component = page.getByTestId(id);
+    const input1 = component.getByTestId("input-1");
+
+    await input1.fill(" ");
 
     await expect(component.locator(".b-Validation.b--input-1 .b-message")).toHaveText("Type 'error' to see error message");
   });

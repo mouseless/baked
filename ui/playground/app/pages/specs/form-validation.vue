@@ -48,8 +48,16 @@ const variants = [
           name: "input-1",
           component: giveMe.anExpectedInput({
             testId: "input-1",
-            restrictedValue: "error",
-            hint: "Type 'error' to see error message"
+            action: giveMe.aLocalAction({
+              composable: "useRestriction",
+              options: giveMe.aCompositeData([
+                giveMe.aContextData({ key: "model", targetProp: "newValue" }),
+                giveMe.anInlineData({
+                  restrictedValue: "error",
+                  hint: "Type 'error' to see error message"
+                })
+              ])
+            })
           })
         }),
         giveMe.anInput({

@@ -39,11 +39,11 @@ function Local() {
   const validation = useValidation();
   const context = useContext();
 
-  const mutable = validation.injectMutable();
+  const mutableValidation = validation.injectMutable();
   const events = context.injectEvents();
 
   async function execute({ action, contextData }) {
-    const composable = composableResolver.resolve(action.composable).default({ mutable, events });
+    const composable = composableResolver.resolve(action.composable).default({ mutableValidation, events });
 
     if(composable.run) {
       const options = action.options ? await dataFetcher.fetch({ data: action.options, contextData }) : { };
