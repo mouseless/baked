@@ -1,0 +1,1 @@
+import{B as e,I as t,m as n}from"./CwZma8f3.js";import{t as r}from"./BDNMzG2s.js";var i={},a={class:`text-xl`};function o(r,i){return t(),n(`div`,a,[e(r.$slots,`default`)])}var s=Object.assign(r(i,[[`render`,o]]),{__name:`Banner`});export{s as default};

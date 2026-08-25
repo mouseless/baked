@@ -1,0 +1,1 @@
+import{o as e}from"#entry";var t=e(`pageStore`,{state:()=>({pages:{}}),actions:{setPages(e){this.pages=e}}});export{t};

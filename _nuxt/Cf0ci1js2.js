@@ -1,1 +1,0 @@
-import{n as e}from"./BrCL1FNy.js";var t=e(`pageStore`,{state:()=>({pages:{}}),actions:{setPages(e){this.pages=e}}});export{t};
