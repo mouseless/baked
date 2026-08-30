@@ -30,5 +30,9 @@
     "mermaid": "11.16.1",
     "@tailwindcss/vite": "4.3.3",
     "tailwindcss": "4.3.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "unrs-resolver@1.12.2": true
   }
 }
