@@ -4,13 +4,13 @@
   "type": "module",
   "scripts": {
     "lint": "eslint .",
-    "setup": "npm run lint && cross-env-shell node -r dotenv/config prebuild dotenv_config_path=.env.$npm_config_env",
-    "predev": "npm run setup --env=local",
+    "setup": "npm run lint && node -r dotenv/config prebuild dotenv_config_path=.env.$APP_ENV",
+    "predev": "APP_ENV=local npm run setup",
     "dev": "nuxi dev --dotenv .env.local",
-    "pregenerate": "cross-env-shell npm run setup --env=$npm_config_env",
-    "generate": "cross-env-shell nuxi generate --dotenv .env.$npm_config_env",
-    "generate:local": "npm run generate --env=local",
-    "generate:production": "npm run generate --env=production",
+    "pregenerate": "npm run setup",
+    "generate": "nuxi generate --dotenv .env.$APP_ENV",
+    "generate:local": "APP_ENV=local npm run generate",
+    "generate:production": "APP_ENV=production npm run generate",
     "postinstall": "nuxi prepare",
     "prelocal": "npm run generate:local",
     "local": "npx http-server .output/public -p 3000"
@@ -20,7 +20,6 @@
     "@nuxt/content": "3.15.2",
     "@nuxt/eslint": "1.17.0",
     "@pinia/nuxt": "0.11.3",
-    "cross-env": "10.1.0",
     "log-symbols": "7.0.1",
     "nuxt": "4.5.2",
     "webpack": "5.109.2",
@@ -30,5 +29,9 @@
     "mermaid": "11.16.1",
     "@tailwindcss/vite": "4.3.3",
     "tailwindcss": "4.3.3"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "unrs-resolver@1.12.2": true
   }
 }

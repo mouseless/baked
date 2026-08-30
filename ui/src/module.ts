@@ -15,10 +15,21 @@ export interface ModuleOptions {
 
 export interface Components {
   Page?: PageOptions,
+  NavLink?: NavLinkOptions
 }
 
 export interface PageOptions {
   title?: String
+}
+
+export interface NavLinkOptions {
+  timeouts?: {
+    show?: {
+      initial?: number,
+      consequent?: number
+    },
+    hide?: number
+  }
 }
 
 export interface PrimeVueOptions {

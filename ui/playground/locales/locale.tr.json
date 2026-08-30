@@ -1,5 +1,8 @@
 {
   "// package keys": "//",
+  "DataContainer": {
+    "Select required values to view this data": "Bu veriyi görüntülemek için gerekli seçimleri yapın"
+  },
   "DataPanel": {
     "Select required values to view this data": "Bu veriyi görüntülemek için gerekli seçimleri yapın"
   },

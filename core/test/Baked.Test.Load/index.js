@@ -14,10 +14,17 @@ app.use(
   })
 );
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-
 app.get("/random-names", (_, res, __) => {
   res.json(["John", "Michael", "James", "Rick", "Steven", "Adam", "Mike", "Daniel"]);
 });
+
+const server = app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+for (const sig of ["SIGTERM", "SIGINT"]) {
+  process.on(sig, () => {
+    server.close(() => process.exit(0));
+    server.closeAllConnections();
+  });
+}

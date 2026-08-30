@@ -1,6 +1,6 @@
 {
   "name": "@mouseless/baked",
-  "version": "1.8.5",
+  "version": "1.8.6",
   "description": "Baked is an opinionated framework for .NET and Vue. This is the UI package of Baked project.",
   "keywords": [
     "baked",
@@ -71,5 +71,13 @@
     "@oxc-parser/binding-linux-x64-gnu": "0.141.0",
     "@oxc-parser/binding-linux-x64-musl": "0.141.0",
     "@oxc-parser/binding-win32-x64-msvc": "0.141.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true,
+    "unrs-resolver@1.12.2": true
+  },
+  "overrides": {
+    "vue-sfc-transformer": "0.2.5"
   }
 }

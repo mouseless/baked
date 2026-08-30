@@ -27,11 +27,10 @@ const data = computed(() => {
 
   return rawData;
 });
-const lengthIsExceeded = computed(() => maxLength && data.value.length > maxLength);
-const text = computed(() => lengthIsExceeded.value ? truncate(data.value, maxLength) : data.value);
+const text = computed(() => truncate(data.value, maxLength));
 const tooltip = computed(() => ({
   value: `${data.value}`,
-  disabled: !lengthIsExceeded.value,
+  disabled: text.value === data.value,
   pt: {
     root: {
       style: maxLength ? `min-width: ${maxLength / 2}rem;` : ""
