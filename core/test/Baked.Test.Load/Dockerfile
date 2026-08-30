@@ -8,4 +8,4 @@ RUN npm install
 
 COPY core/test/Baked.Test.Load .
 
-CMD ["node", "index.js"]
+ENTRYPOINT ["node", "index.js"]

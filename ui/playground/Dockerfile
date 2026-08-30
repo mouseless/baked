@@ -51,6 +51,3 @@ COPY ui/playground/nginx.conf /etc/nginx/nginx.conf
 
 # copy spa output to nginx public folder
 COPY --from=generate ui/playground/.output/public /www/public
-
-# run nginx
-CMD nginx -g "daemon off;"
