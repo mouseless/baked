@@ -9,7 +9,7 @@
     "express": "5.2.1"
   },
   "devDependencies": {
-    "artillery": "2.0.33"
+    "artillery": "2.0.34"
   },
   "allowScripts": {
     "@playwright/browser-chromium@1.61.0": true,
