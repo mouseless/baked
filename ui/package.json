@@ -61,7 +61,7 @@
     "@types/node": "26.1.1",
     "changelogen": "0.6.2",
     "nuxt": "4.5.2",
-    "vitest": "4.1.11",
+    "vitest": "5.0.0",
     "vue-tsc": "3.3.7"
   },
   "optionalDependencies": {
