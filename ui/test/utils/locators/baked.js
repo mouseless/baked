@@ -11,6 +11,9 @@ export default {
     statusCode: ".p-tag",
     footer: ".p-message-content"
   },
+  inputUrl: {
+    base: ".b-component--InputUrl"
+  },
   message: {
     base: ".b-message",
     body: ".b-message-body",
