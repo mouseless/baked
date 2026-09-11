@@ -129,6 +129,10 @@ public static class Components
         Action<InputNumber>? options = default
     ) => new(options.Apply(new()));
 
+    public static ComponentDescriptor<InputUrl> InputUrl(
+        Action<InputUrl>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<LanguageSwitcher> LanguageSwitcher(
         Action<LanguageSwitcher>? options = default
     ) => new(options.Apply(new()));
