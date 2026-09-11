@@ -563,6 +563,19 @@ export default {
     };
   },
 
+  anInputUrl({ label } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputUrl",
+      schema: {
+        label
+      }
+    };
+  },
+
   aLabel({ text, mode, variant, showOptionality } = {}) {
     text = $(text, mode !== null ? "Spec: Test Label" : null);
     mode = $(mode, text ? "float" : null);

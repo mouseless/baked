@@ -57,6 +57,8 @@
   "/specs/input-number:Title": "Sayı Girişi",
   "/specs/input-text:Description": "Düz metin girişine izin verir",
   "/specs/input-text:Title": "Metin Girişi",
+  "/specs/input-url:Description": "Url girişine izin verir",
+  "/specs/input-url:Title": "Url Girişi",
   "/specs/inputs--form-mode:Description": "Kullanıcı girdilerini form modunda yönetir",
   "/specs/inputs--form-mode:Title": "Girdiler - Form Modu",
   "/specs/inputs--optional:Description": "İsteğe bağlı girdileri yönetir",
