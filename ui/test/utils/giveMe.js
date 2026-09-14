@@ -563,6 +563,20 @@ export default {
     };
   },
 
+  anInputCheckbox({ label, indeterminate } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputCheckbox",
+      schema: {
+        label,
+        indeterminate
+      }
+    };
+  },
+
   anInputTextArea({ label } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })

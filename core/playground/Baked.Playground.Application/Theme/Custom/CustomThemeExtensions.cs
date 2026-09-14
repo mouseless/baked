@@ -59,8 +59,9 @@ public static class CustomThemeExtensions
 
                 // Input
                 r => r.Child("/specs/button", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
-                r => r.Child("/specs/input-text", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
+                r => r.Child("/specs/input-checkbox", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/input-number", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
+                r => r.Child("/specs/input-text", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/input-textarea", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/input-url", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/labeler", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },

@@ -121,6 +121,10 @@ public static class Components
         Action<Input>? options = default
     ) => options.Apply(new(name, component));
 
+    public static ComponentDescriptor<InputCheckbox> InputCheckbox(
+        Action<InputCheckbox>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<InputNumber> InputNumber(
         Action<InputNumber>? options = default
     ) => new(options.Apply(new()));

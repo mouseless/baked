@@ -385,14 +385,14 @@
             }
           },
           {
-            "title": "/specs/input-text:Title",
+            "title": "/specs/input-checkbox:Title",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/input-text",
+                "route": "/specs/input-checkbox",
                 "icon": "pi pi-microchip",
-                "title": "/specs/input-text:Title",
-                "description": "/specs/input-text:Description"
+                "title": "/specs/input-checkbox:Title",
+                "description": "/specs/input-checkbox:Description"
               }
             }
           },
@@ -405,6 +405,18 @@
                 "icon": "pi pi-microchip",
                 "title": "/specs/input-number:Title",
                 "description": "/specs/input-number:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/input-text:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-text",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-text:Title",
+                "description": "/specs/input-text:Description"
               }
             }
           },

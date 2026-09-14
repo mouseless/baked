@@ -251,16 +251,22 @@
             "title": "/specs/button:Title",
             "parentRoute": "/specs"
           },
-          "/specs/input-text": {
-            "route": "/specs/input-text",
+          "/specs/input-checkbox": {
+            "route": "/specs/input-checkbox",
             "icon": "pi pi-microchip",
-            "title": "/specs/input-text:Title",
+            "title": "/specs/input-checkbox:Title",
             "parentRoute": "/specs"
           },
           "/specs/input-number": {
             "route": "/specs/input-number",
             "icon": "pi pi-microchip",
             "title": "/specs/input-number:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/input-text": {
+            "route": "/specs/input-text",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-text:Title",
             "parentRoute": "/specs"
           },
           "/specs/input-textarea": {

@@ -118,6 +118,23 @@
     }
   }
 
+  /* INPUT CHECKBOX */
+  .b-component--FormPage {
+    .grid .flex:has(.b-component--InputCheckbox):not(.b-input-group) {
+      @apply self-center;
+    }
+  }
+
+  .b-component--InputCheckbox {
+    .p-iftalabel {
+      @apply cursor-auto;
+    }
+
+    .p-checkbox-lg+label {
+      @apply text-sm -mt-1.5 ml-2 relative top-0 left-0 pointer-events-auto select-none cursor-pointer self-center;
+    }
+  }
+
   /* LABELER */
   .p-iftalabel {
     &:has(.p-selectbutton) {

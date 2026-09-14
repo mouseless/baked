@@ -11,6 +11,9 @@ export default {
     icon: ".p-breadcrumb-item-icon",
     label: ".p-breadcrumb-item-label"
   },
+  checkbox: {
+    base: ".p-checkbox"
+  },
   datatable: {
     container: ".p-datatable-table-container",
     header: ".p-datatable-header",

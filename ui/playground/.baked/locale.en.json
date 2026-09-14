@@ -53,6 +53,8 @@
   "/specs/header:Title": "Header",
   "/specs/icon:Description": "Displays built-in icons",
   "/specs/icon:Title": "Icon",
+  "/specs/input-checkbox:Description": "Allows checkbox input",
+  "/specs/input-checkbox:Title": "Input Checkbox",
   "/specs/input-number:Description": "Allows number input",
   "/specs/input-number:Title": "Input Number",
   "/specs/input-text:Description": "Allows regular text input",
