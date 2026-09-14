@@ -41,6 +41,9 @@ export default {
   inputText: {
     base: ".p-inputtext"
   },
+  inputTextArea: {
+    base: ".p-textarea"
+  },
   message: {
     base: ".p-message",
     icon: ".pi",

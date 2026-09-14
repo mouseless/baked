@@ -263,6 +263,12 @@
             "title": "/specs/input-number:Title",
             "parentRoute": "/specs"
           },
+          "/specs/input-textarea": {
+            "route": "/specs/input-textarea",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-textarea:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/input-url": {
             "route": "/specs/input-url",
             "icon": "pi pi-microchip",

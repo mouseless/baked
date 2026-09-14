@@ -563,6 +563,19 @@ export default {
     };
   },
 
+  anInputTextArea({ label } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputTextArea",
+      schema: {
+        label
+      }
+    };
+  },
+
   anInputUrl({ label } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })

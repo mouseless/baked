@@ -121,12 +121,16 @@ public static class Components
         Action<Input>? options = default
     ) => options.Apply(new(name, component));
 
+    public static ComponentDescriptor<InputNumber> InputNumber(
+        Action<InputNumber>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<InputText> InputText(
         Action<InputText>? options = default
     ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<InputNumber> InputNumber(
-        Action<InputNumber>? options = default
+    public static ComponentDescriptor<InputTextArea> InputTextArea(
+        Action<InputTextArea>? options = default
     ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<InputUrl> InputUrl(
