@@ -109,6 +109,8 @@
   "/specs/simple-page:Title": "Sade Sayfa",
   "/specs/tabbed-page:Description": "Daha karmaşık sayfaları başlık kısmında kullanıcı girdileri ve sekmeli panel ile görselleştirir",
   "/specs/tabbed-page:Title": "Sekmeli Sayfa",
+  "/specs/text-link:Description": "Url değerlerini link olarak gösterir",
+  "/specs/text-link:Title": "Link",
   "/specs/text:Description": "Metin değerlerini gösterir",
   "/specs/text:Title": "Metin",
   "/specs/toast:Description": "Uyarı mesajlarını gösterir",

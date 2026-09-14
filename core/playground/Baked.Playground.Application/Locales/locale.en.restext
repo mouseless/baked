@@ -153,6 +153,8 @@ This should not exist in output locale files=This should not exist in output loc
 /specs/tabbed-page:Description=Renders more complicated pages with input in title and tab panel support
 /specs/text:Title=Text
 /specs/text:Description=Renders string values
+/specs/text-link:Title=Link
+/specs/text-link:Description=Shows url value as a link
 /specs/toast:Title=Toast
 /specs/toast:Description=Renders alert messages
 

@@ -159,6 +159,8 @@ This should not exist in output locale files=Bunun locale çıktılarında bulun
 /specs/tabbed-page:Description=Daha karmaşık sayfaları başlık kısmında kullanıcı girdileri ve sekmeli panel ile görselleştirir
 /specs/text:Title=Metin
 /specs/text:Description=Metin değerlerini gösterir
+/specs/text-link:Title=Link
+/specs/text-link:Description=Url değerlerini link olarak gösterir
 /specs/toast:Title=Uyarı
 /specs/toast:Description=Uyarı mesajlarını gösterir
 

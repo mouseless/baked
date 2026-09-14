@@ -257,4 +257,9 @@ public static class Components
         Action<Text>? options = default,
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
+
+    public static ComponentDescriptor<TextLink> TextLink(
+        Action<TextLink>? options = default,
+        IData? data = default
+    ) => new(options.Apply(new())) { Data = data };
 }

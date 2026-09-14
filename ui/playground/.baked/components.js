@@ -41,7 +41,8 @@ import {
 	SimpleForm,
 	SimplePage,
 	TabbedPage,
-	Text
+	Text,
+	TextLink
 } from "#components";
 
 export {
@@ -87,5 +88,6 @@ export {
 	SimpleForm,
 	SimplePage,
 	TabbedPage,
-	Text
+	Text,
+	TextLink
 }
