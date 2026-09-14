@@ -309,7 +309,7 @@
                       {
                         "key": "website",
                         "component": {
-                          "type": "Text",
+                          "type": "TextLink",
                           "schema": {},
                           "data": {
                             "type": "Context",

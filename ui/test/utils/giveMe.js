@@ -954,6 +954,19 @@ export default {
     };
   },
 
+  aTextLink({ value, data, maxLength, icon } = {}) {
+    value = $(value, "https://baked.mouseless.codes");
+    data = $(data, this.anInlineData(value));
+    maxLength = $(maxLength, 50);
+    icon = $(icon, "pi pi-external-link");
+
+    return {
+      type: "TextLink",
+      schema: { maxLength, icon },
+      data
+    };
+  },
+
   aToken({ accessExpired, admin, expiresAt } = {}) {
     accessExpired = $(accessExpired, false);
     admin = $(admin, false);

@@ -95,13 +95,17 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c =>
                     c.Property.PropertyType.Is<string>() ||
                     c.Property.PropertyType.SkipNullable().Is<Guid>() ||
-                    c.Property.PropertyType.SkipNullable().Is<Uri>() || // TODO: remove when import TextLink component
                     c.Property.PropertyType.SkipNullable().TryGetMetadata(out var metadata) &&
                     (
                         metadata.Has<LocatableAttribute>() ||
                         metadata.Has<ValueTypeAttribute>()
                     ),
                 component: () => B.Text(),
+                order: Order.At.Theme.Min
+            );
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<Uri>(),
+                component: () => B.TextLink(),
                 order: Order.At.Theme.Min
             );
 

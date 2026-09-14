@@ -229,7 +229,7 @@
                 "key": "website",
                 "label": "Website",
                 "component": {
-                  "type": "Text",
+                  "type": "TextLink",
                   "schema": {},
                   "data": {
                     "type": "Context",

@@ -1,7 +1,8 @@
 export default {
   button: {
     base: ".p-button",
-    icon: ".p-button-icon"
+    icon: ".p-button-icon",
+    link: ".p-button-link"
   },
   breadcrumb: {
     base: ".p-breadcrumb",
