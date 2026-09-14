@@ -27,7 +27,8 @@ public class SerializingProxyObjects : TestNfr
             { "description", default },
             { "status", default },
             { "role", default },
-            { "surname", default },
+            { "website", default },
+            { "surname", default }
         });
 
         object? parentInterface = child?.parentInterface;
@@ -40,7 +41,8 @@ public class SerializingProxyObjects : TestNfr
             { "description", default },
             { "status", default },
             { "role", default },
-            { "surname", default },
+            { "website", default },
+            { "surname", default }
         });
     }
 }

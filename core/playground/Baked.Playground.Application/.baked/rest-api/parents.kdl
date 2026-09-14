@@ -25,6 +25,7 @@ parent {
     name @parameter-model
     surname @parameter-model
     description @parameter-model
+    website @parameter-model
   }
   remove-child {
     @action-model route="DELETE /parents/{id}/children/{childId}" required-claims="BaseA, BaseB"

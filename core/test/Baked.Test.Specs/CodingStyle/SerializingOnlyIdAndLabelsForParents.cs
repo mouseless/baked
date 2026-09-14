@@ -30,6 +30,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
             description = (string?)null,
             status = (string?)null,
             role = (string?)null,
+            website = (Uri?)null,
             surname = new { id = "wrapper", label = "wrapper" }
         });
     }

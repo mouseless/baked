@@ -95,6 +95,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c =>
                     c.Property.PropertyType.Is<string>() ||
                     c.Property.PropertyType.SkipNullable().Is<Guid>() ||
+                    c.Property.PropertyType.SkipNullable().Is<Uri>() || // TODO: remove when import TextLink component
                     c.Property.PropertyType.SkipNullable().TryGetMetadata(out var metadata) &&
                     (
                         metadata.Has<LocatableAttribute>() ||
@@ -260,6 +261,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<long>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
+                order: Order.At.Theme.Min
+            );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<Uri>(),
+                component: (c, cc) => B.InputUrl(),
                 order: Order.At.Theme.Min
             );
 
