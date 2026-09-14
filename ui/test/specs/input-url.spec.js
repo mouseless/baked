@@ -22,21 +22,34 @@ test.describe("Base", () => {
     await expect(input).toHaveValue("https://baked.mouseless.codes");
   });
 
-  // TODO: handle model set
-  // test("validated setting model", async({ page }) => {
-  //   const component = page.getByTestId(id);
-  //   const input = component.locator(baked.inputUrl.base);
-  //   const model = page.getByTestId(`${id}:model`);
-
-  //   await input.fill("test value");
-
-  //   await expect(model).toBeNull();
-  // });
-
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("SetModel", () => {
+  const id = "SetModel";
+
+  test("invalid url shows message", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputText.base);
+    const error = component.locator(baked.message.base);
+
+    await input.fill("not a url");
+
+    await expect(error).toHaveText("Invalid URL");
+  });
+
+  test("valid url sets model with the given value", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputText.base);
+    const model = page.getByTestId(`${id}:model`);
+
+    await input.fill("mouseless.org");
+
+    await expect(model).toHaveText("https://mouseless.org");
   });
 });
 

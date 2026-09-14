@@ -5,7 +5,7 @@
   />
 </template>
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import giveMe from "@utils/giveMe";
 
 const variants = [
@@ -15,6 +15,16 @@ const variants = [
       label: "Spec: Label"
     }),
     model: ref("https://baked.mouseless.codes")
+  },
+  {
+    name: "SetModel",
+    descriptor: giveMe.anInputUrl({
+      label: "Spec: Label"
+    }),
+    model: ref(),
+    validation: computed(() => ({
+      severity: "error"
+    }))
   }
 ];
 </script>
