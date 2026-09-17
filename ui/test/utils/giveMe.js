@@ -586,6 +586,22 @@ export default {
     };
   },
 
+  anInputDate({ label, format, usePicker } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    format = $(format, "dd/MM/yyyy");
+
+    return {
+      type: "InputDate",
+      schema: {
+        label,
+        format,
+        usePicker
+      }
+    };
+  },
+
   anInputTextArea({ label } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })

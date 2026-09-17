@@ -20,6 +20,7 @@ export default {
     footer: ".p-datatable-tfoot"
   },
   datepicker: {
+    base: ".p-datepicker",
     weekday: ".p-datepicker-weekday"
   },
   dialog: {
