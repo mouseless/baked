@@ -19,6 +19,8 @@
   "/specs/await-loading:Title": "Yüklerken Bekleme",
   "/specs/bake:Description": "Verilen tanımlayıcıyı kullanarak dinamik bir bileşen oluşturan ana bileşen",
   "/specs/bake:Title": "Bake",
+  "/specs/boolean-display:Description": "/specs/boolean-display:Description",
+  "/specs/boolean-display:Title": "Doğru/Yanlış",
   "/specs/button:Description": "Buton ile yapılabilecek eylemleri gösterir",
   "/specs/button:Title": "Buton",
   "/specs/cache:Description": "Api çağrılarını yerel depo üzerinden önbelleklileştirir",

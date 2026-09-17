@@ -1,5 +1,6 @@
 import {
-    Button,
+    BooleanDisplay,
+	Button,
 	CardLink,
 	Composite,
 	Container,
@@ -48,7 +49,8 @@ import {
 } from "#components";
 
 export {
-    Button,
+    BooleanDisplay,
+	Button,
 	CardLink,
 	Composite,
 	Container,

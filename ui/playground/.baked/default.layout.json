@@ -161,6 +161,12 @@
             "title": "/specs/toast:Title",
             "parentRoute": "/specs"
           },
+          "/specs/boolean-display": {
+            "route": "/specs/boolean-display",
+            "icon": "pi pi-microchip",
+            "title": "/specs/boolean-display:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/card-link": {
             "route": "/specs/card-link",
             "icon": "pi pi-microchip",

@@ -108,6 +108,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: () => B.TextLink(),
                 order: Order.At.Theme.Min
             );
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<bool>(),
+                component: () => B.BooleanDisplay(),
+                order: Order.At.Theme.Min
+            );
 
             // Method Defaults
             conventions.SetMethodAttribute(
@@ -265,6 +270,17 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<long>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
+                order: Order.At.Theme.Min
+            );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<bool>(),
+                component: (c, cc) => B.InputCheckbox(),
+                order: Order.At.Theme.Min
+            );
+            conventions.AddParameterComponentConfiguration<InputCheckbox>(
+                when: c =>
+                    c.Parameter.ParameterType.Is<bool?>() && c.Parameter.Get<ParameterModelAttribute>().FromBodyOrForm,
+                component: ic => ic.Schema.Indeterminate = true,
                 order: Order.At.Theme.Min
             );
             conventions.AddParameterComponent(

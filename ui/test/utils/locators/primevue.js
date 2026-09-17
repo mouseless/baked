@@ -35,6 +35,9 @@ export default {
   iftaLabel: {
     base: ".p-iftalabel"
   },
+  icon: {
+    base: ".pi"
+  },
   inputGroup: {
     base: ".p-inputgroup"
   },

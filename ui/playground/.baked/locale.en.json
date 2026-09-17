@@ -19,6 +19,8 @@
   "/specs/await-loading:Title": "Await Loading",
   "/specs/bake:Description": "The core component that renders a dynamic component using given descriptor",
   "/specs/bake:Title": "Bake",
+  "/specs/boolean-display:Description": "Shows logical data as a icon",
+  "/specs/boolean-display:Title": "True/False",
   "/specs/button:Description": "Showcases interactions using button component",
   "/specs/button:Title": "Button",
   "/specs/cache:Description": "Caches api responses in local storage",

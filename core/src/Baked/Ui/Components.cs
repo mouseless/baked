@@ -2,6 +2,9 @@
 
 public static class Components
 {
+    public static ComponentDescriptor<BooleanDisplay> BooleanDisplay() =>
+        new(new());
+
     public static ComponentDescriptor<Button> Button(string label,
         Action<Button>? options = default,
         IAction? action = default

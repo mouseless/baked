@@ -28,6 +28,15 @@ export default {
     return { sample: "response" };
   },
 
+  aBooleanDisplay({ data } = {}) {
+    data = $(data, true);
+
+    return {
+      type: "BooleanDisplay",
+      data: this.anInlineData(data)
+    };
+  },
+
   aButton({ action, icon, label, variant, severity, size, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
