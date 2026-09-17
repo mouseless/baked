@@ -263,6 +263,12 @@
             "title": "/specs/input-checkbox:Title",
             "parentRoute": "/specs"
           },
+          "/specs/input-date": {
+            "route": "/specs/input-date",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-date:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/input-number": {
             "route": "/specs/input-number",
             "icon": "pi pi-microchip",

@@ -57,6 +57,8 @@
   "/specs/icon:Title": "Simge",
   "/specs/input-checkbox:Description": "Onay kutusu girişine izin verir",
   "/specs/input-checkbox:Title": "Onay Kutusu Girişi",
+  "/specs/input-date:Description": "Tarih girişine izin verir",
+  "/specs/input-date:Title": "Tarih girişi",
   "/specs/input-number:Description": "Sayı girişine izin verir",
   "/specs/input-number:Title": "Sayı Girişi",
   "/specs/input-text:Description": "Düz metin girişine izin verir",

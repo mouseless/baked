@@ -409,6 +409,18 @@
             }
           },
           {
+            "title": "/specs/input-date:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-date",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-date:Title",
+                "description": "/specs/input-date:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/input-number:Title",
             "component": {
               "type": "CardLink",

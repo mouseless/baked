@@ -7,6 +7,7 @@ export default function() {
   const mutable = validation.injectMutable();
 
   return {
+    date: WithMutable(Date(lc), mutable),
     url: WithMutable(Url(lc), mutable)
   };
 }
@@ -27,6 +28,35 @@ function WithMutable(validator, mutable) {
 
   return {
     message: validator.message,
+    validate
+  };
+}
+
+function Date(lc) {
+  const message = lc("Invalid date");
+
+  function validate(value) {
+    if(value?.length != 8) { return false; }
+    if(isNaN(value)) { return false; }
+
+    const day = Number(value.slice(0, 2));
+    const month = Number(value.slice(2, 4));
+    const year = Number(value.slice(4, 8));
+
+    if(year < 1000 || year > 9999) { return false; }
+    if(month < 1 || month > 12) { return false; }
+    if(day < 1 || day > 31) { return false; }
+
+    // edge cases like Feb 30, Apr 31
+    const date = new globalThis.Date(year, month - 1, day);
+
+    return date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day;
+  }
+
+  return {
+    message,
     validate
   };
 }

@@ -57,6 +57,8 @@
   "/specs/icon:Title": "Icon",
   "/specs/input-checkbox:Description": "Allows checkbox input",
   "/specs/input-checkbox:Title": "Input Checkbox",
+  "/specs/input-date:Description": "Allows date input",
+  "/specs/input-date:Title": "Input Date",
   "/specs/input-number:Description": "Allows number input",
   "/specs/input-number:Title": "Input Number",
   "/specs/input-text:Description": "Allows regular text input",

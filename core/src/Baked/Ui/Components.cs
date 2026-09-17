@@ -128,6 +128,10 @@ public static class Components
         Action<InputCheckbox>? options = default
     ) => new(options.Apply(new()));
 
+    public static ComponentDescriptor<InputDate> InputDate(
+        Action<InputDate>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<InputNumber> InputNumber(
         Action<InputNumber>? options = default
     ) => new(options.Apply(new()));
