@@ -658,13 +658,13 @@ export default {
     };
   },
 
-  aNavLink({ icon, labelProp, path, query, params, data } = {}) {
+  aNavLink({ icon, maxLength, labelProp, path, query, params, summary, data } = {}) {
     path = $(path, "/some-object/{0}");
     data = $(data, this.anInlineData("Test"));
 
     return {
       type: "NavLink",
-      schema: { icon, labelProp, path, query, params },
+      schema: { icon, maxLength, labelProp, path, query, params, summary },
       data: data
     };
   },
