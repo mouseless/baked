@@ -63,6 +63,8 @@
   "/specs/input-date:Title": "Input Date",
   "/specs/input-number:Description": "Allows number input",
   "/specs/input-number:Title": "Input Number",
+  "/specs/input-rate:Description": "Allows decimal rate input",
+  "/specs/input-rate:Title": "Input Rate",
   "/specs/input-text:Description": "Allows regular text input",
   "/specs/input-text:Title": "Input Text",
   "/specs/input-textarea:Description": "Allows long textarea input",

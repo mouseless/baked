@@ -556,31 +556,17 @@ export default {
     return { name, required, default: default_, defaultSelfManaged, numeric, queryBound, component };
   },
 
-  anInputText({ label, targetProp } = {}) {
-    targetProp = $(targetProp, undefined);
+  anInputRate({ disabled, label, max } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
     return {
-      type: "InputText",
+      type: "InputRate",
       schema: {
+        disabled,
         label,
-        targetProp
-      }
-    };
-  },
-
-  anInputNumber({ label, noGrouping } = {}) {
-    label = typeof label === "string"
-      ? this.aLabel({ text: label })
-      : $(label, this.aLabel());
-
-    return {
-      type: "InputNumber",
-      schema: {
-        label,
-        noGrouping
+        max
       }
     };
   },
@@ -611,6 +597,35 @@ export default {
         label,
         format,
         usePicker
+      }
+    };
+  },
+
+  anInputText({ label, targetProp } = {}) {
+    targetProp = $(targetProp, undefined);
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputText",
+      schema: {
+        label,
+        targetProp
+      }
+    };
+  },
+
+  anInputNumber({ label, noGrouping } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputNumber",
+      schema: {
+        label,
+        noGrouping
       }
     };
   },

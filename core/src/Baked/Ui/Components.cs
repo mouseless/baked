@@ -140,6 +140,10 @@ public static class Components
         Action<InputNumber>? options = default
     ) => new(options.Apply(new()));
 
+    public static ComponentDescriptor<InputRate> InputRate(
+        Action<InputRate>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<InputText> InputText(
         Action<InputText>? options = default
     ) => new(options.Apply(new()));

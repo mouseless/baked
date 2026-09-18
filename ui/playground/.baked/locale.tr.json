@@ -63,6 +63,8 @@
   "/specs/input-date:Title": "Tarih girişi",
   "/specs/input-number:Description": "Sayı girişine izin verir",
   "/specs/input-number:Title": "Sayı Girişi",
+  "/specs/input-rate:Description": "Yüzdelik girişine izin verir",
+  "/specs/input-rate:Title": "Yüzdelik girişi",
   "/specs/input-text:Description": "Düz metin girişine izin verir",
   "/specs/input-text:Title": "Metin Girişi",
   "/specs/input-textarea:Description": "Uzun metin girişine izin verir",

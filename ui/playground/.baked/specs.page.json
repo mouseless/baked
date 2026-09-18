@@ -445,6 +445,18 @@
             }
           },
           {
+            "title": "/specs/input-rate:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-rate",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-rate:Title",
+                "description": "/specs/input-rate:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/input-text:Title",
             "component": {
               "type": "CardLink",
