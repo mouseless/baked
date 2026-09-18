@@ -274,13 +274,16 @@ export default {
     };
   },
 
-  aDate({ value, format, prop } = {}) {
-    value = $(value, "2026-01-15");
+  aDate({ value, data, format, prop } = {}) {
+    value = $(value, "2026-01-02");
+    data = $(data, this.anInlineData(value));
+    format = $(format, "dd/MM/yyyy");
+    prop = $(prop, undefined);
 
     return {
       type: "Date",
       schema: { format, prop },
-      data: this.anInlineData(value)
+      data
     };
   },
 

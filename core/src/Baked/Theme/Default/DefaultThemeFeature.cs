@@ -113,6 +113,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: () => B.BooleanDisplay(),
                 order: Order.At.Theme.Min
             );
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
+                component: () => B.Date()
+            );
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
+                component: () => B.Date()
+            );
 
             // Method Defaults
             conventions.SetMethodAttribute(

@@ -3,6 +3,9 @@ export default {
     base: ".b-Contents",
     main: ".b-Contents .grid"
   },
+  date: {
+    base: ".b-component--Date"
+  },
   errorPage: {
     baseTestId: "error-page",
     tag: ".pt-8 .p-tag",
@@ -20,13 +23,13 @@ export default {
     icon: ".b-message-icon",
     action: ".b-message-action"
   },
-  money:{
+  money: {
     base: ".b-component--Money"
   },
-  number:{
+  number: {
     base: ".b-component--Number"
   },
-  string:{
+  string: {
     text: "span"
   }
 };
