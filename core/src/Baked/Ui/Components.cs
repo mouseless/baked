@@ -2,7 +2,7 @@
 
 public static class Components
 {
-    public static ComponentDescriptor<BooleanDisplay> BooleanDisplay() =>
+    public static ComponentDescriptor<Check> Check() =>
         new(new());
 
     public static ComponentDescriptor<Button> Button(string label,

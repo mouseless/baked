@@ -1,7 +1,7 @@
 import {
-    BooleanDisplay,
-	Button,
+    Button,
 	CardLink,
+	Check,
 	Composite,
 	Container,
 	DataContainer,
@@ -51,9 +51,9 @@ import {
 } from "#components";
 
 export {
-    BooleanDisplay,
-	Button,
+    Button,
 	CardLink,
+	Check,
 	Composite,
 	Container,
 	DataContainer,

@@ -7,15 +7,15 @@ import giveMe from "@utils/giveMe";
 const variants = [
   {
     name: "True",
-    descriptor: giveMe.aBooleanDisplay({ data: true })
+    descriptor: giveMe.aCheck({ data: true })
   },
   {
     name: "False",
-    descriptor: giveMe.aBooleanDisplay({ data: false })
+    descriptor: giveMe.aCheck({ data: false })
   },
   {
     name: "Null",
-    descriptor: giveMe.aBooleanDisplay({ data: null })
+    descriptor: giveMe.aCheck({ data: null })
   }
 ];
 </script>

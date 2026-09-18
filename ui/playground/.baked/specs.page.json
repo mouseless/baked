@@ -195,14 +195,14 @@
         "title": "Display",
         "links": [
           {
-            "title": "/specs/boolean-display:Title",
+            "title": "/specs/check:Title",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/boolean-display",
+                "route": "/specs/check",
                 "icon": "pi pi-microchip",
-                "title": "/specs/boolean-display:Title",
-                "description": "/specs/boolean-display:Description"
+                "title": "/specs/check:Title",
+                "description": "/specs/check:Description"
               }
             }
           },

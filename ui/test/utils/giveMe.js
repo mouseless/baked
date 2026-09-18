@@ -28,15 +28,6 @@ export default {
     return { sample: "response" };
   },
 
-  aBooleanDisplay({ data } = {}) {
-    data = $(data, true);
-
-    return {
-      type: "BooleanDisplay",
-      data: this.anInlineData(data)
-    };
-  },
-
   aButton({ action, icon, label, variant, severity, size, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
@@ -59,6 +50,15 @@ export default {
     return {
       type: "CardLink",
       schema: { route, icon, title, description, disabled, disabledReason }
+    };
+  },
+
+  aCheck({ data } = {}) {
+    data = $(data, true);
+
+    return {
+      type: "Check",
+      data: this.anInlineData(data)
     };
   },
 

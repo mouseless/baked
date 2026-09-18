@@ -2,7 +2,7 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
-  await goto("/specs/boolean-display", { waitUntil: "hydration" });
+  await goto("/specs/check", { waitUntil: "hydration" });
 });
 
 test.describe("True", () => {

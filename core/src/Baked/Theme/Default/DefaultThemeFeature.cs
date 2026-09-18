@@ -110,7 +110,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<bool>(),
-                component: () => B.BooleanDisplay(),
+                component: () => B.Check(),
                 order: Order.At.Theme.Min
             );
             conventions.AddPropertyComponent(
