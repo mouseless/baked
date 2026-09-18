@@ -39,6 +39,8 @@
   "/specs/data-panel:Title": "Data Panel",
   "/specs/data-table:Description": "Shows list data as a table",
   "/specs/data-table:Title": "Data Table",
+  "/specs/date:Description": "Shows a formatted date",
+  "/specs/date:Title": "Date",
   "/specs/dialog:Description": "Renders a dialog with given contents and a button if given an action",
   "/specs/dialog:Title": "Dialog",
   "/specs/error-handling:Description": "Handling errors",

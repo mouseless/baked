@@ -179,6 +179,12 @@
             "title": "/specs/data-table:Title",
             "parentRoute": "/specs"
           },
+          "/specs/date": {
+            "route": "/specs/date",
+            "icon": "pi pi-microchip",
+            "title": "/specs/date:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/fieldset": {
             "route": "/specs/fieldset",
             "icon": "pi pi-microchip",

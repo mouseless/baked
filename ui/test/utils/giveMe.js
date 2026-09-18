@@ -274,6 +274,16 @@ export default {
     };
   },
 
+  aDate({ value, format, prop } = {}) {
+    value = $(value, "2026-01-15");
+
+    return {
+      type: "Date",
+      schema: { format, prop },
+      data: this.anInlineData(value)
+    };
+  },
+
   aDelayedData(data, { ms = 1 } = {}) {
     return this.aComputedData({
       composable: "useDelayedData",

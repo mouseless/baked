@@ -55,6 +55,10 @@ public static class Components
         Action<DataTable.VirtualScroller>? options = default
     ) => options.Apply(new());
 
+    public static ComponentDescriptor<Date> Date(
+        Action<Date>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<DefaultLayout> DefaultLayout(string name,
         Action<DefaultLayout>? options = default
     ) => new(options.Apply(new(name)));

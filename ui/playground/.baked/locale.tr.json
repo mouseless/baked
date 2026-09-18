@@ -39,6 +39,8 @@
   "/specs/data-panel:Title": "Veri Paneli",
   "/specs/data-table:Description": "Liste verilerini tablo olarak görüntüler",
   "/specs/data-table:Title": "Veri Tablosu",
+  "/specs/date:Description": "Tarih değerini formatlayarak gösterir",
+  "/specs/date:Title": "Tarih",
   "/specs/dialog:Description": "Dialog içinde verilen bileşenleri ve varsa aksiyon buton'u gösterir",
   "/specs/dialog:Title": "Dialog",
   "/specs/error-handling:Description": "Hataları yönetir",

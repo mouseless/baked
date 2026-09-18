@@ -231,6 +231,18 @@
             }
           },
           {
+            "title": "/specs/date:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/date",
+                "icon": "pi pi-microchip",
+                "title": "/specs/date:Title",
+                "description": "/specs/date:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/fieldset:Title",
             "component": {
               "type": "CardLink",
