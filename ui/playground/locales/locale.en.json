@@ -28,6 +28,9 @@
   "useDefaultValidation": {
     "{label} cannot be empty": "{label} cannot be empty"
   },
+  "useInputValidator": {
+    "Invalid e-mail address": "Invalid e-mail address"
+  },
   "useFormat": {
     "suffix": {
       "B": "B",

@@ -433,6 +433,18 @@
             }
           },
           {
+            "title": "/specs/input-mail-address:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-mail-address",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-mail-address:Title",
+                "description": "/specs/input-mail-address:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/input-number:Title",
             "component": {
               "type": "CardLink",

@@ -275,6 +275,12 @@
             "title": "/specs/input-date:Title",
             "parentRoute": "/specs"
           },
+          "/specs/input-mail-address": {
+            "route": "/specs/input-mail-address",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-mail-address:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/input-number": {
             "route": "/specs/input-number",
             "icon": "pi pi-microchip",

@@ -1,13 +1,14 @@
 import { useValidation, useLocalization } from "#imports";
 
 export default function() {
-  const { localize: lc } = useLocalization({ group: "useValidator" });
+  const { localize: lc } = useLocalization({ group: "useInputValidator" });
   const validation = useValidation();
 
   const mutable = validation.injectMutable();
 
   return {
     date: WithMutable(Date(lc), mutable),
+    mailAddress: WithMutable(MailAddress(lc), mutable),
     url: WithMutable(Url(lc), mutable)
   };
 }
@@ -53,6 +54,21 @@ function Date(lc) {
     return date.getFullYear() === year &&
       date.getMonth() === month - 1 &&
       date.getDate() === day;
+  }
+
+  return {
+    message,
+    validate
+  };
+}
+
+function MailAddress(lc) {
+  const message = lc("Invalid e-mail address");
+  const regex = "/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]\\.[a-zA-Z]{2,}$/";
+  const parts = regex.match(/^\/(.*)\/([gimsuy]*)$/);
+
+  function validate(value) {
+    return new RegExp(parts[1], parts[2]).test(value);
   }
 
   return {

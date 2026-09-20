@@ -28,6 +28,9 @@
   "useDefaultValidation": {
     "{label} cannot be empty": "{label} boş bırakılamaz"
   },
+  "useInputValidator": {
+    "Invalid e-mail address": "Geçersiz e-posta adresi"
+  },
   "useFormat": {
     "suffix": {
       "B": "Mr",

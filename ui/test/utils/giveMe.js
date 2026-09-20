@@ -601,6 +601,19 @@ export default {
     };
   },
 
+  anInputMailAddress({ label } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputMailAddress",
+      schema: {
+        label
+      }
+    };
+  },
+
   anInputText({ label, targetProp } = {}) {
     targetProp = $(targetProp, undefined);
     label = typeof label === "string"

@@ -136,6 +136,10 @@ public static class Components
         Action<InputDate>? options = default
     ) => new(options.Apply(new()));
 
+    public static ComponentDescriptor<InputMailAddress> InputMailAddress(
+        Action<InputMailAddress>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<InputNumber> InputNumber(
         Action<InputNumber>? options = default
     ) => new(options.Apply(new()));
