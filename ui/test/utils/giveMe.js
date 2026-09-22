@@ -952,7 +952,7 @@ export default {
 
     if(expiresAt !== null) {
       const exp = Math.floor(expiresAt / 1000);
-      const payload = Buffer.from(JSON.stringify({ exp })).toString("base64url");
+      const payload = Buffer.from(JSON.stringify({ exp })).toString("base64");
       access = `eyJhbGciOiJIUzI1NiJ9.${payload}.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0`;
     }
 
