@@ -1,6 +1,7 @@
 import { useRuntimeConfig } from "#app";
 import { createError, useMutex } from "#imports";
 import { bfetch } from "../utils/bfetch";
+import { Buffer } from "buffer";
 
 export default function() {
   const mutex = useMutex();
@@ -69,7 +70,7 @@ export default function() {
   function decode(value) {
     const { access } = JSON.parse(value);
 
-    return JSON.parse(atob(access.split(".")[1]));
+    return JSON.parse(decodeBase64(access.split(".")[1]));
   }
 
   return {
@@ -94,7 +95,8 @@ function Token(tokenString) {
 
   function isExpired(token) {
     try {
-      const claims = JSON.parse(atob(token.split(".")[1]));
+      const decoded = decodeBase64(token.split(".")[1]);
+      const claims = JSON.parse(decoded);
 
       return parseInt(claims.exp) * 1000 < Date.now();
     } catch {
@@ -109,4 +111,8 @@ function Token(tokenString) {
     accessIsExpired,
     refreshIsExpired
   };
+}
+
+function decodeBase64(value) {
+  return Buffer.from(value, "base64").toString("utf8");
 }

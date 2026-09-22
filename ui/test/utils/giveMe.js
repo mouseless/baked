@@ -1,5 +1,5 @@
 //expires at 2999-03-28
-const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjMyNDc5NjE0MTk0fQ.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0";
+const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjMyNDc5NjE0MTk0LCJ1aV90ZXN0IjoidWlfdGVzdCIsImVtYWlsIjoidGVzdC11c2VyIDx0ZXN0LXVzZXJAbWFpbC5jb20-IiwidXNlcm5hbWUiOiLDh2HEn2xhciDDh0VLxLBLIn0.PjxuHzEnShip1RD1icylSz55XoNQoDV2jH_Q1uN1qoU";
 //expires at 2000-03-28
 const expiredAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjk1NDI0MTM5NH0.ZKPMybdzg1aO1g_xyV1QXUx9NR_vynu9s9z4Zll7WNA";
 //expires at 9999-03-28
@@ -952,7 +952,7 @@ export default {
 
     if(expiresAt !== null) {
       const exp = Math.floor(expiresAt / 1000);
-      const payload = Buffer.from(JSON.stringify({ exp })).toString("base64");
+      const payload = Buffer.from(JSON.stringify({ exp })).toString("base64url");
       access = `eyJhbGciOiJIUzI1NiJ9.${payload}.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0`;
     }
 
