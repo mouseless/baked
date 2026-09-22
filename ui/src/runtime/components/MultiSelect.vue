@@ -1,7 +1,7 @@
 <template>
   <AwaitLoading
     :skeleton="{
-      height: label.mode === 'ifta' ? '3.6rem' : '2.6rem',
+      height: label?.mode === 'ifta' ? '3.6rem' : '2.6rem',
       class: 'min-w-40'
     }"
   >
@@ -89,7 +89,7 @@ watch(
     if(!_data) { return; }
 
     const value = stateful ? (selectStates[path] ?? _model) : _model;
-    selected.value = value ?? null;
+    setSelected(value);
   },
   { immediate: true }
 );
@@ -133,5 +133,20 @@ function findLabel(value) {
     : data?.find(o => o === value);
 
   return optionLabel ? option?.[optionLabel] : option;
+}
+
+function setSelected(value) {
+  // data can be null when data is async
+  if(!data) { return; }
+
+  selected.value = value ?? null;
+
+  if(stateful) {
+    const current = getModel();
+    const isSame = current?.length === selected.value?.length && current?.every(v => selected.value.includes(v));
+    if(!isSame) {
+      setModel(selected.value);
+    }
+  }
 }
 </script>

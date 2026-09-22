@@ -59,6 +59,14 @@ export default {
     icon: ".pi",
     content: ".p-message-content"
   },
+  multiselect: {
+    base: ".p-multiselect",
+    option: ".p-multiselect-option",
+    optionSelected: ".p-multiselect-option-selected",
+    clearIcon: ".p-multiselect-clear-icon",
+    label: ".p-multiselect-label",
+    selectAll: ".p-multiselect-header .p-checkbox"
+  },
   paginator: {
     base: ".p-paginator-default",
     page: ".p-paginator-page"

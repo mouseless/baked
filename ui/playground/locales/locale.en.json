@@ -19,6 +19,9 @@
   "MenuPage": {
     "No item available!": "No item available!"
   },
+  "MultiSelect": {
+    "{number} items selected": "{number} items selected"
+  },
   "Paginator": {
     "Page {page}": "Page {page}"
   },

@@ -19,6 +19,9 @@
   "MenuPage": {
     "No item available!": "Hiçbir öğe mevcut değil!"
   },
+  "MultiSelect": {
+    "{number} items selected": "{number} seçenek seçildi"
+  },
   "Paginator": {
     "Page {page}": "Sayfa {page}"
   },
