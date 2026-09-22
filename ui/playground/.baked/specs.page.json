@@ -445,6 +445,18 @@
             }
           },
           {
+            "title": "/specs/input-money:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-money",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-money:Title",
+                "description": "/specs/input-money:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/input-number:Title",
             "component": {
               "type": "CardLink",

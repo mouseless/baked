@@ -629,6 +629,19 @@ export default {
     };
   },
 
+  anInputMoney({ label } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputMoney",
+      schema: {
+        label
+      }
+    };
+  },
+
   anInputNumber({ label, noGrouping } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })

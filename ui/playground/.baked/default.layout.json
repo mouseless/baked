@@ -281,6 +281,12 @@
             "title": "/specs/input-mail-address:Title",
             "parentRoute": "/specs"
           },
+          "/specs/input-money": {
+            "route": "/specs/input-money",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-money:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/input-number": {
             "route": "/specs/input-number",
             "icon": "pi pi-microchip",

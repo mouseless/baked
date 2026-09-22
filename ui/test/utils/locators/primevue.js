@@ -42,6 +42,9 @@ export default {
   inputGroup: {
     base: ".p-inputgroup"
   },
+  inputGroupAddon: {
+    base: ".p-inputgroupaddon"
+  },
   inputNumber: {
     base: ".p-inputnumber"
   },

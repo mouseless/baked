@@ -63,6 +63,8 @@
   "/specs/input-date:Title": "Tarih girişi",
   "/specs/input-mail-address:Description": "Mail Adres girişine izin verir",
   "/specs/input-mail-address:Title": "Mail Adresi Girişi",
+  "/specs/input-money:Description": "Para girişine izin verir",
+  "/specs/input-money:Title": "Para Girişi",
   "/specs/input-number:Description": "Sayı girişine izin verir",
   "/specs/input-number:Title": "Sayı Girişi",
   "/specs/input-rate:Description": "Yüzdelik girişine izin verir",

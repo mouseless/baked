@@ -140,6 +140,10 @@ public static class Components
         Action<InputMailAddress>? options = default
     ) => new(options.Apply(new()));
 
+    public static ComponentDescriptor<InputMoney> InputMoney(
+        Action<InputMoney>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<InputNumber> InputNumber(
         Action<InputNumber>? options = default
     ) => new(options.Apply(new()));
