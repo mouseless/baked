@@ -15,6 +15,13 @@ const variants = [
       label: "Spec: Label"
     }),
     model: ref()
+  },
+  {
+    name: "Custom Icon",
+    descriptor: giveMe.anInputMoney({
+      label: "Spec: Label",
+      icon: "pi-turkish-lira"
+    })
   }
 ];
 </script>

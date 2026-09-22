@@ -629,7 +629,7 @@ export default {
     };
   },
 
-  anInputMoney({ label } = {}) {
+  anInputMoney({ label, icon } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
@@ -637,7 +637,8 @@ export default {
     return {
       type: "InputMoney",
       schema: {
-        label
+        label,
+        icon
       }
     };
   },

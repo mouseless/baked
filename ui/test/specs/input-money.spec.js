@@ -14,7 +14,7 @@ test.describe("Base", () => {
     await expect(component.locator(primevue.floatLabel.base)).toHaveText("Label");
   });
 
-  test.skip("shows currency addon", async({ page }) => {
+  test("shows currency addon", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.inputGroupAddon.base).locator("i")).toHaveClass(/pi-dollar/);
@@ -30,5 +30,15 @@ test.describe("Base", () => {
     await page.keyboard.press("Digit0");
 
     await expect(model).toHaveText("10");
+  });
+});
+
+test.describe("Custom Icon", () => {
+  const id = "Custom Icon";
+
+  test("shows the given icon", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.inputGroupAddon.base).locator("i")).toHaveClass(/pi-turkish-lira/);
   });
 });

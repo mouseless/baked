@@ -16,8 +16,7 @@
             v-model="model"
             v-bind="$attrs"
             class="min-w-60"
-            min="0"
-            :disabled
+            :min="0"
             @input="onInput"
           />
         </Labeler>
@@ -27,7 +26,7 @@
               dark:bg-zinc-700 dark:text-zinc-300
             "
         >
-          <i class="pi pi-dollar" />
+          <i :class="`pi ${icon}`" />
         </InputGroupAddon>
       </InputGroup>
     </Validation>
@@ -35,17 +34,20 @@
 </template>
 <script setup>
 import { InputNumber, InputGroup, InputGroupAddon } from "primevue";
+import { useRuntimeConfig } from "#app";
 import { useContext } from "#imports";
 import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
+const runtimeConfig = useRuntimeConfig();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 const model = defineModel({ type: null, required: true });
 
-const { label } = schema;
+const { label, icon: schemaIcon } = schema;
+const icon = schemaIcon ?? runtimeConfig.public.components?.InputMoney?.icon ?? "pi-dollar";
 
 const path = context.injectPath();
 
