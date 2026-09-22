@@ -329,6 +329,12 @@
             "title": "/specs/language-switcher:Title",
             "parentRoute": "/specs"
           },
+          "/specs/multi-select": {
+            "route": "/specs/multi-select",
+            "icon": "pi pi-microchip",
+            "title": "/specs/multi-select:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/paginator": {
             "route": "/specs/paginator",
             "icon": "pi pi-microchip",

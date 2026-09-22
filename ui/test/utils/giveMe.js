@@ -993,6 +993,32 @@ export default {
     };
   },
 
+  aMultiSelect({ action, data, inline, label, localizeOptionLabels, maxSelectedLabels, optionLabel, optionValue, showClear, showToggleAll, stateful, targetProp } = {}) {
+    data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    localizeOptionLabels = $(localizeOptionLabels, false);
+    showClear = $(showClear, false);
+    showToggleAll = $(showToggleAll, false);
+    stateful = $(stateful, false);
+    data = inline
+      ? this.anInlineData(data)
+      : this.aComputedData({
+        composable: "useDelayedData",
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
+      });
+
+    return {
+      type: "MultiSelect",
+      schema: { label, localizeOptionLabels, maxSelectedLabels, optionLabel, optionValue, showClear, showToggleAll, stateful, targetProp },
+      data,
+      action
+    };
+  },
+
   aSideMenu({ logo, largeLogo, menu, data, footer } = {}) {
     logo = $(logo, "logo.svg");
     largeLogo = $(largeLogo, "logo-full.svg");

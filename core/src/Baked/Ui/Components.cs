@@ -216,6 +216,10 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
+    public static ComponentDescriptor<MultiSelect> MultiSelect(IData data,
+        Action<MultiSelect>? options = default
+    ) => new(options.Apply(new())) { Data = data };
+
     public static ComponentDescriptor<NavLink> NavLink(string path,
         Action<NavLink>? options = default
     ) => new(options.Apply(new(path)));

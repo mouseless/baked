@@ -99,6 +99,8 @@
   "/specs/missing-component:Title": "Eksik Bileşen",
   "/specs/money:Description": "Para değerlerini kısaltır ve tam değeri ipucu olarak gösterir",
   "/specs/money:Title": "Para",
+  "/specs/multi-select:Description": "Açılır menüden verilen seçeneklerden birden fazlasını seçmeye izin verir",
+  "/specs/multi-select:Title": "Çoklu Seçim",
   "/specs/nav-link:Description": "Bir alan nesnesine bağlantı vermek için bir bileşen",
   "/specs/nav-link:Title": "Navigasyon Bağlantısı",
   "/specs/number:Description": "Sayıları kısaltır ve tam değeri ipucu olarak gösterir",

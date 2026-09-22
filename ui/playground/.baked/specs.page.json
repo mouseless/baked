@@ -541,6 +541,18 @@
             }
           },
           {
+            "title": "/specs/multi-select:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/multi-select",
+                "icon": "pi pi-microchip",
+                "title": "/specs/multi-select:Title",
+                "description": "/specs/multi-select:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/paginator:Title",
             "component": {
               "type": "CardLink",
