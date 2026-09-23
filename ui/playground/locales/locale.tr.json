@@ -32,7 +32,9 @@
     "{label} cannot be empty": "{label} boş bırakılamaz"
   },
   "useInputValidator": {
-    "Invalid e-mail address": "Geçersiz e-posta adresi"
+    "Invalid date": "Geçersiz Tarih",
+    "Invalid e-mail address": "Geçersiz e-posta adresi",
+    "Invalid URL": "Geçersiz URL"
   },
   "useFormat": {
     "suffix": {

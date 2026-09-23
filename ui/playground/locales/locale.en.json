@@ -32,7 +32,9 @@
     "{label} cannot be empty": "{label} cannot be empty"
   },
   "useInputValidator": {
-    "Invalid e-mail address": "Invalid e-mail address"
+    "Invalid date": "Invalid Date",
+    "Invalid e-mail address": "Invalid e-mail address",
+    "Invalid URL": "Invalid URL"
   },
   "useFormat": {
     "suffix": {

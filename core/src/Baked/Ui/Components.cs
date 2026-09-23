@@ -2,9 +2,6 @@
 
 public static class Components
 {
-    public static ComponentDescriptor<Check> Check() =>
-        new(new());
-
     public static ComponentDescriptor<Button> Button(string label,
         Action<Button>? options = default,
         IAction? action = default
@@ -13,6 +10,9 @@ public static class Components
     public static ComponentDescriptor<CardLink> CardLink(string route, string title,
         Action<CardLink>? options = default
     ) => new(options.Apply(new(route, title)));
+
+    public static ComponentDescriptor<Check> Check() =>
+        new(new());
 
     public static ComponentDescriptor<Composite> Composite(
         Action<Composite>? options = default
@@ -156,8 +156,8 @@ public static class Components
         Action<InputText>? options = default
     ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<InputTextArea> InputTextArea(
-        Action<InputTextArea>? options = default
+    public static ComponentDescriptor<InputTextarea> InputTextarea(
+        Action<InputTextarea>? options = default
     ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<InputUrl> InputUrl(

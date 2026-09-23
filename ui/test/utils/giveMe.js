@@ -614,21 +614,6 @@ export default {
     };
   },
 
-  anInputText({ label, targetProp } = {}) {
-    targetProp = $(targetProp, undefined);
-    label = typeof label === "string"
-      ? this.aLabel({ text: label })
-      : $(label, this.aLabel());
-
-    return {
-      type: "InputText",
-      schema: {
-        label,
-        targetProp
-      }
-    };
-  },
-
   anInputMoney({ label, icon } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })
@@ -657,13 +642,28 @@ export default {
     };
   },
 
-  anInputTextArea({ label } = {}) {
+  anInputText({ label, targetProp } = {}) {
+    targetProp = $(targetProp, undefined);
     label = typeof label === "string"
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
     return {
-      type: "InputTextArea",
+      type: "InputText",
+      schema: {
+        label,
+        targetProp
+      }
+    };
+  },
+
+  anInputTextarea({ label } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputTextarea",
       schema: {
         label
       }

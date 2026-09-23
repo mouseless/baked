@@ -51,7 +51,7 @@ export default {
   inputText: {
     base: ".p-inputtext"
   },
-  inputTextArea: {
+  inputTextarea: {
     base: ".p-textarea"
   },
   message: {

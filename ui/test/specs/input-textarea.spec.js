@@ -17,7 +17,7 @@ test.describe("Base", () => {
 
   test("initial value", async({ page }) => {
     const component = page.getByTestId(id);
-    const textarea = component.locator(primevue.inputTextArea.base);
+    const textarea = component.locator(primevue.inputTextarea.base);
 
     await expect(textarea).toHaveValue("initial value");
   });
