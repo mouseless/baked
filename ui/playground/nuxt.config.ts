@@ -52,5 +52,12 @@ export default defineNuxtConfig({
   imports: { autoImport: false },
   logLevel: import.meta.env.BUILD_SILENT === "1" ? "silent" : "info",
   modules: ["@nuxt/eslint", "../src/module"],
-  router: { options: { strict: true } }
+  router: { options: { strict: true } },
+  vite: {
+    optimizeDeps: {
+      // It ensures Vite pre-bundles the buffer package during development so it
+      // works correctly in the browser.
+      include: ["buffer"]
+    }
+  }
 });
