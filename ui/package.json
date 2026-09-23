@@ -1,6 +1,6 @@
 {
   "name": "@mouseless/baked",
-  "version": "1.8.6",
+  "version": "1.8.7",
   "description": "Baked is an opinionated framework for .NET and Vue. This is the UI package of Baked project.",
   "keywords": [
     "baked",
@@ -48,6 +48,7 @@
     "@primeuix/themes": "2.0.3",
     "@tailwindcss/vite": "4.3.3",
     "async-mutex": "0.5.0",
+    "buffer": "6.0.3",
     "playwright": "1.61.1",
     "primeicons": "7.0.0",
     "primevue": "4.5.5",
