@@ -553,6 +553,18 @@
             }
           },
           {
+            "title": "/specs/multi-select-button:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/multi-select-button",
+                "icon": "pi pi-microchip",
+                "title": "/specs/multi-select-button:Title",
+                "description": "/specs/multi-select-button:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/paginator:Title",
             "component": {
               "type": "CardLink",

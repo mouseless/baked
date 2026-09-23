@@ -99,6 +99,8 @@
   "/specs/missing-component:Title": "Missing Component",
   "/specs/money:Description": "Shortens and renders money values with the full value shown as tooltip",
   "/specs/money:Title": "Money",
+  "/specs/multi-select-button:Description": "Allows select multiple options from given options using buttons",
+  "/specs/multi-select-button:Title": "Multi Select Button",
   "/specs/multi-select:Description": "Allows select multiple options from given options using a drop down",
   "/specs/multi-select:Title": "Multi Select",
   "/specs/nav-link:Description": "A component to give a link to a domain object",

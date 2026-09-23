@@ -220,6 +220,10 @@ public static class Components
         Action<MultiSelect>? options = default
     ) => new(options.Apply(new())) { Data = data };
 
+    public static ComponentDescriptor<MultiSelectButton> MultiSelectButton(IData data,
+        Action<MultiSelectButton>? options = default
+    ) => new(options.Apply(new())) { Data = data };
+
     public static ComponentDescriptor<NavLink> NavLink(string path,
         Action<NavLink>? options = default
     ) => new(options.Apply(new(path)));
