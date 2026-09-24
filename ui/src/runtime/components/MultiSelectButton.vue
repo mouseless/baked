@@ -97,20 +97,18 @@ function setModel(selected) {
     selectButtonStates[path] = value;
   }
 
-  const newModel = value
+  if(arrayEquals(value, getModel())) { return; }
+
+  model.value = value
     ? targetProp
       ? value.map(v => ({ [targetProp]: v }))
       : value
     : undefined;
-  if(arrayEquals(newModel, model.value)) { return; }
-
-  model.value = newModel;
 }
 
 function setSelected(value) {
   // data can be null when data is async
   if(!data) { return; }
-  console.log("hit here");
   selected.value = optionValue
     ? data.filter(o => value?.includes(o[optionValue]))
     : value;
@@ -120,7 +118,8 @@ function setSelected(value) {
     const current = getModel();
     const isSame = current?.length === selectedValue?.length && current?.every(v => selectedValue.includes(v));
     if(!isSame) {
-      setModel(selectedValue);
+      // setModel expects raw option objects, not the already-extracted values
+      setModel(selected.value);
     }
   }
 }

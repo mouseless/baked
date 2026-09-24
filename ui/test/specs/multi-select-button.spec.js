@@ -202,7 +202,7 @@ test.describe("Target Prop", () => {
 
     await options.nth(0).click();
 
-    await expect(model).toHaveText("[{ \"id\": \"VALUE_A\" }]");
+    await expect(model).toHaveText("[ { \"id\": \"VALUE_A\" } ]");
   });
 
   test("respects target prop when retaining selected state", async({ page }) => {
@@ -214,7 +214,7 @@ test.describe("Target Prop", () => {
     await page.locator("a[href='/specs']").nth(0).click();
     await page.locator("a[href='/specs/multi-select-button']").nth(0).click();
 
-    await expect(model).toHaveText("{ \"id\": \"VALUE_B\" }");
+    await expect(model).toHaveText("[ { \"id\": \"VALUE_B\" } ]");
   });
 });
 
