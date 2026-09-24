@@ -5,7 +5,6 @@
       class: 'min-w-60'
     }"
   >
-    <!-- NOTE - This component is a copy of SelectButton, consider refactoring to reuse when implementing in baked -->
     <Validation>
       <Labeler
         :label="{
@@ -33,6 +32,7 @@
           :allow-empty
           :data-key="optionValue"
           :option-label
+          :option-value
           :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
         >
           <template #option="slotProps">
@@ -44,9 +44,8 @@
   </AwaitLoading>
 </template>
 <script setup>
-import { ref, watch } from "vue";
 import { SelectButton } from "primevue";
-import { useContext, useLocalization, useUiStates } from "#imports";
+import { useContext, useLocalization, useUiStates, useSelection } from "#imports";
 import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
@@ -62,21 +61,15 @@ const model = defineModel({ type: null, required: true });
 const { allowEmpty = false, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp } = schema;
 
 const path = context.injectPath();
-const selected = ref([]);
-
-// NOTE - Duplicates in Select, SelectButton, MultiSelect, and MultiSelectButton
-// should be reduced two way binding between model and selected
-watch(
-  [() => data, getModel],
-  ([_data, _model]) => {
-    if(!_data) { return; }
-
-    const value = stateful ? (selectButtonStates[path] ?? _model) : _model;
-    setSelected(value);
-  },
-  { immediate: true }
-);
-watch(selected, newSelected => setModel(newSelected));
+const { selected } = useSelection({
+  data,
+  model,
+  path,
+  stateStore: selectButtonStates,
+  stateful,
+  targetProp,
+  mode: "multi"
+});
 
 function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
@@ -84,51 +77,4 @@ function getOptionLabel(slotProps) {
   return localizeOptionLabels ? l(result) : result;
 }
 
-function getModel() {
-  // TODO - This has not been tested! It will be tested with Locatables
-  return targetProp ? model.value?.map(selection => selection[targetProp]) : model.value;
-}
-
-function setModel(selected) {
-  const selectedValue = getSelectedValue(selected);
-  const value = selectedValue?.length ? selectedValue : undefined;
-
-  if(stateful) {
-    selectButtonStates[path] = value;
-  }
-
-  if(arrayEquals(value, getModel())) { return; }
-
-  model.value = value
-    ? targetProp
-      ? value.map(v => ({ [targetProp]: v }))
-      : value
-    : undefined;
-}
-
-function setSelected(value) {
-  // data can be null when data is async
-  if(!data) { return; }
-  selected.value = optionValue
-    ? data.filter(o => value?.includes(o[optionValue]))
-    : value;
-
-  if(stateful) {
-    const selectedValue = getSelectedValue(selected.value);
-    const current = getModel();
-    const isSame = current?.length === selectedValue?.length && current?.every(v => selectedValue.includes(v));
-    if(!isSame) {
-      // setModel expects raw option objects, not the already-extracted values
-      setModel(selected.value);
-    }
-  }
-}
-
-function getSelectedValue(selected) {
-  return optionValue ? selected?.map(s => s[optionValue]) : selected;
-}
-
-function arrayEquals(a, b) {
-  return a?.length === b?.length && a?.every((v, i) => v === b[i]);
-}
 </script>

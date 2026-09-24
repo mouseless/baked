@@ -48,9 +48,8 @@
   </AwaitLoading>
 </template>
 <script setup>
-import { ref, watch } from "vue";
 import { MultiSelect } from "primevue";
-import { useContext, useLocalization, useUiStates } from "#imports";
+import { useContext, useLocalization, useUiStates, useSelection } from "#imports";
 import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
@@ -78,22 +77,16 @@ const {
 } = schema;
 
 const path = context.injectPath();
-const selected = ref();
+const { selected } = useSelection({
+  data,
+  model,
+  path,
+  stateStore: selectStates,
+  stateful,
+  targetProp,
+  mode: "multi"
+});
 const placeholder = label?.text ? l(label.text) : null;
-
-// NOTE - Duplicates in Select, SelectButton, MultiSelect, and MultiSelectButton
-// should be reduced two way binding between model and selected
-watch(
-  [() => data, getModel],
-  ([_data, _model]) => {
-    if(!_data) { return; }
-
-    const value = stateful ? (selectStates[path] ?? _model) : _model;
-    setSelected(value);
-  },
-  { immediate: true }
-);
-watch(selected, newSelected => setModel(newSelected));
 
 function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
@@ -108,25 +101,6 @@ function getValueLabel(value) {
     .join(", ");
 }
 
-function getModel() {
-  // TODO - This has not been tested! It will be tested with Locatables
-  return targetProp ? model.value?.map(selection => selection[targetProp]) : model.value;
-}
-
-function setModel(newSelected) {
-  const value = newSelected?.length ? newSelected : undefined;
-
-  if(stateful) {
-    selectStates[path] = value;
-  }
-
-  model.value = value
-    ? targetProp
-      ? value.map(v => ({ [targetProp]: v }))
-      : value
-    : undefined;
-}
-
 function findLabel(value) {
   const option = optionValue
     ? data?.find(o => o[optionValue] === value)
@@ -135,18 +109,4 @@ function findLabel(value) {
   return optionLabel ? option?.[optionLabel] : option;
 }
 
-function setSelected(value) {
-  // data can be null when data is async
-  if(!data) { return; }
-
-  selected.value = value ?? null;
-
-  if(stateful) {
-    const current = getModel();
-    const isSame = current?.length === selected.value?.length && current?.every(v => selected.value.includes(v));
-    if(!isSame) {
-      setModel(selected.value);
-    }
-  }
-}
 </script>
