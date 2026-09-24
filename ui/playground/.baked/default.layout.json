@@ -305,12 +305,6 @@
             "title": "/specs/input-text:Title",
             "parentRoute": "/specs"
           },
-          "/specs/input-textarea": {
-            "route": "/specs/input-textarea",
-            "icon": "pi pi-microchip",
-            "title": "/specs/input-textarea:Title",
-            "parentRoute": "/specs"
-          },
           "/specs/input-url": {
             "route": "/specs/input-url",
             "icon": "pi pi-microchip",
@@ -357,6 +351,12 @@
             "route": "/specs/select-button",
             "icon": "pi pi-microchip",
             "title": "/specs/select-button:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/textarea": {
+            "route": "/specs/textarea",
+            "icon": "pi pi-microchip",
+            "title": "/specs/textarea:Title",
             "parentRoute": "/specs"
           },
           "/specs/data-container": {

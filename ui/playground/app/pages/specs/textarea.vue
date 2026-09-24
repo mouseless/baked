@@ -11,7 +11,7 @@ import giveMe from "@utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.anInputTextarea({
+    descriptor: giveMe.aTextarea({
       label: "Spec: Label"
     }),
     model: ref("initial value")

@@ -51,9 +51,6 @@ export default {
   inputText: {
     base: ".p-inputtext"
   },
-  inputTextarea: {
-    base: ".p-textarea"
-  },
   message: {
     base: ".p-message",
     icon: ".pi",
@@ -99,6 +96,9 @@ export default {
   },
   tag: {
     base: ".p-tag"
+  },
+  textarea: {
+    base: ".p-textarea"
   },
   toast: {
     base: ".p-toast",

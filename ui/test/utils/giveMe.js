@@ -657,19 +657,6 @@ export default {
     };
   },
 
-  anInputTextarea({ label } = {}) {
-    label = typeof label === "string"
-      ? this.aLabel({ text: label })
-      : $(label, this.aLabel());
-
-    return {
-      type: "InputTextarea",
-      schema: {
-        label
-      }
-    };
-  },
-
   anInputUrl({ label } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })
@@ -1109,6 +1096,19 @@ export default {
       type: "Text",
       schema: { maxLength, prop },
       data
+    };
+  },
+
+  aTextarea({ label } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "Textarea",
+      schema: {
+        label
+      }
     };
   },
 

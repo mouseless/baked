@@ -68,7 +68,6 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/input-number", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/input-rate", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/input-text", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
-                r => r.Child("/specs/input-textarea", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/input-url", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/labeler", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/language-switcher", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
@@ -77,6 +76,7 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/paginator", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/select", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
                 r => r.Child("/specs/select-button", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
+                r => r.Child("/specs/textarea", "/specs") with { Icon = "pi pi-microchip", Section = "Input" },
 
                 // Layout
                 r => r.Child("/specs/data-container", "/specs") with { Icon = "pi pi-microchip", Section = "Layout" },

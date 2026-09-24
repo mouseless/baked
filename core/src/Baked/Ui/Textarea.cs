@@ -1,6 +1,6 @@
 namespace Baked.Ui;
 
-public record InputTextarea : IComponentSchema, ILabeler
+public record Textarea : IComponentSchema, ILabeler
 {
     public Label? Label { get; set; }
 }

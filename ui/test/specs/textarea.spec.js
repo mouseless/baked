@@ -3,7 +3,7 @@ import primevue from "../utils/locators/primevue";
 import baked from "../utils/locators/baked";
 
 test.beforeEach(async({ goto }) => {
-  await goto("/specs/input-textarea", { waitUntil: "hydration" });
+  await goto("/specs/textarea", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
@@ -17,7 +17,7 @@ test.describe("Base", () => {
 
   test("initial value", async({ page }) => {
     const component = page.getByTestId(id);
-    const textarea = component.locator(primevue.inputTextarea.base);
+    const textarea = component.locator(primevue.textarea.base);
 
     await expect(textarea).toHaveValue("initial value");
   });

@@ -26,7 +26,6 @@ import {
 	InputNumber,
 	InputRate,
 	InputText,
-	InputTextarea,
 	InputUrl,
 	LanguageSwitcher,
 	LoginPage,
@@ -52,6 +51,7 @@ import {
 	SimplePage,
 	TabbedPage,
 	Text,
+	Textarea,
 	TextLink
 } from "#components";
 
@@ -83,7 +83,6 @@ export {
 	InputNumber,
 	InputRate,
 	InputText,
-	InputTextarea,
 	InputUrl,
 	LanguageSwitcher,
 	LoginPage,
@@ -109,5 +108,6 @@ export {
 	SimplePage,
 	TabbedPage,
 	Text,
+	Textarea,
 	TextLink
 }

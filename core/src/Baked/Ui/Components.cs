@@ -156,10 +156,6 @@ public static class Components
         Action<InputText>? options = default
     ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<InputTextarea> InputTextarea(
-        Action<InputTextarea>? options = default
-    ) => new(options.Apply(new()));
-
     public static ComponentDescriptor<InputUrl> InputUrl(
         Action<InputUrl>? options = default
     ) => new(options.Apply(new()));
@@ -296,6 +292,10 @@ public static class Components
         Action<Text>? options = default,
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
+
+    public static ComponentDescriptor<Textarea> Textarea(
+        Action<Textarea>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<TextLink> TextLink(
         Action<TextLink>? options = default,
