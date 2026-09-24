@@ -54,7 +54,6 @@ const variants = [
       inline: false
     }),
     model: ref("OPTION 1")
-
   },
   {
     name: "Stateful and Inline",
@@ -64,7 +63,6 @@ const variants = [
       inline: true
     }),
     model: ref("OPTION 1")
-
   },
   {
     name: "Set Selected",

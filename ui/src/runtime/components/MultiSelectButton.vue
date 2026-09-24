@@ -110,15 +110,17 @@ function setModel(selected) {
 function setSelected(value) {
   // data can be null when data is async
   if(!data) { return; }
-
+  console.log("hit here");
   selected.value = optionValue
     ? data.filter(o => value?.includes(o[optionValue]))
     : value;
 
   if(stateful) {
     const selectedValue = getSelectedValue(selected.value);
-    if(getModel() !== selectedValue) {
-      setModel(selected.value);
+    const current = getModel();
+    const isSame = current?.length === selectedValue?.length && current?.every(v => selectedValue.includes(v));
+    if(!isSame) {
+      setModel(selectedValue);
     }
   }
 }
