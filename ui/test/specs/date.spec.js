@@ -16,6 +16,19 @@ test.describe("Base", () => {
   });
 });
 
+test.describe("UTC", () => {
+  const id = "UTC";
+
+  test("datetime only shows the utc", async({ page }) => {
+    const component = page.getByTestId(id);
+    const dates = component.locator(baked.date.base);
+
+    await expect(dates.nth(0)).toHaveText("2026-01-01 00:00:01");
+    await expect(dates.nth(1)).toHaveText("2025-12-31 23:59:59");
+    await expect(dates.nth(2)).toHaveText("2026-01-01 00:00:00");
+  });
+});
+
 test.describe("Format Positioning", () => {
   const id = "Format Positioning";
 

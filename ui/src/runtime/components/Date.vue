@@ -27,9 +27,9 @@ const text = computed(() => {
   const date = new Date(data.value);
   if(isNaN(date.getTime())) { return data.value; }
 
-  const dd = String(date.getUTCDate()).padStart(2, "0");
-  const MM = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const yyyy = String(date.getUTCFullYear());
+  const dd = String(date.getDate()).padStart(2, "0");
+  const MM = String(date.getMonth() + 1).padStart(2, "0");
+  const yyyy = String(date.getFullYear());
   const HH = String(date.getHours()).padStart(2, "0");
   const mm = String(date.getMinutes()).padStart(2, "0");
   const ss = String(date.getSeconds()).padStart(2, "0");

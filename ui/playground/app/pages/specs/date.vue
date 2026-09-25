@@ -10,6 +10,16 @@ const variants = [
     descriptor: giveMe.aDate({ value: "2026-01-15", format: null })
   },
   {
+    name: "UTC",
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aDate({ value: "2026-01-01T00:00:01.000000", format: "yyyy-MM-dd HH:mm:ss" }),
+        giveMe.aDate({ value: "2025-12-31T23:59:59.999999", format: "yyyy-MM-dd HH:mm:ss" }),
+        giveMe.aDate({ value: "2026-01-01T00:00:00.000000", format: "yyyy-MM-dd HH:mm:ss" })
+      ]
+    })
+  },
+  {
     name: "Format Positioning",
     descriptor: giveMe.aContainer({
       contents: [
