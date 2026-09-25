@@ -11,6 +11,9 @@ public static class Components
         Action<CardLink>? options = default
     ) => new(options.Apply(new(route, title)));
 
+    public static ComponentDescriptor<Check> Check() =>
+        new(new());
+
     public static ComponentDescriptor<Composite> Composite(
         Action<Composite>? options = default
     ) => new(options.Apply(new()));
@@ -51,6 +54,10 @@ public static class Components
     public static DataTable.VirtualScroller DataTableVirtualScroller(
         Action<DataTable.VirtualScroller>? options = default
     ) => options.Apply(new());
+
+    public static ComponentDescriptor<Date> Date(
+        Action<Date>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<DefaultLayout> DefaultLayout(string name,
         Action<DefaultLayout>? options = default
@@ -121,12 +128,36 @@ public static class Components
         Action<Input>? options = default
     ) => options.Apply(new(name, component));
 
-    public static ComponentDescriptor<InputText> InputText(
-        Action<InputText>? options = default
+    public static ComponentDescriptor<InputCheckbox> InputCheckbox(
+        Action<InputCheckbox>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<InputDate> InputDate(
+        Action<InputDate>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<InputMailAddress> InputMailAddress(
+        Action<InputMailAddress>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<InputMoney> InputMoney(
+        Action<InputMoney>? options = default
     ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<InputNumber> InputNumber(
         Action<InputNumber>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<InputRate> InputRate(
+        Action<InputRate>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<InputText> InputText(
+        Action<InputText>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<InputUrl> InputUrl(
+        Action<InputUrl>? options = default
     ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<LanguageSwitcher> LanguageSwitcher(
@@ -179,6 +210,14 @@ public static class Components
     public static ComponentDescriptor<Money> Money(
         Action<Money>? options = default,
         IData? data = default
+    ) => new(options.Apply(new())) { Data = data };
+
+    public static ComponentDescriptor<MultiSelect> MultiSelect(IData data,
+        Action<MultiSelect>? options = default
+    ) => new(options.Apply(new())) { Data = data };
+
+    public static ComponentDescriptor<MultiSelectButton> MultiSelectButton(IData data,
+        Action<MultiSelectButton>? options = default
     ) => new(options.Apply(new())) { Data = data };
 
     public static ComponentDescriptor<NavLink> NavLink(string path,
@@ -251,6 +290,15 @@ public static class Components
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,
+        IData? data = default
+    ) => new(options.Apply(new())) { Data = data };
+
+    public static ComponentDescriptor<Textarea> Textarea(
+        Action<Textarea>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<TextLink> TextLink(
+        Action<TextLink>? options = default,
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 }

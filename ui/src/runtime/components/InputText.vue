@@ -40,7 +40,7 @@ const path = context.injectPath();
 const input = ref("");
 
 watch(model, newValue => {
-  input.value = newValue;
+  input.value = (newValue && targetProp ? newValue[targetProp] : newValue) ?? "";
 }, { immediate: true });
 
 function onUpdate(value) {

@@ -101,7 +101,23 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         metadata.Has<ValueTypeAttribute>()
                     ),
                 component: () => B.Text(),
-                order: Order.At.Theme.Min
+                order: Order.At.Min
+            );
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<Uri>(),
+                component: () => B.TextLink()
+            );
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<bool>(),
+                component: () => B.Check()
+            );
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
+                component: () => B.Date()
+            );
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
+                component: () => B.Date()
             );
 
             // Method Defaults
@@ -252,15 +268,27 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c =>
                     c.Parameter.ParameterType.Is<string>() ||
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
-                component: (c, cc) => ParameterInputText(c.Parameter, cc),
-                order: Order.At.Theme.Min
+                component: (c, cc) => ParameterInputText(c.Parameter, cc)
             );
             conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<long>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
-                order: Order.At.Theme.Min
+                order: Order.At.Min
+            );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<bool>(),
+                component: (c, cc) => B.InputCheckbox()
+            );
+            conventions.AddParameterComponentConfiguration<InputCheckbox>(
+                when: c =>
+                    c.Parameter.ParameterType.Is<bool?>() && c.Parameter.Get<ParameterModelAttribute>().FromBodyOrForm,
+                component: ic => ic.Schema.Indeterminate = true
+            );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<Uri>(),
+                component: (c, cc) => B.InputUrl()
             );
 
             // `PageTitle` defaults

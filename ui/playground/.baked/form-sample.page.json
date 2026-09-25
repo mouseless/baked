@@ -305,6 +305,20 @@
                         },
                         "title": "Role",
                         "exportable": true
+                      },
+                      {
+                        "key": "website",
+                        "component": {
+                          "type": "TextLink",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.website"
+                          }
+                        },
+                        "title": "Website",
+                        "exportable": true
                       }
                     ],
                     "dataKey": "id",
@@ -366,6 +380,19 @@
                                       "schema": {
                                         "label": {
                                           "text": "Description",
+                                          "mode": "ifta",
+                                          "showOptionality": true
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "website",
+                                    "component": {
+                                      "type": "InputUrl",
+                                      "schema": {
+                                        "label": {
+                                          "text": "Website",
                                           "mode": "ifta",
                                           "showOptionality": true
                                         }

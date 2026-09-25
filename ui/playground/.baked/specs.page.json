@@ -195,6 +195,18 @@
         "title": "Display",
         "links": [
           {
+            "title": "/specs/check:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/check",
+                "icon": "pi pi-microchip",
+                "title": "/specs/check:Title",
+                "description": "/specs/check:Description"
+              }
+            }
+          },
+          {
             "title": "/specs/card-link:Title",
             "component": {
               "type": "CardLink",
@@ -215,6 +227,18 @@
                 "icon": "pi pi-microchip",
                 "title": "/specs/data-table:Title",
                 "description": "/specs/data-table:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/date:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/date",
+                "icon": "pi pi-microchip",
+                "title": "/specs/date:Title",
+                "description": "/specs/date:Description"
               }
             }
           },
@@ -325,6 +349,18 @@
                 "description": "/specs/text:Description"
               }
             }
+          },
+          {
+            "title": "/specs/text-link:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/text-link",
+                "icon": "pi pi-microchip",
+                "title": "/specs/text-link:Title",
+                "description": "/specs/text-link:Description"
+              }
+            }
           }
         ]
       },
@@ -373,14 +409,50 @@
             }
           },
           {
-            "title": "/specs/input-text:Title",
+            "title": "/specs/input-checkbox:Title",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/input-text",
+                "route": "/specs/input-checkbox",
                 "icon": "pi pi-microchip",
-                "title": "/specs/input-text:Title",
-                "description": "/specs/input-text:Description"
+                "title": "/specs/input-checkbox:Title",
+                "description": "/specs/input-checkbox:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/input-date:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-date",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-date:Title",
+                "description": "/specs/input-date:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/input-mail-address:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-mail-address",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-mail-address:Title",
+                "description": "/specs/input-mail-address:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/input-money:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-money",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-money:Title",
+                "description": "/specs/input-money:Description"
               }
             }
           },
@@ -393,6 +465,42 @@
                 "icon": "pi pi-microchip",
                 "title": "/specs/input-number:Title",
                 "description": "/specs/input-number:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/input-rate:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-rate",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-rate:Title",
+                "description": "/specs/input-rate:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/input-text:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-text",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-text:Title",
+                "description": "/specs/input-text:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/input-url:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-url",
+                "icon": "pi pi-microchip",
+                "title": "/specs/input-url:Title",
+                "description": "/specs/input-url:Description"
               }
             }
           },
@@ -417,6 +525,30 @@
                 "icon": "pi pi-microchip",
                 "title": "/specs/language-switcher:Title",
                 "description": "/specs/language-switcher:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/multi-select:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/multi-select",
+                "icon": "pi pi-microchip",
+                "title": "/specs/multi-select:Title",
+                "description": "/specs/multi-select:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/multi-select-button:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/multi-select-button",
+                "icon": "pi pi-microchip",
+                "title": "/specs/multi-select-button:Title",
+                "description": "/specs/multi-select-button:Description"
               }
             }
           },
@@ -453,6 +585,18 @@
                 "icon": "pi pi-microchip",
                 "title": "/specs/select-button:Title",
                 "description": "/specs/select-button:Description"
+              }
+            }
+          },
+          {
+            "title": "/specs/textarea:Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/textarea",
+                "icon": "pi pi-microchip",
+                "title": "/specs/textarea:Title",
+                "description": "/specs/textarea:Description"
               }
             }
           }

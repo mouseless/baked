@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import giveMe from "../utils/giveMe";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto, page }) => {
@@ -56,6 +57,46 @@ test.describe("Dynamic", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.button.base)).toHaveAttribute("href", "/test-path/test-id?query=value");
+  });
+});
+
+test.describe("Summary", () => {
+  const id = "Summary";
+
+  test("show summary in popover", async({ page }) => {
+    const component = page.getByTestId(id);
+    const link = component.locator(primevue.button.base);
+    const popover = page.locator(primevue.popover.content).first();
+
+    await link.hover();
+
+    await expect(popover).toBeAttached();
+    await expect(popover).toHaveText("NavLink summary content");
+  });
+
+  test("show summary in popover on mobile", async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "sm" });
+    const icon = component.locator(primevue.icon.base);
+    const popover = page.locator(primevue.popover.content).first();
+
+    await page.setViewportSize({ ...screen });
+    await expect(icon).toBeVisible();
+
+    await icon.click();
+
+    await expect(popover).toBeAttached();
+    await expect(popover).toHaveText("NavLink summary content");
+  });
+});
+
+test.describe("Max Length", () => {
+  const id = "Max Length";
+
+  test("truncate link label", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveText("This is...");
   });
 });
 

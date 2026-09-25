@@ -1,7 +1,8 @@
 export default {
   button: {
     base: ".p-button",
-    icon: ".p-button-icon"
+    icon: ".p-button-icon",
+    link: ".p-button-link"
   },
   breadcrumb: {
     base: ".p-breadcrumb",
@@ -10,13 +11,18 @@ export default {
     icon: ".p-breadcrumb-item-icon",
     label: ".p-breadcrumb-item-label"
   },
+  checkbox: {
+    base: ".p-checkbox"
+  },
   datatable: {
     container: ".p-datatable-table-container",
     header: ".p-datatable-header",
     footer: ".p-datatable-tfoot"
   },
   datepicker: {
-    weekday: ".p-datepicker-weekday"
+    base: ".p-datepicker",
+    weekday: ".p-datepicker-weekday",
+    calendar: ".p-datepicker-calendar"
   },
   dialog: {
     base: ".p-dialog",
@@ -31,8 +37,14 @@ export default {
   iftaLabel: {
     base: ".p-iftalabel"
   },
+  icon: {
+    base: ".pi"
+  },
   inputGroup: {
     base: ".p-inputgroup"
+  },
+  inputGroupAddon: {
+    base: ".p-inputgroupaddon"
   },
   inputNumber: {
     base: ".p-inputnumber"
@@ -44,6 +56,14 @@ export default {
     base: ".p-message",
     icon: ".pi",
     content: ".p-message-content"
+  },
+  multiselect: {
+    base: ".p-multiselect",
+    option: ".p-multiselect-option",
+    optionSelected: ".p-multiselect-option-selected",
+    clearIcon: ".p-multiselect-clear-icon",
+    label: ".p-multiselect-label",
+    selectAll: ".p-multiselect-header .p-checkbox"
   },
   paginator: {
     base: ".p-paginator-default",
@@ -77,6 +97,9 @@ export default {
   },
   tag: {
     base: ".p-tag"
+  },
+  textarea: {
+    base: ".p-textarea"
   },
   toast: {
     base: ".p-toast",

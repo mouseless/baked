@@ -19,6 +19,9 @@
   "MenuPage": {
     "No item available!": "Hiçbir öğe mevcut değil!"
   },
+  "MultiSelect": {
+    "{number} items selected": "{number} seçenek seçildi"
+  },
   "Paginator": {
     "Page {page}": "Sayfa {page}"
   },
@@ -27,6 +30,11 @@
   },
   "useDefaultValidation": {
     "{label} cannot be empty": "{label} boş bırakılamaz"
+  },
+  "useInputValidator": {
+    "Invalid date": "Geçersiz Tarih",
+    "Invalid e-mail address": "Geçersiz e-posta adresi",
+    "Invalid URL": "Geçersiz URL"
   },
   "useFormat": {
     "suffix": {

@@ -161,6 +161,12 @@
             "title": "/specs/toast:Title",
             "parentRoute": "/specs"
           },
+          "/specs/check": {
+            "route": "/specs/check",
+            "icon": "pi pi-microchip",
+            "title": "/specs/check:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/card-link": {
             "route": "/specs/card-link",
             "icon": "pi pi-microchip",
@@ -171,6 +177,12 @@
             "route": "/specs/data-table",
             "icon": "pi pi-microchip",
             "title": "/specs/data-table:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/date": {
+            "route": "/specs/date",
+            "icon": "pi pi-microchip",
+            "title": "/specs/date:Title",
             "parentRoute": "/specs"
           },
           "/specs/fieldset": {
@@ -227,6 +239,12 @@
             "title": "/specs/text:Title",
             "parentRoute": "/specs"
           },
+          "/specs/text-link": {
+            "route": "/specs/text-link",
+            "icon": "pi pi-microchip",
+            "title": "/specs/text-link:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/simple-form": {
             "route": "/specs/simple-form",
             "icon": "pi pi-microchip",
@@ -245,16 +263,52 @@
             "title": "/specs/button:Title",
             "parentRoute": "/specs"
           },
-          "/specs/input-text": {
-            "route": "/specs/input-text",
+          "/specs/input-checkbox": {
+            "route": "/specs/input-checkbox",
             "icon": "pi pi-microchip",
-            "title": "/specs/input-text:Title",
+            "title": "/specs/input-checkbox:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/input-date": {
+            "route": "/specs/input-date",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-date:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/input-mail-address": {
+            "route": "/specs/input-mail-address",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-mail-address:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/input-money": {
+            "route": "/specs/input-money",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-money:Title",
             "parentRoute": "/specs"
           },
           "/specs/input-number": {
             "route": "/specs/input-number",
             "icon": "pi pi-microchip",
             "title": "/specs/input-number:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/input-rate": {
+            "route": "/specs/input-rate",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-rate:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/input-text": {
+            "route": "/specs/input-text",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-text:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/input-url": {
+            "route": "/specs/input-url",
+            "icon": "pi pi-microchip",
+            "title": "/specs/input-url:Title",
             "parentRoute": "/specs"
           },
           "/specs/labeler": {
@@ -267,6 +321,18 @@
             "route": "/specs/language-switcher",
             "icon": "pi pi-microchip",
             "title": "/specs/language-switcher:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/multi-select": {
+            "route": "/specs/multi-select",
+            "icon": "pi pi-microchip",
+            "title": "/specs/multi-select:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/multi-select-button": {
+            "route": "/specs/multi-select-button",
+            "icon": "pi pi-microchip",
+            "title": "/specs/multi-select-button:Title",
             "parentRoute": "/specs"
           },
           "/specs/paginator": {
@@ -285,6 +351,12 @@
             "route": "/specs/select-button",
             "icon": "pi pi-microchip",
             "title": "/specs/select-button:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/textarea": {
+            "route": "/specs/textarea",
+            "icon": "pi pi-microchip",
+            "title": "/specs/textarea:Title",
             "parentRoute": "/specs"
           },
           "/specs/data-container": {
