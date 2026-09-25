@@ -30,10 +30,16 @@ const text = computed(() => {
   const dd = String(date.getUTCDate()).padStart(2, "0");
   const MM = String(date.getUTCMonth() + 1).padStart(2, "0");
   const yyyy = String(date.getUTCFullYear());
+  const HH = String(date.getHours()).padStart(2, "0");
+  const mm = String(date.getMinutes()).padStart(2, "0");
+  const ss = String(date.getSeconds()).padStart(2, "0");
 
   return format
     .replace("dd", dd)
     .replace("MM", MM)
-    .replace("yyyy", yyyy);
+    .replace("yyyy", yyyy)
+    .replace("HH", HH)
+    .replace("mm", mm)
+    .replace("ss", ss);
 });
 </script>

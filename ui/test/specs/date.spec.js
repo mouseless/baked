@@ -41,6 +41,19 @@ test.describe("Format divide char", () => {
   });
 });
 
+test.describe("Time Formatting", () => {
+  const id = "Time Formatting";
+
+  test("format with hours, minutes and seconds", async({ page }) => {
+    const component = page.getByTestId(id);
+    const dates = component.locator(baked.date.base);
+
+    await expect(dates.nth(0)).toHaveText("14:30:45");
+    await expect(dates.nth(1)).toHaveText("14:30");
+    await expect(dates.nth(2)).toHaveText("2026-01-15 14:30:45");
+  });
+});
+
 test.describe("Prop", () => {
   const id = "Prop";
 

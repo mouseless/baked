@@ -29,6 +29,16 @@ const variants = [
     })
   },
   {
+    name: "Time Formatting",
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aDate({ value: "2026-01-15T14:30:45", format: "HH:mm:ss" }),
+        giveMe.aDate({ value: "2026-01-15T14:30:45", format: "HH:mm" }),
+        giveMe.aDate({ value: "2026-01-15T14:30:45", format: "yyyy-MM-dd HH:mm:ss" })
+      ]
+    })
+  },
+  {
     name: "Prop",
     descriptor: giveMe.aDate({
       format: null,
