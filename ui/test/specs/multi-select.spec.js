@@ -47,6 +47,12 @@ test.describe("Base", () => {
 
     await expect(model).toBeEmpty();
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Base w/ Localization", () => {

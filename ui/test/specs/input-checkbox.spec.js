@@ -21,6 +21,12 @@ test.describe("Base", () => {
 
     await expect(checkbox).toHaveAttribute("data-p-checked", "true");
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Indeterminate", () => {
@@ -43,6 +49,12 @@ test.describe("Indeterminate", () => {
     await checkbox.click(); // set undefined
 
     await expect(checkbox).toHaveAttribute("data-p-indeterminate", "true");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
   });
 });
 

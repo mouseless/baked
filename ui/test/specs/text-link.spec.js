@@ -15,6 +15,12 @@ test.describe("Base", () => {
     await expect(anchor).toHaveAttribute("href", "https://baked.mouseless.codes");
     await expect(anchor).toHaveText("baked.mouseless.codes");
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Truncated", () => {

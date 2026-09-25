@@ -13,6 +13,12 @@ test.describe("True", () => {
 
     await expect(component.locator(primevue.icon.base)).toHaveClass(/pi-check/);
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("False", () => {
@@ -23,6 +29,12 @@ test.describe("False", () => {
 
     await expect(component.locator(primevue.icon.base)).toHaveClass(/pi-times/);
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Null", () => {
@@ -32,5 +44,11 @@ test.describe("Null", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.icon.base)).not.toBeAttached();
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
   });
 });

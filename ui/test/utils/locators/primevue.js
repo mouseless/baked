@@ -21,7 +21,8 @@ export default {
   },
   datepicker: {
     base: ".p-datepicker",
-    weekday: ".p-datepicker-weekday"
+    weekday: ".p-datepicker-weekday",
+    calendar: ".p-datepicker-calendar"
   },
   dialog: {
     base: ".p-dialog",

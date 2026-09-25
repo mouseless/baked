@@ -14,6 +14,12 @@ test.describe("Base", () => {
 
     await expect(content).toHaveText("2026-01-15");
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("UTC", () => {

@@ -21,6 +21,12 @@ test.describe("Base", () => {
 
     await expect(textarea).toHaveValue("initial value");
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Validation", () => {

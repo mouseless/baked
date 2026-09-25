@@ -23,6 +23,12 @@ test.describe("Base", () => {
     await expect(input).toHaveValue("15/01/2026");
     await expect(model).toHaveText("2026-01-15");
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Use Picker", () => {
@@ -30,14 +36,24 @@ test.describe("Use Picker", () => {
 
   test("renders date picker", async({ page }) => {
     const component = page.getByTestId(id);
+    const calendar = page.locator(primevue.datepicker.calendar);
+    component.click();
 
-    await expect(component.locator(primevue.datepicker.base)).toBeVisible();
+    await expect(calendar).toBeAttached();
   });
 
   test("sets the initial model value", async({ page }) => {
     const model = page.getByTestId(`${id}:model`);
 
     await expect(model).toHaveText("2026-01-15");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const calendar = page.locator(primevue.datepicker.calendar);
+    component.click();
+
+    await expect(calendar).toHaveScreenshot();
   });
 });
 

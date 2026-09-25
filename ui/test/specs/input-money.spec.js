@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
@@ -40,5 +41,16 @@ test.describe("Custom Icon", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.inputGroupAddon.base).locator("i")).toHaveClass(/pi-turkish-lira/);
+  });
+});
+
+test.describe("Validation", () => {
+  const id = "Validation";
+
+  test("component shows the message component under the component", async({ page }) => {
+    const component = page.getByTestId(id);
+    const message = component.locator(baked.message.base);
+
+    await expect(message).toHaveText("this is an error message");
   });
 });
