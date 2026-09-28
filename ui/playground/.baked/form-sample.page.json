@@ -453,42 +453,6 @@
                                     "usePicker": true
                                   }
                                 }
-                              },
-                              {
-                                "name": "useTransaction",
-                                "required": true,
-                                "default": {
-                                  "type": "Inline",
-                                  "value": false
-                                },
-                                "component": {
-                                  "type": "InputCheckbox",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Use Transaction",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "throwError",
-                                "required": true,
-                                "default": {
-                                  "type": "Inline",
-                                  "value": false
-                                },
-                                "component": {
-                                  "type": "InputCheckbox",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Throw Error",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
                               }
                             ],
                             "dialogOptions": {

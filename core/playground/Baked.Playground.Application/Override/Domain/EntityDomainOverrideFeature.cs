@@ -24,7 +24,7 @@ public class EntityDomainOverrideFeature : IFeature
             );
 
             conventions.RemoveParameterSchema<Input>(
-                when: c => c.Type.Is<Entity>() && c.Parameter.Name is "dynamic" or "guid" or "timeonly" or "dateTime",
+                when: c => c.Type.Is<Entity>() && c.Parameter.Name is "dynamic" or "guid" or "timeonly" or "dateTime" or "throwError" or "useTransaction",
                 order: Order.At.Override
             );
 
