@@ -57,6 +57,48 @@
                   }
                 },
                 {
+                  "name": "decimal",
+                  "numeric": true,
+                  "component": {
+                    "type": "InputMoney",
+                    "schema": {
+                      "label": {
+                        "text": "Decimal",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "double",
+                  "numeric": true,
+                  "component": {
+                    "type": "InputRate",
+                    "schema": {
+                      "label": {
+                        "text": "Double",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "boolean",
+                  "component": {
+                    "type": "InputCheckbox",
+                    "schema": {
+                      "label": {
+                        "text": "Boolean",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      },
+                      "indeterminate": true
+                    }
+                  }
+                },
+                {
                   "name": "unique",
                   "component": {
                     "type": "InputText",
@@ -332,6 +374,45 @@
                 }
               },
               {
+                "key": "decimal",
+                "label": "Decimal",
+                "component": {
+                  "type": "Money",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.decimal"
+                  }
+                }
+              },
+              {
+                "key": "double",
+                "label": "Double",
+                "component": {
+                  "type": "Rate",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.double"
+                  }
+                }
+              },
+              {
+                "key": "boolean",
+                "label": "Boolean",
+                "component": {
+                  "type": "Check",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.boolean"
+                  }
+                }
+              },
+              {
                 "key": "uri",
                 "label": "Uri",
                 "component": {
@@ -363,7 +444,7 @@
                 "component": {
                   "type": "Date",
                   "schema": {
-                    "format": "dd-MM-yyyy hh:mm:ss"
+                    "format": "dd-MM-yyyy HH:mm:ss"
                   },
                   "data": {
                     "type": "Context",

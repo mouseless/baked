@@ -6,6 +6,9 @@ entity {
     string @parameter-model
     string-data @parameter-model
     int32 @parameter-model
+    decimal @parameter-model
+    double @parameter-model
+    boolean @parameter-model
     unique @parameter-model
     uri @parameter-model
     mail-address @parameter-model
@@ -21,6 +24,9 @@ entity {
     string @parameter-model
     string-data @parameter-model
     int32 @parameter-model
+    decimal @parameter-model
+    double @parameter-model
+    boolean @parameter-model
     unique @parameter-model
     uri @parameter-model
     mail-address @parameter-model
@@ -57,6 +63,15 @@ entities @controller-model {
       @parameter-model in="query"
     }
     int32 {
+      @parameter-model in="query"
+    }
+    decimal {
+      @parameter-model in="query"
+    }
+    double {
+      @parameter-model in="query"
+    }
+    boolean {
       @parameter-model in="query"
     }
     unique {

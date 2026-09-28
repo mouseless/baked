@@ -145,6 +145,50 @@
                     "exportable": true
                   },
                   {
+                    "key": "decimal",
+                    "component": {
+                      "type": "Money",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.decimal"
+                      }
+                    },
+                    "title": "Decimal",
+                    "alignRight": true,
+                    "exportable": true
+                  },
+                  {
+                    "key": "double",
+                    "component": {
+                      "type": "Rate",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.double"
+                      }
+                    },
+                    "title": "Double",
+                    "alignRight": true,
+                    "exportable": true
+                  },
+                  {
+                    "key": "boolean",
+                    "component": {
+                      "type": "Check",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.boolean"
+                      }
+                    },
+                    "title": "Boolean",
+                    "exportable": true
+                  },
+                  {
                     "key": "uri",
                     "component": {
                       "type": "TextLink",
@@ -177,7 +221,7 @@
                     "component": {
                       "type": "Date",
                       "schema": {
-                        "format": "dd-MM-yyyy hh:mm:ss"
+                        "format": "dd-MM-yyyy HH:mm:ss"
                       },
                       "data": {
                         "type": "Context",
@@ -269,6 +313,48 @@
                                       "mode": "ifta",
                                       "showOptionality": true
                                     }
+                                  }
+                                }
+                              },
+                              {
+                                "name": "decimal",
+                                "numeric": true,
+                                "component": {
+                                  "type": "InputMoney",
+                                  "schema": {
+                                    "label": {
+                                      "text": "Decimal",
+                                      "mode": "ifta",
+                                      "showOptionality": true
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "name": "double",
+                                "numeric": true,
+                                "component": {
+                                  "type": "InputRate",
+                                  "schema": {
+                                    "label": {
+                                      "text": "Double",
+                                      "mode": "ifta",
+                                      "showOptionality": true
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "name": "boolean",
+                                "component": {
+                                  "type": "InputCheckbox",
+                                  "schema": {
+                                    "label": {
+                                      "text": "Boolean",
+                                      "mode": "ifta",
+                                      "showOptionality": true
+                                    },
+                                    "indeterminate": true
                                   }
                                 }
                               },

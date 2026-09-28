@@ -119,7 +119,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
-                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy hh:mm:ss")
+                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy HH:mm:ss")
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),

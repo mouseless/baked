@@ -23,6 +23,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
     /// </summary>
     public string? StringData { get; private set; } = default!;
     public int? Int32 { get; private set; } = default!;
+    public decimal? Decimal { get; private set; } = default!;
+    public double? Double { get; private set; } = default!;
+    public bool? Boolean { get; private set; } = default!;
     public string? Unique { get; private set; } = default!;
     public Uri? Uri { get; private set; } = default!;
     public MailAddress? MailAddress { get; private set; } = default!;
@@ -41,6 +44,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        decimal? @decimal = default,
+        double? @double = default,
+        bool? boolean = default,
         string? unique = default,
         Uri? uri = default,
         MailAddress? mailAddress = default,
@@ -56,6 +62,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
             @string: @string,
             stringData: stringData,
             int32: int32,
+            @decimal: @decimal,
+            @double: @double,
+            boolean: boolean,
             unique: unique,
             uri: uri,
             mailAddress: mailAddress,
@@ -74,6 +83,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        decimal? @decimal = default,
+        double? @double = default,
+        bool? boolean = default,
         string? unique = default,
         Uri? uri = default,
         MailAddress? mailAddress = default,
@@ -92,6 +104,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
                     @string: @string,
                     stringData: stringData,
                     int32: int32,
+                    @decimal: @decimal,
+                    @double: @double,
+                    boolean: boolean,
                     unique: unique,
                     uri: uri,
                     mailAddress: mailAddress,
@@ -108,6 +123,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
                 @string: @string,
                 stringData: stringData,
                 int32: int32,
+                @decimal: @decimal,
+                @double: @double,
+                boolean: boolean,
                 unique: unique,
                 uri: uri,
                 mailAddress: mailAddress,
@@ -146,6 +164,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        decimal? @decimal = default,
+        double? @double = default,
+        bool? boolean = default,
         string? unique = default,
         Uri? uri = default,
         MailAddress? mailAddress = default,
@@ -170,6 +191,9 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         String = @string ?? String;
         StringData = stringData ?? StringData;
         Int32 = int32 ?? Int32;
+        Decimal = @decimal ?? Decimal;
+        Double = @double ?? Double;
+        Boolean = boolean ?? Boolean;
         Unique = unique ?? Unique;
         Uri = uri ?? Uri;
         MailAddress = mailAddress ?? MailAddress;
@@ -193,6 +217,9 @@ public class Entities(IQueryContext<Entity> _context)
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        decimal? @decimal = default,
+        double? @double = default,
+        bool? boolean = default,
         string? unique = default,
         Uri? uri = default,
         MailAddress? mailAddress = default,
@@ -207,6 +234,9 @@ public class Entities(IQueryContext<Entity> _context)
                 (@string is not null, e => e.String == @string),
                 (stringData is not null, e => e.StringData == @stringData),
                 (int32 is not null, e => e.Int32 == int32),
+                (@decimal is not null, e => e.Decimal == @decimal),
+                (@double is not null, e => e.Double == @double),
+                (boolean is not null, e => e.Boolean == boolean),
                 (unique is not null, e => e.Unique == unique),
                 (uri is not null, e => e.Uri == uri),
                 (mailAddress is not null, e => e.MailAddress == mailAddress),
