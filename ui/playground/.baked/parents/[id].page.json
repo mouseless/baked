@@ -54,19 +54,6 @@
                       }
                     }
                   }
-                },
-                {
-                  "name": "website",
-                  "component": {
-                    "type": "InputUrl",
-                    "schema": {
-                      "label": {
-                        "text": "Website",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
                 }
               ],
               "dialogOptions": {
@@ -222,19 +209,6 @@
                     "type": "Context",
                     "key": "parent",
                     "prop": "data.role"
-                  }
-                }
-              },
-              {
-                "key": "website",
-                "label": "Website",
-                "component": {
-                  "type": "TextLink",
-                  "schema": {},
-                  "data": {
-                    "type": "Context",
-                    "key": "parent",
-                    "prop": "data.website"
                   }
                 }
               }

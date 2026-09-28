@@ -12,7 +12,6 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
     public string? Description { get; set; } = default!;
     public Status? Status { get; set; } = default;
     public Role? Role { get; set; } = default!;
-    public Uri? Website { get; private set; } = default!;
 
     public LocatableLabel Surname => _newLocatableLabel().With(SurnameInternal);
     // NOTE Calculated reference (directly or over interface) introduces a case
@@ -45,14 +44,12 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
     public void Update(
         string? name = default,
         string? surname = default,
-        string? description = default,
-        Uri? website = default
+        string? description = default
     )
     {
         Name = name ?? Name;
         SurnameInternal = surname ?? SurnameInternal;
         Description = description ?? Description;
-        Website = website ?? Website;
     }
 
     public void RemoveChild(Child child)

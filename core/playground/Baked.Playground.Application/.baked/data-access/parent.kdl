@@ -7,6 +7,5 @@ parent @entity {
   description @column
   status @column
   role @column
-  website @column
 }
 

@@ -27,7 +27,6 @@ public class SerializingProxyObjects : TestNfr
             { "description", default },
             { "status", default },
             { "role", default },
-            { "website", default },
             { "surname", default }
         });
 
@@ -41,7 +40,6 @@ public class SerializingProxyObjects : TestNfr
             { "description", default },
             { "status", default },
             { "role", default },
-            { "website", default },
             { "surname", default }
         });
     }
