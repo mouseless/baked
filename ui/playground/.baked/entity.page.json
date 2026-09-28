@@ -1,5 +1,5 @@
 {
-  "type": "TabbedPage",
+  "type": "SimplePage",
   "schema": {
     "title": {
       "type": "PageTitle",
@@ -89,6 +89,19 @@
                     "schema": {
                       "label": {
                         "text": "Uri",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "mailAddress",
+                  "component": {
+                    "type": "InputMailAddress",
+                    "schema": {
+                      "label": {
+                        "text": "Mail Address",
                         "mode": "ifta",
                         "showOptionality": true
                       }
@@ -429,8 +442,179 @@
         "value": "/entity:Title"
       }
     },
-    "inputs": [],
-    "tabs": [],
+    "contents": [
+      {
+        "component": {
+          "type": "Fieldset",
+          "schema": {
+            "titleProp": "guid",
+            "fields": [
+              {
+                "key": "guid",
+                "label": "Guid",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.guid"
+                  }
+                }
+              },
+              {
+                "key": "string",
+                "label": "String",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.string"
+                  }
+                }
+              },
+              {
+                "key": "stringData",
+                "label": "String Data",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.stringData"
+                  }
+                }
+              },
+              {
+                "key": "int32",
+                "label": "Int 32",
+                "component": {
+                  "type": "Number",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.int32"
+                  }
+                }
+              },
+              {
+                "key": "unique",
+                "label": "Unique",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.unique"
+                  }
+                }
+              },
+              {
+                "key": "uri",
+                "label": "Uri",
+                "component": {
+                  "type": "TextLink",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.uri"
+                  }
+                }
+              },
+              {
+                "key": "mailAddress",
+                "label": "Mail Address",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.mailAddress"
+                  }
+                }
+              },
+              {
+                "key": "dynamic",
+                "label": "Dynamic",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.dynamic"
+                  }
+                }
+              },
+              {
+                "key": "enum",
+                "label": "Enum",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.enum"
+                  }
+                }
+              },
+              {
+                "key": "dateTime",
+                "label": "Date Time",
+                "component": {
+                  "type": "Date",
+                  "schema": {
+                    "format": "dd-MM-yyyy hh:mm:ss"
+                  },
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.dateTime"
+                  }
+                }
+              },
+              {
+                "key": "dateOnly",
+                "label": "Date Only",
+                "component": {
+                  "type": "Date",
+                  "schema": {
+                    "format": "dd-MM-yyyy"
+                  },
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.dateOnly"
+                  }
+                }
+              },
+              {
+                "key": "timeOnly",
+                "label": "Time Only",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.timeOnly"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "key": "fields"
+      }
+    ],
     "path": "entity"
   }
 }

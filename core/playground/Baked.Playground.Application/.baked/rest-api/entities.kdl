@@ -8,6 +8,7 @@ entity {
     int32 @parameter-model
     unique @parameter-model
     uri @parameter-model
+    mail-address @parameter-model
     dynamic @parameter-model
     enum @parameter-model
     date-time @parameter-model
@@ -22,6 +23,7 @@ entity {
     int32 @parameter-model
     unique @parameter-model
     uri @parameter-model
+    mail-address @parameter-model
     dynamic @parameter-model
     enum @parameter-model
     date-time @parameter-model
@@ -61,6 +63,9 @@ entities @controller-model {
       @parameter-model in="query"
     }
     uri {
+      @parameter-model in="query"
+    }
+    mail-address {
       @parameter-model in="query"
     }
     enum {

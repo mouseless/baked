@@ -8,6 +8,7 @@ entity @entity {
   int32 @column
   unique @column @unique
   uri @column
+  mail-address @column
   dynamic @column
   enum @column @unique
   date-time @column

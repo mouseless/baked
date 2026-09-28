@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Core;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Baked.Ui;
@@ -95,6 +96,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c =>
                     c.Property.PropertyType.Is<string>() ||
                     c.Property.PropertyType.SkipNullable().Is<Guid>() ||
+                    c.Property.PropertyType.SkipNullable().Is<MailAddress>() ||
                     c.Property.PropertyType.SkipNullable().TryGetMetadata(out var metadata) &&
                     (
                         metadata.Has<LocatableAttribute>() ||
@@ -289,6 +291,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<Uri>(),
                 component: (c, cc) => B.InputUrl()
+            );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<MailAddress>(),
+                component: (c, cc) => B.InputMailAddress()
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<DateTime>() || c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
