@@ -17,11 +17,6 @@
             "title": "/cache-samples:Title"
           },
           {
-            "route": "/entity",
-            "icon": "pi pi-box",
-            "title": "/entity:Title"
-          },
-          {
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
             "title": "/form-sample:Title"
@@ -60,11 +55,6 @@
             "icon": "pi pi-database",
             "title": "/cache-samples:Title"
           },
-          "/entity": {
-            "route": "/entity",
-            "icon": "pi pi-box",
-            "title": "/entity:Title"
-          },
           "/form-sample": {
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
@@ -84,6 +74,10 @@
             "route": "/specs",
             "icon": "pi pi-list-check",
             "title": "/specs:Title"
+          },
+          "/entities/[id]": {
+            "route": "/entities/[id]",
+            "title": "/entities/[id]:Title"
           },
           "/parents/[id]": {
             "route": "/parents/[id]",

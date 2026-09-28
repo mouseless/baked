@@ -21,18 +21,6 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/entity",
-                "icon": "pi pi-box",
-                "title": "/entity:Title",
-                "description": "/entity:Description"
-              }
-            }
-          },
-          {
-            "title": "",
-            "component": {
-              "type": "CardLink",
-              "schema": {
                 "route": "/form-sample",
                 "icon": "pi pi-file-edit",
                 "title": "/form-sample:Title",

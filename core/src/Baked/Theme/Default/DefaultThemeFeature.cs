@@ -121,6 +121,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
                 component: () => B.Date(options: td => td.Format = "dd-MM-yyyy hh:mm:ss")
             );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),
+                component: (c, cc) => B.InputMoney()
+            );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<double>(),
+                component: (c, cc) => B.InputRate()
+            );
 
             // Method Defaults
             conventions.SetMethodAttribute(

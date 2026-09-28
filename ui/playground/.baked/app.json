@@ -4,6 +4,10 @@
       "name": "auth",
       "anonymousApiRoutes": [
         {
+          "method": "GET",
+          "path": "form-sample/entities"
+        },
+        {
           "method": "POST",
           "path": "form-sample/parents"
         },
@@ -171,15 +175,6 @@
             "icon": "pi pi-database",
             "title": "/cache-samples:Title",
             "description": "/cache-samples:Description"
-          }
-        },
-        {
-          "type": "CardLink",
-          "schema": {
-            "route": "/entity",
-            "icon": "pi pi-box",
-            "title": "/entity:Title",
-            "description": "/entity:Description"
           }
         },
         {

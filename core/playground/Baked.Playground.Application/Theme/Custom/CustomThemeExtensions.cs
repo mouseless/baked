@@ -16,12 +16,12 @@ public static class CustomThemeExtensions
             [
                 r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
                 r => r.Root<CacheSamples, TabbedPage>("/cache-samples", "pi pi-database"),
-                r => r.Root<Entity, SimplePage>("/entity", "pi pi-box"),
                 r => r.Root<FormSample, SimplePage>("/form-sample", "pi pi-file-edit"),
                 r => r.Child<FormSample, FormPage>("/form-sample/parents/new", "/form-sample", nameof(FormSample.NewParent)),
                 r => r.Root<ReportPageSample, TabbedPage>("/report-page-sample", "pi pi-file"),
                 r => r.Root("/specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()) },
 
+                r => r.RootDynamic<Entity, SimplePage>("/entities/[id]"),
                 r => r.RootDynamic<Parent, SimplePage>("/parents/[id]"),
                 r => r.RootDynamic<RouteParametersSample, SimplePage>("/route-parameters-sample/[id]"),
 

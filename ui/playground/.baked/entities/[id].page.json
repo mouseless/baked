@@ -5,7 +5,7 @@
       "type": "PageTitle",
       "schema": {
         "localizeTitle": true,
-        "description": "/entity:Description",
+        "description": "/entities/[id]:Description",
         "actions": [
           {
             "type": "SimpleForm",
@@ -227,150 +227,6 @@
           {
             "type": "SimpleForm",
             "schema": {
-              "title": "Update String",
-              "submit": {
-                "label": "Update String",
-                "severity": "primary"
-              },
-              "inputs": [
-                {
-                  "name": "string",
-                  "component": {
-                    "type": "InputText",
-                    "schema": {
-                      "label": {
-                        "text": "String",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                }
-              ],
-              "dialogOptions": {
-                "open": {
-                  "icon": "pi pi-pencil",
-                  "label": "Update String"
-                },
-                "cancel": {
-                  "label": "Cancel",
-                  "variant": "text"
-                }
-              }
-            },
-            "action": {
-              "type": "Remote",
-              "path": "entities/{id}/string",
-              "method": "PATCH",
-              "params": {
-                "type": "Computed",
-                "composable": "useNuxtRoute",
-                "options": {
-                  "type": "Inline",
-                  "value": {
-                    "property": "params"
-                  }
-                }
-              },
-              "body": {
-                "type": "Context",
-                "key": "model"
-              },
-              "postAction": {
-                "type": "Publish",
-                "event": "update-string"
-              }
-            }
-          },
-          {
-            "type": "SimpleForm",
-            "schema": {
-              "title": "Lock and Increment Int 32",
-              "submit": {
-                "label": "Lock and Increment Int 32",
-                "severity": "primary"
-              },
-              "inputs": [
-                {
-                  "name": "offset",
-                  "required": true,
-                  "default": {
-                    "type": "Inline",
-                    "value": 1
-                  },
-                  "numeric": true,
-                  "component": {
-                    "type": "InputNumber",
-                    "schema": {
-                      "label": {
-                        "text": "Offset",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                },
-                {
-                  "name": "delayInSeconds",
-                  "required": true,
-                  "default": {
-                    "type": "Inline",
-                    "value": 5
-                  },
-                  "numeric": true,
-                  "component": {
-                    "type": "InputNumber",
-                    "schema": {
-                      "label": {
-                        "text": "Delay in Seconds",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                }
-              ],
-              "dialogOptions": {
-                "open": {
-                  "label": "Lock and Increment Int 32"
-                },
-                "cancel": {
-                  "label": "Cancel",
-                  "variant": "text"
-                }
-              }
-            },
-            "action": {
-              "type": "Remote",
-              "path": "entities/{id}/lock-and-increment-int32",
-              "method": "POST",
-              "params": {
-                "type": "Computed",
-                "composable": "useNuxtRoute",
-                "options": {
-                  "type": "Inline",
-                  "value": {
-                    "property": "params"
-                  }
-                }
-              },
-              "body": {
-                "type": "Context",
-                "key": "model"
-              },
-              "postAction": {
-                "type": "Publish",
-                "event": "lock-and-increment-int32",
-                "data": {
-                  "type": "Context",
-                  "key": "response"
-                }
-              }
-            }
-          },
-          {
-            "type": "SimpleForm",
-            "schema": {
               "title": "Delete",
               "submit": {
                 "label": "Delete",
@@ -413,7 +269,7 @@
       },
       "data": {
         "type": "Inline",
-        "value": "/entity:Title"
+        "value": "/entities/[id]:Title"
       }
     },
     "contents": [
@@ -421,18 +277,18 @@
         "component": {
           "type": "Fieldset",
           "schema": {
-            "titleProp": "guid",
+            "titleProp": "unique",
             "fields": [
               {
-                "key": "guid",
-                "label": "Guid",
+                "key": "unique",
+                "label": "Unique",
                 "component": {
                   "type": "Text",
                   "schema": {},
                   "data": {
                     "type": "Context",
                     "key": "parent",
-                    "prop": "data.guid"
+                    "prop": "data.unique"
                   }
                 }
               },
@@ -476,19 +332,6 @@
                 }
               },
               {
-                "key": "unique",
-                "label": "Unique",
-                "component": {
-                  "type": "Text",
-                  "schema": {},
-                  "data": {
-                    "type": "Context",
-                    "key": "parent",
-                    "prop": "data.unique"
-                  }
-                }
-              },
-              {
                 "key": "uri",
                 "label": "Uri",
                 "component": {
@@ -511,32 +354,6 @@
                     "type": "Context",
                     "key": "parent",
                     "prop": "data.mailAddress"
-                  }
-                }
-              },
-              {
-                "key": "dynamic",
-                "label": "Dynamic",
-                "component": {
-                  "type": "Text",
-                  "schema": {},
-                  "data": {
-                    "type": "Context",
-                    "key": "parent",
-                    "prop": "data.dynamic"
-                  }
-                }
-              },
-              {
-                "key": "enum",
-                "label": "Enum",
-                "component": {
-                  "type": "Text",
-                  "schema": {},
-                  "data": {
-                    "type": "Context",
-                    "key": "parent",
-                    "prop": "data.enum"
                   }
                 }
               },
@@ -569,26 +386,27 @@
                     "prop": "data.dateOnly"
                   }
                 }
-              },
-              {
-                "key": "timeOnly",
-                "label": "Time Only",
-                "component": {
-                  "type": "Text",
-                  "schema": {},
-                  "data": {
-                    "type": "Context",
-                    "key": "parent",
-                    "prop": "data.timeOnly"
-                  }
-                }
               }
             ]
+          },
+          "data": {
+            "type": "Remote",
+            "path": "entities/{id}",
+            "params": {
+              "type": "Computed",
+              "composable": "useNuxtRoute",
+              "options": {
+                "type": "Inline",
+                "value": {
+                  "property": "params"
+                }
+              }
+            }
           }
         },
         "key": "fields"
       }
     ],
-    "path": "entity"
+    "path": "entities/[id]"
   }
 }
