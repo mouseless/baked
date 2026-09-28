@@ -222,6 +222,53 @@
     }
   }
 
+  /* MULTISELECT */
+  .b-component--MultiSelect {
+    /*
+      placeholder gives select the initial width, but it overlaps with label and
+      tab key skip select if placeholder is hidden so it is opacity zero
+    */
+    .p-placeholder {
+      @apply opacity-0;
+    }
+
+    .p-multiselect-label {
+      font-size: inherit;
+    }
+  }
+
+  /* MULTISELECT BUTTON */
+  .p-popover-content {
+    .b-component--MultiSelectButton.p-selectbutton {
+      @apply max-sm:flex-col;
+
+      .p-togglebutton {
+        &:first-child {
+          @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
+        }
+
+        &:last-child {
+          @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
+        }
+      }
+    }
+  }
+
+  .b-component--MultiSelectButton {
+    &:has(.p-iftalabel) {
+      .p-iftalabel {
+        @apply mt-4;
+      }
+    }
+  }
+
+  /* NAV LINK */
+  .b-component--PageTitle {
+    .grid+.relative>div:has(.b-component--NavLink)>span:first-child {
+      @apply hidden;
+    }
+  }
+
   /* SCROLL TOP */
   .p-scrolltop {
     @apply right-6 bottom-6 max-md:bottom-24 py-icon-only-width;
