@@ -92,6 +92,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         object? @dynamic = default,
         Enumeration? @enum = default,
         DateTime? dateTime = default,
+        DateOnly? dateOnly = default,
         bool useTransaction = false,
         bool throwError = false
     )
@@ -112,7 +113,8 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
                     mailAddress: mailAddress,
                     @dynamic: @dynamic,
                     @enum: @enum,
-                    dateTime: dateTime
+                    dateTime: dateTime,
+                    dateOnly: dateOnly
                )
             );
         }
@@ -131,7 +133,8 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
                 mailAddress: mailAddress,
                 @dynamic: @dynamic,
                 @enum: @enum,
-                dateTime: dateTime
+                dateTime: dateTime,
+                dateOnly: dateOnly
             );
         }
 

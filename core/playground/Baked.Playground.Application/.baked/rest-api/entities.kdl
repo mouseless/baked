@@ -33,6 +33,7 @@ entity {
     dynamic @parameter-model
     enum @parameter-model
     date-time @parameter-model
+    date-only @parameter-model
     use-transaction @parameter-model
     throw-error @parameter-model
   }

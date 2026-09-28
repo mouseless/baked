@@ -52,6 +52,13 @@ public class FormSampleDomainOverrideFeature : IFeature
                 order: Order.At.Override
             );
 
+            // Parameters
+            conventions.AddParameterComponent(
+                when: c => c.Type.Is<Parent>() && c.Parameter.Name is "description",
+                component: () => B.Textarea(),
+                order: Order.At.Override
+            );
+
             // Properties
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().IsEnum,

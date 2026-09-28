@@ -440,12 +440,12 @@
                                 }
                               },
                               {
-                                "name": "dateTime",
+                                "name": "dateOnly",
                                 "component": {
                                   "type": "InputDate",
                                   "schema": {
                                     "label": {
-                                      "text": "Date Time",
+                                      "text": "Date Only",
                                       "mode": "ifta",
                                       "showOptionality": true
                                     },
@@ -902,7 +902,7 @@
                                   {
                                     "name": "description",
                                     "component": {
-                                      "type": "InputText",
+                                      "type": "Textarea",
                                       "schema": {
                                         "label": {
                                           "text": "Description",

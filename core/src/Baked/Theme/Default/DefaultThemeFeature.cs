@@ -305,7 +305,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: (c, cc) => B.InputMailAddress()
             );
             conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.SkipNullable().Is<DateTime>() || c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
                 component: (c, cc) => B.InputDate(options: id =>
                 {
                     id.Format = "dd/mm/yy";
