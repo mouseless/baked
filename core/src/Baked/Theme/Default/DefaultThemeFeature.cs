@@ -115,11 +115,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
-                component: () => B.Date()
+                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy")
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
-                component: () => B.Date()
+                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy hh:mm:ss")
             );
 
             // Method Defaults
@@ -303,16 +303,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     id.Format = "dd/mm/yy";
                     id.UsePicker = true;
                 })
-            );
-
-            conventions.AddPropertyComponent(
-                when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
-                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy")
-            );
-
-            conventions.AddPropertyComponent(
-                when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
-                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy hh:mm:ss")
             );
 
             // `PageTitle` defaults

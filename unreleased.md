@@ -10,3 +10,4 @@
   one composable for setting and getting model operations
 - `InputText` was minor bug about `TargetProp` feature, fixed
 - `MissingComponent` was returned old coding style, fixed
+- `useAuth` is brokean was importing Buffer package, fixed

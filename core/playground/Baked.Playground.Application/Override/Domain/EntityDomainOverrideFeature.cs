@@ -25,7 +25,7 @@ public class EntityDomainOverrideFeature : IFeature
             );
 
             conventions.RemoveParameterSchema<Input>(
-                when: c => c.Type.Is<Entity>() && c.Parameter.Name == "dynamic",
+                when: c => c.Type.Is<Entity>() && c.Parameter.ParameterType.SkipNullable().Is<object>(),
                 order: Order.At.Override
             );
         });
