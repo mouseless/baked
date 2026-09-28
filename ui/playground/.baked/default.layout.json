@@ -17,6 +17,11 @@
             "title": "/cache-samples:Title"
           },
           {
+            "route": "/entity",
+            "icon": "pi pi-box",
+            "title": "/entity:Title"
+          },
+          {
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
             "title": "/form-sample:Title"
@@ -54,6 +59,11 @@
             "route": "/cache-samples",
             "icon": "pi pi-database",
             "title": "/cache-samples:Title"
+          },
+          "/entity": {
+            "route": "/entity",
+            "icon": "pi pi-box",
+            "title": "/entity:Title"
           },
           "/form-sample": {
             "route": "/form-sample",

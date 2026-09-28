@@ -290,6 +290,24 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<Uri>(),
                 component: (c, cc) => B.InputUrl()
             );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<DateTime>() || c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
+                component: (c, cc) => B.InputDate(options: id =>
+                {
+                    id.Format = "dd/mm/yy";
+                    id.UsePicker = true;
+                })
+            );
+
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
+                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy")
+            );
+
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
+                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy hh:mm:ss")
+            );
 
             // `PageTitle` defaults
             conventions.AddTypeComponent(
