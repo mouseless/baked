@@ -1,8 +1,8 @@
 using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Playground.Orm;
-
-using B = Baked.Ui.Components;
+using Baked.Ui;
 
 namespace Baked.Playground.Override.Domain;
 
@@ -19,16 +19,14 @@ public class EntityDomainOverrideFeature : IFeature
                 attribute: () => new LabelAttribute()
             );
 
-            // Make Guid field an InputText
-            conventions.AddParameterComponent(
+            conventions.RemoveParameterSchema<Input>(
                 when: c => c.Type.Is<Entity>() && c.Parameter.ParameterType.SkipNullable().Is<Guid>(),
-                component: c => B.InputText()
+                order: Order.At.Override
             );
 
-            // Make dynamic field an InputText
-            conventions.AddParameterComponent(
+            conventions.RemoveParameterSchema<Input>(
                 when: c => c.Type.Is<Entity>() && c.Parameter.Name == "dynamic",
-                component: c => B.InputText()
+                order: Order.At.Override
             );
         });
     }

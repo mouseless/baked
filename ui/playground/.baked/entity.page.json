@@ -17,19 +17,6 @@
               },
               "inputs": [
                 {
-                  "name": "guid",
-                  "component": {
-                    "type": "InputText",
-                    "schema": {
-                      "label": {
-                        "text": "Guid",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                },
-                {
                   "name": "string",
                   "component": {
                     "type": "InputText",
@@ -102,19 +89,6 @@
                     "schema": {
                       "label": {
                         "text": "Mail Address",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                },
-                {
-                  "name": "dynamic",
-                  "component": {
-                    "type": "InputText",
-                    "schema": {
-                      "label": {
-                        "text": "Dynamic",
                         "mode": "ifta",
                         "showOptionality": true
                       }
