@@ -107,27 +107,33 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<Uri>(),
-                component: () => B.TextLink()
+                component: () => B.TextLink(),
+                order: Order.At.Min
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<bool>(),
-                component: () => B.Check()
+                component: () => B.Check(),
+                order: Order.At.Min
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
-                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy")
+                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy"),
+                order: Order.At.Min
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
-                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy HH:mm:ss")
+                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy HH:mm:ss"),
+                order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),
-                component: (c, cc) => B.InputMoney()
+                component: (c, cc) => B.InputMoney(),
+                order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<double>(),
-                component: (c, cc) => B.InputRate()
+                component: (c, cc) => B.InputRate(),
+                order: Order.At.Min
             );
 
             // Method Defaults
@@ -278,7 +284,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c =>
                     c.Parameter.ParameterType.Is<string>() ||
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
-                component: (c, cc) => ParameterInputText(c.Parameter, cc)
+                component: (c, cc) => ParameterInputText(c.Parameter, cc),
+                order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c =>
@@ -289,7 +296,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<bool>(),
-                component: (c, cc) => B.InputCheckbox()
+                component: (c, cc) => B.InputCheckbox(),
+                order: Order.At.Min
             );
             conventions.AddParameterComponentConfiguration<InputCheckbox>(
                 when: c =>
@@ -298,11 +306,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<Uri>(),
-                component: (c, cc) => B.InputUrl()
+                component: (c, cc) => B.InputUrl(),
+                order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<MailAddress>(),
-                component: (c, cc) => B.InputMailAddress()
+                component: (c, cc) => B.InputMailAddress(),
+                order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
@@ -310,7 +320,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 {
                     id.Format = "dd/mm/yy";
                     id.UsePicker = true;
-                })
+                }),
+                order: Order.At.Min
             );
 
             // `PageTitle` defaults
