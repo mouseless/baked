@@ -7,6 +7,8 @@ using Humanizer;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
+using B = Baked.Ui.Components;
+
 namespace Baked.Ux.DescriptionProperty;
 
 public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
@@ -38,6 +40,10 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
                 schema: f => f.Wide = true
             );
 
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.Has<DescriptionAttribute>(),
+                component: () => B.Textarea()
+            );
             conventions.AddParameterSchemaConfiguration<FormPage.InputGroup>(
                 when: c => c.Parameter.Has<DescriptionAttribute>(),
                 schema: f => f.Wide = true

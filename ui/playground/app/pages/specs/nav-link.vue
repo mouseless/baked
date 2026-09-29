@@ -28,6 +28,22 @@ const variants = [
     })
   },
   {
+    name: "Summary",
+    descriptor: giveMe.aNavLink({
+      path: "/specs",
+      summary: giveMe.aText({ value: "NavLink summary content" }),
+      data: giveMe.anInlineData("Link")
+    })
+  },
+  {
+    name: "Max Length",
+    descriptor: giveMe.aNavLink({
+      path: "/specs",
+      maxLength: 10,
+      data: giveMe.anInlineData("This is a long link")
+    })
+  },
+  {
     name: "Inline Error",
     descriptor: giveMe.aNavLink({
       path: "/test-path/[id]",

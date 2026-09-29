@@ -74,7 +74,7 @@ test.describe("Type", () => {
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
-      String.raw`builder.Conventions.AddTypeComponent(
+      String.raw`conventions.AddTypeComponent(
     when: c => c.Type.Is<TestPage>(),
     where: cc => cc.Path.EndsWith("page"),
     component: () => B.Text()
@@ -130,7 +130,7 @@ test.describe("Property", () => {
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
-      String.raw`builder.Conventions.AddPropertyComponent(
+      String.raw`conventions.AddPropertyComponent(
     when: c => c.Type.Is<Record>() && c.Property.Name == nameof(Record.Text),
     where: cc => cc.Path.EndsWith("page", "data-table", "columns", "text"),
     component: () => B.Text()
@@ -160,7 +160,7 @@ test.describe("Method", () => {
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre").nth(0)).toHaveText(
-      String.raw`builder.Conventions.AddMethodComponent(
+      String.raw`conventions.AddMethodComponent(
     when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
     where: cc => cc.Path.EndsWith("page", "data-panel"),
     component: () => B.DataTable()
@@ -229,7 +229,7 @@ test.describe("Parameter", () => {
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
-      String.raw`builder.Conventions.AddParameterComponent(
+      String.raw`conventions.AddParameterComponent(
     when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData) && c.Parameter.Name == "panel",
     where: cc => cc.Path.EndsWith("page", "data-panel", "parameters"),
     component: () => B.InputText()

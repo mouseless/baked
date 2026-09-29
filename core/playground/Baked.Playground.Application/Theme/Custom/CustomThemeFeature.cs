@@ -76,6 +76,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // Custom routes
+            conventions.SetTypeRoute<Entity>("/entities/[id]");
             conventions.SetTypeRoute<Parent>("/parents/[id]");
             conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
         });

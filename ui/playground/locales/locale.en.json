@@ -19,6 +19,9 @@
   "MenuPage": {
     "No item available!": "No item available!"
   },
+  "MultiSelect": {
+    "{number} items selected": "{number} items selected"
+  },
   "Paginator": {
     "Page {page}": "Page {page}"
   },
@@ -27,6 +30,11 @@
   },
   "useDefaultValidation": {
     "{label} cannot be empty": "{label} cannot be empty"
+  },
+  "useInputValidator": {
+    "Invalid date": "Invalid Date",
+    "Invalid e-mail address": "Invalid e-mail address",
+    "Invalid URL": "Invalid URL"
   },
   "useFormat": {
     "suffix": {

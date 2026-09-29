@@ -116,7 +116,7 @@ const highlightedData = computed(() => {
 });
 
 function renderTypeSample([ type ]) {
-  return String.raw`builder.Conventions.AddTypeComponent${component ? `<${component}>` : ""}(
+  return String.raw`conventions.AddTypeComponent${component ? `<${component}>` : ""}(
     when: c => c.Type.Is<${type}>(),
     where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
     component: () => ${component ? "..." : "B.Text()"}
@@ -124,7 +124,7 @@ function renderTypeSample([ type ]) {
 }
 
 function renderPropertySample([ type, property ]) {
-  return String.raw`builder.Conventions.AddPropertyComponent${component ? `<${component}>` : ""}(
+  return String.raw`conventions.AddPropertyComponent${component ? `<${component}>` : ""}(
     when: c => c.Type.Is<${type}>() && c.Property.Name == nameof(${type}.${property}),
     where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
     component: () => ${component ? "..." : "B.Text()"}
@@ -132,7 +132,7 @@ function renderPropertySample([ type, property ]) {
 }
 
 function renderMethodSample([ type, method ]) {
-  return String.raw`builder.Conventions.AddMethodComponent${component ? `<${component}>` : ""}(
+  return String.raw`conventions.AddMethodComponent${component ? `<${component}>` : ""}(
     when: c => c.Type.Is<${type}>() && c.Method.Name == nameof(${type}.${method}),
     where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
     component: () => ${component ? "..." : "B.DataTable()"}
@@ -140,7 +140,7 @@ function renderMethodSample([ type, method ]) {
 }
 
 function renderParameterSample([ type, method, parameter ]) {
-  return String.raw`builder.Conventions.AddParameterComponent${component ? `<${component}>` : ""}(
+  return String.raw`conventions.AddParameterComponent${component ? `<${component}>` : ""}(
     when: c => c.Type.Is<${type}>() && c.Method.Name == nameof(${type}.${method}) && c.Parameter.Name == "${parameter}",
     where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
     component: () => ${component ? "..." : "B.InputText()"}

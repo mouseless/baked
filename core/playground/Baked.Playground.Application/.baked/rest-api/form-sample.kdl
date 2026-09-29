@@ -1,4 +1,7 @@
 form-sample @controller-model {
+  get-entities {
+    @action-model route="GET /form-sample/entities" anonymous=#true
+  }
   new-parent {
     @action-model route="POST /form-sample/parents" anonymous=#true
     surname {

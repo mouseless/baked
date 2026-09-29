@@ -1,4 +1,5 @@
 ﻿using Baked.Business;
+using Baked.Core;
 using Baked.Database;
 using Baked.Orm;
 
@@ -22,8 +23,12 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
     /// </summary>
     public string? StringData { get; private set; } = default!;
     public int? Int32 { get; private set; } = default!;
+    public decimal? Decimal { get; private set; } = default!;
+    public double? Double { get; private set; } = default!;
+    public bool? Boolean { get; private set; } = default!;
     public string? Unique { get; private set; } = default!;
     public Uri? Uri { get; private set; } = default!;
+    public MailAddress? MailAddress { get; private set; } = default!;
     /// <summary>
     /// Object type properties are converted to json strings in db, dynamic
     /// json objects in rest api layer.
@@ -39,8 +44,12 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        decimal? @decimal = default,
+        double? @double = default,
+        bool? boolean = default,
         string? unique = default,
         Uri? uri = default,
+        MailAddress? mailAddress = default,
         object? @dynamic = default,
         Enumeration? @enum = default,
         DateTime? dateTime = default,
@@ -53,8 +62,12 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
             @string: @string,
             stringData: stringData,
             int32: int32,
+            @decimal: @decimal,
+            @double: @double,
+            boolean: boolean,
             unique: unique,
             uri: uri,
+            mailAddress: mailAddress,
             @dynamic: @dynamic,
             @enum: @enum,
             dateTime: dateTime,
@@ -70,11 +83,16 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        decimal? @decimal = default,
+        double? @double = default,
+        bool? boolean = default,
         string? unique = default,
         Uri? uri = default,
+        MailAddress? mailAddress = default,
         object? @dynamic = default,
         Enumeration? @enum = default,
         DateTime? dateTime = default,
+        DateOnly? dateOnly = default,
         bool useTransaction = false,
         bool throwError = false
     )
@@ -87,11 +105,16 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
                     @string: @string,
                     stringData: stringData,
                     int32: int32,
+                    @decimal: @decimal,
+                    @double: @double,
+                    boolean: boolean,
                     unique: unique,
                     uri: uri,
+                    mailAddress: mailAddress,
                     @dynamic: @dynamic,
                     @enum: @enum,
-                    dateTime: dateTime
+                    dateTime: dateTime,
+                    dateOnly: dateOnly
                )
             );
         }
@@ -102,11 +125,16 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
                 @string: @string,
                 stringData: stringData,
                 int32: int32,
+                @decimal: @decimal,
+                @double: @double,
+                boolean: boolean,
                 unique: unique,
                 uri: uri,
+                mailAddress: mailAddress,
                 @dynamic: @dynamic,
                 @enum: @enum,
-                dateTime: dateTime
+                dateTime: dateTime,
+                dateOnly: dateOnly
             );
         }
 
@@ -139,8 +167,12 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        decimal? @decimal = default,
+        double? @double = default,
+        bool? boolean = default,
         string? unique = default,
         Uri? uri = default,
+        MailAddress? mailAddress = default,
         object? @dynamic = default,
         Enumeration? @enum = default,
         DateTime? dateTime = default,
@@ -162,8 +194,12 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         String = @string ?? String;
         StringData = stringData ?? StringData;
         Int32 = int32 ?? Int32;
+        Decimal = @decimal ?? Decimal;
+        Double = @double ?? Double;
+        Boolean = boolean ?? Boolean;
         Unique = unique ?? Unique;
         Uri = uri ?? Uri;
+        MailAddress = mailAddress ?? MailAddress;
         Dynamic = @dynamic ?? Dynamic;
         Enum = @enum ?? Enum;
         DateTime = dateTime ?? DateTime;
@@ -184,8 +220,12 @@ public class Entities(IQueryContext<Entity> _context)
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        decimal? @decimal = default,
+        double? @double = default,
+        bool? boolean = default,
         string? unique = default,
         Uri? uri = default,
+        MailAddress? mailAddress = default,
         Enumeration? @enum = default,
         DateTime? dateTime = default,
         int? take = default,
@@ -197,8 +237,12 @@ public class Entities(IQueryContext<Entity> _context)
                 (@string is not null, e => e.String == @string),
                 (stringData is not null, e => e.StringData == @stringData),
                 (int32 is not null, e => e.Int32 == int32),
+                (@decimal is not null, e => e.Decimal == @decimal),
+                (@double is not null, e => e.Double == @double),
+                (boolean is not null, e => e.Boolean == boolean),
                 (unique is not null, e => e.Unique == unique),
                 (uri is not null, e => e.Uri == uri),
+                (mailAddress is not null, e => e.MailAddress == mailAddress),
                 (@enum is not null, e => e.Enum == @enum),
                 (dateTime is not null, e => e.DateTime == dateTime),
             ],

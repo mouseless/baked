@@ -60,6 +60,7 @@ test.describe("Target Prop", () => {
     await input.fill("1");
 
     await expect(model).toHaveText(/\{\s*"id": "1"\s*\}/);
+    await expect(input).toHaveValue("1");
   });
 });
 

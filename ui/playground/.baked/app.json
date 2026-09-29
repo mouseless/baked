@@ -4,6 +4,10 @@
       "name": "auth",
       "anonymousApiRoutes": [
         {
+          "method": "GET",
+          "path": "form-sample/entities"
+        },
+        {
           "method": "POST",
           "path": "form-sample/parents"
         },

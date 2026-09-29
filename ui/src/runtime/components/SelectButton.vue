@@ -32,6 +32,7 @@
           :allow-empty
           :data-key="optionValue"
           :option-label
+          :option-value
           class="!w-auto"
           pt:pc-toggle-button:root="text-[length:inherit]"
         >
@@ -44,9 +45,8 @@
   </AwaitLoading>
 </template>
 <script setup>
-import { ref, watch } from "vue";
 import { SelectButton } from "primevue";
-import { useContext, useLocalization, useUiStates } from "#imports";
+import { useContext, useLocalization, useUiStates, useSelection } from "#imports";
 import { AwaitLoading, Labeler, Validation } from "#components";
 
 const context = useContext();
@@ -70,20 +70,15 @@ const {
 } = schema;
 
 const path = context.injectPath();
-
-const selected = ref();
-
-watch(
-  [() => data, getModel],
-  ([_data, _model]) => {
-    if(!_data) { return; }
-
-    const value = stateful ? (selectButtonStates[path] ?? _model) : _model;
-    setSelected(value);
-  },
-  { immediate: true }
-);
-watch(selected, newSelected => setModel(newSelected));
+const { selected } = useSelection({
+  data,
+  model,
+  path,
+  stateStore: selectButtonStates,
+  stateful,
+  targetProp,
+  mode: "single"
+});
 
 function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
@@ -91,36 +86,4 @@ function getOptionLabel(slotProps) {
   return localizeOptionLabels ? l(result) : result;
 }
 
-function getModel() {
-  return targetProp ? model.value?.[targetProp] : model.value;
-}
-
-function setModel(selected) {
-  const selectedValue = optionValue ? selected?.[optionValue] : selected;
-  if(stateful) {
-    selectButtonStates[path] = selectedValue;
-  }
-
-  model.value = selectedValue
-    ? targetProp
-      ? { [targetProp]: selectedValue }
-      : selectedValue
-    : undefined;
-}
-
-function setSelected(value) {
-  // data can be null when data is async
-  if(!data) { return; }
-
-  selected.value = optionValue
-    ? data.filter(o => o[optionValue] === value)[0]
-    : value;
-
-  if(stateful) {
-    const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
-    if(getModel() !== selectedValue) {
-      setModel(selected.value);
-    }
-  }
-}
 </script>

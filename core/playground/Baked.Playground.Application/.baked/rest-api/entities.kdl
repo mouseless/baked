@@ -6,8 +6,12 @@ entity {
     string @parameter-model
     string-data @parameter-model
     int32 @parameter-model
+    decimal @parameter-model
+    double @parameter-model
+    boolean @parameter-model
     unique @parameter-model
     uri @parameter-model
+    mail-address @parameter-model
     dynamic @parameter-model
     enum @parameter-model
     date-time @parameter-model
@@ -20,11 +24,16 @@ entity {
     string @parameter-model
     string-data @parameter-model
     int32 @parameter-model
+    decimal @parameter-model
+    double @parameter-model
+    boolean @parameter-model
     unique @parameter-model
     uri @parameter-model
+    mail-address @parameter-model
     dynamic @parameter-model
     enum @parameter-model
     date-time @parameter-model
+    date-only @parameter-model
     use-transaction @parameter-model
     throw-error @parameter-model
   }
@@ -57,10 +66,22 @@ entities @controller-model {
     int32 {
       @parameter-model in="query"
     }
+    decimal {
+      @parameter-model in="query"
+    }
+    double {
+      @parameter-model in="query"
+    }
+    boolean {
+      @parameter-model in="query"
+    }
     unique {
       @parameter-model in="query"
     }
     uri {
+      @parameter-model in="query"
+    }
+    mail-address {
       @parameter-model in="query"
     }
     enum {

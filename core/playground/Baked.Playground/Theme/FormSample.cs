@@ -6,8 +6,11 @@ using Microsoft.Extensions.Localization;
 namespace Baked.Playground.Theme;
 
 [AllowAnonymous]
-public class FormSample(IStringLocalizer _l, Parents _parents, Func<Parent> _newParent)
+public class FormSample(IStringLocalizer _l, Entities _entities, Parents _parents, Func<Parent> _newParent)
 {
+    public List<Entity> GetEntities() =>
+        _entities.By();
+
     public void NewParent(string surname,
         string? name = default,
         Role? role = default,

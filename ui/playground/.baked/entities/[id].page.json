@@ -1,0 +1,457 @@
+{
+  "type": "SimplePage",
+  "schema": {
+    "title": {
+      "type": "PageTitle",
+      "schema": {
+        "localizeTitle": true,
+        "description": "/entities/[id]:Description",
+        "actions": [
+          {
+            "type": "SimpleForm",
+            "schema": {
+              "title": "Update",
+              "submit": {
+                "label": "Update",
+                "severity": "primary"
+              },
+              "inputs": [
+                {
+                  "name": "string",
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": {
+                        "text": "String",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "stringData",
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": {
+                        "text": "String Data",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "int32",
+                  "numeric": true,
+                  "component": {
+                    "type": "InputNumber",
+                    "schema": {
+                      "label": {
+                        "text": "Int 32",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "decimal",
+                  "numeric": true,
+                  "component": {
+                    "type": "InputMoney",
+                    "schema": {
+                      "label": {
+                        "text": "Decimal",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "double",
+                  "numeric": true,
+                  "component": {
+                    "type": "InputRate",
+                    "schema": {
+                      "label": {
+                        "text": "Double",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "boolean",
+                  "component": {
+                    "type": "InputCheckbox",
+                    "schema": {
+                      "label": {
+                        "text": "Boolean",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      },
+                      "indeterminate": true
+                    }
+                  }
+                },
+                {
+                  "name": "unique",
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": {
+                        "text": "Unique",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "uri",
+                  "component": {
+                    "type": "InputUrl",
+                    "schema": {
+                      "label": {
+                        "text": "Uri",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "mailAddress",
+                  "component": {
+                    "type": "InputMailAddress",
+                    "schema": {
+                      "label": {
+                        "text": "Mail Address",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      }
+                    }
+                  }
+                },
+                {
+                  "name": "enum",
+                  "component": {
+                    "type": "Select",
+                    "schema": {
+                      "label": {
+                        "text": "Enum",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      },
+                      "localizeOptionLabels": true,
+                      "optionLabel": "label",
+                      "optionValue": "value",
+                      "showClear": true
+                    },
+                    "data": {
+                      "type": "Inline",
+                      "value": [
+                        {
+                          "label": "Enumeration.Member1",
+                          "value": "member1"
+                        },
+                        {
+                          "label": "Enumeration.Member2",
+                          "value": "member2"
+                        },
+                        {
+                          "label": "Enumeration.Member3",
+                          "value": "member3"
+                        },
+                        {
+                          "label": "Enumeration.Member4",
+                          "value": "member4"
+                        },
+                        {
+                          "label": "Enumeration.Member5",
+                          "value": "member5"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "name": "dateOnly",
+                  "component": {
+                    "type": "InputDate",
+                    "schema": {
+                      "label": {
+                        "text": "Date Only",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      },
+                      "format": "dd/mm/yy",
+                      "usePicker": true
+                    }
+                  }
+                }
+              ],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-pencil",
+                  "label": "Update"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                }
+              }
+            },
+            "action": {
+              "type": "Remote",
+              "path": "entities/{id}/",
+              "method": "PUT",
+              "params": {
+                "type": "Computed",
+                "composable": "useNuxtRoute",
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
+              },
+              "body": {
+                "type": "Context",
+                "key": "model"
+              },
+              "postAction": {
+                "type": "Publish",
+                "event": "update"
+              }
+            }
+          },
+          {
+            "type": "SimpleForm",
+            "schema": {
+              "title": "Delete",
+              "submit": {
+                "label": "Delete",
+                "severity": "danger"
+              },
+              "inputs": [],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-trash",
+                  "label": "Delete"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                },
+                "message": "Are you sure?"
+              }
+            },
+            "action": {
+              "type": "Remote",
+              "path": "entities/{id}/",
+              "method": "DELETE",
+              "params": {
+                "type": "Computed",
+                "composable": "useNuxtRoute",
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
+              },
+              "postAction": {
+                "type": "Publish",
+                "event": "delete"
+              }
+            }
+          }
+        ]
+      },
+      "data": {
+        "type": "Inline",
+        "value": "/entities/[id]:Title"
+      }
+    },
+    "contents": [
+      {
+        "component": {
+          "type": "Fieldset",
+          "schema": {
+            "titleProp": "unique",
+            "fields": [
+              {
+                "key": "unique",
+                "label": "Unique",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.unique"
+                  }
+                }
+              },
+              {
+                "key": "string",
+                "label": "String",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.string"
+                  }
+                }
+              },
+              {
+                "key": "stringData",
+                "label": "String Data",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.stringData"
+                  }
+                }
+              },
+              {
+                "key": "int32",
+                "label": "Int 32",
+                "component": {
+                  "type": "Number",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.int32"
+                  }
+                }
+              },
+              {
+                "key": "decimal",
+                "label": "Decimal",
+                "component": {
+                  "type": "Money",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.decimal"
+                  }
+                }
+              },
+              {
+                "key": "double",
+                "label": "Double",
+                "component": {
+                  "type": "Rate",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.double"
+                  }
+                }
+              },
+              {
+                "key": "boolean",
+                "label": "Boolean",
+                "component": {
+                  "type": "Check",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.boolean"
+                  }
+                }
+              },
+              {
+                "key": "uri",
+                "label": "Uri",
+                "component": {
+                  "type": "TextLink",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.uri"
+                  }
+                }
+              },
+              {
+                "key": "mailAddress",
+                "label": "Mail Address",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.mailAddress"
+                  }
+                }
+              },
+              {
+                "key": "dateTime",
+                "label": "Date Time",
+                "component": {
+                  "type": "Date",
+                  "schema": {
+                    "format": "dd-MM-yyyy HH:mm:ss"
+                  },
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.dateTime"
+                  }
+                }
+              },
+              {
+                "key": "dateOnly",
+                "label": "Date Only",
+                "component": {
+                  "type": "Date",
+                  "schema": {
+                    "format": "dd-MM-yyyy"
+                  },
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.dateOnly"
+                  }
+                }
+              }
+            ]
+          },
+          "data": {
+            "type": "Remote",
+            "path": "entities/{id}",
+            "params": {
+              "type": "Computed",
+              "composable": "useNuxtRoute",
+              "options": {
+                "type": "Inline",
+                "value": {
+                  "property": "params"
+                }
+              }
+            }
+          }
+        },
+        "key": "fields"
+      }
+    ],
+    "path": "entities/[id]"
+  }
+}

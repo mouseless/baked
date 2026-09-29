@@ -6,8 +6,12 @@ entity @entity {
   string @column
   string-data @column
   int32 @column
+  decimal @column
+  double @column
+  boolean @column
   unique @column @unique
   uri @column
+  mail-address @column
   dynamic @column
   enum @column @unique
   date-time @column

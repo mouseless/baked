@@ -18,7 +18,9 @@ namespace Baked;
 
 public static class DomainExtensions
 {
+#pragma warning disable IDE0052
     static readonly ConcurrentDictionary<Type, AttributeUsageAttribute?> _attributeUsageCache = new();
+#pragma warning restore IDE0052
 
     public class Configurator(LayerConfigurator _configurator)
     {

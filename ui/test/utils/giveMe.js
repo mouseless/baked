@@ -53,6 +53,15 @@ export default {
     };
   },
 
+  aCheck({ data } = {}) {
+    data = $(data, true);
+
+    return {
+      type: "Check",
+      data: this.anInlineData(data)
+    };
+  },
+
   aComposite(parts) {
     parts = $(parts, []);
 
@@ -262,6 +271,19 @@ export default {
       formatter,
       buttonIcon,
       buttonLabel
+    };
+  },
+
+  aDate({ value, data, format, prop } = {}) {
+    value = $(value, "2026-01-02");
+    data = $(data, this.anInlineData(value));
+    format = $(format, "dd/MM/yyyy");
+    prop = $(prop, undefined);
+
+    return {
+      type: "Date",
+      schema: { format, prop },
+      data
     };
   },
 
@@ -534,6 +556,92 @@ export default {
     return { name, required, default: default_, defaultSelfManaged, numeric, queryBound, component };
   },
 
+  anInputRate({ disabled, label, max } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputRate",
+      schema: {
+        disabled,
+        label,
+        max
+      }
+    };
+  },
+
+  anInputCheckbox({ label, indeterminate } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputCheckbox",
+      schema: {
+        label,
+        indeterminate
+      }
+    };
+  },
+
+  anInputDate({ label, format, usePicker } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    format = $(format, "dd/MM/yyyy");
+
+    return {
+      type: "InputDate",
+      schema: {
+        label,
+        format,
+        usePicker
+      }
+    };
+  },
+
+  anInputMailAddress({ label } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputMailAddress",
+      schema: {
+        label
+      }
+    };
+  },
+
+  anInputMoney({ label, icon } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputMoney",
+      schema: {
+        label,
+        icon
+      }
+    };
+  },
+
+  anInputNumber({ label, noGrouping } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "InputNumber",
+      schema: {
+        label,
+        noGrouping
+      }
+    };
+  },
+
   anInputText({ label, targetProp } = {}) {
     targetProp = $(targetProp, undefined);
     label = typeof label === "string"
@@ -549,16 +657,15 @@ export default {
     };
   },
 
-  anInputNumber({ label, noGrouping } = {}) {
+  anInputUrl({ label } = {}) {
     label = typeof label === "string"
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
     return {
-      type: "InputNumber",
+      type: "InputUrl",
       schema: {
-        label,
-        noGrouping
+        label
       }
     };
   },
@@ -609,13 +716,13 @@ export default {
     };
   },
 
-  aNavLink({ icon, labelProp, path, query, params, data } = {}) {
+  aNavLink({ icon, maxLength, labelProp, path, query, params, summary, data } = {}) {
     path = $(path, "/some-object/{0}");
     data = $(data, this.anInlineData("Test"));
 
     return {
       type: "NavLink",
-      schema: { icon, labelProp, path, query, params },
+      schema: { icon, maxLength, labelProp, path, query, params, summary },
       data: data
     };
   },
@@ -873,6 +980,57 @@ export default {
     };
   },
 
+  aMultiSelect({ action, data, inline, label, localizeOptionLabels, maxSelectedLabels, optionLabel, optionValue, showClear, showToggleAll, stateful, targetProp } = {}) {
+    data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    localizeOptionLabels = $(localizeOptionLabels, false);
+    showClear = $(showClear, false);
+    showToggleAll = $(showToggleAll, false);
+    stateful = $(stateful, false);
+    data = inline
+      ? this.anInlineData(data)
+      : this.aComputedData({
+        composable: "useDelayedData",
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
+      });
+
+    return {
+      type: "MultiSelect",
+      schema: { label, localizeOptionLabels, maxSelectedLabels, optionLabel, optionValue, showClear, showToggleAll, stateful, targetProp },
+      data,
+      action
+    };
+  },
+
+  aMultiSelectButton({ action, allowEmpty, data, inline, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp } = {}) {
+    allowEmpty = $(allowEmpty, false);
+    data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+    localizeOptionLabels = $(localizeOptionLabels, false);
+    stateful = $(stateful, false);
+    data = inline
+      ? this.anInlineData(data)
+      : this.aComputedData({
+        composable: "useDelayedData",
+        options: this.anInlineData({ ms: 1, data }),
+        isAsync: true
+      });
+
+    return {
+      type: "MultiSelectButton",
+      schema: { allowEmpty, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp },
+      data,
+      action
+    };
+  },
+
   aSideMenu({ logo, largeLogo, menu, data, footer } = {}) {
     logo = $(logo, "logo.svg");
     largeLogo = $(largeLogo, "logo-full.svg");
@@ -937,6 +1095,32 @@ export default {
     return {
       type: "Text",
       schema: { maxLength, prop },
+      data
+    };
+  },
+
+  aTextarea({ label } = {}) {
+    label = typeof label === "string"
+      ? this.aLabel({ text: label })
+      : $(label, this.aLabel());
+
+    return {
+      type: "Textarea",
+      schema: {
+        label
+      }
+    };
+  },
+
+  aTextLink({ value, data, maxLength, icon } = {}) {
+    value = $(value, "https://baked.mouseless.codes");
+    data = $(data, this.anInlineData(value));
+    maxLength = $(maxLength, 50);
+    icon = $(icon, "pi pi-external-link");
+
+    return {
+      type: "TextLink",
+      schema: { maxLength, icon },
       data
     };
   },

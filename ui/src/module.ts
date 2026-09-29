@@ -15,7 +15,8 @@ export interface ModuleOptions {
 
 export interface Components {
   Page?: PageOptions,
-  NavLink?: NavLinkOptions
+  NavLink?: NavLinkOptions,
+  InputMoney?: InputMoneyOptions
 }
 
 export interface PageOptions {
@@ -30,6 +31,10 @@ export interface NavLinkOptions {
     },
     hide?: number
   }
+}
+
+export interface InputMoneyOptions {
+  icon?: String
 }
 
 export interface PrimeVueOptions {
@@ -123,6 +128,10 @@ export default defineNuxtModule<ModuleOptions>({
       "2xl": "1536px",
       "3xl": "1920px"
     };
+
+    _options.components ||= {};
+    _options.components.InputMoney ||= {};
+    _options.components.InputMoney.icon ||= "pi-dollar";
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = app?.error;
