@@ -165,7 +165,7 @@
               {
                 "name": "description",
                 "component": {
-                  "type": "InputText",
+                  "type": "Textarea",
                   "schema": {
                     "label": {
                       "text": "Description",
