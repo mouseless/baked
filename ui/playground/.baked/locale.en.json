@@ -130,7 +130,7 @@
   "/specs/tabbed-page:Description": "Renders more complicated pages with input in title and tab panel support",
   "/specs/tabbed-page:Title": "Tabbed Page",
   "/specs/text-link:Description": "Shows url value as a link",
-  "/specs/text-link:Title": "Link",
+  "/specs/text-link:Title": "Text Link",
   "/specs/text:Description": "Renders string values",
   "/specs/text:Title": "Text",
   "/specs/textarea:Description": "Allows multi-line text input",

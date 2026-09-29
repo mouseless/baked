@@ -181,8 +181,8 @@ This should not exist in output locale files=Bunun locale çıktılarında bulun
 /specs/text:Description=Metin değerlerini gösterir
 /specs/textarea:Title=Metin Alanı
 /specs/textarea:Description=Çok satırlı metin girişine izin verir
-/specs/text-link:Title=Link
-/specs/text-link:Description=Url değerlerini link olarak gösterir
+/specs/text-link:Title=Bağlantı Metni
+/specs/text-link:Description=Url değerlerini bağlantı olarak gösterir
 /specs/toast:Title=Uyarı
 /specs/toast:Description=Uyarı mesajlarını gösterir
 

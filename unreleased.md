@@ -1,13 +1,28 @@
 # Unreleased
 
-- It introduces the new components it has added to the Baked ecosystem.
- - Nine input components were developed for use in forms. Their names are
-  `InputCheckbox`, `InputDate`, `InputMailAddress`, `InputMoney`,
-  `InputRate`, `InputUrl`, `MultiSelect`, `MultiSelectButton`, `Textarea`
- - Three display components were developed. Their names are `TextLink`
-  `Check` and `Date`
-- `Select`, `SelectButton`, `MultiSelect` and `MultiSelectButton` are developed
-  one composable for setting and getting model operations
-- `InputText` was minor bug about `TargetProp` feature, fixed
-- `MissingComponent` was returned old coding style, fixed
-- `useAuth` is brokean was importing Buffer package, fixed
+## Features
+
+- New input components are added for forms; `InputCheckbox`, `InputDate`,
+  `InputMailAddress`, `InputMoney`, `InputRate`, `InputUrl`, `MultiSelect`,
+  `MultiSelectButton` and `Textarea`
+- New display components are added; `Check`, `Date` and `TextLink`
+- `MailAddress` value type is introduced in `Baked.Core`
+- Default theme now renders `bool`, `DateOnly`, `DateTime`, `decimal`,
+  `double`, `Uri` and `MailAddress` members with the new components by
+  default
+  - `bool?` parameters in body or form render as an indeterminate checkbox
+- `InputMoney` icon is configurable through `components.InputMoney.icon`
+  module option, `pi-dollar` by default
+
+## Improvements
+
+- `Select`, `SelectButton`, `MultiSelect` and `MultiSelectButton` now share
+  model handling through the new `useSelection` composable
+- `useInputValidator` composable is added for input format validation
+
+## Bugfixes
+
+- `InputText` was setting a wrong input model value with `targetProp`, fixed
+- `MissingComponent` was showing samples with `builder.Conventions` instead of
+  `conventions`, fixed
+- `useAuth` was failing in dev mode because `buffer` wasn't pre-bundled, fixed
