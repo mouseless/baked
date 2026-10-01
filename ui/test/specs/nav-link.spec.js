@@ -1,6 +1,8 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import giveMe from "../utils/giveMe";
+import { devices } from "@playwright/test";
 import primevue from "../utils/locators/primevue";
+
+const iphoneSe = devices["iPhone SE"];
 
 test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/exception-samples/handled", async route => {
@@ -65,7 +67,7 @@ test.describe("Summary", () => {
 
   test("show summary in popover", async({ page }) => {
     const component = page.getByTestId(id);
-    const link = component.locator(primevue.button.base);
+    const link = component.locator(primevue.button.base).first();
     const popover = page.locator(primevue.popover.content).first();
 
     await link.hover();
@@ -74,19 +76,27 @@ test.describe("Summary", () => {
     await expect(popover).toHaveText("NavLink summary content");
   });
 
-  test("show summary in popover on mobile", async({ page }) => {
-    const component = page.getByTestId(id);
-    const screen = giveMe.aScreenSize({ name: "sm" });
-    const icon = component.locator(primevue.icon.base);
-    const popover = page.locator(primevue.popover.content).first();
+  test.describe("Mobile", () => {
+    test.use({
+      viewport: iphoneSe.viewport,
+      userAgent: iphoneSe.userAgent,
+      deviceScaleFactor: iphoneSe.deviceScaleFactor,
+      isMobile: iphoneSe.isMobile,
+      hasTouch: iphoneSe.hasTouch
+    });
 
-    await page.setViewportSize({ ...screen });
-    await expect(icon).toBeVisible();
+    test("show summary in popover", async({ page }) => {
+      const component = page.getByTestId(id);
+      const icon = component.locator(primevue.button.icon);
+      const popover = page.locator(primevue.popover.content).filter({ hasText: "NavLink summary content" });
 
-    await icon.click();
+      await expect(icon).toBeVisible();
 
-    await expect(popover).toBeAttached();
-    await expect(popover).toHaveText("NavLink summary content");
+      await icon.click();
+
+      await expect(popover).toBeAttached();
+      await expect(popover).toHaveText("NavLink summary content");
+    });
   });
 });
 
