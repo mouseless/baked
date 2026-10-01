@@ -2,7 +2,6 @@
 
 public interface ISelect : IComponentSchema
 {
-    bool? AutoSelectFirst { get; set; }
     bool? LocalizeOptionLabels { get; set; }
     string? OptionLabel { get; set; }
     string? OptionValue { get; set; }

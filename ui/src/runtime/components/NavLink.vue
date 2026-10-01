@@ -21,6 +21,7 @@
         icon="pi pi-lightbulb"
         size="small"
         variant="text"
+        rounded
         severity="secondary"
         data-icon
         @click="openPopover"

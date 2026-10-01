@@ -371,12 +371,18 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => !c.Parameter.IsNullable,
                 schema: i =>
                 {
-                    if (i.Component.Schema is not ISelect s) { return; }
                     if (i.Default is not null) { return; }
-                    if (i.Name.Contains("Multi")) { return; }
+                    if (i.Component.Schema is SelectButton sb)
+                    {
+                        sb.AutoSelectFirst = true;
+                        i.DefaultSelfManaged = true;
+                    }
 
-                    i.DefaultSelfManaged = true;
-                    s.AutoSelectFirst = true;
+                    if (i.Component.Schema is Select s)
+                    {
+                        s.AutoSelectFirst = true;
+                        i.DefaultSelfManaged = true;
+                    }
                 },
                 order: Order.At.Global.Max
             );
