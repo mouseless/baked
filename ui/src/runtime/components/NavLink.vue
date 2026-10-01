@@ -2,7 +2,7 @@
   <AwaitLoading :skeleton="{ height: '1.5rem' }">
     <div
       v-if="data"
-      class="flex gap-2"
+      class="flex gap-1"
     >
       <Button
         :icon
@@ -14,21 +14,22 @@
         @mouseenter="openPopover"
         @mouseleave="closePopover"
       />
-      <span
+      <Button
         v-if="summary"
-        class="md:hidden"
+        class="popover-icon hidden"
+        :class="popover?.visible && summaryShown ? 'text-yellow-500' : 'text-inherit'"
+        icon="pi pi-lightbulb"
+        size="small"
+        variant="text"
+        rounded
+        severity="secondary"
         data-icon
         @click="openPopover"
-      >
-        <i class="pi pi-eye" />
-      </span>
+      />
       <PersistentPopover
         v-if="summary"
         ref="popover"
-        class="
-          mx-4 max-w-96
-          max-md:w-[calc(100%-2rem)]
-        "
+        class="max-w-96 max-md:w-[65%]"
       >
         <Bake
           v-if="summaryShown"
@@ -90,8 +91,8 @@ function openPopover(event) {
 
   // store target value when async function
   // https://github.com/primefaces/primevue/issues/2352
-  const target = event.target || event;
-  const onIcon = event.target.dataset["icon"] !== undefined;
+  const target = event.currentTarget || event.target || event;
+  const onIcon = target.dataset["icon"] !== undefined;
 
   loadPopoverTask = setTimeout(() => {
     if(summaryShown.value) {

@@ -17,16 +17,16 @@
   },
   "devDependencies": {
     "@mouseless/prebuild": "mouseless/prebuild#v0.1.12",
-    "@nuxt/content": "3.15.2",
+    "@nuxt/content": "3.16.1",
     "@nuxt/eslint": "1.17.0",
-    "@pinia/nuxt": "0.11.3",
+    "@pinia/nuxt": "1.0.2",
     "log-symbols": "7.0.1",
     "nuxt": "4.5.2",
-    "webpack": "5.109.2",
-    "yaml": "2.9.0"
+    "webpack": "5.111.1",
+    "yaml": "2.9.1"
   },
   "dependencies": {
-    "mermaid": "11.16.1",
+    "mermaid": "12.0.0",
     "@tailwindcss/vite": "4.3.3",
     "tailwindcss": "4.3.3"
   },

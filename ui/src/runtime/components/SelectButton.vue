@@ -61,6 +61,7 @@ const model = defineModel({ type: null, required: true });
 
 const {
   allowEmpty = false,
+  autoSelectFirst,
   label,
   localizeOptionLabels,
   optionLabel,
@@ -77,6 +78,8 @@ const { selected } = useSelection({
   stateStore: selectButtonStates,
   stateful,
   targetProp,
+  autoSelectFirst,
+  optionValue,
   mode: "single"
 });
 

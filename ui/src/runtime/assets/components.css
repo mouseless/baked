@@ -263,6 +263,13 @@
   }
 
   /* NAV LINK */
+  @media (hover: none) {
+    .b-component--NavLink {
+      .popover-icon {
+        @apply flex -ml-1;
+      }
+    }
+  }
   .b-component--PageTitle {
     .grid+.relative>div:has(.b-component--NavLink)>span:first-child {
       @apply hidden;
