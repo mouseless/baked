@@ -2,6 +2,8 @@ import mermaid from "mermaid";
 
 const mermaidOptions = {
   theme: "base",
+  layout: "dagre",
+  look: "classic",
   flowchart: {
     useMaxWidth: false
   },
