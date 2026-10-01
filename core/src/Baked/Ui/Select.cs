@@ -2,6 +2,7 @@
 
 public record Select : ISelect, ILabeler
 {
+    public bool? AutoSelectFirst { get; set; }
     public bool? Filter { get; set; }
     public Label? Label { get; set; }
     public bool? LocalizeOptionLabels { get; set; }

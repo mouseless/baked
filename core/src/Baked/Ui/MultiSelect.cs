@@ -2,6 +2,7 @@ namespace Baked.Ui;
 
 public record MultiSelect : ISelect, ILabeler
 {
+    public bool? AutoSelectFirst { get; set; }
     public Label? Label { get; set; }
     public bool? LocalizeOptionLabels { get; set; }
     public int? MaxSelectedLabels { get; set; }

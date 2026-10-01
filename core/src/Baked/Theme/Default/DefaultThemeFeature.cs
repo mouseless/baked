@@ -367,6 +367,19 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     }
                 }
             );
+            conventions.AddParameterSchemaConfiguration<Input>(
+                when: c => !c.Parameter.IsNullable,
+                schema: i =>
+                {
+                    if (i.Component.Schema is not ISelect s) { return; }
+                    if (i.Default is not null) { return; }
+                    if (i.Name.Contains("Multi")) { return; }
+
+                    i.DefaultSelfManaged = true;
+                    s.AutoSelectFirst = true;
+                },
+                order: Order.At.Global.Max
+            );
 
             // `Select` defaults
             conventions.AddParameterComponentConfiguration<Select>(
