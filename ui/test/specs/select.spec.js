@@ -348,6 +348,42 @@ test.describe("Filtering on Select without Option Label", () => {
   });
 });
 
+test.describe("Auto Select First", () => {
+  const id = "Auto Select First";
+
+  test("first option is selected automatically", async({ page }) => {
+    const component = page.getByTestId(id);
+    const model = page.getByTestId(`${id}:model`);
+
+    await expect(component.locator(primevue.select.label)).toHaveText("OPTION_1");
+    await expect(model).toHaveText("OPTION_1");
+  });
+});
+
+test.describe("Auto Select First w/ Existing Model", () => {
+  const id = "Auto Select First w/ Existing Model";
+
+  test("existing model value is not overridden", async({ page }) => {
+    const component = page.getByTestId(id);
+    const model = page.getByTestId(`${id}:model`);
+
+    await expect(component.locator(primevue.select.label)).toHaveText("OPTION_2");
+    await expect(model).toHaveText("OPTION_2");
+  });
+});
+
+test.describe("Auto Select First w/ Option Label and Value", () => {
+  const id = "Auto Select First w/ Option Label and Value";
+
+  test("first option's value is selected automatically", async({ page }) => {
+    const component = page.getByTestId(id);
+    const model = page.getByTestId(`${id}:model`);
+
+    await expect(component.locator(primevue.select.label)).toHaveText("LABEL_1");
+    await expect(model).toHaveText("VALUE_1");
+  });
+});
+
 test.describe("Validation", () => {
   const id = "Validation";
 

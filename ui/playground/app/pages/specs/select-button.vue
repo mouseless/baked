@@ -109,6 +109,35 @@ const variants = [
       allowEmpty: true
     }),
     model: ref()
+  },
+  {
+    name: "Auto Select First",
+    descriptor: giveMe.aSelectButton({
+      autoSelectFirst: true,
+      data: ["OPTION_1", "OPTION_2"]
+    }),
+    model: ref()
+  },
+  {
+    name: "Auto Select First w/ Existing Model",
+    descriptor: giveMe.aSelectButton({
+      autoSelectFirst: true,
+      data: ["OPTION_1", "OPTION_2"]
+    }),
+    model: ref("OPTION_2")
+  },
+  {
+    name: "Auto Select First w/ Option Label and Value",
+    descriptor: giveMe.aSelectButton({
+      autoSelectFirst: true,
+      optionLabel: "label",
+      optionValue: "value",
+      data: [
+        { label: "LABEL_1", value: "VALUE_1" },
+        { label: "LABEL_2", value: "VALUE_2" }
+      ]
+    }),
+    model: ref()
   }
 ];
 </script>

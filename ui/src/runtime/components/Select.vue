@@ -49,7 +49,7 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { filter, label, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
+const { autoSelectFirst, filter, label, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp } = schema;
 
 const path = context.injectPath();
 const { selected } = useSelection({
@@ -59,6 +59,8 @@ const { selected } = useSelection({
   stateStore: selectStates,
   stateful,
   targetProp,
+  autoSelectFirst,
+  optionValue,
   mode: "single"
 });
 

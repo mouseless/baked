@@ -7,6 +7,8 @@ export default function useSelection({
   stateStore,
   stateful,
   targetProp,
+  optionValue,
+  autoSelectFirst,
   mode = "single"
 }) {
   const isMulti = mode === "multi";
@@ -61,7 +63,11 @@ export default function useSelection({
 
       selected.value = stateful ? (stateStore[path] ?? _model) : _model ?? null;
 
-      if(stateful && !hasChanges(selected.value)) {
+      if(!isMulti && autoSelectFirst && isEmpty(selected.value) && _data.length) {
+        selected.value = optionValue ? _data[0][optionValue] : _data[0];
+      }
+
+      if((stateful || autoSelectFirst) && !hasChanges(selected.value)) {
         setModel(selected.value);
       }
     },
@@ -69,6 +75,10 @@ export default function useSelection({
   );
 
   watch(selected, setModel);
+
+  function isEmpty(value) {
+    return value === null || value === undefined;
+  }
 
   function arrayEquals(a, b) {
     return a?.length === b?.length && a?.every((value, index) => value === b[index]);
