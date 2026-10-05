@@ -2,7 +2,7 @@
   <AwaitLoading :skeleton="{ height: '1.5rem' }">
     <div
       v-if="data"
-      class="flex gap-1"
+      class="inline-flex gap-1"
     >
       <Button
         :icon
