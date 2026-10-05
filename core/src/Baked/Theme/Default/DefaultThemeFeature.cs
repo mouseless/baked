@@ -369,7 +369,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddParameterSchemaConfiguration<Input>(
                 when: c => !c.Parameter.IsNullable,
-                where: c => c.Path.Is("page", "**", "data-panel", "inputs"),
+                where: c => c.Path.EndsWith("data-panel", "inputs"),
                 schema: i =>
                 {
                     if (i.Default is not null) { return; }
