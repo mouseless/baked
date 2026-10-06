@@ -45,11 +45,13 @@ public static class BusinessExtensions
     // Do NOT remove this warning disable section unintentionally.
     // Without this, GitHub Actions fails on dotnet format
 #pragma warning disable IDE0052
-    static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 2, [typeof(IServiceCollection)]) ??
-        throw new("AddTransientWithFactory<TService, TImplementation> should have existed");
+    static readonly MethodInfo _addTransientWithFactory =
+        new Func<IServiceCollection, IServiceCollection>(AddTransientWithFactory<object, object>)
+            .Method.GetGenericMethodDefinition();
 
-    static readonly MethodInfo _addScopedWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddScopedWithFactory), 2, [typeof(IServiceCollection)]) ??
-        throw new("AddScopedWithFactory<TService, TImplementation> should have existed");
+    static readonly MethodInfo _addScopedWithFactory =
+        new Func<IServiceCollection, IServiceCollection>(AddScopedWithFactory<object, object>)
+            .Method.GetGenericMethodDefinition();
 #pragma warning restore IDE0052
 
     extension(IServiceCollection services)

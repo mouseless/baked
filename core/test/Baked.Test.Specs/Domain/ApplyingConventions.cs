@@ -4,7 +4,6 @@ using Baked.Testing;
 
 namespace Baked.Test.Domain;
 
-[TestFixture]
 public class ApplyingConventions : Spec
 {
     static List<string> _values = default!;

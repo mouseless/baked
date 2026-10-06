@@ -12,7 +12,12 @@ namespace Baked.Playground.Orm;
 /// It is a test entity to check all supported property types both in data
 /// access layer and in rest api layer.
 /// </remarks>
-public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
+public class Entity(
+    IEntityContext<Entity> _context,
+    ITransaction _transaction,
+    Validate _validate,
+    Entities _entities
+)
 {
     public Id Id { get; private set; } = default!;
     public Guid? Guid { get; private set; } = default!;
@@ -187,15 +192,10 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         TimeOnly? timeOnly = default
     )
     {
-        if (unique is not null && unique != Unique && _entities.SingleByUnique(unique) is not null)
-        {
-            throw new MustBeUniqueException(nameof(Unique));
-        }
-
-        if (@enum is not null && @enum != Enum && _entities.SingleByEnum(@enum.Value) is not null)
-        {
-            throw new MustBeUniqueException(nameof(Enum));
-        }
+        _validate
+            .Unique(unique, Unique, _entities.SingleByUnique)
+            .Unique(@enum, Enum, _entities.SingleByEnum)
+        ;
 
         Guid = guid ?? Guid;
         String = @string ?? String;

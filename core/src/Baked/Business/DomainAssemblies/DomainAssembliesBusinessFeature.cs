@@ -159,6 +159,8 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
+            services.AddSingleton<Validate>();
+
             foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
             {
                 if (_addEmbeddedFileProviders)
