@@ -68,6 +68,7 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
         c => c.AddRemoveChild(),
         _commandPattern,
         c => c.Id(),
+        c => c.FlagsEnum(),
         _initializable,
         _label,
         c => c.Locatable(),

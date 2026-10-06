@@ -83,6 +83,7 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
         c => c.AddRemoveChild(),
         c => c.Client(),
         _commandPattern,
+        c => c.FlagsEnum(),
         c => c.Id(),
         _initializable,
         _label,

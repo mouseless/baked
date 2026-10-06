@@ -18,7 +18,8 @@ public class MappingValueTypes : TestSpec
         var mapping = configuration.GetClassMapping(typeof(EntityWithValueType));
         var property = configuration.GetClassMapping(typeof(EntityWithValueType)).PropertyIterator.FirstOrDefault(p => p.Name == propertyName);
 
-        property?
+        property
+            .ShouldNotBeNull()
             .Type.ShouldBeOfType<CustomType>()
             .UserType.ShouldBeOfType<ValueTypeUserType<Value>>();
     }

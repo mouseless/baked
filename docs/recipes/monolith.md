@@ -45,6 +45,7 @@ Bake.New
 |                    | Add/Remove Child                         |                                    |
 |                    | Client                                   |                                    |
 |                    | Command Pattern                          |                                    |
+|                    | Flags Enum                               |                                    |
 |                    | Id                                       |                                    |
 |                    | Initializable                            |                                    |
 |                    | Label                                    |                                    |

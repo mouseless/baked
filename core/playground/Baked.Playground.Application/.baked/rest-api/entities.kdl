@@ -14,6 +14,7 @@ entity {
     mail-address @parameter-model
     dynamic @parameter-model
     enum @parameter-model
+    flags-enum @parameter-model
     date-time @parameter-model
     date-only @parameter-model
     time-only @parameter-model
@@ -32,6 +33,7 @@ entity {
     mail-address @parameter-model
     dynamic @parameter-model
     enum @parameter-model
+    flags-enum @parameter-model
     date-time @parameter-model
     date-only @parameter-model
     use-transaction @parameter-model
@@ -85,6 +87,9 @@ entities @controller-model {
       @parameter-model in="query"
     }
     enum {
+      @parameter-model in="query"
+    }
+    flags-enum {
       @parameter-model in="query"
     }
     date-time {

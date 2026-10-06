@@ -40,6 +40,7 @@ Bake.New
 | Coding Style(s)    | :white_check_mark:                 | :white_check_mark:                 |
 |                    | Add/Remove Child                   |                                    |
 |                    | Command Pattern                    |                                    |
+|                    | Flags Enum                         |                                    |
 |                    | Id                                 |                                    |
 |                    | Initializable                      |                                    |
 |                    | Label                              |                                    |

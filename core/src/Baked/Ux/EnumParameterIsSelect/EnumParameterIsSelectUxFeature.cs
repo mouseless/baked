@@ -22,14 +22,6 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton,
                 component: (c, cc) => ParameterSelectButton(c.Parameter, cc)
             );
-            conventions.AddParameterComponentConfiguration<SelectButton>(
-                when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
-                component: (s, c) =>
-                {
-                    s.Schema.OptionLabel = "label";
-                    s.Schema.OptionValue = "value";
-                }
-            );
 
             // Use `Select` when enum member count is > _maxMemberCountForSelectButton
             conventions.AddParameterComponent(
@@ -38,13 +30,23 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton,
                 component: (c, cc) => ParameterSelect(c.Parameter, cc)
             );
-            conventions.AddParameterComponentConfiguration<Select>(
-                when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
-                component: (s, c) =>
-                {
-                    s.Schema.OptionLabel = "label";
-                    s.Schema.OptionValue = "value";
-                }
+
+            // Use `MultiSelectButton` for flags enum, when enum member count is <= _maxMemberCountForSelectButton
+            conventions.AddParameterComponent(
+                when: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton &&
+                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),
+                component: (c, cc) => ParameterMultiSelectButton(c.Parameter, cc)
+            );
+
+            // Use `MultiSelect` for flags enum, when enum member count is > _maxMemberCountForSelectButton
+            conventions.AddParameterComponent(
+                when: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton &&
+                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),
+                component: (c, cc) => ParameterMultiSelect(c.Parameter, cc)
             );
 
             // Default value of a required enum parameter is set to the first enum
@@ -57,6 +59,33 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     (api.FromQuery || api.FromRoute),
                 schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First().Camelize(),
                 order: 10
+            );
+
+            // Map option label and value for enum data
+            conventions.AddParameterSchemaConfiguration<Input>(
+                when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
+                schema: i =>
+                {
+                    if (i.Component.Schema is not ISelect select) { return; }
+
+                    select.OptionLabel = "label";
+                    select.OptionValue = "value";
+                }
+            );
+
+            // Use localize option labels for flags enum
+            conventions.AddParameterSchemaConfiguration<Input>(
+                when: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),
+                schema: (i, _, cc) =>
+                {
+                    if (i.Component.Schema is not ISelect select) { return; }
+
+                    var (_, l) = cc;
+
+                    select.LocalizeOptionLabels = true;
+                }
             );
         });
     }

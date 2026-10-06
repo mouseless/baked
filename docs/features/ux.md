@@ -104,8 +104,10 @@ c => c.EnumParameterIsSelect(maxMemberCountForSelectButton: ...)
 ```
 
 - By default, enum parameters are shown as a `Select` dropdown
+  - For flags enum types, it uses `MultiSelect`
 - When the number of enum members is less than or equal to the given limit, it
   switches to a `SelectButton`
+  - For flags enum types, it switches to `MultiSelectButton`
 - Required enum parameters default to the first enum member when parameter is in
   query or route
 
