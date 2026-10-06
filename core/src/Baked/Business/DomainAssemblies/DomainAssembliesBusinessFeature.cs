@@ -75,7 +75,6 @@ public class DomainAssembliesBusinessFeature(
             builder.DefaultConventionLevel = "Business.Defaults.Configure";
 
             builder.Index.Type.Add<ServiceAttribute>();
-            builder.Index.Type.Add<CasterAttribute>();
             builder.Index.Type.Add<QueryAttribute>();
             builder.Index.Method.Add<InitializerAttribute>();
             builder.Index.Property.Add<IdAttribute>();
@@ -156,12 +155,6 @@ public class DomainAssembliesBusinessFeature(
                     !metadata.Has<ServiceAttribute>(),
                 order: Order.At.Infra
             );
-
-            conventions.SetTypeAttribute(
-                attribute: () => new CasterAttribute(),
-                when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>)),
-                order: Order.At.Infra
-            );
         });
 
         configurator.Runtime.ConfigureServiceCollection(services =>
@@ -180,19 +173,6 @@ public class DomainAssembliesBusinessFeature(
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
         });
 
-        configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
-        {
-            configurator.Domain.UsingDomainModel(domain =>
-            {
-                generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
-                    assembly => assembly
-                        .AddReferenceFrom<DomainAssembliesBusinessFeature>()
-                        .AddCodes(new CasterConfigurerTemplate(domain)),
-                    usings: [.. CasterConfigurerTemplate.GlobalUsings]
-                );
-            });
-        });
-
         configurator.Domain.ConfigureDomainServiceCollection(services =>
         {
             services.References.AddRange(_assemblyDescriptors.Select(ad => ad.assembly));
@@ -201,26 +181,6 @@ public class DomainAssembliesBusinessFeature(
                 "Baked.Runtime",
                 "Microsoft.Extensions.DependencyInjection"
             ]);
-        });
-
-        configurator.Runtime.ConfigureServiceProvider(sp =>
-        {
-            Caster.SetServiceProvider(sp);
-
-            configurator.Buildtime.UsingGeneratedContext(generatedContext =>
-            {
-                generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)]
-                    .CreateRequiredImplementationInstance<ICasterConfigurer>()
-                    .Configure();
-            });
-        });
-
-        configurator.Testing.ConfigureTestConfiguration(test =>
-        {
-            test.SetUps.Add(spec =>
-            {
-                Caster.SetServiceProvider(spec.GiveMe.TheServiceProvider());
-            });
         });
 
         configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>

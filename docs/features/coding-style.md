@@ -38,22 +38,6 @@ c => c.CommandPattern(methodNames: [...])
 >
 > Default value of `methodNames` is `["Execute", "Process"]`.
 
-## Entity Subclass
-
-Allows classes to be subclasses of entities via composition. This marks a
-transient class as an entity subclass when it implements explicit casting to an
-entity. Methods of these extension classes are rendered under entity group. It
-uses the first unique property to discriminate entity records.
-
-> [!WARNING]
->
-> First unique property is expected to be `enum` or `string`. Otherwise
-> subclass routing won't work.
-
-```csharp
-c => c.EntitySubclass()
-```
-
 ## Id
 
 This feature provides `Id` configuration for transient and entity classes.
@@ -131,9 +115,9 @@ c => c.Locatable()
 ## Locatable Extension
 
 Allows classes to extend locatables via composition. This marks a transient
-class as a locatable extension when it implements implicit casting to a
-locatable. Methods of these extension classes are rendered under locatable
-group.
+class as a locatable extension when it has an initializer with only one
+parameter that is a locatable. Methods of these extension classes are rendered
+under locatable group.
 
 ```csharp
 c => c.LocatableExtension()

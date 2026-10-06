@@ -45,7 +45,6 @@ Bake.New
 |                    | Add/Remove Child                         |                                    |
 |                    | Client                                   |                                    |
 |                    | Command Pattern                          |                                    |
-|                    | Entity Subclass                          |                                    |
 |                    | Id                                       |                                    |
 |                    | Initializable                            |                                    |
 |                    | Label                                    |                                    |

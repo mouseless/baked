@@ -46,42 +46,43 @@ public class LocatorTemplate : CodeTemplateBase
 
         {{ForEach(_locatableExtensions, extension => $$"""
         public class {{extension.Name}}Locator(
+            Func<{{extension.CSharpFriendlyFullName}}> _new{{extension.Name}},
             I{{If(IsAsync(extension), () => "Async")}}Locator<{{LocatableType(extension).CSharpFriendlyFullName}}> _locator
         ) : I{{If(IsAsync(extension), () => "Async")}}Locator<{{extension.CSharpFriendlyFullName}}>
         {
             {{If(IsAsync(extension), () => $$"""
             public async Task<{{extension.CSharpFriendlyFullName}}> LocateAsync(Id id, bool throwNotFound) =>
-                ({{extension.CSharpFriendlyFullName}})await _locator.LocateAsync(id, throwNotFound: throwNotFound);
+                {{New(extension, "await _locator.LocateAsync(id, throwNotFound: throwNotFound)")}};
 
             public async Task<IEnumerable<{{extension.CSharpFriendlyFullName}}>> LocateManyAsync(IEnumerable<Id> ids) =>
-                (await _locator.LocateManyAsync(ids)).Select(e => ({{extension.CSharpFriendlyFullName}})e);
+                (await _locator.LocateManyAsync(ids)).Select(e => {{New(extension, "e")}});
 
             public {{extension.CSharpFriendlyFullName}} Locate(Id id, bool throwNotFound) =>
-                ({{extension.CSharpFriendlyFullName}})_locator.Locate(id, throwNotFound: throwNotFound);
+                {{New(extension, "_locator.Locate(id, throwNotFound: throwNotFound)")}};
 
             public LazyLocatable<{{extension.CSharpFriendlyFullName}}> LocateLazily(Id id)
             {
                 var result = _locator.LocateLazily(id);
 
-                return new(({{extension.CSharpFriendlyFullName}})result.Value, result.Initialize);
+                return new({{New(extension, "result.Value")}}, result.Initialize);
             }
 
             public IEnumerable<{{extension.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
-                _locator.LocateMany(ids).Select(e => ({{extension.CSharpFriendlyFullName}})e);
+                _locator.LocateMany(ids).Select(e => {{New(extension, "e")}});
             """,
             @else: () => $$"""
             public {{extension.CSharpFriendlyFullName}} Locate(Id id, bool throwNotFound) =>
-                ({{extension.CSharpFriendlyFullName}})_locator.Locate(id, throwNotFound: throwNotFound);
+                {{New(extension, "_locator.Locate(id, throwNotFound: throwNotFound)")}};
 
             public LazyLocatable<{{extension.CSharpFriendlyFullName}}> LocateLazily(Id id)
             {
                 var result = _locator.LocateLazily(id);
 
-                return new(({{extension.CSharpFriendlyFullName}})result.Value, result.Initialize);
+                return new({{New(extension, "result.Value")}}, result.Initialize);
             }
 
             public IEnumerable<{{extension.CSharpFriendlyFullName}}> LocateMany(IEnumerable<Id> ids) =>
-                _locator.LocateMany(ids).Select(e => ({{extension.CSharpFriendlyFullName}})e);
+                _locator.LocateMany(ids).Select(e => {{New(extension, "e")}});
             """, indentation: 1)}}
         }
 
@@ -119,4 +120,7 @@ public class LocatorTemplate : CodeTemplateBase
 
     TypeModel LocatableType(TypeModelMembers extension) =>
         _domain.Types[extension.Get<LocatableExtensionAttribute>().LocatableType];
+
+    string New(TypeModelMembers extension, string expression) =>
+        $$"""_new{{extension.Name}}().{{extension.FirstMethod<InitializerAttribute>().Name}}({{expression}})""";
 }

@@ -72,9 +72,6 @@ definitions.
 > treated as non-business logic, while allowing you to define business logic in
 > your own base classes.
 
-Additionally, it registers types that implement `ICasts<,>` interface under
-`Caster` to allow static casting under `implicit` and `explicit` operators.
-
 ```csharp
 c => c.DomainAssemblies([typeof(MyClass).Assembly])
 ```

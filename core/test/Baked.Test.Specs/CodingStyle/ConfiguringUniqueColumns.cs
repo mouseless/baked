@@ -1,4 +1,4 @@
-using Baked.Playground.CodingStyle.EntitySubclass;
+using Baked.Playground.Orm;
 
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
@@ -11,8 +11,8 @@ public class ConfiguringUniqueColumns : TestSpec
     {
         var configuration = GiveMe.The<NHConfiguration>();
 
-        var mapping = configuration.GetClassMapping(typeof(TypedEntity));
-        var property = configuration.GetClassMapping(typeof(TypedEntity)).PropertyIterator.FirstOrDefault(p => p.Name == nameof(TypedEntity.Type));
+        var mapping = configuration.GetClassMapping(typeof(Entity));
+        var property = configuration.GetClassMapping(typeof(Entity)).PropertyIterator.FirstOrDefault(p => p.Name == nameof(Entity.Unique));
         var column = property?.ColumnIterator.OfType<NHibernate.Mapping.Column>().FirstOrDefault();
 
         column?.Unique.ShouldBeTrue();

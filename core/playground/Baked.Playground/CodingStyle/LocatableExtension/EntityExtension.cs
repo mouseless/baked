@@ -1,5 +1,4 @@
-﻿using Baked.Business;
-using Baked.Playground.Orm;
+﻿using Baked.Playground.Orm;
 
 namespace Baked.Playground.CodingStyle.LocatableExtension;
 
@@ -32,14 +31,4 @@ public class EntityExtension
             moreExtensions.Sum(e => e._entity.Int32) +
             evenMoreExtensions.Sum(e => e._entity.Int32)
         );
-
-    public static implicit operator EntityExtension(Entity real) =>
-        real.Cast().To<EntityExtension>();
-}
-
-public class EntityExtensions(Func<EntityExtension> _newEntityExtension)
-    : ICasts<Entity, EntityExtension>
-{
-    EntityExtension ICasts<Entity, EntityExtension>.To(Entity real) =>
-        _newEntityExtension().With(real);
 }
