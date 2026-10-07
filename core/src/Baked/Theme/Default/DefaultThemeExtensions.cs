@@ -55,10 +55,12 @@ public static class DefaultThemeExtensions
                             .Select(r => r.AsCardLink(l)),
                         options: mp =>
                         {
-                            mp.Header = B.PageTitle(
-                                title: l(context.Route.Title),
-                                options: pt => pt.Description = l(context.Route.Description)
-                            );
+                            mp.Header = B.PageTitle(options: pt =>
+                            {
+                                pt.LocalizeTitle = true;
+                                pt.Description = l(context.Route.Description);
+                            });
+                            mp.Header.Data = Datas.Inline(l(context.Route.Title));
                         }
                     );
                 }
@@ -66,14 +68,16 @@ public static class DefaultThemeExtensions
                 return B.MenuPage(context.Route.Name,
                     options: mp =>
                     {
-                        mp.Header = B.PageTitle(context.Route.Title, options: pt =>
+                        mp.Header = B.PageTitle(options: pt =>
                         {
+                            pt.LocalizeTitle = true;
                             pt.Description = l(context.Route.Description);
                             pt.Actions.Add(B.Filter(
                                 options: f => f.Placeholder = l("Filter"),
                                 action: Publish.Event("filter-changed")
                             ));
                         });
+                        mp.Header.Data = Datas.Inline(context.Route.Title);
                         mp.FilterEvent = "filter-changed";
                         mp.Sections.AddRange(
                             sections.Select(g => B.MenuPageSection(

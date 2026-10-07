@@ -35,23 +35,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            // adds simple page to types
-            conventions.AddTypeComponent(
-                where: cc => cc.Path.Is("page", "*"),
-                component: (c, cc) => B.SimplePage(cc.Route.Path)
-            );
-            conventions.AddTypeComponentConfiguration<SimplePage>(
-                where: cc => cc.Path.Is("page", "*"),
-                component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("simple-page", "title")),
-                order: Order.At.Min
-            );
-
-            // adds tabbed page to types
-            conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeTabbedPage(c.Type, cc)
-            );
-
             // configures page route params for types with dynamic page route
             conventions.AddTypeAttributeConfiguration<RouteAttribute>(
                 when: (c, r) =>
@@ -65,6 +48,22 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     r.Params[idAttribute.RouteName] = idAttribute.RouteName;
                 },
                 order: Order.At.Infra
+            );
+
+            // adds simple page to types
+            conventions.AddTypeComponent(
+                where: cc => cc.Path.Is("page", "*"),
+                component: (c, cc) => B.SimplePage(cc.Route.Path)
+            );
+            conventions.AddTypeComponentConfiguration<SimplePage>(
+                where: cc => cc.Path.Is("page", "*"),
+                component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("simple-page", "title"))
+            );
+
+            // adds tabbed page to types
+            conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeTabbedPage(c.Type, cc)
             );
 
             // Enum Data
@@ -335,31 +334,44 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // `PageTitle` defaults
             conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
-                component: (c, cc) => TypePageTitle(c.Type, cc)
+                where: cc => cc.Path.Is("page", "*", "*-page", "title"),
+                component: () => B.PageTitle()
             );
             conventions.AddTypeComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
+                    var (_, l) = cc;
 
-                    pt.Schema.Icon = c.Type.GenerateComponent(cc);
+                    pt.Data = Inline(l(cc.Route.Title));
+                    pt.Schema.Description = l(cc.Route.Description);
+                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
                 }
+            );
+            conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
+                order: Order.At.Global.Max
             );
 
             conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
-                component: (c, cc) => MethodPageTitle(c.Method, cc)
+                component: () => B.PageTitle()
             );
             conventions.AddMethodComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
+                    var (_, l) = cc;
 
-                    pt.Schema.Icon = c.Method.GenerateComponent(cc);
+                    pt.Data = Inline(l(cc.Route.Title));
+                    pt.Schema.Description = l(cc.Route.Description);
+                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
                 }
             );
+            conventions.AddMethodComponentConfiguration<PageTitle>(
+                component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
+                order: Order.At.Global.Max
+            );
 
+            // add action methods to page title actions
             conventions.AddTypeComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
@@ -375,26 +387,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         pt.Schema.Actions.Add(actionComponent);
                     }
                 }
-            );
-            conventions.AddParameterSchemaConfiguration<Input>(
-                when: c => !c.Parameter.IsNullable,
-                where: c => c.Path.EndsWith("data-panel", "inputs"),
-                schema: i =>
-                {
-                    if (i.Default is not null) { return; }
-                    if (i.Component.Schema is SelectButton sb)
-                    {
-                        sb.AutoSelectFirst = true;
-                        i.DefaultSelfManaged = true;
-                    }
-
-                    if (i.Component.Schema is Select s)
-                    {
-                        s.AutoSelectFirst = true;
-                        i.DefaultSelfManaged = true;
-                    }
-                },
-                order: Order.At.Global.Max
             );
 
             // `Select` defaults
@@ -414,7 +406,30 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     label.None();
                 },
-                order: Order.At.Max
+                order: Order.At.Global.Max
+            );
+
+            // make required select/select-button inputs in data panel to
+            // select their first item automatically when they have no default
+            conventions.AddParameterSchemaConfiguration<Input>(
+                when: c => !c.Parameter.IsNullable,
+                where: c => c.Path.EndsWith("data-panel", "inputs"),
+                schema: i =>
+                {
+                    if (i.Default is not null) { return; }
+                    if (i.Component.Schema is SelectButton sb)
+                    {
+                        sb.AutoSelectFirst = true;
+                        i.DefaultSelfManaged = true;
+                    }
+
+                    if (i.Component.Schema is Select s)
+                    {
+                        s.AutoSelectFirst = true;
+                        i.DefaultSelfManaged = true;
+                    }
+                },
+                order: Order.At.Global.Max
             );
         });
 

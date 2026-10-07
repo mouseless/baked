@@ -233,13 +233,9 @@ public static class Components
         Action<PageSize>? options = default
     ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<PageTitle> PageTitle(string title,
+    public static ComponentDescriptor<PageTitle> PageTitle(
         Action<PageTitle>? options = default
-    ) => PageTitle(Datas.Inline(title), options: options);
-
-    public static ComponentDescriptor<PageTitle> PageTitle(IData data,
-        Action<PageTitle>? options = default
-    ) => new(options.Apply(new() { LocalizeTitle = data?.RequireLocalization })) { Data = data };
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<Paginator> Paginator(
         Action<Paginator>? options = default

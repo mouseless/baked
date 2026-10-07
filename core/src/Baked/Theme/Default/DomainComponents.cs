@@ -10,21 +10,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<PageTitle> TypePageTitle(TypeModelMetadata _, ComponentContext context,
-        Action<PageTitle>? options = default
-    )
-    {
-        context = context.Drill(nameof(PageTitle));
-        var (_, l) = context;
-
-        return B.PageTitle(l(context.Route.Title), options: pt =>
-        {
-            pt.Description = l(context.Route.Description);
-
-            options.Apply(pt);
-        });
-    }
-
     public static ComponentDescriptor<FormPage> MethodFormPage(MethodModel method, ComponentContext context,
         Action<FormPage>? options = default
     )
@@ -40,21 +25,6 @@ public static class DomainComponents
             action: method.GenerateSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
             options: options
         );
-    }
-
-    public static ComponentDescriptor<PageTitle> MethodPageTitle(MethodModel _, ComponentContext context,
-        Action<PageTitle>? options = default
-    )
-    {
-        context = context.Drill(nameof(PageTitle));
-        var (_, l) = context;
-
-        return B.PageTitle(l(context.Route.Title), options: pt =>
-        {
-            pt.Description = l(context.Route.Description);
-
-            options.Apply(pt);
-        });
     }
 
     public static ComponentDescriptor<TabbedPage> TypeTabbedPage(TypeModelMetadata type, ComponentContext context,
