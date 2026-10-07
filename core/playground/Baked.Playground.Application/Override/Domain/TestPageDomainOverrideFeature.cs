@@ -20,7 +20,7 @@ public class TestPageDomainOverrideFeature : IFeature
             conventions.AddTypeComponent(
                 when: c => c.Type.Is<TestPage>(),
                 where: cc => cc.Path.EndsWith(nameof(Page)),
-                component: () => B.TabbedPage("test-page", B.PageTitle()),
+                component: () => B.TabbedPage("test-page"),
                 order: Order.At.Override
             );
             conventions.AddTypeComponentConfiguration<TabbedPage>(

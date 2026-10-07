@@ -1,10 +1,12 @@
-﻿namespace Baked.Ui;
+﻿using B = Baked.Ui.Components;
 
-public record FormPage(string Path, IComponentDescriptor Title, Button Submit)
+namespace Baked.Ui;
+
+public record FormPage(string Path)
     : PageSchemaBase(Path)
 {
-    public IComponentDescriptor Title { get; set; } = Title;
-    public Button Submit { get; set; } = Submit;
+    public IComponentDescriptor Title { get; set; } = B.MissingComponent();
+    public Button Submit { get; set; } = new(nameof(MissingComponent));
     public List<Section> Sections { get; init; } = [];
     public List<ValidationComposable>? Validations { get; set; }
     public bool? ShowValidationSummary { get; set; }

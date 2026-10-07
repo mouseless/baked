@@ -53,17 +53,23 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // adds simple page to types
             conventions.AddTypeComponent(
                 where: cc => cc.Path.Is("page", "*"),
-                component: (c, cc) => B.SimplePage(cc.Route.Path)
+                component: (_, cc) => B.SimplePage(cc.Route.Path)
             );
             conventions.AddTypeComponentConfiguration<SimplePage>(
                 where: cc => cc.Path.Is("page", "*"),
-                component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("simple-page", "title"))
+                component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("simple-page", "title")),
+                order: Order.At.Min
             );
 
             // adds tabbed page to types
             conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeTabbedPage(c.Type, cc)
+                where: cc => cc.Path.Is("page", "*"),
+                component: (_, cc) => B.TabbedPage(cc.Route.Path)
+            );
+            conventions.AddTypeComponentConfiguration<TabbedPage>(
+                where: cc => cc.Path.Is("page", "*"),
+                component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("tabbed-page", "title")),
+                order: Order.At.Min
             );
 
             // Enum Data
@@ -133,27 +139,34 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: () => B.Date(options: td => td.Format = "dd-MM-yyyy HH:mm:ss"),
                 order: Order.At.Min
             );
-            conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),
-                component: (c, cc) => B.InputMoney(),
-                order: Order.At.Min
-            );
-            conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.SkipNullable().Is<double>(),
-                component: (c, cc) => B.InputRate(),
-                order: Order.At.Min
-            );
 
             // Method Defaults
+
+            // set methods as action by default when they are api action
             conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 attribute: () => new ActionAttribute(),
                 order: Order.At.Theme.AbsoluteMin
             );
+
+            // add form page to methods
             conventions.AddMethodComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
-                component: (c, cc) => MethodFormPage(c.Method, cc)
+                where: cc => cc.Path.Is("page", "*", "*"),
+                component: (_, cc) => B.FormPage(cc.Route.Path)
             );
+            conventions.AddMethodComponentConfiguration<FormPage>(
+                where: cc => cc.Path.Is("page", "*", "*"),
+                component: (fp, c, cc) =>
+                {
+                    cc = cc.Drill("form-page");
+
+                    fp.Schema.Title = c.Method.GenerateRequiredComponent(cc.Drill("title"));
+                    fp.Schema.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
+                    fp.Action = c.Method.GenerateRequiredSchema<RemoteAction>(cc.Drill("action"));
+                },
+                order: Order.At.Min
+            );
+
             conventions.AddMethodSchema(
                 schema: (c, cc) => MethodContent(c.Method, cc)
             );
@@ -166,7 +179,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionAttribute>(),
-                schema: (c, cc) => DomainActions.MethodRemote(c.Method)
+                schema: c => DomainActions.MethodRemote(c.Method)
             );
             conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
@@ -303,6 +316,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
             conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),
+                component: (c, cc) => B.InputMoney(),
+                order: Order.At.Min
+            );
+            conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<double>(),
+                component: (c, cc) => B.InputRate(),
+                order: Order.At.Min
+            );
+            conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<bool>(),
                 component: (c, cc) => B.InputCheckbox(),
                 order: Order.At.Min
@@ -353,7 +376,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             conventions.AddMethodComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
+                where: cc => cc.Path.Is("page", "*", "*", "*-page", "title"),
                 component: () => B.PageTitle()
             );
             conventions.AddMethodComponentConfiguration<PageTitle>(

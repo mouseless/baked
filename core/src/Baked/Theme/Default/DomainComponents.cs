@@ -10,36 +10,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<FormPage> MethodFormPage(MethodModel method, ComponentContext context,
-        Action<FormPage>? options = default
-    )
-    {
-        context = context.Drill(nameof(FormPage));
-        var (_, l) = context;
-
-        var path = context.Route.Path.Trim('/');
-        var title = method.GenerateRequiredComponent(context.Drill(nameof(FormPage.Title)));
-        var button = method.GenerateRequiredComponent<Button>(context.Drill(nameof(FormPage.Submit))).Schema;
-
-        return B.FormPage(path, title, button,
-            action: method.GenerateSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
-            options: options
-        );
-    }
-
-    public static ComponentDescriptor<TabbedPage> TypeTabbedPage(TypeModelMetadata type, ComponentContext context,
-        Action<TabbedPage>? options = default
-    )
-    {
-        context = context.Drill(nameof(TabbedPage));
-        var (_, l) = context;
-
-        var path = context.Route.Path.Trim('/');
-        var title = type.GenerateRequiredComponent(context.Drill(nameof(TabbedPage.Title)));
-
-        return B.TabbedPage(path, title, options: options);
-    }
-
     public static Tab TypeTab(TypeModelMetadata type, ComponentContext context, string name,
         Action<Tab>? options = default
     )
