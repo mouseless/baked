@@ -10,32 +10,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<MissingComponent> CustomAttributesMissingComponent(ICustomAttributesModel metadata, ComponentContext context,
-        Action<MissingComponent>? options = default
-    ) => B.MissingComponent(options: mc =>
-    {
-        mc.Path.AddRange(context.Path.GetParts());
-        mc.Source = B.MissingComponentDomainSource(metadata.GetType().Name, options: mcds =>
-        {
-            mcds.Path.AddRange(metadata.CustomAttributes.Name.Split('.'));
-        });
-
-        options.Apply(mc);
-    });
-
-    public static ComponentDescriptor<SimplePage> TypeSimplePage(TypeModelMetadata type, ComponentContext context,
-        Action<SimplePage>? options = default
-    )
-    {
-        context = context.Drill(nameof(SimplePage));
-        var (_, l) = context;
-
-        var path = context.Route.Path.Trim('/');
-        var title = type.GenerateRequiredComponent(context.Drill(nameof(SimplePage.Title)));
-
-        return B.SimplePage(path, title, options: options);
-    }
-
     public static ComponentDescriptor<PageTitle> TypePageTitle(TypeModelMetadata _, ComponentContext context,
         Action<PageTitle>? options = default
     )

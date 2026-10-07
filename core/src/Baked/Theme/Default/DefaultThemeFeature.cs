@@ -35,15 +35,24 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            // Type defaults
+            // adds simple page to types
+            conventions.AddTypeComponent(
+                where: cc => cc.Path.Is("page", "*"),
+                component: (c, cc) => B.SimplePage(cc.Route.Path)
+            );
+            conventions.AddTypeComponentConfiguration<SimplePage>(
+                where: cc => cc.Path.Is("page", "*"),
+                component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("simple-page", "title")),
+                order: Order.At.Min
+            );
+
+            // adds tabbed page to types
             conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*"),
                 component: (c, cc) => TypeTabbedPage(c.Type, cc)
             );
-            conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeSimplePage(c.Type, cc)
-            );
+
+            // configures page route params for types with dynamic page route
             conventions.AddTypeAttributeConfiguration<RouteAttribute>(
                 when: (c, r) =>
                     r.Path.Contains("[id]") &&

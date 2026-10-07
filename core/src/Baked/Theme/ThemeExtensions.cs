@@ -7,7 +7,6 @@ using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Testing;
 using Baked.Theme;
-using Baked.Theme.Default;
 using Baked.Ui;
 using Baked.Ui.Configuration;
 using System.Collections.Immutable;
@@ -15,6 +14,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 using static Baked.Ui.Datas;
+
+using B = Baked.Ui.Components;
 
 namespace Baked;
 
@@ -1198,7 +1199,15 @@ public static class ThemeExtensions
                 else { Diagnostics.Current.ReportError(DiagnosticCode.MissingRequiredComponent, message); }
             }
 
-            return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);
+            return B.MissingComponent(options: mc =>
+            {
+                mc.Path.AddRange(context.Path.GetParts());
+                mc.Source = B.MissingComponentDomainSource(metadata.GetType().Name, options: mcds =>
+                {
+                    mcds.Path.AddRange(metadata.CustomAttributes.Name.Split('.'));
+                });
+                mc.Component = componentType?.Name;
+            });
         }
 
         public ComponentDescriptor<T>? GenerateComponent<T>(ComponentContext context) where T : IComponentSchema =>
