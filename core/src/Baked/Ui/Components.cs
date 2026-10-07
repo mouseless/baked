@@ -101,7 +101,7 @@ public static class Components
     public static ComponentDescriptor<FormPage> FormPage(string path, IComponentDescriptor title, Button submit,
         Action<FormPage>? options = default,
         IAction? action = default
-    ) => new(options.Apply(new(path.Trim('/'), title, submit))) { Action = action };
+    ) => new(options.Apply(new(path, title, submit))) { Action = action };
 
     public static FormPage.Section FormPageSection(string key, string label,
         Action<FormPage.Section>? options = default
@@ -176,7 +176,7 @@ public static class Components
 
     public static ComponentDescriptor<MenuPage> MenuPage(string path,
         Action<MenuPage>? options = default
-    ) => new(options.Apply(new(path.Trim('/'))));
+    ) => new(options.Apply(new(path)));
 
     public static MenuPage.Section MenuPageSection(
         Action<MenuPage.Section>? options = default
@@ -274,7 +274,7 @@ public static class Components
 
     public static ComponentDescriptor<SimplePage> SimplePage(string path,
         Action<SimplePage>? options = default
-    ) => new(options.Apply(new(path.Trim('/'))));
+    ) => new(options.Apply(new(path)));
 
     public static Tab Tab(string id,
         Action<Tab>? options = default
@@ -282,7 +282,7 @@ public static class Components
 
     public static ComponentDescriptor<TabbedPage> TabbedPage(string path, IComponentDescriptor title,
         Action<TabbedPage>? options = default
-    ) => new(options.Apply(new(path.Trim('/'), title)));
+    ) => new(options.Apply(new(path, title)));
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

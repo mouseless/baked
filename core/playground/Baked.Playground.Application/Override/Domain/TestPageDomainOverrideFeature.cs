@@ -25,9 +25,13 @@ public class TestPageDomainOverrideFeature : IFeature
             );
             conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c => c.Type.Is<TestPage>(),
-                component: (tp, c, cc) => tp.Schema.Tabs.AddRange(
-                    c.Type.GenerateSchemas<Tab>(cc.Drill(nameof(TabbedPage.Tabs)))
-                ),
+                component: (tp, c, cc) =>
+                {
+                    tp.Schema.Title?.Data = Datas.Inline("Test Page");
+                    tp.Schema.Tabs.AddRange(
+                        c.Type.GenerateSchemas<Tab>(cc.Drill(nameof(TabbedPage.Tabs)))
+                    );
+                },
                 order: Order.At.Override
             );
             conventions.AddTypeSchema(
