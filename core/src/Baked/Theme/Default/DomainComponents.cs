@@ -31,26 +31,6 @@ public static class DomainComponents
         return B.Input(api.Name, parameter.GenerateRequiredComponent(context.Drill(nameof(Input.Component))), options: options);
     }
 
-    public static ComponentDescriptor<InputText> ParameterInputText(ParameterModel _, ComponentContext context,
-        Action<InputText>? options = default
-    )
-    {
-        context = context.Drill(nameof(InputText));
-        var (_, l) = context;
-
-        return B.InputText(options: options);
-    }
-
-    public static ComponentDescriptor<InputNumber> ParameterInputNumber(ParameterModel _, ComponentContext context,
-        Action<InputNumber>? options = default
-    )
-    {
-        context = context.Drill(nameof(InputNumber));
-        var (_, l) = context;
-
-        return B.InputNumber(options: options);
-    }
-
     public static ComponentDescriptor<MultiSelect> ParameterMultiSelect(ParameterModel parameter, ComponentContext context,
         Action<MultiSelect>? options = default
     ) => ParameterMultiSelect<InlineData>(parameter, context, options: options);
@@ -104,7 +84,6 @@ public static class DomainComponents
     ) where TData : IData
     {
         context = context.Drill(nameof(Select));
-        var (_, l) = context;
 
         var data = parameter.GenerateSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)));
         if (data is null)
@@ -131,7 +110,6 @@ public static class DomainComponents
     ) where TData : IData
     {
         context = context.Drill(nameof(SelectButton));
-        var (_, l) = context;
 
         var data = parameter.GenerateSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)));
         if (data is null)
@@ -196,7 +174,6 @@ public static class DomainComponents
     )
     {
         context = context.Drill(property.Name);
-        var (_, l) = context;
 
         if (!property.TryGet<DataAttribute>(out var data))
         {

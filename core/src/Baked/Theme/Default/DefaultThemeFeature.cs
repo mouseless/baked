@@ -359,29 +359,29 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c =>
                     c.Parameter.ParameterType.Is<string>() ||
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
-                component: (c, cc) => ParameterInputText(c.Parameter, cc),
+                component: () => B.InputText(),
                 order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<long>(),
-                component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
+                component: () => B.InputNumber(),
                 order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),
-                component: (c, cc) => B.InputMoney(),
+                component: () => B.InputMoney(),
                 order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<double>(),
-                component: (c, cc) => B.InputRate(),
+                component: () => B.InputRate(),
                 order: Order.At.Min
             );
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<bool>(),
-                component: (c, cc) => B.InputCheckbox(),
+                component: () => B.InputCheckbox(),
                 order: Order.At.Min
             );
             conventions.AddParameterComponentConfiguration<InputCheckbox>(
