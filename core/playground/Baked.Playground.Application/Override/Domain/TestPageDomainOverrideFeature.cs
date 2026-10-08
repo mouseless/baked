@@ -49,6 +49,11 @@ public class TestPageDomainOverrideFeature : IFeature
                 order: Order.At.Override
             );
 
+            conventions.AddMethodSchema(
+                when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
+                schema: () => B.Content("get-data"),
+                order: Order.At.Override
+            );
             conventions.AddMethodSchemaConfiguration<Content>(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 schema: tabContent => tabContent.Narrow = true,
