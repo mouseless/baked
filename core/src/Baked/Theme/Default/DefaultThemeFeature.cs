@@ -86,17 +86,27 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // adds tab to type
             conventions.AddTypeSchema(
-                where: cc => cc.Path.EndsWith("*-page", "tabs", "*"),
-                schema: (_, cc) => B.Tab(cc.Path.GetParts().Last())
+                where: cc => cc.Path.EndsWith("tabs", "*"),
+                schema: () => B.Tab()
             );
             conventions.AddTypeSchemaConfiguration<Tab>(
-                schema: (t, c, cc) => t.Icon = c.Type.GenerateComponent(cc.Drill(t.Id, "icon")),
+                where: cc => cc.Path.EndsWith("tabs", "*"),
+                schema: (t, c, cc) =>
+                {
+                    t.Id = cc.Path.GetParts().Last();
+                    t.Icon = c.Type.GenerateComponent(cc.Drill("icon"));
+                },
                 order: Order.At.Min
             );
 
             // configures content defaults of type
             conventions.AddTypeSchemaConfiguration<Content>(
-                schema: (cn, c, cc) => cn.Component = c.Type.GenerateRequiredComponent(cc.Drill(cn.Key, "component")),
+                where: cc => cc.Path.EndsWith("contents", "*", "*"),
+                schema: (cn, c, cc) =>
+                {
+                    cn.Key = cc.Path.GetParts().Last();
+                    cn.Component = c.Type.GenerateRequiredComponent(cc.Drill(cn.Key, "component"));
+                },
                 order: Order.At.Min
             );
 
@@ -197,10 +207,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // adds content to method
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("contents", "*"),
-                schema: (c, cc) => B.Content(c.Method.Name.Kebaberize())
+                schema: (c, cc) => B.Content()
             );
             conventions.AddMethodSchemaConfiguration<Content>(
-                schema: (cn, c, cc) => cn.Component = c.Method.GenerateRequiredComponent(cc.Drill(cn.Key, "component")),
+                schema: (cn, c, cc) =>
+                {
+                    cn.Key = c.Method.Name.Kebaberize();
+                    cn.Component = c.Method.GenerateRequiredComponent(cc.Drill(cn.Key, "component"));
+                },
                 order: Order.At.Min
             );
 
@@ -296,18 +310,41 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // Parameter defaults
+
+            // configures input group key of parameters to their own name by default
             conventions.AddParameterAttributeConfiguration<GroupAttribute>(
                 attribute: (group, c) => group.InputGroupKey = c.Parameter.Name
             );
 
+            // adds form page input group to parameters
             conventions.AddParameterSchema(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
-                schema: (c, cc) => ParameterFormPageInputGroup(c.Parameter, cc)
+                schema: () => B.FormPageInputGroup()
+            );
+            conventions.AddParameterSchemaConfiguration<FormPage.InputGroup>(
+                schema: (fpig, c, cc) =>
+                {
+                    fpig.Key = c.Parameter.InputGroupKey;
+                    fpig.Inputs.Add(
+                        c.Parameter.GenerateRequiredSchema<Input>(cc.Drill(fpig.Key, "inputs"))
+                    );
+                },
+                order: Order.At.Min
             );
 
+            // adds input to parameters
             conventions.AddParameterSchema(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
-                schema: (c, cc) => ParameterInput(c.Parameter, cc)
+                schema: (c, cc) => B.Input()
+            );
+            conventions.AddParameterSchemaConfiguration<Input>(
+                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                schema: (i, c, cc) =>
+                {
+                    i.Name = c.Parameter.Get<ParameterModelAttribute>().Name;
+                    i.Component = c.Parameter.GenerateRequiredComponent(cc.Drill(c.Parameter.Name, "component"));
+                },
+                order: Order.At.Min
             );
 
             // configures input defaults for parameter

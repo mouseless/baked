@@ -19,10 +19,9 @@ public record FormPage(string Path)
         public List<InputGroup> InputGroups { get; init; } = [];
     }
 
-    public record InputGroup(string Key)
-        : IOrderableSchema
+    public record InputGroup : IOrderableSchema
     {
-        public string Key { get; set; } = Key;
+        public string Key { get; set; } = string.Empty;
         public List<Input> Inputs { get; init; } = [];
         public bool? Wide { get; set; }
     }

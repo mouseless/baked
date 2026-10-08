@@ -18,9 +18,9 @@ public static class Components
         Action<Composite>? options = default
     ) => new(options.Apply(new()));
 
-    public static Content Content(string key,
+    public static Content Content(
         Action<Content>? options = default
-    ) => options.Apply(new(key));
+    ) => options.Apply(new());
 
     public static ComponentDescriptor<DataPanel> DataPanel(
         Action<DataPanel>? options = default
@@ -102,9 +102,9 @@ public static class Components
         Action<FormPage.Section>? options = default
     ) => options.Apply(new(key, label));
 
-    public static FormPage.InputGroup FormPageInputGroup(string key,
+    public static FormPage.InputGroup FormPageInputGroup(
         Action<FormPage.InputGroup>? options = default
-    ) => options.Apply(new(key));
+    ) => options.Apply(new());
 
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,
@@ -119,9 +119,9 @@ public static class Components
         Action<Icon>? options = default
     ) => new(options.Apply(new(iconClass)));
 
-    public static Input Input(string name, IComponentDescriptor component,
+    public static Input Input(
         Action<Input>? options = default
-    ) => options.Apply(new(name, component));
+    ) => options.Apply(new());
 
     public static ComponentDescriptor<InputCheckbox> InputCheckbox(
         Action<InputCheckbox>? options = default
@@ -271,9 +271,9 @@ public static class Components
         Action<SimplePage>? options = default
     ) => new(options.Apply(new(path)));
 
-    public static Tab Tab(string id,
+    public static Tab Tab(
         Action<Tab>? options = default
-    ) => options.Apply(new(id));
+    ) => options.Apply(new());
 
     public static ComponentDescriptor<TabbedPage> TabbedPage(string path,
         Action<TabbedPage>? options = default

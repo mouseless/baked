@@ -37,7 +37,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
                 where: cc => cc.Path.EndsWith("fields"),
-                schema: (c, cc) => B.Content("fields")
+                schema: (c, cc) => B.Content()
             );
             conventions.AddTypeComponent(
                 when: c =>

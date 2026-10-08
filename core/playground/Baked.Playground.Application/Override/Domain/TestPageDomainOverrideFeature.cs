@@ -27,31 +27,36 @@ public class TestPageDomainOverrideFeature : IFeature
                 component: (tp, c, cc) =>
                 {
                     tp.Schema.Title?.Data = Datas.Inline("Test Page");
-                    tp.Schema.Tabs.AddRange(
-                        c.Type.GenerateSchemas<Tab>(cc.Drill(nameof(TabbedPage.Tabs)))
+                    tp.Schema.Tabs.Add(
+                        c.Type.GenerateRequiredSchema<Tab>(cc.Drill("tabs", "default"))
                     );
                 },
                 order: Order.At.Override
             );
             conventions.AddTypeSchema(
                 when: c => c.Type.Is<TestPage>(),
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage.Tabs)),
-                schema: (c, cc) => B.Tab("default"),
+                where: cc => cc.Path.EndsWith("tabs", "default"),
+                schema: (c, cc) => B.Tab(),
                 order: Order.At.Override
             );
             conventions.AddTypeSchemaConfiguration<Tab>(
                 when: c => c.Type.Is<TestPage>(),
-                schema: (t, c, cc) => t.Contents.Add(
-                    c.Type
+                where: cc => cc.Path.EndsWith("tabs", "default"),
+                schema: (t, c, cc) =>
+                {
+                    t.Id = "default";
+                    t.Contents.Add(
+                        c.Type
                         .GetMethod(nameof(TestPage.GetData))
-                        .GenerateRequiredSchema<Content>(cc.Drill(t.Id, "contents", t.Contents.Count))
-                ),
+                        .GenerateRequiredSchema<Content>(cc.Drill("contents", t.Contents.Count))
+                    );
+                },
                 order: Order.At.Override
             );
 
             conventions.AddMethodSchema(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
-                schema: () => B.Content("get-data"),
+                schema: () => B.Content(),
                 order: Order.At.Override
             );
             conventions.AddMethodSchemaConfiguration<Content>(

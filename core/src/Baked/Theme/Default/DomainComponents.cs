@@ -1,6 +1,5 @@
 ﻿using Baked.Business;
 using Baked.Domain.Model;
-using Baked.RestApi.Model;
 using Baked.Ui;
 using Humanizer;
 
@@ -10,27 +9,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static FormPage.InputGroup ParameterFormPageInputGroup(ParameterModel parameter, ComponentContext context)
-    {
-        context = context.Drill(parameter.InputGroupKey, nameof(FormPage.InputGroup.Inputs));
-
-        return B.FormPageInputGroup(parameter.InputGroupKey,
-            options: fpig => fpig.Inputs.Add(
-                parameter.GenerateRequiredSchema<Input>(context)
-            )
-        );
-    }
-
-    public static Input ParameterInput(ParameterModel parameter, ComponentContext context,
-        Action<Input>? options = default
-    )
-    {
-        context = context.Drill(parameter.Name);
-        var api = parameter.Get<ParameterModelAttribute>();
-
-        return B.Input(api.Name, parameter.GenerateRequiredComponent(context.Drill(nameof(Input.Component))), options: options);
-    }
-
     public static ComponentDescriptor<MultiSelect> ParameterMultiSelect(ParameterModel parameter, ComponentContext context,
         Action<MultiSelect>? options = default
     ) => ParameterMultiSelect<InlineData>(parameter, context, options: options);

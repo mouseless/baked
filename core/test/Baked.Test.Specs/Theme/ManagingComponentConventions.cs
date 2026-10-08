@@ -13,7 +13,7 @@ public class ManagingComponentConventions : TestSpec
 
         var component = type.GenerateRequiredComponent(componentContext);
 
-        var page = component.ShouldBeOfType<ComponentDescriptor<TabbedPage>>();
+        var page = component.Schema.ShouldBeOfType<ComponentDescriptor<TabbedPage>>();
         page.Schema.Path.ShouldBe("test-page");
         page.Schema.Title.Data.ShouldBeOfType<InlineData>().Value.ShouldBe("Test Page");
     }
@@ -22,12 +22,11 @@ public class ManagingComponentConventions : TestSpec
     public void Adding_schema_to_a_type()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
-        var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs"]);
+        var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs", "default"]);
 
-        var tabs = type.GenerateSchemas<Tab>(componentContext);
+        var tab = type.GenerateRequiredSchema<Tab>(componentContext);
 
-        tabs.Count.ShouldBe(1);
-        tabs[0].Id.ShouldBe("default");
+        tab.Id.ShouldBe("default");
     }
 
     [Test]
