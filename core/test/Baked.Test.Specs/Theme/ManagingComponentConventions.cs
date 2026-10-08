@@ -13,7 +13,7 @@ public class ManagingComponentConventions : TestSpec
 
         var component = type.GenerateRequiredComponent(componentContext);
 
-        var page = component.Schema.ShouldBeOfType<ComponentDescriptor<TabbedPage>>();
+        var page = component.ShouldBeOfType<ComponentDescriptor<TabbedPage>>();
         page.Schema.Path.ShouldBe("test-page");
         page.Schema.Title.Data.ShouldBeOfType<InlineData>().Value.ShouldBe("Test Page");
     }

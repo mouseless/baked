@@ -16,7 +16,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
         {
             conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
-                component: (c, cc) => B.DataPanel()
+                component: () => B.DataPanel()
             );
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title)),
