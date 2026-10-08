@@ -10,33 +10,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<DataPanel> MethodDataPanel(MethodModel method, ComponentContext context,
-        Action<DataPanel>? options = default
-    )
-    {
-        context = context.Drill(nameof(DataPanel));
-        var (_, l) = context;
-
-        return B.DataPanel(
-            method.GenerateRequiredSchema<InlineData>(context.Drill(nameof(DataPanel.Title))),
-            method.GenerateRequiredComponent(context.Drill(nameof(DataPanel.Content))),
-            options: options
-        );
-    }
-
-    public static ComponentDescriptor<DataContainer> MethodDataContainer(MethodModel method, ComponentContext context,
-        Action<DataContainer>? options = default
-    )
-    {
-        context = context.Drill(nameof(DataContainer));
-        var (_, l) = context;
-
-        return B.DataContainer(
-            method.GenerateRequiredComponent(context.Drill(nameof(DataContainer.Content))),
-            options: options
-        );
-    }
-
     public static FormPage.InputGroup ParameterFormPageInputGroup(ParameterModel parameter, ComponentContext context)
     {
         context = context.Drill(parameter.InputGroupKey, nameof(FormPage.InputGroup.Inputs));

@@ -22,17 +22,13 @@ public static class Components
         Action<Content>? options = default
     ) => options.Apply(new(key));
 
-    public static ComponentDescriptor<DataPanel> DataPanel(string title, IComponentDescriptor content,
+    public static ComponentDescriptor<DataPanel> DataPanel(
         Action<DataPanel>? options = default
-    ) => DataPanel(Datas.Inline(title), content, options: options);
+    ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<DataPanel> DataPanel(IData title, IComponentDescriptor content,
-        Action<DataPanel>? options = default
-    ) => new(options.Apply(new(title, content)));
-
-    public static ComponentDescriptor<DataContainer> DataContainer(IComponentDescriptor content,
+    public static ComponentDescriptor<DataContainer> DataContainer(
         Action<DataContainer>? options = default
-    ) => new(options.Apply(new(content)));
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<DataTable> DataTable(
         Action<DataTable>? options = default,

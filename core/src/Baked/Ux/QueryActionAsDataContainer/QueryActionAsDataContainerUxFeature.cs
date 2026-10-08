@@ -3,7 +3,6 @@ using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Actions;
 using static Baked.Ui.Datas;
 
@@ -25,13 +24,13 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
-                component: (c, cc) => MethodDataContainer(c.Method, cc),
+                component: () => B.DataContainer(),
                 order: -10
             );
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: (c, cc) => MethodDataContainer(c.Method, cc)
+                component: () => B.DataContainer()
             );
 
             // Add sort and paging parameters to RemoteData query

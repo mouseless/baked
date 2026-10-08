@@ -1,12 +1,13 @@
-﻿namespace Baked.Ui;
+﻿using B = Baked.Ui.Components;
 
-public record DataPanel(IData Title, IComponentDescriptor Content)
-    : IComponentSchema
+namespace Baked.Ui;
+
+public record DataPanel : IComponentSchema
 {
-    public IData Title { get; set; } = Title;
+    public IData Title { get; set; } = Datas.Inline(nameof(MissingComponent));
     public bool? Collapsed { get; set; }
-    public bool? LocalizeTitle { get; set; } = Title.RequireLocalization;
+    public bool? LocalizeTitle { get; set; }
     public List<Input> Inputs { get; init; } = [];
-    public IComponentDescriptor Content { get; set; } = Content;
+    public IComponentDescriptor Content { get; set; } = B.MissingComponent();
     public bool? Toggleable { get; set; }
 }

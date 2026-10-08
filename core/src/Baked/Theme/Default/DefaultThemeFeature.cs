@@ -204,6 +204,26 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
+            // configure data panel defaults for method
+            conventions.AddMethodComponentConfiguration<DataPanel>(
+                component: (dp, c, cc) =>
+                {
+                    dp.Schema.Title = c.Method.GenerateRequiredSchema<InlineData>(cc.Drill("data-panel", "title"));
+                    dp.Schema.Content = c.Method.GenerateRequiredComponent(cc.Drill("data-panel", "content"));
+                },
+                order: Order.At.Min
+            );
+            conventions.AddMethodComponentConfiguration<DataPanel>(
+                component: dp => dp.Schema.LocalizeTitle ??= dp.Schema.Title.RequireLocalization,
+                order: Order.At.Global.Max
+            );
+
+            // configure data container defaults for method
+            conventions.AddMethodComponentConfiguration<DataContainer>(
+                component: (dp, c, cc) => dp.Schema.Content = c.Method.GenerateRequiredComponent(cc.Drill("data-container", "content")),
+                order: Order.At.Min
+            );
+
             conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method)
             );
