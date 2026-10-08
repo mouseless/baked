@@ -84,7 +84,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                order: Order.At.Global.Max
             );
 
-            // add tab to type
+            // adds tab to type
             conventions.AddTypeSchema(
                 where: cc => cc.Path.EndsWith("*-page", "tabs", "*"),
                 schema: (_, cc) => B.Tab(cc.Path.GetParts().Last())
@@ -94,7 +94,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // configure content defaults of type
+            // configures content defaults of type
             conventions.AddTypeSchemaConfiguration<Content>(
                 schema: (cn, c, cc) => cn.Component = c.Type.GenerateRequiredComponent(cc.Drill(cn.Key, "component")),
                 order: Order.At.Min
@@ -170,14 +170,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // Method Defaults
 
-            // set methods as action by default when they are api action
+            // sets methods as action by default when they are api action
             conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 attribute: () => new ActionAttribute(),
                 order: Order.At.Theme.AbsoluteMin
             );
 
-            // add form page to methods
+            // adds form page to methods
             conventions.AddMethodComponent(
                 where: cc => cc.Path.Is("page", "*", "*"),
                 component: (_, cc) => B.FormPage(cc.Route.Path)
@@ -194,7 +194,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // add content to method
+            // adds content to method
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("contents", "*"),
                 schema: (c, cc) => B.Content(c.Method.Name.Kebaberize())
@@ -204,7 +204,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // configure data panel defaults for method
+            // configures data panel defaults for method
             conventions.AddMethodComponentConfiguration<DataPanel>(
                 component: (dp, c, cc) =>
                 {
@@ -218,7 +218,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Global.Max
             );
 
-            // configure data container defaults for method
+            // configures data container defaults for method
             conventions.AddMethodComponentConfiguration<DataContainer>(
                 component: (dp, c, cc) => dp.Schema.Content = c.Method.GenerateRequiredComponent(cc.Drill("data-container", "content")),
                 order: Order.At.Min
@@ -309,6 +309,29 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (c, cc) => ParameterInput(c.Parameter, cc)
             );
+
+            // configures input defaults for parameter
+            conventions.AddParameterSchemaConfiguration<Input>(
+                schema: (i, c, cc) =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+
+                    labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, nameof(ILabeler.Label)));
+                },
+                order: Order.At.Min
+            );
+            conventions.AddParameterSchemaConfiguration<Input>(
+                schema: i =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+                    if (labeler.Label?.Text is not null) { return; }
+
+                    labeler.Label = null;
+                },
+                order: Order.At.Global.Max
+            );
+
+            // configures number inputs as numeric
             conventions.AddParameterSchemaConfiguration<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
@@ -319,6 +342,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.SkipNullable().Is<short>(),
                 schema: input => input.Numeric = true
             );
+
+            // configures default value for required inputs
             conventions.AddParameterSchemaConfiguration<Input>(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (p, c) =>
@@ -327,24 +352,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     p.DefaultValue = c.Parameter.DefaultValue;
                 }
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
-                schema: (i, c, cc) =>
-                {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
 
-                    labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, nameof(ILabeler.Label)));
-                }
-            );
-            conventions.AddParameterSchemaConfiguration<Input>(
-                schema: i =>
-                {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
-                    if (labeler.Label?.Text != null) { return; }
-
-                    labeler.Label = null;
-                },
-                order: Order.At.Max
-            );
             conventions.AddParameterSchema(
                 schema: () => new Label()
             );
@@ -355,6 +363,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: label => label.ShowOptionality = true
             );
 
+            // adds input text to string and value type parameters
             conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.Is<string>() ||
@@ -362,6 +371,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: () => B.InputText(),
                 order: Order.At.Min
             );
+
+            // adds input number to int and long parameters
             conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
@@ -369,16 +380,22 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: () => B.InputNumber(),
                 order: Order.At.Min
             );
+
+            // adds input money to decimal parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),
                 component: () => B.InputMoney(),
                 order: Order.At.Min
             );
+
+            // adds input rate to double parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<double>(),
                 component: () => B.InputRate(),
                 order: Order.At.Min
             );
+
+            // adds input checkbox to bool parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<bool>(),
                 component: () => B.InputCheckbox(),
@@ -389,16 +406,22 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.Is<bool?>() && c.Parameter.Get<ParameterModelAttribute>().FromBodyOrForm,
                 component: ic => ic.Schema.Indeterminate = true
             );
+
+            // adds input url to uri parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<Uri>(),
                 component: (c, cc) => B.InputUrl(),
                 order: Order.At.Min
             );
+
+            // adds input mail address to mail address parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<MailAddress>(),
                 component: (c, cc) => B.InputMailAddress(),
                 order: Order.At.Min
             );
+
+            // add input date to date only parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
                 component: (c, cc) => B.InputDate(options: id =>
@@ -409,7 +432,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // `PageTitle` defaults
+            // adds page title to type
             conventions.AddTypeComponent(
                 where: cc => cc.Path.Is("page", "*", "*-page", "title"),
                 component: () => B.PageTitle()
@@ -429,6 +452,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Global.Max
             );
 
+            // adds page title to method
             conventions.AddMethodComponent(
                 where: cc => cc.Path.Is("page", "*", "*", "*-page", "title"),
                 component: () => B.PageTitle()
@@ -448,7 +472,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Global.Max
             );
 
-            // add action methods to page title actions
+            // adds action methods to page title actions
             conventions.AddTypeComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
                 {
