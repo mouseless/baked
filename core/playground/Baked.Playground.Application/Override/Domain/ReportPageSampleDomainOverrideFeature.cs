@@ -4,7 +4,6 @@ using Baked.Domain.Configuration;
 using Baked.Playground.Theme;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
@@ -20,23 +19,23 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
             // Tabs
             conventions.AddMethodAttributeConfiguration<GroupAttribute>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>(),
-                attribute: group => group.TabName = "SingleValue",
+                attribute: group => group.TabName = "single-value",
                 order: Order.At.Override
             );
             conventions.AddMethodAttributeConfiguration<GroupAttribute>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnsList(),
-                attribute: group => group.TabName = "DataTable",
+                attribute: group => group.TabName = "data-table",
                 order: Order.At.Override
             );
             conventions.AddTypeComponent(
                 when: c => c.Type.Is<ReportPageSample>(),
-                where: cc => cc.Path.EndsWith("SingleValue", nameof(Tab.Icon)),
+                where: cc => cc.Path.EndsWith("single-value", "icon"),
                 component: () => B.Icon("pi-box"),
                 order: Order.At.Override
             );
             conventions.AddTypeComponent(
                 when: c => c.Type.Is<ReportPageSample>(),
-                where: cc => cc.Path.EndsWith("DataTable", nameof(Tab.Icon)),
+                where: cc => cc.Path.EndsWith("data-table", "icon"),
                 component: () => B.Icon("pi-table"),
                 order: Order.At.Override
             );
@@ -50,13 +49,13 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
 
             // Parameter overrides
             conventions.AddParameterComponent(
-                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.With) && !c.Parameter.IsNullable,
-                component: (c, cc) => ParameterSelect(c.Parameter, cc),
+                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name is nameof(ReportPageSample.With) && !c.Parameter.IsNullable,
+                component: () => B.Select(),
                 order: Order.At.Override
             );
             conventions.AddParameterComponent(
-                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.GetFirst) && c.Parameter.Name == "count",
-                component: (c, cc) => ParameterSelect(c.Parameter, cc),
+                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name is nameof(ReportPageSample.GetFirst) && c.Parameter.Name is "count",
+                component: () => B.Select(),
                 order: Order.At.Override
             );
 

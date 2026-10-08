@@ -4,7 +4,7 @@ using Baked.Ui;
 using Humanizer;
 using System.ComponentModel.DataAnnotations;
 
-using static Baked.Theme.Default.DomainComponents;
+using B = Baked.Ui.Components;
 
 namespace Baked.Ux.EnumParameterIsSelect;
 
@@ -20,7 +20,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton,
-                component: (c, cc) => ParameterSelectButton(c.Parameter, cc)
+                component: (c, cc) => B.SelectButton()
             );
 
             // Use `Select` when enum member count is > _maxMemberCountForSelectButton
@@ -28,7 +28,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton,
-                component: (c, cc) => ParameterSelect(c.Parameter, cc)
+                component: (c, cc) => B.Select()
             );
 
             // Use `MultiSelectButton` for flags enum, when enum member count is <= _maxMemberCountForSelectButton
@@ -37,7 +37,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton &&
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),
-                component: (c, cc) => ParameterMultiSelectButton(c.Parameter, cc)
+                component: (c, cc) => B.MultiSelectButton()
             );
 
             // Use `MultiSelect` for flags enum, when enum member count is > _maxMemberCountForSelectButton
@@ -46,7 +46,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton &&
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),
-                component: (c, cc) => ParameterMultiSelect(c.Parameter, cc)
+                component: (c, cc) => B.MultiSelect()
             );
 
             // Default value of a required enum parameter is set to the first enum

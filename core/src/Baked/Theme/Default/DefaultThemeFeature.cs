@@ -547,6 +547,40 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Global.Max
             );
 
+            // configure select inputs to use inline data or remote from parameter or parameter type if not already configured
+            conventions.AddParameterSchemaConfiguration<Input>(
+                schema: (i, c, cc) =>
+                {
+                    if (i.Component.Schema is not ISelect select) { return; }
+
+                    cc = cc.Drill(i.Component.Schema.GetType().Name, "data");
+
+                    i.Component.Data ??=
+                        c.Parameter.GenerateSchema<InlineData>(cc) as IData ??
+                        c.Parameter.GenerateSchema<RemoteData>(cc) ??
+                        null;
+
+                    if (!c.Parameter.ParameterType.TryGetMetadata(out var metadata))
+                    {
+                        throw DiagnosticCode.RequiresBuildLevel.Exception(
+                            $"{c.Parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"
+                        );
+                    }
+
+                    i.Component.Data ??=
+                        metadata.GenerateSchema<InlineData>(cc) as IData ??
+                        metadata.GenerateSchema<RemoteData>(cc) ??
+                        throw DiagnosticCode.MissingRequiredSchema.Exception(
+                            $"`{c.Parameter.CustomAttributes.Name} or {metadata.CustomAttributes.Name}` is required to have descriptor" +
+                            $" for schema type `{nameof(InlineData)}` or `{nameof(RemoteData)}` at path `{cc.Path}`"
+                        );
+                    ;
+
+                    select.LocalizeOptionLabels ??= i.Component.Data.RequireLocalization;
+                },
+                order: Order.At.Global.Max
+            );
+
             // make required select/select-button inputs in data panel to
             // select their first item automatically when they have no default
             conventions.AddParameterSchemaConfiguration<Input>(

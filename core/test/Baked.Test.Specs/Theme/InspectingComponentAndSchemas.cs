@@ -5,8 +5,6 @@ using Baked.Playground.Orm;
 using Baked.Playground.Ui;
 using Baked.Ui;
 
-using static Baked.Ui.Datas;
-
 using B = Baked.Ui.Components;
 using C = Baked.Playground.Ui.Components;
 
@@ -86,7 +84,6 @@ public class InspectingComponentAndSchemas : TestSpec
         using (_diagnostics)
         {
             var sb = _trace.CaptureDescriptor(c, cc, () => B.SelectButton(
-                data: Inline(new[] { new { testProp = GiveMe.AString() } }),
                 options: sb => sb.OptionLabel = "initialized")
             );
             _trace.CaptureDescriptor(c, cc, sb, () => sb.Schema.OptionLabel = "updated");

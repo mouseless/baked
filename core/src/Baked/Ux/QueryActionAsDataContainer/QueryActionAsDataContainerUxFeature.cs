@@ -148,6 +148,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                         o.Prop = prop;
                         o.TargetProp = "take";
                     });
+
                     p.ReloadWhen(prop);
                 }
             );
@@ -155,17 +156,15 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             // Take
             conventions.AddParameterComponent(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
-                component: (c, cc) =>
-                {
-                    cc = cc.Drill(nameof(Select));
-                    var (_, l) = cc;
-
-                    return B.Select(Inline(_pageSizeOptions, options: i => i.RequireLocalization = false));
-                }
+                component: (c, cc) => B.Select()
             );
             conventions.AddParameterComponentConfiguration<Select>(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
-                component: s => s.Override(B.PageSize())
+                component: s =>
+                {
+                    s.Data = Inline(_pageSizeOptions, options: i => i.RequireLocalization = false);
+                    s.Override(B.PageSize());
+                }
             );
             conventions.AddParameterComponentConfiguration<Select>(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,

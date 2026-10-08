@@ -207,13 +207,13 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static ComponentDescriptor<MultiSelect> MultiSelect(IData data,
+    public static ComponentDescriptor<MultiSelect> MultiSelect(
         Action<MultiSelect>? options = default
-    ) => new(options.Apply(new())) { Data = data };
+    ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<MultiSelectButton> MultiSelectButton(IData data,
+    public static ComponentDescriptor<MultiSelectButton> MultiSelectButton(
         Action<MultiSelectButton>? options = default
-    ) => new(options.Apply(new())) { Data = data };
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<NavLink> NavLink(string path,
         Action<NavLink>? options = default
@@ -241,13 +241,13 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static ComponentDescriptor<Select> Select(IData data,
+    public static ComponentDescriptor<Select> Select(
         Action<Select>? options = default
-    ) => new(options.Apply(new() { LocalizeOptionLabels = data.RequireLocalization })) { Data = data };
+    ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<SelectButton> SelectButton(IData data,
+    public static ComponentDescriptor<SelectButton> SelectButton(
         Action<SelectButton>? options = default
-    ) => new(options.Apply(new() { LocalizeOptionLabels = data.RequireLocalization })) { Data = data };
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<SideMenu> SideMenu(
         Action<SideMenu>? options = default,
