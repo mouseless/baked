@@ -7,6 +7,8 @@ using Baked.Ui;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
+using B = Baked.Ui.Components;
+
 namespace Baked.Ux.PropertiesAsFieldset;
 
 public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
@@ -21,9 +23,9 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     members.Properties.GetDataProperties().Any(),
                 component: (sp, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(SimplePage), nameof(SimplePage.Contents));
+                    cc = cc.Drill("simple-page", "contents", sp.Schema.Contents.Count);
 
-                    var content = c.Type.GenerateSchema<Content>(cc.Drill("Fields"));
+                    var content = c.Type.GenerateSchema<Content>(cc.Drill("fields"));
                     if (content is null) { return; }
 
                     sp.Schema.Contents.Add(content);
@@ -34,14 +36,14 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
-                where: cc => cc.Path.EndsWith("Fields"),
-                schema: (c, cc) => TypeContent(c.Type, cc, "fields")
+                where: cc => cc.Path.EndsWith("fields"),
+                schema: (c, cc) => B.Content("fields")
             );
             conventions.AddTypeComponent(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
-                where: cc => cc.Path.EndsWith("Fields", nameof(Content.Component)),
+                where: cc => cc.Path.EndsWith("fields", "component"),
                 component: (c, cc) => TypeFieldset(c.Type.GetMembers(), cc)
             );
             conventions.AddTypeComponentConfiguration<Fieldset>(
@@ -50,7 +52,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     members.Properties.GetDataProperties().Any(),
                 component: (f, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(Fieldset), nameof(Fieldset.Fields));
+                    cc = cc.Drill("fieldset", "fields");
 
                     foreach (var property in c.Type.GetMembers().Properties.GetDataProperties())
                     {

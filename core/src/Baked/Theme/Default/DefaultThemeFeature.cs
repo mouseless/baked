@@ -56,7 +56,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: (_, cc) => B.SimplePage(cc.Route.Path)
             );
             conventions.AddTypeComponentConfiguration<SimplePage>(
-                where: cc => cc.Path.Is("page", "*"),
                 component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("simple-page", "title")),
                 order: Order.At.Min
             );
@@ -67,8 +66,37 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: (_, cc) => B.TabbedPage(cc.Route.Path)
             );
             conventions.AddTypeComponentConfiguration<TabbedPage>(
-                where: cc => cc.Path.Is("page", "*"),
                 component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("tabbed-page", "title")),
+                order: Order.At.Min
+            );
+            conventions.AddTypeComponentConfiguration<TabbedPage>(
+               component: (tp, c, cc) =>
+               {
+                   if (tp.Schema.Tabs.Count <= 1) { return; }
+
+                   var (_, l) = cc;
+
+                   foreach (var tab in tp.Schema.Tabs)
+                   {
+                       tab.Title ??= l(tab.Id.Replace("-", "_").Titleize());
+                   }
+               },
+               order: Order.At.Global.Max
+            );
+
+            // add tab to type
+            conventions.AddTypeSchema(
+                where: cc => cc.Path.EndsWith("*-page", "tabs", "*"),
+                schema: (_, cc) => B.Tab(cc.Path.GetParts().Last())
+            );
+            conventions.AddTypeSchemaConfiguration<Tab>(
+                schema: (t, c, cc) => t.Icon = c.Type.GenerateComponent(cc.Drill(t.Id, "icon")),
+                order: Order.At.Min
+            );
+
+            // configure content defaults of type
+            conventions.AddTypeSchemaConfiguration<Content>(
+                schema: (cn, c, cc) => cn.Component = c.Type.GenerateRequiredComponent(cc.Drill(cn.Key, "component")),
                 order: Order.At.Min
             );
 
@@ -155,7 +183,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: (_, cc) => B.FormPage(cc.Route.Path)
             );
             conventions.AddMethodComponentConfiguration<FormPage>(
-                where: cc => cc.Path.Is("page", "*", "*"),
                 component: (fp, c, cc) =>
                 {
                     cc = cc.Drill("form-page");
@@ -167,9 +194,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
+            // add content to method
             conventions.AddMethodSchema(
-                schema: (c, cc) => MethodContent(c.Method, cc)
+                where: cc => cc.Path.EndsWith("contents", "*"),
+                schema: (c, cc) => B.Content(c.Method.Name.Kebaberize())
             );
+            conventions.AddMethodSchemaConfiguration<Content>(
+                schema: (cn, c, cc) => cn.Component = c.Method.GenerateRequiredComponent(cc.Drill(cn.Key, "component")),
+                order: Order.At.Min
+            );
+
             conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method)
             );
@@ -187,10 +221,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Has<LocatableAttribute>(),
-                where: cc => cc.Path.StartsWith(nameof(Page), "*", "*Page"),
+                where: cc => cc.Path.StartsWith("page", "*", "*-page"),
                 schema: (ra, c, cc) =>
                 {
-                    if (!cc.Path.StartsWith(nameof(Page), c.Type.Name)) { return; }
+                    if (!cc.Path.StartsWith("page", c.Type.Name)) { return; }
 
                     ra.Params = Computed.UseRoute("params");
                 }
@@ -200,14 +234,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c =>
                     c.Method.TryGet<ActionModelAttribute>(out var action) &&
                     action.Method != HttpMethod.Get,
-                where: cc => cc.Path.EndsWith(nameof(Tab.Contents), "*", nameof(Content.Component)),
+                where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
                 component: (c, cc) => MethodSimpleForm(c.Method, cc)
             );
 
             conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(SimpleForm), nameof(SimpleForm.Inputs));
+                    cc = cc.Drill("simple-form", "inputs");
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
@@ -222,7 +256,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: (fp, c, cc) =>
                 {
                     var (_, l) = cc;
-                    cc = cc.Drill(nameof(FormPage), nameof(FormPage.Sections));
+                    cc = cc.Drill("form-page", "sections");
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
@@ -233,7 +267,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                             fp.Schema.Sections.Add(section);
                         }
 
-                        var inputGroup = parameter.GenerateSchema<FormPage.InputGroup>(cc.Drill(parameter.SectionKey, nameof(FormPage.Section.InputGroups)));
+                        var inputGroup = parameter.GenerateSchema<FormPage.InputGroup>(cc.Drill(parameter.SectionKey, "input-groups"));
                         if (inputGroup is null) { continue; }
 
                         section.InputGroups.Add(inputGroup);

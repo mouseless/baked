@@ -3,7 +3,6 @@ using Baked.Domain.Configuration;
 using Baked.Playground.Theme;
 using Baked.Theme;
 using Baked.Ui;
-using Humanizer;
 
 using static Baked.Playground.Theme.Custom.DomainComponents;
 
@@ -45,30 +44,24 @@ public class TestPageDomainOverrideFeature : IFeature
                 schema: (t, c, cc) => t.Contents.Add(
                     c.Type
                         .GetMethod(nameof(TestPage.GetData))
-                        .GenerateRequiredSchema<Content>(cc.Drill(t.Id, nameof(Tab.Contents), 0))
+                        .GenerateRequiredSchema<Content>(cc.Drill(t.Id, "contents", t.Contents.Count))
                 ),
                 order: Order.At.Override
             );
 
-            conventions.AddMethodSchema(
-                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                where: cc => cc.Path.EndsWith(nameof(Tab.Contents), 0),
-                schema: (c, cc) => B.Content(component: c.Method.GenerateRequiredComponent(cc.Drill(nameof(Content.Component))), c.Method.Name.Kebaberize()),
-                order: Order.At.Override
-            );
             conventions.AddMethodSchemaConfiguration<Content>(
-                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+                when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 schema: tabContent => tabContent.Narrow = true,
                 order: Order.At.Override
             );
             conventions.AddMethodComponent(
-                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                where: cc => cc.Path.EndsWith(nameof(Content.Component)),
+                when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
+                where: cc => cc.Path.EndsWith("component"),
                 component: (c, cc) => MethodText(c.Method, cc),
                 order: Order.At.Override
             );
             conventions.AddMethodComponentConfiguration<Text>(
-                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+                when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 component: t => t.Schema.MaxLength = 20,
                 order: Order.At.Override
             );

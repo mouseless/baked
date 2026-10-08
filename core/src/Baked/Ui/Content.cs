@@ -1,9 +1,11 @@
-﻿namespace Baked.Ui;
+﻿using B = Baked.Ui.Components;
 
-public record Content(IComponentDescriptor Component, string Key)
+namespace Baked.Ui;
+
+public record Content(string Key)
     : IOrderableSchema
 {
-    public IComponentDescriptor Component { get; set; } = Component;
+    public IComponentDescriptor Component { get; set; } = B.MissingComponent();
     public string Key { get; set; } = Key;
     public bool? Narrow { get; set; }
     public bool? Side { get; set; }

@@ -19,13 +19,13 @@ public class ParentDomainOverrideFeature : IFeature
             conventions.AddEntityRemoteData<Parent>();
 
             conventions.SetPropertyAttribute(
-                when: c => c.Type.Is<Parent>() && c.Property.Name == nameof(Parent.Surname),
+                when: c => c.Type.Is<Parent>() && c.Property.Name is nameof(Parent.Surname),
                 attribute: () => new LabelAttribute(),
                 order: Order.At.Override
             );
 
             conventions.RemoveMethodAttribute<ActionAttribute>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.RemoveChild),
+                when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.RemoveChild),
                 order: Order.At.Theme.Override
             );
 
@@ -45,12 +45,12 @@ public class ParentDomainOverrideFeature : IFeature
 
                 conventions.AddTypeComponentConfiguration<SimplePage>(
                     when: c => c.Type.Is<Parent>(),
-                    component: (dp, c, cc) =>
+                    component: (sp, c, cc) =>
                     {
                         var addChild = c.Type.GetMembers().Methods[nameof(Parent.AddChild)];
 
-                        dp.Schema.Contents.Add(
-                            addChild.GenerateRequiredSchema<Content>(cc.Drill(nameof(SimplePage), nameof(SimplePage.Contents)))
+                        sp.Schema.Contents.Add(
+                            addChild.GenerateRequiredSchema<Content>(cc.Drill("simple-page", "contents", sp.Schema.Contents.Count))
                         );
                     },
                     order: Order.At.Override
@@ -58,13 +58,13 @@ public class ParentDomainOverrideFeature : IFeature
             }
 
             conventions.AddMethodSchemaConfiguration<Content>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.AddChild),
+                when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.AddChild),
                 schema: s => s.Side = true,
                 order: Order.At.Override
             );
 
             conventions.AddMethodComponentConfiguration<SimpleForm>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.AddChild),
+                when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.AddChild),
                 component: sf => sf.Schema.AlwaysShowTitle = true,
                 order: Order.At.Override
             );
@@ -76,7 +76,7 @@ public class ParentDomainOverrideFeature : IFeature
             );
 
             conventions.AddMethodComponentConfiguration<DataTable>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.GetChildren),
+                when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.GetChildren),
                 component: dt => dt.ReloadOn(nameof(Parent.AddChild).Kebaberize()),
                 order: Order.At.Override
             );

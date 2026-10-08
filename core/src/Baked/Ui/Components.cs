@@ -18,9 +18,9 @@ public static class Components
         Action<Composite>? options = default
     ) => new(options.Apply(new()));
 
-    public static Content Content(IComponentDescriptor component, string key,
+    public static Content Content(string key,
         Action<Content>? options = default
-    ) => options.Apply(new(component, key));
+    ) => options.Apply(new(key));
 
     public static ComponentDescriptor<DataPanel> DataPanel(string title, IComponentDescriptor content,
         Action<DataPanel>? options = default

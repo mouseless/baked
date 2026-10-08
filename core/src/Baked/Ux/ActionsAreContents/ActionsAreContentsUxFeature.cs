@@ -2,9 +2,6 @@
 using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Ui;
-using Humanizer;
-
-using static Baked.Theme.Default.DomainComponents;
 
 namespace Baked.Ux.ActionsAreContents;
 
@@ -41,7 +38,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                     members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
                 component: (tp, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Tabs));
+                    cc = cc.Drill("tabbed-page", "tabs");
                     var tabs = new Dictionary<string, Tab>();
 
                     var members = c.Type.GetMembers();
@@ -52,33 +49,20 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                         var action = method.Get<ActionModelAttribute>();
                         if (action.Method != HttpMethod.Get) { continue; }
 
-                        if (!tabs.TryGetValue(method.TabName, out var t))
+                        if (!tabs.TryGetValue(method.TabName, out var tab))
                         {
-                            tabs.Add(method.TabName, t = TypeTab(c.Type, cc, method.TabName));
+                            tabs.Add(method.TabName, tab = members.GenerateRequiredSchema<Tab>(cc.Drill(method.TabName)));
                         }
 
-                        var content = method.GenerateSchema<Content>(cc.Drill(method.TabName, nameof(Tab.Contents), t.Contents.Count));
+                        var content = method.GenerateSchema<Content>(cc.Drill(method.TabName, "contents", tab.Contents.Count));
                         if (content is null) { continue; }
 
-                        t.Contents.Add(content);
+                        tab.Contents.Add(content);
                     }
 
                     tp.Schema.Tabs.AddRange(tabs.Values);
                 },
                 order: -10
-            );
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
-               component: (tp, c, cc) =>
-               {
-                   if (tp.Schema.Tabs.Count <= 1) { return; }
-
-                   var (_, l) = cc;
-
-                   foreach (var tab in tp.Schema.Tabs)
-                   {
-                       tab.Title = l(tab.Id.Replace("-", "_").Titleize());
-                   }
-               }
             );
         });
     }

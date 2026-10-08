@@ -10,32 +10,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static Tab TypeTab(TypeModelMetadata type, ComponentContext context, string name,
-        Action<Tab>? options = default
-    )
-    {
-        context = context.Drill(name);
-        var (_, l) = context;
-
-        return B.Tab(name.Kebaberize(), options: t =>
-        {
-            t.Icon = type.GenerateComponent(context.Drill(nameof(Tab.Icon)));
-
-            options.Apply(t);
-        });
-    }
-
-    public static Content MethodContent(MethodModel method, ComponentContext context,
-        Action<Content>? options = default
-    )
-    {
-        context = context.Drill(method.Name);
-
-        return B.Content(method.GenerateRequiredComponent(context.Drill(nameof(Content.Component))), method.Name.Kebaberize(),
-            options: options
-        );
-    }
-
     public static ComponentDescriptor<DataPanel> MethodDataPanel(MethodModel method, ComponentContext context,
         Action<DataPanel>? options = default
     )
@@ -321,15 +295,6 @@ public static class DomainComponents
         var open = method.GenerateRequiredComponent<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Open))).Schema;
 
         return B.SimpleFormDialog(open, cancel, options: options);
-    }
-
-    public static Content TypeContent(TypeModelMetadata type, ComponentContext context, string key,
-        Action<Content>? options = default
-    )
-    {
-        var component = type.GenerateRequiredComponent(context.Drill(nameof(Content.Component)));
-
-        return B.Content(component, key, options: options);
     }
 
     public static ComponentDescriptor<Fieldset> TypeFieldset(TypeModelMembers type, ComponentContext context,
