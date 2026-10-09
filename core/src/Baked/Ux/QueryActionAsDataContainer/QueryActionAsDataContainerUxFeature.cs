@@ -156,7 +156,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             // Take
             conventions.AddParameterComponent(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
-                component: (c, cc) => B.Select()
+                component: () => B.Select()
             );
             conventions.AddParameterComponentConfiguration<Select>(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,

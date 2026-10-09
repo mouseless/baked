@@ -52,7 +52,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             conventions.AddMethodComponent(
                 when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
                 where: cc => cc.Path.EndsWith("data-panel", "content"),
-                component: (c, cc) => B.Text()
+                component: () => B.Text()
             );
             conventions.AddMethodComponentConfiguration<Text>(
                 when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),

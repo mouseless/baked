@@ -128,7 +128,7 @@ public static class ThemeExtensions
         {
             conventions.AddTypeSchema(
                 when: c => c.Type.Is<TEntity>(),
-                schema: (c, cc) =>
+                schema: c =>
                 {
                     if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate))
                     {

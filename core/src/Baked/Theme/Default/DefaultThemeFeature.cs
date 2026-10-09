@@ -362,7 +362,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Method.TryGet<ActionModelAttribute>(out var action) &&
                     action.Method != HttpMethod.Get,
                 where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
-                component: (c, cc) => B.SimpleForm()
+                component: () => B.SimpleForm()
             );
             conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>

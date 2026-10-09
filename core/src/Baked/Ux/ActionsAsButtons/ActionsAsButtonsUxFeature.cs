@@ -20,7 +20,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<ActionAttribute>() && !c.Method.DefaultOverload.Parameters.Any(),
                 where: cc => cc.Path.EndsWith("actions", "*"),
-                component: (c, cc) => B.Button()
+                component: () => B.Button()
             );
 
             // `SimpleForm` with dialog options
@@ -32,11 +32,11 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                         c.Method.GetAction().Method == HttpMethod.Delete
                     ),
                 where: cc => cc.Path.EndsWith("actions", "*"),
-                component: (c, cc) => B.SimpleForm()
+                component: () => B.SimpleForm()
             );
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("actions", "*", "simple-form", "dialog-options"),
-                schema: (c, cc) => B.SimpleFormDialog()
+                schema: () => B.SimpleFormDialog()
             );
             conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
                 when: c => !c.Method.DefaultOverload.Parameters.Any(),
@@ -52,14 +52,14 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<ActionAttribute>() && c.Method.Has<RouteAttribute>(),
                 where: cc => cc.Path.EndsWith("actions", "*"),
-                component: (c, cc) => B.Button()
+                component: () => B.Button()
             );
 
             // adds redirect action for methods with a route
             conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionAttribute>() && c.Method.Has<RouteAttribute>(),
                 where: cc => cc.Path.EndsWith("actions", "*", "button", "action"),
-                schema: (c, cc) => Local.UseRedirect(c.Method.Get<RouteAttribute>().Path)
+                schema: c => Local.UseRedirect(c.Method.Get<RouteAttribute>().Path)
             );
 
             // configures post action to be a redirect back to the configured route path back for methods under the form page

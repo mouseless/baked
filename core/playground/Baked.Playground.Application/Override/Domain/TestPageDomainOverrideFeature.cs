@@ -34,7 +34,7 @@ public class TestPageDomainOverrideFeature : IFeature
             conventions.AddTypeSchema(
                 when: c => c.Type.Is<TestPage>(),
                 where: cc => cc.Path.EndsWith("tabs", "default"),
-                schema: (c, cc) => B.Tab(),
+                schema: () => B.Tab(),
                 order: Order.At.Override
             );
             conventions.AddTypeSchemaConfiguration<Tab>(
@@ -65,7 +65,7 @@ public class TestPageDomainOverrideFeature : IFeature
             conventions.AddMethodComponent(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 where: cc => cc.Path.EndsWith("component"),
-                component: (c, cc) => B.Text(),
+                component: () => B.Text(),
                 order: Order.At.Override
             );
             conventions.AddMethodComponentConfiguration<Text>(

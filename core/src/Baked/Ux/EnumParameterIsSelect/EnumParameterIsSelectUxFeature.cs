@@ -20,7 +20,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton,
-                component: (c, cc) => B.SelectButton()
+                component: () => B.SelectButton()
             );
 
             // Use `Select` when enum member count is > _maxMemberCountForSelectButton
@@ -28,7 +28,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton,
-                component: (c, cc) => B.Select()
+                component: () => B.Select()
             );
 
             // Use `MultiSelectButton` for flags enum, when enum member count is <= _maxMemberCountForSelectButton
@@ -37,7 +37,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton &&
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),
-                component: (c, cc) => B.MultiSelectButton()
+                component: () => B.MultiSelectButton()
             );
 
             // Use `MultiSelect` for flags enum, when enum member count is > _maxMemberCountForSelectButton
@@ -46,7 +46,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton &&
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),
-                component: (c, cc) => B.MultiSelect()
+                component: () => B.MultiSelect()
             );
 
             // Default value of a required enum parameter is set to the first enum
