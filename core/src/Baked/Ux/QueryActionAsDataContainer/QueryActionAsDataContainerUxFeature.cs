@@ -23,20 +23,20 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             // Order is set to -10 to allow DataPanel override
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
-                where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
+                where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
                 component: () => B.DataContainer(),
                 order: -10
             );
             conventions.AddMethodComponent(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
+                where: cc => cc.Path.EndsWith("data-panel", "content"),
                 component: () => B.DataContainer()
             );
 
             // Add sort and paging parameters to RemoteData query
             conventions.AddMethodSchemaConfiguration<RemoteData>(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataContainer), nameof(DataContainer.Content), "*", nameof(IComponentDescriptor.Data)),
+                where: cc => cc.Path.EndsWith("data-container", "content", "*", "data"),
                 schema: rd => rd.Query += Context.Parent(options: cd => cd.Prop = "container-parameters"),
                 order: 20
             );
@@ -47,7 +47,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        var input = parameter.GenerateSchema<Input>(cc.Drill(nameof(DataContainer), nameof(DataContainer.Inputs)));
+                        var input = parameter.GenerateSchema<Input>(cc.Drill("data-container", "inputs"));
                         if (input is null) { continue; }
 
                         dc.Schema.Inputs.Add(input);
@@ -100,7 +100,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             // Disable virtual scroll, configure paginator and publish
             // data length when skip parameter exists
             conventions.AddMethodComponentConfiguration<DataTable>(
-                where: cc => cc.Path.Contains(nameof(DataContainer)),
+                where: cc => cc.Path.Contains("data-container"),
                 component: (dt, c) =>
                 {
                     dt.Schema.VirtualScrollerOptions = default;

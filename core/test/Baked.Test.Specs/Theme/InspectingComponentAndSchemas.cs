@@ -239,7 +239,7 @@ public class InspectingComponentAndSchemas : TestSpec
     public void Provides_when_filter_to_filter_by_property_model_context()
     {
         _inspect.PropertyComponent<Text>(
-            when: c => c.Property.Name == nameof(Parent.Id)
+            when: c => c.Property.Name is nameof(Parent.Id)
         );
         var domain = GiveMe.TheDomainModel();
         var parent = domain.Types[typeof(Parent)].GetMembers();
@@ -262,7 +262,7 @@ public class InspectingComponentAndSchemas : TestSpec
     public void Provides_when_filter_to_filter_by_method_model_context()
     {
         _inspect.MethodComponent<Text>(
-            when: c => c.Method.Name == nameof(Parent.AddChild)
+            when: c => c.Method.Name is nameof(Parent.AddChild)
         );
         var domain = GiveMe.TheDomainModel();
         var parent = domain.Types[typeof(Parent)].GetMembers();

@@ -19,7 +19,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                 component: () => B.DataPanel()
             );
             conventions.AddMethodSchema(
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title)),
+                where: cc => cc.Path.EndsWith("data-panel", "title"),
                 schema: (c, cc) => MethodNameInline(c.Method, cc)
             );
             conventions.AddMethodComponentConfiguration<DataPanel>(
@@ -28,7 +28,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        var input = parameter.GenerateSchema<Input>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Inputs)));
+                        var input = parameter.GenerateSchema<Input>(cc.Drill("data-panel", "inputs"));
                         if (input is null) { continue; }
 
                         dp.Schema.Inputs.Add(input);
@@ -36,7 +36,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                 }
             );
             conventions.AddParameterSchemaConfiguration<Label>(
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(ILabeler.Label)),
+                where: cc => cc.Path.EndsWith("data-panel", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {
                     var (_, l) = cc;

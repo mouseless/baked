@@ -29,19 +29,19 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                     tp.Schema.Inputs.AddRange(
                         initializer
                             .DefaultOverload.Parameters
-                            .Select(p => p.GenerateSchema<Input>(cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Inputs))))
+                            .Select(p => p.GenerateSchema<Input>(cc.Drill("tabbed-page", "inputs")))
                             .OfType<Input>()
                     );
                 }
             );
 
             conventions.AddParameterSchemaConfiguration<Input>(
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
+                where: cc => cc.Path.EndsWith("tabbed-page", "inputs"),
                 schema: i => i.QueryBound = true
             );
 
             conventions.AddParameterSchemaConfiguration<Label>(
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs), "*", nameof(ILabeler.Label)),
+                where: cc => cc.Path.EndsWith("tabbed-page", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {
                     var (_, l) = cc;

@@ -12,8 +12,8 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
         {
             conventions.AddParameterSchemaConfiguration<Label>(
                 where: cc =>
-                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs), "*", nameof(ILabeler.Label)) ||
-                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs), "*", nameof(ILabeler.Label)),
+                    cc.Path.EndsWith("simple-form", "inputs", "*", "label") ||
+                    cc.Path.EndsWith("form-page", "**", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {
                     var (_, l) = cc;

@@ -1027,7 +1027,7 @@ public static class ThemeExtensions
                     );
                 }
 
-                return method.GenerateRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name, method.Name));
+                return method.GenerateRequiredComponent<TPageSchema>(context.Drill("page", typeof(TDomainType).Name, method.Name));
             };
 
         public PageBuilder Type<TDomainType, TPageSchema>() where TPageSchema : IPageSchema =>
@@ -1042,7 +1042,7 @@ public static class ThemeExtensions
                     );
                 }
 
-                return metadata.GenerateRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name));
+                return metadata.GenerateRequiredComponent<TPageSchema>(context.Drill("page", typeof(TDomainType).Name));
             };
     }
 

@@ -129,7 +129,7 @@ public class BuildingAttributeExportSets : TestSpec
 
         var model = builder.Build(domain);
 
-        model.Types.Any(t => t.Name == nameof(Parent));
+        model.Types.Any(t => t.Name is nameof(Parent));
     }
 
     [Test]
@@ -158,7 +158,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<LocatableAttribute>()
-            .ExcludeProperty(p => p.Name == nameof(LocatableAttribute.IsAsync));
+            .ExcludeProperty(p => p.Name is nameof(LocatableAttribute.IsAsync));
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -297,7 +297,7 @@ public class BuildingAttributeExportSets : TestSpec
         var model = builder.Build(domain);
 
         var typeExport = model.Types[typeof(Parent)];
-        var method = typeExport.Methods.First(m => m.Name == nameof(Parent.With));
+        var method = typeExport.Methods.First(m => m.Name is nameof(Parent.With));
         method.Parameters.Count.ShouldBe(0);
     }
 

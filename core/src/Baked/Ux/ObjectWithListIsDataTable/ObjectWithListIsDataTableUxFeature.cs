@@ -75,7 +75,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     elementType.HasMembers(),
                 component: (dt, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(DataTable));
+                    cc = cc.Drill("data-table");
 
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
                     var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
@@ -83,7 +83,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     var elementMembers = elementType.GetMembers();
                     foreach (var property in elementMembers.Properties.GetDataProperties())
                     {
-                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill("columns"));
                         if (column is null) { continue; }
 
                         dt.Schema.Columns.Add(column);
@@ -158,7 +158,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 
                         property.Get<DataAttribute>().Label = null;
 
-                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill("columns"));
                         if (column is null) { continue; }
 
                         dtf.Columns.Add(column);

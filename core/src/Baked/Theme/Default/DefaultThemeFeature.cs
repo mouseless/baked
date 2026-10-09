@@ -281,7 +281,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     f.Key = c.Property.Name.Camelize();
                     f.Label = l(c.Property.Name.Titleize());
-                    f.Component = c.Property.GenerateRequiredComponent(cc.Drill(nameof(Field.Component)));
+                    f.Component = c.Property.GenerateRequiredComponent(cc.Drill("component"));
                 },
                 order: Order.At.Min
             );
@@ -652,8 +652,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.AddParameterSchemaConfiguration<Label>(
                 where: cc =>
-                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs), "*", nameof(ILabeler.Label)) ||
-                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs), "*", nameof(ILabeler.Label)),
+                    cc.Path.EndsWith("simple-form", "inputs", "*", "label") ||
+                    cc.Path.EndsWith("form-page", "**", "inputs", "*", "label"),
                 schema: label => label.ShowOptionality = true
             );
 
@@ -736,7 +736,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: (s, c) => s.Schema.AllowEmpty = c.Parameter.IsNullable ? true : null
             );
             conventions.AddParameterSchemaConfiguration<Label>(
-                where: cc => cc.Path.EndsWith(nameof(SelectButton), nameof(ILabeler.Label)),
+                where: cc => cc.Path.EndsWith("select-button", "label"),
                 schema: label =>
                 {
                     if (label.Mode == "ifta") { return; }

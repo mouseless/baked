@@ -10,12 +10,12 @@ public class PanelParametersAreStatefulUxFeature : IFeature<UxConfigurator>
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.AddParameterComponentConfiguration<Select>(
-                component: sb => sb.Schema.Stateful = true,
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(Input.Component))
+                where: cc => cc.Path.EndsWith("data-panel", "inputs", "*", "component"),
+                component: sb => sb.Schema.Stateful = true
             );
             conventions.AddParameterComponentConfiguration<SelectButton>(
-                component: sb => sb.Schema.Stateful = true,
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(Input.Component))
+                where: cc => cc.Path.EndsWith("data-panel", "inputs", "*", "component"),
+                component: sb => sb.Schema.Stateful = true
             );
         });
     }

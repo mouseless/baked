@@ -1,7 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Configuration;
 using Baked.Playground.Theme;
-using Baked.Theme;
 using Baked.Ui;
 
 using B = Baked.Ui.Components;
@@ -16,7 +15,7 @@ public class TestPageDomainOverrideFeature : IFeature
         {
             conventions.AddTypeComponent(
                 when: c => c.Type.Is<TestPage>(),
-                where: cc => cc.Path.EndsWith(nameof(Page)),
+                where: cc => cc.Path.EndsWith("page"),
                 component: () => B.TabbedPage("test-page"),
                 order: Order.At.Override
             );

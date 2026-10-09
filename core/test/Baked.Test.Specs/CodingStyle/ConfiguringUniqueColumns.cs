@@ -12,7 +12,7 @@ public class ConfiguringUniqueColumns : TestSpec
         var configuration = GiveMe.The<NHConfiguration>();
 
         var mapping = configuration.GetClassMapping(typeof(Entity));
-        var property = configuration.GetClassMapping(typeof(Entity)).PropertyIterator.FirstOrDefault(p => p.Name == nameof(Entity.Unique));
+        var property = configuration.GetClassMapping(typeof(Entity)).PropertyIterator.FirstOrDefault(p => p.Name is nameof(Entity.Unique));
         var column = property?.ColumnIterator.OfType<NHibernate.Mapping.Column>().FirstOrDefault();
 
         column?.Unique.ShouldBeTrue();

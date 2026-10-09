@@ -17,7 +17,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                     members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
                 component: (sp, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(SimplePage), nameof(SimplePage.Contents));
+                    cc = cc.Drill("simple-page", "contents");
 
                     foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
                     {

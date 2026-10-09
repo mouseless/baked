@@ -152,7 +152,7 @@ public class InspectingAttributes : TestSpec
     public void Provides_when_filter_to_filter_by_property_model_context()
     {
         _inspect.PropertyAttribute<CustomAttribute>(
-            when: c => c.Property.Name == nameof(Parent.Id)
+            when: c => c.Property.Name is nameof(Parent.Id)
         );
         var domain = GiveMe.TheDomainModel();
         var parent = domain.Types[typeof(Parent)].GetMembers();
@@ -173,7 +173,7 @@ public class InspectingAttributes : TestSpec
     public void Provides_when_filter_to_filter_by_method_model_context()
     {
         _inspect.MethodAttribute<CustomAttribute>(
-            when: c => c.Method.Name == nameof(Parent.AddChild)
+            when: c => c.Method.Name is nameof(Parent.AddChild)
         );
         var domain = GiveMe.TheDomainModel();
         var parent = domain.Types[typeof(Parent)].GetMembers();
