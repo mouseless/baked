@@ -6,7 +6,7 @@ public record FormPage(string Path)
     : PageSchemaBase(Path)
 {
     public IComponentDescriptor Title { get; set; } = B.MissingComponent();
-    public Button Submit { get; set; } = new(nameof(MissingComponent));
+    public Button Submit { get; set; } = new();
     public List<Section> Sections { get; init; } = [];
     public List<ValidationComposable>? Validations { get; set; }
     public bool? ShowValidationSummary { get; set; }

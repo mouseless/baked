@@ -342,6 +342,21 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
+            // configures button defaults for method
+            conventions.AddMethodComponentConfiguration<Button>(
+                component: (b, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    b.Schema.Label = l(c.Method.Name.Titleize());
+                    b.Action =
+                        c.Method.GenerateSchema<LocalAction>(cc.Drill("button", "action")) as IAction ??
+                        c.Method.GenerateSchema<RemoteAction>(cc.Drill("button", "action"))
+                    ;
+                },
+                order: Order.At.Min
+            );
+
             // adds simple form to methods
             conventions.AddMethodComponent(
                 when: c =>
@@ -362,7 +377,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                         sf.Schema.Inputs.Add(input);
                     }
-                }
+                },
+                order: Order.At.Min
             );
 
             // configures form page defaults for method

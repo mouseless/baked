@@ -51,17 +51,24 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
 
             conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
+                where: cc => cc.Path.EndsWith("data-table", "columns", "*", "component"),
                 component: (c, cc) => PropertyDialog(c.Property, cc)
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(Dialog.Open)),
-                component: (c, cc) => LocalizedButton(c.Property.Name.Titleize(), cc)
+                where: cc => cc.Path.EndsWith("open"),
+                component: () => B.Button()
             );
             conventions.AddPropertyComponentConfiguration<Button>(
-                where: cc => cc.Path.EndsWith(nameof(Dialog.Open)),
-                component: b => b.Schema.Icon = "pi pi-eye"
+                when: c => c.Property.Has<DescriptionAttribute>(),
+                where: cc => cc.Path.EndsWith("open"),
+                component: (b, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    b.Schema.Icon = "pi pi-eye";
+                    b.Schema.Label = l(c.Property.Name.Titleize());
+                }
             );
             conventions.AddPropertyComponentConfiguration<Dialog>(
                 component: d => d.Schema.Content.Data ??= Context.Parent()

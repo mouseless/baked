@@ -9,19 +9,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
-        Action<Button>? options = default
-    )
-    {
-        context = context.Drill(nameof(Button));
-        var (_, l) = context;
-
-        return B.Button(l(method.Name.Humanize().Titleize()),
-            action: method.GenerateSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
-            options: options
-        );
-    }
-
     public static ComponentDescriptor<SimpleForm> MethodSimpleForm(MethodModel method, ComponentContext context,
         Action<SimpleForm>? options = default
     )
@@ -124,18 +111,5 @@ public static class DomainComponents
         }
 
         return B.NavLink(pageAttribute.Path, options: options);
-    }
-
-    public static ComponentDescriptor<Button> LocalizedButton(string label, ComponentContext context,
-        Action<Button>? options = default,
-        IAction? action = default
-    )
-    {
-        var (_, l) = context;
-
-        return B.Button(l(label),
-            options: options,
-            action: action
-        );
     }
 }
