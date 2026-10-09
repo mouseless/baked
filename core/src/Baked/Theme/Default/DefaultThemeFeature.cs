@@ -257,7 +257,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // adds content to method
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("contents", "*"),
-                schema: (c, cc) => B.Content()
+                schema: () => B.Content()
             );
             conventions.AddMethodSchemaConfiguration<Content>(
                 schema: (cn, c, cc) =>
@@ -432,7 +432,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // adds input to parameters
             conventions.AddParameterSchema(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
-                schema: (c, cc) => B.Input()
+                schema: () => B.Input()
             );
             conventions.AddParameterSchemaConfiguration<Input>(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
@@ -544,21 +544,21 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // adds input url to uri parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<Uri>(),
-                component: (c, cc) => B.InputUrl(),
+                component: () => B.InputUrl(),
                 order: Order.At.Min
             );
 
             // adds input mail address to mail address parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<MailAddress>(),
-                component: (c, cc) => B.InputMailAddress(),
+                component: () => B.InputMailAddress(),
                 order: Order.At.Min
             );
 
             // add input date to date only parameters
             conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
-                component: (c, cc) => B.InputDate(options: id =>
+                component: () => B.InputDate(options: id =>
                 {
                     id.Format = "dd/mm/yy";
                     id.UsePicker = true;
