@@ -3,8 +3,9 @@ using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
+
+using B = Baked.Ui.Components;
 
 namespace Baked.Ux.RoutedTypesAsNavLinks;
 
@@ -14,14 +15,24 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
+            // adds navlink to types with route
+            conventions.AddTypeComponent(
+                when: c => c.Type.Has<RouteAttribute>(),
+                where: cc => cc.Path.EndsWith("data-table", "columns", "*", "component"),
+                component: () => B.NavLink()
+            );
+
+            // renders property as navlink when it is a label property for the types that has route
             conventions.AddPropertyComponent(
                 when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<LabelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
-                component: (c, cc) => TypeNavLink(c.Type, cc)
+                where: cc => cc.Path.EndsWith("data-table", "columns", "*", "component"),
+                component: (c, cc) => c.Type.GenerateRequiredComponent<NavLink>(cc)
             );
+
+            // configures navlink in data table to use route params from row data
             conventions.AddPropertyComponentConfiguration<NavLink>(
                 when: c => c.Type.Has<RouteAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
+                where: cc => cc.Path.EndsWith("data-table", "columns", "*", "component"),
                 component: (link, c) =>
                 {
                     foreach (var (param, prop) in c.Type.Get<RouteAttribute>().Params)

@@ -4,7 +4,6 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
@@ -52,7 +51,7 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
             conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 where: cc => cc.Path.EndsWith("data-table", "columns", "*", "component"),
-                component: (c, cc) => PropertyDialog(c.Property, cc)
+                component: () => B.Dialog()
             );
             conventions.AddPropertyComponent(
                 when: c => c.Property.Has<DescriptionAttribute>(),

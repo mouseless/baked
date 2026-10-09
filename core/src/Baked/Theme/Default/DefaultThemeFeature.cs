@@ -34,6 +34,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
+            // TYPES
+
             // configures page route params for types with dynamic page route
             conventions.AddTypeAttributeConfiguration<RouteAttribute>(
                 when: (c, r) =>
@@ -109,42 +111,107 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // Enum Data
+            // adds enum inline data to enum types
             conventions.AddTypeSchema(
                 when: c => c.Type.SkipNullable().IsEnum,
                 schema: (c, cc) => EnumInline(c.Type, cc)
             );
 
-            // Remote Action
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                schema: (ra, c) =>
+            // adds page title to type
+            conventions.AddTypeComponent(
+                where: cc => cc.Path.Is("page", "*", "*-page", "title"),
+                component: () => B.PageTitle()
+            );
+            conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
                 {
-                    var method = ra.Method?.ToUpperInvariant();
-                    if (method is null or "GET" or "DELETE" or "TRACE" && ra.Body is not null)
-                    {
-                        var methodName = method ?? "GET";
+                    var (_, l) = cc;
 
-                        throw DiagnosticCode.MethodDoesNotSupportBody.Exception(
-                            $"{c.Type.Name}.{c.Method.Name}, {methodName} action with a body is not allowed. Remove the body or use a method that supports a payload."
-                        );
-                    }
+                    pt.Data = Inline(l(cc.Route.Title));
+                    pt.Schema.Description = l(cc.Route.Description);
+                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
                 },
+                order: Order.At.Min
+            );
+            conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
                 order: Order.At.Global.Max
             );
 
-            // Property defaults
+            // adds action methods to page title actions
+            conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method == HttpMethod.Get) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
+
+                        var actionComponent = method.GenerateComponent(cc.Drill("actions", method.Name));
+                        if (actionComponent is null) { continue; }
+
+                        pt.Schema.Actions.Add(actionComponent);
+                    }
+                },
+                order: Order.At.Min
+            );
+
+            // configures field set defaults for type
+            conventions.AddTypeComponentConfiguration<Fieldset>(
+                when: c => c.Type.HasMembers(),
+                component: (f, c, cc) =>
+                {
+                    cc = cc.Drill("fieldset");
+
+                    var label = c.Type.GetMembers().FirstPropertyOrDefault<LabelAttribute>();
+                    if (label is not null && label.TryGet<DataAttribute>(out var labelData))
+                    {
+                        f.Schema.TitleProp = labelData.Prop;
+                    }
+
+                    f.Data =
+                        c.Type.GenerateSchema<InlineData>(cc.Drill("data")) as IData ??
+                        c.Type.GenerateSchema<ComputedData>(cc.Drill("data")) as IData ??
+                        c.Type.GenerateSchema<RemoteData>(cc.Drill("data"))
+                    ;
+                },
+                order: Order.At.Min
+            );
+
+            // configures navlink defaults for routed types
+            conventions.AddTypeComponentConfiguration<NavLink>(
+                component: (nl, c, cc) =>
+                {
+                    if (!c.Type.TryGet<RouteAttribute>(out var route))
+                    {
+                        throw DiagnosticCode.TypeWithAttribute.Exception(
+                            $"`{nameof(RouteAttribute)}` is not found on type (`{c.Type.Name}`) to render as `{nameof(NavLink)}`"
+                        );
+                    }
+
+                    nl.Schema.Path = route.Path;
+                },
+                order: Order.At.Min
+            );
+
+            // PROPERTIES
+
+            // adds data attribute to public properties
             conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 order: Order.At.Infra - 10
             );
 
+            // hides id data properties
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
                 attribute: data => data.Visible = false,
                 order: Order.At.Infra
             );
 
+            // adds text component to string, guid, mail address, locatable and value type properties
             conventions.AddPropertyComponent(
                 when: c =>
                     c.Property.PropertyType.Is<string>() ||
@@ -159,24 +226,35 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
+            // adds text component to enum properties
+            conventions.AddPropertyComponent(
+                when: c => c.Property.PropertyType.SkipNullable().IsEnum,
+                component: () => B.Text(),
+                order: Order.At.Min
+            );
+
+            // adds text link to uri properties
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<Uri>(),
                 component: () => B.TextLink(),
                 order: Order.At.Min
             );
 
+            // adds check to boolean properties
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<bool>(),
                 component: () => B.Check(),
                 order: Order.At.Min
             );
 
+            // adds date to date only properties
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
                 component: () => B.Date(options: td => td.Format = "dd-MM-yyyy"),
                 order: Order.At.Min
             );
 
+            // adds date to date time properties
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
                 component: () => B.Date(options: td => td.Format = "dd-MM-yyyy HH:mm:ss"),
@@ -194,7 +272,52 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // Method Defaults
+            // configures field for property
+            conventions.AddPropertySchemaConfiguration<Field>(
+                schema: (f, c, cc) =>
+                {
+                    cc = cc.Drill(c.Property.Name);
+                    var (_, l) = cc;
+
+                    f.Key = c.Property.Name.Camelize();
+                    f.Label = l(c.Property.Name.Titleize());
+                    f.Component = c.Property.GenerateRequiredComponent(cc.Drill(nameof(Field.Component)));
+                },
+                order: Order.At.Min
+            );
+
+            // configures dialog for property
+            conventions.AddPropertyComponentConfiguration<Dialog>(
+                component: (d, c, cc) =>
+                {
+                    cc = cc.Drill("dialog");
+                    var (_, l) = cc;
+
+                    d.Schema.Header = l(c.Property.Name.Titleize());
+                    d.Schema.Open = c.Property.GenerateRequiredComponent<Button>(cc.Drill("open")).Schema;
+                    d.Schema.Content = c.Property.GenerateRequiredComponent(cc.Drill("content"));
+                },
+                order: Order.At.Min
+            );
+
+            // METHODS
+
+            // validates body nullability for GET, DELETE and TRACE remote actions
+            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                schema: (ra, c) =>
+                {
+                    var method = ra.Method?.ToUpperInvariant();
+                    if (method is null or "GET" or "DELETE" or "TRACE" && ra.Body is not null)
+                    {
+                        var methodName = method ?? "GET";
+
+                        throw DiagnosticCode.MethodDoesNotSupportBody.Exception(
+                            $"{c.Type.Name}.{c.Method.Name}, {methodName} action with a body is not allowed. Remove the body or use a method that supports a payload."
+                        );
+                    }
+                },
+                order: Order.At.Global.Max
+            );
 
             // adds remote data to method
             conventions.AddMethodSchema(
@@ -253,6 +376,26 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
+            // adds page title to method
+            conventions.AddMethodComponent(
+                where: cc => cc.Path.Is("page", "*", "*", "*-page", "title"),
+                component: () => B.PageTitle()
+            );
+            conventions.AddMethodComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    pt.Data = Inline(l(cc.Route.Title));
+                    pt.Schema.Description = l(cc.Route.Description);
+                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
+                }
+            );
+            conventions.AddMethodComponentConfiguration<PageTitle>(
+                component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
+                order: Order.At.Global.Max
+            );
+
             // adds content to method
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("contents", "*"),
@@ -300,6 +443,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     dt.Data =
                         c.Method.GenerateSchema<InlineData>(cc.Drill("data")) as IData ??
+                        c.Method.GenerateSchema<ComputedData>(cc.Drill("data")) as IData ??
                         c.Method.GenerateSchema<RemoteData>(cc.Drill("data"))
                     ;
 
@@ -350,6 +494,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     b.Schema.Label = l(c.Method.Name.Titleize());
                     b.Action =
                         c.Method.GenerateSchema<LocalAction>(cc.Drill("button", "action")) as IAction ??
+                        c.Method.GenerateSchema<PublishAction>(cc.Drill("button", "action")) as IAction ??
                         c.Method.GenerateSchema<RemoteAction>(cc.Drill("button", "action"))
                     ;
                 },
@@ -421,7 +566,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // Parameter defaults
+            // PARAMETERS
 
             // configures input group key of parameters to their own name by default
             conventions.AddParameterAttributeConfiguration<GroupAttribute>(
@@ -465,7 +610,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 {
                     if (i.Component.Schema is not ILabeler labeler) { return; }
 
-                    labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, nameof(ILabeler.Label)));
+                    labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, "label"));
                 },
                 order: Order.At.Min
             );
@@ -581,64 +726,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // adds page title to type
-            conventions.AddTypeComponent(
-                where: cc => cc.Path.Is("page", "*", "*-page", "title"),
-                component: () => B.PageTitle()
-            );
-            conventions.AddTypeComponentConfiguration<PageTitle>(
-                component: (pt, c, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    pt.Data = Inline(l(cc.Route.Title));
-                    pt.Schema.Description = l(cc.Route.Description);
-                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
-                }
-            );
-            conventions.AddTypeComponentConfiguration<PageTitle>(
-                component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
-                order: Order.At.Global.Max
-            );
-
-            // adds page title to method
-            conventions.AddMethodComponent(
-                where: cc => cc.Path.Is("page", "*", "*", "*-page", "title"),
-                component: () => B.PageTitle()
-            );
-            conventions.AddMethodComponentConfiguration<PageTitle>(
-                component: (pt, c, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    pt.Data = Inline(l(cc.Route.Title));
-                    pt.Schema.Description = l(cc.Route.Description);
-                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
-                }
-            );
-            conventions.AddMethodComponentConfiguration<PageTitle>(
-                component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
-                order: Order.At.Global.Max
-            );
-
-            // adds action methods to page title actions
-            conventions.AddTypeComponentConfiguration<PageTitle>(
-                component: (pt, c, cc) =>
-                {
-                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
-                    {
-                        var action = method.GetAction();
-                        if (action.Method == HttpMethod.Get) { continue; }
-                        if (method.Has<InitializerAttribute>()) { continue; }
-
-                        var actionComponent = method.GenerateComponent(cc.Drill(nameof(PageTitle.Actions), method.Name));
-                        if (actionComponent is null) { continue; }
-
-                        pt.Schema.Actions.Add(actionComponent);
-                    }
-                }
-            );
-
             // `Select` defaults
             conventions.AddParameterComponentConfiguration<Select>(
                 component: (s, c) => s.Schema.ShowClear = c.Parameter.IsNullable ? true : null
@@ -659,7 +746,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Global.Max
             );
 
-            // configure select inputs to use inline data or remote from parameter or parameter type if not already configured
+            // configure select inputs to use inline, computed or remote data
+            // from parameter or its parameter type if not configured already
             conventions.AddParameterSchemaConfiguration<Input>(
                 schema: (i, c, cc) =>
                 {
@@ -669,23 +757,28 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     i.Component.Data ??=
                         c.Parameter.GenerateSchema<InlineData>(cc) as IData ??
-                        c.Parameter.GenerateSchema<RemoteData>(cc) ??
-                        null;
-                    if (!c.Parameter.ParameterType.TryGetMetadata(out var metadata))
+                        c.Parameter.GenerateSchema<ComputedData>(cc) as IData ??
+                        c.Parameter.GenerateSchema<RemoteData>(cc);
+                    if (i.Component.Data is null)
                     {
-                        throw DiagnosticCode.RequiresBuildLevel.Exception(
-                            $"{c.Parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"
-                        );
+                        if (!c.Parameter.ParameterType.TryGetMetadata(out var metadata))
+                        {
+                            throw DiagnosticCode.RequiresBuildLevel.Exception(
+                                $"{c.Parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"
+                            );
+                        }
+
+                        i.Component.Data =
+                            metadata.GenerateSchema<InlineData>(cc) as IData ??
+                            metadata.GenerateSchema<ComputedData>(cc) as IData ??
+                            metadata.GenerateSchema<RemoteData>(cc) ??
+                            throw DiagnosticCode.MissingRequiredSchema.Exception(
+                                $"`{c.Parameter.CustomAttributes.Name} or {metadata.CustomAttributes.Name}` is required to have descriptor" +
+                                $" for schema type `{nameof(InlineData)}`, `{nameof(ComputedData)}` or `{nameof(RemoteData)}` at path `{cc.Path}`"
+                            );
+                        ;
                     }
 
-                    i.Component.Data ??=
-                        metadata.GenerateSchema<InlineData>(cc) as IData ??
-                        metadata.GenerateSchema<RemoteData>(cc) ??
-                        throw DiagnosticCode.MissingRequiredSchema.Exception(
-                            $"`{c.Parameter.CustomAttributes.Name} or {metadata.CustomAttributes.Name}` is required to have descriptor" +
-                            $" for schema type `{nameof(InlineData)}` or `{nameof(RemoteData)}` at path `{cc.Path}`"
-                        );
-                    ;
                     select.LocalizeOptionLabels ??= i.Component.Data.RequireLocalization;
                 },
                 order: Order.At.Global.Max

@@ -4,7 +4,6 @@ using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
@@ -44,7 +43,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
                 where: cc => cc.Path.EndsWith("fields", "component"),
-                component: (c, cc) => TypeFieldset(c.Type.GetMembers(), cc)
+                component: () => B.Fieldset()
             );
             conventions.AddTypeComponentConfiguration<Fieldset>(
                 when: c =>
@@ -64,7 +63,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                 }
             );
             conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyField(c.Property, cc)
+                schema: () => B.Field()
             );
             conventions.AddPropertySchemaConfiguration<Field>(
                 when: c =>

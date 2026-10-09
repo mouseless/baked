@@ -61,9 +61,9 @@ public static class Components
         Action<DefaultLayout.ScrollTop>? options = default
     ) => options.Apply(new());
 
-    public static ComponentDescriptor<Dialog> Dialog(Button open, string header, IComponentDescriptor content,
+    public static ComponentDescriptor<Dialog> Dialog(
         Action<Dialog>? options = default
-    ) => new(options.Apply(new(open, header, content)));
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<ErrorPage> ErrorPage(
         Action<ErrorPage>? options = default,
@@ -74,14 +74,13 @@ public static class Components
         Action<ErrorPage.Info>? options = default
     ) => options.Apply(new(title, message));
 
-    public static Field Field(string key, string label,
+    public static Field Field(
         Action<Field>? options = default
-    ) => options.Apply(new(key, label));
+    ) => options.Apply(new());
 
-    public static ComponentDescriptor<Fieldset> Fieldset(string titleProp,
-        Action<Fieldset>? options = default,
-        IData? data = default
-    ) => new(options.Apply(new(titleProp))) { Data = data };
+    public static ComponentDescriptor<Fieldset> Fieldset(
+        Action<Fieldset>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<Filter> Filter(
         Action<Filter>? options = default,
@@ -212,9 +211,9 @@ public static class Components
         Action<MultiSelectButton>? options = default
     ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<NavLink> NavLink(string path,
+    public static ComponentDescriptor<NavLink> NavLink(
         Action<NavLink>? options = default
-    ) => new(options.Apply(new(path)));
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<Number> Number(
         Action<Number>? options = default
