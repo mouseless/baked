@@ -126,7 +126,11 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc => dtc.Key = "test-key"));
+            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc =>
+            {
+                dtc.Key = "test-key";
+                dtc.Component = B.Text();
+            }));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("""
