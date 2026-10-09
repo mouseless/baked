@@ -1,21 +1,21 @@
-rich-transient-with-data @controller-model {
+rich-transient-with-data @api-controller {
   with {
-    @action-model route="GET /rich-transient-with-datas/{id}" required-claims="BaseA, BaseB"
+    @api-action route="GET /rich-transient-with-datas/{id}" required-claims="BaseA, BaseB"
     id {
-      @parameter-model required=#true in="route"
+      @api-parameter required=#true in="route"
     }
   }
   method {
-    @action-model route="POST /rich-transient-with-datas/{id}/method" required-claims="BaseA, BaseB"
+    @api-action route="POST /rich-transient-with-datas/{id}/method" required-claims="BaseA, BaseB"
     text {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
 }
 
-rich-transient-extension @controller-model {
+rich-transient-extension @api-controller {
   from-extension {
-    @action-model route="POST /rich-transient-with-datas/{id}/from-extension" required-claims="BaseA, BaseB"
+    @api-action route="POST /rich-transient-with-datas/{id}/from-extension" required-claims="BaseA, BaseB"
   }
 }
 

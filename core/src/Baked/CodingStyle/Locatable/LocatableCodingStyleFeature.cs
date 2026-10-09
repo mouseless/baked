@@ -29,7 +29,7 @@ public class LocatableCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.Domain.ConfigureExportConfigurations(exports =>
         {
             exports.Build("RestApi", export => export
-                .Include<ControllerModelAttribute>()
+                .Include<ApiController>()
                 .AddProperty(controller =>
                 {
                     string? value = null;

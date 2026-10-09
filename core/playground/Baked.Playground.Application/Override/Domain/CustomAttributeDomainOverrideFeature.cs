@@ -12,10 +12,10 @@ public class CustomAttributeDomainOverrideFeature : IFeature
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.Is<Class>(),
-                attribute: () => new CustomAttribute(),
+                attribute: () => new Custom(),
                 order: Order.At.Override
             );
-            conventions.EditTypeAttribute<CustomAttribute>(
+            conventions.EditTypeAttribute<Custom>(
                 when: c => c.Type.Is<Class>(),
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 order: Order.At.Override
@@ -26,9 +26,9 @@ public class CustomAttributeDomainOverrideFeature : IFeature
                     c.Type.Is<Record>() &&
                     c.Property.Name is nameof(Record.Text),
                     order: Order.At.Override,
-                attribute: () => new CustomAttribute()
+                attribute: () => new Custom()
             );
-            conventions.EditPropertyAttribute<CustomAttribute>(
+            conventions.EditPropertyAttribute<Custom>(
                 when: c =>
                     c.Type.Is<Record>() &&
                     c.Property.Name is nameof(Record.Text),
@@ -41,9 +41,9 @@ public class CustomAttributeDomainOverrideFeature : IFeature
                     c.Type.Is<Class>() &&
                     c.Method.Name is nameof(Class.Method),
                     order: Order.At.Override,
-                attribute: () => new CustomAttribute()
+                attribute: () => new Custom()
             );
-            conventions.EditMethodAttribute<CustomAttribute>(
+            conventions.EditMethodAttribute<Custom>(
                 when: c =>
                     c.Type.Is<Class>() &&
                     c.Method.Name is nameof(Class.Method),
@@ -57,9 +57,9 @@ public class CustomAttributeDomainOverrideFeature : IFeature
                     c.Method.Name is nameof(MethodSamples.PrimitiveParameters) &&
                     c.Parameter.Name is "string",
                     order: Order.At.Override,
-                attribute: () => new CustomAttribute()
+                attribute: () => new Custom()
             );
-            conventions.EditParameterAttribute<CustomAttribute>(
+            conventions.EditParameterAttribute<Custom>(
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name is nameof(MethodSamples.PrimitiveParameters) &&

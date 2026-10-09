@@ -1,7 +1,7 @@
-﻿namespace Baked.Authorization;
+namespace Baked.Authorization;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class RequireUserAttribute(
+public class RequireUser(
     string[]? claims = default
 ) : Attribute
 {

@@ -21,7 +21,7 @@ public class ClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 order: Order.At.Infra
             );
 
-            conventions.RemoveTypeAttribute<ControllerModelAttribute>(
+            conventions.RemoveTypeAttribute<ApiController>(
                 when: c => c.Type.Name.EndsWith("Client"),
                 order: Order.At.Max
             );

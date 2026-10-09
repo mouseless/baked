@@ -122,5 +122,5 @@ public class LocatorTemplate : CodeTemplateBase
         _domain.Types[extension.Get<LocatableExtensionAttribute>().LocatableType];
 
     string New(TypeModelMembers extension, string expression) =>
-        $$"""_new{{extension.Name}}().{{extension.FirstMethod<InitializerAttribute>().Name}}({{expression}})""";
+        $$"""_new{{extension.Name}}().{{extension.FirstMethod<Initializer>().Name}}({{expression}})""";
 }

@@ -28,21 +28,21 @@ public static class RestBindingExtensions
 
     extension(TypeModel type)
     {
-        public bool TryGetInitializerActionModel([NotNullWhen(true)] out ActionModelAttribute? action)
+        public bool TryGetInitializerApiAction([NotNullWhen(true)] out ApiAction? action)
         {
             action = default;
             if (!type.TryGetMembers(out var members)) { return false; }
 
-            var initializer = members.Methods.Having<InitializerAttribute>().SingleOrDefault();
+            var initializer = members.Methods.Having<Initializer>().SingleOrDefault();
             if (initializer is null) { return false; }
             if (!initializer.TryGet(out action)) { return false; }
 
             return true;
         }
 
-        public ActionModelAttribute GetInitializerActionModel()
+        public ApiAction GetInitializerApiAction()
         {
-            if (!type.TryGetInitializerActionModel(out var result))
+            if (!type.TryGetInitializerApiAction(out var result))
             {
                 throw DiagnosticCode.RequiresInitializerAction.Exception(
                     $"{type.Name} does not have an initializer that has an action model"
@@ -52,7 +52,7 @@ public static class RestBindingExtensions
             return result;
         }
 
-        public bool TryGetControllerModel([NotNullWhen(true)] out ControllerModelAttribute? controller)
+        public bool TryGetApiController([NotNullWhen(true)] out ApiController? controller)
         {
             controller = default;
             if (!type.TryGetMetadata(out var metadata)) { return false; }
@@ -60,9 +60,9 @@ public static class RestBindingExtensions
             return metadata.TryGet(out controller);
         }
 
-        public ControllerModelAttribute GetControllerModel()
+        public ApiController GetApiController()
         {
-            if (!type.TryGetControllerModel(out var result))
+            if (!type.TryGetApiController(out var result))
             {
                 throw DiagnosticCode.RequiresController.Exception(
                     $"{type.Name} does not have controller"

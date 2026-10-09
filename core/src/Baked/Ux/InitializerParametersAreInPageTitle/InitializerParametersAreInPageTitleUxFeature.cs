@@ -20,7 +20,7 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                 {
                     var members = c.Type.GetMembers();
                     var initializer =
-                        members.Methods.Having<InitializerAttribute>().SingleOrDefault() ??
+                        members.Methods.Having<Initializer>().SingleOrDefault() ??
                         throw DiagnosticCode.RequiresInitializerAction.Exception(
                             $"{c.Type.Name} is a transient but doesn't have an initializer action." +
                             " Initializer is needed to render its inputs on page title in a tabbed page."
@@ -40,7 +40,7 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                 schema: i => i.QueryBound = true
             );
 
-            conventions.EditParameterSchema<Label>(
+            conventions.EditParameterSchema<Labeler>(
                 where: cc => cc.Path.EndsWith("tabbed-page", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {

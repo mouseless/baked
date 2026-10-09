@@ -10,7 +10,7 @@ public class UseClassNameInsteadOfActionNamesConvention(
     public void Apply(MethodModelContext context)
     {
         if (_whenContext is not null && !_whenContext(context)) { return; }
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
 
         action.RouteParts.RemoveAll(action.Name);
         action.Name = context.Type.Name;

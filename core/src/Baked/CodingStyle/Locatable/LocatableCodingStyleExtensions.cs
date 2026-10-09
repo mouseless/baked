@@ -20,13 +20,13 @@ public static class LocatableCodingStyleExtensions
 
     extension(LocatableAttribute locatable)
     {
-        public ParameterModelAttribute AddLocatorAsService(ActionModelAttribute action, TypeModel locatableType) =>
+        public ApiParameter AddLocatorAsService(ApiAction action, TypeModel locatableType) =>
             action.Parameter[$"{locatableType.Name.Camelize()}Locator"] = new($"{locatableType.Name.Camelize()}Locator", locatable.RenderLocatorType(locatableType.CSharpFriendlyFullName), ParameterModelFrom.Services)
             {
                 IsInvokeMethodParameter = false
             };
 
-        public string BuildLocate(ParameterModelAttribute locatorServiceParameter, string parameter,
+        public string BuildLocate(ApiParameter locatorServiceParameter, string parameter,
             string? notNullParameterExpression = default,
             bool nullable = false
         )
@@ -42,7 +42,7 @@ public static class LocatableCodingStyleExtensions
             return locate;
         }
 
-        public string BuildLocateMany(ParameterModelAttribute locatorServiceParameter, string parameter,
+        public string BuildLocateMany(ApiParameter locatorServiceParameter, string parameter,
             bool isArray = false
         )
         {
@@ -58,7 +58,7 @@ public static class LocatableCodingStyleExtensions
             conventions.Add(new AddLocateActionConvention<TLocatable>(), order: Order.At.Infra.Max - 20);
     }
 
-    extension(ParameterModelAttribute parameter)
+    extension(ApiParameter parameter)
     {
         public void ConvertToId(IdInfo idInfo,
             string? name = default,

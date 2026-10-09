@@ -10,7 +10,7 @@ public class RichTransientUnderPluralGroupConvention : IDomainModelConvention<Ty
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
+        if (!metadata.TryGet<ApiController>(out var controller)) { return; }
         if (!metadata.Has<LocatableAttribute>()) { return; }
 
         controller.GroupName = controller.GroupName.Pluralize();

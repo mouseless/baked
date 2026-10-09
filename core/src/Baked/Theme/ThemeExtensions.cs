@@ -130,7 +130,7 @@ public static class ThemeExtensions
                 when: c => c.Type.Is<TEntity>(),
                 schema: c =>
                 {
-                    if (!c.Type.GetControllerModel().Action.TryGetValue("Locate", out var locate))
+                    if (!c.Type.GetApiController().Action.TryGetValue("Locate", out var locate))
                     {
                         throw DiagnosticCode.RequiresLocateAction.Exception(
                             $"`{c.Type.Name}` should have `Locate` action added"
@@ -292,7 +292,7 @@ public static class ThemeExtensions
                     Filter = where,
                     Trace = c.Trace
                 },
-                when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
+                when: c => c.Type.Has<ApiController>() && c.Method.Has<ApiAction>() && when(c),
                 beforeBuildingIndexes: false,
                 order: order
             );
@@ -347,7 +347,7 @@ public static class ThemeExtensions
                     Filter = where,
                     Trace = c.Trace
                 },
-                when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
+                when: c => c.Type.Has<ApiController>() && c.Parameter.Has<ApiParameter>() && when(c),
                 beforeBuildingIndexes: false,
                 order: order
             );
@@ -707,7 +707,7 @@ public static class ThemeExtensions
                         Filter = where
                     });
                 },
-                when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && when(c),
+                when: c => c.Type.Has<ApiController>() && c.Method.Has<ApiAction>() && when(c),
                 beforeBuildingIndexes: false,
                 order: order
             );
@@ -771,7 +771,7 @@ public static class ThemeExtensions
                         Filter = where
                     });
                 },
-                when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
+                when: c => c.Type.Has<ApiController>() && c.Parameter.Has<ApiParameter>() && when(c),
                 beforeBuildingIndexes: false,
                 order: order
             );
@@ -975,11 +975,11 @@ public static class ThemeExtensions
 
     extension(MethodModel method)
     {
-        public ActionModelAttribute GetAction() =>
-            method.Get<ActionModelAttribute>();
+        public ApiAction GetAction() =>
+            method.Get<ApiAction>();
     }
 
-    extension(ActionModelAttribute action)
+    extension(ApiAction action)
     {
         public string GetRoute(List<(string key, string value)> routeParameters)
         {

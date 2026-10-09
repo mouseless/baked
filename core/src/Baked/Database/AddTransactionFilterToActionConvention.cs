@@ -8,7 +8,7 @@ public class AddTransactionFilterToActionConvention : IDomainModelConvention<Typ
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMembers(out var members)) { return; }
-        if (!members.TryGet<ControllerModelAttribute>(out var controller)) { return; }
+        if (!members.TryGet<ApiController>(out var controller)) { return; }
 
         foreach (var (key, action) in controller.Action)
         {

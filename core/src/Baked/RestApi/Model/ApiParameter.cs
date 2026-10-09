@@ -1,14 +1,14 @@
-﻿namespace Baked.RestApi.Model;
+namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Parameter)]
-public class ParameterModelAttribute(
+public class ApiParameter(
     ParameterModelFrom @from = ParameterModelFrom.BodyOrForm,
     string[]? additionalAttributes = default
 ) : Attribute
 {
     public const string TargetParameterName = "target";
 
-    public ParameterModelAttribute(string id, string type, ParameterModelFrom @from)
+    public ApiParameter(string id, string type, ParameterModelFrom @from)
       : this(@from)
     {
         Init(id, type, false, null);
@@ -24,7 +24,7 @@ public class ParameterModelAttribute(
 
     /// <summary>
     /// Do NOT set this property directly from the attribute definition, e.g.,
-    /// `[ParameterModel(..., IsOptional = true, ...)]`. Initial value is always
+    /// `[ApiParameter(..., IsOptional = true, ...)]`. Initial value is always
     /// overridden by the value comes from reflection.
     ///
     /// Use conventions to set a custom value.
@@ -47,7 +47,7 @@ public class ParameterModelAttribute(
     public bool FromQuery => From == ParameterModelFrom.Query;
     public bool FromBodyOrForm => From == ParameterModelFrom.BodyOrForm;
 
-    internal ParameterModelAttribute Init(string id, string type, bool isOptional, object? defaultValue)
+    internal ApiParameter Init(string id, string type, bool isOptional, object? defaultValue)
     {
         if (Initialized) { throw new($"Cannot initialize, already initialized: {Id}"); }
 

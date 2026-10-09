@@ -1,48 +1,48 @@
-form-sample @controller-model {
+form-sample @api-controller {
   get-entities {
-    @action-model route="GET /form-sample/entities" anonymous=#true
+    @api-action route="GET /form-sample/entities" anonymous=#true
   }
   new-parent {
-    @action-model route="POST /form-sample/parents" anonymous=#true
+    @api-action route="POST /form-sample/parents" anonymous=#true
     surname {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    name @parameter-model
-    role @parameter-model
-    status @parameter-model
-    description @parameter-model
+    name @api-parameter
+    role @api-parameter
+    status @api-parameter
+    description @api-parameter
   }
   clear-parents {
-    @action-model route="DELETE /form-sample/parents" anonymous=#true
+    @api-action route="DELETE /form-sample/parents" anonymous=#true
   }
   get-parents {
-    @action-model route="GET /form-sample/parents" anonymous=#true
+    @api-action route="GET /form-sample/parents" anonymous=#true
     name {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     sort {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     take {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     skip {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
   get-parents-role {
-    @action-model route="GET /form-sample/parents-role" anonymous=#true
+    @api-action route="GET /form-sample/parents-role" anonymous=#true
     name {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     sort {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     take {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     skip {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
 }

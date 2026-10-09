@@ -26,7 +26,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
         {
             builder.Index.Type.Add<RouteAttribute>();
             builder.Index.Property.Add<DataAttribute>();
-            builder.Index.Method.Add<ActionAttribute>();
+            builder.Index.Method.Add<UiAction>();
             builder.Index.Method.Add<RouteAttribute>();
 
             builder.ConventionOrderMatrix.Bases.Add("Theme");
@@ -142,11 +142,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.EditTypeComponent<PageTitle>(
                 component: (pt, c, cc) =>
                 {
-                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
+                    foreach (var method in c.Type.GetMembers().Methods.Having<UiAction>())
                     {
                         var action = method.GetAction();
                         if (action.Method == HttpMethod.Get) { continue; }
-                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.Has<Initializer>()) { continue; }
 
                         var actionComponent = method.GenerateComponent(cc.Drill("actions", method.Name));
                         if (actionComponent is null) { continue; }
@@ -330,7 +330,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // adds remote action to method
             conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionAttribute>(),
+                when: c => c.Method.Has<UiAction>(),
                 schema: c => DomainActions.MethodRemote(c.Method)
             );
 
@@ -354,8 +354,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // sets methods as action by default when they are api action
             conventions.SetMethodAttribute(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                attribute: () => new ActionAttribute(),
+                when: c => c.Method.Has<ApiAction>(),
+                attribute: () => new UiAction(),
                 order: Order.At.Theme.AbsoluteMin
             );
 
@@ -504,7 +504,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // adds simple form to methods
             conventions.AddMethodComponent(
                 when: c =>
-                    c.Method.TryGet<ActionModelAttribute>(out var action) &&
+                    c.Method.TryGet<ApiAction>(out var action) &&
                     action.Method != HttpMethod.Get,
                 where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
                 component: () => B.SimpleForm()
@@ -575,7 +575,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // adds form page input group to parameters
             conventions.AddParameterSchema(
-                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                when: c => c.Parameter.Has<ApiParameter>(),
                 schema: () => B.FormPageInputGroup()
             );
             conventions.EditParameterSchema<FormPage.InputGroup>(
@@ -591,14 +591,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // adds input to parameters
             conventions.AddParameterSchema(
-                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                when: c => c.Parameter.Has<ApiParameter>(),
                 schema: () => B.Input()
             );
             conventions.EditParameterSchema<Input>(
-                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                when: c => c.Parameter.Has<ApiParameter>(),
                 schema: (i, c, cc) =>
                 {
-                    i.Name = c.Parameter.Get<ParameterModelAttribute>().Name;
+                    i.Name = c.Parameter.Get<ApiParameter>().Name;
                     i.Component = c.Parameter.GenerateRequiredComponent(cc.Drill(c.Parameter.Name, "component"));
                 },
                 order: Order.At.Min
@@ -610,7 +610,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 {
                     if (i.Component.Schema is not ILabeler labeler) { return; }
 
-                    labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, "label"));
+                    labeler.Label = c.Parameter.GenerateSchema<Labeler>(cc.Drill(i.Component.Type, "label"));
                 },
                 order: Order.At.Min
             );
@@ -639,7 +639,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // configures default value for required inputs
             conventions.EditParameterSchema<Input>(
-                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                when: c => c.Parameter.Has<ApiParameter>(),
                 schema: (p, c) =>
                 {
                     p.Required = !c.Parameter.IsNullable ? true : null;
@@ -648,9 +648,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             conventions.AddParameterSchema(
-                schema: () => new Label()
+                schema: () => new Labeler()
             );
-            conventions.EditParameterSchema<Label>(
+            conventions.EditParameterSchema<Labeler>(
                 where: cc =>
                     cc.Path.EndsWith("simple-form", "inputs", "*", "label") ||
                     cc.Path.EndsWith("form-page", "**", "inputs", "*", "label"),
@@ -697,7 +697,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             conventions.EditParameterComponent<InputCheckbox>(
                 when: c =>
-                    c.Parameter.ParameterType.Is<bool?>() && c.Parameter.Get<ParameterModelAttribute>().FromBodyOrForm,
+                    c.Parameter.ParameterType.Is<bool?>() && c.Parameter.Get<ApiParameter>().FromBodyOrForm,
                 component: ic => ic.Schema.Indeterminate = true
             );
 
@@ -735,7 +735,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.EditParameterComponent<SelectButton>(
                 component: (s, c) => s.Schema.AllowEmpty = c.Parameter.IsNullable ? true : null
             );
-            conventions.EditParameterSchema<Label>(
+            conventions.EditParameterSchema<Labeler>(
                 where: cc => cc.Path.EndsWith("select-button", "label"),
                 schema: label =>
                 {

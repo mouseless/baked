@@ -57,7 +57,7 @@ Renders controller actions as `DataPanel` components inside a `TabbedPage`.
 c => c.ActionsAsDataPanels()
 ```
 
-- Methods with `ActionModelAttribute` become `DataPanel` components
+- Methods with `ApiActionAttribute` become `DataPanel` components
 - Each action is shown inside the tab content where it belongs
 - The panel title is taken from the method name
 - Action parameters are added to the panel schema automatically
@@ -157,7 +157,7 @@ Shows list results of controller actions as a `DataTable` inside a `DataPanel`.
 c => c.ListDataTable()
 ```
 
-- Methods with `ActionModelAttribute` that return a list are rendered as
+- Methods with `ApiActionAttribute` that return a list are rendered as
   `DataTable`
 - The `DataTable` is placed in the action’s panel content
 - Properties of the list element type are added as table columns automatically
@@ -184,7 +184,7 @@ Shows list data from an object result as a `DataTable` inside a `DataPanel`.
 c => c.ObjectWithListIsDataTable()
 ```
 
-- Methods with `ActionModelAttribute` that return an object containing a visible
+- Methods with `ApiActionAttribute` that return an object containing a visible
   list property are rendered as `DataTable`
 - The list property is detected automatically and used as the data source
 - Properties of the list element type are added as table columns

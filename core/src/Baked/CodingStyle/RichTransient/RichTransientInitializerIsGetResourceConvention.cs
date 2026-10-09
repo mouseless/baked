@@ -9,9 +9,9 @@ public class RichTransientInitializerIsGetResourceConvention : IDomainModelConve
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
         if (!context.Type.Has<RichTransientAttribute>()) { return; }
-        if (!context.Method.Has<InitializerAttribute>()) { return; }
+        if (!context.Method.Has<Initializer>()) { return; }
         if (!context.Type.TryGetIdInfo(out var idInfo)) { return; }
         if (!action.Parameter.TryGetValue(idInfo.RouteName, out var parameter)) { return; }
 

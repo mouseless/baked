@@ -8,7 +8,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
+        if (!metadata.TryGet<ApiController>(out var controller)) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (controller.Initialized) { return; }
 
@@ -17,9 +17,9 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
             className: context.Type.CSharpFriendlyFullName.Split('.').Skip(1).Join('_'),
             groupName: context.Type.Name,
             actions: members.Methods
-                .Having<ActionModelAttribute>()
+                .Having<ApiAction>()
                 .Select(method => method
-                    .Get<ActionModelAttribute>()
+                    .Get<ApiAction>()
                     .Init(
                         id: method.Name,
                         routeParts: [context.Type.Name, method.Name],
@@ -27,9 +27,9 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
                         returnIsAsync: method.DefaultOverload.ReturnType.IsAssignableTo<Task>(),
                         returnIsVoid: method.DefaultOverload.ReturnType.Is(typeof(void)) || method.DefaultOverload.ReturnType.Is<Task>(),
                         parameters: method.DefaultOverload.Parameters
-                            .Having<ParameterModelAttribute>()
+                            .Having<ApiParameter>()
                             .Select(param => param
-                                .Get<ParameterModelAttribute>()
+                                .Get<ApiParameter>()
                                 .Init(
                                     id: param.Name,
                                     type: param.ParameterType.CSharpFriendlyFullName,
@@ -44,7 +44,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
         if (action.Initialized) { return; }
 
         action.Init(
@@ -54,9 +54,9 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
             returnIsAsync: context.Method.DefaultOverload.ReturnType.IsAssignableTo<Task>(),
             returnIsVoid: context.Method.DefaultOverload.ReturnType.Is(typeof(void)) || context.Method.DefaultOverload.ReturnType.Is<Task>(),
             parameters: context.Method.DefaultOverload.Parameters
-                .Having<ParameterModelAttribute>()
+                .Having<ApiParameter>()
                 .Select(param => param
-                    .Get<ParameterModelAttribute>()
+                    .Get<ApiParameter>()
                     .Init(
                         id: param.Name,
                         type: param.ParameterType.CSharpFriendlyFullName,
@@ -69,7 +69,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
 
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ApiParameter>(out var parameter)) { return; }
         if (parameter.Initialized) { return; }
 
         parameter.Init(

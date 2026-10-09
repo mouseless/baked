@@ -12,7 +12,7 @@ Binds domain types, methods and parameters as API controllers, actions and
 parameters respectively.
 
 Controller, action and parameters are represented via corresponding model
-attributes, e.g., `ControllerModelAttribute`. Once these attributes are added to
+attributes, e.g., `ApiControllerAttribute`. Once these attributes are added to
 domain model, this feature initializes them with default parameters.
 
 These models are subject to alteration via coding styles and other features for

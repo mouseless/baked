@@ -76,7 +76,7 @@ public class DomainAssembliesBusinessFeature(
 
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<QueryAttribute>();
-            builder.Index.Method.Add<InitializerAttribute>();
+            builder.Index.Method.Add<Initializer>();
             builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<LabelAttribute>();
         });

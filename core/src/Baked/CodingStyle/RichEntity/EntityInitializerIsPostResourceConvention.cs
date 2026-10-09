@@ -12,8 +12,8 @@ public class EntityInitializerIsPostResourceConvention : IDomainModelConvention<
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
-        if (!context.Method.Has<InitializerAttribute>()) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
+        if (!context.Method.Has<Initializer>()) { return; }
 
         action.Method = HttpMethod.Post;
         action.RouteParts = [context.Type.Name.Pluralize()];

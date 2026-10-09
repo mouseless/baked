@@ -17,7 +17,7 @@ public class ApiCodeTemplate : CodeTemplateBase
     protected override IEnumerable<string> Render() =>
         _apiModel.Controllers.Select(Controller);
 
-    string Controller(ControllerModelAttribute controller) => $$"""
+    string Controller(ApiController controller) => $$"""
         namespace RestApiLayer;
 
         [ApiController]
@@ -28,7 +28,7 @@ public class ApiCodeTemplate : CodeTemplateBase
         }
     """;
 
-    string Action(ActionModelAttribute action) => $$"""
+    string Action(ApiAction action) => $$"""
         {{If(action.UseForm || action.HasBody && action.UseRequestClassForBody, () => $$"""
         public class {{action.Id}}Request
         {
@@ -70,7 +70,7 @@ public class ApiCodeTemplate : CodeTemplateBase
         }
     """;
 
-    string Property(ParameterModelAttribute parameter) => $$"""
+    string Property(ApiParameter parameter) => $$"""
         {{Attributes(parameter)}}
         public {{parameter.Type}} @{{parameter.Name}} { get; set; }{{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()};")}}
     """;
@@ -81,18 +81,18 @@ public class ApiCodeTemplate : CodeTemplateBase
     string Attribute(string attribute) =>
         $"[{attribute}]";
 
-    string ReturnType(ActionModelAttribute action) =>
+    string ReturnType(ApiAction action) =>
         action.ReturnIsAsync ? $"async {action.ReturnType}" :
         action.ReturnType
     ;
 
-    string Parameter(ParameterModelAttribute parameter) =>
+    string Parameter(ApiParameter parameter) =>
         $"{From(parameter.From)}{ParameterWithoutFrom(parameter)}";
 
-    string ParameterWithoutFrom(ParameterModelAttribute parameter) =>
+    string ParameterWithoutFrom(ApiParameter parameter) =>
         $"{Attributes(parameter)}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
 
-    string Attributes(ParameterModelAttribute parameter) =>
+    string Attributes(ApiParameter parameter) =>
         $"{ForEach(parameter.AdditionalAttributes, Attribute)}";
 
     string From(ParameterModelFrom from) =>
@@ -100,13 +100,13 @@ public class ApiCodeTemplate : CodeTemplateBase
             ? $"[From{from}]"
             : "[FromForm]";
 
-    string Invoke(string target, ActionModelAttribute action) => $$"""
+    string Invoke(string target, ApiAction action) => $$"""
         {{(action.InvocationIsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
             {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm, action.UseRequestClassForBody)}", separator: ", ")}}
         )
     """;
 
-    string ParameterLookup(ParameterModelAttribute parameter, bool useForm, bool useRequestClassForBody) =>
+    string ParameterLookup(ApiParameter parameter, bool useForm, bool useRequestClassForBody) =>
         $"({parameter.RenderLookup(
             If(useForm || useRequestClassForBody && parameter.FromBodyOrForm,
                 () => $"request.@{parameter.Name}",

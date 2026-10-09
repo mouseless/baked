@@ -7,7 +7,7 @@ public class InitializeLocatablesConvention : IDomainModelConvention<MethodModel
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
 
         action.AdditionalAttributes.Add($"ServiceFilter(typeof({typeof(InitializeLocatablesFilter).FullName}))");
     }

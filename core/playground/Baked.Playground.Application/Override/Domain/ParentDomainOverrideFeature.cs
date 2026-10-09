@@ -24,7 +24,7 @@ public class ParentDomainOverrideFeature : IFeature
                 order: Order.At.Override
             );
 
-            conventions.RemoveMethodAttribute<ActionAttribute>(
+            conventions.RemoveMethodAttribute<UiAction>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.RemoveChild),
                 order: Order.At.Theme.Override
             );
@@ -36,7 +36,7 @@ public class ParentDomainOverrideFeature : IFeature
                     component: (pt, c) =>
                     {
                         var addChild = c.Type.GetMembers().Methods[nameof(Parent.AddChild)];
-                        var addChildRoute = addChild.Get<ActionModelAttribute>().GetRoute();
+                        var addChildRoute = addChild.Get<ApiAction>().GetRoute();
 
                         pt.Schema.Actions.RemoveAll(a => a.Action is RemoteAction ra && ra.Path == addChildRoute);
                     },

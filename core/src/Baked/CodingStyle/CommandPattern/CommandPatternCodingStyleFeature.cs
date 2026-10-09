@@ -42,13 +42,13 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                 },
                 order: Order.At.Infra + 40
             );
-            conventions.RemoveTypeAttribute<ControllerModelAttribute>(
+            conventions.RemoveTypeAttribute<ApiController>(
                 when: c =>
                     c.Type.Has<CommandAttribute>() &&
                     c.Type.Has<TransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Any(m =>
-                        m.Has<InitializerAttribute>() &&
+                        m.Has<Initializer>() &&
                         m.DefaultOverload.DeclaringType == c.Type &&
                         m.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
                         !m.DefaultOverload.AllParametersAreApiInput()
@@ -104,7 +104,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
     }
 
     static bool IsPotentialAction(MethodModel m, TypeModelMetadataContext c) =>
-        !m.Has<InitializerAttribute>() &&
+        !m.Has<Initializer>() &&
         m.DefaultOverload.DeclaringType == c.Type &&
         m.DefaultOverload.IsPublicInstanceWithNoSpecialName;
 

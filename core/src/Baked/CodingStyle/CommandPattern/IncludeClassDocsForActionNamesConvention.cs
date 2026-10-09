@@ -10,7 +10,7 @@ public class IncludeClassDocsForActionNamesConvention(
     public void Apply(MethodModelContext context)
     {
         if (!context.Method.Has<CommandMethodAttribute>()) { return; }
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
         if (_whenContext is not null && !_whenContext(context)) { return; }
         if (context.Type.Documentation is null) { return; }
 

@@ -5,6 +5,8 @@ using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Humanizer;
 
+using ApiParameter = Baked.RestApi.Model.ApiParameter;
+
 namespace Baked;
 
 public static class RichTransientCodingStyleExtensions
@@ -15,12 +17,12 @@ public static class RichTransientCodingStyleExtensions
             new();
     }
 
-    extension(ActionModelAttribute action)
+    extension(ApiAction action)
     {
-        public ParameterModelAttribute AddFactoryAsService(TypeModel transientType)
+        public ApiParameter AddFactoryAsService(TypeModel transientType)
         {
             var parameter =
-                new ParameterModelAttribute($"new{transientType.Name.Pascalize()}", $"Func<{transientType.CSharpFriendlyFullName}>", ParameterModelFrom.Services)
+                new ApiParameter($"new{transientType.Name.Pascalize()}", $"Func<{transientType.CSharpFriendlyFullName}>", ParameterModelFrom.Services)
                 {
                     IsInvokeMethodParameter = false,
                 };
@@ -40,7 +42,7 @@ public static class RichTransientCodingStyleExtensions
         {
             notNullValueExpression ??= valueExpression;
 
-            var initializer = type.GetMembers().Methods.Having<InitializerAttribute>().Single();
+            var initializer = type.GetMembers().Methods.Having<Initializer>().Single();
             var initializerById = $"new{type.Name.Pascalize()}().{initializer.Name}({notNullValueExpression})";
             if (initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>())
             {
@@ -59,7 +61,7 @@ public static class RichTransientCodingStyleExtensions
             bool isArray = default
         )
         {
-            var initializer = type.GetMembers().Methods.Having<InitializerAttribute>().Single();
+            var initializer = type.GetMembers().Methods.Having<Initializer>().Single();
             var byIds = $"{valueExpression}.Select(id => new{type.Name.Pascalize()}().{initializer.Name}(id))";
             if (initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>())
             {

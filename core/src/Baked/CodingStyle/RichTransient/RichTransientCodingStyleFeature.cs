@@ -28,7 +28,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     members.Has<TransientAttribute>() &&
                     TryFindIdProperty(members, out var idProperty) &&
                     members.Methods.Any(m =>
-                        m.Has<InitializerAttribute>() &&
+                        m.Has<Initializer>() &&
                         m.DefaultOverload.Parameters.Count == 1 &&
                         m.DefaultOverload.Parameters.All(p =>
                             p.Name == idProperty.Name.Camelize() &&
@@ -50,7 +50,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     if (!c.Type.TryGetMembers(out var members)) { return; }
 
                     var initializer =
-                        members.Methods.FirstOrDefault(m => m.Has<InitializerAttribute>()) ??
+                        members.Methods.FirstOrDefault(m => m.Has<Initializer>()) ??
                         throw DiagnosticCode.MethodWithAttribute.Exception(
                             $"`{c.Type.Name}` should have had method with `InitializerAttribute`."
                         );
@@ -64,9 +64,9 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Type.Has<RichTransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.Any(p => p.IsPublic) &&
-                    c.Method.Has<InitializerAttribute>() &&
+                    c.Method.Has<Initializer>() &&
                     c.Method.DefaultOverload.IsPublic,
-                attribute: c => new ActionModelAttribute(),
+                attribute: c => new ApiAction(),
                 order: Order.At.Infra + 20
             );
 

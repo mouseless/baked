@@ -7,7 +7,7 @@ public class OnlyLocatableParameterIsInRouteForDeleteChildConvention : IDomainMo
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
         if (action.Method != HttpMethod.Delete) { return; }
         if (action.Name == string.Empty) { return; }
         if (action.InvokedMethodParameters.Count() != 1) { return; }

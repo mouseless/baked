@@ -153,14 +153,14 @@ experiences, see [UX Feature](ux.md)
 |              | &nbsp; ↳ with type `string` or `Guid`                                                    |
 |              | &nbsp; ↳ or with type that has `LocatableAttribute`                                      |
 |              | &nbsp; ↳ or with type that has `ValueTypeAttribute`                                      |
-| Method       | All actions with `ActionModelAttribute` get `ActionAttribute` and `TabNameAttribute`     |
+| Method       | All actions with `ApiActionAttribute` get `UiActionAttribute` and `TabNameAttribute`     |
 |              | `FormPage` is added for any method at component path `/page/*/*`                         |
 |              | `Content` schema is added to any method                                                  |
 |              | Each method is wired as a remote data and remote action                                  |
 |              | Remote data of locatable types include `route.params` in their route                     |
 |              | For method with parameters `Context.Model` is set as remote action body by default       |
 | Parameter    | Parameters are rendered as `Input` list under `SimpleForm` and `FormPage` inputs         |
-|              | Parameters with `ParameterModelAttribute` use `Input` schema                             |
+|              | Parameters with `ApiParameterAttribute` use `Input` schema                               |
 |              | Required and default values are taken from the attribute                                 |
 |              | `string` parameters render using `InputText`                                             |
 |              | parameters with type that has `ValueTypeAttribute` render using `InputText`              |

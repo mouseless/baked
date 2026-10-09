@@ -77,7 +77,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
             // Actions
             conventions.EditMethodSchema<RemoteAction>(
-                when: c => c.Method.Has<ActionAttribute>(),
+                when: c => c.Method.Has<UiAction>(),
                 where: cc => cc.Path.Contains("data-table", "actions"),
                 schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row"),
                 order: 10

@@ -165,7 +165,7 @@ are usually at `Members` level, and by default any type is built to at least
 It means that the indicated type is required to be a controller.
 
 To fix this, look through your conventions where you require a controller over a
-domain type using `type.GetControllerModel()`.
+domain type using `type.GetApiController()`.
 
 In Baked, `conventions.AddEntityRemoteData<MyEntity>()` helper assumes given
 entity type has a controller model. Make sure you didn't call that helper over a

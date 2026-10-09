@@ -12,7 +12,7 @@ public class MockingClients : TestSpec
         var gitHubClient = domain.Types[typeof(GitHubClient)];
 
         gitHubClient.TryGetMetadata(out var metadata).ShouldBeTrue();
-        metadata.Has<ControllerModelAttribute>().ShouldBeFalse();
+        metadata.Has<ApiController>().ShouldBeFalse();
     }
 
     [Test]

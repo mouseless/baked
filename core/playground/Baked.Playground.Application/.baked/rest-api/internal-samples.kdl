@@ -1,13 +1,13 @@
-internal-samples @controller-model {
+internal-samples @api-controller {
   internal-request {
-    @action-model route="POST /internal-samples/internal-request" required-claims="BaseA, BaseB"
+    @api-action route="POST /internal-samples/internal-request" required-claims="BaseA, BaseB"
     path {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     method {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    content @parameter-model
+    content @api-parameter
   }
 }
 

@@ -18,7 +18,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
         {
             // `Button`
             conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionAttribute>() && !c.Method.DefaultOverload.Parameters.Any(),
+                when: c => c.Method.Has<UiAction>() && !c.Method.DefaultOverload.Parameters.Any(),
                 where: cc => cc.Path.EndsWith("actions", "*"),
                 component: () => B.Button()
             );
@@ -26,7 +26,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             // `SimpleForm` with dialog options
             conventions.AddMethodComponent(
                 when: c =>
-                    c.Method.Has<ActionAttribute>() &&
+                    c.Method.Has<UiAction>() &&
                     (
                         c.Method.DefaultOverload.Parameters.Any() ||
                         c.Method.GetAction().Method == HttpMethod.Delete
@@ -50,28 +50,28 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
 
             // adds button to the methods with a route
             conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionAttribute>() && c.Method.Has<RouteAttribute>(),
+                when: c => c.Method.Has<UiAction>() && c.Method.Has<RouteAttribute>(),
                 where: cc => cc.Path.EndsWith("actions", "*"),
                 component: () => B.Button()
             );
 
             // adds redirect action for methods with a route
             conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionAttribute>() && c.Method.Has<RouteAttribute>(),
+                when: c => c.Method.Has<UiAction>() && c.Method.Has<RouteAttribute>(),
                 where: cc => cc.Path.EndsWith("actions", "*", "button", "action"),
                 schema: c => Local.UseRedirect(c.Method.Get<RouteAttribute>().Path)
             );
 
             // configures post action to be a redirect back to the configured route path back for methods under the form page
             conventions.EditMethodSchema<RemoteAction>(
-                when: c => c.Method.TryGet<ActionAttribute>(out var action) && action.RoutePathBack is not null,
+                when: c => c.Method.TryGet<UiAction>(out var action) && action.RoutePathBack is not null,
                 where: cc => cc.Path.StartsWith("page", "*", "*", "form-page"),
                 schema: (ra, c) =>
                 {
                     var routeBack =
-                        c.Method.Get<ActionAttribute>().RoutePathBack ??
+                        c.Method.Get<UiAction>().RoutePathBack ??
                         throw DiagnosticCode.InvalidState.Exception(
-                            $"`{nameof(ActionAttribute.RoutePathBack)}` can't be null here"
+                            $"`{nameof(UiAction.RoutePathBack)}` can't be null here"
                         );
 
                     ra.PostAction = Local.UseRedirect(routeBack);
@@ -86,7 +86,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
 
             // Submit button (for dialog and page)
             conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionAttribute>(),
+                when: c => c.Method.Has<UiAction>(),
                 where: cc => cc.Path.EndsWith("submit"),
                 component: () => B.Button()
             );
@@ -164,7 +164,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
 
             // Icons
             conventions.EditMethodComponent<Button>(
-                when: c => c.Method.Has<ActionAttribute>(),
+                when: c => c.Method.Has<UiAction>(),
                 where: cc =>
                     !cc.Path.Contains("form-page") &&
                     (

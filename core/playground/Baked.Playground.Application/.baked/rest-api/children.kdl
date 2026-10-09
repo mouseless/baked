@@ -1,21 +1,21 @@
 child {
-  @controller-model locate-route="GET /children/{id}"
+  @api-controller locate-route="GET /children/{id}"
   update {
-    @action-model route="PUT /children/{id}/" anonymous=#true
-    name @parameter-model
-    parent @parameter-model
-    parent-wrapper @parameter-model
+    @api-action route="PUT /children/{id}/" anonymous=#true
+    name @api-parameter
+    parent @api-parameter
+    parent-wrapper @api-parameter
   }
 }
 
-children @controller-model {
+children @api-controller {
   by {
-    @action-model route="GET /children" required-claims="BaseA, BaseB"
+    @api-action route="GET /children" required-claims="BaseA, BaseB"
   }
   first-by {
-    @action-model route="GET /children/first" required-claims="BaseA, BaseB"
+    @api-action route="GET /children/first" required-claims="BaseA, BaseB"
     fetch-parents {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
 }

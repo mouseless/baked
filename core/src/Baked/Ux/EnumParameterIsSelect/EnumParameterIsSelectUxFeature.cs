@@ -55,7 +55,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.Has<RequiredAttribute>() &&
-                    c.Parameter.TryGet<ParameterModelAttribute>(out var api) &&
+                    c.Parameter.TryGet<ApiParameter>(out var api) &&
                     (api.FromQuery || api.FromRoute),
                 schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First().Camelize(),
                 order: 10

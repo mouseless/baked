@@ -6,5 +6,5 @@ public record ApiModel
 {
     public List<Assembly> References { get; init; } = [];
     public List<string> Usings { get; } = [];
-    public List<ControllerModelAttribute> Controllers { get; init; } = [];
+    public List<ApiController> Controllers { get; init; } = [];
 }

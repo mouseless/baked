@@ -30,7 +30,7 @@ public class GeneratingAttributeExportFiles : TestSpec
         };
     }
 
-    class FakeAttribute : Attribute;
+    class Fake : Attribute;
 
     [Test]
     public void Serialize_given_type_metadata_model()
@@ -43,9 +43,9 @@ public class GeneratingAttributeExportFiles : TestSpec
           }
           surname @label
           method-name @initializer {
-            @action-model method="Post" route-parts="System.String[]"
+            @api-action method="Post" route-parts="System.String[]"
             id {
-              @parameter-model from="Route"
+              @api-parameter from="Route"
             }
           }
         }
@@ -56,7 +56,7 @@ public class GeneratingAttributeExportFiles : TestSpec
             attributes:
             [
                 new(nameof(EntityAttribute)),
-                new(nameof(FakeAttribute),
+                new(nameof(Fake),
                     ("CamelCase", "CamelCase"),
                     ("String", "Post"),
                     ("Array", new[] { "sample-types", "id" }),
@@ -71,11 +71,11 @@ public class GeneratingAttributeExportFiles : TestSpec
             [
                 new("MethodName",
                 [
-                    new(nameof(InitializerAttribute)),
-                    new(nameof(ActionModelAttribute), ("Method", "Post"), ("RouteParts", new[] { "sample-types", "id" })),
+                    new(nameof(Initializer)),
+                    new(nameof(ApiAction), ("Method", "Post"), ("RouteParts", new[] { "sample-types", "id" })),
                 ])
                 {
-                    Parameters = [new("Id", [new(nameof(ParameterModelAttribute), ("From", ParameterModelFrom.Route))])]
+                    Parameters = [new("Id", [new(nameof(ApiParameter), ("From", ParameterModelFrom.Route))])]
                 },
             ],
             properties:
@@ -104,7 +104,7 @@ public class GeneratingAttributeExportFiles : TestSpec
             name: "SampleType",
             attributes:
             [
-                new(nameof(FakeAttribute), ("ValueNull", null))
+                new(nameof(Fake), ("ValueNull", null))
             ]
         );
 

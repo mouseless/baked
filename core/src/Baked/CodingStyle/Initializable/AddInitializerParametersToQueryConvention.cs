@@ -12,18 +12,18 @@ public class AddInitializerParametersToQueryConvention : IDomainModelConvention<
         if (!context.Type.Has<TransientAttribute>()) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (members.Has<LocatableAttribute>()) { return; }
-        if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!members.Methods.Having<Initializer>().Any()) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
 
-        var initializer = members.Methods.Having<InitializerAttribute>().Single();
+        var initializer = members.Methods.Having<Initializer>().Single();
         foreach (var parameter in initializer.DefaultOverload.Parameters)
         {
-            if (!parameter.TryGet<ParameterModelAttribute>(out var parameterModel)) { continue; }
+            if (!parameter.TryGet<ApiParameter>(out var apiParameter)) { continue; }
 
-            parameterModel.From = ParameterModelFrom.Query;
-            parameterModel.IsInvokeMethodParameter = false;
+            apiParameter.From = ParameterModelFrom.Query;
+            apiParameter.IsInvokeMethodParameter = false;
 
-            action.Parameter[parameter.Name] = parameterModel;
+            action.Parameter[parameter.Name] = apiParameter;
         }
     }
 }

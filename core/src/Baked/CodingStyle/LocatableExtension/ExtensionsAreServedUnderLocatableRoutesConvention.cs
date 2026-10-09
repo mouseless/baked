@@ -9,8 +9,8 @@ public class ExtensionsAreServedUnderLocatableRoutesConvention : IDomainModelCon
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
-        if (context.Method.Has<InitializerAttribute>()) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
+        if (context.Method.Has<Initializer>()) { return; }
         if (!context.Type.TryGetLocatableTypeFromExtension(context.Domain, out var locatableType)) { return; }
 
         action.RouteParts = [locatableType.Name.Pluralize(), action.Name];

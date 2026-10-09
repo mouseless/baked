@@ -77,9 +77,9 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
 
                     var dpInputs = dp.Schema.Inputs.ToDictionary(i => i.Name, i => i);
                     var dcInputs = dc.Inputs.ToDictionary(i => i.Name, i => i);
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters.Having<ParameterModelAttribute>())
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters.Having<ApiParameter>())
                     {
-                        var api = parameter.Get<ParameterModelAttribute>();
+                        var api = parameter.Get<ApiParameter>();
                         if (parameter.Has<SortingAttribute>() || parameter.Has<PagingAttribute>())
                         {
                             if (!dpInputs.TryGetValue(api.Name, out var input)) { continue; }

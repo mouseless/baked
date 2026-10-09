@@ -23,14 +23,14 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.Any(p => p.CustomAttributes.Contains<IdAttribute>()) &&
                     members.Methods.Any(m =>
-                        m.Has<InitializerAttribute>() &&
+                        m.Has<Initializer>() &&
                         m.DefaultOverload.Parameters.Count == 1 &&
                         m.DefaultOverload.Parameters.Single().ParameterType.TryGetMetadata(out var parameterTypeMetadata) &&
                         parameterTypeMetadata.Has<LocatableAttribute>()
                     ),
                 attribute: context =>
                 {
-                    var locatableType = context.Type.GetMembers().Methods.First(m => m.Has<InitializerAttribute>()).DefaultOverload.Parameters.Single().ParameterType;
+                    var locatableType = context.Type.GetMembers().Methods.First(m => m.Has<Initializer>()).DefaultOverload.Parameters.Single().ParameterType;
 
                     return locatableType.Apply(t => new LocatableExtensionAttribute(t));
                 },

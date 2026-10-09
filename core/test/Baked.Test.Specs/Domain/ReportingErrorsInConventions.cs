@@ -7,7 +7,7 @@ namespace Baked.Test.Domain;
 public class ReportingErrorsInConventions : TestSpec
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class CustomAttribute : Attribute;
+    public class Custom : Attribute;
 
     [Test]
     public void Domain_model_builder_continues_execution_even_if_an_exception_occurs_during_post_build()
@@ -26,7 +26,7 @@ public class ReportingErrorsInConventions : TestSpec
                     {
                         hit = true;
 
-                        return new CustomAttribute();
+                        return new Custom();
                     }
                 );
             }

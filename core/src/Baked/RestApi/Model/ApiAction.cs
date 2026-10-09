@@ -1,16 +1,16 @@
-﻿using Humanizer;
+using Humanizer;
 
 namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class ActionModelAttribute(
+public class ApiAction(
     string? method = default,
     string[]? routeParts = default,
     string[]? additionalAttributes = default,
     string[]? preparationStatements = default
 ) : Attribute
 {
-    public ActionModelAttribute(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
+    public ApiAction(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ApiParameter> parameters)
       : this()
     {
         Init(id, routeParts, returnType, returnIsAsync, returnIsVoid, parameters);
@@ -27,7 +27,7 @@ public class ActionModelAttribute(
 
     /// <summary>
     /// Do NOT set this property directly from the attribute definition, e.g.,
-    /// `[ActionModel(..., ReturnIsAsync = true, ...)]`. Initial value is
+    /// `[ApiAction(..., ReturnIsAsync = true, ...)]`. Initial value is
     /// always overridden by the value comes from reflection.
     ///
     /// Use conventions to set a custom value.
@@ -36,7 +36,7 @@ public class ActionModelAttribute(
 
     /// <summary>
     /// Do NOT set this property directly from the attribute definition, e.g.,
-    /// `[ActionModel(..., ReturnIsVoid = true, ...)]`. Initial value is always
+    /// `[ApiAction(..., ReturnIsVoid = true, ...)]`. Initial value is always
     /// overridden by the value comes from reflection.
     ///
     /// Use conventions to set a custom value.
@@ -45,7 +45,7 @@ public class ActionModelAttribute(
 
     /// <summary>
     /// Do NOT set this property directly from the attribute definition, e.g.,
-    /// `[ActionModel(..., InvocationIsAsync = true, ...)]`. Initial value is
+    /// `[ApiAction(..., InvocationIsAsync = true, ...)]`. Initial value is
     /// always overridden by the value comes from reflection.
     ///
     /// Use conventions to set a custom value.
@@ -53,27 +53,27 @@ public class ActionModelAttribute(
     public bool InvocationIsAsync { get; set; } = default!;
 
     public Func<string, string> ReturnResultRenderer { get; set; } = resultExpression => resultExpression;
-    public string FindTargetStatement { get; set; } = ParameterModelAttribute.TargetParameterName;
+    public string FindTargetStatement { get; set; } = ApiParameter.TargetParameterName;
     public bool UseForm { get; set; } = false;
     public bool UseRequestClassForBody { get; set; } = true;
     public int Order { get; set; } = 0;
     public List<string> AdditionalAttributes { get; } = [.. additionalAttributes ?? []];
     public List<string> PreparationStatements { get; } = [.. preparationStatements ?? []];
-    public Dictionary<string, ParameterModelAttribute> Parameter { get; private set; } = default!;
+    public Dictionary<string, ApiParameter> Parameter { get; private set; } = default!;
     public bool Orphan { get; } = false;
     internal bool Initialized { get; private set; } = false;
 
     public bool HasBody => !UseForm && BodyParameters.Any();
-    public IEnumerable<ParameterModelAttribute> Parameters => Parameter.Values;
-    IEnumerable<ParameterModelAttribute> ActionParameters => Parameters.Where(p => !p.IsHardCoded).OrderBy(p => p.Order).ThenBy(p => p.IsOptional ? 1 : -1);
-    IEnumerable<ParameterModelAttribute> RouteParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
-    IEnumerable<ParameterModelAttribute> NonServiceParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.Services);
-    public IEnumerable<ParameterModelAttribute> BodyParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
-    public IEnumerable<ParameterModelAttribute> ServiceParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Services);
-    public IEnumerable<ParameterModelAttribute> NonBodyParameters => NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
-    public IEnumerable<ParameterModelAttribute> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
+    public IEnumerable<ApiParameter> Parameters => Parameter.Values;
+    IEnumerable<ApiParameter> ActionParameters => Parameters.Where(p => !p.IsHardCoded).OrderBy(p => p.Order).ThenBy(p => p.IsOptional ? 1 : -1);
+    IEnumerable<ApiParameter> RouteParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
+    IEnumerable<ApiParameter> NonServiceParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.Services);
+    public IEnumerable<ApiParameter> BodyParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ApiParameter> ServiceParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Services);
+    public IEnumerable<ApiParameter> NonBodyParameters => NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ApiParameter> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
 
-    internal ActionModelAttribute Init(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
+    internal ApiAction Init(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ApiParameter> parameters)
     {
         if (Initialized) { throw new($"Cannot initialize, already initialized: {Id}"); }
 

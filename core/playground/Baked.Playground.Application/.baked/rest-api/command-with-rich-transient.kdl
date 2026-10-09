@@ -1,6 +1,6 @@
-command-with-rich-transient @controller-model {
+command-with-rich-transient @api-controller {
   execute {
-    @action-model route="POST /command-with-rich-transient" required-claims="BaseA, BaseB"
+    @api-action route="POST /command-with-rich-transient" required-claims="BaseA, BaseB"
   }
 }
 

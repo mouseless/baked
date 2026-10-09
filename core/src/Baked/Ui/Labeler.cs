@@ -1,6 +1,6 @@
 namespace Baked.Ui;
 
-public record Label
+public record Labeler
 {
     public string? Text { get; set; }
     public string? Mode { get; set; }

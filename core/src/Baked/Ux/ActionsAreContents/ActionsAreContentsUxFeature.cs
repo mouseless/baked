@@ -14,15 +14,15 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
             conventions.EditTypeComponent<SimplePage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
-                    members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
+                    members.Methods.Having<ApiAction>().Any(m => m.GetAction().Method == HttpMethod.Get),
                 component: (sp, c, cc) =>
                 {
                     cc = cc.Drill("simple-page", "contents");
 
-                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
+                    foreach (var method in c.Type.GetMembers().Methods.Having<ApiAction>())
                     {
-                        if (method.Has<InitializerAttribute>()) { continue; }
-                        if (!method.TryGet<ActionModelAttribute>(out var action)) { continue; }
+                        if (method.Has<Initializer>()) { continue; }
+                        if (!method.TryGet<ApiAction>(out var action)) { continue; }
                         if (action.Method != HttpMethod.Get) { continue; }
 
                         var content = method.GenerateSchema<Content>(cc.Drill(sp.Schema.Contents.Count));
@@ -35,18 +35,18 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
             conventions.EditTypeComponent<TabbedPage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
-                    members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
+                    members.Methods.Having<ApiAction>().Any(m => m.GetAction().Method == HttpMethod.Get),
                 component: (tp, c, cc) =>
                 {
                     cc = cc.Drill("tabbed-page", "tabs");
                     var tabs = new Dictionary<string, Tab>();
 
                     var members = c.Type.GetMembers();
-                    foreach (var method in members.Methods.Having<ActionModelAttribute>())
+                    foreach (var method in members.Methods.Having<ApiAction>())
                     {
-                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.Has<Initializer>()) { continue; }
 
-                        var action = method.Get<ActionModelAttribute>();
+                        var action = method.Get<ApiAction>();
                         if (action.Method != HttpMethod.Get) { continue; }
 
                         if (!tabs.TryGetValue(method.TabName, out var tab))

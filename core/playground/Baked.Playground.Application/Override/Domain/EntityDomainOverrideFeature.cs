@@ -33,7 +33,7 @@ public class EntityDomainOverrideFeature : IFeature
                 order: Order.At.Override
             );
 
-            conventions.RemoveMethodAttribute<ActionAttribute>(
+            conventions.RemoveMethodAttribute<UiAction>(
                 when: c => c.Type.Is<Entity>() && c.Method.Name is nameof(Entity.UpdateString) or nameof(Entity.LockAndIncrementInt32),
                 order: Order.At.Theme.Override
             );

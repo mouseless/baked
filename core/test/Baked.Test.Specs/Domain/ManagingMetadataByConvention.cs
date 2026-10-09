@@ -9,7 +9,7 @@ public class ManagingMetadataByConvention : TestSpec
     {
         var @class = GiveMe.TheTypeModel<Class>().GetMetadata();
 
-        @class.Has<CustomAttribute>().ShouldBeTrue();
+        @class.Has<Custom>().ShouldBeTrue();
     }
 
     [Test]
@@ -17,7 +17,7 @@ public class ManagingMetadataByConvention : TestSpec
     {
         var @class = GiveMe.TheTypeModel<Class>().GetMetadata();
 
-        @class.Get<CustomAttribute>().Value.ShouldBe("FROM CONVENTION");
+        @class.Get<Custom>().Value.ShouldBe("FROM CONVENTION");
     }
 
     [Test]
@@ -26,7 +26,7 @@ public class ManagingMetadataByConvention : TestSpec
         var @class = GiveMe.TheTypeModel<Record>().GetMembers();
         var property = @class.Properties[nameof(Record.Text)];
 
-        property.Has<CustomAttribute>().ShouldBeTrue();
+        property.Has<Custom>().ShouldBeTrue();
     }
 
     [Test]
@@ -35,7 +35,7 @@ public class ManagingMetadataByConvention : TestSpec
         var @class = GiveMe.TheTypeModel<Record>().GetMembers();
         var property = @class.Properties[nameof(Record.Text)];
 
-        property.Get<CustomAttribute>().Value.ShouldBe("FROM CONVENTION");
+        property.Get<Custom>().Value.ShouldBe("FROM CONVENTION");
     }
 
     [Test]
@@ -44,7 +44,7 @@ public class ManagingMetadataByConvention : TestSpec
         var @class = GiveMe.TheTypeModel<Class>().GetMembers();
         var method = @class.Methods[nameof(Class.Method)];
 
-        method.Has<CustomAttribute>().ShouldBeTrue();
+        method.Has<Custom>().ShouldBeTrue();
     }
 
     [Test]
@@ -53,7 +53,7 @@ public class ManagingMetadataByConvention : TestSpec
         var @class = GiveMe.TheTypeModel<Class>().GetMembers();
         var method = @class.Methods[nameof(Class.Method)];
 
-        method.Get<CustomAttribute>().Value.ShouldBe("FROM CONVENTION");
+        method.Get<Custom>().Value.ShouldBe("FROM CONVENTION");
     }
 
     [Test]
@@ -63,7 +63,7 @@ public class ManagingMetadataByConvention : TestSpec
         var method = @class.GetMethod(nameof(MethodSamples.PrimitiveParameters));
         var parameter = method.Parameters["string"];
 
-        parameter.Has<CustomAttribute>().ShouldBeTrue();
+        parameter.Has<Custom>().ShouldBeTrue();
     }
 
     [Test]
@@ -73,6 +73,6 @@ public class ManagingMetadataByConvention : TestSpec
         var method = @class.GetMethod(nameof(MethodSamples.PrimitiveParameters));
         var parameter = method.Parameters["string"];
 
-        parameter.Get<CustomAttribute>().Value.ShouldBe("FROM CONVENTION");
+        parameter.Get<Custom>().Value.ShouldBe("FROM CONVENTION");
     }
 }

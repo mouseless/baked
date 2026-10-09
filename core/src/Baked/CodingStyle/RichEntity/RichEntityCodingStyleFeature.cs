@@ -35,9 +35,9 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
             conventions.SetMethodAttribute(
                 when: c =>
-                    c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
+                    c.Type.Has<EntityAttribute>() && c.Method.Has<Initializer>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
-                attribute: c => new ActionModelAttribute(),
+                attribute: c => new ApiAction(),
                 order: Order.At.Infra + 30
             );
 

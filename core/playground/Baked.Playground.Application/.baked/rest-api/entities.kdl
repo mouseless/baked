@@ -1,144 +1,144 @@
 entity {
-  @controller-model locate-route="GET /entities/{id}"
+  @api-controller locate-route="GET /entities/{id}"
   with {
-    @action-model route="POST /entities" required-claims="BaseA, BaseB"
-    guid @parameter-model
-    string @parameter-model
-    string-data @parameter-model
-    int32 @parameter-model
-    decimal @parameter-model
-    double @parameter-model
-    boolean @parameter-model
-    unique @parameter-model
-    uri @parameter-model
-    mail-address @parameter-model
-    dynamic @parameter-model
-    enum @parameter-model
-    flags-enum @parameter-model
-    date-time @parameter-model
-    date-only @parameter-model
-    time-only @parameter-model
+    @api-action route="POST /entities" required-claims="BaseA, BaseB"
+    guid @api-parameter
+    string @api-parameter
+    string-data @api-parameter
+    int32 @api-parameter
+    decimal @api-parameter
+    double @api-parameter
+    boolean @api-parameter
+    unique @api-parameter
+    uri @api-parameter
+    mail-address @api-parameter
+    dynamic @api-parameter
+    enum @api-parameter
+    flags-enum @api-parameter
+    date-time @api-parameter
+    date-only @api-parameter
+    time-only @api-parameter
   }
   update {
-    @action-model route="PUT /entities/{id}/" required-claims="BaseA, BaseB"
-    guid @parameter-model
-    string @parameter-model
-    string-data @parameter-model
-    int32 @parameter-model
-    decimal @parameter-model
-    double @parameter-model
-    boolean @parameter-model
-    unique @parameter-model
-    uri @parameter-model
-    mail-address @parameter-model
-    dynamic @parameter-model
-    enum @parameter-model
-    flags-enum @parameter-model
-    date-time @parameter-model
-    date-only @parameter-model
-    use-transaction @parameter-model
-    throw-error @parameter-model
+    @api-action route="PUT /entities/{id}/" required-claims="BaseA, BaseB"
+    guid @api-parameter
+    string @api-parameter
+    string-data @api-parameter
+    int32 @api-parameter
+    decimal @api-parameter
+    double @api-parameter
+    boolean @api-parameter
+    unique @api-parameter
+    uri @api-parameter
+    mail-address @api-parameter
+    dynamic @api-parameter
+    enum @api-parameter
+    flags-enum @api-parameter
+    date-time @api-parameter
+    date-only @api-parameter
+    use-transaction @api-parameter
+    throw-error @api-parameter
   }
   update-string {
-    @action-model route="PATCH /entities/{id}/string" required-claims="BaseA, BaseB"
-    string @parameter-model
+    @api-action route="PATCH /entities/{id}/string" required-claims="BaseA, BaseB"
+    string @api-parameter
   }
   lock-and-increment-int32 {
-    @action-model route="POST /entities/{id}/lock-and-increment-int32" required-claims="BaseA, BaseB"
-    offset @parameter-model
-    delay-in-seconds @parameter-model
+    @api-action route="POST /entities/{id}/lock-and-increment-int32" required-claims="BaseA, BaseB"
+    offset @api-parameter
+    delay-in-seconds @api-parameter
   }
   delete {
-    @action-model route="DELETE /entities/{id}/" required-claims="BaseA, BaseB"
+    @api-action route="DELETE /entities/{id}/" required-claims="BaseA, BaseB"
   }
 }
 
-entities @controller-model {
+entities @api-controller {
   by {
-    @action-model route="GET /entities" required-claims="BaseA, BaseB"
+    @api-action route="GET /entities" required-claims="BaseA, BaseB"
     guid {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     string {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     string-data {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     int32 {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     decimal {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     double {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     boolean {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     unique {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     uri {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     mail-address {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     enum {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     flags-enum {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     date-time {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     take {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     skip {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
   first-by-string {
-    @action-model route="GET /entities/first-by-string" required-claims="BaseA, BaseB"
+    @api-action route="GET /entities/first-by-string" required-claims="BaseA, BaseB"
     starts-with {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
     asc {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     desc {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
   count-by-date {
-    @action-model route="POST /entities/count-by-date" required-claims="BaseA, BaseB"
+    @api-action route="POST /entities/count-by-date" required-claims="BaseA, BaseB"
   }
 }
 
-entity-extension @controller-model {
+entity-extension @api-controller {
   increment-int32 {
-    @action-model route="POST /entities/{id}/increment-int32" required-claims="BaseA, BaseB"
+    @api-action route="POST /entities/{id}/increment-int32" required-claims="BaseA, BaseB"
   }
   increment-by {
-    @action-model route="POST /entities/{id}/increment-by" required-claims="BaseA, BaseB"
+    @api-action route="POST /entities/{id}/increment-by" required-claims="BaseA, BaseB"
     other {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   increment-by-all {
-    @action-model route="POST /entities/{id}/increment-by-all" required-claims="BaseA, BaseB"
+    @api-action route="POST /entities/{id}/increment-by-all" required-claims="BaseA, BaseB"
     extensions {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     more-extensions {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     even-more-extensions {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
 }

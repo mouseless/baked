@@ -35,7 +35,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                     }
                 }
             );
-            conventions.EditParameterSchema<Label>(
+            conventions.EditParameterSchema<Labeler>(
                 where: cc => cc.Path.EndsWith("data-panel", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {

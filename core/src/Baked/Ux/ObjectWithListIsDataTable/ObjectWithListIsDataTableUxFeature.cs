@@ -104,7 +104,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.TryGetMembers(out var elementMembers) &&
-                    elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
+                    elementMembers.Methods.Having<UiAction>().Any(m => !m.Get<UiAction>().HideInLists),
                 where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: () => B.DataTableColumn()
             );
@@ -123,10 +123,10 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
                     var elementMembers = elementType.GetMembers();
-                    foreach (var method in elementMembers.Methods.Having<ActionAttribute>())
+                    foreach (var method in elementMembers.Methods.Having<UiAction>())
                     {
-                        if (method.Get<ActionAttribute>().HideInLists) { continue; }
-                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.Get<UiAction>().HideInLists) { continue; }
+                        if (method.Has<Initializer>()) { continue; }
                         if (method.GetAction().Method == HttpMethod.Get) { continue; }
 
                         var component = method.GenerateComponent(cc.Drill(method.Name));

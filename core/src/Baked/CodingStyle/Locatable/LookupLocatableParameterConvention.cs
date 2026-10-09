@@ -10,7 +10,7 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
     public void Apply(ParameterModelContext context)
     {
         if (!context.Parameter.ParameterType.TryGetMembers(out var parameterTypeMembers)) { return; }
-        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ApiParameter>(out var parameter)) { return; }
         if (!parameterTypeMembers.TryGetIdInfo(out var idInfo)) { return; }
         if (!parameterTypeMembers.TryGet<LocatableAttribute>(out var locatable)) { return; }
 
@@ -18,8 +18,8 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
         // default overload has zero parameters
         if (!context.Method.DefaultOverload.Parameters.Any()) { return; }
 
-        ParameterModelAttribute? locatorServiceParameter = null;
-        if (context.Method.TryGet<ActionModelAttribute>(out var action))
+        ApiParameter? locatorServiceParameter = null;
+        if (context.Method.TryGet<ApiAction>(out var action))
         {
             if (parameter.FromBodyOrForm && !action.UseForm) { return; }
 
@@ -30,10 +30,10 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
                 action.MakeAsync();
             }
         }
-        else if (context.Method.Has<InitializerAttribute>())
+        else if (context.Method.Has<Initializer>())
         {
             // parameter belongs to an initializer, add service to all actions
-            foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.Get<ActionModelAttribute>()))
+            foreach (var otherAction in context.Type.Methods.Having<ApiAction>().Select(m => m.Get<ApiAction>()))
             {
                 locatorServiceParameter = locatable.AddLocatorAsService(otherAction, context.Parameter.ParameterType);
                 if (locatable.IsAsync)

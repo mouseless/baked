@@ -13,7 +13,7 @@ namespace Baked.Test.Domain;
 
 public class BuildingAttributeExportSets : TestSpec
 {
-    public class NotExistingAttribute : Attribute;
+    public class NotExisting : Attribute;
 
     AttributeProperties _builders = default!;
 
@@ -78,12 +78,12 @@ public class BuildingAttributeExportSets : TestSpec
     public void Adds_attribute_to_all_filters_when_usage_is_null()
     {
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<CustomAttribute>();
+        attributeExport.Include<Custom>();
 
-        attributeExport.Type.ShouldContain<CustomAttribute>();
-        attributeExport.Method.ShouldContain<CustomAttribute>();
-        attributeExport.Parameter.ShouldContain<CustomAttribute>();
-        attributeExport.Property.ShouldContain<CustomAttribute>();
+        attributeExport.Type.ShouldContain<Custom>();
+        attributeExport.Method.ShouldContain<Custom>();
+        attributeExport.Parameter.ShouldContain<Custom>();
+        attributeExport.Property.ShouldContain<Custom>();
     }
 
     [Test]
@@ -205,7 +205,7 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<NotExistingAttribute>();
+        attributeExport.Include<NotExisting>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -218,8 +218,8 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<ControllerModelAttribute>();
-        attributeExport.Include<ActionModelAttribute>();
+        attributeExport.Include<ApiController>();
+        attributeExport.Include<ApiAction>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -240,9 +240,9 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<ControllerModelAttribute>();
-        attributeExport.Include<ActionModelAttribute>();
-        attributeExport.Include<ParameterModelAttribute>();
+        attributeExport.Include<ApiController>();
+        attributeExport.Include<ApiAction>();
+        attributeExport.Include<ApiParameter>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -251,7 +251,7 @@ public class BuildingAttributeExportSets : TestSpec
         var method = typeExport.Methods.First(m => m.Name == "With");
         method.Parameters.ShouldNotBeNull();
         method.Parameters.Count.ShouldBe(4);
-        method.Parameters[0].Attributes.ShouldContain(a => a.Type == nameof(ParameterModelAttribute));
+        method.Parameters[0].Attributes.ShouldContain(a => a.Type == nameof(ApiParameter));
     }
 
     [Test]
@@ -259,8 +259,8 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<ControllerModelAttribute>();
-        attributeExport.Include<InitializerAttribute>();
+        attributeExport.Include<ApiController>();
+        attributeExport.Include<Initializer>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -276,7 +276,7 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<ControllerModelAttribute>();
+        attributeExport.Include<ApiController>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -291,7 +291,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<TransientAttribute>();
-        attributeExport.Include<InitializerAttribute>();
+        attributeExport.Include<Initializer>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);

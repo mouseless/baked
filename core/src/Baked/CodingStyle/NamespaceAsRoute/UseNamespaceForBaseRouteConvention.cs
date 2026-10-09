@@ -8,7 +8,7 @@ public class UseNamespaceForBaseRouteConvention : IDomainModelConvention<TypeMod
     public void Apply(TypeModelMetadataContext context)
     {
         if (!context.Type.TryGetNamespace(out var @namespace)) { return; }
-        if (!context.Type.TryGet<ControllerModelAttribute>(out var controller)) { return; }
+        if (!context.Type.TryGet<ApiController>(out var controller)) { return; }
 
         var baseRoute = @namespace.Split(".");
         foreach (var action in controller.Actions)

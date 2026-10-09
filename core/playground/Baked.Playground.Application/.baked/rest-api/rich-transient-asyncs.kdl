@@ -1,15 +1,15 @@
-rich-transient-async @controller-model {
+rich-transient-async @api-controller {
   with {
-    @action-model route="GET /rich-transient-asyncs/{id}" required-claims="BaseA, BaseB"
+    @api-action route="GET /rich-transient-asyncs/{id}" required-claims="BaseA, BaseB"
     id {
-      @parameter-model required=#true in="route"
+      @api-parameter required=#true in="route"
     }
   }
 }
 
-rich-transient-async-extension @controller-model {
+rich-transient-async-extension @api-controller {
   from-extension {
-    @action-model route="POST /rich-transient-asyncs/{id}/from-extension" required-claims="BaseA, BaseB"
+    @api-action route="POST /rich-transient-asyncs/{id}/from-extension" required-claims="BaseA, BaseB"
   }
 }
 

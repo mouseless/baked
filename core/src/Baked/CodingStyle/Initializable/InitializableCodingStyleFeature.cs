@@ -27,7 +27,7 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
 
             conventions.SetMethodAttribute(
                 when: c => _initializerNames.Contains(c.Method.Name),
-                attribute: () => new InitializerAttribute(),
+                attribute: () => new Initializer(),
                 order: Order.At.Infra
             );
 
