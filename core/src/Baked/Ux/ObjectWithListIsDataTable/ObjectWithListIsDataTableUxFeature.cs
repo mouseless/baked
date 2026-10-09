@@ -5,8 +5,6 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainComponents;
-
 using B = Baked.Ui.Components;
 
 namespace Baked.Ux.ObjectWithListIsDataTable;
@@ -50,7 +48,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
+                where: cc => cc.Path.EndsWith("data-panel", "content"),
                 component: () => B.DataTable()
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
@@ -107,8 +105,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.TryGetMembers(out var elementMembers) &&
                     elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: () => ActionsDataTableColumn()
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
+                schema: () => B.DataTableColumn()
             );
             conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c =>
@@ -118,7 +116,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.HasMembers(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: (col, c, cc) =>
                 {
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
@@ -169,7 +167,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             );
 
             conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.FooterTemplate)),
+                where: cc => cc.Path.Contains("data-table", "footer-template"),
                 schema: dtc =>
                 {
                     dtc.Title = null;

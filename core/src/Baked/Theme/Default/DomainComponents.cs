@@ -9,41 +9,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
-        Action<DataTable.Column>? options = default
-    )
-    {
-        context = context.Drill(property.Name);
-
-        if (!property.TryGet<DataAttribute>(out var data))
-        {
-            data = new(property.Name.Camelize());
-        }
-
-        return B.DataTableColumn(data.Prop,
-            options: dtc =>
-            {
-                dtc.Component = property.GenerateRequiredComponent(context.Drill(nameof(DataTable.Column.Component)));
-
-                options.Apply(dtc);
-            }
-        );
-    }
-
-    public static DataTable.Column ActionsDataTableColumn(
-        Action<DataTable.Column>? options = default
-    )
-    {
-        return B.DataTableColumn(nameof(DataTable.Actions),
-            options: dtc =>
-            {
-                dtc.Component = B.Composite();
-
-                options.Apply(dtc);
-            }
-        );
-    }
-
     public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
         Action<Button>? options = default
     )

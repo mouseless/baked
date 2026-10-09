@@ -3,8 +3,6 @@ using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
-
 using B = Baked.Ui.Components;
 
 namespace Baked.Ux.ListIsDataTable;
@@ -27,12 +25,12 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                     elementType.HasMembers(),
                 component: (dt, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(DataTable));
+                    cc = cc.Drill("data-table");
 
                     var members = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();
                     foreach (var property in members.Properties.GetDataProperties())
                     {
-                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill("columns"));
                         if (column is null) { continue; }
 
                         dt.Schema.Columns.Add(column);
@@ -51,15 +49,15 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
                     elementType.TryGetMembers(out var elementMembers) &&
                     elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: () => ActionsDataTableColumn()
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
+                schema: () => B.DataTableColumn()
             );
             conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var itemType) &&
                     itemType.HasMembers(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: (col, c, cc) =>
                 {
                     var itemMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();

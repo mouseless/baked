@@ -139,11 +139,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 order: Order.At.Infra - 10
             );
+
             conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
                 attribute: data => data.Visible = false,
                 order: Order.At.Infra
             );
+
             conventions.AddPropertyComponent(
                 when: c =>
                     c.Property.PropertyType.Is<string>() ||
@@ -157,29 +159,45 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: () => B.Text(),
                 order: Order.At.Min
             );
+
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<Uri>(),
                 component: () => B.TextLink(),
                 order: Order.At.Min
             );
+
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<bool>(),
                 component: () => B.Check(),
                 order: Order.At.Min
             );
+
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
                 component: () => B.Date(options: td => td.Format = "dd-MM-yyyy"),
                 order: Order.At.Min
             );
+
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
                 component: () => B.Date(options: td => td.Format = "dd-MM-yyyy HH:mm:ss"),
                 order: Order.At.Min
             );
 
+            // configures data table column for property
+            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+                when: c => c.Property.Has<DataAttribute>(),
+                schema: (dtc, c, cc) =>
+                {
+                    dtc.Key = c.Property.DataProp;
+                    dtc.Component = c.Property.GenerateRequiredComponent(cc.Drill(dtc.Key, "component"));
+                },
+                order: Order.At.Min
+            );
+
             // Method Defaults
 
+            // adds remote data to method
             conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method)
             );
@@ -188,10 +206,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: rd => rd.Params = Computed.UseRoute("params")
             );
 
+            // adds remote action to method
             conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionAttribute>(),
                 schema: c => DomainActions.MethodRemote(c.Method)
             );
+
+            // configures request body for methods with parameters
             conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
                 schema: ra => ra.Body = Context.Model()
@@ -287,6 +308,17 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
+            // configures actions data table column for method
+            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
+                schema: dtc =>
+                {
+                    dtc.Key = "actions";
+                    dtc.Component = B.Composite();
+                },
+                order: Order.At.Min
+            );
+
             // configures data table export defaults for method
             conventions.AddMethodSchemaConfiguration<DataTable.Export>(
                 schema: (dte, c, cc) =>
@@ -332,6 +364,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     }
                 }
             );
+
+            // configures form page defaults for method
             conventions.AddMethodComponentConfiguration<FormPage>(
                 component: (fp, c, cc) =>
                 {
@@ -352,7 +386,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                         section.InputGroups.Add(inputGroup);
                     }
-                }
+                },
+                order: Order.At.Min
             );
 
             // Parameter defaults

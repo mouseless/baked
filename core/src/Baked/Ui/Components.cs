@@ -34,9 +34,9 @@ public static class Components
         Action<DataTable>? options = default
     ) => new(options.Apply(new()));
 
-    public static DataTable.Column DataTableColumn(string key,
+    public static DataTable.Column DataTableColumn(
         Action<DataTable.Column>? options = default
-    ) => options.Apply(new(key));
+    ) => options.Apply(new());
 
     public static DataTable.Export DataTableExport(
         Action<DataTable.Export>? options = default

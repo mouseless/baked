@@ -45,7 +45,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test title"));
+            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc => dtc.Title = "test title"));
         }
 
         _messages.Count.ShouldBe(2);
@@ -126,7 +126,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn("test-key"));
+            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc => dtc.Key = "test-key"));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("""
@@ -163,7 +163,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            var dtc = _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(GiveMe.AString(), options: t => t.Title = "test title"));
+            var dtc = _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: t => t.Title = "test title"));
 
             dtc.Title.ShouldBe("test title");
         }
@@ -180,7 +180,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            var dtc = _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(key: GiveMe.AString(), options: dtc => dtc.Title = "1"));
+            var dtc = _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc => dtc.Title = "1"));
 
             _trace.CaptureDescriptor(c, cc, dtc, () => dtc.Title = "2");
         }
@@ -341,7 +341,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test"));
+            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc => dtc.Title = "test"));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("<DataTable.Column>"));

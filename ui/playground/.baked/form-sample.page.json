@@ -262,7 +262,7 @@
                   "parameterFormatter": "useLocaleParameterFormatter"
                 },
                 "actions": {
-                  "key": "Actions",
+                  "key": "actions",
                   "component": {
                     "type": "Composite",
                     "schema": {
@@ -856,7 +856,7 @@
                       "parameterFormatter": "useLocaleParameterFormatter"
                     },
                     "actions": {
-                      "key": "Actions",
+                      "key": "actions",
                       "component": {
                         "type": "Composite",
                         "schema": {

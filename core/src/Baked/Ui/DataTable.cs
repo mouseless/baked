@@ -1,4 +1,6 @@
-﻿namespace Baked.Ui;
+﻿using B = Baked.Ui.Components;
+
+namespace Baked.Ui;
 
 public record DataTable : IComponentSchema
 {
@@ -15,11 +17,10 @@ public record DataTable : IComponentSchema
     public Column? Actions { get; set; }
     public string? DataLengthContextKey { get; set; }
 
-    public record Column(string Key)
-        : IOrderableSchema
+    public record Column : IOrderableSchema
     {
-        public string Key { get; set; } = Key;
-        public IComponentDescriptor Component { get; set; } = Components.Text();
+        public string Key { get; set; } = string.Empty;
+        public IComponentDescriptor Component { get; set; } = B.MissingComponent();
         public string? Title { get; set; }
         public bool? AlignRight { get; set; }
         public bool? MinWidth { get; set; }
