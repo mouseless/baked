@@ -4,7 +4,6 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
@@ -33,11 +32,11 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                         c.Method.GetAction().Method == HttpMethod.Delete
                     ),
                 where: cc => cc.Path.EndsWith("actions", "*"),
-                component: (c, cc) => MethodSimpleForm(c.Method, cc)
+                component: (c, cc) => B.SimpleForm()
             );
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("actions", "*", "simple-form", "dialog-options"),
-                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
+                schema: (c, cc) => B.SimpleFormDialog()
             );
             conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
                 when: c => !c.Method.DefaultOverload.Parameters.Any(),

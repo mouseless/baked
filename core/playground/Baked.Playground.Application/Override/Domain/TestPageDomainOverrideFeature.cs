@@ -4,8 +4,6 @@ using Baked.Playground.Theme;
 using Baked.Theme;
 using Baked.Ui;
 
-using static Baked.Playground.Theme.Custom.DomainComponents;
-
 using B = Baked.Ui.Components;
 
 namespace Baked.Playground.Override.Domain;
@@ -67,7 +65,7 @@ public class TestPageDomainOverrideFeature : IFeature
             conventions.AddMethodComponent(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 where: cc => cc.Path.EndsWith("component"),
-                component: (c, cc) => MethodText(c.Method, cc),
+                component: (c, cc) => B.Text(),
                 order: Order.At.Override
             );
             conventions.AddMethodComponentConfiguration<Text>(

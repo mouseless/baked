@@ -201,9 +201,8 @@ public static class Components
     ) => options.Apply(new(type));
 
     public static ComponentDescriptor<Money> Money(
-        Action<Money>? options = default,
-        IData? data = default
-    ) => new(options.Apply(new())) { Data = data };
+        Action<Money>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<MultiSelect> MultiSelect(
         Action<MultiSelect>? options = default
@@ -218,9 +217,8 @@ public static class Components
     ) => new(options.Apply(new(path)));
 
     public static ComponentDescriptor<Number> Number(
-        Action<Number>? options = default,
-        IData? data = default
-    ) => new(options.Apply(new())) { Data = data };
+        Action<Number>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<PageSize> PageSize(
         Action<PageSize>? options = default
@@ -235,9 +233,8 @@ public static class Components
     ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<Rate> Rate(
-        Action<Rate>? options = default,
-        IData? data = default
-    ) => new(options.Apply(new())) { Data = data };
+        Action<Rate>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<Select> Select(
         Action<Select>? options = default
@@ -256,14 +253,13 @@ public static class Components
         Action<SideMenu.Item>? options = default
     ) => options.Apply(new(route, icon));
 
-    public static ComponentDescriptor<SimpleForm> SimpleForm(string title, Button submit,
-        Action<SimpleForm>? options = default,
-        IAction? action = default
-    ) => new(options.Apply(new(title, submit))) { Action = action };
+    public static ComponentDescriptor<SimpleForm> SimpleForm(
+        Action<SimpleForm>? options = default
+    ) => new(options.Apply(new()));
 
-    public static SimpleForm.Dialog SimpleFormDialog(Button open, Button cancel,
+    public static SimpleForm.Dialog SimpleFormDialog(
         Action<SimpleForm.Dialog>? options = default
-    ) => options.Apply(new(open, cancel));
+    ) => options.Apply(new());
 
     public static ComponentDescriptor<SimplePage> SimplePage(string path,
         Action<SimplePage>? options = default
@@ -278,16 +274,14 @@ public static class Components
     ) => new(options.Apply(new(path)));
 
     public static ComponentDescriptor<Text> Text(
-        Action<Text>? options = default,
-        IData? data = default
-    ) => new(options.Apply(new())) { Data = data };
+        Action<Text>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<Textarea> Textarea(
         Action<Textarea>? options = default
     ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<TextLink> TextLink(
-        Action<TextLink>? options = default,
-        IData? data = default
-    ) => new(options.Apply(new())) { Data = data };
+        Action<TextLink>? options = default
+    ) => new(options.Apply(new()));
 }

@@ -1,9 +1,9 @@
 namespace Baked.Ui;
 
-public record SimpleForm(string Title, Button Submit) : IComponentSchema
+public record SimpleForm : IComponentSchema
 {
-    public string Title { get; set; } = Title;
-    public Button Submit { get; set; } = Submit;
+    public string Title { get; set; } = string.Empty;
+    public Button Submit { get; set; } = new();
     public List<Input> Inputs { get; init; } = [];
     public bool? Horizontal { get; set; }
     public Dialog? DialogOptions { get; set; }
@@ -11,10 +11,10 @@ public record SimpleForm(string Title, Button Submit) : IComponentSchema
     public bool? ShowValidationSummary { get; set; }
     public bool? AlwaysShowTitle { get; set; }
 
-    public record Dialog(Button Open, Button Cancel)
+    public record Dialog
     {
-        public Button Open { get; set; } = Open;
-        public Button Cancel { get; set; } = Cancel;
+        public Button Open { get; set; } = new();
+        public Button Cancel { get; set; } = new();
         public string? Message { get; set; }
     }
 }

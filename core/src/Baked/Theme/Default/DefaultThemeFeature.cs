@@ -6,7 +6,6 @@ using Baked.RestApi.Model;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
 
@@ -363,20 +362,36 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Method.TryGet<ActionModelAttribute>(out var action) &&
                     action.Method != HttpMethod.Get,
                 where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
-                component: (c, cc) => MethodSimpleForm(c.Method, cc)
+                component: (c, cc) => B.SimpleForm()
             );
             conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
-                    cc = cc.Drill("simple-form", "inputs");
+                    cc = cc.Drill("simple-form");
+                    var (_, l) = cc;
+
+                    sf.Action = c.Method.GenerateSchema<RemoteAction>(cc.Drill("action"));
+                    sf.Schema.Title = l(c.Method.Name.Titleize());
+                    sf.Schema.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
+                    sf.Schema.DialogOptions = c.Method.GenerateSchema<SimpleForm.Dialog>(cc.Drill("dialog-options"));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        var input = parameter.GenerateSchema<Input>(cc);
+                        var input = parameter.GenerateSchema<Input>(cc.Drill("inputs"));
                         if (input is null) { continue; }
 
                         sf.Schema.Inputs.Add(input);
                     }
+                },
+                order: Order.At.Min
+            );
+
+            // configures simple form dialog
+            conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
+                schema: (sfd, c, cc) =>
+                {
+                    sfd.Cancel = c.Method.GenerateRequiredComponent<Button>(cc.Drill("cancel")).Schema;
+                    sfd.Open = c.Method.GenerateRequiredComponent<Button>(cc.Drill("open")).Schema;
                 },
                 order: Order.At.Min
             );

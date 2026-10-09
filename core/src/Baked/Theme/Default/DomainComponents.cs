@@ -9,36 +9,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<SimpleForm> MethodSimpleForm(MethodModel method, ComponentContext context,
-        Action<SimpleForm>? options = default
-    )
-    {
-        context = context.Drill(nameof(SimpleForm));
-        var (_, l) = context;
-
-        var submit = method.GenerateRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Submit))).Schema;
-
-        return B.SimpleForm(l(method.Name.Titleize()), submit,
-            action: method.GenerateSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
-            options: sf =>
-            {
-                sf.DialogOptions = method.GenerateSchema<SimpleForm.Dialog>(context.Drill(nameof(SimpleForm.DialogOptions)));
-
-                options.Apply(sf);
-            }
-        );
-    }
-
-    public static SimpleForm.Dialog MethodSimpleFormDialog(MethodModel method, ComponentContext context,
-        Action<SimpleForm.Dialog>? options = default
-    )
-    {
-        var cancel = method.GenerateRequiredComponent<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Cancel))).Schema;
-        var open = method.GenerateRequiredComponent<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Open))).Schema;
-
-        return B.SimpleFormDialog(open, cancel, options: options);
-    }
-
     public static ComponentDescriptor<Fieldset> TypeFieldset(TypeModelMembers type, ComponentContext context,
         Action<Fieldset>? options = default
     ) => TypeFieldset<RemoteData>(type, context, options: options);
