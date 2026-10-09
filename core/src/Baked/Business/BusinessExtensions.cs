@@ -419,116 +419,116 @@ public static class BusinessExtensions
         ) where TAttribute : Attribute =>
             conventions.Add(new RemoveAttributeConvention<ParameterModelContext, TAttribute>((context, remove) => remove(context.Parameter), when, beforeBuildingIndexes: beforeBuildingIndexes), order.BusinessDefault.Add);
 
-        public void AddTypeAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
+        public void EditTypeAttribute<TAttribute>(Action<TAttribute> attribute,
             Func<TypeModelMetadataContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddTypeAttributeConfiguration<TAttribute>((a, _) => attribute(a), when: when, order: order);
+            conventions.EditTypeAttribute<TAttribute>((a, _) => attribute(a), when: when, order: order);
 
-        public void AddTypeAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
+        public void EditTypeAttribute<TAttribute>(Action<TAttribute> attribute,
             Func<TypeModelMetadataContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddTypeAttributeConfiguration((a, _) => attribute(a), when: when, order: order);
+            conventions.EditTypeAttribute((a, _) => attribute(a), when: when, order: order);
 
-        public void AddTypeAttributeConfiguration<TAttribute>(Action<TAttribute, TypeModelMetadataContext> attribute,
+        public void EditTypeAttribute<TAttribute>(Action<TAttribute, TypeModelMetadataContext> attribute,
             Func<TypeModelMetadataContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddTypeAttributeConfiguration(attribute, when: (c, _) => when(c), order: order);
+            conventions.EditTypeAttribute(attribute, when: (c, _) => when(c), order: order);
 
-        public void AddTypeAttributeConfiguration<TAttribute>(Action<TAttribute, TypeModelMetadataContext> attribute,
+        public void EditTypeAttribute<TAttribute>(Action<TAttribute, TypeModelMetadataContext> attribute,
             Func<TypeModelMetadataContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute
         {
             order = order.BusinessDefault.Configure;
 
-            conventions.Add(new TypeAttributeConfigurationConvention<TAttribute>(attribute, order, when: when), order: order);
+            conventions.Add(new EditTypeAttributeConvention<TAttribute>(attribute, order, when: when), order: order);
         }
 
-        public void AddPropertyAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
+        public void EditPropertyAttribute<TAttribute>(Action<TAttribute> attribute,
             Func<PropertyModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddPropertyAttributeConfiguration<TAttribute>((a, _) => attribute(a), when: when, order: order);
+            conventions.EditPropertyAttribute<TAttribute>((a, _) => attribute(a), when: when, order: order);
 
-        public void AddPropertyAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
+        public void EditPropertyAttribute<TAttribute>(Action<TAttribute> attribute,
             Func<PropertyModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddPropertyAttributeConfiguration((a, _) => attribute(a), when: when, order: order);
+            conventions.EditPropertyAttribute((a, _) => attribute(a), when: when, order: order);
 
-        public void AddPropertyAttributeConfiguration<TAttribute>(Action<TAttribute, PropertyModelContext> attribute,
+        public void EditPropertyAttribute<TAttribute>(Action<TAttribute, PropertyModelContext> attribute,
             Func<PropertyModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddPropertyAttributeConfiguration(attribute, when: (c, _) => when(c), order: order);
+            conventions.EditPropertyAttribute(attribute, when: (c, _) => when(c), order: order);
 
-        public void AddPropertyAttributeConfiguration<TAttribute>(Action<TAttribute, PropertyModelContext> attribute,
+        public void EditPropertyAttribute<TAttribute>(Action<TAttribute, PropertyModelContext> attribute,
             Func<PropertyModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute
         {
             order = order.BusinessDefault.Configure;
 
-            conventions.Add(new PropertyAttributeConfigurationConvention<TAttribute>(attribute, order, when: when), order: order);
+            conventions.Add(new EditPropertyAttributeConvention<TAttribute>(attribute, order, when: when), order: order);
         }
 
-        public void AddMethodAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
+        public void EditMethodAttribute<TAttribute>(Action<TAttribute> attribute,
             Func<MethodModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddMethodAttributeConfiguration<TAttribute>((a, _) => attribute(a), when: when, order: order);
+            conventions.EditMethodAttribute<TAttribute>((a, _) => attribute(a), when: when, order: order);
 
-        public void AddMethodAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
+        public void EditMethodAttribute<TAttribute>(Action<TAttribute> attribute,
             Func<MethodModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddMethodAttributeConfiguration((a, _) => attribute(a), when: when, order: order);
+            conventions.EditMethodAttribute((a, _) => attribute(a), when: when, order: order);
 
-        public void AddMethodAttributeConfiguration<TAttribute>(Action<TAttribute, MethodModelContext> attribute,
+        public void EditMethodAttribute<TAttribute>(Action<TAttribute, MethodModelContext> attribute,
             Func<MethodModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddMethodAttributeConfiguration(attribute, when: (c, _) => when(c), order: order);
+            conventions.EditMethodAttribute(attribute, when: (c, _) => when(c), order: order);
 
-        public void AddMethodAttributeConfiguration<TAttribute>(Action<TAttribute, MethodModelContext> attribute,
+        public void EditMethodAttribute<TAttribute>(Action<TAttribute, MethodModelContext> attribute,
             Func<MethodModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute
         {
             order = order.BusinessDefault.Configure;
 
-            conventions.Add(new MethodAttributeConfigurationConvention<TAttribute>(attribute, order, when: when), order: order);
+            conventions.Add(new EditMethodAttributeConvention<TAttribute>(attribute, order, when: when), order: order);
         }
 
-        public void AddParameterAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
+        public void EditParameterAttribute<TAttribute>(Action<TAttribute> attribute,
             Func<ParameterModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddParameterAttributeConfiguration<TAttribute>((a, _) => attribute(a), when: when, order: order);
+            conventions.EditParameterAttribute<TAttribute>((a, _) => attribute(a), when: when, order: order);
 
-        public void AddParameterAttributeConfiguration<TAttribute>(Action<TAttribute> attribute,
+        public void EditParameterAttribute<TAttribute>(Action<TAttribute> attribute,
             Func<ParameterModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddParameterAttributeConfiguration((a, _) => attribute(a), when: when, order: order);
+            conventions.EditParameterAttribute((a, _) => attribute(a), when: when, order: order);
 
-        public void AddParameterAttributeConfiguration<TAttribute>(Action<TAttribute, ParameterModelContext> attribute,
+        public void EditParameterAttribute<TAttribute>(Action<TAttribute, ParameterModelContext> attribute,
             Func<ParameterModelContext, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
             Order order = default
         ) where TAttribute : Attribute =>
-            conventions.AddParameterAttributeConfiguration(attribute, when: (c, _) => when(c), order: order);
+            conventions.EditParameterAttribute(attribute, when: (c, _) => when(c), order: order);
 
-        public void AddParameterAttributeConfiguration<TAttribute>(Action<TAttribute, ParameterModelContext> attribute,
+        public void EditParameterAttribute<TAttribute>(Action<TAttribute, ParameterModelContext> attribute,
             Func<ParameterModelContext, TAttribute, bool>? when = default,
             Order order = default
         ) where TAttribute : Attribute
         {
             order = order.BusinessDefault.Configure;
 
-            conventions.Add(new ParameterAttributeConfigurationConvention<TAttribute>(attribute, order, when: when), order: order);
+            conventions.Add(new EditParameterAttributeConvention<TAttribute>(attribute, order, when: when), order: order);
         }
     }
 

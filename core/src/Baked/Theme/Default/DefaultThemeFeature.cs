@@ -37,7 +37,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // TYPES
 
             // configures page route params for types with dynamic page route
-            conventions.AddTypeAttributeConfiguration<RouteAttribute>(
+            conventions.EditTypeAttribute<RouteAttribute>(
                 when: (c, r) =>
                     r.Path.Contains("[id]") &&
                     c.Type.TryGetMembers(out var members) &&
@@ -56,7 +56,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is("page", "*"),
                 component: (_, cc) => B.SimplePage(cc.Route.Path)
             );
-            conventions.AddTypeComponentConfiguration<SimplePage>(
+            conventions.EditTypeComponent<SimplePage>(
                 component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("simple-page", "title")),
                 order: Order.At.Min
             );
@@ -66,11 +66,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is("page", "*"),
                 component: (_, cc) => B.TabbedPage(cc.Route.Path)
             );
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("tabbed-page", "title")),
                 order: Order.At.Min
             );
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                component: (tp, c, cc) =>
                {
                    if (tp.Schema.Tabs.Count <= 1) { return; }
@@ -90,7 +90,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith("tabs", "*"),
                 schema: () => B.Tab()
             );
-            conventions.AddTypeSchemaConfiguration<Tab>(
+            conventions.EditTypeSchema<Tab>(
                 where: cc => cc.Path.EndsWith("tabs", "*"),
                 schema: (t, c, cc) =>
                 {
@@ -101,7 +101,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures content defaults of type
-            conventions.AddTypeSchemaConfiguration<Content>(
+            conventions.EditTypeSchema<Content>(
                 where: cc => cc.Path.EndsWith("contents", "*", "*"),
                 schema: (cn, c, cc) =>
                 {
@@ -122,7 +122,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is("page", "*", "*-page", "title"),
                 component: () => B.PageTitle()
             );
-            conventions.AddTypeComponentConfiguration<PageTitle>(
+            conventions.EditTypeComponent<PageTitle>(
                 component: (pt, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -133,13 +133,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 },
                 order: Order.At.Min
             );
-            conventions.AddTypeComponentConfiguration<PageTitle>(
+            conventions.EditTypeComponent<PageTitle>(
                 component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
                 order: Order.At.Global.Max
             );
 
             // adds action methods to page title actions
-            conventions.AddTypeComponentConfiguration<PageTitle>(
+            conventions.EditTypeComponent<PageTitle>(
                 component: (pt, c, cc) =>
                 {
                     foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
@@ -158,7 +158,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures field set defaults for type
-            conventions.AddTypeComponentConfiguration<Fieldset>(
+            conventions.EditTypeComponent<Fieldset>(
                 when: c => c.Type.HasMembers(),
                 component: (f, c, cc) =>
                 {
@@ -180,7 +180,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures navlink defaults for routed types
-            conventions.AddTypeComponentConfiguration<NavLink>(
+            conventions.EditTypeComponent<NavLink>(
                 component: (nl, c, cc) =>
                 {
                     if (!c.Type.TryGet<RouteAttribute>(out var route))
@@ -205,7 +205,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // hides id data properties
-            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+            conventions.EditPropertyAttribute<DataAttribute>(
                 when: c => c.Property.Has<IdAttribute>(),
                 attribute: data => data.Visible = false,
                 order: Order.At.Infra
@@ -262,7 +262,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures data table column for property
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 when: c => c.Property.Has<DataAttribute>(),
                 schema: (dtc, c, cc) =>
                 {
@@ -273,7 +273,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures field for property
-            conventions.AddPropertySchemaConfiguration<Field>(
+            conventions.EditPropertySchema<Field>(
                 schema: (f, c, cc) =>
                 {
                     cc = cc.Drill(c.Property.Name);
@@ -287,7 +287,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures dialog for property
-            conventions.AddPropertyComponentConfiguration<Dialog>(
+            conventions.EditPropertyComponent<Dialog>(
                 component: (d, c, cc) =>
                 {
                     cc = cc.Drill("dialog");
@@ -303,7 +303,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // METHODS
 
             // validates body nullability for GET, DELETE and TRACE remote actions
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+            conventions.EditMethodSchema<RemoteAction>(
                 schema: (ra, c) =>
                 {
                     var method = ra.Method?.ToUpperInvariant();
@@ -323,7 +323,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method)
             );
-            conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.EditMethodSchema<RemoteData>(
                 when: c => c.Type.Has<LocatableAttribute>(),
                 schema: rd => rd.Params = Computed.UseRoute("params")
             );
@@ -335,13 +335,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures request body for methods with parameters
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+            conventions.EditMethodSchema<RemoteAction>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
                 schema: ra => ra.Body = Context.Model()
             );
 
             // configure route params of actions of locatables on their own pages
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+            conventions.EditMethodSchema<RemoteAction>(
                 when: c => c.Type.Has<LocatableAttribute>(),
                 where: cc => cc.Path.StartsWith("page", "*", "*-page"),
                 schema: (ra, c, cc) =>
@@ -364,7 +364,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is("page", "*", "*"),
                 component: (_, cc) => B.FormPage(cc.Route.Path)
             );
-            conventions.AddMethodComponentConfiguration<FormPage>(
+            conventions.EditMethodComponent<FormPage>(
                 component: (fp, c, cc) =>
                 {
                     cc = cc.Drill("form-page");
@@ -381,7 +381,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is("page", "*", "*", "*-page", "title"),
                 component: () => B.PageTitle()
             );
-            conventions.AddMethodComponentConfiguration<PageTitle>(
+            conventions.EditMethodComponent<PageTitle>(
                 component: (pt, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -391,7 +391,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
                 }
             );
-            conventions.AddMethodComponentConfiguration<PageTitle>(
+            conventions.EditMethodComponent<PageTitle>(
                 component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
                 order: Order.At.Global.Max
             );
@@ -401,7 +401,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith("contents", "*"),
                 schema: () => B.Content()
             );
-            conventions.AddMethodSchemaConfiguration<Content>(
+            conventions.EditMethodSchema<Content>(
                 schema: (cn, c, cc) =>
                 {
                     cn.Key = c.Method.Name.Kebaberize();
@@ -411,7 +411,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures data panel defaults for method
-            conventions.AddMethodComponentConfiguration<DataPanel>(
+            conventions.EditMethodComponent<DataPanel>(
                 component: (dp, c, cc) =>
                 {
                     dp.Schema.Title = c.Method.GenerateRequiredSchema<InlineData>(cc.Drill("data-panel", "title"));
@@ -419,19 +419,19 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 },
                 order: Order.At.Min
             );
-            conventions.AddMethodComponentConfiguration<DataPanel>(
+            conventions.EditMethodComponent<DataPanel>(
                 component: dp => dp.Schema.LocalizeTitle ??= dp.Schema.Title.RequireLocalization,
                 order: Order.At.Global.Max
             );
 
             // configures data container defaults for method
-            conventions.AddMethodComponentConfiguration<DataContainer>(
+            conventions.EditMethodComponent<DataContainer>(
                 component: (dp, c, cc) => dp.Schema.Content = c.Method.GenerateRequiredComponent(cc.Drill("data-container", "content")),
                 order: Order.At.Min
             );
 
             // configures data table defaults for method
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 component: (dt, c, cc) =>
                 {
                     cc = cc.Drill("data-table");
@@ -452,7 +452,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures actions data table column for method
-            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+            conventions.EditMethodSchema<DataTable.Column>(
                 where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: dtc =>
                 {
@@ -463,7 +463,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures data table export defaults for method
-            conventions.AddMethodSchemaConfiguration<DataTable.Export>(
+            conventions.EditMethodSchema<DataTable.Export>(
                 schema: (dte, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -475,7 +475,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures data table footer defaults for method
-            conventions.AddMethodSchemaConfiguration<DataTable.Footer>(
+            conventions.EditMethodSchema<DataTable.Footer>(
                 schema: (dte, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -486,7 +486,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures button defaults for method
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 component: (b, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -509,7 +509,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
                 component: () => B.SimpleForm()
             );
-            conventions.AddMethodComponentConfiguration<SimpleForm>(
+            conventions.EditMethodComponent<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
                     cc = cc.Drill("simple-form");
@@ -532,7 +532,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures simple form dialog
-            conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
+            conventions.EditMethodSchema<SimpleForm.Dialog>(
                 schema: (sfd, c, cc) =>
                 {
                     sfd.Cancel = c.Method.GenerateRequiredComponent<Button>(cc.Drill("cancel")).Schema;
@@ -542,7 +542,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures form page defaults for method
-            conventions.AddMethodComponentConfiguration<FormPage>(
+            conventions.EditMethodComponent<FormPage>(
                 component: (fp, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -569,7 +569,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // PARAMETERS
 
             // configures input group key of parameters to their own name by default
-            conventions.AddParameterAttributeConfiguration<GroupAttribute>(
+            conventions.EditParameterAttribute<GroupAttribute>(
                 attribute: (group, c) => group.InputGroupKey = c.Parameter.Name
             );
 
@@ -578,7 +578,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: () => B.FormPageInputGroup()
             );
-            conventions.AddParameterSchemaConfiguration<FormPage.InputGroup>(
+            conventions.EditParameterSchema<FormPage.InputGroup>(
                 schema: (fpig, c, cc) =>
                 {
                     fpig.Key = c.Parameter.InputGroupKey;
@@ -594,7 +594,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: () => B.Input()
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (i, c, cc) =>
                 {
@@ -605,7 +605,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures input defaults for parameter
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 schema: (i, c, cc) =>
                 {
                     if (i.Component.Schema is not ILabeler labeler) { return; }
@@ -614,7 +614,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 },
                 order: Order.At.Min
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 schema: i =>
                 {
                     if (i.Component.Schema is not ILabeler labeler) { return; }
@@ -626,7 +626,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures number inputs as numeric
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<decimal>() ||
@@ -638,7 +638,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures default value for required inputs
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (p, c) =>
                 {
@@ -650,7 +650,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.AddParameterSchema(
                 schema: () => new Label()
             );
-            conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.EditParameterSchema<Label>(
                 where: cc =>
                     cc.Path.EndsWith("simple-form", "inputs", "*", "label") ||
                     cc.Path.EndsWith("form-page", "**", "inputs", "*", "label"),
@@ -695,7 +695,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: () => B.InputCheckbox(),
                 order: Order.At.Min
             );
-            conventions.AddParameterComponentConfiguration<InputCheckbox>(
+            conventions.EditParameterComponent<InputCheckbox>(
                 when: c =>
                     c.Parameter.ParameterType.Is<bool?>() && c.Parameter.Get<ParameterModelAttribute>().FromBodyOrForm,
                 component: ic => ic.Schema.Indeterminate = true
@@ -727,15 +727,15 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // `Select` defaults
-            conventions.AddParameterComponentConfiguration<Select>(
+            conventions.EditParameterComponent<Select>(
                 component: (s, c) => s.Schema.ShowClear = c.Parameter.IsNullable ? true : null
             );
 
             // `SelectButton` defaults
-            conventions.AddParameterComponentConfiguration<SelectButton>(
+            conventions.EditParameterComponent<SelectButton>(
                 component: (s, c) => s.Schema.AllowEmpty = c.Parameter.IsNullable ? true : null
             );
-            conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.EditParameterSchema<Label>(
                 where: cc => cc.Path.EndsWith("select-button", "label"),
                 schema: label =>
                 {
@@ -748,7 +748,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // configure select inputs to use inline, computed or remote data
             // from parameter or its parameter type if not configured already
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 schema: (i, c, cc) =>
                 {
                     if (i.Component.Schema is not ISelect select) { return; }
@@ -786,7 +786,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // make required select/select-button inputs in data panel to
             // select their first item automatically when they have no default
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c => !c.Parameter.IsNullable,
                 where: c => c.Path.EndsWith("data-panel", "inputs"),
                 schema: i =>

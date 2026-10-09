@@ -11,7 +11,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddTypeComponentConfiguration<SimplePage>(
+            conventions.EditTypeComponent<SimplePage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
@@ -32,7 +32,7 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                     }
                 }
             );
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),

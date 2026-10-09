@@ -17,12 +17,12 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Tabs
-            conventions.AddMethodAttributeConfiguration<GroupAttribute>(
+            conventions.EditMethodAttribute<GroupAttribute>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>(),
                 attribute: group => group.TabName = "single-value",
                 order: Order.At.Override
             );
-            conventions.AddMethodAttributeConfiguration<GroupAttribute>(
+            conventions.EditMethodAttribute<GroupAttribute>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnsList(),
                 attribute: group => group.TabName = "data-table",
                 order: Order.At.Override
@@ -41,7 +41,7 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
             );
 
             // Allowing admin token for report api
-            conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.EditMethodSchema<RemoteData>(
                 when: c => c.Type.Is<ReportPageSample>(),
                 schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
                 order: Order.At.Override
@@ -60,7 +60,7 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
             );
 
             // Page overrides
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 when: c => c.Type.Is<ReportPageSample>(),
                 component: tp =>
                 {

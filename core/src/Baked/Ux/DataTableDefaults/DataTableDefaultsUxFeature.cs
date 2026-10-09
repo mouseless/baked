@@ -17,7 +17,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 component: dt =>
                 {
                     dt.Schema.Rows = 5;
@@ -30,11 +30,11 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 when: c => c.Property.Has<DataAttribute>(),
                 schema: () => B.DataTableColumn()
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
                 schema: (dtc, c, cc) => dtc.Hidden = cc.Path.StartsWith("page", c.Property.PropertyType.Name) ? true : null
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 schema: (dtc, c, cc) =>
                 {
                     var (_, l) = cc;
@@ -44,7 +44,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     dtc.Exportable = true;
                 }
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 when: c => c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
                 schema: (dtc, c, cc) =>
                 {
@@ -57,7 +57,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{c.Property.DataProp}.{labelProperty.DataProp}");
                 }
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 schema: (dtc, c, cc) =>
                 {
                     var data = c.Property.Get<DataAttribute>();
@@ -76,14 +76,14 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
             );
 
             // Actions
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+            conventions.EditMethodSchema<RemoteAction>(
                 when: c => c.Method.Has<ActionAttribute>(),
                 where: cc => cc.Path.Contains("data-table", "actions"),
                 schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row"),
                 order: 10
             );
 
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 component: dt =>
                 {
                     if (dt.Schema.Actions is null) { return; }
@@ -100,7 +100,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 }
             );
 
-            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+            conventions.EditMethodSchema<DataTable.Column>(
                 where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: (col, c, cc) =>
                 {
@@ -111,14 +111,14 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
             );
 
             // `Button` defaults
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 where: cc =>
                     cc.Path.EndsWith("data-table", "actions", "*") ||
                     cc.Path.EndsWith("data-table", "actions", "**", "open"),
                 component: ButtonDefaults,
                 order: 10
             );
-            conventions.AddPropertyComponentConfiguration<Button>(
+            conventions.EditPropertyComponent<Button>(
                 where: cc => cc.Path.EndsWith("data-table", "columns", "**", "open"),
                 component: ButtonDefaults,
                 order: 10

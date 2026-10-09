@@ -17,7 +17,7 @@ public class ConcurrencyRateLimiterFeature(
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.EditMethodAttribute<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("""EnableRateLimiting("Concurrency")"""),
                 order: Order.At.Infra
             );

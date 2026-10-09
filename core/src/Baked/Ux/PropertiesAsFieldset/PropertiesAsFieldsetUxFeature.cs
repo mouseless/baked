@@ -16,7 +16,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddTypeComponentConfiguration<SimplePage>(
+            conventions.EditTypeComponent<SimplePage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
@@ -45,7 +45,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("fields", "component"),
                 component: () => B.Fieldset()
             );
-            conventions.AddTypeComponentConfiguration<Fieldset>(
+            conventions.EditTypeComponent<Fieldset>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
@@ -65,7 +65,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
             conventions.AddPropertySchema(
                 schema: () => B.Field()
             );
-            conventions.AddPropertySchemaConfiguration<Field>(
+            conventions.EditPropertySchema<Field>(
                 when: c =>
                     c.Property.Has<DataAttribute>() &&
                     c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
@@ -81,7 +81,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
                 }
             );
-            conventions.AddPropertySchemaConfiguration<Field>(
+            conventions.EditPropertySchema<Field>(
                 when: c => c.Property.Has<DataAttribute>(),
                 schema: (f, c) =>
                 {

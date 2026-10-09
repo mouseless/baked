@@ -18,7 +18,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("*-panel", "content") || cc.Path.EndsWith("*-container", "content"),
                 component: () => B.DataTable()
             );
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
@@ -52,7 +52,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: () => B.DataTableColumn()
             );
-            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+            conventions.EditMethodSchema<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var itemType) &&

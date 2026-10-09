@@ -15,7 +15,7 @@ public class CustomAttributeDomainOverrideFeature : IFeature
                 attribute: () => new CustomAttribute(),
                 order: Order.At.Override
             );
-            conventions.AddTypeAttributeConfiguration<CustomAttribute>(
+            conventions.EditTypeAttribute<CustomAttribute>(
                 when: c => c.Type.Is<Class>(),
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 order: Order.At.Override
@@ -28,7 +28,7 @@ public class CustomAttributeDomainOverrideFeature : IFeature
                     order: Order.At.Override,
                 attribute: () => new CustomAttribute()
             );
-            conventions.AddPropertyAttributeConfiguration<CustomAttribute>(
+            conventions.EditPropertyAttribute<CustomAttribute>(
                 when: c =>
                     c.Type.Is<Record>() &&
                     c.Property.Name is nameof(Record.Text),
@@ -43,7 +43,7 @@ public class CustomAttributeDomainOverrideFeature : IFeature
                     order: Order.At.Override,
                 attribute: () => new CustomAttribute()
             );
-            conventions.AddMethodAttributeConfiguration<CustomAttribute>(
+            conventions.EditMethodAttribute<CustomAttribute>(
                 when: c =>
                     c.Type.Is<Class>() &&
                     c.Method.Name is nameof(Class.Method),
@@ -59,7 +59,7 @@ public class CustomAttributeDomainOverrideFeature : IFeature
                     order: Order.At.Override,
                 attribute: () => new CustomAttribute()
             );
-            conventions.AddParameterAttributeConfiguration<CustomAttribute>(
+            conventions.EditParameterAttribute<CustomAttribute>(
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name is nameof(MethodSamples.PrimitiveParameters) &&

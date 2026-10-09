@@ -28,12 +28,12 @@ public class QueryMethodCodingStyleFeature(
                 attribute: () => new QueryMethodAttribute(),
                 order: Order.At.Infra + 40
             );
-            conventions.AddMethodAttributeConfiguration<QueryMethodAttribute>(
+            conventions.EditMethodAttribute<QueryMethodAttribute>(
                 when: c => c.Method.DefaultOverload.Parameters.All(p => p.IsOptional),
                 attribute: qm => qm.AllParametersAreOptional = true,
                 order: Order.At.Infra
             );
-            conventions.AddMethodAttributeConfiguration<QueryMethodAttribute>(
+            conventions.EditMethodAttribute<QueryMethodAttribute>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(p => _primaryParameterNames.Contains(p.Name)),
                 attribute: (qm, c) =>
                 {

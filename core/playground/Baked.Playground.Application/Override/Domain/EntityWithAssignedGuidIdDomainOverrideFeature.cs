@@ -11,7 +11,7 @@ public class EntityWithAssignedGuidIdDomainOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+            conventions.EditPropertyAttribute<IdAttribute>(
                 when: c => c.Type.Is<EntityWithAssignedGuidId>(),
                 attribute: id => id.AssignedGuid(),
                 order: Order.At.Override

@@ -10,7 +10,7 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.EditParameterSchema<Label>(
                 where: cc =>
                     cc.Path.EndsWith("simple-form", "inputs", "*", "label") ||
                     cc.Path.EndsWith("form-page", "**", "inputs", "*", "label"),

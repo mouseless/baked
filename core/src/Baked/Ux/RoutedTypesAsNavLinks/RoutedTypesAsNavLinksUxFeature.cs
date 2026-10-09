@@ -30,7 +30,7 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
             );
 
             // configures navlink in data table to use route params from row data
-            conventions.AddPropertyComponentConfiguration<NavLink>(
+            conventions.EditPropertyComponent<NavLink>(
                 when: c => c.Type.Has<RouteAttribute>(),
                 where: cc => cc.Path.EndsWith("data-table", "columns", "*", "component"),
                 component: (link, c) =>

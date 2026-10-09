@@ -51,7 +51,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
 
             // Default value of a required enum parameter is set to the first enum
             // member (camelCase) when it is in query or route
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.Has<RequiredAttribute>() &&
@@ -62,7 +62,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
             );
 
             // Map option label and value for enum data
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
                 schema: i =>
                 {
@@ -74,7 +74,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
             );
 
             // Use localize option labels for flags enum
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),

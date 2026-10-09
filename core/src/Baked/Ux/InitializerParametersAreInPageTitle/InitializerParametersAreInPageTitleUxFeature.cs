@@ -12,7 +12,7 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 when: c =>
                     c.Type.Has<TransientAttribute>() && c.Type.HasMembers() &&
                     !c.Type.Has<LocatableAttribute>(),
@@ -35,12 +35,12 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                 }
             );
 
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 where: cc => cc.Path.EndsWith("tabbed-page", "inputs"),
                 schema: i => i.QueryBound = true
             );
 
-            conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.EditParameterSchema<Label>(
                 where: cc => cc.Path.EndsWith("tabbed-page", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {

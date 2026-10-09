@@ -35,7 +35,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Custom theme CSV formatter settings
-            conventions.AddMethodSchemaConfiguration<DataTable.Export>(
+            conventions.EditMethodSchema<DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
                     var (_, l) = cc;
@@ -54,18 +54,18 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 where: cc => cc.Path.EndsWith("data-panel", "content"),
                 component: () => B.Text()
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
                 when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
                 component: (t, c, cc) => t.Data = c.Method.GenerateSchema<RemoteData>(cc.Drill("data")),
                 order: Order.At.Min
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
                 component: t => t.Override(C.MyText())
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
                 component: t => t.Schema.MaxLength = 100
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
                 component: t =>
                 {
                     if (t.Schema is not MyText mt) { return; }

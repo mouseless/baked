@@ -16,13 +16,13 @@ public class FormSampleDomainOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+            conventions.EditMethodAttribute<ActionAttribute>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name is nameof(FormSample.NewParent),
                 attribute: (a, c) => a.RoutePathBack = "/form-sample",
                 order: Order.At.Override
             );
 
-            conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+            conventions.EditMethodAttribute<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
                 attribute: a => a.HideInLists = true,
                 order: Order.At.Override
@@ -36,7 +36,7 @@ public class FormSampleDomainOverrideFeature : IFeature
                 order: Order.At.Infra
             );
 
-            conventions.AddMethodComponentConfiguration<FormPage>(
+            conventions.EditMethodComponent<FormPage>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name is nameof(FormSample.NewParent),
                 component: fp =>
                 {

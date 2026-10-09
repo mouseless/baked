@@ -36,7 +36,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 order: Order.At.Infra
             );
 
-            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+            conventions.EditPropertyAttribute<DataAttribute>(
                 when: c =>
                     c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
                     c.Property.Name == objectWithList.ListPropertyName,
@@ -51,7 +51,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("data-panel", "content"),
                 component: () => B.DataTable()
             );
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
@@ -65,7 +65,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .Camelize();
                 }
             );
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
                     returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
@@ -108,7 +108,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: () => B.DataTableColumn()
             );
-            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+            conventions.EditMethodSchema<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
                     returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
@@ -143,7 +143,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     returnMetadata.Has<ObjectWithListAttribute>(),
                 schema: () => B.DataTableFooter()
             );
-            conventions.AddMethodSchemaConfiguration<DataTable.Footer>(
+            conventions.EditMethodSchema<DataTable.Footer>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
                     returnMembers.Has<ObjectWithListAttribute>(),
@@ -166,7 +166,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 }
             );
 
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 where: cc => cc.Path.Contains("data-table", "footer-template"),
                 schema: dtc =>
                 {

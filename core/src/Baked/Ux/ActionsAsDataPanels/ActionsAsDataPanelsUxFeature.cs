@@ -22,7 +22,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("data-panel", "title"),
                 schema: (c, cc) => MethodNameInline(c.Method, cc)
             );
-            conventions.AddMethodComponentConfiguration<DataPanel>(
+            conventions.EditMethodComponent<DataPanel>(
                 when: c => c.Method.GetAction().Method == HttpMethod.Get,
                 component: (dp, c, cc) =>
                 {
@@ -35,7 +35,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                     }
                 }
             );
-            conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.EditParameterSchema<Label>(
                 where: cc => cc.Path.EndsWith("data-panel", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {

@@ -13,7 +13,7 @@ public class ChildDomainOverrideFeature : IFeature
         {
             conventions.AddLocateAction<Child>();
 
-            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+            conventions.EditPropertyAttribute<DataAttribute>(
                 when: c => c.Type.Is<Child>() && c.Property.PropertyType.Is<ParentWrapper>() || c.Property.PropertyType.Is<IParentInterface>(),
                 attribute: data => data.Visible = false,
                 order: Order.At.Override

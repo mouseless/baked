@@ -363,27 +363,27 @@ public static class ThemeExtensions
             );
         }
 
-        public void AddTypeSchemaConfiguration<TSchema>(Action<TSchema> schema,
+        public void EditTypeSchema<TSchema>(Action<TSchema> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
-        ) => conventions.AddTypeSchemaConfiguration<TSchema>((s, _) => schema(s),
+        ) => conventions.EditTypeSchema<TSchema>((s, _) => schema(s),
             when: when,
             where: where,
             order: order
         );
 
-        public void AddTypeSchemaConfiguration<TSchema>(Action<TSchema, TypeModelMetadataContext> schema,
+        public void EditTypeSchema<TSchema>(Action<TSchema, TypeModelMetadataContext> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
-        ) => conventions.AddTypeSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
+        ) => conventions.EditTypeSchema<TSchema>((s, c, _) => schema(s, c),
             when: when,
             where: where,
             order: order
         );
 
-        public void AddTypeSchemaConfiguration<TSchema>(Action<TSchema, TypeModelMetadataContext, ComponentContext> schema,
+        public void EditTypeSchema<TSchema>(Action<TSchema, TypeModelMetadataContext, ComponentContext> schema,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
@@ -393,7 +393,7 @@ public static class ThemeExtensions
             where ??= _ => true;
             order = order.ThemeDefault.Configure;
 
-            conventions.AddTypeAttributeConfiguration<GeneratorAttribute<TSchema>>(
+            conventions.EditTypeAttribute<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
@@ -405,27 +405,27 @@ public static class ThemeExtensions
             );
         }
 
-        public void AddPropertySchemaConfiguration<TSchema>(Action<TSchema> schema,
+        public void EditPropertySchema<TSchema>(Action<TSchema> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
-        ) => conventions.AddPropertySchemaConfiguration<TSchema>((s, _) => schema(s),
+        ) => conventions.EditPropertySchema<TSchema>((s, _) => schema(s),
             when: when,
             where: where,
             order: order
         );
 
-        public void AddPropertySchemaConfiguration<TSchema>(Action<TSchema, PropertyModelContext> schema,
+        public void EditPropertySchema<TSchema>(Action<TSchema, PropertyModelContext> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
-        ) => conventions.AddPropertySchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
+        ) => conventions.EditPropertySchema<TSchema>((s, c, _) => schema(s, c),
             when: when,
             where: where,
             order: order
         );
 
-        public void AddPropertySchemaConfiguration<TSchema>(Action<TSchema, PropertyModelContext, ComponentContext> schema,
+        public void EditPropertySchema<TSchema>(Action<TSchema, PropertyModelContext, ComponentContext> schema,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
@@ -435,7 +435,7 @@ public static class ThemeExtensions
             where ??= _ => true;
             order = order.ThemeDefault.Configure;
 
-            conventions.AddPropertyAttributeConfiguration<GeneratorAttribute<TSchema>>(
+            conventions.EditPropertyAttribute<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
@@ -447,27 +447,27 @@ public static class ThemeExtensions
             );
         }
 
-        public void AddMethodSchemaConfiguration<TSchema>(Action<TSchema> schema,
+        public void EditMethodSchema<TSchema>(Action<TSchema> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
-        ) => conventions.AddMethodSchemaConfiguration<TSchema>((s, _) => schema(s),
+        ) => conventions.EditMethodSchema<TSchema>((s, _) => schema(s),
             when: when,
             where: where,
             order: order
         );
 
-        public void AddMethodSchemaConfiguration<TSchema>(Action<TSchema, MethodModelContext> schema,
+        public void EditMethodSchema<TSchema>(Action<TSchema, MethodModelContext> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
-        ) => conventions.AddMethodSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
+        ) => conventions.EditMethodSchema<TSchema>((s, c, _) => schema(s, c),
             when: when,
             where: where,
             order: order
         );
 
-        public void AddMethodSchemaConfiguration<TSchema>(Action<TSchema, MethodModelContext, ComponentContext> schema,
+        public void EditMethodSchema<TSchema>(Action<TSchema, MethodModelContext, ComponentContext> schema,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
@@ -477,7 +477,7 @@ public static class ThemeExtensions
             where ??= _ => true;
             order = order.ThemeDefault.Configure;
 
-            conventions.AddMethodAttributeConfiguration<GeneratorAttribute<TSchema>>(
+            conventions.EditMethodAttribute<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
@@ -489,27 +489,27 @@ public static class ThemeExtensions
             );
         }
 
-        public void AddParameterSchemaConfiguration<TSchema>(Action<TSchema> schema,
+        public void EditParameterSchema<TSchema>(Action<TSchema> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
-        ) => conventions.AddParameterSchemaConfiguration<TSchema>((s, _) => schema(s),
+        ) => conventions.EditParameterSchema<TSchema>((s, _) => schema(s),
             when: when,
             where: where,
             order: order
         );
 
-        public void AddParameterSchemaConfiguration<TSchema>(Action<TSchema, ParameterModelContext> schema,
+        public void EditParameterSchema<TSchema>(Action<TSchema, ParameterModelContext> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
-        ) => conventions.AddParameterSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
+        ) => conventions.EditParameterSchema<TSchema>((s, c, _) => schema(s, c),
             when: when,
             where: where,
             order: order
         );
 
-        public void AddParameterSchemaConfiguration<TSchema>(Action<TSchema, ParameterModelContext, ComponentContext> schema,
+        public void EditParameterSchema<TSchema>(Action<TSchema, ParameterModelContext, ComponentContext> schema,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
@@ -519,7 +519,7 @@ public static class ThemeExtensions
             where ??= _ => true;
             order = order.ThemeDefault.Configure;
 
-            conventions.AddParameterAttributeConfiguration<GeneratorAttribute<TSchema>>(
+            conventions.EditParameterAttribute<GeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (s, cc) => schema(s, c, cc),
@@ -787,29 +787,29 @@ public static class ThemeExtensions
             );
         }
 
-        public void AddTypeComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
+        public void EditTypeComponent<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
         ) where TSchema : IComponentSchema =>
-            conventions.AddTypeComponentConfiguration<TSchema>((s, _) => component(s),
+            conventions.EditTypeComponent<TSchema>((s, _) => component(s),
                 when: when,
                 where: where,
                 order: order
             );
 
-        public void AddTypeComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext> component,
+        public void EditTypeComponent<TSchema>(Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
         ) where TSchema : IComponentSchema =>
-            conventions.AddTypeComponentConfiguration<TSchema>((s, c, _) => component(s, c),
+            conventions.EditTypeComponent<TSchema>((s, c, _) => component(s, c),
                 when: when,
                 where: where,
                 order: order
             );
 
-        public void AddTypeComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext, ComponentContext> component,
+        public void EditTypeComponent<TSchema>(Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext, ComponentContext> component,
             Func<TypeModelMetadataContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
@@ -819,7 +819,7 @@ public static class ThemeExtensions
             where ??= _ => true;
             order = order.ThemeDefault.Configure;
 
-            conventions.AddTypeAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
+            conventions.EditTypeAttribute<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
@@ -831,29 +831,29 @@ public static class ThemeExtensions
             );
         }
 
-        public void AddPropertyComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
+        public void EditPropertyComponent<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
         ) where TSchema : IComponentSchema =>
-            conventions.AddPropertyComponentConfiguration<TSchema>((s, _) => component(s),
+            conventions.EditPropertyComponent<TSchema>((s, _) => component(s),
                 when: when,
                 where: where,
                 order: order
             );
 
-        public void AddPropertyComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, PropertyModelContext> component,
+        public void EditPropertyComponent<TSchema>(Action<ComponentDescriptor<TSchema>, PropertyModelContext> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
         ) where TSchema : IComponentSchema =>
-            conventions.AddPropertyComponentConfiguration<TSchema>((s, c, _) => component(s, c),
+            conventions.EditPropertyComponent<TSchema>((s, c, _) => component(s, c),
                 when: when,
                 where: where,
                 order: order
             );
 
-        public void AddPropertyComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, PropertyModelContext, ComponentContext> component,
+        public void EditPropertyComponent<TSchema>(Action<ComponentDescriptor<TSchema>, PropertyModelContext, ComponentContext> component,
             Func<PropertyModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
@@ -863,7 +863,7 @@ public static class ThemeExtensions
             where ??= _ => true;
             order = order.ThemeDefault.Configure;
 
-            conventions.AddPropertyAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
+            conventions.EditPropertyAttribute<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
@@ -875,29 +875,29 @@ public static class ThemeExtensions
             );
         }
 
-        public void AddMethodComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
+        public void EditMethodComponent<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
         ) where TSchema : IComponentSchema =>
-            conventions.AddMethodComponentConfiguration<TSchema>((s, _) => component(s),
+            conventions.EditMethodComponent<TSchema>((s, _) => component(s),
                 when: when,
                 where: where,
                 order: order
             );
 
-        public void AddMethodComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, MethodModelContext> component,
+        public void EditMethodComponent<TSchema>(Action<ComponentDescriptor<TSchema>, MethodModelContext> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
         ) where TSchema : IComponentSchema =>
-            conventions.AddMethodComponentConfiguration<TSchema>((s, c, _) => component(s, c),
+            conventions.EditMethodComponent<TSchema>((s, c, _) => component(s, c),
                 when: when,
                 where: where,
                 order: order
             );
 
-        public void AddMethodComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, MethodModelContext, ComponentContext> component,
+        public void EditMethodComponent<TSchema>(Action<ComponentDescriptor<TSchema>, MethodModelContext, ComponentContext> component,
             Func<MethodModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
@@ -907,7 +907,7 @@ public static class ThemeExtensions
             where ??= _ => true;
             order = order.ThemeDefault.Configure;
 
-            conventions.AddMethodAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
+            conventions.EditMethodAttribute<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),
@@ -919,29 +919,29 @@ public static class ThemeExtensions
             );
         }
 
-        public void AddParameterComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>> component,
+        public void EditParameterComponent<TSchema>(Action<ComponentDescriptor<TSchema>> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
         ) where TSchema : IComponentSchema =>
-            conventions.AddParameterComponentConfiguration<TSchema>((s, _) => component(s),
+            conventions.EditParameterComponent<TSchema>((s, _) => component(s),
                 when: when,
                 where: where,
                 order: order
             );
 
-        public void AddParameterComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, ParameterModelContext> component,
+        public void EditParameterComponent<TSchema>(Action<ComponentDescriptor<TSchema>, ParameterModelContext> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
         ) where TSchema : IComponentSchema =>
-            conventions.AddParameterComponentConfiguration<TSchema>((s, c, _) => component(s, c),
+            conventions.EditParameterComponent<TSchema>((s, c, _) => component(s, c),
                 when: when,
                 where: where,
                 order: order
             );
 
-        public void AddParameterComponentConfiguration<TSchema>(Action<ComponentDescriptor<TSchema>, ParameterModelContext, ComponentContext> component,
+        public void EditParameterComponent<TSchema>(Action<ComponentDescriptor<TSchema>, ParameterModelContext, ComponentContext> component,
             Func<ParameterModelContext, bool>? when = default,
             Func<ComponentContext, bool>? where = default,
             Order order = default
@@ -951,7 +951,7 @@ public static class ThemeExtensions
             where ??= _ => true;
             order = order.ThemeDefault.Configure;
 
-            conventions.AddParameterAttributeConfiguration<ComponentGeneratorAttribute<TSchema>>(
+            conventions.EditParameterAttribute<ComponentGeneratorAttribute<TSchema>>(
                 attribute: (attribute, c) => attribute.WrapGenerator(
                     context: c,
                     apply: (d, cc) => component(d, c, cc),

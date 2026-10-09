@@ -19,7 +19,7 @@ public class TestPageDomainOverrideFeature : IFeature
                 component: () => B.TabbedPage("test-page"),
                 order: Order.At.Override
             );
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 when: c => c.Type.Is<TestPage>(),
                 component: (tp, c, cc) =>
                 {
@@ -36,7 +36,7 @@ public class TestPageDomainOverrideFeature : IFeature
                 schema: () => B.Tab(),
                 order: Order.At.Override
             );
-            conventions.AddTypeSchemaConfiguration<Tab>(
+            conventions.EditTypeSchema<Tab>(
                 when: c => c.Type.Is<TestPage>(),
                 where: cc => cc.Path.EndsWith("tabs", "default"),
                 schema: (t, c, cc) =>
@@ -56,7 +56,7 @@ public class TestPageDomainOverrideFeature : IFeature
                 schema: () => B.Content(),
                 order: Order.At.Override
             );
-            conventions.AddMethodSchemaConfiguration<Content>(
+            conventions.EditMethodSchema<Content>(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 schema: tabContent => tabContent.Narrow = true,
                 order: Order.At.Override
@@ -67,7 +67,7 @@ public class TestPageDomainOverrideFeature : IFeature
                 component: () => B.Text(),
                 order: Order.At.Override
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
                 when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 component: t => t.Schema.MaxLength = 20,
                 order: Order.At.Override

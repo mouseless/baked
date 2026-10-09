@@ -43,7 +43,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 },
                 order: Order.At.Infra + 10
             );
-            conventions.AddTypeAttributeConfiguration<LocatableAttribute>(
+            conventions.EditTypeAttribute<LocatableAttribute>(
                 when: c => c.Type.Has<RichTransientAttribute>(),
                 attribute: (locatable, c) =>
                 {

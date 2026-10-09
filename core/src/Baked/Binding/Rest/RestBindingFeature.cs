@@ -57,7 +57,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
             // init before any domain convention
             conventions.Add(new InitApiModelConvention(), order: Order.At.Global.AbsoluteMin);
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.EditMethodAttribute<ActionModelAttribute>(
                 attribute: (action, context) =>
                     action.Parameter[ParameterModelAttribute.TargetParameterName] =
                         new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
@@ -75,18 +75,18 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             conventions.Add(new RemoveFromRouteConvention(["Get"]), order: Order.At.Infra);
             conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]), order: Order.At.Infra);
             conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]), order: Order.At.Infra);
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.EditMethodAttribute<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
                 when: (_, action) => action.HasBody,
                 order: Order.At.Infra + 10
             );
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.EditMethodAttribute<ActionModelAttribute>(
                 attribute: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
                 when: (_, action) => !action.ReturnIsVoid,
                 order: Order.At.Infra + 10
             );
             conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: Order.At.Infra + 10);
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
+            conventions.EditMethodAttribute<ActionModelAttribute>((action, context) =>
                 action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")"),
                 order: Order.At.Infra
             );

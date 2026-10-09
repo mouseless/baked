@@ -31,7 +31,7 @@ public class ParentDomainOverrideFeature : IFeature
 
             // Move `AddChild` action to contents
             {
-                conventions.AddTypeComponentConfiguration<PageTitle>(
+                conventions.EditTypeComponent<PageTitle>(
                     when: c => c.Type.Is<Parent>(),
                     component: (pt, c) =>
                     {
@@ -43,7 +43,7 @@ public class ParentDomainOverrideFeature : IFeature
                     order: Order.At.Override
                 );
 
-                conventions.AddTypeComponentConfiguration<SimplePage>(
+                conventions.EditTypeComponent<SimplePage>(
                     when: c => c.Type.Is<Parent>(),
                     component: (sp, c, cc) =>
                     {
@@ -57,25 +57,25 @@ public class ParentDomainOverrideFeature : IFeature
                 );
             }
 
-            conventions.AddMethodSchemaConfiguration<Content>(
+            conventions.EditMethodSchema<Content>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.AddChild),
                 schema: s => s.Side = true,
                 order: Order.At.Override
             );
 
-            conventions.AddMethodComponentConfiguration<SimpleForm>(
+            conventions.EditMethodComponent<SimpleForm>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.AddChild),
                 component: sf => sf.Schema.AlwaysShowTitle = true,
                 order: Order.At.Override
             );
 
-            conventions.AddTypeComponentConfiguration<Fieldset>(
+            conventions.EditTypeComponent<Fieldset>(
                 when: c => c.Type.Is<Parent>(),
                 component: dt => dt.ReloadOn(nameof(Parent.Update).Kebaberize()),
                 order: Order.At.Override
             );
 
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.GetChildren),
                 component: dt => dt.ReloadOn(nameof(Parent.AddChild).Kebaberize()),
                 order: Order.At.Override

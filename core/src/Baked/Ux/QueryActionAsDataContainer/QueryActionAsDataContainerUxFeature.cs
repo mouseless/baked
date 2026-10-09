@@ -34,7 +34,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             );
 
             // Add sort and paging parameters to RemoteData query
-            conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.EditMethodSchema<RemoteData>(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 where: cc => cc.Path.EndsWith("data-container", "content", "*", "data"),
                 schema: rd => rd.Query += Context.Parent(options: cd => cd.Prop = "container-parameters"),
@@ -42,7 +42,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             );
 
             // Add all inputs to DataContainer
-            conventions.AddMethodComponentConfiguration<DataContainer>(
+            conventions.EditMethodComponent<DataContainer>(
                 component: (dc, c, cc) =>
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
@@ -56,7 +56,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             );
 
             // Set paging inputs to be required and numeric
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c => c.Parameter.Has<PagingAttribute>(),
                 schema: input =>
                 {
@@ -69,7 +69,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             // Split inputs between `DataPanel` and `DataContainer` when
             // container is under a panel, keeping only sorting and paging in
             // container while keeping the rest in panel
-            conventions.AddMethodComponentConfiguration<DataPanel>(
+            conventions.EditMethodComponent<DataPanel>(
                 when: c => c.Method.Has<QueryMethodAttribute>(),
                 component: (dp, c) =>
                 {
@@ -99,7 +99,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
 
             // Disable virtual scroll, configure paginator and publish
             // data length when skip parameter exists
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 where: cc => cc.Path.Contains("data-container"),
                 component: (dt, c) =>
                 {
@@ -119,7 +119,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsSkip,
                 component: () => B.Paginator()
             );
-            conventions.AddParameterComponentConfiguration<Paginator>(
+            conventions.EditParameterComponent<Paginator>(
                 component: (p, c) =>
                 {
                     var prop = $"{c.Type.Name}:{c.Method.Name}:{_lengthContextKeySuffix}";
@@ -133,12 +133,12 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 }
             );
             // When there is no take parameter, set take to 10
-            conventions.AddParameterComponentConfiguration<Paginator>(
+            conventions.EditParameterComponent<Paginator>(
                 when: c => !c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
                 component: p => p.Data += Inline(new { take = 10 })
             );
             // When there is take parameter, use take parameter's value from page context
-            conventions.AddParameterComponentConfiguration<Paginator>(
+            conventions.EditParameterComponent<Paginator>(
                 when: c => c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
                 component: (p, c) =>
                 {
@@ -158,7 +158,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
                 component: () => B.Select()
             );
-            conventions.AddParameterComponentConfiguration<Select>(
+            conventions.EditParameterComponent<Select>(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
                 component: s =>
                 {
@@ -166,7 +166,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                     s.Override(B.PageSize());
                 }
             );
-            conventions.AddParameterComponentConfiguration<Select>(
+            conventions.EditParameterComponent<Select>(
                 when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
                 component: (s, c) =>
                 {

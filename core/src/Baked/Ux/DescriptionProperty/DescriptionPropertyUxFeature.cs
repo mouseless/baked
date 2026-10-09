@@ -34,7 +34,7 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
                 order: Order.At.Infra
             );
 
-            conventions.AddPropertySchemaConfiguration<Field>(
+            conventions.EditPropertySchema<Field>(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 schema: f => f.Wide = true
             );
@@ -43,7 +43,7 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
                 when: c => c.Parameter.Has<DescriptionAttribute>(),
                 component: () => B.Textarea()
             );
-            conventions.AddParameterSchemaConfiguration<FormPage.InputGroup>(
+            conventions.EditParameterSchema<FormPage.InputGroup>(
                 when: c => c.Parameter.Has<DescriptionAttribute>(),
                 schema: f => f.Wide = true
             );
@@ -58,7 +58,7 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("open"),
                 component: () => B.Button()
             );
-            conventions.AddPropertyComponentConfiguration<Button>(
+            conventions.EditPropertyComponent<Button>(
                 when: c => c.Property.Has<DescriptionAttribute>(),
                 where: cc => cc.Path.EndsWith("open"),
                 component: (b, c, cc) =>
@@ -69,7 +69,7 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
                     b.Schema.Label = l(c.Property.Name.Titleize());
                 }
             );
-            conventions.AddPropertyComponentConfiguration<Dialog>(
+            conventions.EditPropertyComponent<Dialog>(
                 component: d => d.Schema.Content.Data ??= Context.Parent()
             );
         });

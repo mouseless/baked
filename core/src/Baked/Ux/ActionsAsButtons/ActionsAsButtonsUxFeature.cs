@@ -38,7 +38,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("actions", "*", "simple-form", "dialog-options"),
                 schema: () => B.SimpleFormDialog()
             );
-            conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
+            conventions.EditMethodSchema<SimpleForm.Dialog>(
                 when: c => !c.Method.DefaultOverload.Parameters.Any(),
                 schema: (sfd, _, cc) =>
                 {
@@ -63,7 +63,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             );
 
             // configures post action to be a redirect back to the configured route path back for methods under the form page
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+            conventions.EditMethodSchema<RemoteAction>(
                 when: c => c.Method.TryGet<ActionAttribute>(out var action) && action.RoutePathBack is not null,
                 where: cc => cc.Path.StartsWith("page", "*", "*", "form-page"),
                 schema: (ra, c) =>
@@ -90,16 +90,16 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 where: cc => cc.Path.EndsWith("submit"),
                 component: () => B.Button()
             );
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 where: cc => cc.Path.EndsWith("submit"),
                 component: b => b.Schema.Severity = "primary"
             );
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 when: c => c.Method.GetAction().Method == HttpMethod.Delete,
                 where: cc => cc.Path.EndsWith("submit"),
                 component: b => b.Schema.Severity = "danger"
             );
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 where: cc => cc.Path.EndsWith("form-page", "submit"),
                 component: (b, _, cc) =>
                 {
@@ -116,7 +116,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             );
 
             // configures back button on form-page
-            conventions.AddMethodComponentConfiguration<PageTitle>(
+            conventions.EditMethodComponent<PageTitle>(
                 where: cc => cc.Path.StartsWith("page", "*", "*", "form-page"),
                 component: (fp, c, cc) =>
                 {
@@ -134,7 +134,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             );
 
             // configure label for cancel & button
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 where: cc => cc.Path.EndsWith("cancel") || cc.Path.EndsWith("back"),
                 component: (b, _, cc) =>
                 {
@@ -151,19 +151,19 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             );
 
             // clears action of cancel button
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 where: cc => cc.Path.EndsWith("cancel"),
                 component: b => b.Action = null
             );
 
             // configures text variant for cancel and back
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 where: cc => cc.Path.EndsWith("cancel") || cc.Path.EndsWith("back"),
                 component: b => b.Schema.Variant = "text"
             );
 
             // Icons
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 when: c => c.Method.Has<ActionAttribute>(),
                 where: cc =>
                     !cc.Path.Contains("form-page") &&

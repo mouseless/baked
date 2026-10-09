@@ -13,7 +13,7 @@ public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.EditMethodAttribute<ActionModelAttribute>(
                 attribute: action =>
                 {
                     var newName = action.Name.Pluralize();

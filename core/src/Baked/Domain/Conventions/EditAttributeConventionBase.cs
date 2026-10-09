@@ -1,10 +1,10 @@
-﻿using Baked.Domain.Configuration;
+using Baked.Domain.Configuration;
 using Baked.Domain.Inspection;
 using Baked.Domain.Model;
 
 namespace Baked.Domain.Conventions;
 
-public abstract class AttributeConfigurationConventionBase<TModelContext, TAttribute>(Action<TAttribute, TModelContext> apply, Order order,
+public abstract class EditAttributeConventionBase<TModelContext, TAttribute>(Action<TAttribute, TModelContext> apply, Order order,
     Func<TModelContext, TAttribute, bool>? when = default
 ) : IDomainModelConvention<TModelContext>
     where TAttribute : Attribute

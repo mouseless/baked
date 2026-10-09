@@ -11,7 +11,7 @@ public class EntityWithAutoIncrementIdDomainOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+            conventions.EditPropertyAttribute<IdAttribute>(
                 when: c => c.Type.Is<EntityWithAutoIncrementId>(),
                 attribute: id => id.AutoIncrement(),
                 order: Order.At.Override
