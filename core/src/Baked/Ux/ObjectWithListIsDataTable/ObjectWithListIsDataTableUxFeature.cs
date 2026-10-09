@@ -7,6 +7,8 @@ using Humanizer;
 
 using static Baked.Theme.Default.DomainComponents;
 
+using B = Baked.Ui.Components;
+
 namespace Baked.Ux.ObjectWithListIsDataTable;
 
 public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
@@ -49,15 +51,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: (c, cc) => MethodDataTable(c.Method, cc, options: dt =>
-                {
-                    dt.ItemsProp = c.Method.DefaultOverload
-                        .ReturnType.SkipTask()
-                        .GetMetadata()
-                        .Get<ObjectWithListAttribute>()
-                        .ListPropertyName
-                        .Camelize();
-                })
+                component: () => B.DataTable()
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c =>
@@ -149,7 +143,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
-                schema: (c, cc) => MethodDataTableFooter(c.Method, cc)
+                schema: () => B.DataTableFooter()
             );
             conventions.AddMethodSchemaConfiguration<DataTable.Footer>(
                 when: c =>

@@ -180,6 +180,35 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // Method Defaults
 
+            conventions.AddMethodSchema(
+                schema: c => MethodRemote(c.Method)
+            );
+            conventions.AddMethodSchemaConfiguration<RemoteData>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                schema: rd => rd.Params = Computed.UseRoute("params")
+            );
+
+            conventions.AddMethodSchema(
+                when: c => c.Method.Has<ActionAttribute>(),
+                schema: c => DomainActions.MethodRemote(c.Method)
+            );
+            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.DefaultOverload.Parameters.Any(),
+                schema: ra => ra.Body = Context.Model()
+            );
+
+            // configure route params of actions of locatables on their own pages
+            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                where: cc => cc.Path.StartsWith("page", "*", "*-page"),
+                schema: (ra, c, cc) =>
+                {
+                    if (!cc.Path.StartsWith("page", c.Type.Name)) { return; }
+
+                    ra.Params = Computed.UseRoute("params");
+                }
+            );
+
             // sets methods as action by default when they are api action
             conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
@@ -238,32 +267,50 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            conventions.AddMethodSchema(
-                schema: c => MethodRemote(c.Method)
-            );
-            conventions.AddMethodSchemaConfiguration<RemoteData>(
-                when: c => c.Type.Has<LocatableAttribute>(),
-                schema: rd => rd.Params = Computed.UseRoute("params")
-            );
-            conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionAttribute>(),
-                schema: c => DomainActions.MethodRemote(c.Method)
-            );
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Method.DefaultOverload.Parameters.Any(),
-                schema: ra => ra.Body = Context.Model()
-            );
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Has<LocatableAttribute>(),
-                where: cc => cc.Path.StartsWith("page", "*", "*-page"),
-                schema: (ra, c, cc) =>
+            // configures data table defaults for method
+            conventions.AddMethodComponentConfiguration<DataTable>(
+                component: (dt, c, cc) =>
                 {
-                    if (!cc.Path.StartsWith("page", c.Type.Name)) { return; }
+                    cc = cc.Drill("data-table");
 
-                    ra.Params = Computed.UseRoute("params");
-                }
+                    dt.Schema.ExportOptions = c.Method.GenerateSchema<DataTable.Export>(cc.Drill("export-options"));
+                    dt.Schema.FooterTemplate = c.Method.GenerateSchema<DataTable.Footer>(cc.Drill("footer-template"));
+                    dt.Schema.VirtualScrollerOptions = c.Method.GenerateSchema<DataTable.VirtualScroller>(cc.Drill("virtual-scroller-options"));
+                    dt.Schema.Actions = c.Method.GenerateSchema<DataTable.Column>(cc.Drill("actions"));
+
+                    dt.Data =
+                        c.Method.GenerateSchema<InlineData>(cc.Drill("data")) as IData ??
+                        c.Method.GenerateSchema<RemoteData>(cc.Drill("data"))
+                    ;
+
+                },
+                order: Order.At.Min
             );
 
+            // configures data table export defaults for method
+            conventions.AddMethodSchemaConfiguration<DataTable.Export>(
+                schema: (dte, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    dte.CsvSeparator = ";";
+                    dte.FileName = l($"{c.Method.Name}.ExportFileName");
+                },
+                order: Order.At.Min
+            );
+
+            // configures data table footer defaults for method
+            conventions.AddMethodSchemaConfiguration<DataTable.Footer>(
+                schema: (dte, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    dte.Label = l($"{c.Method.Name}.FooterLabel");
+                },
+                order: Order.At.Min
+            );
+
+            // adds simple form to methods
             conventions.AddMethodComponent(
                 when: c =>
                     c.Method.TryGet<ActionModelAttribute>(out var action) &&
@@ -271,7 +318,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
                 component: (c, cc) => MethodSimpleForm(c.Method, cc)
             );
-
             conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
@@ -559,7 +605,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         c.Parameter.GenerateSchema<InlineData>(cc) as IData ??
                         c.Parameter.GenerateSchema<RemoteData>(cc) ??
                         null;
-
                     if (!c.Parameter.ParameterType.TryGetMetadata(out var metadata))
                     {
                         throw DiagnosticCode.RequiresBuildLevel.Exception(
@@ -575,7 +620,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                             $" for schema type `{nameof(InlineData)}` or `{nameof(RemoteData)}` at path `{cc.Path}`"
                         );
                     ;
-
                     select.LocalizeOptionLabels ??= i.Component.Data.RequireLocalization;
                 },
                 order: Order.At.Global.Max

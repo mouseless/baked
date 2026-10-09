@@ -9,48 +9,6 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,
-        Action<DataTable>? options = default
-    ) => MethodDataTable<RemoteData>(method, context, options: options);
-
-    public static ComponentDescriptor<DataTable> MethodDataTable<TData>(MethodModel method, ComponentContext context,
-        Action<DataTable>? options = default
-    ) where TData : IData
-    {
-        context = context.Drill(nameof(DataTable));
-
-        return B.DataTable(
-            options: dt =>
-            {
-                dt.ExportOptions = method.GenerateSchema<DataTable.Export>(context.Drill(nameof(DataTable.ExportOptions)));
-                dt.FooterTemplate = method.GenerateSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
-                dt.VirtualScrollerOptions = method.GenerateSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
-                dt.Actions = method.GenerateSchema<DataTable.Column>(context.Drill(nameof(DataTable.Actions)));
-
-                options.Apply(dt);
-            },
-            data: method.GenerateSchema<TData>(context.Drill(nameof(IComponentDescriptor.Data)))
-        );
-    }
-
-    public static DataTable.Export MethodDataTableExport(MethodModel method, ComponentContext context,
-        Action<DataTable.Export>? options = default
-    )
-    {
-        var (_, l) = context;
-
-        return B.DataTableExport(";", l($"{method.Name}.ExportFileName"), options: options);
-    }
-
-    public static DataTable.Footer MethodDataTableFooter(MethodModel method, ComponentContext context,
-        Action<DataTable.Footer>? options = default
-    )
-    {
-        var (_, l) = context;
-
-        return B.DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
-    }
-
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
         Action<DataTable.Column>? options = default
     )

@@ -28,16 +28,16 @@ public record DataTable : IComponentSchema
         public bool? Hidden { get; set; }
     }
 
-    public record Footer(string Label)
+    public record Footer
     {
-        public string Label { get; set; } = Label;
+        public string Label { get; set; } = string.Empty;
         public List<Column> Columns { get; init; } = [];
     }
 
-    public record Export(string CsvSeparator, string FileName)
+    public record Export
     {
-        public string CsvSeparator { get; set; } = CsvSeparator;
-        public string FileName { get; set; } = FileName;
+        public string CsvSeparator { get; set; } = string.Empty;
+        public string FileName { get; set; } = string.Empty;
         public string? Formatter { get; set; }
         public string? ButtonIcon { get; set; }
         public string? ButtonLabel { get; set; }
@@ -46,7 +46,7 @@ public record DataTable : IComponentSchema
         public string? ParameterFormatter { get; set; }
     }
 
-    public record VirtualScroller()
+    public record VirtualScroller
     {
         public int? ItemSize { get; set; }
         public int? NumToleratedItems { get; set; }

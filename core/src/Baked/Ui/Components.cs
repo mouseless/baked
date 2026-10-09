@@ -31,21 +31,20 @@ public static class Components
     ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<DataTable> DataTable(
-        Action<DataTable>? options = default,
-        IData? data = default
-    ) => new(options.Apply(new())) { Data = data };
+        Action<DataTable>? options = default
+    ) => new(options.Apply(new()));
 
     public static DataTable.Column DataTableColumn(string key,
         Action<DataTable.Column>? options = default
     ) => options.Apply(new(key));
 
-    public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
+    public static DataTable.Export DataTableExport(
         Action<DataTable.Export>? options = default
-    ) => options.Apply(new(csvSeparator, fileName));
+    ) => options.Apply(new());
 
-    public static DataTable.Footer DataTableFooter(string label,
+    public static DataTable.Footer DataTableFooter(
         Action<DataTable.Footer>? options = default
-    ) => options.Apply(new(label));
+    ) => options.Apply(new());
 
     public static DataTable.VirtualScroller DataTableVirtualScroller(
         Action<DataTable.VirtualScroller>? options = default

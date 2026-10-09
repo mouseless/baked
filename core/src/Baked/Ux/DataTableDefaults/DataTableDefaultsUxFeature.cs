@@ -8,6 +8,8 @@ using Baked.Ui;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
+using B = Baked.Ui.Components;
+
 namespace Baked.Ux.DataTableDefaults;
 
 public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
@@ -72,7 +74,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
             // Export
             conventions.AddMethodSchema(
                 when: c => c.Method.Has<ComponentGeneratorAttribute<DataTable>>(),
-                schema: (c, cc) => MethodDataTableExport(c.Method, cc),
+                schema: () => B.DataTableExport(),
                 order: 10
             );
 

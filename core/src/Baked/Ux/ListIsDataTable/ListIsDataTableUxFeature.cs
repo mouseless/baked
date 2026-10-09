@@ -5,6 +5,8 @@ using Baked.Ui;
 
 using static Baked.Theme.Default.DomainComponents;
 
+using B = Baked.Ui.Components;
+
 namespace Baked.Ux.ListIsDataTable;
 
 public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
@@ -15,8 +17,8 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
         {
             conventions.AddMethodComponent(
                 when: c => c.Method.DefaultOverload.ReturnsList(),
-                where: cc => cc.Path.EndsWith("*Panel", "Content") || cc.Path.EndsWith("*Container", "Content"),
-                component: (c, cc) => MethodDataTable(c.Method, cc)
+                where: cc => cc.Path.EndsWith("*-panel", "content") || cc.Path.EndsWith("*-container", "content"),
+                component: () => B.DataTable()
             );
             conventions.AddMethodComponentConfiguration<DataTable>(
                 when: c =>
