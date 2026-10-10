@@ -1,4 +1,4 @@
 namespace Baked.Orm;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class ForeignKeyAttribute : Attribute;
+public class Column : Attribute;

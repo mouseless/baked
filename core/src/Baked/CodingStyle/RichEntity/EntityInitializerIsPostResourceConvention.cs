@@ -11,7 +11,7 @@ public class EntityInitializerIsPostResourceConvention : IDomainModelConvention<
     public void Apply(MethodModelContext context)
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.Has<EntityAttribute>()) { return; }
+        if (!metadata.Has<Entity>()) { return; }
         if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
         if (!context.Method.Has<Initializer>()) { return; }
 

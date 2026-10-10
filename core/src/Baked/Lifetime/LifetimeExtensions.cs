@@ -24,7 +24,7 @@ public static class LifetimeExtensions
             type: type,
             serviceLifetime: serviceLifetime,
             useFactory: useFactory,
-            interfaces: !type.TryGetInheritance(out var inheritance) ? [] : inheritance.Interfaces.Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>()),
+            interfaces: !type.TryGetInheritance(out var inheritance) ? [] : inheritance.Interfaces.Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<Service>()),
             forward: forward
         );
     }

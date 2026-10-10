@@ -1,19 +1,19 @@
 ﻿using Baked.Architecture;
 
-namespace Baked.Lifetime.Transient;
+namespace Baked.Lifetime.Instance;
 
-public class TransientLifetimeFeature : IFeature<LifetimeConfigurator>
+public class InstanceLifetimeFeature : IFeature<LifetimeConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Type.Add<TransientAttribute>();
+            builder.Index.Type.Add<Transient>();
         });
 
         configurator.Domain.ConfigureDomainServiceCollection((services, domain) =>
         {
-            foreach (var transient in domain.Types.Having<TransientAttribute>())
+            foreach (var transient in domain.Types.Having<Transient>())
             {
                 services.AddTransient(transient, useFactory: true);
             }

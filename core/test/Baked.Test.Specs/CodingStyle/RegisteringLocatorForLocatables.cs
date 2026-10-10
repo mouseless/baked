@@ -1,7 +1,8 @@
 using Baked.Business;
 using Baked.Orm;
 using Baked.Playground.CodingStyle.RichTransient;
-using Baked.Playground.Orm;
+
+using Entity = Baked.Playground.Orm.Entity;
 
 namespace Baked.Test.CodingStyle;
 

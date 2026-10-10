@@ -1,8 +1,8 @@
-﻿namespace Baked.Business;
+namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Parameter)]
-public class PagingAttribute(PagingAttribute.Role roleOption)
-    : Attribute
+public class Paging(Paging.Role roleOption)
+    : Attribute()
 {
     public Role RoleOption { get; set; } = roleOption;
 

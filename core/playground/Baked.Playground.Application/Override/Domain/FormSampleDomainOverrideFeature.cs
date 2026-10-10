@@ -32,7 +32,7 @@ public class FormSampleDomainOverrideFeature : IFeature
                 when: c =>
                     c.Type.Is<FormSample>() &&
                     c.Method.Name is nameof(FormSample.GetParents) or nameof(FormSample.GetParentsRole),
-                attribute: () => new QueryMethodAttribute(),
+                attribute: () => new QueryMethod(),
                 order: Order.At.Infra
             );
 

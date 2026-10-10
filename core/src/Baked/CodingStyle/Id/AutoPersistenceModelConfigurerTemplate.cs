@@ -24,7 +24,7 @@ public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
 
     public AutoPersistenceModelConfigurerTemplate(DomainModel _domain)
     {
-        foreach (var entity in _domain.Types.Having<EntityAttribute>())
+        foreach (var entity in _domain.Types.Having<Entity>())
         {
             var idProperty = entity.GetMembers().FirstPropertyOrDefault<IdAttribute>();
             if (idProperty is null) { continue; }

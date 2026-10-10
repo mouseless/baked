@@ -1,16 +1,16 @@
 ﻿using Baked.Domain;
 using Baked.Domain.Model;
 using Baked.Lifetime;
-using Baked.Lifetime.Singleton;
+using Baked.Lifetime.Application;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked;
 
-public static class SingletonLifetimeExtensions
+public static class ApplicationLifetimeExtensions
 {
     extension(LifetimeConfigurator _)
     {
-        public SingletonLifetimeFeature Singleton() =>
+        public ApplicationLifetimeFeature Application() =>
             new();
     }
 

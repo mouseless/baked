@@ -9,8 +9,8 @@ app.Layers.AddUi();
 
 `UiLayer` provides `IComponentDescriptor`, `IComponentSchema`, `IData` types for
 building UI page metadata. A page metadata will have a component descriptor
-(represented by a `ComponentDescriptorAttribute` instance) at the top in the
-hierarchy containing `Type`, `Schema`, `Name` and `Data` properties.
+(represented by a `ComponentDescriptor` instance) at the top in the hierarchy
+containing `Type`, `Schema`, `Name` and `Data` properties.
 
 > [!NOTE]
 >
@@ -112,8 +112,8 @@ To generate a page descriptor from a domain model, we provide a generator system
 that is added through domain model conventions. There are two generator
 attributes for this purpose;
 
-1. `ComponentGeneratorAttribute<TComponentSchema>`
-2. `GeneratorAttribute<TSchema>`
+1. `ComponentGenerator<TComponentSchema>`
+2. `Generator<TSchema>`
 
 The page generator starts with a `Page` component path to render a domain model
 into a `ComponentDescriptor<TComponentSchema>` instance. To add a component to a
@@ -185,19 +185,18 @@ using `GenerateSchema<TSchema>` or `GenerateSchemas<TSchema>` extension methods.
 ### Configuring Existing Schemas
 
 To add a convention that configures an existing schema, there are
-`Add...ComponentConfiguration<TComponentSchema>` and
-`Add...SchemaConfiguration<TSchema>` helpers. Configuration conventions works
-exactly the same way add conventions. In addition, to make sure there is a
-schema to configure, configuration conventions automatically filter out the
-domain models that don't have the given `TComponentSchema` or `TSchema` at the
-expected component path.
+`Edit...Component<TComponentSchema>` and `Edit...Schema<TSchema>` helpers. Edit
+conventions works exactly the same way add/set conventions. In addition, to make
+sure there is a schema to configure, configuration conventions automatically
+filter out the domain models that don't have the given `TComponentSchema` or
+`TSchema` at the expected component path.
 
 ```csharp
 configurator.Domain.ConfigureConventions(conventions =>
 {
     // This convention will automatically apply only to the types that have a
     // `SimplePage` component
-    conventions.AddTypeComponentConfiguration<SimplePage>(
+    conventions.EditTypeComponent<SimplePage>(
         component: sp =>
         {
             sp.Title = ...;

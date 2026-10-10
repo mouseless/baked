@@ -12,6 +12,7 @@ using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;
 using Baked.Greeting;
+using Baked.Lifetime;
 using Baked.Localization;
 using Baked.Logging;
 using Baked.MockOverrider;
@@ -37,8 +38,8 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
     FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
     public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
 
-    IEnumerable<FeatureFunc<Lifetime.LifetimeConfigurator>> _lifetimes = [c => c.Singleton(), c => c.Scoped(), c => c.Transient()];
-    public void Lifetimes(IEnumerable<FeatureFunc<Lifetime.LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
+    IEnumerable<FeatureFunc<LifetimeConfigurator>> _lifetimes = [c => c.Application(), c => c.Scope(), c => c.Instance()];
+    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
 
     FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
     public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;

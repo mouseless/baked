@@ -6,28 +6,27 @@ Add this feature using `AddLifetimes()` extension;
 app.Features.AddLifetimes([...]);
 ```
 
-## Singleton
+## Application
 
-Adds services with `SingletonAttribute` metadata to `IServiceCollection` as
-singleton.
-
-```csharp
-c => c.Singleton()
-```
-
-## Scoped
-
-Adds services with `ScopedAttribute` metadata to `IServiceCollection` as scoped.
+Adds services with `Singleton` metadata to `IServiceCollection` as singleton.
 
 ```csharp
-c => c.Scoped()
+c => c.Application()
 ```
 
-## Transient
+## Instance
 
-Adds services with `TransientAttribute` metadata to `IServiceCollection` as
+Adds services with `Transient` metadata to `IServiceCollection` as
 transient.
 
 ```csharp
-c => c.Transient()
+c => c.Instance()
+```
+
+## Scope
+
+Adds services with `Scoped` metadata to `IServiceCollection` as scoped.
+
+```csharp
+c => c.Scope()
 ```

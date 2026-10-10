@@ -1,16 +1,16 @@
 ﻿using Baked.Domain;
 using Baked.Domain.Model;
 using Baked.Lifetime;
-using Baked.Lifetime.Transient;
+using Baked.Lifetime.Instance;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked;
 
-public static class TransientLifetimeExtensions
+public static class InstanceLifetimeExtensions
 {
     extension(LifetimeConfigurator _)
     {
-        public TransientLifetimeFeature Transient() =>
+        public InstanceLifetimeFeature Instance() =>
             new();
     }
 

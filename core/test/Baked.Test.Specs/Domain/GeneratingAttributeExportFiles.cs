@@ -55,7 +55,7 @@ public class GeneratingAttributeExportFiles : TestSpec
             name: "SampleType",
             attributes:
             [
-                new(nameof(EntityAttribute)),
+                new(nameof(Entity)),
                 new(nameof(Fake),
                     ("CamelCase", "CamelCase"),
                     ("String", "Post"),
@@ -140,7 +140,7 @@ public class GeneratingAttributeExportFiles : TestSpec
            id: "Baked.Domain.Test.SampleTypeC",
            name: "SampleTypeC",
            groupName: "Test",
-           attributes: [new(nameof(EntityAttribute))]
+           attributes: [new(nameof(Entity))]
        );
 
         var exportSet = new ExportSetModel(new(new[] { typeExportA, typeExportB, typeExportC }));

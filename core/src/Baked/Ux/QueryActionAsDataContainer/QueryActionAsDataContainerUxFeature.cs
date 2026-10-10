@@ -22,20 +22,20 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
         {
             // Order is set to -10 to allow DataPanel override
             conventions.AddMethodComponent(
-                when: c => c.Method.Has<QueryMethodAttribute>(),
+                when: c => c.Method.Has<QueryMethod>(),
                 where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
                 component: () => B.DataContainer(),
                 order: -10
             );
             conventions.AddMethodComponent(
-                when: c => c.Method.Has<QueryMethodAttribute>(),
+                when: c => c.Method.Has<QueryMethod>(),
                 where: cc => cc.Path.EndsWith("data-panel", "content"),
                 component: () => B.DataContainer()
             );
 
             // Add sort and paging parameters to RemoteData query
             conventions.EditMethodSchema<RemoteData>(
-                when: c => c.Method.Has<QueryMethodAttribute>(),
+                when: c => c.Method.Has<QueryMethod>(),
                 where: cc => cc.Path.EndsWith("data-container", "content", "*", "data"),
                 schema: rd => rd.Query += Context.Parent(options: cd => cd.Prop = "container-parameters"),
                 order: 20
@@ -57,7 +57,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
 
             // Set paging inputs to be required and numeric
             conventions.EditParameterSchema<Input>(
-                when: c => c.Parameter.Has<PagingAttribute>(),
+                when: c => c.Parameter.Has<Paging>(),
                 schema: input =>
                 {
                     input.Required = true;
@@ -70,7 +70,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             // container is under a panel, keeping only sorting and paging in
             // container while keeping the rest in panel
             conventions.EditMethodComponent<DataPanel>(
-                when: c => c.Method.Has<QueryMethodAttribute>(),
+                when: c => c.Method.Has<QueryMethod>(),
                 component: (dp, c) =>
                 {
                     if (dp.Schema.Content.Schema is not DataContainer dc) { return; }
@@ -80,7 +80,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                     foreach (var parameter in c.Method.DefaultOverload.Parameters.Having<ApiParameter>())
                     {
                         var api = parameter.Get<ApiParameter>();
-                        if (parameter.Has<SortingAttribute>() || parameter.Has<PagingAttribute>())
+                        if (parameter.Has<Sorting>() || parameter.Has<Paging>())
                         {
                             if (!dpInputs.TryGetValue(api.Name, out var input)) { continue; }
 
@@ -105,7 +105,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 {
                     dt.Schema.VirtualScrollerOptions = default;
 
-                    if (c.Method.DefaultOverload.Parameters.Any(p => p.TryGet<PagingAttribute>(out var paging) && paging.IsSkip))
+                    if (c.Method.DefaultOverload.Parameters.Any(p => p.TryGet<Paging>(out var paging) && paging.IsSkip))
                     {
                         dt.Schema.Paginator = default;
                         dt.Schema.DataLengthContextKey = $"{c.Type.Name}:{c.Method.Name}:{_lengthContextKeySuffix}";
@@ -116,7 +116,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
 
             // Skip
             conventions.AddParameterComponent(
-                when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsSkip,
+                when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsSkip,
                 component: () => B.Paginator()
             );
             conventions.EditParameterComponent<Paginator>(
@@ -134,12 +134,12 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             );
             // When there is no take parameter, set take to 10
             conventions.EditParameterComponent<Paginator>(
-                when: c => !c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
+                when: c => !c.Method.DefaultOverload.Parameters.Having<Paging>().Any(p => p.Get<Paging>().IsTake),
                 component: p => p.Data += Inline(new { take = 10 })
             );
             // When there is take parameter, use take parameter's value from page context
             conventions.EditParameterComponent<Paginator>(
-                when: c => c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
+                when: c => c.Method.DefaultOverload.Parameters.Having<Paging>().Any(p => p.Get<Paging>().IsTake),
                 component: (p, c) =>
                 {
                     var prop = $"{c.Type.Name}:{c.Method.Name}:{_takeContextKeySuffix}";
@@ -155,11 +155,11 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
 
             // Take
             conventions.AddParameterComponent(
-                when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
+                when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsTake,
                 component: () => B.Select()
             );
             conventions.EditParameterComponent<Select>(
-                when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
+                when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsTake,
                 component: s =>
                 {
                     s.Data = Inline(_pageSizeOptions, options: i => i.RequireLocalization = false);
@@ -167,7 +167,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 }
             );
             conventions.EditParameterComponent<Select>(
-                when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
+                when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsTake,
                 component: (s, c) =>
                 {
                     s.Schema.ShowClear = null;

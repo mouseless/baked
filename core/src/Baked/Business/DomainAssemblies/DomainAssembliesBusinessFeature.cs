@@ -74,8 +74,8 @@ public class DomainAssembliesBusinessFeature(
 
             builder.DefaultConventionLevel = "Business.Defaults.Configure";
 
-            builder.Index.Type.Add<ServiceAttribute>();
-            builder.Index.Type.Add<QueryAttribute>();
+            builder.Index.Type.Add<Service>();
+            builder.Index.Type.Add<QueryClass>();
             builder.Index.Method.Add<Initializer>();
             builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<LabelAttribute>();
@@ -124,7 +124,7 @@ public class DomainAssembliesBusinessFeature(
                 order: Order.At.Infra
             );
             conventions.SetTypeAttribute(
-                attribute: () => new ServiceAttribute(),
+                attribute: () => new Service(),
                 when: c =>
                     c.Type.IsPublic &&
                     !c.Type.IsValueType &&
@@ -142,7 +142,7 @@ public class DomainAssembliesBusinessFeature(
                 when: c =>
                     c.Method.DefaultOverload.DeclaringType is not null &&
                     c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
-                    !metadata.Has<ServiceAttribute>(),
+                    !metadata.Has<Service>(),
                 order: Order.At.Infra
             );
 
@@ -152,7 +152,7 @@ public class DomainAssembliesBusinessFeature(
                     c.Method.DefaultOverload.BaseDefinition is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType.TryGetMetadata(out var metadata) &&
-                    !metadata.Has<ServiceAttribute>(),
+                    !metadata.Has<Service>(),
                 order: Order.At.Infra
             );
         });

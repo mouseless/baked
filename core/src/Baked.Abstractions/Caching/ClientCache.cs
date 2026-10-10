@@ -1,6 +1,6 @@
 namespace Baked.Caching;
 
-public class ClientCacheAttribute(string type)
+public class ClientCache(string type)
     : Attribute()
 {
     public string Type { get; set; } = type;

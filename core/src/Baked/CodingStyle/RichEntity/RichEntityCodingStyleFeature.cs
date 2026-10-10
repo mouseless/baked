@@ -21,11 +21,11 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     TryGetEntityContextParameter(members, out var entityContextParameter) &&
                     entityContextParameter.ParameterType.TryGetGenerics(out var entityContextGenerics) &&
                     entityContextGenerics.GenericTypeArguments.First().Model == c.Type,
-                attribute: () => new EntityAttribute(),
+                attribute: () => new Entity(),
                 order: Order.At.Infra
             );
             conventions.SetTypeAttribute(
-                when: c => c.Type.Has<EntityAttribute>(),
+                when: c => c.Type.Has<Entity>(),
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
@@ -35,7 +35,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
             conventions.SetMethodAttribute(
                 when: c =>
-                    c.Type.Has<EntityAttribute>() && c.Method.Has<Initializer>() &&
+                    c.Type.Has<Entity>() && c.Method.Has<Initializer>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
                 attribute: c => new ApiAction(),
                 order: Order.At.Infra + 30

@@ -54,7 +54,6 @@ Bake.New
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
 |                    | Query                                    |                                    |
-|                    | Query Method                             |                                    |
 |                    | Records are DTOs                         |                                    |
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Rich Entity                              |                                    |

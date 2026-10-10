@@ -14,7 +14,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (!context.Parameter.ParameterType.IsAssignableTo<IEnumerable>()) { return; }
         if (!context.Parameter.ParameterType.TryGetElementType(out var elementType)) { return; }
         if (!elementType.TryGetMembers(out var elementMembers)) { return; }
-        if (!elementMembers.Has<TransientAttribute>()) { return; }
+        if (!elementMembers.Has<Transient>()) { return; }
         if (!elementMembers.TryGetIdInfo(out var idInfo)) { return; }
         if (!elementMembers.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
 

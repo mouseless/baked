@@ -8,7 +8,7 @@ using Baked.CodingStyle;
 using Baked.CodingStyle.CommandPattern;
 using Baked.CodingStyle.Initializable;
 using Baked.CodingStyle.Label;
-using Baked.CodingStyle.QueryMethod;
+using Baked.CodingStyle.Query;
 using Baked.CodingStyle.ScopedBySuffix;
 using Baked.CodingStyle.UseBuiltInTypes;
 using Baked.Communication;
@@ -17,6 +17,7 @@ using Baked.Cors;
 using Baked.Database;
 using Baked.ExceptionHandling;
 using Baked.Greeting;
+using Baked.Lifetime;
 using Baked.Localization;
 using Baked.Logging;
 using Baked.MockOverrider;
@@ -46,8 +47,8 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
     FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
     public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
 
-    IEnumerable<FeatureFunc<Lifetime.LifetimeConfigurator>> _lifetimes = [c => c.Scoped(), c => c.Singleton(), c => c.Transient()];
-    public void Lifetimes(IEnumerable<FeatureFunc<Lifetime.LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
+    IEnumerable<FeatureFunc<LifetimeConfigurator>> _lifetimes = [c => c.Scope(), c => c.Application(), c => c.Instance()];
+    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
 
     FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
     public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;
@@ -65,8 +66,8 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
     FeatureFunc<CodingStyleConfigurator> _label = c => c.Label();
     public void Label(Func<CodingStyleConfigurator, LabelCodingStyleFeature> label) => _label = c => label(c);
 
-    FeatureFunc<CodingStyleConfigurator> _queryMethod = c => c.QueryMethod();
-    public void QueryMethod(Func<CodingStyleConfigurator, QueryMethodCodingStyleFeature> queryMethod) => _queryMethod = c => queryMethod(c);
+    FeatureFunc<CodingStyleConfigurator> _query = c => c.Query();
+    public void Query(Func<CodingStyleConfigurator, QueryCodingStyleFeature> query) => _query = c => query(c);
 
     FeatureFunc<CodingStyleConfigurator> _scopedBySuffix = c => c.ScopedBySuffix();
     public void ScopedBySuffix(Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> scopedBySuffix) => _scopedBySuffix = c => scopedBySuffix(c);
@@ -91,8 +92,7 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
         c => c.LocatableExtension(),
         c => c.NamespaceAsRoute(),
         c => c.ObjectAsJson(),
-        c => c.Query(),
-        _queryMethod,
+        _query,
         c => c.RecordsAreDtos(),
         c => c.RemainingServicesAreSingleton(),
         c => c.RichEntity(),

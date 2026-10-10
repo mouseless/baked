@@ -21,7 +21,7 @@ public class ManyToOneFetcherTemplate : CodeTemplateBase
     {
         _entities = domain
             .Types
-            .Having<EntityAttribute>()
+            .Having<Entity>()
             .Where(type => type.HasMembers())
             .Select(type => type.GetMembers());
 

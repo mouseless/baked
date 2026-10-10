@@ -32,15 +32,15 @@ This feature abstraction provides following extensions to
 - Executes after building index and `Order` is defaulted to
   `Theme.Defaults.Configure`
   ```csharp
-  conventions.AddTypeComponentConfiguration(...);
-  conventions.AddPropertyComponentConfiguration(...);
-  conventions.AddMethodComponentConfiguration(...);
-  conventions.AddParameterComponentConfiguration(...);
+  conventions.EditTypeComponent(...);
+  conventions.EditPropertyComponent(...);
+  conventions.EditMethodComponent(...);
+  conventions.EditParameterComponent(...);
 
-  conventions.AddTypeSchemaConfiguration(...);
-  conventions.AddPropertySchemaConfiguration(...);
-  conventions.AddMethodSchemaConfiguration(...);
-  conventions.AddParameterSchemaConfiguration(...);
+  conventions.EditTypeSchema(...);
+  conventions.EditPropertySchema(...);
+  conventions.EditMethodSchema(...);
+  conventions.EditParameterSchema(...);
   ```
 
 > [!TIP]
@@ -54,27 +54,25 @@ Below you can find sample for adding convention using extensions;
 configurator.Domain.ConfigureConventions(conventions =>
 {
     // Adding component via extensions
-    conventions.AddPropertyComponent(
-        when: c => c.Property.Name == "Id"
-        component: () => ...
+    conventions.AddMethodComponent<Button>(
+        when: c => c.Method.Name is "Login"
     );
 
     // Adding component configuration via extensions
-    conventions.AddPropertyComponentConfiguration<Button>(
-        when: c => c.Property.Name == "Id"
-        component: button => ...
+    conventions.EditMethodComponent<Button>(
+        when: c => c.Method.Name is "Login",
+        component: b => ...
     );
 
     // Adding schema via extensions
-    conventions.AddPropertySchema(
-        when: c => c.Property.Name == "Id"
-        schema: () => ...
+    conventions.AddPropertySchema<Input>(
+        when: c => c.Property.Name is "Id"
     );
 
     // Adding schema configuration via extensions
-    conventions.AddPropertySchemaConfiguration<Input>(
-        when: c => c.Property.Name == "Id"
-        schema: input => ...
+    conventions.EditPropertySchema<Input>(
+        when: c => c.Property.Name is "Id",
+        schema: i => ...
     );
 }
 ```
@@ -145,25 +143,25 @@ experiences, see [UX Feature](ux.md)
 | Group        | Rules                                                                                    |
 | ---          | ---                                                                                      |
 | Type         | `TabbedPage` and `SimplePage` is added for any type at component path `/page/*`          |
-|              | `[id]` route parameter is mapped to first data property with `IdAttribute`               |
-| Property     | All public properties get a `DataAttribute` with a camelized name and titleized label    |
-|              | `IdAttribute` is added to properties named as `Id`                                       |
+|              | `[id]` route parameter is mapped to first data property with `IdProperty` attribute      |
+| Property     | All public properties get a `Data` attribute with a camelized name and titleized label   |
+|              | `IdProperty` attribute is added to properties named as `Id`                              |
 |              | Id properties are set to be hidden                                                       |
 |              | Configures `Text` component to display properties;                                       |
 |              | &nbsp; ↳ with type `string` or `Guid`                                                    |
-|              | &nbsp; ↳ or with type that has `LocatableAttribute`                                      |
-|              | &nbsp; ↳ or with type that has `ValueTypeAttribute`                                      |
-| Method       | All actions with `ApiActionAttribute` get `UiActionAttribute` and `TabNameAttribute`     |
+|              | &nbsp; ↳ or with type that has `Locatable` attribute                                     |
+|              | &nbsp; ↳ or with type that has `ValueType` attribute                                     |
+| Method       | All actions with `ApiAction` attribute get `UiAction` and `TabName` attributes           |
 |              | `FormPage` is added for any method at component path `/page/*/*`                         |
 |              | `Content` schema is added to any method                                                  |
 |              | Each method is wired as a remote data and remote action                                  |
 |              | Remote data of locatable types include `route.params` in their route                     |
 |              | For method with parameters `Context.Model` is set as remote action body by default       |
 | Parameter    | Parameters are rendered as `Input` list under `SimpleForm` and `FormPage` inputs         |
-|              | Parameters with `ApiParameterAttribute` use `Input` schema                               |
+|              | Parameters with `ApiParameter` attribute use `Input` schema                              |
 |              | Required and default values are taken from the attribute                                 |
 |              | `string` parameters render using `InputText`                                             |
-|              | parameters with type that has `ValueTypeAttribute` render using `InputText`              |
+|              | parameters with type that has `ValueType` attribute render using `InputText`             |
 |              | `int` and `long` parameters render using `InputNumber`                                   |
 | Enum         | Enum types render inline with `EnumInline`                                               |
 | Page Title   | `PageTitle` is added for any type at component path `/page/*/*page/title`                |

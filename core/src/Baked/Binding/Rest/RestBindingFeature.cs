@@ -31,7 +31,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             // domain attribute mutations
             conventions.SetTypeAttribute(
                 when: c =>
-                  c.Type.Has<ServiceAttribute>() &&
+                  c.Type.Has<Service>() &&
                   c.Type.IsClass &&
                   !c.Type.IsAbstract &&
                   !c.Type.IsGenericType &&

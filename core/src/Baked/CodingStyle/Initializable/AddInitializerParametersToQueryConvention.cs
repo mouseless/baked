@@ -9,7 +9,7 @@ public class AddInitializerParametersToQueryConvention : IDomainModelConvention<
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Type.Has<TransientAttribute>()) { return; }
+        if (!context.Type.Has<Transient>()) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (members.Has<LocatableAttribute>()) { return; }
         if (!members.Methods.Having<Initializer>().Any()) { return; }

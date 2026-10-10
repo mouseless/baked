@@ -10,7 +10,7 @@ public class RemoveInitializerNameFromRouteConvention : IDomainModelConvention<M
     public void Apply(MethodModelContext context)
     {
         if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
-        if (!context.Type.Has<TransientAttribute>()) { return; }
+        if (!context.Type.Has<Transient>()) { return; }
         if (!context.Method.Has<Initializer>()) { return; }
 
         var initializerPart = action.RouteParts.FirstOrDefault(p => p == context.Method.Name);

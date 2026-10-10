@@ -19,9 +19,9 @@ public class InitializableCodingStyleFeature(IEnumerable<string> initalizerNames
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
-                    members.Has<ServiceAttribute>() &&
+                    members.Has<Service>() &&
                     _initializerNames.Any(i => members.Methods.Contains(i)),
-                attribute: () => new TransientAttribute(),
+                attribute: () => new Transient(),
                 order: Order.At.Infra
             );
 

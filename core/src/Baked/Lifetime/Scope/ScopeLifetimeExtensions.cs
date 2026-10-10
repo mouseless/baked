@@ -1,16 +1,16 @@
 ﻿using Baked.Domain;
 using Baked.Domain.Model;
 using Baked.Lifetime;
-using Baked.Lifetime.Scoped;
+using Baked.Lifetime.Scope;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked;
 
-public static class ScopedLifetimeExtensions
+public static class ScopeLifetimeExtensions
 {
     extension(LifetimeConfigurator _)
     {
-        public ScopedLifetimeFeature Scoped() =>
+        public ScopeLifetimeFeature Scope() =>
             new();
     }
 

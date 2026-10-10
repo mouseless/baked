@@ -10,13 +10,33 @@ public static class QueryCodingStyleExtensions
 {
     extension(CodingStyleConfigurator _)
     {
-        public QueryCodingStyleFeature Query() =>
-            new();
+        public QueryCodingStyleFeature Query(
+            HashSet<string>? queryMethodNames = default,
+            HashSet<string>? primaryParameterNames = default,
+            HashSet<string>? takeParameterNames = default,
+            HashSet<string>? skipParameterNames = default,
+            HashSet<string>? sortingParameterNames = default
+        )
+        {
+            queryMethodNames ??= ["By"];
+            primaryParameterNames ??= ["searchText"];
+            takeParameterNames ??= ["take"];
+            skipParameterNames ??= ["skip"];
+            sortingParameterNames ??= ["sort"];
+
+            return new(
+                queryMethodNames,
+                primaryParameterNames,
+                takeParameterNames,
+                skipParameterNames,
+                sortingParameterNames
+            );
+        }
     }
 
     extension(TypeModel type)
     {
-        public bool TryGetQueryAttribute([NotNullWhen(true)] out QueryAttribute? queryAttribute)
+        public bool TryGetQueryAttribute([NotNullWhen(true)] out QueryClass? queryAttribute)
         {
             queryAttribute = default;
 

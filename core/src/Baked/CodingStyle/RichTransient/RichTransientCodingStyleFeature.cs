@@ -24,8 +24,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
-                    members.Has<ServiceAttribute>() &&
-                    members.Has<TransientAttribute>() &&
+                    members.Has<Service>() &&
+                    members.Has<Transient>() &&
                     TryFindIdProperty(members, out var idProperty) &&
                     members.Methods.Any(m =>
                         m.Has<Initializer>() &&

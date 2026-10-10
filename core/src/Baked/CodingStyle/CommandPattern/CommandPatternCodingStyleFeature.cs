@@ -23,8 +23,8 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     (
-                        !members.Has<TransientAttribute>() ||
-                        members.Has<TransientAttribute>() && !members.Has<LocatableAttribute>()
+                        !members.Has<Transient>() ||
+                        members.Has<Transient>() && !members.Has<LocatableAttribute>()
                     ) &&
                     TryGetSinglePotentialAction(members, c, out var action) &&
                     _methodNames.Contains(action.Name),
@@ -45,7 +45,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
             conventions.RemoveTypeAttribute<ApiController>(
                 when: c =>
                     c.Type.Has<CommandAttribute>() &&
-                    c.Type.Has<TransientAttribute>() &&
+                    c.Type.Has<Transient>() &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Any(m =>
                         m.Has<Initializer>() &&

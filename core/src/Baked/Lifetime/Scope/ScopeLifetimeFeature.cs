@@ -1,21 +1,21 @@
 ﻿using Baked.Architecture;
 
-namespace Baked.Lifetime.Singleton;
+namespace Baked.Lifetime.Scope;
 
-public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
+public class ScopeLifetimeFeature : IFeature<LifetimeConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Type.Add<SingletonAttribute>();
+            builder.Index.Type.Add<Scoped>();
         });
 
         configurator.Domain.ConfigureDomainServiceCollection((services, domain) =>
         {
-            foreach (var singleton in domain.Types.Having<SingletonAttribute>())
+            foreach (var scoped in domain.Types.Having<Scoped>())
             {
-                services.AddSingleton(singleton, forward: true);
+                services.AddScoped(scoped, useFactory: true);
             }
         });
     }

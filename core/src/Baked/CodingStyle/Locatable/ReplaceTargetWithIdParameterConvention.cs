@@ -10,7 +10,7 @@ public class ReplaceTargetWithIdParameterConvention : IDomainModelConvention<Met
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Type.Has<TransientAttribute>()) { return; }
+        if (!context.Type.Has<Transient>()) { return; }
         if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }

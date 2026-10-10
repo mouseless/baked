@@ -35,26 +35,26 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Type.Add(typeof(EntityAttribute));
-            builder.Index.Property.Add(typeof(UniqueAttribute));
+            builder.Index.Type.Add(typeof(Entity));
+            builder.Index.Property.Add(typeof(Unique));
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetPropertyAttribute(
                 when: c =>
-                    c.Type.Has<EntityAttribute>() &&
+                    c.Type.Has<Entity>() &&
                     c.Property.IsAutoProperty,
-                attribute: () => new ColumnAttribute(),
+                attribute: () => new Column(),
                 order: Order.At.Infra
             );
             conventions.SetPropertyAttribute(
                 when: c =>
-                    c.Type.Has<EntityAttribute>() &&
-                    c.Property.Has<ColumnAttribute>() &&
+                    c.Type.Has<Entity>() &&
+                    c.Property.Has<Column>() &&
                     c.Property.PropertyType.TryGetMetadata(out var metadata) &&
-                    metadata.Has<EntityAttribute>(),
-                attribute: () => new ForeignKeyAttribute(),
+                    metadata.Has<Entity>(),
+                attribute: () => new ForeignKey(),
                 order: Order.At.Infra
             );
         });
@@ -63,11 +63,11 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             exports.Build("DataAccess", export =>
             {
-                export.Include<EntityAttribute>();
+                export.Include<Entity>();
                 export.Include<IdAttribute>();
-                export.Include<ColumnAttribute>();
-                export.Include<ForeignKeyAttribute>();
-                export.Include<UniqueAttribute>();
+                export.Include<Column>();
+                export.Include<ForeignKey>();
+                export.Include<Unique>();
             });
         });
 

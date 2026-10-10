@@ -46,9 +46,9 @@ This feature provides `Id` configuration for transient and entity classes.
 c => c.Id()
 ```
 
-Single property of type `Baked.Business.Id` is marked with `IdAttribute`. For
-entities, `Id` properties are mapped with `IdGuidUserType` and generated with
-`IdGuidGenerator` using `DbType.Guid`.
+Single property of type `Baked.Business.Id` is marked with `IdProperty`
+attribute. For entities, `Id` properties are mapped with `IdGuidUserType` and
+generated with `IdGuidGenerator` using `DbType.Guid`.
 
 ```csharp
 public class Entity(IEntityContext<Parent> _context)
@@ -61,10 +61,10 @@ public class Entity(IEntityContext<Parent> _context)
 > [!TIP]
 >
 > To override ID mapping of an entity, add a property attribute configuration on
-> `IdAttribute` as below,
+> `IdProperty` as below,
 >
 > ```csharp
-> conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+> conventions.EditPropertyAttribute<IdProperty>(
 >     when: c => c.Type.Is<MyEntity>(),
 >     attribute: id => id.Assigned() // or id.AutoIncrement()
 > );
@@ -72,7 +72,7 @@ public class Entity(IEntityContext<Parent> _context)
 
 ## Initializable
 
-Adds `TransientAttribute` to the services that has an `Initializer` method.
+Adds `Transient` attribute to the services that has an `Initializer` method.
 This coding style makes usages like `_newEntity().With(name)` possible.
 `Transient` type's initializer parameters are added to query string and
 initalizer is invoked with given parameters when constructing target.
@@ -87,8 +87,8 @@ c => c.Initializable(initializerNames: [...])
 
 ## Label
 
-Marks selected string properties as labels by giving `LabelAttribute` to
-properties with matching names.
+Marks selected string properties as labels by giving `Label` to properties with
+matching names.
 
 ```csharp
 c => c.Label(propertyNames: [...])
@@ -142,28 +142,18 @@ c => c.ObjectAsJson()
 
 ## Query
 
-Adds `QueryAttribute` to the classes that has plural name of a locatable class,
-e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a query.
+Adds `QueryClass` attribute to the classes that has plural name of a locatable
+class, e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a
+query.
 
 Removes `FirstBy`, `SingleBy` and `By` names from API routes and configure them
 as `GET` endpoints.
 
-```csharp
-c => c.Query()
-```
-
-> [!WARNING]
->
-> A class that injects `IQueryContext` is not considered as a query class unless
-> it satisfies the plural naming convention.
-
-## Query Method
-
-Adds `QueryMethodAttribute` to the methods having given name of types with
-`QueryAttribute` and marks parameters with `SortAttribute` and `PagingAttribute`
+Adds `QueryMethod` to the methods having given name of types with `QueryClass`
+and marks parameters with `Sorting` and `Paging` attributes.
 
 ```csharp
-c => c.QueryMethod(
+c => c.Query(
     queryMethodNames: [...],
     primaryParameterNames: [...],
     takeParameterNames: [...],
@@ -182,6 +172,11 @@ c => c.QueryMethod(
 > - `skipParameterNames`: `["skip"]`
 > - `sortParameterNames`: `["sort"]`
 
+> [!WARNING]
+>
+> A class that injects `IQueryContext` is not considered as a query class unless
+> it satisfies the plural naming convention.
+
 ## Records are DTOs
 
 Configures domain type records as valid input parameters. Methods containing
@@ -193,8 +188,8 @@ c => c.RecordsAreDtos()
 
 ## Remaining Services are Singleton
 
-Adds `SingletonAttribute` to the services that has no `TransientAttribute` or
-`ScopedAttribute`.
+Adds `Singleton` attribute to the services that has no `Transient` or `Scoped`
+attributes.
 
 ```csharp
 c => c.RemainingServicesAreSingleton()
@@ -202,7 +197,7 @@ c => c.RemainingServicesAreSingleton()
 
 ## Rich Entity
 
-Adds `EntityAttribute` to classes that inject `IEntityContext<TEntity>`.
+Adds `Entity` to classes that inject `IEntityContext<TEntity>`.
 
 Configures `NHibernate` to initialize entities using dependency injection,
 making them rich entities.
@@ -230,7 +225,7 @@ c => c.RichTransient()
 
 ## Scoped by Suffix
 
-Adds `ScopedAttribute` to the services that has name with any of the given
+Adds `Scoped` attribute to the services that has name with any of the given
 suffixes.
 
 ```csharp
@@ -243,14 +238,14 @@ c => c.ScopedBySuffix(suffixes: [...])
 
 ## Unique
 
-Adds `UniqueAttribute` to entity properties of which corresponding query class
+Adds `Unique` attribute to entity properties of which corresponding query class
 has either a `SingleBy...` or `AnyBy...` query method, e.g., `User.Username`
 property would be treated as unique if either `Users.SingleByUsername` or
 `Users.AnyByUsername` exists.
 
 > [!NOTE]
 >
-> Having `UniqueAttribute` on a property tells `AutoMapOrmFeature` to configure
+> Having `Unique` attribute on a property tells `AutoMapOrmFeature` to configure
 > that column to have a unique constraint.
 
 ## `Uri` Return is Redirect
@@ -294,7 +289,7 @@ c => c.UseNullableTypes()
 ## Value Type
 
 Allows creating custom value types via `IParsable<T>` interface. It marks these
-types as `ValueTypeAttribute` and maps them using `ValueTypeUserType` in data
+types as `ValueType` attribute and maps them using `ValueTypeUserType` in data
 access layer using `NHibernateUtil.String`. Allows serializing and deserializing
 to and from `string` in json and API endpoints.
 
