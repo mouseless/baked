@@ -5,8 +5,12 @@
 - `Business` namespace now provides `Validate` object to perform business
   validations
 - `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
-- `IExportOptions` is introduced so that an attribute can control the name it
-  is exported with, e.g., `IdProperty` attribute is exported as `@id`
+- `IExportOptions` is introduced in `Baked.Abstractions` so that an attribute
+  can control the name it is exported with, e.g., `IdProperty` attribute is
+  exported as `@id`
+  - Attributes named after their target do not carry that noise to exports,
+    `CommandMethod` is exported as `@command`, `MappedMethod` as `@mapped` and
+    `QueryMethod` as `@query`
 
 ## Breaking Changes
 
@@ -37,6 +41,7 @@
     - `AllParametersAreApiInput()` -> `AllParametersAreBindable()`
     - `IsApiInput` -> `IsBindable`
   - `IdAttribute` -> `IdProperty`
+  - `QueryClass` -> `Query`, the coding style no longer occupies that name
   - `ValueTypeAttribute` -> `Primitive`, to avoid clashing with
     `System.ValueType` once the `Attribute` suffix is dropped
   - `RichTransientAttribute` -> `Resource`, since transients are already rich,

@@ -31,11 +31,11 @@ public class QueryViaPluralNameCodingStyleFeature(
                     c.Type.Has<Locatable>() &&
                     c.Domain.Types.TryGetValue(((IModel)c.Type).Id.Pluralize(), out var query) &&
                     query.TryGetMetadata(out var queryMetadata) &&
-                    !queryMetadata.Has<QueryClass>(),
+                    !queryMetadata.Has<Query>(),
                 apply: (c, set) =>
                 {
                     var queryType = c.Domain.Types[((IModel)c.Type).Id.Pluralize()];
-                    set(queryType.GetMetadata(), c.Type.Apply(t => new QueryClass(t)));
+                    set(queryType.GetMetadata(), c.Type.Apply(t => new Query(t)));
 
                     var locatable = c.Type.Get<Locatable>();
                     queryType.Apply(qt => locatable.QueryType = qt);
@@ -47,12 +47,12 @@ public class QueryViaPluralNameCodingStyleFeature(
             conventions.Add(new RemoveFromRouteConvention(["By"],
                 _whenContext: c =>
                     c.Type.TryGetMetadata(out var metadata) &&
-                    metadata.Has<QueryClass>() &&
+                    metadata.Has<Query>() &&
                     c.Method.Name.EndsWith("By")
             ), order: Order.At.Infra);
 
             conventions.SetMethodAttribute(
-                when: c => c.Type.Has<QueryClass>() && _queryMethodNames.Contains(c.Method.Name),
+                when: c => c.Type.Has<Query>() && _queryMethodNames.Contains(c.Method.Name),
                 attribute: () => new QueryMethod(),
                 order: Order.At.Infra + 40
             );

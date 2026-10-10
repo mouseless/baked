@@ -110,27 +110,13 @@ public static class BusinessExtensions
 
     extension(TypeModel type)
     {
-        public bool TryGetNamespace([NotNullWhen(true)] out string? @namespace)
+        public bool TryGetNamespace([NotNullWhen(true)] out Namespace? @namespace)
         {
-            if (!type.TryGetNamespaceAttribute(out var namespaceAttribute) || string.IsNullOrWhiteSpace(namespaceAttribute.Value))
-            {
-                @namespace = null;
-
-                return false;
-            }
-
-            @namespace = namespaceAttribute.Value;
-
-            return true;
-        }
-
-        public bool TryGetNamespaceAttribute([NotNullWhen(true)] out Namespace? namespaceAttribute)
-        {
-            namespaceAttribute = default;
+            @namespace = default;
 
             return
                 type.TryGetMetadata(out var metadata) &&
-                metadata.TryGet(out namespaceAttribute);
+                metadata.TryGet(out @namespace);
         }
 
         public bool HasIdInfo() =>

@@ -183,16 +183,14 @@ public readonly record struct MyValue : IParsable<MyValue>
 
 ## Query via Plural Name
 
-Adds `QueryClass` attribute to the classes that has plural name of a locatable
-class, e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a
-query.
+Adds `Query` attribute to the classes that has plural name of a locatable class,
+e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a query.
 
 Removes `FirstBy`, `SingleBy` and `By` names from API routes and configure them
 as `GET` endpoints.
 
 Adds `QueryMethod` attribute to the methods having given name of types with
-`QueryClass` attribute and marks parameters with `Sorting` and `Paging`
-attributes.
+`Query` attribute and marks parameters with `Sorting` and `Paging` attributes.
 
 ```csharp
 c => c.QueryViaPluralName(

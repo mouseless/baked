@@ -1,4 +1,5 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.Binding;
+using Baked.Domain.Model;
 
 namespace Baked.Domain.Export;
 

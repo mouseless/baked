@@ -75,7 +75,7 @@ public class DomainAssembliesBusinessFeature(
             builder.DefaultConventionLevel = "Business.Defaults.Configure";
 
             builder.Index.Type.Add<Service>();
-            builder.Index.Type.Add<QueryClass>();
+            builder.Index.Type.Add<Query>();
             builder.Index.Method.Add<Initializer>();
             builder.Index.Property.Add<IdProperty>();
             builder.Index.Property.Add<Label>();

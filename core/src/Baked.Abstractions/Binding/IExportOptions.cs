@@ -1,4 +1,4 @@
-﻿namespace Baked.Domain.Export;
+﻿namespace Baked.Binding;
 
 public interface IExportOptions
 {

@@ -1,4 +1,4 @@
-﻿using Baked.Domain.Export;
+﻿using Baked.Binding;
 
 namespace Baked.Business;
 

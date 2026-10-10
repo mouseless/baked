@@ -36,25 +36,25 @@ public static class QueryViaPluralNameCodingStyleExtensions
 
     extension(TypeModel type)
     {
-        public bool TryGetQueryAttribute([NotNullWhen(true)] out QueryClass? queryAttribute)
+        public bool TryGetQuery([NotNullWhen(true)] out Query? query)
         {
-            queryAttribute = default;
+            query = default;
 
             return
                 type.TryGetMetadata(out var metadata) &&
-                metadata.TryGet(out queryAttribute);
+                metadata.TryGet(out query);
         }
 
         public bool TryGetLocatableType(DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)
         {
-            if (!type.TryGetQueryAttribute(out var queryAttribute))
+            if (!type.TryGetQuery(out var query))
             {
                 locatableType = default;
 
                 return false;
             }
 
-            locatableType = domain.Types[queryAttribute.LocatableType];
+            locatableType = domain.Types[query.LocatableType];
 
             return true;
         }

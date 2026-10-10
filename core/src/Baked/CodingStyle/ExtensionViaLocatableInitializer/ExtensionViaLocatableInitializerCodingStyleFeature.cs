@@ -52,9 +52,9 @@ public class ExtensionViaLocatableInitializerCodingStyleFeature : IFeature<Codin
                 {
                     var locatableType = c.Type.Get<LocatableExtension>().LocatableType;
                     var locatableTypeModel = c.Domain.Types[locatableType];
-                    if (!locatableTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
+                    if (!locatableTypeModel.TryGetNamespace(out var @namespace)) { return; }
 
-                    set(c.Type, namespaceAttribute);
+                    set(c.Type, @namespace);
                 },
                 order: Order.At.Infra + 20
             );
