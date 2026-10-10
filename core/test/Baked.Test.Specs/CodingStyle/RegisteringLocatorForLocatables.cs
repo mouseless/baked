@@ -1,6 +1,6 @@
 ﻿using Baked.Business;
 using Baked.Orm;
-using Baked.Playground.CodingStyle.RichTransient;
+using Baked.Playground.CodingStyle.ResourceViaIdInitializer;
 
 using Entity = Baked.Playground.Orm.Entity;
 
@@ -19,16 +19,16 @@ public class RegisteringLocatorForLocatables : TestSpec
     [Test]
     public void Rich_transients_use_custom_generated_locator()
     {
-        var locator = GiveMe.The<ILocator<RichTransientWithData>>();
+        var locator = GiveMe.The<ILocator<ResourceWithData>>();
 
-        locator.GetType().Name.ShouldBe($"{nameof(RichTransientWithData)}Locator");
+        locator.GetType().Name.ShouldBe($"{nameof(ResourceWithData)}Locator");
     }
 
     [Test]
     public void Rich_transients_with_non_public_also_use_custom_generated_locator()
     {
-        var locator = GiveMe.The<ILocator<RichTransientParent>>();
+        var locator = GiveMe.The<ILocator<ResourceParent>>();
 
-        locator.GetType().Name.ShouldBe($"{nameof(RichTransientParent)}Locator");
+        locator.GetType().Name.ShouldBe($"{nameof(ResourceParent)}Locator");
     }
 }

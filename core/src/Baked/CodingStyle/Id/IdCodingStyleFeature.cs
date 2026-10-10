@@ -16,7 +16,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.RemoveTypeAttribute<ValueTypeAttribute>(
+            conventions.RemoveTypeAttribute<Primitive>(
                 when: c => c.Type.Is<Business.Id>(),
                 order: Order.At.Infra + 10
             );

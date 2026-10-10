@@ -119,8 +119,8 @@ nullable-samples @api-controller {
     nullable @api-parameter
     optional-nullable @api-parameter
   }
-  get-rich-transient {
-    @api-action route="GET /nullable-samples/rich-transient" required-claims="BaseA, BaseB"
+  get-resource {
+    @api-action route="GET /nullable-samples/resource" required-claims="BaseA, BaseB"
     not-null {
       @api-parameter required=#true in="query" name="notNullId"
     }
@@ -131,16 +131,16 @@ nullable-samples @api-controller {
       @api-parameter in="query" name="optionalNullableId"
     }
   }
-  rich-transient {
-    @api-action route="POST /nullable-samples/rich-transient" required-claims="BaseA, BaseB"
+  resource {
+    @api-action route="POST /nullable-samples/resource" required-claims="BaseA, BaseB"
     not-null {
       @api-parameter required=#true
     }
     nullable @api-parameter
     optional-nullable @api-parameter
   }
-  get-value-type-parameters {
-    @api-action route="GET /nullable-samples/value-type-parameters" required-claims="BaseA, BaseB"
+  get-primitive-parameters {
+    @api-action route="GET /nullable-samples/primitive-parameters" required-claims="BaseA, BaseB"
     single {
       @api-parameter in="query"
     }
@@ -151,8 +151,8 @@ nullable-samples @api-controller {
       @api-parameter required=#true in="query"
     }
   }
-  value-type-parameters {
-    @api-action route="POST /nullable-samples/value-type-parameters" required-claims="BaseA, BaseB"
+  primitive-parameters {
+    @api-action route="POST /nullable-samples/primitive-parameters" required-claims="BaseA, BaseB"
     single @api-parameter
     enumerable {
       @api-parameter required=#true
@@ -161,8 +161,8 @@ nullable-samples @api-controller {
       @api-parameter required=#true
     }
   }
-  record-with-value-type {
-    @api-action route="POST /nullable-samples/record-with-value-type" required-claims="BaseA, BaseB"
+  record-with-primitive {
+    @api-action route="POST /nullable-samples/record-with-primitive" required-claims="BaseA, BaseB"
     record {
       @api-parameter required=#true
     }

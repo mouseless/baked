@@ -1,5 +1,5 @@
-﻿using Baked.Playground.CodingStyle.RichTransient;
-using Baked.Playground.CodingStyle.ValueType;
+﻿using Baked.Playground.CodingStyle.PrimitiveViaParsable;
+using Baked.Playground.CodingStyle.ResourceViaIdInitializer;
 using Baked.Playground.Orm;
 using Microsoft.Extensions.Logging;
 
@@ -82,11 +82,11 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public object MultipleObjects(object object1, object object2) =>
         new { object1, object2 };
 
-    public void PrimitiveParameters(string @string, int @int, DateTime dateTime) =>
-        _logger.LogInformation($"{nameof(PrimitiveParameters)} was called with {@string}, {@int} and {dateTime}");
+    public void BuiltInTypeParameters(string @string, int @int, DateTime dateTime) =>
+        _logger.LogInformation($"{nameof(BuiltInTypeParameters)} was called with {@string}, {@int} and {dateTime}");
 
-    public void PrimitiveListParameters(List<string> strings, int[] ints, IEnumerable<DateTime> dateTimes) =>
-        _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{strings.Join(", ")}], [{ints.Join(", ")}] and [{dateTimes.Join(", ")}]");
+    public void BuiltInTypeListParameters(List<string> strings, int[] ints, IEnumerable<DateTime> dateTimes) =>
+        _logger.LogInformation($"{nameof(BuiltInTypeListParameters)} was called with [{strings.Join(", ")}], [{ints.Join(", ")}] and [{dateTimes.Join(", ")}]");
 
     public void RecordParameters(Record record) =>
         _logger.LogInformation($"{nameof(RecordParameters)} was called with {record}");
@@ -94,13 +94,13 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public void RecordListParameters(List<Record> records) =>
         _logger.LogInformation($"{nameof(RecordParameters)} was called with {records.Join(", ")}");
 
-    public IEnumerable<Value> GetValueTypeParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
+    public IEnumerable<Value> GetPrimitiveParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<Value> ValueTypeParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
+    public IEnumerable<Value> PrimitiveParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<Value> RecordWithValueType(RecordWith<Value> record) =>
+    public IEnumerable<Value> RecordWithPrimitive(RecordWith<Value> record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 
     /// <param name="single">
@@ -130,13 +130,13 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     /// <param name="array">
     /// Array description
     /// </param>
-    public IEnumerable<RichTransientWithData> GetTransientParameters(RichTransientWithData single, IEnumerable<RichTransientWithData> enumerable, RichTransientWithData[] array) =>
+    public IEnumerable<ResourceWithData> GetTransientParameters(ResourceWithData single, IEnumerable<ResourceWithData> enumerable, ResourceWithData[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<RichTransientWithData> TransientParameters(RichTransientWithData single, IEnumerable<RichTransientWithData> enumerable, RichTransientWithData[] array) =>
+    public IEnumerable<ResourceWithData> TransientParameters(ResourceWithData single, IEnumerable<ResourceWithData> enumerable, ResourceWithData[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<RichTransientWithData> RecordWithRichTransient(RecordWith<RichTransientWithData> record) =>
+    public IEnumerable<ResourceWithData> RecordWithResource(RecordWith<ResourceWithData> record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 
     /// <param name="single">
@@ -148,13 +148,13 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     /// <param name="array">
     /// Array description
     /// </param>
-    public IEnumerable<RichTransientAsync> GetTransientAsyncParameters(RichTransientAsync single, IEnumerable<RichTransientAsync> enumerable, RichTransientAsync[] array) =>
+    public IEnumerable<ResourceAsync> GetTransientAsyncParameters(ResourceAsync single, IEnumerable<ResourceAsync> enumerable, ResourceAsync[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<RichTransientAsync> TransientAsyncParameters(RichTransientAsync single, IEnumerable<RichTransientAsync> enumerable, RichTransientAsync[] array) =>
+    public IEnumerable<ResourceAsync> TransientAsyncParameters(ResourceAsync single, IEnumerable<ResourceAsync> enumerable, ResourceAsync[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<RichTransientAsync> RecordWithRichTransientAsync(RecordWith<RichTransientAsync> record) =>
+    public IEnumerable<ResourceAsync> RecordWithResourceAsync(RecordWith<ResourceAsync> record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 
     internal Internal Internal() =>

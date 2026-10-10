@@ -1,9 +1,0 @@
-rich-transient-no-data @api-controller {
-  method {
-    @api-action route="POST /rich-transient-no-datas/{id}/method" required-claims="BaseA, BaseB"
-    text {
-      @api-parameter required=#true
-    }
-  }
-}
-

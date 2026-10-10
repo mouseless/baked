@@ -37,7 +37,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
     [Test]
     public async Task Serializes_only_id_and_label_for_direct_parent_of_a_rich_transient()
     {
-        var response = await Client.GetAsync("/rich-transient-with-children/1");
+        var response = await Client.GetAsync("/resource-with-children/1");
         dynamic? child = await response.Content.Deserialize();
         object? actual = child?.parent;
 
@@ -47,7 +47,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
     [Test]
     public async Task Does_not_skip_properties_when_parent_child_relation_is_broken_for_a_rich_transient()
     {
-        var response = await Client.GetAsync("/rich-transient-with-children/1");
+        var response = await Client.GetAsync("/resource-with-children/1");
         dynamic? child = await response.Content.Deserialize();
         object? actual = child?.parentWrapper;
 
@@ -62,7 +62,7 @@ public class SerializingOnlyIdAndLabelsForParents : TestNfr
     [Test]
     public async Task Serializes_type_for_locatable_interfaces()
     {
-        var response = await Client.GetAsync("/rich-transient-with-children/1");
+        var response = await Client.GetAsync("/resource-with-children/1");
         dynamic? child = await response.Content.Deserialize();
         object? actual = child?.@interface;
 

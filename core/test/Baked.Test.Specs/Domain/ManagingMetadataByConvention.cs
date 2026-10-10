@@ -60,7 +60,7 @@ public class ManagingMetadataByConvention : TestSpec
     public void Adding_metadata_to_parameter()
     {
         var @class = GiveMe.TheTypeModel<MethodSamples>().GetMembers();
-        var method = @class.GetMethod(nameof(MethodSamples.PrimitiveParameters));
+        var method = @class.GetMethod(nameof(MethodSamples.BuiltInTypeParameters));
         var parameter = method.Parameters["string"];
 
         parameter.Has<Custom>().ShouldBeTrue();
@@ -70,7 +70,7 @@ public class ManagingMetadataByConvention : TestSpec
     public void Modifying_metadata_of_parameter()
     {
         var @class = GiveMe.TheTypeModel<MethodSamples>().GetMembers();
-        var method = @class.GetMethod(nameof(MethodSamples.PrimitiveParameters));
+        var method = @class.GetMethod(nameof(MethodSamples.BuiltInTypeParameters));
         var parameter = method.Parameters["string"];
 
         parameter.Get<Custom>().Value.ShouldBe("FROM CONVENTION");

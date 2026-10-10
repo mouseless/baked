@@ -71,7 +71,7 @@ public class RoutingCommands : TestNfr
     [Test]
     public async Task Initialization_parameters_can_be_rich_transient()
     {
-        var response = await Client.PostAsync("/command-with-rich-transient?transientId=1", null);
+        var response = await Client.PostAsync("/command-with-resource?transientId=1", null);
 
         var actual = await response.Content.ReadAsStringAsync();
 

@@ -77,11 +77,11 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
         c => c.Query(),
         c => c.RecordsAreDtos(),
         c => c.RemainingServicesAreSingleton(),
-        c => c.RichTransient(),
+        c => c.ResourceViaIdInitializer(),
         _scopedBySuffix,
         _useBuiltInTypes,
         c => c.UseNullableTypes(),
-        c => c.ValueType()
+        c => c.PrimitiveViaParsable()
     ];
 
     public class Run(FeatureFunc<BusinessConfigurator> business)

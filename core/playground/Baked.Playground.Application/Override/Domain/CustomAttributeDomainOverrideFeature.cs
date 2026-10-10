@@ -54,7 +54,7 @@ public class CustomAttributeDomainOverrideFeature : IFeature
             conventions.SetParameterAttribute(
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
-                    c.Method.Name is nameof(MethodSamples.PrimitiveParameters) &&
+                    c.Method.Name is nameof(MethodSamples.BuiltInTypeParameters) &&
                     c.Parameter.Name is "string",
                     order: Order.At.Override,
                 attribute: () => new Custom()
@@ -62,7 +62,7 @@ public class CustomAttributeDomainOverrideFeature : IFeature
             conventions.EditParameterAttribute<Custom>(
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
-                    c.Method.Name is nameof(MethodSamples.PrimitiveParameters) &&
+                    c.Method.Name is nameof(MethodSamples.BuiltInTypeParameters) &&
                     c.Parameter.Name is "string",
                     order: Order.At.Override,
                 attribute: attr => attr.Value = "FROM CONVENTION"

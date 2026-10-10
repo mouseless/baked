@@ -1,0 +1,18 @@
+entity-with-primitive @api-controller {
+  with {
+    @api-action route="POST /entity-with-primitives" required-claims="BaseA, BaseB"
+    value {
+      @api-parameter required=#true
+    }
+  }
+}
+
+entity-with-primitives @api-controller {
+  by {
+    @api-action route="GET /entity-with-primitives" required-claims="BaseA, BaseB"
+    value {
+      @api-parameter in="query"
+    }
+  }
+}
+

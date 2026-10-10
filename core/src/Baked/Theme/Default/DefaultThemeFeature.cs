@@ -220,7 +220,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Property.PropertyType.SkipNullable().TryGetMetadata(out var metadata) &&
                     (
                         metadata.Has<LocatableAttribute>() ||
-                        metadata.Has<ValueTypeAttribute>()
+                        metadata.Has<Primitive>()
                     ),
                 component: () => B.Text(),
                 order: Order.At.Min
@@ -661,7 +661,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.AddParameterComponent(
                 when: c =>
                     c.Parameter.ParameterType.Is<string>() ||
-                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
+                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<Primitive>(),
                 component: () => B.InputText(),
                 order: Order.At.Min
             );

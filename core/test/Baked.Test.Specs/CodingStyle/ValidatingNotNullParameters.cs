@@ -11,7 +11,7 @@ public class ValidatingNotNullParameters : TestNfr
     [TestCase("reference-type", "notNull")]
     [TestCase("entity", "notNullId")]
     [TestCase("entity-extension", "notNullId")]
-    [TestCase("rich-transient", "notNullId")]
+    [TestCase("resource", "notNullId")]
     public async Task Not_null_in_query_throws_bad_request_when_not_given(string route, string propertyName)
     {
         var response = await Client.GetAsync($"/nullable-samples/{route}");
@@ -28,7 +28,7 @@ public class ValidatingNotNullParameters : TestNfr
     [TestCase("record", "notNull")]
     [TestCase("entity", "notNull")]
     [TestCase("entity-extension", "notNull")]
-    [TestCase("rich-transient", "notNull")]
+    [TestCase("resource", "notNull")]
     public async Task Not_null_in_body_throws_bad_request_when_not_given(string route, string propertyName)
     {
         var response = await Client.PostAsync($"/nullable-samples/{route}", JsonContent.Create(
@@ -47,7 +47,7 @@ public class ValidatingNotNullParameters : TestNfr
     [TestCase("record", "notNull")]
     [TestCase("entity", "notNull")]
     [TestCase("entity-extension", "notNull")]
-    [TestCase("rich-transient", "notNull")]
+    [TestCase("resource", "notNull")]
     public async Task Not_null_in_body_throws_bad_request_when_null_is_given(string route, string propertyName)
     {
         var response = await Client.PostAsync($"/nullable-samples/{route}", JsonContent.Create(JsonConvert.DeserializeObject($$"""

@@ -78,8 +78,8 @@ method-samples @api-controller {
       @api-parameter required=#true
     }
   }
-  primitive-parameters {
-    @api-action route="POST /method-samples/primitive-parameters" required-claims="BaseA, BaseB"
+  built-in-type-parameters {
+    @api-action route="POST /method-samples/built-in-type-parameters" required-claims="BaseA, BaseB"
     string {
       @api-parameter required=#true
     }
@@ -90,8 +90,8 @@ method-samples @api-controller {
       @api-parameter required=#true
     }
   }
-  primitive-list-parameters {
-    @api-action route="POST /method-samples/primitive-list-parameters" required-claims="BaseA, BaseB"
+  built-in-type-list-parameters {
+    @api-action route="POST /method-samples/built-in-type-list-parameters" required-claims="BaseA, BaseB"
     strings {
       @api-parameter required=#true
     }
@@ -114,8 +114,8 @@ method-samples @api-controller {
       @api-parameter required=#true
     }
   }
-  get-value-type-parameters {
-    @api-action route="GET /method-samples/value-type-parameters" required-claims="BaseA, BaseB"
+  get-primitive-parameters {
+    @api-action route="GET /method-samples/primitive-parameters" required-claims="BaseA, BaseB"
     single {
       @api-parameter required=#true in="query"
     }
@@ -126,8 +126,8 @@ method-samples @api-controller {
       @api-parameter required=#true in="query"
     }
   }
-  value-type-parameters {
-    @api-action route="POST /method-samples/value-type-parameters" required-claims="BaseA, BaseB"
+  primitive-parameters {
+    @api-action route="POST /method-samples/primitive-parameters" required-claims="BaseA, BaseB"
     single {
       @api-parameter required=#true
     }
@@ -138,8 +138,8 @@ method-samples @api-controller {
       @api-parameter required=#true
     }
   }
-  record-with-value-type {
-    @api-action route="POST /method-samples/record-with-value-type" required-claims="BaseA, BaseB"
+  record-with-primitive {
+    @api-action route="POST /method-samples/record-with-primitive" required-claims="BaseA, BaseB"
     record {
       @api-parameter required=#true
     }
@@ -198,8 +198,8 @@ method-samples @api-controller {
       @api-parameter required=#true
     }
   }
-  record-with-rich-transient {
-    @api-action route="POST /method-samples/record-with-rich-transient" required-claims="BaseA, BaseB"
+  record-with-resource {
+    @api-action route="POST /method-samples/record-with-resource" required-claims="BaseA, BaseB"
     record {
       @api-parameter required=#true
     }
@@ -228,8 +228,8 @@ method-samples @api-controller {
       @api-parameter required=#true
     }
   }
-  record-with-rich-transient-async {
-    @api-action route="POST /method-samples/record-with-rich-transient-async" required-claims="BaseA, BaseB"
+  record-with-resource-async {
+    @api-action route="POST /method-samples/record-with-resource-async" required-claims="BaseA, BaseB"
     record {
       @api-parameter required=#true
     }

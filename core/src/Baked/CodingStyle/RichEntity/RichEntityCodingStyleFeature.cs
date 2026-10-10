@@ -41,7 +41,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 order: Order.At.Infra + 30
             );
 
-            conventions.Add(new EntityInitializerIsPostResourceConvention(), order: Order.At.Infra);
+            conventions.Add(new EntityInitializerIsPostConvention(), order: Order.At.Infra);
         });
 
         configurator.DataAccess.ConfigureNHibernateInterceptor(interceptor =>

@@ -1,9 +1,0 @@
-rich-transient-child @api-controller {
-  with {
-    @api-action route="GET /rich-transient-children/{id}" required-claims="BaseA, BaseB"
-    id {
-      @api-parameter required=#true in="route"
-    }
-  }
-}
-

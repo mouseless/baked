@@ -18,7 +18,7 @@ public class LabelCodingStyleFeature(IEnumerable<string> propertyNames)
                     c.Property.IsPublic &&
                     (
                         c.Property.PropertyType.Is<string>() ||
-                        c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>()
+                        c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<Primitive>()
                     ) &&
                     _propertyNames.Contains(c.Property.Name),
                 attribute: () => new LabelAttribute(),

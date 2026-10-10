@@ -96,13 +96,13 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
         c => c.RecordsAreDtos(),
         c => c.RemainingServicesAreSingleton(),
         c => c.RichEntity(),
-        c => c.RichTransient(),
+        c => c.ResourceViaIdInitializer(),
         _scopedBySuffix,
         c => c.Unique(),
         c => c.UriReturnIsRedirect(),
         _useBuiltInTypes,
         c => c.UseNullableTypes(),
-        c => c.ValueType()
+        c => c.PrimitiveViaParsable()
     ];
 
     public class Run(FeatureFunc<BusinessConfigurator> business)

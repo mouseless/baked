@@ -1,0 +1,6 @@
+command-with-resource @api-controller {
+  execute {
+    @api-action route="POST /command-with-resource" required-claims="BaseA, BaseB"
+  }
+}
+
