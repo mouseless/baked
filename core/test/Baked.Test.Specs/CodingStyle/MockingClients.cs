@@ -1,4 +1,4 @@
-using Baked.Playground.Communication;
+﻿using Baked.Playground.Communication;
 using Baked.RestApi.Model;
 
 namespace Baked.Test.CodingStyle;

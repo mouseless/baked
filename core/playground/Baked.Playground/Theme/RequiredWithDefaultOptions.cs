@@ -1,4 +1,4 @@
-namespace Baked.Playground.Theme;
+﻿namespace Baked.Playground.Theme;
 
 public enum RequiredWithDefaultOptions
 {

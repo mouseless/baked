@@ -1,4 +1,4 @@
-namespace Baked.Business;
+﻿namespace Baked.Business;
 
 public class Validate(IServiceProvider _sp)
 {

@@ -1,4 +1,4 @@
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using System.ComponentModel.DataAnnotations;
 

@@ -1,4 +1,4 @@
-namespace Baked.Theme.Default;
+﻿namespace Baked.Theme.Default;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class UiAction : Attribute

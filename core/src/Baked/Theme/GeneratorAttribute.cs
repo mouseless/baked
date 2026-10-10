@@ -1,4 +1,4 @@
-using Baked.Domain.Inspection;
+﻿using Baked.Domain.Inspection;
 
 namespace Baked.Theme;
 

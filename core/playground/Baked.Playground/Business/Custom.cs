@@ -1,4 +1,4 @@
-namespace Baked.Playground.Business;
+﻿namespace Baked.Playground.Business;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter)]
 public class Custom : Attribute

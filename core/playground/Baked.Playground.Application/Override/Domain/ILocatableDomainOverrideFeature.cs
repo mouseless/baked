@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Playground.CodingStyle.Locatable;

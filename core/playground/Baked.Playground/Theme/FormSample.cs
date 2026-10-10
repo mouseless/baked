@@ -1,4 +1,4 @@
-using Baked.Authorization;
+﻿using Baked.Authorization;
 using Baked.Playground.ExceptionHandling;
 using Baked.Playground.Orm;
 using Microsoft.Extensions.Localization;

@@ -1,4 +1,4 @@
-namespace Baked.Ui;
+﻿namespace Baked.Ui;
 
 public record InputUrl : IComponentSchema, ILabeler
 {

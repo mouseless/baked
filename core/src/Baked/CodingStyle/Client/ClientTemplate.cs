@@ -1,4 +1,4 @@
-using Baked.Buildtime;
+﻿using Baked.Buildtime;
 using Baked.Domain.Model;
 
 namespace Baked.CodingStyle.Client;

@@ -1,4 +1,4 @@
-namespace Baked.Ui;
+﻿namespace Baked.Ui;
 
 public interface ILabeler : IComponentSchema
 {

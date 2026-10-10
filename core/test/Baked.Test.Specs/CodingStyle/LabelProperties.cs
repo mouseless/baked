@@ -1,4 +1,4 @@
-using Baked.Business;
+﻿using Baked.Business;
 using Baked.Playground.Orm;
 
 namespace Baked.Test.CodingStyle;

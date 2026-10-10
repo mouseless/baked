@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Authentication;
 using Baked.Authorization;
 using Baked.Binding;

@@ -1,4 +1,4 @@
-namespace Baked.Playground.Orm;
+﻿namespace Baked.Playground.Orm;
 
 [Flags]
 public enum FlagsEnumeration

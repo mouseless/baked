@@ -1,4 +1,4 @@
-namespace Baked.Caching;
+﻿namespace Baked.Caching;
 
 public class ClientCache(string type)
     : Attribute()

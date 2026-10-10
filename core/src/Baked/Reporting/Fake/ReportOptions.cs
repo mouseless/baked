@@ -1,4 +1,4 @@
-using Baked.Runtime;
+﻿using Baked.Runtime;
 
 namespace Baked.Reporting.Fake;
 

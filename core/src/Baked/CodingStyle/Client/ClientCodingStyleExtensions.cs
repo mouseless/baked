@@ -1,4 +1,4 @@
-using Baked.CodingStyle;
+﻿using Baked.CodingStyle;
 using Baked.CodingStyle.Client;
 
 namespace Baked;

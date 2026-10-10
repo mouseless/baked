@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Globalization;
 
 namespace Baked.CodingStyle.ValueType;

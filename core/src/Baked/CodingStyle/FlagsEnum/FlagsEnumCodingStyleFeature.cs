@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 
 namespace Baked.CodingStyle.FlagsEnum;
 

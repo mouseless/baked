@@ -1,4 +1,4 @@
-using Baked.Ui.Configuration;
+﻿using Baked.Ui.Configuration;
 
 namespace Baked.Playground.Override.Ui;
 

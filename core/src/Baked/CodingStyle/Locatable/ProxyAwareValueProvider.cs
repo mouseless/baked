@@ -1,4 +1,4 @@
-using Baked.RestApi;
+﻿using Baked.RestApi;
 using Humanizer;
 using Newtonsoft.Json.Serialization;
 

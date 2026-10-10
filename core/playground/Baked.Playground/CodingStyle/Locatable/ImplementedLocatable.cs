@@ -1,4 +1,4 @@
-namespace Baked.Playground.CodingStyle.Locatable;
+﻿namespace Baked.Playground.CodingStyle.Locatable;
 
 public class ImplementedLocatable : ILocatable
 {

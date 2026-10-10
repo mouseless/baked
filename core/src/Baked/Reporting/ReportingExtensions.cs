@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Reporting;
 using Baked.Testing;
 using Moq;

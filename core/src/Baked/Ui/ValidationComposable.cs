@@ -1,3 +1,3 @@
-namespace Baked.Ui;
+﻿namespace Baked.Ui;
 
 public record ValidationComposable(string Name);

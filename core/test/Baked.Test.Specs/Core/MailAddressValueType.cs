@@ -1,4 +1,4 @@
-using Baked.Core;
+﻿using Baked.Core;
 
 namespace Baked.Test.Core;
 

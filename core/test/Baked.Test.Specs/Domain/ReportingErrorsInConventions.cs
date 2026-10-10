@@ -1,4 +1,4 @@
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.Testing;
 using System.Reflection;
 

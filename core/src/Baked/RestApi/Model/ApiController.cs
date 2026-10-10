@@ -1,4 +1,4 @@
-namespace Baked.RestApi.Model;
+﻿namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class ApiController()

@@ -1,4 +1,4 @@
-using Baked.Communication;
+﻿using Baked.Communication;
 using System.Net;
 using System.Text.Json;
 

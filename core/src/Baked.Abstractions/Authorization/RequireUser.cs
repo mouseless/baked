@@ -1,4 +1,4 @@
-namespace Baked.Authorization;
+﻿namespace Baked.Authorization;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class RequireUser(

@@ -1,4 +1,4 @@
-using Baked.Buildtime.Diagnostics;
+﻿using Baked.Buildtime.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Baked.Test.Buildtime;

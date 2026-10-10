@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Domain.Configuration;
 using Baked.Runtime;
 using FluentNHibernate.Cfg.Db;

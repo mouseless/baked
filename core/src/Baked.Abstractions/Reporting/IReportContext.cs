@@ -1,4 +1,4 @@
-namespace Baked.Reporting;
+﻿namespace Baked.Reporting;
 
 public interface IReportContext
 {

@@ -1,4 +1,4 @@
-using Baked.Localization;
+﻿using Baked.Localization;
 using Baked.Localization.Dotnet;
 using System.Globalization;
 

@@ -1,3 +1,3 @@
-namespace Baked.Binding;
+﻿namespace Baked.Binding;
 
 public class BindingConfigurator;

@@ -1,4 +1,4 @@
-using Baked.CodingStyle.ValueType;
+﻿using Baked.CodingStyle.ValueType;
 using Baked.Playground.CodingStyle.ValueType;
 using Baked.Test;
 using NHibernate.Type;

@@ -1,4 +1,4 @@
-namespace Baked.Business;
+﻿namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.All)]
 public class GroupAttribute : Attribute

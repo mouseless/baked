@@ -1,4 +1,4 @@
-namespace Baked.Playground.CodingStyle.RichTransient;
+﻿namespace Baked.Playground.CodingStyle.RichTransient;
 
 public class RichTransientAsync
 {

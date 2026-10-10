@@ -1,4 +1,4 @@
-using Baked.Business;
+﻿using Baked.Business;
 using Baked.CodingStyle;
 using Baked.CodingStyle.Query;
 using Baked.Domain.Model;

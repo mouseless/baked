@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.RestApi;
 using Baked.Theme.Default;
 using Baked.Ui;

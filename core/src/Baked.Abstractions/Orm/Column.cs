@@ -1,4 +1,4 @@
-namespace Baked.Orm;
+﻿namespace Baked.Orm;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class Column : Attribute;

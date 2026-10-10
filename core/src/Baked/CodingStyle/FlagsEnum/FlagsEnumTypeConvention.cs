@@ -1,4 +1,4 @@
-using FluentNHibernate.Conventions;
+﻿using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;

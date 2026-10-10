@@ -1,4 +1,4 @@
-using Baked.Buildtime.Diagnostics;
+﻿using Baked.Buildtime.Diagnostics;
 using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
 using Baked.Domain.Model;

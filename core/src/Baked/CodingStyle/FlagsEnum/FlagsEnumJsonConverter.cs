@@ -1,4 +1,4 @@
-using Humanizer;
+﻿using Humanizer;
 using Newtonsoft.Json;
 using System.Globalization;
 

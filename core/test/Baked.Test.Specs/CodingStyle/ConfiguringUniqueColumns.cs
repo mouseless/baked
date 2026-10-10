@@ -1,4 +1,4 @@
-using Baked.Playground.Orm;
+﻿using Baked.Playground.Orm;
 
 using NHConfiguration = NHibernate.Cfg.Configuration;
 

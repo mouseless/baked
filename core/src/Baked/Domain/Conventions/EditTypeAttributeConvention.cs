@@ -1,4 +1,4 @@
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 
 namespace Baked.Domain.Conventions;
