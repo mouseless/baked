@@ -4,9 +4,7 @@
 
 - `Business` namespace now provides `Validate` object to perform business
   validations
-- `ValidatableObjectCodingStyle` is introduced to handle complex record
-  validation via `IValidatableObject` interface
-- `EnumFlagsCodingStyle` is now available that supports enums with `[Flags]`
+- `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
 
 ## Breaking Changes
 

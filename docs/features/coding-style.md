@@ -38,6 +38,37 @@ c => c.CommandPattern(methodNames: [...])
 >
 > Default value of `methodNames` is `["Execute", "Process"]`.
 
+## Flags Enum
+
+Adds support for enums marked with `[Flags]`. Configures data access to map
+flags enum properties, including nullable ones, using the enum type itself, and
+configures api serialization to represent them as an array of flag names in
+`camelCase`.
+
+```csharp
+c => c.FlagsEnum()
+```
+
+To create a flags enum, mark it with `[Flags]` and give each member a distinct
+bit;
+
+```csharp
+[Flags]
+public enum Permissions
+{
+    Read = 1 << 0,
+    Write = 1 << 1,
+    Delete = 1 << 2
+}
+```
+
+A property of this type is serialized as below, and is deserialized from the
+same representation;
+
+```json
+["read", "write"]
+```
+
 ## Id
 
 This feature provides `Id` configuration for transient and entity classes.
@@ -115,9 +146,9 @@ c => c.Locatable()
 ## Locatable Extension
 
 Allows classes to extend locatables via composition. This marks a transient
-class as a locatable extension when it has an initializer with only one
-parameter that is a locatable. Methods of these extension classes are rendered
-under locatable group.
+class as a locatable extension when it has a property with `IdProperty`
+attribute and an initializer with only one parameter that is a locatable.
+Methods of these extension classes are rendered under locatable group.
 
 ```csharp
 c => c.LocatableExtension()
@@ -239,9 +270,12 @@ c => c.ScopedBySuffix(suffixes: [...])
 ## Unique
 
 Adds `Unique` attribute to entity properties of which corresponding query class
-has either a `SingleBy...` or `AnyBy...` query method, e.g., `User.Username`
-property would be treated as unique if either `Users.SingleByUsername` or
-`Users.AnyByUsername` exists.
+has a `SingleBy...` query method, e.g., `User.Username` property would be
+treated as unique if `Users.SingleByUsername` exists.
+
+```csharp
+c => c.Unique()
+```
 
 > [!NOTE]
 >
