@@ -5,8 +5,6 @@ using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Humanizer;
 
-using ApiParameter = Baked.RestApi.Model.ApiParameter;
-
 namespace Baked;
 
 public static class ResourceViaIdInitializerCodingStyleExtensions

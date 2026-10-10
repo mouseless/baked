@@ -11,7 +11,7 @@ public class AddInitializerParametersToQueryConvention : IDomainModelConvention<
     {
         if (!context.Type.Has<Transient>()) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
-        if (members.Has<LocatableAttribute>()) { return; }
+        if (members.Has<Locatable>()) { return; }
         if (!members.Methods.Having<Initializer>().Any()) { return; }
         if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
 

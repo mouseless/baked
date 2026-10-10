@@ -11,7 +11,7 @@ public class LabelProperties : TestSpec
         var child = GiveMe.TheTypeModel<Child>().GetMembers();
         var name = child.Properties[nameof(Child.Name)];
 
-        name.Has<LabelAttribute>().ShouldBeTrue();
+        name.Has<Label>().ShouldBeTrue();
     }
 
     [Test]
@@ -20,6 +20,6 @@ public class LabelProperties : TestSpec
         var child = GiveMe.TheTypeModel<Child>().GetMembers();
         var title = child.Properties["Title"];
 
-        title.Has<LabelAttribute>().ShouldBeFalse();
+        title.Has<Label>().ShouldBeFalse();
     }
 }

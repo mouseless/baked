@@ -31,7 +31,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 schema: () => B.DataTableColumn()
             );
             conventions.EditPropertySchema<DataTable.Column>(
-                when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
+                when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<Locatable>(),
                 schema: (dtc, c, cc) => dtc.Hidden = cc.Path.StartsWith("page", c.Property.PropertyType.Name) ? true : null
             );
             conventions.EditPropertySchema<DataTable.Column>(
@@ -45,12 +45,12 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 }
             );
             conventions.EditPropertySchema<DataTable.Column>(
-                when: c => c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
+                when: c => c.Property.PropertyType.TryGetMembers(out var members) && members.Has<Locatable>(),
                 schema: (dtc, c, cc) =>
                 {
                     var members = c.Property.PropertyType.GetMembers();
                     var labelProperty =
-                        members.FirstPropertyOrDefault<LabelAttribute>() ??
+                        members.FirstPropertyOrDefault<Label>() ??
                         members.FirstProperty<IdProperty>();
 
                     var rootProp = cc.Path.Contains("footer-template") ? "data" : "row";
@@ -70,7 +70,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
             // Export
             conventions.AddMethodSchema(
-                when: c => c.Method.Has<ComponentGeneratorAttribute<DataTable>>(),
+                when: c => c.Method.Has<ComponentGenerator<DataTable>>(),
                 schema: () => B.DataTableExport(),
                 order: 10
             );

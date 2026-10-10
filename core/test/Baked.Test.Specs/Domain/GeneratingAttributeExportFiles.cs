@@ -80,8 +80,8 @@ public class GeneratingAttributeExportFiles : TestSpec
             ],
             properties:
             [
-                new("Name", [new(nameof(DataAttribute), ("Prop","Name")), new(nameof(LabelAttribute))]),
-                new("Surname", [new(nameof(LabelAttribute))])
+                new("Name", [new(nameof(DataAttribute), ("Prop","Name")), new(nameof(Label))]),
+                new("Surname", [new(nameof(Label))])
             ]
         );
         var exportSet = new ExportSetModel(new(new[] { typeExport }));

@@ -14,7 +14,7 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
-                attribute: () => new ApiInputAttribute(),
+                attribute: () => new ApiInput(),
                 when: c => c.Type.Is<object>(),
                 order: Order.At.Infra
             );

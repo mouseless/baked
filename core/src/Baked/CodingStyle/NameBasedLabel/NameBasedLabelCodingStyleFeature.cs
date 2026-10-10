@@ -21,7 +21,7 @@ public class NameBasedLabelCodingStyleFeature(IEnumerable<string> propertyNames)
                         c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<Primitive>()
                     ) &&
                     _propertyNames.Contains(c.Property.Name),
-                attribute: () => new LabelAttribute(),
+                attribute: () => new Label(),
                 order: Order.At.Infra + 10
             );
         });

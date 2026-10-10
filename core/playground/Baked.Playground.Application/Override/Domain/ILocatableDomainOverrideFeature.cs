@@ -13,7 +13,7 @@ public class ILocatableDomainOverrideFeature : IFeature
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.Is<ILocatable>(),
-                attribute: () => new LocatableAttribute(),
+                attribute: () => new Locatable(),
                 order: Order.At.Override
             );
         });

@@ -24,7 +24,7 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
 
             // renders property as navlink when it is a label property for the types that has route
             conventions.AddPropertyComponent(
-                when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<LabelAttribute>(),
+                when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<Label>(),
                 where: cc => cc.Path.EndsWith("data-table", "columns", "*", "component"),
                 component: (c, cc) => c.Type.GenerateRequiredComponent<NavLink>(cc)
             );

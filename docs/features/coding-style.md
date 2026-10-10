@@ -72,10 +72,11 @@ same representation;
 
 ## Initializable via Method Name
 
-Adds `Transient` attribute to the services that has an `Initializer` method.
-This coding style makes usages like `_newEntity().With(name)` possible.
-`Transient` type's initializer parameters are added to query string and
-initalizer is invoked with given parameters when constructing target.
+Adds `Transient` attribute to the services that has a method with `Initializer`
+attribute. This coding style makes usages like `_newEntity().With(name)`
+possible. Initializer parameters of a type with `Transient` attribute are added
+to query string and initializer is invoked with given parameters when
+constructing target.
 
 ```csharp
 c => c.InitializableViaMethodName(initializerNames: [...])
@@ -87,9 +88,9 @@ c => c.InitializableViaMethodName(initializerNames: [...])
 
 ## Locate via ID
 
-Manages binding of `Locatable` targets and api inputs. For `Locatable` types,
-this feature adds id parameter to route, configures finding target and parameter
-lookup expressions by using `Locatable` attribute.
+Manages binding of targets and api inputs that have `Locatable` attribute. For
+such types, this feature adds id parameter to route, configures finding target
+and parameter lookup expressions by using `Locatable` attribute.
 
 ```csharp
 c => c.LocateViaId()
@@ -97,12 +98,12 @@ c => c.LocateViaId()
 
 > [!NOTE]
 >
-> Parameter lookup is only supported for `Locatable` types
+> Parameter lookup is only supported for types with `Locatable` attribute
 
 ## Name based Label
 
-Marks selected string properties as labels by giving `Label` to properties with
-matching names.
+Marks selected string properties as labels by giving `Label` attribute to
+properties with matching names.
 
 ```csharp
 c => c.NameBasedLabel(propertyNames: [...])
@@ -189,8 +190,9 @@ query.
 Removes `FirstBy`, `SingleBy` and `By` names from API routes and configure them
 as `GET` endpoints.
 
-Adds `QueryMethod` to the methods having given name of types with `QueryClass`
-and marks parameters with `Sorting` and `Paging` attributes.
+Adds `QueryMethod` attribute to the methods having given name of types with
+`QueryClass` attribute and marks parameters with `Sorting` and `Paging`
+attributes.
 
 ```csharp
 c => c.QueryViaPluralName(
@@ -239,8 +241,8 @@ c => c.RemainingServicesAreSingleton()
 
 Configures transient services as api services. This coding style marks a type
 having a public initializer with a single `Business.Id` parameter which will
-render from route, as `Resource`, configures `Locatable` attribute and generates
-locators.
+render from route, as `Resource` attribute, configures `Locatable` attribute and
+generates locators.
 
 Resources can be method parameters and located using their locators.
 
@@ -252,7 +254,7 @@ c => c.ResourceViaIdInitializer()
 
 ## Rich Entity
 
-Adds `Entity` to classes that inject `IEntityContext<TEntity>`.
+Adds `Entity` attribute to classes that inject `IEntityContext<TEntity>`.
 
 Configures `NHibernate` to initialize entities using dependency injection,
 making them rich entities.
@@ -309,7 +311,7 @@ public class Entity(IEntityContext<Parent> _context)
 > [!TIP]
 >
 > To override ID mapping of an entity, add a property attribute configuration on
-> `IdProperty` as below,
+> `IdProperty` attribute as below,
 >
 > ```csharp
 > conventions.EditPropertyAttribute<IdProperty>(

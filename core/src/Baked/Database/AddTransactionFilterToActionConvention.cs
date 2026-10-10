@@ -12,7 +12,7 @@ public class AddTransactionFilterToActionConvention : IDomainModelConvention<Typ
 
         foreach (var (key, action) in controller.Action)
         {
-            if (members.Methods.TryGetValue(key, out var method) && method.Has<NoTransactionAttribute>()) { continue; }
+            if (members.Methods.TryGetValue(key, out var method) && method.Has<NoTransaction>()) { continue; }
 
             action.AdditionalAttributes.Add($"ServiceFilter(typeof({typeof(TransactionFilter).FullName}), Order = int.MinValue)");
         }

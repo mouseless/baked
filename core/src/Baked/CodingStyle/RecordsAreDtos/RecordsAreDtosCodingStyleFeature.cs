@@ -11,7 +11,7 @@ public class RecordsAreDtosCodingStyleFeature : IFeature<CodingStyleConfigurator
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
-                attribute: () => new ApiInputAttribute(),
+                attribute: () => new ApiInput(),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Contains("<Clone>$"), // if type is record

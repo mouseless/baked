@@ -153,7 +153,7 @@ public static class DefaultThemeExtensions
         }
     }
 
-    extension(GroupAttribute group)
+    extension(Group group)
     {
         public string InputGroupKey { get => group[nameof(FormPage.InputGroup)]; set => group[nameof(FormPage.InputGroup)] = value; }
         public string SectionKey { get => group[nameof(FormPage.Section)]; set => group[nameof(FormPage.Section)] = value; }
@@ -163,13 +163,13 @@ public static class DefaultThemeExtensions
     extension(ICustomAttributesModel model)
     {
         public string InputGroupKey =>
-            model.Get<GroupAttribute>().InputGroupKey;
+            model.Get<Group>().InputGroupKey;
 
         public string SectionKey =>
-            model.Get<GroupAttribute>().SectionKey;
+            model.Get<Group>().SectionKey;
 
         public string TabName =>
-            model.Get<GroupAttribute>().TabName.Kebaberize();
+            model.Get<Group>().TabName.Kebaberize();
     }
 
     extension<T>(IEnumerable<T> models) where T : ICustomAttributesModel

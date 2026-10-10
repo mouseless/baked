@@ -19,8 +19,8 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                 when: c =>
                     c.Type.IsAssignableTo(typeof(Nullable<>)) &&
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
-                    genericArgumentMetadata.Has<ApiInputAttribute>(),
-                attribute: () => new ApiInputAttribute(),
+                    genericArgumentMetadata.Has<ApiInput>(),
+                attribute: () => new ApiInput(),
                 order: Order.At.Infra.Min
             );
 

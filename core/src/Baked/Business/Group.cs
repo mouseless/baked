@@ -1,7 +1,7 @@
 ﻿namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.All)]
-public class GroupAttribute : Attribute
+public class Group : Attribute
 {
     Dictionary<string, string> NameByContext { get; } = [];
 

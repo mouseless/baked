@@ -19,10 +19,10 @@ public class LocatorTemplate : CodeTemplateBase
     public LocatorTemplate(DomainModel domain)
     {
         _domain = domain;
-        foreach (var item in _domain.Types.Having<LocatableExtensionAttribute>())
+        foreach (var item in _domain.Types.Having<LocatableExtension>())
         {
             if (!item.TryGetMembers(out var members)) { continue; }
-            if (!members.TryGet<LocatableAttribute>(out var _)) { continue; }
+            if (!members.TryGet<Locatable>(out var _)) { continue; }
 
             _locatableExtensions.Add(members);
         }
@@ -115,11 +115,11 @@ public class LocatorTemplate : CodeTemplateBase
 
     bool IsAsync(TypeModelMembers extension) =>
         LocatableType(extension).TryGetMetadata(out var metadata) &&
-        metadata.TryGet<LocatableAttribute>(out var locatable) &&
+        metadata.TryGet<Locatable>(out var locatable) &&
         locatable.IsAsync;
 
     TypeModel LocatableType(TypeModelMembers extension) =>
-        _domain.Types[extension.Get<LocatableExtensionAttribute>().LocatableType];
+        _domain.Types[extension.Get<LocatableExtension>().LocatableType];
 
     string New(TypeModelMembers extension, string expression) =>
         $$"""_new{{extension.Name}}().{{extension.FirstMethod<Initializer>().Name}}({{expression}})""";

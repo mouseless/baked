@@ -19,7 +19,7 @@ public class EntityDomainOverrideFeature : IFeature
 
             conventions.SetPropertyAttribute(
                 when: c => c.Type.Is<Entity>() && c.Property.Name is nameof(Entity.Unique),
-                attribute: () => new LabelAttribute(),
+                attribute: () => new Label(),
                 order: Order.At.Override
             );
 

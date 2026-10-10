@@ -6,10 +6,31 @@
   validations
 - `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
 - `IExportOptions` is introduced so that an attribute can control the name it
-  is exported with, e.g., `IdProperty` is exported as `@id`
+  is exported with, e.g., `IdProperty` attribute is exported as `@id`
 
 ## Breaking Changes
 
+- Attributes that are used in conventions no longer have the `Attribute` suffix
+  - `ApiInputAttribute` -> `ApiInput`
+  - `ClientAttribute` -> `Client`
+  - `CommandAttribute` -> `Command`
+  - `CommandMethodAttribute` -> `CommandMethod`
+  - `ComponentGeneratorAttribute<T>` -> `ComponentGenerator<T>`
+  - `ContextBasedComponentAttribute` -> `ContextBasedComponent`
+  - `ExternalAttribute` -> `External`
+  - `GroupAttribute` -> `Group`
+  - `LabelAttribute` -> `Label`
+  - `LocatableAttribute` -> `Locatable`
+  - `LocatableExtensionAttribute` -> `LocatableExtension`
+  - `MappedMethodAttribute` -> `MappedMethod`
+  - `NamespaceAttribute` -> `Namespace`
+  - `NoTransactionAttribute` -> `NoTransaction`
+  - `ObjectWithListAttribute` -> `ObjectWithList`
+  - `TryGetLocatableAttribute()` extension -> `TryGetLocatable()`
+  - Names in exported `.kdl` files do not change, the `Attribute` suffix was
+    already being stripped during export
+- `AllowAnonymous`, `ClientCache` and `NoTransaction` attributes now declare
+  `[AttributeUsage]`, so they are no longer included in every export target
 - Attributes that are used in conventions are renamed
   - `IdAttribute` -> `IdProperty`
   - `ValueTypeAttribute` -> `Primitive`, to avoid clashing with
@@ -51,6 +72,6 @@
     locatable, e.g., `internal MyExtension With(MyLocatable locatable) { ... }`,
     becomes an extension for that locatable
   - This might result unintended classes to become an extension causing their
-    API endpoint routes to change, removing `LocatableExtensionAttribute` from
-    unwanted classes, or adding another parameter to the initializer, will
-    resolve the issue
+    API endpoint routes to change, removing `LocatableExtension` attribute
+    from unwanted classes, or adding another parameter to the initializer,
+    will resolve the issue

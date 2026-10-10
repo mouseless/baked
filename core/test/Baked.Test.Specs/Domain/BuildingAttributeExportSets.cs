@@ -23,7 +23,7 @@ public class BuildingAttributeExportSets : TestSpec
         base.SetUp();
 
         _builders = new();
-        _builders.Set<LocatableAttribute>(locatable =>
+        _builders.Set<Locatable>(locatable =>
         [
             new(locatable.QueryType),
             new(locatable.IsAsync)
@@ -42,17 +42,17 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<Entity>();
-        attributeExport.Include<ComponentGeneratorAttribute<Text>>();
+        attributeExport.Include<ComponentGenerator<Text>>();
 
         attributeExport.Name.ShouldBe("Test");
         attributeExport.Type.ShouldContain<Entity>();
-        attributeExport.Type.ShouldContain<ComponentGeneratorAttribute<Text>>();
+        attributeExport.Type.ShouldContain<ComponentGenerator<Text>>();
         attributeExport.Method.ShouldNotContain<Entity>();
-        attributeExport.Method.ShouldContain<ComponentGeneratorAttribute<Text>>();
+        attributeExport.Method.ShouldContain<ComponentGenerator<Text>>();
         attributeExport.Parameter.ShouldNotContain<Entity>();
-        attributeExport.Parameter.ShouldContain<ComponentGeneratorAttribute<Text>>();
+        attributeExport.Parameter.ShouldContain<ComponentGenerator<Text>>();
         attributeExport.Property.ShouldNotContain<Entity>();
-        attributeExport.Property.ShouldContain<ComponentGeneratorAttribute<Text>>();
+        attributeExport.Property.ShouldContain<ComponentGenerator<Text>>();
     }
 
     [Test]
@@ -104,7 +104,7 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<LocatableAttribute>();
+        attributeExport.Include<Locatable>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -113,9 +113,9 @@ public class BuildingAttributeExportSets : TestSpec
         var attributes = typeExport.Attributes;
         attributes.Count.ShouldBe(1);
         attributes.ShouldContain(a =>
-            a.Type == nameof(LocatableAttribute) &&
-            $"{a.Values[nameof(LocatableAttribute.QueryType)]}".Equals("Baked.Playground.Orm.Parents") &&
-            $"{a.Values[nameof(LocatableAttribute.IsAsync)]}".Equals("false", StringComparison.InvariantCultureIgnoreCase)
+            a.Type == nameof(Locatable) &&
+            $"{a.Values[nameof(Locatable.QueryType)]}".Equals("Baked.Playground.Orm.Parents") &&
+            $"{a.Values[nameof(Locatable.IsAsync)]}".Equals("false", StringComparison.InvariantCultureIgnoreCase)
         );
     }
 
@@ -140,7 +140,7 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<LocatableAttribute>()
+        attributeExport.Include<Locatable>()
             .AddFilter((locatable, _) => locatable.IsAsync);
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
@@ -154,19 +154,19 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<NamespaceAttribute>();
+        attributeExport.Include<Namespace>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
         var classExport = model.Types[typeof(Parent)];
-        classExport.Attributes.ShouldContain(a => a.Type == nameof(NamespaceAttribute));
+        classExport.Attributes.ShouldContain(a => a.Type == nameof(Namespace));
         var interfaceExport = model.Types[typeof(ILocatable)];
-        interfaceExport.Attributes.ShouldContain(a => a.Type == nameof(NamespaceAttribute));
+        interfaceExport.Attributes.ShouldContain(a => a.Type == nameof(Namespace));
         var structExport = model.Types[typeof(Struct)];
-        structExport.Attributes.ShouldContain(a => a.Type == nameof(NamespaceAttribute));
+        structExport.Attributes.ShouldContain(a => a.Type == nameof(Namespace));
         var enumExport = model.Types[typeof(Enum)];
-        enumExport.Attributes.ShouldContain(a => a.Type == nameof(NamespaceAttribute));
+        enumExport.Attributes.ShouldContain(a => a.Type == nameof(Namespace));
     }
 
     [Test]
@@ -174,15 +174,15 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<LocatableAttribute>()
-            .ExcludeProperty(p => p.Name is nameof(LocatableAttribute.IsAsync));
+        attributeExport.Include<Locatable>()
+            .ExcludeProperty(p => p.Name is nameof(Locatable.IsAsync));
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
         var typeExport = model.Types[typeof(Parent)];
         var attribute = typeExport.Attributes.First();
-        attribute.Values.Single().Key.ShouldBe(nameof(LocatableAttribute.QueryType));
+        attribute.Values.Single().Key.ShouldBe(nameof(Locatable.QueryType));
     }
 
     [Test]
@@ -190,17 +190,17 @@ public class BuildingAttributeExportSets : TestSpec
     {
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
-        attributeExport.Include<LocatableAttribute>()
+        attributeExport.Include<Locatable>()
             .ExcludeProperty(p => false);
-        attributeExport.Include<LocatableAttribute>()
-            .ExcludeProperty(p => p.Name != nameof(LocatableAttribute.QueryType));
+        attributeExport.Include<Locatable>()
+            .ExcludeProperty(p => p.Name != nameof(Locatable.QueryType));
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
 
         var typeExport = model.Types[typeof(Parent)];
         var attribute = typeExport.Attributes.First();
-        attribute.Values.Single().Key.ShouldBe(nameof(LocatableAttribute.QueryType));
+        attribute.Values.Single().Key.ShouldBe(nameof(Locatable.QueryType));
     }
 
     [Test]
@@ -325,7 +325,7 @@ public class BuildingAttributeExportSets : TestSpec
         var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<Entity>();
         attributeExport.Include<IdProperty>();
-        attributeExport.Include<LabelAttribute>();
+        attributeExport.Include<Label>();
 
         var builder = new ExportSetBuilder(attributeExport, _builders);
 

@@ -24,7 +24,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         !p.PropertyType.Is<string>() &&
                         p.PropertyType.IsAssignableTo<IEnumerable>()
                     ),
-                attribute: c => new ObjectWithListAttribute(
+                attribute: c => new ObjectWithList(
                     c.Type.GetMembers().Properties
                         .First(p =>
                             p.TryGet<DataAttribute>(out var data) &&
@@ -38,7 +38,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 
             conventions.EditPropertyAttribute<DataAttribute>(
                 when: c =>
-                    c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    c.Type.TryGet<ObjectWithList>(out var objectWithList) &&
                     c.Property.Name == objectWithList.ListPropertyName,
                 attribute: data => data.Visible = false,
                 order: Order.At.Infra
@@ -47,20 +47,20 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodComponent(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
-                    returnMetadata.Has<ObjectWithListAttribute>(),
+                    returnMetadata.Has<ObjectWithList>(),
                 where: cc => cc.Path.EndsWith("data-panel", "content"),
                 component: () => B.DataTable()
             );
             conventions.EditMethodComponent<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
-                    returnMetadata.Has<ObjectWithListAttribute>(),
+                    returnMetadata.Has<ObjectWithList>(),
                 component: (dt, c) =>
                 {
                     dt.Schema.ItemsProp = c.Method.DefaultOverload
                         .ReturnType.SkipTask()
                         .GetMetadata()
-                        .Get<ObjectWithListAttribute>()
+                        .Get<ObjectWithList>()
                         .ListPropertyName
                         .Camelize();
                 }
@@ -68,7 +68,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.EditMethodComponent<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    returnMembers.TryGet<ObjectWithList>(out var objectWithList) &&
                     returnMembers
                         .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
@@ -78,7 +78,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     cc = cc.Drill("data-table");
 
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
-                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+                    var listPropertyName = returnMembers.Get<ObjectWithList>().ListPropertyName;
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
                     var elementMembers = elementType.GetMembers();
                     foreach (var property in elementMembers.Properties.GetDataProperties())
@@ -99,7 +99,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodSchema(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    returnMembers.TryGet<ObjectWithList>(out var objectWithList) &&
                     returnMembers
                         .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
@@ -111,7 +111,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.EditMethodSchema<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    returnMembers.TryGet<ObjectWithList>(out var objectWithList) &&
                     returnMembers
                         .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
@@ -120,7 +120,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 schema: (col, c, cc) =>
                 {
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
-                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+                    var listPropertyName = returnMembers.Get<ObjectWithList>().ListPropertyName;
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
                     var elementMembers = elementType.GetMembers();
                     foreach (var method in elementMembers.Methods.Having<UiAction>())
@@ -140,17 +140,17 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodSchema(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
-                    returnMetadata.Has<ObjectWithListAttribute>(),
+                    returnMetadata.Has<ObjectWithList>(),
                 schema: () => B.DataTableFooter()
             );
             conventions.EditMethodSchema<DataTable.Footer>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.Has<ObjectWithListAttribute>(),
+                    returnMembers.Has<ObjectWithList>(),
                 schema: (dtf, c, cc) =>
                 {
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
-                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+                    var listPropertyName = returnMembers.Get<ObjectWithList>().ListPropertyName;
 
                     foreach (var property in returnMembers.Properties.GetDataProperties())
                     {

@@ -38,12 +38,12 @@ public class ResourceViaIdInitializerCodingStyleFeature : IFeature<CodingStyleCo
                 apply: (c, set) =>
                 {
                     set(c.Type, new Resource());
-                    set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
+                    set(c.Type, new ApiInput());
+                    set(c.Type, new Locatable());
                 },
                 order: Order.At.Infra + 10
             );
-            conventions.EditTypeAttribute<LocatableAttribute>(
+            conventions.EditTypeAttribute<Locatable>(
                 when: c => c.Type.Has<Resource>(),
                 attribute: (locatable, c) =>
                 {

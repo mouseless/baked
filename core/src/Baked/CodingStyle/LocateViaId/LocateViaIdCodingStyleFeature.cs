@@ -14,7 +14,7 @@ public class LocateViaIdCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Type.Add<LocatableAttribute>();
+            builder.Index.Type.Add<Locatable>();
         });
 
         configurator.Domain.ConfigureConventions(conventions =>

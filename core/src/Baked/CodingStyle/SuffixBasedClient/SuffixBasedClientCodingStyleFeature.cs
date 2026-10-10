@@ -10,14 +10,14 @@ public class SuffixBasedClientCodingStyleFeature : IFeature<CodingStyleConfigura
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Type.Add<ClientAttribute>();
+            builder.Index.Type.Add<Client>();
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.IsInterface && c.Type.Name.EndsWith("Client"),
-                attribute: () => new ClientAttribute(),
+                attribute: () => new Client(),
                 order: Order.At.Infra
             );
 

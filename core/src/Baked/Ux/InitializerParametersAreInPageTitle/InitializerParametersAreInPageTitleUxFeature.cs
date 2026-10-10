@@ -15,7 +15,7 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
             conventions.EditTypeComponent<TabbedPage>(
                 when: c =>
                     c.Type.Has<Transient>() && c.Type.HasMembers() &&
-                    !c.Type.Has<LocatableAttribute>(),
+                    !c.Type.Has<Locatable>(),
                 component: (tp, c, cc) =>
                 {
                     var members = c.Type.GetMembers();

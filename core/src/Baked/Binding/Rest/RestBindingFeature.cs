@@ -21,7 +21,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
         {
             // domain attribute indices
             builder.Index.Type.Add<ApiController>();
-            builder.Index.Type.Add<ApiInputAttribute>();
+            builder.Index.Type.Add<ApiInput>();
             builder.Index.Method.Add<ApiAction>();
             builder.Index.Parameter.Add<ApiParameter>();
         });
@@ -42,7 +42,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             );
             conventions.SetMethodAttribute(
                 when: c =>
-                    !c.Method.Has<ExternalAttribute>() &&
+                    !c.Method.Has<External>() &&
                     !c.Method.Has<Initializer>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
@@ -87,7 +87,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             );
             conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: Order.At.Infra + 10);
             conventions.EditMethodAttribute<ApiAction>((action, context) =>
-                action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")"),
+                action.AdditionalAttributes.Add($"{typeof(MappedMethod).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")"),
                 order: Order.At.Infra
             );
         });

@@ -1,7 +1,7 @@
 ﻿namespace Baked.Binding;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class MappedMethodAttribute(string typeFullName, string methodName)
+public class MappedMethod(string typeFullName, string methodName)
     : Attribute
 {
     public string TypeFullName { get; } = typeFullName;

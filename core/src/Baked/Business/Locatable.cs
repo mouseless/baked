@@ -1,7 +1,7 @@
 ﻿namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-public class LocatableAttribute : Attribute
+public class Locatable : Attribute
 {
     public Type? QueryType { get; set; }
     public bool IsAsync { get; set; } = false;

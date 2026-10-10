@@ -19,10 +19,10 @@ public static class ExtensionViaLocatableInitializerCodingStyleExtensions
         {
             locatableType = default;
 
-            if (!type.TryGetMetadata(out var locatableExtensionMetadata)) { return false; }
-            if (!locatableExtensionMetadata.TryGet<LocatableExtensionAttribute>(out var locatableExtensionAttribute)) { return false; }
+            if (!type.TryGetMetadata(out var metadata)) { return false; }
+            if (!metadata.TryGet<LocatableExtension>(out var locatableExtension)) { return false; }
 
-            locatableType = domain.Types[locatableExtensionAttribute.LocatableType];
+            locatableType = domain.Types[locatableExtension.LocatableType];
 
             return true;
         }

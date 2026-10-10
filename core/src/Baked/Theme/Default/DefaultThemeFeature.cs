@@ -164,7 +164,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 {
                     cc = cc.Drill("fieldset");
 
-                    var label = c.Type.GetMembers().FirstPropertyOrDefault<LabelAttribute>();
+                    var label = c.Type.GetMembers().FirstPropertyOrDefault<Label>();
                     if (label is not null && label.TryGet<DataAttribute>(out var labelData))
                     {
                         f.Schema.TitleProp = labelData.Prop;
@@ -219,7 +219,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Property.PropertyType.SkipNullable().Is<MailAddress>() ||
                     c.Property.PropertyType.SkipNullable().TryGetMetadata(out var metadata) &&
                     (
-                        metadata.Has<LocatableAttribute>() ||
+                        metadata.Has<Locatable>() ||
                         metadata.Has<Primitive>()
                     ),
                 component: () => B.Text(),
@@ -324,7 +324,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: c => MethodRemote(c.Method)
             );
             conventions.EditMethodSchema<RemoteData>(
-                when: c => c.Type.Has<LocatableAttribute>(),
+                when: c => c.Type.Has<Locatable>(),
                 schema: rd => rd.Params = Computed.UseRoute("params")
             );
 
@@ -342,7 +342,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // configure route params of actions of locatables on their own pages
             conventions.EditMethodSchema<RemoteAction>(
-                when: c => c.Type.Has<LocatableAttribute>(),
+                when: c => c.Type.Has<Locatable>(),
                 where: cc => cc.Path.StartsWith("page", "*", "*-page"),
                 schema: (ra, c, cc) =>
                 {
@@ -569,7 +569,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // PARAMETERS
 
             // configures input group key of parameters to their own name by default
-            conventions.EditParameterAttribute<GroupAttribute>(
+            conventions.EditParameterAttribute<Group>(
                 attribute: (group, c) => group.InputGroupKey = c.Parameter.Name
             );
 

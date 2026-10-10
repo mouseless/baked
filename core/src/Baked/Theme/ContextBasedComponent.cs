@@ -1,7 +1,7 @@
 ﻿namespace Baked.Theme;
 
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-public class ContextBasedComponentAttribute(Type schemaType)
+public class ContextBasedComponent(Type schemaType)
     : Attribute(), IComponentContextFilter
 {
     public Type SchemaType { get; set; } = schemaType;

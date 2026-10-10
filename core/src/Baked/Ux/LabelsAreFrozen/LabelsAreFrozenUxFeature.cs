@@ -14,12 +14,12 @@ public class LabelsAreFrozenUxFeature()
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.EditPropertyAttribute<DataAttribute>(
-                when: c => c.Property.Has<LabelAttribute>(),
+                when: c => c.Property.Has<Label>(),
                 attribute: data => data.Order = -10,
                 order: Order.At.Infra
             );
             conventions.EditPropertySchema<DataTable.Column>(
-                when: c => c.Property.Has<LabelAttribute>(),
+                when: c => c.Property.Has<Label>(),
                 schema: dtc =>
                 {
                     dtc.Frozen = true;

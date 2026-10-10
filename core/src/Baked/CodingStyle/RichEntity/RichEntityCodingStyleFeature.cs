@@ -28,8 +28,8 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c => c.Type.Has<Entity>(),
                 apply: (c, set) =>
                 {
-                    set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
+                    set(c.Type, new ApiInput());
+                    set(c.Type, new Locatable());
                 },
                 order: Order.At.Infra
             );

@@ -85,14 +85,14 @@ public static class RestBindingExtensions
     extension(ParameterModel parameter)
     {
         public bool IsApiInput =>
-            parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>();
+            parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInput>();
     }
 
     extension(ApiDescription apiDescription)
     {
-        public bool TryGetMappedMethod([NotNullWhen(true)] out MappedMethodAttribute? result)
+        public bool TryGetMappedMethod([NotNullWhen(true)] out MappedMethod? result)
         {
-            result = apiDescription.CustomAttributes().OfType<MappedMethodAttribute>().SingleOrDefault();
+            result = apiDescription.CustomAttributes().OfType<MappedMethod>().SingleOrDefault();
 
             return result is not null;
         }

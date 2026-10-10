@@ -23,7 +23,7 @@ public class LocatableTemplate : CodeTemplateBase
     {
         _locatables = domain
             .Types
-            .Having<LocatableAttribute>()
+            .Having<Locatable>()
             .Where(t => t.HasMembers())
             .Select(t => t.GetMembers());
 
@@ -72,10 +72,10 @@ public class LocatableTemplate : CodeTemplateBase
 
             protected override void WriteLabel(JsonWriter writer, {{locatable.CSharpFriendlyFullName}} locatable, JsonSerializer serializer, string labelProp)    
             {
-                {{ForEach(locatable.Properties.Having<LabelAttribute>(), label => $$"""
+                {{ForEach(locatable.Properties.Having<Label>(), label => $$"""
                 if(labelProp == "{{label.Name.Camelize()}}")
                 {
-                    {{If(label.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(), () => $$"""
+                    {{If(label.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<Locatable>(), () => $$"""
                     serializer.Serialize(writer, locatable.{{label.Name}});
                     """, @else: () => $$"""
                     writer.WriteValue(locatable.{{label.Name}});
@@ -91,7 +91,7 @@ public class LocatableTemplate : CodeTemplateBase
     """);
 
     string Labels(TypeModelMembers locatable) =>
-        ForEach(locatable.Properties.Having<LabelAttribute>(),
+        ForEach(locatable.Properties.Having<Label>(),
             label => $$""" "{{label.Name.Camelize()}}" """,
             separator: ", "
         );
@@ -120,7 +120,7 @@ public class LocatableTemplate : CodeTemplateBase
             """, indentation: 2)}}
             {{ForEach(_locatables
                 .SelectMany(l => l.Properties.Select(p => new { Property = p, Type = l }))
-                .Where(c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>()), context => $$"""
+                .Where(c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<Locatable>()), context => $$"""
                 contractResolver.SetProperty(
                     typeof({{context.Type.CSharpFriendlyFullName}}),
                     "{{context.Property.Name}}",

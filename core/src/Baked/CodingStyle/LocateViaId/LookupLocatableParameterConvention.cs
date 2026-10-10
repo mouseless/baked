@@ -12,7 +12,7 @@ public class LookupLocatableParameterConvention : IDomainModelConvention<Paramet
         if (!context.Parameter.ParameterType.TryGetMembers(out var parameterTypeMembers)) { return; }
         if (!context.Parameter.TryGet<ApiParameter>(out var parameter)) { return; }
         if (!parameterTypeMembers.TryGetIdInfo(out var idInfo)) { return; }
-        if (!parameterTypeMembers.TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (!parameterTypeMembers.TryGet<Locatable>(out var locatable)) { return; }
 
         // NOTE action seems to have parameters set from somewhere even though the
         // default overload has zero parameters

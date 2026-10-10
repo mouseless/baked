@@ -24,27 +24,27 @@ public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodN
                     c.Type.TryGetMembers(out var members) &&
                     (
                         !members.Has<Transient>() ||
-                        members.Has<Transient>() && !members.Has<LocatableAttribute>()
+                        members.Has<Transient>() && !members.Has<Locatable>()
                     ) &&
                     TryGetSinglePotentialAction(members, c, out var action) &&
                     _methodNames.Contains(action.Name),
                 apply: (c, set) =>
                 {
-                    set(c.Type, new CommandAttribute());
+                    set(c.Type, new Command());
 
                     var members = c.Type.GetMembers();
                     foreach (var method in members.Methods)
                     {
                         if (!_methodNames.Contains(method.Name)) { continue; }
 
-                        set(method, new CommandMethodAttribute());
+                        set(method, new CommandMethod());
                     }
                 },
                 order: Order.At.Infra + 40
             );
             conventions.RemoveTypeAttribute<ApiController>(
                 when: c =>
-                    c.Type.Has<CommandAttribute>() &&
+                    c.Type.Has<Command>() &&
                     c.Type.Has<Transient>() &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Any(m =>
@@ -57,38 +57,38 @@ public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodN
             );
 
             conventions.Add(new IncludeClassDocsForActionNamesConvention(
-                _whenContext: c => c.Method.Has<CommandMethodAttribute>()
+                _whenContext: c => c.Method.Has<CommandMethod>()
             ), order: Order.At.Infra - 10);
 
             conventions.Add(new UseClassNameInsteadOfActionNamesConvention(
-                _whenContext: c => c.Method.Has<CommandMethodAttribute>()
+                _whenContext: c => c.Method.Has<CommandMethod>()
             ), order: Order.At.Infra - 10);
 
             conventions.Add(new RemoveFromRouteConvention(
                 _parts: _methodNames,
-                _whenContext: c => c.Method.Has<CommandMethodAttribute>()
+                _whenContext: c => c.Method.Has<CommandMethod>()
             ), order: Order.At.Infra);
 
             conventions.Add(new RemoveFromRouteConvention(
                 _parts: ["Sync", "Create"],
-                _whenContext: c => c.Method.Has<CommandMethodAttribute>()
+                _whenContext: c => c.Method.Has<CommandMethod>()
             ), order: Order.At.Infra);
 
             conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention(
                 _whenContext: c =>
                     c.Type.TryGetMembers(out var members) &&
-                    members.Has<CommandAttribute>()
+                    members.Has<Command>()
             ), order: Order.At.Infra);
 
             conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
                 _when: action => action.Name.StartsWith("Sync"),
-                _whenContext: c => c.Method.Has<CommandMethodAttribute>(),
+                _whenContext: c => c.Method.Has<CommandMethod>(),
                 _method: HttpMethod.Put
             ), order: Order.At.Infra - 10);
 
             conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
                 _when: action => action.Name.StartsWith("Create"),
-                _whenContext: c => c.Method.Has<CommandMethodAttribute>(),
+                _whenContext: c => c.Method.Has<CommandMethod>(),
                 _method: HttpMethod.Patch
             ), order: Order.At.Infra - 10);
         });

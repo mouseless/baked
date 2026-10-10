@@ -16,7 +16,7 @@ public class LookupLocatableParametersConvention : IDomainModelConvention<Parame
         if (!elementType.TryGetMembers(out var elementMembers)) { return; }
         if (!elementMembers.Has<Transient>()) { return; }
         if (!elementMembers.TryGetIdInfo(out var idInfo)) { return; }
-        if (!elementMembers.GetMembers().TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (!elementMembers.GetMembers().TryGet<Locatable>(out var locatable)) { return; }
 
         var notNull = context.Parameter.Has<NotNullAttribute>();
 

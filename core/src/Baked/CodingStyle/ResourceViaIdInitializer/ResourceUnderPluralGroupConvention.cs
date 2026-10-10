@@ -11,7 +11,7 @@ public class ResourceUnderPluralGroupConvention : IDomainModelConvention<TypeMod
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.TryGet<ApiController>(out var controller)) { return; }
-        if (!metadata.Has<LocatableAttribute>()) { return; }
+        if (!metadata.Has<Locatable>()) { return; }
 
         controller.GroupName = controller.GroupName.Pluralize();
     }

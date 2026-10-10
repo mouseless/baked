@@ -124,7 +124,7 @@ public static class BusinessExtensions
             return true;
         }
 
-        public bool TryGetNamespaceAttribute([NotNullWhen(true)] out NamespaceAttribute? namespaceAttribute)
+        public bool TryGetNamespaceAttribute([NotNullWhen(true)] out Namespace? namespaceAttribute)
         {
             namespaceAttribute = default;
 

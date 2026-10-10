@@ -20,7 +20,7 @@ public class ParentDomainOverrideFeature : IFeature
 
             conventions.SetPropertyAttribute(
                 when: c => c.Type.Is<Parent>() && c.Property.Name is nameof(Parent.Surname),
-                attribute: () => new LabelAttribute(),
+                attribute: () => new Label(),
                 order: Order.At.Override
             );
 

@@ -14,7 +14,7 @@ public class UniqueViaSingleByCodingStyleFeature : IFeature<CodingStyleConfigura
             conventions.SetPropertyAttribute(
                 when: c =>
                     c.Type.Has<Entity>() &&
-                    c.Type.TryGet<LocatableAttribute>(out var locatable) &&
+                    c.Type.TryGet<Locatable>(out var locatable) &&
                     locatable.QueryType is not null &&
                     c.Domain.Types[locatable.QueryType].TryGetMembers(out var query) &&
                     query.Methods.Contains($"SingleBy{c.Property.Name}"),

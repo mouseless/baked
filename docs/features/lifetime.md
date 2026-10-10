@@ -8,7 +8,7 @@ app.Features.AddLifetimes([...]);
 
 ## Application
 
-Adds services with `Singleton` metadata to `IServiceCollection` as singleton.
+Adds services with `Singleton` attribute to `IServiceCollection` as singleton.
 
 ```csharp
 c => c.Application()
@@ -16,7 +16,7 @@ c => c.Application()
 
 ## Instance
 
-Adds services with `Transient` metadata to `IServiceCollection` as
+Adds services with `Transient` attribute to `IServiceCollection` as
 transient.
 
 ```csharp
@@ -25,7 +25,7 @@ c => c.Instance()
 
 ## Scope
 
-Adds services with `Scoped` metadata to `IServiceCollection` as scoped.
+Adds services with `Scoped` attribute to `IServiceCollection` as scoped.
 
 ```csharp
 c => c.Scope()

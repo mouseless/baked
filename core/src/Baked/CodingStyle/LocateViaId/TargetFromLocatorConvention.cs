@@ -12,7 +12,7 @@ public class TargetFromLocatorConvention : IDomainModelConvention<MethodModelCon
         if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
         if (context.Method.Has<Initializer>()) { return; }
         if (!context.Type.TryGetMembers(out var metadata)) { return; }
-        if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (!metadata.TryGet<Locatable>(out var locatable)) { return; }
         if (!metadata.TryGetIdInfo(out var idInfo)) { return; }
 
         var id = action.Parameter[idInfo.PropertyName.Camelize()];

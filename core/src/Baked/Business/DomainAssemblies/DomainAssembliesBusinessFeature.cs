@@ -78,29 +78,29 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Type.Add<QueryClass>();
             builder.Index.Method.Add<Initializer>();
             builder.Index.Property.Add<IdProperty>();
-            builder.Index.Property.Add<LabelAttribute>();
+            builder.Index.Property.Add<Label>();
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: _ => true,
-                attribute: () => new GroupAttribute(),
+                attribute: () => new Group(),
                 order: Order.At.Global.Min
             );
             conventions.SetPropertyAttribute(
                 when: _ => true,
-                attribute: () => new GroupAttribute(),
+                attribute: () => new Group(),
                 order: Order.At.Global.Min
             );
             conventions.SetMethodAttribute(
                 when: _ => true,
-                attribute: () => new GroupAttribute(),
+                attribute: () => new Group(),
                 order: Order.At.Global.Min
             );
             conventions.SetParameterAttribute(
                 when: _ => true,
-                attribute: () => new GroupAttribute(),
+                attribute: () => new Group(),
                 order: Order.At.Global.Min
             );
 
@@ -118,7 +118,7 @@ public class DomainAssembliesBusinessFeature(
                             @namespace;
                     });
 
-                    return new NamespaceAttribute(@namespace);
+                    return new Namespace(@namespace);
                 },
                 when: c => setNamespaceWhen(c.Type),
                 order: Order.At.Infra
@@ -138,7 +138,7 @@ public class DomainAssembliesBusinessFeature(
             );
 
             conventions.SetMethodAttribute(
-                attribute: () => new ExternalAttribute(),
+                attribute: () => new External(),
                 when: c =>
                     c.Method.DefaultOverload.DeclaringType is not null &&
                     c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
@@ -147,7 +147,7 @@ public class DomainAssembliesBusinessFeature(
             );
 
             conventions.SetMethodAttribute(
-                attribute: () => new ExternalAttribute(),
+                attribute: () => new External(),
                 when: c =>
                     c.Method.DefaultOverload.BaseDefinition is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&

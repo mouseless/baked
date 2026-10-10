@@ -11,7 +11,7 @@ public class ClientTemplate : CodeTemplateBase
 
     public ClientTemplate(DomainModel domain)
     {
-        _clients = domain.Types.Having<ClientAttribute>();
+        _clients = domain.Types.Having<Client>();
 
         AddReferences(_clients);
     }

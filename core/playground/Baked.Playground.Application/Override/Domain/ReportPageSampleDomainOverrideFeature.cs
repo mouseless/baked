@@ -17,12 +17,12 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Tabs
-            conventions.EditMethodAttribute<GroupAttribute>(
+            conventions.EditMethodAttribute<Group>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>(),
                 attribute: group => group.TabName = "single-value",
                 order: Order.At.Override
             );
-            conventions.EditMethodAttribute<GroupAttribute>(
+            conventions.EditMethodAttribute<Group>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnsList(),
                 attribute: group => group.TabName = "data-table",
                 order: Order.At.Override

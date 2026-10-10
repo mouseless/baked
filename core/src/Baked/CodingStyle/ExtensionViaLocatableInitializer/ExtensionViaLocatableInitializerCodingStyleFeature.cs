@@ -11,7 +11,7 @@ public class ExtensionViaLocatableInitializerCodingStyleFeature : IFeature<Codin
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Type.Add<LocatableExtensionAttribute>();
+            builder.Index.Type.Add<LocatableExtension>();
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
@@ -26,31 +26,31 @@ public class ExtensionViaLocatableInitializerCodingStyleFeature : IFeature<Codin
                         m.Has<Initializer>() &&
                         m.DefaultOverload.Parameters.Count == 1 &&
                         m.DefaultOverload.Parameters.Single().ParameterType.TryGetMetadata(out var parameterTypeMetadata) &&
-                        parameterTypeMetadata.Has<LocatableAttribute>()
+                        parameterTypeMetadata.Has<Locatable>()
                     ),
                 attribute: context =>
                 {
                     var locatableType = context.Type.GetMembers().Methods.First(m => m.Has<Initializer>()).DefaultOverload.Parameters.Single().ParameterType;
 
-                    return locatableType.Apply(t => new LocatableExtensionAttribute(t));
+                    return locatableType.Apply(t => new LocatableExtension(t));
                 },
                 order: Order.At.Infra + 20
             );
             conventions.SetPropertyAttribute(
-                when: c => c.Type.Has<LocatableExtensionAttribute>(),
+                when: c => c.Type.Has<LocatableExtension>(),
                 attribute: c =>
                 {
-                    var locatableExtensionAttribute = c.Type.GetMetadata().Get<LocatableExtensionAttribute>();
+                    var locatableExtensionAttribute = c.Type.GetMetadata().Get<LocatableExtension>();
 
                     return c.Domain.Types[locatableExtensionAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdProperty>()).Get<IdProperty>();
                 },
                 order: Order.At.Infra + 20
             );
             conventions.SetTypeAttribute(
-                when: c => c.Type.Has<LocatableExtensionAttribute>(),
+                when: c => c.Type.Has<LocatableExtension>(),
                 apply: (c, set) =>
                 {
-                    var locatableType = c.Type.Get<LocatableExtensionAttribute>().LocatableType;
+                    var locatableType = c.Type.Get<LocatableExtension>().LocatableType;
                     var locatableTypeModel = c.Domain.Types[locatableType];
                     if (!locatableTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
 
@@ -59,16 +59,16 @@ public class ExtensionViaLocatableInitializerCodingStyleFeature : IFeature<Codin
                 order: Order.At.Infra + 20
             );
             conventions.SetTypeAttribute(
-                when: c => c.Type.Has<LocatableExtensionAttribute>(),
+                when: c => c.Type.Has<LocatableExtension>(),
                 apply: (c, set) =>
                 {
-                    set(c.Type, new ApiInputAttribute());
+                    set(c.Type, new ApiInput());
 
                     var locatableExtensionType = c.Type;
                     if (!locatableExtensionType.TryGetLocatableTypeFromExtension(c.Domain, out var locatableType)) { return; }
-                    if (!locatableType.GetMetadata().CustomAttributes.TryGet<LocatableAttribute>(out var locatable)) { return; }
+                    if (!locatableType.GetMetadata().CustomAttributes.TryGet<Locatable>(out var locatable)) { return; }
 
-                    set(c.Type, new LocatableAttribute());
+                    set(c.Type, new Locatable());
                 },
                 order: Order.At.Infra + 20
             );

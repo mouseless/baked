@@ -14,7 +14,7 @@ public class OnlyLocatableParameterIsInRouteForDeleteChildConvention : IDomainMo
 
         var onlyParameter = action.InvokedMethodParameters.Single();
         if (onlyParameter.Orphan) { return; }
-        if (!context.Method.DefaultOverload.Parameters[onlyParameter.Id].ParameterType.TryGetLocatableAttribute(out var _)) { return; }
+        if (!context.Method.DefaultOverload.Parameters[onlyParameter.Id].ParameterType.TryGetLocatable(out var _)) { return; }
 
         onlyParameter.From = ParameterModelFrom.Route;
         onlyParameter.RoutePosition = 3;

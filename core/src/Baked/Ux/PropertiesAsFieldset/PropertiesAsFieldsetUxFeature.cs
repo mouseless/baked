@@ -68,13 +68,13 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
             conventions.EditPropertySchema<Field>(
                 when: c =>
                     c.Property.Has<DataAttribute>() &&
-                    c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
+                    c.Property.PropertyType.TryGetMembers(out var members) && members.Has<Locatable>(),
                 schema: (dtc, c, cc) =>
                 {
                     var data = c.Property.Get<DataAttribute>();
                     var members = c.Property.PropertyType.GetMembers();
                     var labelProperty =
-                        members.FirstPropertyOrDefault<LabelAttribute>() ??
+                        members.FirstPropertyOrDefault<Label>() ??
                         members.FirstProperty<IdProperty>();
                     var labelData = labelProperty.Get<DataAttribute>();
 

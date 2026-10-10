@@ -12,7 +12,7 @@ public class AddLocateActionConvention<T> : IDomainModelConvention<TypeModelCont
         if (!context.Type.Is<T>()) { return; }
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.TryGet<ApiController>(out var controller)) { return; }
-        if (!metadata.TryGet<LocatableAttribute>(out var locatable)) { return; }
+        if (!metadata.TryGet<Locatable>(out var locatable)) { return; }
         if (!context.Type.TryGetIdInfo(out var idInfo)) { return; }
 
         var action = controller.Action["Locate"] = new("Locate",

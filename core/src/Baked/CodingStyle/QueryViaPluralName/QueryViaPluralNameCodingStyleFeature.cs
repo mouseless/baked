@@ -28,7 +28,7 @@ public class QueryViaPluralNameCodingStyleFeature(
         {
             conventions.SetTypeAttribute(
                 when: c =>
-                    c.Type.Has<LocatableAttribute>() &&
+                    c.Type.Has<Locatable>() &&
                     c.Domain.Types.TryGetValue(((IModel)c.Type).Id.Pluralize(), out var query) &&
                     query.TryGetMetadata(out var queryMetadata) &&
                     !queryMetadata.Has<QueryClass>(),
@@ -37,7 +37,7 @@ public class QueryViaPluralNameCodingStyleFeature(
                     var queryType = c.Domain.Types[((IModel)c.Type).Id.Pluralize()];
                     set(queryType.GetMetadata(), c.Type.Apply(t => new QueryClass(t)));
 
-                    var locatable = c.Type.Get<LocatableAttribute>();
+                    var locatable = c.Type.Get<Locatable>();
                     queryType.Apply(qt => locatable.QueryType = qt);
                 },
                 order: Order.At.Infra + 30

@@ -18,7 +18,7 @@ public class LocatorTemplate : CodeTemplateBase
     {
         foreach (var item in domain.Types.Having<Resource>())
         {
-            if (!item.GetMembers().TryGet<LocatableAttribute>(out _)) { continue; }
+            if (!item.GetMembers().TryGet<Locatable>(out _)) { continue; }
 
             _richTransients.Add(item);
         }
@@ -108,7 +108,6 @@ public class LocatorTemplate : CodeTemplateBase
     """;
 
     bool IsAsync(TypeModel type) =>
-        type.TryGetMetadata(out var metadata) &&
-        metadata.TryGet<LocatableAttribute>(out var locatable) &&
+        type.TryGetLocatable(out var locatable) &&
         locatable.IsAsync;
 }

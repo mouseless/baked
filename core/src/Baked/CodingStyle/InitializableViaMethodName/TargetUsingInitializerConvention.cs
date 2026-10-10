@@ -10,7 +10,7 @@ public class TargetUsingInitializerConvention : IDomainModelConvention<MethodMod
     {
         if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
-        if (members.Has<LocatableAttribute>()) { return; }
+        if (members.Has<Locatable>()) { return; }
         if (!members.Methods.Having<Initializer>().Any()) { return; }
         if (context.Method.Has<Initializer>()) { return; }
 

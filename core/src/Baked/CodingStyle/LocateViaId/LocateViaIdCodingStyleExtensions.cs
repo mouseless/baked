@@ -18,7 +18,7 @@ public static class LocateViaIdCodingStyleExtensions
             new();
     }
 
-    extension(LocatableAttribute locatable)
+    extension(Locatable locatable)
     {
         public ApiParameter AddLocatorAsService(ApiAction action, TypeModel locatableType) =>
             action.Parameter[$"{locatableType.Name.Camelize()}Locator"] = new($"{locatableType.Name.Camelize()}Locator", locatable.RenderLocatorType(locatableType.CSharpFriendlyFullName), ParameterModelFrom.Services)
@@ -86,25 +86,25 @@ public static class LocateViaIdCodingStyleExtensions
 
     extension(TypeModel type)
     {
-        public bool TryGetLocatableAttribute([NotNullWhen(true)] out LocatableAttribute? locatableAttribute)
+        public bool TryGetLocatable([NotNullWhen(true)] out Locatable? locatable)
         {
-            locatableAttribute = default;
+            locatable = default;
 
             return
                 type.TryGetMetadata(out var metadata) &&
-                metadata.TryGet(out locatableAttribute);
+                metadata.TryGet(out locatable);
         }
 
         public bool TryGetQueryType(DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
         {
-            if (!type.TryGetLocatableAttribute(out var locatableAttribute) || locatableAttribute.QueryType is null)
+            if (!type.TryGetLocatable(out var locatable) || locatable.QueryType is null)
             {
                 queryType = default;
 
                 return false;
             }
 
-            queryType = domain.Types[locatableAttribute.QueryType];
+            queryType = domain.Types[locatable.QueryType];
 
             return true;
         }
