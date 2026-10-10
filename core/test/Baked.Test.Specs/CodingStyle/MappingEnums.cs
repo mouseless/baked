@@ -1,5 +1,4 @@
 ﻿using Baked.Playground.Orm;
-using Baked.Test;
 using NHibernate.Type;
 
 using NHConfiguration = NHibernate.Cfg.Configuration;

@@ -1,6 +1,5 @@
 ﻿using Baked.CodingStyle.PrimitiveViaParsable;
 using Baked.Playground.CodingStyle.PrimitiveViaParsable;
-using Baked.Test;
 using NHibernate.Type;
 
 using NHConfiguration = NHibernate.Cfg.Configuration;
