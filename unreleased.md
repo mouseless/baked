@@ -5,7 +5,7 @@
 - `Business` namespace now provides `Validate` object to perform business
   validations
 - `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
-- `IExportOptions` is introduced in `Baked.Abstractions` so that an attribute
+- `IExportOptions` is introduced in `Baked.Binding` so that an attribute
   can control the name it is exported with, e.g., `IdProperty` attribute is
   exported as `@id`
   - Attributes named after their target do not carry that noise to exports,
@@ -29,6 +29,12 @@
   - `NamespaceAttribute` -> `Namespace`
   - `NoTransactionAttribute` -> `NoTransaction`
   - `ObjectWithListAttribute` -> `ObjectWithList`
+  - `DataAttribute` -> `UiData`
+  - `RouteAttribute` -> `UiRoute`
+  - `DescriptionAttribute` -> `UiDescription`
+  - `GeneratorAttribute<T>` -> `Generator<T>`, its `Generator` and `Filter`
+    properties are renamed as `GeneratorDelegate` and `FilterDelegate`
+    - `ContextBasedComponent.Filter` -> `FilterDelegate` as well
   - `TryGetLocatableAttribute()` extension -> `TryGetLocatable()`
   - Names in exported `.kdl` files do not change, the `Attribute` suffix was
     already being stripped during export

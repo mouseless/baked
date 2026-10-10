@@ -50,16 +50,16 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
 
             // adds button to the methods with a route
             conventions.AddMethodComponent(
-                when: c => c.Method.Has<UiAction>() && c.Method.Has<RouteAttribute>(),
+                when: c => c.Method.Has<UiAction>() && c.Method.Has<UiRoute>(),
                 where: cc => cc.Path.EndsWith("actions", "*"),
                 component: () => B.Button()
             );
 
             // adds redirect action for methods with a route
             conventions.AddMethodSchema(
-                when: c => c.Method.Has<UiAction>() && c.Method.Has<RouteAttribute>(),
+                when: c => c.Method.Has<UiAction>() && c.Method.Has<UiRoute>(),
                 where: cc => cc.Path.EndsWith("actions", "*", "button", "action"),
-                schema: c => Local.UseRedirect(c.Method.Get<RouteAttribute>().Path)
+                schema: c => Local.UseRedirect(c.Method.Get<UiRoute>().Path)
             );
 
             // configures post action to be a redirect back to the configured route path back for methods under the form page

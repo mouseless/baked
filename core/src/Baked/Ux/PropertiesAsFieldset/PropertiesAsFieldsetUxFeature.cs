@@ -67,25 +67,25 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
             );
             conventions.EditPropertySchema<Field>(
                 when: c =>
-                    c.Property.Has<DataAttribute>() &&
+                    c.Property.Has<UiData>() &&
                     c.Property.PropertyType.TryGetMembers(out var members) && members.Has<Locatable>(),
                 schema: (dtc, c, cc) =>
                 {
-                    var data = c.Property.Get<DataAttribute>();
+                    var data = c.Property.Get<UiData>();
                     var members = c.Property.PropertyType.GetMembers();
                     var labelProperty =
                         members.FirstPropertyOrDefault<Label>() ??
                         members.FirstProperty<IdProperty>();
-                    var labelData = labelProperty.Get<DataAttribute>();
+                    var labelData = labelProperty.Get<UiData>();
 
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
                 }
             );
             conventions.EditPropertySchema<Field>(
-                when: c => c.Property.Has<DataAttribute>(),
+                when: c => c.Property.Has<UiData>(),
                 schema: (f, c) =>
                 {
-                    var prop = c.Property.Get<DataAttribute>().Prop;
+                    var prop = c.Property.Get<UiData>().Prop;
 
                     f.Component.Data ??= Context.Parent(options: cd => cd.Prop = $"data.{prop}");
                 },

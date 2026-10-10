@@ -27,7 +27,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
             // Columns
             conventions.AddPropertySchema(
-                when: c => c.Property.Has<DataAttribute>(),
+                when: c => c.Property.Has<UiData>(),
                 schema: () => B.DataTableColumn()
             );
             conventions.EditPropertySchema<DataTable.Column>(
@@ -38,7 +38,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 schema: (dtc, c, cc) =>
                 {
                     var (_, l) = cc;
-                    var data = c.Property.Get<DataAttribute>();
+                    var data = c.Property.Get<UiData>();
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
@@ -60,7 +60,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
             conventions.EditPropertySchema<DataTable.Column>(
                 schema: (dtc, c, cc) =>
                 {
-                    var data = c.Property.Get<DataAttribute>();
+                    var data = c.Property.Get<UiData>();
 
                     var rootProp = cc.Path.Contains("footer-template") ? "data" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");

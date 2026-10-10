@@ -39,7 +39,7 @@ public class GeneratingAttributeExportFiles : TestSpec
         sample-type @entity {
           @fake camel-case="CamelCase" string="Post" array="System.String[]" bool-true=#true int=1
           name @label {
-            @data prop="Name"
+            @ui-data prop="Name"
           }
           surname @label
           method-name @initializer {
@@ -80,7 +80,7 @@ public class GeneratingAttributeExportFiles : TestSpec
             ],
             properties:
             [
-                new("Name", [new(nameof(DataAttribute), ("Prop","Name")), new(nameof(Label))]),
+                new("Name", [new(nameof(UiData), ("Prop","Name")), new(nameof(Label))]),
                 new("Surname", [new(nameof(Label))])
             ]
         );

@@ -24,10 +24,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Type.Add<RouteAttribute>();
-            builder.Index.Property.Add<DataAttribute>();
+            builder.Index.Type.Add<UiRoute>();
+            builder.Index.Property.Add<UiData>();
             builder.Index.Method.Add<UiAction>();
-            builder.Index.Method.Add<RouteAttribute>();
+            builder.Index.Method.Add<UiRoute>();
 
             builder.ConventionOrderMatrix.Bases.Add("Theme");
         });
@@ -37,7 +37,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // TYPES
 
             // configures page route params for types with dynamic page route
-            conventions.EditTypeAttribute<RouteAttribute>(
+            conventions.EditTypeAttribute<UiRoute>(
                 when: (c, r) =>
                     r.Path.Contains("[id]") &&
                     c.Type.TryGetMembers(out var members) &&
@@ -165,7 +165,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     cc = cc.Drill("fieldset");
 
                     var label = c.Type.GetMembers().FirstPropertyOrDefault<Label>();
-                    if (label is not null && label.TryGet<DataAttribute>(out var labelData))
+                    if (label is not null && label.TryGet<UiData>(out var labelData))
                     {
                         f.Schema.TitleProp = labelData.Prop;
                     }
@@ -183,10 +183,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.EditTypeComponent<NavLink>(
                 component: (nl, c, cc) =>
                 {
-                    if (!c.Type.TryGet<RouteAttribute>(out var route))
+                    if (!c.Type.TryGet<UiRoute>(out var route))
                     {
                         throw DiagnosticCode.TypeWithAttribute.Exception(
-                            $"`{nameof(RouteAttribute)}` is not found on type (`{c.Type.Name}`) to render as `{nameof(NavLink)}`"
+                            $"`{nameof(UiRoute)}` is not found on type (`{c.Type.Name}`) to render as `{nameof(NavLink)}`"
                         );
                     }
 
@@ -200,12 +200,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // adds data attribute to public properties
             conventions.SetPropertyAttribute(
                 when: c => c.Property.IsPublic,
-                attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
+                attribute: c => new UiData(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 order: Order.At.Infra - 10
             );
 
             // hides id data properties
-            conventions.EditPropertyAttribute<DataAttribute>(
+            conventions.EditPropertyAttribute<UiData>(
                 when: c => c.Property.Has<IdProperty>(),
                 attribute: data => data.Visible = false,
                 order: Order.At.Infra
@@ -263,7 +263,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // configures data table column for property
             conventions.EditPropertySchema<DataTable.Column>(
-                when: c => c.Property.Has<DataAttribute>(),
+                when: c => c.Property.Has<UiData>(),
                 schema: (dtc, c, cc) =>
                 {
                     dtc.Key = c.Property.DataProp;

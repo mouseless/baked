@@ -43,13 +43,13 @@ public static class UiExtensions
     extension(PropertyModel property)
     {
         public bool IsData =>
-            property.Has<DataAttribute>();
+            property.Has<UiData>();
 
         public string DataName =>
             property.Name;
 
         public string DataProp =>
-            property.Get<DataAttribute>().Prop;
+            property.Get<UiData>().Prop;
     }
 
     extension(ISupportsReaction source)

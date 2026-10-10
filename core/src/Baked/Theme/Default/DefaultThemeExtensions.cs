@@ -127,8 +127,8 @@ public static class DefaultThemeExtensions
     {
         public IEnumerable<PropertyModel> GetDataProperties() =>
             properties
-                .Having<DataAttribute>()
-                .Select(p => (property: p, data: p.Get<DataAttribute>()))
+                .Having<UiData>()
+                .Select(p => (property: p, data: p.Get<UiData>()))
                 .Where(pd => pd.data.Visible)
                 .OrderBy(pd => pd.data.Order)
                 .Select(pd => pd.property);
@@ -140,7 +140,7 @@ public static class DefaultThemeExtensions
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.Is<T>(),
-                attribute: c => new RouteAttribute(routePath)
+                attribute: c => new UiRoute(routePath)
             );
         }
 
@@ -148,7 +148,7 @@ public static class DefaultThemeExtensions
         {
             conventions.SetMethodAttribute(
                 when: c => c.Type.Is<T>() && c.Method.Name == methodName,
-                attribute: c => new RouteAttribute(routePath)
+                attribute: c => new UiRoute(routePath)
             );
         }
     }

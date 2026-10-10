@@ -16,50 +16,50 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Property.Add<DescriptionAttribute>();
-            builder.Index.Parameter.Add<DescriptionAttribute>();
+            builder.Index.Property.Add<UiDescription>();
+            builder.Index.Parameter.Add<UiDescription>();
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetPropertyAttribute(
                 when: c => c.Property.Name.EndsWith("Description"),
-                attribute: () => new DescriptionAttribute(),
+                attribute: () => new UiDescription(),
                 order: Order.At.Infra
             );
 
             conventions.SetParameterAttribute(
                 when: c => c.Parameter.Name.Pascalize().EndsWith("Description"),
-                attribute: () => new DescriptionAttribute(),
+                attribute: () => new UiDescription(),
                 order: Order.At.Infra
             );
 
             conventions.EditPropertySchema<Field>(
-                when: c => c.Property.Has<DescriptionAttribute>(),
+                when: c => c.Property.Has<UiDescription>(),
                 schema: f => f.Wide = true
             );
 
             conventions.AddParameterComponent(
-                when: c => c.Parameter.Has<DescriptionAttribute>(),
+                when: c => c.Parameter.Has<UiDescription>(),
                 component: () => B.Textarea()
             );
             conventions.EditParameterSchema<FormPage.InputGroup>(
-                when: c => c.Parameter.Has<DescriptionAttribute>(),
+                when: c => c.Parameter.Has<UiDescription>(),
                 schema: f => f.Wide = true
             );
 
             conventions.AddPropertyComponent(
-                when: c => c.Property.Has<DescriptionAttribute>(),
+                when: c => c.Property.Has<UiDescription>(),
                 where: cc => cc.Path.EndsWith("data-table", "columns", "*", "component"),
                 component: () => B.Dialog()
             );
             conventions.AddPropertyComponent(
-                when: c => c.Property.Has<DescriptionAttribute>(),
+                when: c => c.Property.Has<UiDescription>(),
                 where: cc => cc.Path.EndsWith("open"),
                 component: () => B.Button()
             );
             conventions.EditPropertyComponent<Button>(
-                when: c => c.Property.Has<DescriptionAttribute>(),
+                when: c => c.Property.Has<UiDescription>(),
                 where: cc => cc.Path.EndsWith("open"),
                 component: (b, c, cc) =>
                 {

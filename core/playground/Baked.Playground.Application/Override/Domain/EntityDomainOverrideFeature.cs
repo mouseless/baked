@@ -28,7 +28,7 @@ public class EntityDomainOverrideFeature : IFeature
                 order: Order.At.Override
             );
 
-            conventions.RemovePropertyAttribute<DataAttribute>(
+            conventions.RemovePropertyAttribute<UiData>(
                 when: c => c.Type.Is<Entity>() && c.Property.Name is nameof(Entity.Dynamic) or nameof(Entity.Guid) or nameof(Entity.TimeOnly) or nameof(Entity.Enum) or nameof(Entity.FlagsEnum),
                 order: Order.At.Override
             );

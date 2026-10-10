@@ -13,7 +13,7 @@ public class LabelsAreFrozenUxFeature()
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.EditPropertyAttribute<DataAttribute>(
+            conventions.EditPropertyAttribute<UiData>(
                 when: c => c.Property.Has<Label>(),
                 attribute: data => data.Order = -10,
                 order: Order.At.Infra

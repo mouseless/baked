@@ -1,7 +1,7 @@
 ﻿namespace Baked.Theme.Default;
 
 [AttributeUsage(AttributeTargets.Property)]
-public class DataAttribute(string prop)
+public class UiData(string prop)
     : Attribute()
 {
     public string Prop { get; set; } = prop;

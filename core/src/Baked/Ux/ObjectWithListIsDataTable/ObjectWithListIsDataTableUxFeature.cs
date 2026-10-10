@@ -19,7 +19,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.Any(p =>
-                        p.TryGet<DataAttribute>(out var data) &&
+                        p.TryGet<UiData>(out var data) &&
                         data.Visible &&
                         !p.PropertyType.Is<string>() &&
                         p.PropertyType.IsAssignableTo<IEnumerable>()
@@ -27,7 +27,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 attribute: c => new ObjectWithList(
                     c.Type.GetMembers().Properties
                         .First(p =>
-                            p.TryGet<DataAttribute>(out var data) &&
+                            p.TryGet<UiData>(out var data) &&
                             data.Visible &&
                             !p.PropertyType.Is<string>() &&
                             p.PropertyType.IsAssignableTo<IEnumerable>()
@@ -36,7 +36,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 order: Order.At.Infra
             );
 
-            conventions.EditPropertyAttribute<DataAttribute>(
+            conventions.EditPropertyAttribute<UiData>(
                 when: c =>
                     c.Type.TryGet<ObjectWithList>(out var objectWithList) &&
                     c.Property.Name == objectWithList.ListPropertyName,
@@ -156,7 +156,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     {
                         if (property.Name == listPropertyName) { continue; }
 
-                        property.Get<DataAttribute>().Label = null;
+                        property.Get<UiData>().Label = null;
 
                         var column = property.GenerateSchema<DataTable.Column>(cc.Drill("columns"));
                         if (column is null) { continue; }
