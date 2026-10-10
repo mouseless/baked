@@ -78,14 +78,14 @@ public static class RestBindingExtensions
         public bool IsPublicInstanceWithNoSpecialName =>
             overload.IsPublic && !overload.IsStatic && !overload.IsSpecialName;
 
-        public bool AllParametersAreApiInput() =>
-            overload.Parameters.All(p => p.IsApiInput);
+        public bool AllParametersAreBindable() =>
+            overload.Parameters.All(p => p.IsBindable);
     }
 
     extension(ParameterModel parameter)
     {
-        public bool IsApiInput =>
-            parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInput>();
+        public bool IsBindable =>
+            parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<Bindable>();
     }
 
     extension(ApiDescription apiDescription)

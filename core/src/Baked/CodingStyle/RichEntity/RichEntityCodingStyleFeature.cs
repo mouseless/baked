@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -28,7 +29,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c => c.Type.Has<Entity>(),
                 apply: (c, set) =>
                 {
-                    set(c.Type, new ApiInput());
+                    set(c.Type, new Bindable());
                     set(c.Type, new Locatable());
                 },
                 order: Order.At.Infra
@@ -36,7 +37,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Has<Entity>() && c.Method.Has<Initializer>() &&
-                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
+                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreBindable()),
                 attribute: c => new ApiAction(),
                 order: Order.At.Infra + 30
             );

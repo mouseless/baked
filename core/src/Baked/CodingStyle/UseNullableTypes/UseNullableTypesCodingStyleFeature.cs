@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Domain.Configuration;
-using Baked.RestApi.Model;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -19,8 +19,8 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                 when: c =>
                     c.Type.IsAssignableTo(typeof(Nullable<>)) &&
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
-                    genericArgumentMetadata.Has<ApiInput>(),
-                attribute: () => new ApiInput(),
+                    genericArgumentMetadata.Has<Bindable>(),
+                attribute: () => new Bindable(),
                 order: Order.At.Infra.Min
             );
 

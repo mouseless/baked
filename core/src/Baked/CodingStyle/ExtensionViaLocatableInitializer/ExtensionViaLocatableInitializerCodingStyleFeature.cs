@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Business;
 using Baked.Domain.Configuration;
-using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.ExtensionViaLocatableInitializer;
 
@@ -62,7 +62,7 @@ public class ExtensionViaLocatableInitializerCodingStyleFeature : IFeature<Codin
                 when: c => c.Type.Has<LocatableExtension>(),
                 apply: (c, set) =>
                 {
-                    set(c.Type, new ApiInput());
+                    set(c.Type, new Bindable());
 
                     var locatableExtensionType = c.Type;
                     if (!locatableExtensionType.TryGetLocatableTypeFromExtension(c.Domain, out var locatableType)) { return; }

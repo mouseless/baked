@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -38,7 +39,7 @@ public class ResourceViaIdInitializerCodingStyleFeature : IFeature<CodingStyleCo
                 apply: (c, set) =>
                 {
                     set(c.Type, new Resource());
-                    set(c.Type, new ApiInput());
+                    set(c.Type, new Bindable());
                     set(c.Type, new Locatable());
                 },
                 order: Order.At.Infra + 10

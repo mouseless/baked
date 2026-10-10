@@ -11,7 +11,6 @@
 ## Breaking Changes
 
 - Attributes that are used in conventions no longer have the `Attribute` suffix
-  - `ApiInputAttribute` -> `ApiInput`
   - `ClientAttribute` -> `Client`
   - `CommandAttribute` -> `Command`
   - `CommandMethodAttribute` -> `CommandMethod`
@@ -32,6 +31,11 @@
 - `AllowAnonymous`, `ClientCache` and `NoTransaction` attributes now declare
   `[AttributeUsage]`, so they are no longer included in every export target
 - Attributes that are used in conventions are renamed
+  - `ApiInputAttribute` -> `Bindable`, and moved from `Baked.RestApi.Model` to
+    `Baked.Binding`, since it marks types that can be bound from a request and
+    is only used by rest binding
+    - `AllParametersAreApiInput()` -> `AllParametersAreBindable()`
+    - `IsApiInput` -> `IsBindable`
   - `IdAttribute` -> `IdProperty`
   - `ValueTypeAttribute` -> `Primitive`, to avoid clashing with
     `System.ValueType` once the `Attribute` suffix is dropped

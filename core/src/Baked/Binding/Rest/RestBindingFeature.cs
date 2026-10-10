@@ -21,7 +21,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
         {
             // domain attribute indices
             builder.Index.Type.Add<ApiController>();
-            builder.Index.Type.Add<ApiInput>();
+            builder.Index.Type.Add<Bindable>();
             builder.Index.Method.Add<ApiAction>();
             builder.Index.Parameter.Add<ApiParameter>();
         });
@@ -45,12 +45,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     !c.Method.Has<External>() &&
                     !c.Method.Has<Initializer>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
-                    c.Method.DefaultOverload.AllParametersAreApiInput(),
+                    c.Method.DefaultOverload.AllParametersAreBindable(),
                 attribute: c => new ApiAction(),
                 order: Order.At.Max
             );
             conventions.SetParameterAttribute(
-                when: c => c.Parameter.IsApiInput,
+                when: c => c.Parameter.IsBindable,
                 attribute: c => new ApiParameter(),
                 order: Order.At.Max
             );

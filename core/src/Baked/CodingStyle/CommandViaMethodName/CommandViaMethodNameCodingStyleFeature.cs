@@ -51,7 +51,7 @@ public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodN
                         m.Has<Initializer>() &&
                         m.DefaultOverload.DeclaringType == c.Type &&
                         m.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
-                        !m.DefaultOverload.AllParametersAreApiInput()
+                        !m.DefaultOverload.AllParametersAreBindable()
                     ),
                 order: Order.At.Infra + 40
             );

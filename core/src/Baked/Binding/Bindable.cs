@@ -1,4 +1,4 @@
-﻿namespace Baked.RestApi.Model;
+﻿namespace Baked.Binding;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.Enum)]
-public class ApiInput : Attribute;
+public class Bindable : Attribute;
