@@ -1,4 +1,4 @@
-using Baked.Reporting;
+﻿using Baked.Reporting;
 using Baked.Reporting.Fake;
 using Baked.Runtime;
 using Baked.Testing;

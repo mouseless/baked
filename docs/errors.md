@@ -145,10 +145,9 @@ find the first matching property in a type.
 
 To fix this, either add the given attribute to an existing property in the type
 or add a new property that will match existing coding style so that it will be
-marked automatically with the given attribute. For example, if the required
-attribute is `LabelAttribute`, it will be added to a property that is named as
-`Name`. Other option is to add it to an existing property using a domain
-override.
+marked automatically with the given attribute. For example, for the `Label`
+attribute, it will be added to a property that is named as `Name`. Other option
+is to add it to an existing property using a domain override.
 
 ## `requires-build-level`
 
@@ -165,7 +164,7 @@ are usually at `Members` level, and by default any type is built to at least
 It means that the indicated type is required to be a controller.
 
 To fix this, look through your conventions where you require a controller over a
-domain type using `type.GetControllerModel()`.
+domain type using `type.GetApiController()`.
 
 In Baked, `conventions.AddEntityRemoteData<MyEntity>()` helper assumes given
 entity type has a controller model. Make sure you didn't call that helper over a
@@ -182,8 +181,8 @@ Indicated type requires an initializer method that is an API action.
 
 An initializer is a method that serves as a builder method for a domain object,
 e.g., a `With` method. For an initializer to become an API action it needs to be
-`public` and all parameters should be in type that is marked with
-`ApiInputAttribute`, e.g., primitives and your own domain types.
+`public` and all parameters should be in type that is marked with `Bindable`
+attribute, e.g., primitives and your own domain types.
 
 To fix this, go check if the type indicated in the error message has a public
 initializer method (`public MyType With(...)`). If not, add one or make the

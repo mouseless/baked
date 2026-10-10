@@ -1,4 +1,4 @@
-using Baked.Ui;
+﻿using Baked.Ui;
 
 namespace Baked.Playground.Ui;
 

@@ -1,45 +1,45 @@
-documentation-samples @controller-model {
+documentation-samples @api-controller {
   execute {
-    @action-model route="POST /documentation-samples" required-claims="BaseA, BaseB"
+    @api-action route="POST /documentation-samples" required-claims="BaseA, BaseB"
     parameter {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
 }
 
-documentation-samples @controller-model {
+documentation-samples @api-controller {
   method {
-    @action-model route="POST /documentation-samples/method" required-claims="BaseA, BaseB"
+    @api-action route="POST /documentation-samples/method" required-claims="BaseA, BaseB"
     parameter1 {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     parameter2 {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   parameterless-method {
-    @action-model route="POST /documentation-samples/parameterless-method" required-claims="BaseA, BaseB"
+    @api-action route="POST /documentation-samples/parameterless-method" required-claims="BaseA, BaseB"
   }
   array-and-generic-parameters {
-    @action-model route="POST /documentation-samples/array-and-generic-parameters" required-claims="BaseA, BaseB"
+    @api-action route="POST /documentation-samples/array-and-generic-parameters" required-claims="BaseA, BaseB"
     enumerable {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     array {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     dictionary {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   route {
-    @action-model route="POST /documentation-samples/route/{route}" required-claims="BaseA, BaseB"
+    @api-action route="POST /documentation-samples/route/{route}" required-claims="BaseA, BaseB"
     route {
-      @parameter-model required=#true in="route"
+      @api-parameter required=#true in="route"
     }
   }
   multiline {
-    @action-model route="POST /documentation-samples/multiline" required-claims="BaseA, BaseB"
+    @api-action route="POST /documentation-samples/multiline" required-claims="BaseA, BaseB"
   }
 }
 

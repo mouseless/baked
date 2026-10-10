@@ -1,0 +1,15 @@
+resource-async @api-controller {
+  with {
+    @api-action route="GET /resource-asyncs/{id}" required-claims="BaseA, BaseB"
+    id {
+      @api-parameter required=#true in="route"
+    }
+  }
+}
+
+resource-async-extension @api-controller {
+  from-extension {
+    @api-action route="POST /resource-asyncs/{id}/from-extension" required-claims="BaseA, BaseB"
+  }
+}
+

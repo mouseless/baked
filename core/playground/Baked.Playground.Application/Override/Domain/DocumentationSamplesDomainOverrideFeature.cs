@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Playground.Business;
 using Baked.RestApi.Model;
 

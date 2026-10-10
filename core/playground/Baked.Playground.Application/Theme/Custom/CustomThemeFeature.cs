@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Playground.Caching;
 using Baked.Playground.Orm;
 using Baked.Playground.Ui;
@@ -6,7 +7,6 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Playground.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 
 using B = Baked.Ui.Components;
@@ -35,7 +35,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Custom theme CSV formatter settings
-            conventions.AddMethodSchemaConfiguration<DataTable.Export>(
+            conventions.EditMethodSchema<DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
                     var (_, l) = cc;
@@ -51,16 +51,21 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             // String api rendering
             conventions.AddMethodComponent(
                 when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: (c, cc) => MethodText(c.Method, cc)
+                where: cc => cc.Path.EndsWith("data-panel", "content"),
+                component: () => B.Text()
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
+                when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
+                component: (t, c, cc) => t.Data = c.Method.GenerateSchema<RemoteData>(cc.Drill("data")),
+                order: Order.At.Min
+            );
+            conventions.EditMethodComponent<Text>(
                 component: t => t.Override(C.MyText())
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
                 component: t => t.Schema.MaxLength = 100
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
                 component: t =>
                 {
                     if (t.Schema is not MyText mt) { return; }

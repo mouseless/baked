@@ -19,7 +19,7 @@ public class TypeModelTypeSourceTemplate : CodeTemplateBase
 
     public TypeModelTypeSourceTemplate(DomainModel domain)
     {
-        _entities = domain.Types.Having<EntityAttribute>().Where(CheckType);
+        _entities = domain.Types.Having<Entity>().Where(CheckType);
 
         AddReferences(_entities);
     }

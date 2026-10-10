@@ -55,10 +55,12 @@ public static class DefaultThemeExtensions
                             .Select(r => r.AsCardLink(l)),
                         options: mp =>
                         {
-                            mp.Header = B.PageTitle(
-                                title: l(context.Route.Title),
-                                options: pt => pt.Description = l(context.Route.Description)
-                            );
+                            mp.Header = B.PageTitle(options: pt =>
+                            {
+                                pt.LocalizeTitle = true;
+                                pt.Description = l(context.Route.Description);
+                            });
+                            mp.Header.Data = Datas.Inline(l(context.Route.Title));
                         }
                     );
                 }
@@ -66,14 +68,16 @@ public static class DefaultThemeExtensions
                 return B.MenuPage(context.Route.Name,
                     options: mp =>
                     {
-                        mp.Header = B.PageTitle(context.Route.Title, options: pt =>
+                        mp.Header = B.PageTitle(options: pt =>
                         {
+                            pt.LocalizeTitle = true;
                             pt.Description = l(context.Route.Description);
                             pt.Actions.Add(B.Filter(
                                 options: f => f.Placeholder = l("Filter"),
                                 action: Publish.Event("filter-changed")
                             ));
                         });
+                        mp.Header.Data = Datas.Inline(context.Route.Title);
                         mp.FilterEvent = "filter-changed";
                         mp.Sections.AddRange(
                             sections.Select(g => B.MenuPageSection(
@@ -123,8 +127,8 @@ public static class DefaultThemeExtensions
     {
         public IEnumerable<PropertyModel> GetDataProperties() =>
             properties
-                .Having<DataAttribute>()
-                .Select(p => (property: p, data: p.Get<DataAttribute>()))
+                .Having<UiData>()
+                .Select(p => (property: p, data: p.Get<UiData>()))
                 .Where(pd => pd.data.Visible)
                 .OrderBy(pd => pd.data.Order)
                 .Select(pd => pd.property);
@@ -136,7 +140,7 @@ public static class DefaultThemeExtensions
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.Is<T>(),
-                attribute: c => new RouteAttribute(routePath)
+                attribute: c => new UiRoute(routePath)
             );
         }
 
@@ -144,12 +148,12 @@ public static class DefaultThemeExtensions
         {
             conventions.SetMethodAttribute(
                 when: c => c.Type.Is<T>() && c.Method.Name == methodName,
-                attribute: c => new RouteAttribute(routePath)
+                attribute: c => new UiRoute(routePath)
             );
         }
     }
 
-    extension(GroupAttribute group)
+    extension(Group group)
     {
         public string InputGroupKey { get => group[nameof(FormPage.InputGroup)]; set => group[nameof(FormPage.InputGroup)] = value; }
         public string SectionKey { get => group[nameof(FormPage.Section)]; set => group[nameof(FormPage.Section)] = value; }
@@ -159,13 +163,13 @@ public static class DefaultThemeExtensions
     extension(ICustomAttributesModel model)
     {
         public string InputGroupKey =>
-            model.Get<GroupAttribute>().InputGroupKey;
+            model.Get<Group>().InputGroupKey;
 
         public string SectionKey =>
-            model.Get<GroupAttribute>().SectionKey;
+            model.Get<Group>().SectionKey;
 
         public string TabName =>
-            model.Get<GroupAttribute>().TabName.Kebaberize();
+            model.Get<Group>().TabName.Kebaberize();
     }
 
     extension<T>(IEnumerable<T> models) where T : ICustomAttributesModel

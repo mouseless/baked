@@ -1,4 +1,4 @@
-using Baked.Binding.Rest;
+﻿using Baked.Binding.Rest;
 using Baked.Playground.Business;
 using System.Globalization;
 

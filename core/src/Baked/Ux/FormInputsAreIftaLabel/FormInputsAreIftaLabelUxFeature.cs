@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Ui;
 using Humanizer;
 
@@ -10,10 +10,10 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.EditParameterSchema<Labeler>(
                 where: cc =>
-                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs), "*", nameof(ILabeler.Label)) ||
-                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs), "*", nameof(ILabeler.Label)),
+                    cc.Path.EndsWith("simple-form", "inputs", "*", "label") ||
+                    cc.Path.EndsWith("form-page", "**", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {
                     var (_, l) = cc;

@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Domain.Configuration;
 using Baked.Playground.Business;
 
@@ -11,61 +11,61 @@ public class CustomAttributeDomainOverrideFeature : IFeature
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
-                attribute: () => new CustomAttribute(),
                 when: c => c.Type.Is<Class>(),
+                attribute: () => new Custom(),
                 order: Order.At.Override
             );
-            conventions.AddTypeAttributeConfiguration<CustomAttribute>(
-                attribute: attr => attr.Value = "FROM CONVENTION",
+            conventions.EditTypeAttribute<Custom>(
                 when: c => c.Type.Is<Class>(),
+                attribute: attr => attr.Value = "FROM CONVENTION",
                 order: Order.At.Override
             );
 
             conventions.SetPropertyAttribute(
-                attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Record>() &&
-                    c.Property.Name == nameof(Record.Text),
-                    order: Order.At.Override
+                    c.Property.Name is nameof(Record.Text),
+                    order: Order.At.Override,
+                attribute: () => new Custom()
             );
-            conventions.AddPropertyAttributeConfiguration<CustomAttribute>(
-                attribute: attr => attr.Value = "FROM CONVENTION",
+            conventions.EditPropertyAttribute<Custom>(
                 when: c =>
                     c.Type.Is<Record>() &&
-                    c.Property.Name == nameof(Record.Text),
-                    order: Order.At.Override
+                    c.Property.Name is nameof(Record.Text),
+                    order: Order.At.Override,
+                attribute: attr => attr.Value = "FROM CONVENTION"
             );
 
             conventions.SetMethodAttribute(
-                attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Class>() &&
-                    c.Method.Name == nameof(Class.Method),
-                    order: Order.At.Override
+                    c.Method.Name is nameof(Class.Method),
+                    order: Order.At.Override,
+                attribute: () => new Custom()
             );
-            conventions.AddMethodAttributeConfiguration<CustomAttribute>(
-                attribute: attr => attr.Value = "FROM CONVENTION",
+            conventions.EditMethodAttribute<Custom>(
                 when: c =>
                     c.Type.Is<Class>() &&
-                    c.Method.Name == nameof(Class.Method),
-                    order: Order.At.Override
+                    c.Method.Name is nameof(Class.Method),
+                    order: Order.At.Override,
+                attribute: attr => attr.Value = "FROM CONVENTION"
             );
 
             conventions.SetParameterAttribute(
-                attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
-                    c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
-                    c.Parameter.Name == "string",
-                    order: Order.At.Override
+                    c.Method.Name is nameof(MethodSamples.BuiltInTypeParameters) &&
+                    c.Parameter.Name is "string",
+                    order: Order.At.Override,
+                attribute: () => new Custom()
             );
-            conventions.AddParameterAttributeConfiguration<CustomAttribute>(
-                attribute: attr => attr.Value = "FROM CONVENTION",
+            conventions.EditParameterAttribute<Custom>(
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
-                    c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
-                    c.Parameter.Name == "string",
-                    order: Order.At.Override
+                    c.Method.Name is nameof(MethodSamples.BuiltInTypeParameters) &&
+                    c.Parameter.Name is "string",
+                    order: Order.At.Override,
+                attribute: attr => attr.Value = "FROM CONVENTION"
             );
         });
     }

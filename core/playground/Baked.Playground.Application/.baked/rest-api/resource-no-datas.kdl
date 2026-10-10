@@ -1,0 +1,9 @@
+resource-no-data @api-controller {
+  method {
+    @api-action route="POST /resource-no-datas/{id}/method" required-claims="BaseA, BaseB"
+    text {
+      @api-parameter required=#true
+    }
+  }
+}
+

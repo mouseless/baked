@@ -1,3 +1,3 @@
-namespace Baked.Localization;
+﻿namespace Baked.Localization;
 
 public class LocalizationConfigurator;

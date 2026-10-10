@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Domain.Configuration;
 using Baked.Playground.Orm;
 using Baked.Theme.Default;
@@ -13,13 +13,13 @@ public class ChildDomainOverrideFeature : IFeature
         {
             conventions.AddLocateAction<Child>();
 
-            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+            conventions.EditPropertyAttribute<UiData>(
                 when: c => c.Type.Is<Child>() && c.Property.PropertyType.Is<ParentWrapper>() || c.Property.PropertyType.Is<IParentInterface>(),
                 attribute: data => data.Visible = false,
                 order: Order.At.Override
             );
 
-            conventions.RemoveMethodAttribute<ActionAttribute>(
+            conventions.RemoveMethodAttribute<UiAction>(
                 when: c => c.Type.Is<Child>(),
                 order: Order.At.Theme.Override
             );

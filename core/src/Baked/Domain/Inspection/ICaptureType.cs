@@ -1,4 +1,4 @@
-namespace Baked.Domain.Inspection;
+﻿namespace Baked.Domain.Inspection;
 
 internal interface ICaptureType
 {

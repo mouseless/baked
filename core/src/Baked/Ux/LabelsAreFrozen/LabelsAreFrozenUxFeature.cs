@@ -13,20 +13,20 @@ public class LabelsAreFrozenUxFeature()
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
-                when: c => c.Property.Has<LabelAttribute>(),
+            conventions.EditPropertyAttribute<UiData>(
+                when: c => c.Property.Has<Label>(),
                 attribute: data => data.Order = -10,
                 order: Order.At.Infra
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                when: c => c.Property.Has<LabelAttribute>(),
+            conventions.EditPropertySchema<DataTable.Column>(
+                when: c => c.Property.Has<Label>(),
                 schema: dtc =>
                 {
                     dtc.Frozen = true;
                     dtc.MinWidth = true;
                 }
             );
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 component: (dt, c) =>
                 {
                     if (dt.Schema.DataKey is not null) { return; }

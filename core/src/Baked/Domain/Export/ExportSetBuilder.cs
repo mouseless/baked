@@ -1,4 +1,5 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.Binding;
+using Baked.Domain.Model;
 
 namespace Baked.Domain.Export;
 
@@ -102,7 +103,9 @@ public class ExportSetBuilder(ExportConfiguration _configuration, IAttributeProp
             properties.Add(property((Attribute)instance));
         }
 
-        var attributeMetadata = new AttributeExportModel(instance.GetType().Name)
+        var attributeMetadata = new AttributeExportModel(
+            instance is IExportOptions options ? options.Name : instance.GetType().Name
+        )
         {
             Values = properties.Where(p => !attributeExport.RemoveProperty.Any(r => r(p))).ToDictionary(p => p.Name, p => p.Value)
         };

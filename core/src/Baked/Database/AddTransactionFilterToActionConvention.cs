@@ -1,4 +1,4 @@
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
 namespace Baked.Database;
@@ -8,11 +8,11 @@ public class AddTransactionFilterToActionConvention : IDomainModelConvention<Typ
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMembers(out var members)) { return; }
-        if (!members.TryGet<ControllerModelAttribute>(out var controller)) { return; }
+        if (!members.TryGet<ApiController>(out var controller)) { return; }
 
         foreach (var (key, action) in controller.Action)
         {
-            if (members.Methods.TryGetValue(key, out var method) && method.Has<NoTransactionAttribute>()) { continue; }
+            if (members.Methods.TryGetValue(key, out var method) && method.Has<NoTransaction>()) { continue; }
 
             action.AdditionalAttributes.Add($"ServiceFilter(typeof({typeof(TransactionFilter).FullName}), Order = int.MinValue)");
         }

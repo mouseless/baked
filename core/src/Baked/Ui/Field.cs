@@ -2,11 +2,10 @@
 
 namespace Baked.Ui;
 
-public record Field(string Key, string Label)
-    : IOrderableSchema
+public record Field : IOrderableSchema
 {
-    public string Key { get; set; } = Key;
-    public string Label { get; set; } = Label;
-    public IComponentDescriptor Component { get; set; } = B.Text();
+    public string Key { get; set; } = string.Empty;
+    public string Label { get; set; } = string.Empty;
+    public IComponentDescriptor Component { get; set; } = B.MissingComponent();
     public bool? Wide { get; set; }
 }

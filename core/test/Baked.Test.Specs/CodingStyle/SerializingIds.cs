@@ -1,4 +1,4 @@
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
@@ -36,7 +36,7 @@ public class SerializingIds : TestNfr
     [Test]
     public async Task Serializes_id_using_property_name_for_rich_transients()
     {
-        var response = await Client.PostAsync("/rich-transient-with-custom-id-properties/test-uid/test-custom-id-property-name", JsonContent.Create(
+        var response = await Client.PostAsync("/resource-with-custom-id-properties/test-uid/test-custom-id-property-name", JsonContent.Create(
             new
             {
                 other = new { uid = "test-uid" }
@@ -50,7 +50,7 @@ public class SerializingIds : TestNfr
     [Test]
     public async Task Id_suffix_uses_property_name_for_rich_transients()
     {
-        var response = await Client.GetAsync($"/rich-transient-with-custom-id-properties/test-uid/test-custom-id-property-name?otherUid=test-uid");
+        var response = await Client.GetAsync($"/resource-with-custom-id-properties/test-uid/test-custom-id-property-name?otherUid=test-uid");
         dynamic? actual = await response.Content.Deserialize();
 
         ((string?)actual?.uid).ShouldBe("test-uid");

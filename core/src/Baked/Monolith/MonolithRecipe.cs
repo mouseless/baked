@@ -1,15 +1,15 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Authentication;
 using Baked.Authorization;
 using Baked.Binding;
 using Baked.Business;
 using Baked.Caching;
 using Baked.CodingStyle;
-using Baked.CodingStyle.CommandPattern;
-using Baked.CodingStyle.Initializable;
-using Baked.CodingStyle.Label;
-using Baked.CodingStyle.QueryMethod;
-using Baked.CodingStyle.ScopedBySuffix;
+using Baked.CodingStyle.CommandViaMethodName;
+using Baked.CodingStyle.InitializableViaMethodName;
+using Baked.CodingStyle.NameBasedLabel;
+using Baked.CodingStyle.QueryViaPluralName;
+using Baked.CodingStyle.ScopedViaSuffix;
 using Baked.CodingStyle.UseBuiltInTypes;
 using Baked.Communication;
 using Baked.Core;
@@ -17,6 +17,7 @@ using Baked.Cors;
 using Baked.Database;
 using Baked.ExceptionHandling;
 using Baked.Greeting;
+using Baked.Lifetime;
 using Baked.Localization;
 using Baked.Logging;
 using Baked.MockOverrider;
@@ -46,8 +47,8 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
     FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
     public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
 
-    IEnumerable<FeatureFunc<Lifetime.LifetimeConfigurator>> _lifetimes = [c => c.Scoped(), c => c.Singleton(), c => c.Transient()];
-    public void Lifetimes(IEnumerable<FeatureFunc<Lifetime.LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
+    IEnumerable<FeatureFunc<LifetimeConfigurator>> _lifetimes = [c => c.Scope(), c => c.Application(), c => c.Instance()];
+    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
 
     FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
     public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;
@@ -56,20 +57,20 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
     public void Orm(FeatureFunc<OrmConfigurator> orm) => _orm = orm;
 
     // Coding Styles
-    FeatureFunc<CodingStyleConfigurator> _commandPattern = c => c.CommandPattern();
-    public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) => _commandPattern = c => commandPattern(c);
+    FeatureFunc<CodingStyleConfigurator> _commandViaMethodName = c => c.CommandViaMethodName();
+    public void CommandViaMethodName(Func<CodingStyleConfigurator, CommandViaMethodNameCodingStyleFeature> commandViaMethodName) => _commandViaMethodName = c => commandViaMethodName(c);
 
-    FeatureFunc<CodingStyleConfigurator> _initializable = c => c.Initializable();
-    public void Initializable(Func<CodingStyleConfigurator, InitializableCodingStyleFeature> initializable) => _initializable = c => initializable(c);
+    FeatureFunc<CodingStyleConfigurator> _initializableViaMethodName = c => c.InitializableViaMethodName();
+    public void InitializableViaMethodName(Func<CodingStyleConfigurator, InitializableViaMethodNameCodingStyleFeature> initializableViaMethodName) => _initializableViaMethodName = c => initializableViaMethodName(c);
 
-    FeatureFunc<CodingStyleConfigurator> _label = c => c.Label();
-    public void Label(Func<CodingStyleConfigurator, LabelCodingStyleFeature> label) => _label = c => label(c);
+    FeatureFunc<CodingStyleConfigurator> _nameBasedLabel = c => c.NameBasedLabel();
+    public void NameBasedLabel(Func<CodingStyleConfigurator, NameBasedLabelCodingStyleFeature> nameBasedLabel) => _nameBasedLabel = c => nameBasedLabel(c);
 
-    FeatureFunc<CodingStyleConfigurator> _queryMethod = c => c.QueryMethod();
-    public void QueryMethod(Func<CodingStyleConfigurator, QueryMethodCodingStyleFeature> queryMethod) => _queryMethod = c => queryMethod(c);
+    FeatureFunc<CodingStyleConfigurator> _queryViaPluralName = c => c.QueryViaPluralName();
+    public void QueryViaPluralName(Func<CodingStyleConfigurator, QueryViaPluralNameCodingStyleFeature> queryViaPluralName) => _queryViaPluralName = c => queryViaPluralName(c);
 
-    FeatureFunc<CodingStyleConfigurator> _scopedBySuffix = c => c.ScopedBySuffix();
-    public void ScopedBySuffix(Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> scopedBySuffix) => _scopedBySuffix = c => scopedBySuffix(c);
+    FeatureFunc<CodingStyleConfigurator> _scopedViaSuffix = c => c.ScopedViaSuffix();
+    public void ScopedViaSuffix(Func<CodingStyleConfigurator, ScopedViaSuffixCodingStyleFeature> scopedViaSuffix) => _scopedViaSuffix = c => scopedViaSuffix(c);
 
     FeatureFunc<CodingStyleConfigurator> _useBuiltInTypes = c => c.UseBuiltInTypes();
     public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) => _useBuiltInTypes = c => useBuiltInTypes(c);
@@ -80,29 +81,28 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
 
     IEnumerable<FeatureFunc<CodingStyleConfigurator>> CodingStyleFeatures => _codingStyles ??
     [
-        c => c.AddRemoveChild(),
-        c => c.Client(),
-        _commandPattern,
-        c => c.EntitySubclass(),
-        c => c.Id(),
-        _initializable,
-        _label,
-        c => c.Locatable(),
-        c => c.LocatableExtension(),
+        c => c.AddRemoveChildAsSubResource(),
+        _commandViaMethodName,
+        c => c.ExtensionViaLocatableInitializer(),
+        c => c.FlagsEnum(),
+        _initializableViaMethodName,
+        c => c.LocateViaId(),
+        _nameBasedLabel,
         c => c.NamespaceAsRoute(),
         c => c.ObjectAsJson(),
-        c => c.Query(),
-        _queryMethod,
+        c => c.PrimitiveViaParsable(),
+        _queryViaPluralName,
         c => c.RecordsAreDtos(),
         c => c.RemainingServicesAreSingleton(),
+        c => c.ResourceViaIdInitializer(),
         c => c.RichEntity(),
-        c => c.RichTransient(),
-        _scopedBySuffix,
-        c => c.Unique(),
+        _scopedViaSuffix,
+        c => c.SuffixBasedClient(),
+        c => c.TypeBasedId(),
+        c => c.UniqueViaSingleBy(),
         c => c.UriReturnIsRedirect(),
         _useBuiltInTypes,
-        c => c.UseNullableTypes(),
-        c => c.ValueType()
+        c => c.UseNullableTypes()
     ];
 
     public class Run(FeatureFunc<BusinessConfigurator> business)

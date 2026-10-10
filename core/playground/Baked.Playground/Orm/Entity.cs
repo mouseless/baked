@@ -12,7 +12,12 @@ namespace Baked.Playground.Orm;
 /// It is a test entity to check all supported property types both in data
 /// access layer and in rest api layer.
 /// </remarks>
-public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
+public class Entity(
+    IEntityContext<Entity> _context,
+    ITransaction _transaction,
+    Validate _validate,
+    Entities _entities
+)
 {
     public Id Id { get; private set; } = default!;
     public Guid? Guid { get; private set; } = default!;
@@ -35,6 +40,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
     /// </summary>
     public object? Dynamic { get; private set; } = default!;
     public Enumeration? Enum { get; private set; } = default!;
+    public FlagsEnumeration? FlagsEnum { get; private set; } = default!;
     public DateTime? DateTime { get; private set; } = default!;
     public DateOnly? DateOnly { get; private set; } = default!;
     public TimeOnly? TimeOnly { get; private set; } = default!;
@@ -52,6 +58,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         MailAddress? mailAddress = default,
         object? @dynamic = default,
         Enumeration? @enum = default,
+        FlagsEnumeration? flagsEnum = default,
         DateTime? dateTime = default,
         DateOnly? dateOnly = default,
         TimeOnly? timeOnly = default
@@ -70,6 +77,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
             mailAddress: mailAddress,
             @dynamic: @dynamic,
             @enum: @enum,
+            flagsEnum: flagsEnum,
             dateTime: dateTime,
             dateOnly: dateOnly,
             timeOnly: timeOnly
@@ -91,6 +99,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         MailAddress? mailAddress = default,
         object? @dynamic = default,
         Enumeration? @enum = default,
+        FlagsEnumeration? flagsEnum = default,
         DateTime? dateTime = default,
         DateOnly? dateOnly = default,
         bool useTransaction = false,
@@ -113,6 +122,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
                     mailAddress: mailAddress,
                     @dynamic: @dynamic,
                     @enum: @enum,
+                    flagsEnum: flagsEnum,
                     dateTime: dateTime,
                     dateOnly: dateOnly
                )
@@ -133,6 +143,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
                 mailAddress: mailAddress,
                 @dynamic: @dynamic,
                 @enum: @enum,
+                flagsEnum: flagsEnum,
                 dateTime: dateTime,
                 dateOnly: dateOnly
             );
@@ -175,20 +186,16 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         MailAddress? mailAddress = default,
         object? @dynamic = default,
         Enumeration? @enum = default,
+        FlagsEnumeration? flagsEnum = default,
         DateTime? dateTime = default,
         DateOnly? dateOnly = default,
         TimeOnly? timeOnly = default
     )
     {
-        if (unique is not null && unique != Unique && _entities.SingleByUnique(unique) is not null)
-        {
-            throw new MustBeUniqueException(nameof(Unique));
-        }
-
-        if (@enum is not null && @enum != Enum && _entities.SingleByEnum(@enum.Value) is not null)
-        {
-            throw new MustBeUniqueException(nameof(Enum));
-        }
+        _validate
+            .Unique(unique, Unique, _entities.SingleByUnique)
+            .Unique(@enum, Enum, _entities.SingleByEnum)
+        ;
 
         Guid = guid ?? Guid;
         String = @string ?? String;
@@ -202,6 +209,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         MailAddress = mailAddress ?? MailAddress;
         Dynamic = @dynamic ?? Dynamic;
         Enum = @enum ?? Enum;
+        FlagsEnum = flagsEnum ?? FlagsEnum;
         DateTime = dateTime ?? DateTime;
         DateOnly = dateOnly ?? DateOnly;
         TimeOnly = timeOnly ?? TimeOnly;
@@ -227,6 +235,7 @@ public class Entities(IQueryContext<Entity> _context)
         Uri? uri = default,
         MailAddress? mailAddress = default,
         Enumeration? @enum = default,
+        FlagsEnumeration? flagsEnum = default,
         DateTime? dateTime = default,
         int? take = default,
         int? skip = default
@@ -244,6 +253,7 @@ public class Entities(IQueryContext<Entity> _context)
                 (uri is not null, e => e.Uri == uri),
                 (mailAddress is not null, e => e.MailAddress == mailAddress),
                 (@enum is not null, e => e.Enum == @enum),
+                (flagsEnum is not null, c => c.FlagsEnum != null && c.FlagsEnum.Value.HasFlag(flagsEnum!.Value)),
                 (dateTime is not null, e => e.DateTime == dateTime),
             ],
             take: take,

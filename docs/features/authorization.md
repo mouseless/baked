@@ -15,9 +15,9 @@ authorization policies with given claim requirements.
  c => c.ClaimBased(claims: ["User", "Admin"], baseClaims: ["User"]);
 ```
 
-Feature gets claim requirement for methods by using `RequireUserAttribute`
-metadata and adds appropriate `AuthorizeAttribute` to the specified controller
-actions by with `ApiModel` conventions.
+Feature gets claim requirement for methods by using `RequireUser` attribute and
+adds appropriate `AuthorizeAttribute` to the specified controller actions by
+with `ApiModel` conventions.
 
 ```csharp
 [RequireUser(["Admin"])]

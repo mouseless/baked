@@ -159,10 +159,10 @@ be specified from its builder options.
 ```csharp
 configurator.Domain.ConfigureBuilder(builder =>
 {
-    builder.Index.Type.Add<MyTypeAttribute>();
-    builder.Index.Property.Add<MyPropertyAttribute>();
-    builder.Index.Method.Add<MyMethodAttribute>();
-    builder.Index.Parameter.Add<MyParameterAttribute>();
+    builder.Index.Type.Add<MyType>();
+    builder.Index.Property.Add<MyProperty>();
+    builder.Index.Method.Add<MyMethod>();
+    builder.Index.Parameter.Add<MyParameter>();
 }
 ```
 
@@ -170,13 +170,13 @@ When any model type are indexed, they can be accessed using `.Having` extension
 method instead of querying through models.
 
 ```csharp
-foreach(var type in domain.Types.Where(t => t.TryGetMetadata(out var metadata) && metadata.Has<MyTypeAttribute>()))
+foreach(var type in domain.Types.Where(t => t.TryGetMetadata(out var metadata) && metadata.Has<MyType>()))
 {
     ...
 }
 
 // Indexed, no query needed
-foreach(var type in domain.Types.Having<MyTypeAttribute>())
+foreach(var type in domain.Types.Having<MyType>())
 {
     ...
 }
@@ -197,7 +197,7 @@ public class IdConvention : IDomainModelConvention<PropertyModelContext>
     {
         if(c.Property.Name != "Id") { continue; }
 
-        ((IMutableAttributeCollection).Property.CustomAttributes).Add(new IdAttribute());
+        ((IMutableAttributeCollection).Property.CustomAttributes).Add(new IdProperty());
     }
 }
 
@@ -456,25 +456,25 @@ phase. To configure it in a feature;
 configurator.Domain.ConfigureBuilder(builder =>
 {
     // To inspect an attribute on types
-    builder.Inspect.TypeAttribute<MyAttribute>(
+    builder.Inspect.TypeAttribute<MyType>(
         when: c => c.Type..., // optional to inspect specific type models
         attribute: ma => ma.Value // optional to inspect just this value
     );
 
     // To inspect an attribute properties
-    builder.Inspect.PropertyAttribute<MyAttribute>(
+    builder.Inspect.PropertyAttribute<MyProperty>(
         when: c => c.Property..., // optional to inspect specific property models
         attribute: ma => ma.Value // optional to inspect just this value
     );
 
     // To inspect an attribute methods
-    builder.Inspect.MethodAttribute<MyAttribute>(
+    builder.Inspect.MethodAttribute<MyMethod>(
         when: c => c.Method..., // optional to inspect specific method models
         attribute: ma => ma.Value // optional to inspect just this value
     );
 
     // To inspect an attribute parameters
-    builder.Inspect.ParameterAttribute<MyAttribute>(
+    builder.Inspect.ParameterAttribute<MyParameter>(
         when: c => c.Parameter..., // optional to inspect specific parameter models
         attribute: ma => ma.Value // optional to inspect just this value
     );

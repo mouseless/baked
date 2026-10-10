@@ -1,8 +1,8 @@
-namespace Baked.Ui;
+﻿namespace Baked.Ui;
 
 public record MultiSelect : ISelect, ILabeler
 {
-    public Label? Label { get; set; }
+    public Labeler? Label { get; set; }
     public bool? LocalizeOptionLabels { get; set; }
     public int? MaxSelectedLabels { get; set; }
     public string? OptionLabel { get; set; }

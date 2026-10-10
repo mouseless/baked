@@ -1,0 +1,9 @@
+resource-child @api-controller {
+  with {
+    @api-action route="GET /resource-children/{id}" required-claims="BaseA, BaseB"
+    id {
+      @api-parameter required=#true in="route"
+    }
+  }
+}
+

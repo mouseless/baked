@@ -1,6 +1,6 @@
-namespace Baked.Ui;
+﻿namespace Baked.Ui;
 
 public record InputUrl : IComponentSchema, ILabeler
 {
-    public Label? Label { get; set; }
+    public Labeler? Label { get; set; }
 }

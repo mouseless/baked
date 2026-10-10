@@ -1,237 +1,237 @@
-method-samples @controller-model {
+method-samples @api-controller {
   execute {
-    @action-model route="POST /method-samples/execute" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/execute" required-claims="BaseA, BaseB"
   }
   update {
-    @action-model route="PUT /method-samples" required-claims="BaseA, BaseB"
+    @api-action route="PUT /method-samples" required-claims="BaseA, BaseB"
   }
   update-string {
-    @action-model route="PATCH /method-samples/string" required-claims="BaseA, BaseB"
+    @api-action route="PATCH /method-samples/string" required-claims="BaseA, BaseB"
   }
   delete {
-    @action-model route="DELETE /method-samples" required-claims="BaseA, BaseB"
+    @api-action route="DELETE /method-samples" required-claims="BaseA, BaseB"
   }
   void {
-    @action-model route="POST /method-samples/void" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/void" required-claims="BaseA, BaseB"
   }
   get-strings {
-    @action-model route="GET /method-samples/strings" required-claims="BaseA, BaseB"
+    @api-action route="GET /method-samples/strings" required-claims="BaseA, BaseB"
   }
   get-data {
-    @action-model route="GET /method-samples/data" required-claims="BaseA, BaseB"
+    @api-action route="GET /method-samples/data" required-claims="BaseA, BaseB"
   }
   set-setting {
-    @action-model route="PATCH /method-samples/setting" required-claims="BaseA, BaseB"
+    @api-action route="PATCH /method-samples/setting" required-claims="BaseA, BaseB"
     value {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   add-string {
-    @action-model route="POST /method-samples/strings" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/strings" required-claims="BaseA, BaseB"
     string {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   parameters {
-    @action-model route="POST /method-samples/parameters" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/parameters" required-claims="BaseA, BaseB"
     required {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    optional @parameter-model
+    optional @api-parameter
   }
   void-async {
-    @action-model route="POST /method-samples/void-async" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/void-async" required-claims="BaseA, BaseB"
   }
   get-async {
-    @action-model route="GET /method-samples/async" required-claims="BaseA, BaseB"
+    @api-action route="GET /method-samples/async" required-claims="BaseA, BaseB"
     ms {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
   }
   request-class {
-    @action-model route="POST /method-samples/request-class" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/request-class" required-claims="BaseA, BaseB"
     text {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     numeric {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   object {
-    @action-model route="POST /method-samples/object" flat-request-body=#true required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/object" flat-request-body=#true required-claims="BaseA, BaseB"
     object {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   object-async {
-    @action-model route="POST /method-samples/object-async" flat-request-body=#true required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/object-async" flat-request-body=#true required-claims="BaseA, BaseB"
     object {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   multiple-objects {
-    @action-model route="POST /method-samples/multiple-objects" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/multiple-objects" required-claims="BaseA, BaseB"
     object1 {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     object2 {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
-  primitive-parameters {
-    @action-model route="POST /method-samples/primitive-parameters" required-claims="BaseA, BaseB"
+  built-in-type-parameters {
+    @api-action route="POST /method-samples/built-in-type-parameters" required-claims="BaseA, BaseB"
     string {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     int {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     date-time {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
-  primitive-list-parameters {
-    @action-model route="POST /method-samples/primitive-list-parameters" required-claims="BaseA, BaseB"
+  built-in-type-list-parameters {
+    @api-action route="POST /method-samples/built-in-type-list-parameters" required-claims="BaseA, BaseB"
     strings {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     ints {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     date-times {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   record-parameters {
-    @action-model route="POST /method-samples/record-parameters" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/record-parameters" required-claims="BaseA, BaseB"
     record {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   record-list-parameters {
-    @action-model route="POST /method-samples/record-list-parameters" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/record-list-parameters" required-claims="BaseA, BaseB"
     records {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
-  get-value-type-parameters {
-    @action-model route="GET /method-samples/value-type-parameters" required-claims="BaseA, BaseB"
+  get-primitive-parameters {
+    @api-action route="GET /method-samples/primitive-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
     enumerable {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
     array {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
   }
-  value-type-parameters {
-    @action-model route="POST /method-samples/value-type-parameters" required-claims="BaseA, BaseB"
+  primitive-parameters {
+    @api-action route="POST /method-samples/primitive-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     enumerable {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     array {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
-  record-with-value-type {
-    @action-model route="POST /method-samples/record-with-value-type" required-claims="BaseA, BaseB"
+  record-with-primitive {
+    @api-action route="POST /method-samples/record-with-primitive" required-claims="BaseA, BaseB"
     record {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   get-entity-parameters {
-    @action-model route="GET /method-samples/entity-parameters" required-claims="BaseA, BaseB"
+    @api-action route="GET /method-samples/entity-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true in="query" name="singleId"
+      @api-parameter required=#true in="query" name="singleId"
     }
     enumerable {
-      @parameter-model required=#true in="query" name="enumerableIds"
+      @api-parameter required=#true in="query" name="enumerableIds"
     }
     array {
-      @parameter-model required=#true in="query" name="arrayIds"
+      @api-parameter required=#true in="query" name="arrayIds"
     }
   }
   entity-parameters {
-    @action-model route="POST /method-samples/entity-parameters" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/entity-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     enumerable {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     array {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   record-with-entity {
-    @action-model route="POST /method-samples/record-with-entity" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/record-with-entity" required-claims="BaseA, BaseB"
     record {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   get-transient-parameters {
-    @action-model route="GET /method-samples/transient-parameters" required-claims="BaseA, BaseB"
+    @api-action route="GET /method-samples/transient-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true in="query" name="singleId"
+      @api-parameter required=#true in="query" name="singleId"
     }
     enumerable {
-      @parameter-model required=#true in="query" name="enumerableIds"
+      @api-parameter required=#true in="query" name="enumerableIds"
     }
     array {
-      @parameter-model required=#true in="query" name="arrayIds"
+      @api-parameter required=#true in="query" name="arrayIds"
     }
   }
   transient-parameters {
-    @action-model route="POST /method-samples/transient-parameters" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/transient-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     enumerable {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     array {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
-  record-with-rich-transient {
-    @action-model route="POST /method-samples/record-with-rich-transient" required-claims="BaseA, BaseB"
+  record-with-resource {
+    @api-action route="POST /method-samples/record-with-resource" required-claims="BaseA, BaseB"
     record {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   get-transient-async-parameters {
-    @action-model route="GET /method-samples/transient-async-parameters" required-claims="BaseA, BaseB"
+    @api-action route="GET /method-samples/transient-async-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true in="query" name="singleId"
+      @api-parameter required=#true in="query" name="singleId"
     }
     enumerable {
-      @parameter-model required=#true in="query" name="enumerableIds"
+      @api-parameter required=#true in="query" name="enumerableIds"
     }
     array {
-      @parameter-model required=#true in="query" name="arrayIds"
+      @api-parameter required=#true in="query" name="arrayIds"
     }
   }
   transient-async-parameters {
-    @action-model route="POST /method-samples/transient-async-parameters" required-claims="BaseA, BaseB"
+    @api-action route="POST /method-samples/transient-async-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     enumerable {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     array {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
-  record-with-rich-transient-async {
-    @action-model route="POST /method-samples/record-with-rich-transient-async" required-claims="BaseA, BaseB"
+  record-with-resource-async {
+    @api-action route="POST /method-samples/record-with-resource-async" required-claims="BaseA, BaseB"
     record {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
 }

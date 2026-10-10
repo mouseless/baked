@@ -1,12 +1,13 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
+
+using B = Baked.Ui.Components;
 
 namespace Baked.Ux.DataTableDefaults;
 
@@ -16,7 +17,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 component: dt =>
                 {
                     dt.Schema.Rows = 5;
@@ -26,44 +27,42 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
             // Columns
             conventions.AddPropertySchema(
-                when: c => c.Property.Has<DataAttribute>(),
-                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc)
+                when: c => c.Property.Has<UiData>(),
+                schema: () => B.DataTableColumn()
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<LocatableAttribute>(),
-                schema: (dtc, c, cc) => dtc.Hidden = cc.Path.StartsWith(nameof(Page), c.Property.PropertyType.Name) ? true : null
+            conventions.EditPropertySchema<DataTable.Column>(
+                when: c => c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<Locatable>(),
+                schema: (dtc, c, cc) => dtc.Hidden = cc.Path.StartsWith("page", c.Property.PropertyType.Name) ? true : null
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 schema: (dtc, c, cc) =>
                 {
                     var (_, l) = cc;
-                    var data = c.Property.Get<DataAttribute>();
+                    var data = c.Property.Get<UiData>();
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
                 }
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                when: c => c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
+            conventions.EditPropertySchema<DataTable.Column>(
+                when: c => c.Property.PropertyType.TryGetMembers(out var members) && members.Has<Locatable>(),
                 schema: (dtc, c, cc) =>
                 {
-                    var data = c.Property.Get<DataAttribute>();
                     var members = c.Property.PropertyType.GetMembers();
                     var labelProperty =
-                        members.FirstPropertyOrDefault<LabelAttribute>() ??
-                        members.FirstProperty<IdAttribute>();
-                    var labelData = labelProperty.Get<DataAttribute>();
+                        members.FirstPropertyOrDefault<Label>() ??
+                        members.FirstProperty<IdProperty>();
 
-                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
-                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}.{labelData.Prop}");
+                    var rootProp = cc.Path.Contains("footer-template") ? "data" : "row";
+                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{c.Property.DataProp}.{labelProperty.DataProp}");
                 }
             );
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 schema: (dtc, c, cc) =>
                 {
-                    var data = c.Property.Get<DataAttribute>();
+                    var data = c.Property.Get<UiData>();
 
-                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
+                    var rootProp = cc.Path.Contains("footer-template") ? "data" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
                 },
                 order: Order.At.Theme.Max
@@ -71,26 +70,26 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
             // Export
             conventions.AddMethodSchema(
-                when: c => c.Method.Has<ComponentGeneratorAttribute<DataTable>>(),
-                schema: (c, cc) => MethodDataTableExport(c.Method, cc),
+                when: c => c.Method.Has<ComponentGenerator<DataTable>>(),
+                schema: () => B.DataTableExport(),
                 order: 10
             );
 
             // Actions
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Method.Has<ActionAttribute>(),
-                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.Actions)),
+            conventions.EditMethodSchema<RemoteAction>(
+                when: c => c.Method.Has<UiAction>(),
+                where: cc => cc.Path.Contains("data-table", "actions"),
                 schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row"),
                 order: 10
             );
 
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 component: dt =>
                 {
                     if (dt.Schema.Actions is null) { return; }
-                    if (dt.Schema.Actions.Component is not ComponentDescriptor<Composite> composite) { return; }
+                    if (dt.Schema.Actions.Component.Schema is not Composite composite) { return; }
 
-                    foreach (var component in composite.Schema.Parts)
+                    foreach (var component in composite.Parts)
                     {
                         if (component.Action is not RemoteAction remote) { continue; }
                         if (remote.PostAction is not PublishAction publish) { continue; }
@@ -101,8 +100,8 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 }
             );
 
-            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+            conventions.EditMethodSchema<DataTable.Column>(
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: (col, c, cc) =>
                 {
                     col.Frozen = true;
@@ -112,15 +111,15 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
             );
 
             // `Button` defaults
-            conventions.AddMethodComponentConfiguration<Button>(
+            conventions.EditMethodComponent<Button>(
                 where: cc =>
-                    cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "*") ||
-                    cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "**", nameof(SimpleForm.DialogOptions.Open)),
+                    cc.Path.EndsWith("data-table", "actions", "*") ||
+                    cc.Path.EndsWith("data-table", "actions", "**", "open"),
                 component: ButtonDefaults,
                 order: 10
             );
-            conventions.AddPropertyComponentConfiguration<Button>(
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "**", nameof(SimpleForm.DialogOptions.Open)),
+            conventions.EditPropertyComponent<Button>(
+                where: cc => cc.Path.EndsWith("data-table", "columns", "**", "open"),
                 component: ButtonDefaults,
                 order: 10
             );

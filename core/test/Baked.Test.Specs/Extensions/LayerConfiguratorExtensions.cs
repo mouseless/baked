@@ -60,7 +60,7 @@ public static class LayerConfiguratorExtensions
 
             var create = typeof(LayerConfigurator)
                     .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                    .FirstOrDefault(c => c.Name == nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length == 1);
+                    .FirstOrDefault(c => c.Name is nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length is 1);
             create.ShouldNotBeNull();
 
             var configurator = create.MakeGenericMethod(target.GetType()).Invoke(null, [context, target]);

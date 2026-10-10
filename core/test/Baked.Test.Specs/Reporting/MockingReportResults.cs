@@ -1,4 +1,4 @@
-using Baked.Playground.Reporting;
+﻿using Baked.Playground.Reporting;
 using Baked.Reporting;
 
 namespace Baked.Test.Reporting;

@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -21,27 +22,27 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     TryGetEntityContextParameter(members, out var entityContextParameter) &&
                     entityContextParameter.ParameterType.TryGetGenerics(out var entityContextGenerics) &&
                     entityContextGenerics.GenericTypeArguments.First().Model == c.Type,
-                attribute: () => new EntityAttribute(),
+                attribute: () => new Entity(),
                 order: Order.At.Infra
             );
             conventions.SetTypeAttribute(
-                when: c => c.Type.Has<EntityAttribute>(),
+                when: c => c.Type.Has<Entity>(),
                 apply: (c, set) =>
                 {
-                    set(c.Type, new ApiInputAttribute());
-                    set(c.Type, new LocatableAttribute());
+                    set(c.Type, new Bindable());
+                    set(c.Type, new Locatable());
                 },
                 order: Order.At.Infra
             );
             conventions.SetMethodAttribute(
                 when: c =>
-                    c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
-                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
-                attribute: c => new ActionModelAttribute(),
+                    c.Type.Has<Entity>() && c.Method.Has<Initializer>() &&
+                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreBindable()),
+                attribute: c => new ApiAction(),
                 order: Order.At.Infra + 30
             );
 
-            conventions.Add(new EntityInitializerIsPostResourceConvention(), order: Order.At.Infra);
+            conventions.Add(new EntityInitializerIsPostConvention(), order: Order.At.Infra);
         });
 
         configurator.DataAccess.ConfigureNHibernateInterceptor(interceptor =>

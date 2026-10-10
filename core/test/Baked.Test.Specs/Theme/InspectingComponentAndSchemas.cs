@@ -1,11 +1,9 @@
-using Baked.Buildtime.Diagnostics;
+﻿using Baked.Buildtime.Diagnostics;
 using Baked.Domain.Configuration;
 using Baked.Domain.Inspection;
 using Baked.Playground.Orm;
 using Baked.Playground.Ui;
 using Baked.Ui;
-
-using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
 using C = Baked.Playground.Ui.Components;
@@ -47,7 +45,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test title"));
+            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc => dtc.Title = "test title"));
         }
 
         _messages.Count.ShouldBe(2);
@@ -86,7 +84,6 @@ public class InspectingComponentAndSchemas : TestSpec
         using (_diagnostics)
         {
             var sb = _trace.CaptureDescriptor(c, cc, () => B.SelectButton(
-                data: Inline(new[] { new { testProp = GiveMe.AString() } }),
                 options: sb => sb.OptionLabel = "initialized")
             );
             _trace.CaptureDescriptor(c, cc, sb, () => sb.Schema.OptionLabel = "updated");
@@ -129,7 +126,11 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn("test-key"));
+            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc =>
+            {
+                dtc.Key = "test-key";
+                dtc.Component = B.Text();
+            }));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("""
@@ -166,7 +167,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            var dtc = _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(GiveMe.AString(), options: t => t.Title = "test title"));
+            var dtc = _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: t => t.Title = "test title"));
 
             dtc.Title.ShouldBe("test title");
         }
@@ -183,7 +184,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            var dtc = _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(key: GiveMe.AString(), options: dtc => dtc.Title = "1"));
+            var dtc = _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc => dtc.Title = "1"));
 
             _trace.CaptureDescriptor(c, cc, dtc, () => dtc.Title = "2");
         }
@@ -238,7 +239,7 @@ public class InspectingComponentAndSchemas : TestSpec
     public void Provides_when_filter_to_filter_by_property_model_context()
     {
         _inspect.PropertyComponent<Text>(
-            when: c => c.Property.Name == nameof(Parent.Id)
+            when: c => c.Property.Name is nameof(Parent.Id)
         );
         var domain = GiveMe.TheDomainModel();
         var parent = domain.Types[typeof(Parent)].GetMembers();
@@ -261,7 +262,7 @@ public class InspectingComponentAndSchemas : TestSpec
     public void Provides_when_filter_to_filter_by_method_model_context()
     {
         _inspect.MethodComponent<Text>(
-            when: c => c.Method.Name == nameof(Parent.AddChild)
+            when: c => c.Method.Name is nameof(Parent.AddChild)
         );
         var domain = GiveMe.TheDomainModel();
         var parent = domain.Types[typeof(Parent)].GetMembers();
@@ -344,7 +345,7 @@ public class InspectingComponentAndSchemas : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(GiveMe.AString(), options: dtc => dtc.Title = "test"));
+            _trace.CaptureDescriptor(c, cc, () => B.DataTableColumn(options: dtc => dtc.Title = "test"));
         }
 
         _messages.ShouldContain(m => m.Message.Contains("<DataTable.Column>"));

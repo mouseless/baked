@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Buildtime;
 using Baked.Testing;
 using Microsoft.CodeAnalysis;

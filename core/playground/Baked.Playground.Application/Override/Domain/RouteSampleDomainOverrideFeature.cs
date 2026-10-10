@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Playground.CodingStyle.NamespaceAsRoute;
 
 namespace Baked.Playground.Override.Domain;

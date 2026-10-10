@@ -1,0 +1,42 @@
+﻿using Baked.Domain.Configuration;
+using Baked.Domain.Inspection;
+using Baked.Domain.Model;
+
+namespace Baked.Domain.Conventions;
+
+public abstract class EditAttributeConventionBase<TModelContext, TAttribute>(Action<TAttribute, TModelContext> apply, Order order,
+    Func<TModelContext, TAttribute, bool>? when = default
+) : IDomainModelConvention<TModelContext>
+    where TAttribute : Attribute
+    where TModelContext : DomainModelContext
+{
+    readonly Trace _trace = Trace.Here();
+    readonly string _orderInfo = $"+{order}";
+
+    protected abstract ICustomAttributesModel GetMetadata(TModelContext context);
+
+    public void Apply(TModelContext context)
+    {
+        context.Trace = _trace;
+
+        var attributes = new List<TAttribute>();
+        if (typeof(TAttribute).AllowsMultiple)
+        {
+            if (GetMetadata(context).TryGetAll<TAttribute>(out var list))
+            {
+                attributes.AddRange(list);
+            }
+        }
+        else if (GetMetadata(context).TryGet<TAttribute>(out var single))
+        {
+            attributes.Add(single);
+        }
+
+        foreach (var attribute in attributes)
+        {
+            if (when is not null && !when(context, attribute)) { continue; }
+
+            _trace.CaptureAttribute(context, attribute, () => apply(attribute, context), orderInfo: _orderInfo);
+        }
+    }
+}

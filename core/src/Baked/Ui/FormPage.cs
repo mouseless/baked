@@ -1,10 +1,12 @@
-﻿namespace Baked.Ui;
+﻿using B = Baked.Ui.Components;
 
-public record FormPage(string Path, IComponentDescriptor Title, Button Submit)
+namespace Baked.Ui;
+
+public record FormPage(string Path)
     : PageSchemaBase(Path)
 {
-    public IComponentDescriptor Title { get; set; } = Title;
-    public Button Submit { get; set; } = Submit;
+    public IComponentDescriptor Title { get; set; } = B.MissingComponent();
+    public Button Submit { get; set; } = new();
     public List<Section> Sections { get; init; } = [];
     public List<ValidationComposable>? Validations { get; set; }
     public bool? ShowValidationSummary { get; set; }
@@ -17,10 +19,9 @@ public record FormPage(string Path, IComponentDescriptor Title, Button Submit)
         public List<InputGroup> InputGroups { get; init; } = [];
     }
 
-    public record InputGroup(string Key)
-        : IOrderableSchema
+    public record InputGroup : IOrderableSchema
     {
-        public string Key { get; set; } = Key;
+        public string Key { get; set; } = string.Empty;
         public List<Input> Inputs { get; init; } = [];
         public bool? Wide { get; set; }
     }

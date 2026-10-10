@@ -2,7 +2,6 @@
 
 namespace Baked.Test.Business;
 
-[TestFixture]
 public class UsingId
 {
     [TestCase(12, "12")]

@@ -1,7 +1,7 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
-using Baked.Playground.CodingStyle.Id;
+using Baked.Playground.CodingStyle.TypeBasedId;
 
 namespace Baked.Playground.Override.Domain;
 
@@ -11,7 +11,7 @@ public class EntityWithAssignedGuidIdDomainOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddPropertyAttributeConfiguration<IdAttribute>(
+            conventions.EditPropertyAttribute<IdProperty>(
                 when: c => c.Type.Is<EntityWithAssignedGuidId>(),
                 attribute: id => id.AssignedGuid(),
                 order: Order.At.Override

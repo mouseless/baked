@@ -1,4 +1,4 @@
-namespace Baked.Ui.Configuration;
+﻿namespace Baked.Ui.Configuration;
 
 public abstract record ModulePluginBase(
     string BasePath = "./runtime/plugins/",

@@ -5,7 +5,7 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainComponents;
+using B = Baked.Ui.Components;
 
 namespace Baked.Ux.ObjectWithListIsDataTable;
 
@@ -19,15 +19,15 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.Any(p =>
-                        p.TryGet<DataAttribute>(out var data) &&
+                        p.TryGet<UiData>(out var data) &&
                         data.Visible &&
                         !p.PropertyType.Is<string>() &&
                         p.PropertyType.IsAssignableTo<IEnumerable>()
                     ),
-                attribute: c => new ObjectWithListAttribute(
+                attribute: c => new ObjectWithList(
                     c.Type.GetMembers().Properties
                         .First(p =>
-                            p.TryGet<DataAttribute>(out var data) &&
+                            p.TryGet<UiData>(out var data) &&
                             data.Visible &&
                             !p.PropertyType.Is<string>() &&
                             p.PropertyType.IsAssignableTo<IEnumerable>()
@@ -36,9 +36,9 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 order: Order.At.Infra
             );
 
-            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+            conventions.EditPropertyAttribute<UiData>(
                 when: c =>
-                    c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    c.Type.TryGet<ObjectWithList>(out var objectWithList) &&
                     c.Property.Name == objectWithList.ListPropertyName,
                 attribute: data => data.Visible = false,
                 order: Order.At.Infra
@@ -47,51 +47,43 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodComponent(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
-                    returnMetadata.Has<ObjectWithListAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: (c, cc) => MethodDataTable(c.Method, cc, options: dt =>
-                {
-                    dt.ItemsProp = c.Method.DefaultOverload
-                        .ReturnType.SkipTask()
-                        .GetMetadata()
-                        .Get<ObjectWithListAttribute>()
-                        .ListPropertyName
-                        .Camelize();
-                })
+                    returnMetadata.Has<ObjectWithList>(),
+                where: cc => cc.Path.EndsWith("data-panel", "content"),
+                component: () => B.DataTable()
             );
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
-                    returnMetadata.Has<ObjectWithListAttribute>(),
+                    returnMetadata.Has<ObjectWithList>(),
                 component: (dt, c) =>
                 {
                     dt.Schema.ItemsProp = c.Method.DefaultOverload
                         .ReturnType.SkipTask()
                         .GetMetadata()
-                        .Get<ObjectWithListAttribute>()
+                        .Get<ObjectWithList>()
                         .ListPropertyName
                         .Camelize();
                 }
             );
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    returnMembers.TryGet<ObjectWithList>(out var objectWithList) &&
                     returnMembers
                         .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.HasMembers(),
                 component: (dt, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(DataTable));
+                    cc = cc.Drill("data-table");
 
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
-                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+                    var listPropertyName = returnMembers.Get<ObjectWithList>().ListPropertyName;
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
                     var elementMembers = elementType.GetMembers();
                     foreach (var property in elementMembers.Properties.GetDataProperties())
                     {
-                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill("columns"));
                         if (column is null) { continue; }
 
                         dt.Schema.Columns.Add(column);
@@ -107,34 +99,34 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodSchema(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    returnMembers.TryGet<ObjectWithList>(out var objectWithList) &&
                     returnMembers
                         .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.TryGetMembers(out var elementMembers) &&
-                    elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: () => ActionsDataTableColumn()
+                    elementMembers.Methods.Having<UiAction>().Any(m => !m.Get<UiAction>().HideInLists),
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
+                schema: () => B.DataTableColumn()
             );
-            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+            conventions.EditMethodSchema<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    returnMembers.TryGet<ObjectWithList>(out var objectWithList) &&
                     returnMembers
                         .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.HasMembers(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: (col, c, cc) =>
                 {
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
-                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+                    var listPropertyName = returnMembers.Get<ObjectWithList>().ListPropertyName;
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
                     var elementMembers = elementType.GetMembers();
-                    foreach (var method in elementMembers.Methods.Having<ActionAttribute>())
+                    foreach (var method in elementMembers.Methods.Having<UiAction>())
                     {
-                        if (method.Get<ActionAttribute>().HideInLists) { continue; }
-                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.Get<UiAction>().HideInLists) { continue; }
+                        if (method.Has<Initializer>()) { continue; }
                         if (method.GetAction().Method == HttpMethod.Get) { continue; }
 
                         var component = method.GenerateComponent(cc.Drill(method.Name));
@@ -148,25 +140,25 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodSchema(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
-                    returnMetadata.Has<ObjectWithListAttribute>(),
-                schema: (c, cc) => MethodDataTableFooter(c.Method, cc)
+                    returnMetadata.Has<ObjectWithList>(),
+                schema: () => B.DataTableFooter()
             );
-            conventions.AddMethodSchemaConfiguration<DataTable.Footer>(
+            conventions.EditMethodSchema<DataTable.Footer>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.Has<ObjectWithListAttribute>(),
+                    returnMembers.Has<ObjectWithList>(),
                 schema: (dtf, c, cc) =>
                 {
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
-                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+                    var listPropertyName = returnMembers.Get<ObjectWithList>().ListPropertyName;
 
                     foreach (var property in returnMembers.Properties.GetDataProperties())
                     {
                         if (property.Name == listPropertyName) { continue; }
 
-                        property.Get<DataAttribute>().Label = null;
+                        property.Get<UiData>().Label = null;
 
-                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill("columns"));
                         if (column is null) { continue; }
 
                         dtf.Columns.Add(column);
@@ -174,8 +166,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 }
             );
 
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.FooterTemplate)),
+            conventions.EditPropertySchema<DataTable.Column>(
+                where: cc => cc.Path.Contains("data-table", "footer-template"),
                 schema: dtc =>
                 {
                     dtc.Title = null;

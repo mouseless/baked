@@ -1,4 +1,4 @@
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +8,7 @@ public class RequiredParametersAreRequiredInApiModelConvention : IDomainModelCon
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ApiParameter>(out var parameter)) { return; }
         if (!context.Parameter.Has<RequiredAttribute>()) { return; }
 
         parameter.AddRequiredAttributes(isValueType: context.Parameter.ParameterType.IsValueType);

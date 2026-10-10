@@ -1,170 +1,170 @@
-nullable-samples @controller-model {
+nullable-samples @api-controller {
   get-value-type {
-    @action-model route="GET /nullable-samples/value-type" required-claims="BaseA, BaseB"
+    @api-action route="GET /nullable-samples/value-type" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
     nullable {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     optional {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     optional-nullable {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
   value-type {
-    @action-model route="POST /nullable-samples/value-type" required-claims="BaseA, BaseB"
+    @api-action route="POST /nullable-samples/value-type" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    nullable @parameter-model
-    optional @parameter-model
-    optional-nullable @parameter-model
+    nullable @api-parameter
+    optional @api-parameter
+    optional-nullable @api-parameter
   }
   get-enum {
-    @action-model route="GET /nullable-samples/enum" required-claims="BaseA, BaseB"
+    @api-action route="GET /nullable-samples/enum" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
     nullable {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     optional {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     optional-nullable {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
   enum {
-    @action-model route="POST /nullable-samples/enum" required-claims="BaseA, BaseB"
+    @api-action route="POST /nullable-samples/enum" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    nullable @parameter-model
-    optional @parameter-model
-    optional-nullable @parameter-model
+    nullable @api-parameter
+    optional @api-parameter
+    optional-nullable @api-parameter
   }
   get-reference-type {
-    @action-model route="GET /nullable-samples/reference-type" required-claims="BaseA, BaseB"
+    @api-action route="GET /nullable-samples/reference-type" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
     nullable {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     optional {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     optional-nullable {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
   reference-type {
-    @action-model route="POST /nullable-samples/reference-type" required-claims="BaseA, BaseB"
+    @api-action route="POST /nullable-samples/reference-type" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    nullable @parameter-model
-    optional @parameter-model
-    optional-nullable @parameter-model
+    nullable @api-parameter
+    optional @api-parameter
+    optional-nullable @api-parameter
   }
   record {
-    @action-model route="POST /nullable-samples/record" required-claims="BaseA, BaseB"
+    @api-action route="POST /nullable-samples/record" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    nullable @parameter-model
-    optional-nullable @parameter-model
+    nullable @api-parameter
+    optional-nullable @api-parameter
   }
   get-entity {
-    @action-model route="GET /nullable-samples/entity" required-claims="BaseA, BaseB"
+    @api-action route="GET /nullable-samples/entity" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query" name="notNullId"
+      @api-parameter required=#true in="query" name="notNullId"
     }
     nullable {
-      @parameter-model in="query" name="nullableId"
+      @api-parameter in="query" name="nullableId"
     }
     optional-nullable {
-      @parameter-model in="query" name="optionalNullableId"
+      @api-parameter in="query" name="optionalNullableId"
     }
   }
   entity {
-    @action-model route="POST /nullable-samples/entity" required-claims="BaseA, BaseB"
+    @api-action route="POST /nullable-samples/entity" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    nullable @parameter-model
-    optional-nullable @parameter-model
+    nullable @api-parameter
+    optional-nullable @api-parameter
   }
   get-entity-extension {
-    @action-model route="GET /nullable-samples/entity-extension" required-claims="BaseA, BaseB"
+    @api-action route="GET /nullable-samples/entity-extension" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query" name="notNullId"
+      @api-parameter required=#true in="query" name="notNullId"
     }
     nullable {
-      @parameter-model in="query" name="nullableId"
+      @api-parameter in="query" name="nullableId"
     }
     optional-nullable {
-      @parameter-model in="query" name="optionalNullableId"
+      @api-parameter in="query" name="optionalNullableId"
     }
   }
   entity-extension {
-    @action-model route="POST /nullable-samples/entity-extension" required-claims="BaseA, BaseB"
+    @api-action route="POST /nullable-samples/entity-extension" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    nullable @parameter-model
-    optional-nullable @parameter-model
+    nullable @api-parameter
+    optional-nullable @api-parameter
   }
-  get-rich-transient {
-    @action-model route="GET /nullable-samples/rich-transient" required-claims="BaseA, BaseB"
+  get-resource {
+    @api-action route="GET /nullable-samples/resource" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true in="query" name="notNullId"
+      @api-parameter required=#true in="query" name="notNullId"
     }
     nullable {
-      @parameter-model in="query" name="nullableId"
+      @api-parameter in="query" name="nullableId"
     }
     optional-nullable {
-      @parameter-model in="query" name="optionalNullableId"
+      @api-parameter in="query" name="optionalNullableId"
     }
   }
-  rich-transient {
-    @action-model route="POST /nullable-samples/rich-transient" required-claims="BaseA, BaseB"
+  resource {
+    @api-action route="POST /nullable-samples/resource" required-claims="BaseA, BaseB"
     not-null {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
-    nullable @parameter-model
-    optional-nullable @parameter-model
+    nullable @api-parameter
+    optional-nullable @api-parameter
   }
-  get-value-type-parameters {
-    @action-model route="GET /nullable-samples/value-type-parameters" required-claims="BaseA, BaseB"
+  get-primitive-parameters {
+    @api-action route="GET /nullable-samples/primitive-parameters" required-claims="BaseA, BaseB"
     single {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
     enumerable {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
     array {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
   }
-  value-type-parameters {
-    @action-model route="POST /nullable-samples/value-type-parameters" required-claims="BaseA, BaseB"
-    single @parameter-model
+  primitive-parameters {
+    @api-action route="POST /nullable-samples/primitive-parameters" required-claims="BaseA, BaseB"
+    single @api-parameter
     enumerable {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
     array {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
-  record-with-value-type {
-    @action-model route="POST /nullable-samples/record-with-value-type" required-claims="BaseA, BaseB"
+  record-with-primitive {
+    @api-action route="POST /nullable-samples/record-with-primitive" required-claims="BaseA, BaseB"
     record {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
 }

@@ -3,7 +3,6 @@ using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Playground.Orm;
 using Baked.Playground.Theme;
-using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
@@ -17,13 +16,13 @@ public class FormSampleDomainOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodAttributeConfiguration<ActionAttribute>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
+            conventions.EditMethodAttribute<UiAction>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name is nameof(FormSample.NewParent),
                 attribute: (a, c) => a.RoutePathBack = "/form-sample",
                 order: Order.At.Override
             );
 
-            conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+            conventions.EditMethodAttribute<UiAction>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
                 attribute: a => a.HideInLists = true,
                 order: Order.At.Override
@@ -32,16 +31,13 @@ public class FormSampleDomainOverrideFeature : IFeature
             conventions.SetMethodAttribute(
                 when: c =>
                     c.Type.Is<FormSample>() &&
-                    (
-                        c.Method.Name == nameof(FormSample.GetParents) ||
-                        c.Method.Name == nameof(FormSample.GetParentsRole)
-                    ),
-                attribute: () => new QueryMethodAttribute(),
+                    c.Method.Name is nameof(FormSample.GetParents) or nameof(FormSample.GetParentsRole),
+                attribute: () => new QueryMethod(),
                 order: Order.At.Infra
             );
 
-            conventions.AddMethodComponentConfiguration<FormPage>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
+            conventions.EditMethodComponent<FormPage>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name is nameof(FormSample.NewParent),
                 component: fp =>
                 {
                     fp.Schema.ForEachInputGroup(g => g.Wide = true);
@@ -55,7 +51,7 @@ public class FormSampleDomainOverrideFeature : IFeature
             // Properties
             conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().IsEnum,
-                where: cc => cc.Path.StartsWith(nameof(Page), nameof(FormSample)),
+                where: cc => cc.Path.StartsWith("page", "form-sample"),
                 component: () => B.Text(),
                 order: Order.At.Override
             );

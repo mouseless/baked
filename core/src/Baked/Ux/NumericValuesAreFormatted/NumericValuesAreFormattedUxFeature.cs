@@ -11,7 +11,7 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+            conventions.EditPropertySchema<DataTable.Column>(
                 when: c =>
                     c.Property.PropertyType.SkipNullable().Is<int>() ||
                     c.Property.PropertyType.SkipNullable().Is<long>() ||

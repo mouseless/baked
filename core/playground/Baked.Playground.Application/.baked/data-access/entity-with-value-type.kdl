@@ -1,9 +1,0 @@
-entity-with-value-type @entity {
-  id @column {
-    @id type="guid" generator="id-guid"
-  }
-  value @column
-  value-nullable @column
-  value-nullable-null @column
-}
-

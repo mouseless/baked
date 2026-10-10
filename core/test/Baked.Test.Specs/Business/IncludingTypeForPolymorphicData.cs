@@ -1,4 +1,4 @@
-namespace Baked.Test.Business;
+﻿namespace Baked.Test.Business;
 
 public class IncludingTypeForPolymorphicData : TestNfr
 {

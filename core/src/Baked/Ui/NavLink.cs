@@ -1,9 +1,8 @@
 ﻿namespace Baked.Ui;
 
-public record NavLink(string Path)
-    : IComponentSchema
+public record NavLink : IComponentSchema
 {
-    public string Path { get; set; } = Path;
+    public string Path { get; set; } = string.Empty;
     public string? Icon { get; set; }
     public IData? Query { get; set; }
     public IData? Params { get; set; }

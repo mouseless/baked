@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Domain.Configuration;
-using Baked.RestApi.Model;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
@@ -14,7 +14,7 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
-                attribute: () => new ApiInputAttribute(),
+                attribute: () => new Bindable(),
                 when: c => c.Type.Is<object>(),
                 order: Order.At.Infra
             );

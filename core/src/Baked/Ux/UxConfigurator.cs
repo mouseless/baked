@@ -1,3 +1,3 @@
-namespace Baked.Ux;
+﻿namespace Baked.Ux;
 
 public class UxConfigurator;

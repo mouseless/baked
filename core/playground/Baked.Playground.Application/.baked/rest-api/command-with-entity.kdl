@@ -1,6 +1,6 @@
-command-with-entity @controller-model {
+command-with-entity @api-controller {
   execute {
-    @action-model route="POST /command-with-entity" required-claims="BaseA, BaseB"
+    @api-action route="POST /command-with-entity" required-claims="BaseA, BaseB"
   }
 }
 

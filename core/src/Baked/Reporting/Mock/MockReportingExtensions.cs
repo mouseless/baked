@@ -1,4 +1,4 @@
-using Baked.Reporting;
+﻿using Baked.Reporting;
 using Baked.Reporting.Mock;
 
 namespace Baked;

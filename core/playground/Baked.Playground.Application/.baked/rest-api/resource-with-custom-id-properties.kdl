@@ -1,0 +1,21 @@
+resource-with-custom-id-property @api-controller {
+  with {
+    @api-action route="GET /resource-with-custom-id-properties/{uid}" required-claims="BaseA, BaseB"
+    uid {
+      @api-parameter required=#true in="route"
+    }
+  }
+  get-test-custom-id-property-name {
+    @api-action route="GET /resource-with-custom-id-properties/{uid}/test-custom-id-property-name" required-claims="BaseA, BaseB"
+    other {
+      @api-parameter required=#true in="query" name="otherUid"
+    }
+  }
+  test-custom-id-property-name {
+    @api-action route="POST /resource-with-custom-id-properties/{uid}/test-custom-id-property-name" required-claims="BaseA, BaseB"
+    other {
+      @api-parameter required=#true
+    }
+  }
+}
+

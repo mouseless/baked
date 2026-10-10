@@ -23,7 +23,7 @@ c => c.ActionsAsButtons()
 ```
 
 - Parameterized actions are rendered as forms in dialogs
-  - When an action has `RouteAttribute`, it is rendered as a `Button` that
+  - When an action has `Route` attribute, it is rendered as a `Button` that
     routes to the indicated path
 - Submit buttons are rendered using `primary` severity
 - Cancel and back buttons are rendered using `text` variant
@@ -45,7 +45,7 @@ c => c.ActionsAreContents()
   - Without a `Content` configuration for a method at expected path, method will
     be skipped
 - For `TabbedPage`, actions are grouped under tabs using their tab name in
-  `TabNameAttribute`
+  `Group` attribute
   - Tab titles are automatically localized and formatted (e.g., `SampleTab` →
     `Sample Tab`) when there are more than one tabs
 
@@ -57,7 +57,7 @@ Renders controller actions as `DataPanel` components inside a `TabbedPage`.
 c => c.ActionsAsDataPanels()
 ```
 
-- Methods with `ActionModelAttribute` become `DataPanel` components
+- Methods with `ApiAction` attribute become `DataPanel` components
 - Each action is shown inside the tab content where it belongs
 - The panel title is taken from the method name
 - Action parameters are added to the panel schema automatically
@@ -72,7 +72,7 @@ c => c.DataTableDefaults()
 ```
 
 - Sets row count to 5 and adds paginator
-- Adds properties with `DataAttribute` as columns
+- Adds properties with `Data` attribute as columns
   - For locatable properties, uses the first label (or id) property as component
     data, e.g., `row.parent.name`
   - Otherwise, sets the property value as component data, e.g., `row.name`
@@ -85,9 +85,9 @@ c => c.DataTableDefaults()
 ## Description Property
 
 Marks properties and parameters that ends with or equal to `Description` using
-`DescriptionAttribute` and treats properties and parameters with
-`DescriptionAttribute` special attention to allow more UI space when under a
-`DataTable`, `Fieldset` or `FormPage`.
+`Description` attribute and treats properties and parameters with `Description`
+attribute special attention to allow more UI space when under a `DataTable`,
+`Fieldset` or `FormPage`.
 
 - Set `Field.Wide` to `true` to have a full width under a fieldset
 - Set `FormPage.InputGroup.Wide` to `true` to have a full width under a form
@@ -104,8 +104,10 @@ c => c.EnumParameterIsSelect(maxMemberCountForSelectButton: ...)
 ```
 
 - By default, enum parameters are shown as a `Select` dropdown
+  - For flags enum types, it uses `MultiSelect`
 - When the number of enum members is less than or equal to the given limit, it
   switches to a `SelectButton`
+  - For flags enum types, it switches to `MultiSelectButton`
 - Required enum parameters default to the first enum member when parameter is in
   query or route
 
@@ -132,18 +134,18 @@ c => c.InitializerParametersAreInPageTitle()
 
 - Adds initializer parameters as query parameters of the page
   - Query parameters use `float:on` label by default
-- Works for types marked with `TransientAttribute`
+- Works for types marked with `Transient` attribute
 
 ## Labels are Frozen
 
-Configure label properties (properties with `LabelAttribute`) to have a better
+Configure label properties (properties with `Label` attribute) to have a better
 display in `DataTable` columns.
 
 ```csharp
 c => c.LabelsAreFrozen()
 ```
 
-- Brings label columns before other columns via `DataAttribute.Order`
+- Brings label columns before other columns via `Data.Order`
 - Label columns in a `DataTable` are frozen and have minimum width
 - The first label column is used as the table’s data key if no key is set
 
@@ -155,7 +157,7 @@ Shows list results of controller actions as a `DataTable` inside a `DataPanel`.
 c => c.ListDataTable()
 ```
 
-- Methods with `ActionModelAttribute` that return a list are rendered as
+- Methods with `ApiAction` attribute that return a list are rendered as
   `DataTable`
 - The `DataTable` is placed in the action’s panel content
 - Properties of the list element type are added as table columns automatically
@@ -182,7 +184,7 @@ Shows list data from an object result as a `DataTable` inside a `DataPanel`.
 c => c.ObjectWithListIsDataTable()
 ```
 
-- Methods with `ActionModelAttribute` that return an object containing a visible
+- Methods with `ApiAction` attribute that return an object containing a visible
   list property are rendered as `DataTable`
 - The list property is detected automatically and used as the data source
 - Properties of the list element type are added as table columns
@@ -191,7 +193,7 @@ c => c.ObjectWithListIsDataTable()
 
 > [!TIP]
 >
-> This feature uses `ObjectWithListAttribute` to decide which list property to
+> This feature uses `ObjectWithList` attribute to decide which list property to
 > render in a `DataTable`. You can override an existing attribute to point to
 > another `IEnumerable` property. You can also add this attribute to a type so
 > that actions returning it are rendered as a `DataTable` as well.
@@ -239,24 +241,24 @@ c => c.QueryActionAsDataContainer(
 )
 ```
 
-- `PagingAttribute` with `take` role is rendered as `Select`
-- `PagingAttribute` with `skip` role is rendered as `Paginator`
+- `Paging` attribute with `take` role is rendered as `Select`
+- `Paging` attribute with `skip` role is rendered as `Paginator`
   - When there is `take` parameter, paginator uses its value for page size
     calculation, otherwise it defaults to `10`
 - When container is wrapped in a `DataPanel`, only parameters with
-  `SortingAttribute` or `PagingAttribute` are kept in `DataContainer`, remaining
+  `Sorting` or `Paging` attributes are kept in `DataContainer`, remaining
   parameters are placed in `DataPanel`
 
 ## Routed Types as Nav Links
 
-Configures `NavLink` component for types that have `RouteAttribute` under data
-table columns.
+Configures `NavLink` component for types that have `Route` under data table
+columns.
 
 ```csharp
 c => c.RoutedTypesAsNavLinks()
 ```
 
-- Converts label properties to a `NavLink` using `RouteAttribute` route params
+- Converts label properties to a `NavLink` using `Route` route params
 
 > [!NOTE]
 >

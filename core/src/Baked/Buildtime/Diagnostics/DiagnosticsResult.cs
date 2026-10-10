@@ -1,4 +1,4 @@
-namespace Baked.Buildtime.Diagnostics;
+﻿namespace Baked.Buildtime.Diagnostics;
 
 public record DiagnosticsResult(
     IReadOnlyCollection<Exception> Exceptions,

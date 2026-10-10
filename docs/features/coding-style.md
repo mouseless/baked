@@ -6,138 +6,112 @@ Add this feature using `AddCodingStyles()` extension;
 app.Features.AddCodingStyles([...]);
 ```
 
-## Add/Remove Child
+## Add/Remove Child as Sub Resource
 
 Configures method routes in `AddChild` and `RemoveChild(Child)` signature to
 have a resource route `POST /../children` and `DELETE /../children/{childId}`
 respectively.
 
 ```csharp
-c => c.AddRemoveChild()
+c => c.AddRemoveChildAsSubResource()
 ```
 
-## Client
-
-Configures `IXxxClient` interfaces as outgoing clients and removes rest binding
-for their implementations. Also, adds singleton mock override for the interface
-to inject mock instances to domain objects that use client interfaces.
-
-```csharp
-c => c.Client()
-```
-
-## Command Pattern
+## Command via Method Name
 
 Uses class names as route and removes configured method names from route.
 
 ```csharp
-c => c.CommandPattern(methodNames: [...])
+c => c.CommandViaMethodName(methodNames: [...])
 ```
 
 > [!NOTE]
 >
 > Default value of `methodNames` is `["Execute", "Process"]`.
 
-## Entity Subclass
+## Extension via Locatable Initializer
 
-Allows classes to be subclasses of entities via composition. This marks a
-transient class as an entity subclass when it implements explicit casting to an
-entity. Methods of these extension classes are rendered under entity group. It
-uses the first unique property to discriminate entity records.
-
-> [!WARNING]
->
-> First unique property is expected to be `enum` or `string`. Otherwise
-> subclass routing won't work.
+Allows classes to extend locatables via composition. This marks a transient
+class as a locatable extension when it has a property with `IdProperty`
+attribute and an initializer with only one parameter that is a locatable.
+Methods of these extension classes are rendered under locatable group.
 
 ```csharp
-c => c.EntitySubclass()
+c => c.ExtensionViaLocatableInitializer()
 ```
 
-## Id
+## Flags Enum
 
-This feature provides `Id` configuration for transient and entity classes.
+Adds support for enums marked with `[Flags]`. Configures data access to map
+flags enum properties, including nullable ones, using the enum type itself, and
+configures api serialization to represent them as an array of flag names in
+`camelCase`.
 
 ```csharp
-c => c.Id()
+c => c.FlagsEnum()
 ```
 
-Single property of type `Baked.Business.Id` is marked with `IdAttribute`. For
-entities, `Id` properties are mapped with `IdGuidUserType` and generated with
-`IdGuidGenerator` using `DbType.Guid`.
+To create a flags enum, mark it with `[Flags]` and give each member a distinct
+bit;
 
 ```csharp
-public class Entity(IEntityContext<Parent> _context)
+[Flags]
+public enum Permissions
 {
-    public Id Id { get; private set; } = default!;
-    ...
+    Read = 1 << 0,
+    Write = 1 << 1,
+    Delete = 1 << 2
 }
 ```
 
-> [!TIP]
->
-> To override ID mapping of an entity, add a property attribute configuration on
-> `IdAttribute` as below,
->
-> ```csharp
-> conventions.AddPropertyAttributeConfiguration<IdAttribute>(
->     when: c => c.Type.Is<MyEntity>(),
->     attribute: id => id.Assigned() // or id.AutoIncrement()
-> );
-> ```
+A property of this type is serialized as below, and is deserialized from the
+same representation;
 
-## Initializable
+```json
+["read", "write"]
+```
 
-Adds `TransientAttribute` to the services that has an `Initializer` method.
-This coding style makes usages like `_newEntity().With(name)` possible.
-`Transient` type's initializer parameters are added to query string and
-initalizer is invoked with given parameters when constructing target.
+## Initializable via Method Name
+
+Adds `Transient` attribute to the services that has a method with `Initializer`
+attribute. This coding style makes usages like `_newEntity().With(name)`
+possible. Initializer parameters of a type with `Transient` attribute are added
+to query string and initializer is invoked with given parameters when
+constructing target.
 
 ```csharp
-c => c.Initializable(initializerNames: [...])
+c => c.InitializableViaMethodName(initializerNames: [...])
 ```
 
 > [!NOTE]
 >
 > Default value of `initializerNames` is `["With"]`.
 
-## Label
+## Locate via ID
 
-Marks selected string properties as labels by giving `LabelAttribute` to
+Manages binding of targets and api inputs that have `Locatable` attribute. For
+such types, this feature adds id parameter to route, configures finding target
+and parameter lookup expressions by using `Locatable` attribute.
+
+```csharp
+c => c.LocateViaId()
+```
+
+> [!NOTE]
+>
+> Parameter lookup is only supported for types with `Locatable` attribute
+
+## Name based Label
+
+Marks selected string properties as labels by giving `Label` attribute to
 properties with matching names.
 
 ```csharp
-c => c.Label(propertyNames: [...])
+c => c.NameBasedLabel(propertyNames: [...])
 ```
 
 > [!NOTE]
 >
 > Default value of `propertyNames` is `["Display", "Label", "Name", "Title"]`.
-
-## Locatable
-
-Manages binding of `Locatable` targets and api inputs. For `Locatable` types,
-this feature adds id parameter to route, configures finding target and parameter
-lookup expressions by using `Locatable` attribute.
-
-> [!NOTE]
->
-> Parameter lookup is only supported for `Locatable` types
-
-```csharp
-c => c.Locatable()
-```
-
-## Locatable Extension
-
-Allows classes to extend locatables via composition. This marks a transient
-class as a locatable extension when it implements implicit casting to a
-locatable. Methods of these extension classes are rendered under locatable
-group.
-
-```csharp
-c => c.LocatableExtension()
-```
 
 ## Namespace as Route
 
@@ -156,169 +130,18 @@ Configures all `object` parameters, return types and properties to be treated as
 c => c.ObjectAsJson()
 ```
 
-## Query
+## Primitive via Parsable
 
-Adds `QueryAttribute` to the classes that has plural name of a locatable class,
-e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a query.
-
-Removes `FirstBy`, `SingleBy` and `By` names from API routes and configure them
-as `GET` endpoints.
-
-```csharp
-c => c.Query()
-```
-
-> [!WARNING]
->
-> A class that injects `IQueryContext` is not considered as a query class unless
-> it satisfies the plural naming convention.
-
-## Query Method
-
-Adds `QueryMethodAttribute` to the methods having given name of types with
-`QueryAttribute` and marks parameters with `SortAttribute` and `PagingAttribute`
-
-```csharp
-c => c.QueryMethod(
-    queryMethodNames: [...],
-    primaryParameterNames: [...],
-    takeParameterNames: [...],
-    skipParameterNames: [...],
-    sortParameterNames: [...]
-)
-```
-
-> [!NOTE]
->
-> Default values for parameters are listed below;
->
-> - `queryMethodNames`: `["By"]`
-> - `primaryParameterNames`: `["searchText"]`
-> - `takeParameterNames`: `["take"]`
-> - `skipParameterNames`: `["skip"]`
-> - `sortParameterNames`: `["sort"]`
-
-## Records are DTOs
-
-Configures domain type records as valid input parameters. Methods containing
-record parameters render as api endpoints.
-
-```csharp
-c => c.RecordsAreDtos()
-```
-
-## Remaining Services are Singleton
-
-Adds `SingletonAttribute` to the services that has no `TransientAttribute` or
-`ScopedAttribute`.
-
-```csharp
-c => c.RemainingServicesAreSingleton()
-```
-
-## Rich Entity
-
-Adds `EntityAttribute` to classes that inject `IEntityContext<TEntity>`.
-
-Configures `NHibernate` to initialize entities using dependency injection,
-making them rich entities.
-
-Configures routes and swagger docs to use entity methods as resource actions.
-
-```csharp
-c => c.RichEntity()
-```
-
-## Rich Transient
-
-Configures transient services as api services. This coding style marks a type
-having a public initializer with a single `Business.Id` parameter which will
-render from route, as `RichTransient`, configures `Locatable` attribure and
-generates locators.
-
-Rich transients can be method parameters and located using their locators.
-
-Configures routes and swagger docs to use entity methods as resource actions.
-
-```csharp
-c => c.RichTransient()
-```
-
-## Scoped by Suffix
-
-Adds `ScopedAttribute` to the services that has name with any of the given
-suffixes.
-
-```csharp
-c => c.ScopedBySuffix(suffixes: [...])
-```
-
-> [!NOTE]
->
-> Default value of `suffixes` is `["Context"]`.
-
-## Unique
-
-Adds `UniqueAttribute` to entity properties of which corresponding query class
-has either a `SingleBy...` or `AnyBy...` query method, e.g., `User.Username`
-property would be treated as unique if either `Users.SingleByUsername` or
-`Users.AnyByUsername` exists.
-
-> [!NOTE]
->
-> Having `UniqueAttribute` on a property tells `AutoMapOrmFeature` to configure
-> that column to have a unique constraint.
-
-## `Uri` Return is Redirect
-
-Adds redirect support to your api endpoints. It configures an endpoint to use
-redirect result when its corresponding method returns `Uri`. Combined with
-`CommandPattern`, it allows you to create callback `GET` endpoints when method
-doesn't have any parameters. For actions that have parameters, it configures
-its corresponding endpoint to accept form instead of a `json` body.
-
-```csharp
-c => c.UriReturnIsRedirect()
-```
-
-## Use Built-in Types
-
-Configures built-in .NET types to be used as entity properties and service
-parameters. Uses `IParsable<>` interface to configure primitives. Additionally
-configures `string`, enums, `Uri` and `IEnumerable<>` types.
-
-It also allows for string properties to use `TEXT` column type instead of
-`VARCHAR` by suffixes.
-
-```csharp
-c => c.UseBuiltInTypes(textPropertySuffixes: [...])
-```
-
-> [!TIP]
->
-> Default value of `textPropertySuffixes` is `["Data", "Description"]`.
-
-## Use Nullable Types
-
-Adds support for nullable value and reference types. Configures api model to
-forbid sending null or empty values to not-null parameters.
-
-```csharp
-c => c.UseNullableTypes()
-```
-
-## Value Type
-
-Allows creating custom value types via `IParsable<T>` interface. It marks these
-types as `ValueTypeAttribute` and maps them using `ValueTypeUserType` in data
+Allows creating custom primitives via `IParsable<T>` interface. It marks these
+types as `Primitive` attribute and maps them using `PrimitiveUserType` in data
 access layer using `NHibernateUtil.String`. Allows serializing and deserializing
 to and from `string` in json and API endpoints.
 
 ```csharp
-c => c.ValueType()
+c => c.PrimitiveViaParsable()
 ```
 
-To create a value type implement `IParsable<>` and override `ToString()`. Below
+To create a primitive implement `IParsable<>` and override `ToString()`. Below
 is an example implementation;
 
 ```csharp
@@ -356,4 +179,194 @@ public readonly record struct MyValue : IParsable<MyValue>
     public override string ToString() =>
         _data;
 }
+```
+
+## Query via Plural Name
+
+Adds `Query` attribute to the classes that has plural name of a locatable class,
+e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a query.
+
+Removes `FirstBy`, `SingleBy` and `By` names from API routes and configure them
+as `GET` endpoints.
+
+Adds `QueryMethod` attribute to the methods having given name of types with
+`Query` attribute and marks parameters with `Sorting` and `Paging` attributes.
+
+```csharp
+c => c.QueryViaPluralName(
+    queryMethodNames: [...],
+    primaryParameterNames: [...],
+    takeParameterNames: [...],
+    skipParameterNames: [...],
+    sortParameterNames: [...]
+)
+```
+
+> [!NOTE]
+>
+> Default values for parameters are listed below;
+>
+> - `queryMethodNames`: `["By"]`
+> - `primaryParameterNames`: `["searchText"]`
+> - `takeParameterNames`: `["take"]`
+> - `skipParameterNames`: `["skip"]`
+> - `sortParameterNames`: `["sort"]`
+
+> [!WARNING]
+>
+> A class that injects `IQueryContext` is not considered as a query class unless
+> it satisfies the plural naming convention.
+
+## Records are DTOs
+
+Configures domain type records as valid input parameters. Methods containing
+record parameters render as api endpoints.
+
+```csharp
+c => c.RecordsAreDtos()
+```
+
+## Remaining Services are Singleton
+
+Adds `Singleton` attribute to the services that has no `Transient` or `Scoped`
+attributes.
+
+```csharp
+c => c.RemainingServicesAreSingleton()
+```
+
+## Resource via ID Initializer
+
+Configures transient services as api services. This coding style marks a type
+having a public initializer with a single `Business.Id` parameter which will
+render from route, as `Resource` attribute, configures `Locatable` attribute and
+generates locators.
+
+Resources can be method parameters and located using their locators.
+
+Configures routes and swagger docs to use entity methods as resource actions.
+
+```csharp
+c => c.ResourceViaIdInitializer()
+```
+
+## Rich Entity
+
+Adds `Entity` attribute to classes that inject `IEntityContext<TEntity>`.
+
+Configures `NHibernate` to initialize entities using dependency injection,
+making them rich entities.
+
+Configures routes and swagger docs to use entity methods as resource actions.
+
+```csharp
+c => c.RichEntity()
+```
+
+## Scoped via Suffix
+
+Adds `Scoped` attribute to the services that has name with any of the given
+suffixes.
+
+```csharp
+c => c.ScopedViaSuffix(suffixes: [...])
+```
+
+> [!NOTE]
+>
+> Default value of `suffixes` is `["Context"]`.
+
+## Suffix based Client
+
+Configures `IXxxClient` interfaces as outgoing clients and removes rest binding
+for their implementations. Also, adds singleton mock override for the interface
+to inject mock instances to domain objects that use client interfaces.
+
+```csharp
+c => c.SuffixBasedClient()
+```
+
+## Type based ID
+
+This feature provides `Id` configuration for transient and entity classes.
+
+```csharp
+c => c.TypeBasedId()
+```
+
+Single property of type `Baked.Business.Id` is marked with `IdProperty`
+attribute. For entities, `Id` properties are mapped with `IdGuidUserType` and
+generated with `IdGuidGenerator` using `DbType.Guid`.
+
+```csharp
+public class Entity(IEntityContext<Parent> _context)
+{
+    public Id Id { get; private set; } = default!;
+    ...
+}
+```
+
+> [!TIP]
+>
+> To override ID mapping of an entity, add a property attribute configuration on
+> `IdProperty` attribute as below,
+>
+> ```csharp
+> conventions.EditPropertyAttribute<IdProperty>(
+>     when: c => c.Type.Is<MyEntity>(),
+>     attribute: id => id.Assigned() // or id.AutoIncrement()
+> );
+> ```
+
+## Unique via SingleBy
+
+Adds `Unique` attribute to entity properties of which corresponding query class
+has a `SingleBy...` query method, e.g., `User.Username` property would be
+treated as unique if `Users.SingleByUsername` exists.
+
+```csharp
+c => c.UniqueViaSingleBy()
+```
+
+> [!NOTE]
+>
+> Having `Unique` attribute on a property tells `AutoMapOrmFeature` to configure
+> that column to have a unique constraint.
+
+## `Uri` Return is Redirect
+
+Adds redirect support to your api endpoints. It configures an endpoint to use
+redirect result when its corresponding method returns `Uri`. Combined with
+`CommandViaMethodName`, it allows you to create callback `GET` endpoints when
+method doesn't have any parameters. For actions that have parameters, it
+configures its corresponding endpoint to accept form instead of a `json` body.
+
+```csharp
+c => c.UriReturnIsRedirect()
+```
+
+## Use Built-in Types
+
+Configures built-in .NET types to be used as entity properties and service
+parameters. Uses `IParsable<>` interface to configure primitives. Additionally
+configures `string`, enums, `Uri` and `IEnumerable<>` types.
+
+It also allows for string properties to use `TEXT` column type instead of
+`VARCHAR` by suffixes.
+
+```csharp
+c => c.UseBuiltInTypes(textPropertySuffixes: [...])
+```
+
+> [!TIP]
+>
+> Default value of `textPropertySuffixes` is `["Data", "Description"]`.
+
+## Use Nullable Types
+
+Adds support for nullable value and reference types. Configures api model to
+forbid sending null or empty values to not-null parameters.
+
+```csharp
+c => c.UseNullableTypes()
 ```

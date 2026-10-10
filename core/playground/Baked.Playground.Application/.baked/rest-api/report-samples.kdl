@@ -1,12 +1,12 @@
-report-samples @controller-model {
+report-samples @api-controller {
   get-entity {
-    @action-model route="GET /report-samples/entity" required-claims="BaseA, BaseB"
+    @api-action route="GET /report-samples/entity" required-claims="BaseA, BaseB"
     string {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
   }
   get-non-existing {
-    @action-model route="GET /report-samples/non-existing" required-claims="BaseA, BaseB"
+    @api-action route="GET /report-samples/non-existing" required-claims="BaseA, BaseB"
   }
 }
 

@@ -1,4 +1,4 @@
-namespace Baked.Playground.Business;
+﻿namespace Baked.Playground.Business;
 
 public class ImplementedPolymorphic(string name)
     : IPolymorphic

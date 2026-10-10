@@ -3,8 +3,13 @@ using Baked.Orm;
 
 namespace Baked.Playground.Orm;
 
-public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities, Func<LocatableLabel> _newLocatableLabel)
-    : IParentInterface
+public class Parent(
+    IEntityContext<Parent> _context,
+    Validate _validate,
+    Func<Child> _newChild,
+    Children _childEntities,
+    Func<LocatableLabel> _newLocatableLabel
+) : IParentInterface
 {
     public Id Id { get; set; } = default!;
     public string Name { get; set; } = default!;
@@ -16,7 +21,7 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
     public LocatableLabel Surname => _newLocatableLabel().With(SurnameInternal);
     // NOTE Calculated reference (directly or over interface) introduces a case
     // where `Orm.AutoMap.ManyToOneFetcherTemplate` and
-    // `CodingStyle.Id.AutoPersistenceModelConfigurerTemplate` fail when they
+    // `CodingStyle.TypeBasedId.AutoPersistenceModelConfigurerTemplate` fail when they
     // don't check property for `IsAutoProperty`
     internal Entity? CalculatedReference => null;
     Entity? IParentInterface.CalculatedReferenceOverInterface => CalculatedReference;
@@ -54,7 +59,7 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
 
     public void RemoveChild(Child child)
     {
-        if (child.Parent != this) { throw new NotMyChildException(child); }
+        _validate.MyChild(this, child);
 
         child.Delete();
     }
