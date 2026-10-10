@@ -11,7 +11,7 @@ app.Features.AddReporting(...);
 ## Fake
 
 Adds a fake report context that allows you to return data directly from `.json`
-resources.
+files.
 
 ```csharp
 c => c.Fake(basePath: "Fake")
@@ -28,7 +28,7 @@ c => c.Mock()
 ## Native SQL
 
 Adds a report context instance that uses a `IStatelessSession` instance to
-execute native SQL queries read from `.sql` resources in your project.
+execute native SQL queries read from `.sql` files in your project.
 
 ```csharp
 c => c.NativeSql(basePath: "Queries/MySql")

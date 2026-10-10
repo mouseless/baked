@@ -2,10 +2,10 @@
 
 namespace Baked.Test.Core;
 
-public class ReadingResourcesDuringTests : TestSpec
+public class ReadingFilesDuringTests : TestSpec
 {
     [TestCase("Core/DomainEmbedded.txt")]
-    public void Specs_includes_business_resources(string subpath)
+    public void Specs_includes_business_files(string subpath)
     {
         var provider = GiveMe.The<IFileProvider>();
 
@@ -16,7 +16,7 @@ public class ReadingResourcesDuringTests : TestSpec
 
     [TestCase("Core/ApplicationEmbedded.txt")]
     [TestCase("Core/ApplicationPhysical.txt")]
-    public void Specs_excludes_application_resources(string subpath)
+    public void Specs_excludes_application_files(string subpath)
     {
         var provider = GiveMe.The<IFileProvider>();
 

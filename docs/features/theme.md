@@ -150,7 +150,7 @@ experiences, see [UX Feature](ux.md)
 |              | Configures `Text` component to display properties;                                       |
 |              | &nbsp; ↳ with type `string` or `Guid`                                                    |
 |              | &nbsp; ↳ or with type that has `Locatable` attribute                                     |
-|              | &nbsp; ↳ or with type that has `ValueType` attribute                                     |
+|              | &nbsp; ↳ or with type that has `Primitive` attribute                                     |
 | Method       | All actions with `ApiAction` attribute get `UiAction` and `TabName` attributes           |
 |              | `FormPage` is added for any method at component path `/page/*/*`                         |
 |              | `Content` schema is added to any method                                                  |
@@ -161,7 +161,7 @@ experiences, see [UX Feature](ux.md)
 |              | Parameters with `ApiParameter` attribute use `Input` schema                              |
 |              | Required and default values are taken from the attribute                                 |
 |              | `string` parameters render using `InputText`                                             |
-|              | parameters with type that has `ValueType` attribute render using `InputText`             |
+|              | parameters with type that has `Primitive` attribute render using `InputText`             |
 |              | `int` and `long` parameters render using `InputNumber`                                   |
 | Enum         | Enum types render inline with `EnumInline`                                               |
 | Page Title   | `PageTitle` is added for any type at component path `/page/*/*page/title`                |
@@ -284,7 +284,7 @@ that you can see which UX or Theme feature sets what value and in which order.
 configurator.Domain.ConfigureBuilder(builder =>
 {
     // To inspect a component or a schema on types
-    builder.Inspect.TypeCompnent<MyComponent>( // or inspect.TypeSchema
+    builder.Inspect.TypeComponent<MyComponent>( // or inspect.TypeSchema
         when: c => c.Type..., // optional to inspect specific type models
         where: cc => cc.Path..., // optional to inspect specific component paths
         component: mc => mc.Value // optional to inspect just this value

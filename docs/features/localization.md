@@ -1,7 +1,7 @@
 # Localization
 
 This feature registers `.NET` localization services and middleware, and
-generates `.json` resource files for to be used for UI app localization
+generates `.json` files to be used for UI app localization
 
 Add this feature implementations using `AddLocalization()` extension;
 
@@ -21,7 +21,7 @@ c => c.Dotnet(
 )
 ```
 
-### Resources
+### Locale Files
 
 Keep the localize keys in the `.restext` and `.json` files under the `Locales`
 and `locales` folder in the root of your backend (app) and frontend projects

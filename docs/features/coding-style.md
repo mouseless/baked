@@ -171,6 +171,57 @@ Configures all `object` parameters, return types and properties to be treated as
 c => c.ObjectAsJson()
 ```
 
+## Primitive via Parsable
+
+Allows creating custom primitives via `IParsable<T>` interface. It marks these
+types as `Primitive` attribute and maps them using `PrimitiveUserType` in data
+access layer using `NHibernateUtil.String`. Allows serializing and deserializing
+to and from `string` in json and API endpoints.
+
+```csharp
+c => c.PrimitiveViaParsable()
+```
+
+To create a primitive implement `IParsable<>` and override `ToString()`. Below
+is an example implementation;
+
+```csharp
+public readonly record struct MyValue : IParsable<MyValue>
+{
+    public static MyValue Parse(string s, IFormatProvider? provider)
+    {
+        if (!TryParse(s, provider, out var result))
+        {
+            throw new FormatException($"'{s}' is not in an expected format");
+        }
+
+        return result;
+    }
+
+    public static bool TryParse(
+        [NotNullWhen(true)] string? s,
+        IFormatProvider? provider,
+        [MaybeNullWhen(false)] out MyValue result
+    )
+    {
+        // Add your custom validation and parse logic here
+        result = new(s ?? string.Empty);
+
+        return true;
+    }
+
+    readonly string _data;
+
+    MyValue(string data)
+    {
+        _data = data;
+    }
+
+    public override string ToString() =>
+        _data;
+}
+```
+
 ## Query
 
 Adds `QueryClass` attribute to the classes that has plural name of a locatable
@@ -226,6 +277,21 @@ attributes.
 c => c.RemainingServicesAreSingleton()
 ```
 
+## Resource via ID Initializer
+
+Configures transient services as api services. This coding style marks a type
+having a public initializer with a single `Business.Id` parameter which will
+render from route, as `Resource`, configures `Locatable` attribute and generates
+locators.
+
+Resources can be method parameters and located using their locators.
+
+Configures routes and swagger docs to use entity methods as resource actions.
+
+```csharp
+c => c.ResourceViaIdInitializer()
+```
+
 ## Rich Entity
 
 Adds `Entity` to classes that inject `IEntityContext<TEntity>`.
@@ -237,21 +303,6 @@ Configures routes and swagger docs to use entity methods as resource actions.
 
 ```csharp
 c => c.RichEntity()
-```
-
-## Rich Transient
-
-Configures transient services as api services. This coding style marks a type
-having a public initializer with a single `Business.Id` parameter which will
-render from route, as `RichTransient`, configures `Locatable` attribure and
-generates locators.
-
-Rich transients can be method parameters and located using their locators.
-
-Configures routes and swagger docs to use entity methods as resource actions.
-
-```csharp
-c => c.RichTransient()
 ```
 
 ## Scoped by Suffix
@@ -318,55 +369,4 @@ forbid sending null or empty values to not-null parameters.
 
 ```csharp
 c => c.UseNullableTypes()
-```
-
-## Value Type
-
-Allows creating custom value types via `IParsable<T>` interface. It marks these
-types as `ValueType` attribute and maps them using `ValueTypeUserType` in data
-access layer using `NHibernateUtil.String`. Allows serializing and deserializing
-to and from `string` in json and API endpoints.
-
-```csharp
-c => c.ValueType()
-```
-
-To create a value type implement `IParsable<>` and override `ToString()`. Below
-is an example implementation;
-
-```csharp
-public readonly record struct MyValue : IParsable<MyValue>
-{
-    public static MyValue Parse(string s, IFormatProvider? provider)
-    {
-        if (!TryParse(s, provider, out var result))
-        {
-            throw new FormatException($"'{s}' is not in an expected format");
-        }
-
-        return result;
-    }
-
-    public static bool TryParse(
-        [NotNullWhen(true)] string? s,
-        IFormatProvider? provider,
-        [MaybeNullWhen(false)] out MyValue result
-    )
-    {
-        // Add your custom validation and parse logic here
-        result = new(s ?? string.Empty);
-
-        return true;
-    }
-
-    readonly string _data;
-
-    MyValue(string data)
-    {
-        _data = data;
-    }
-
-    public override string ToString() =>
-        _data;
-}
 ```

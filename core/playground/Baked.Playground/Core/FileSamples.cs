@@ -2,7 +2,7 @@
 
 namespace Baked.Playground.Core;
 
-public class ResourceSamples(IFileProvider _provider)
+public class FileSamples(IFileProvider _provider)
 {
     public string? Read(string subPath) =>
         _provider.ReadAsString(subPath);
