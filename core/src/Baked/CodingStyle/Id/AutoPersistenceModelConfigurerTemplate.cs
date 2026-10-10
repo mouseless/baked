@@ -20,17 +20,17 @@ public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
             "NHibernate.Linq",
         ];
 
-    readonly List<(TypeModel Type, IdAttribute.MappingOptions IdMapping)> _entities = [];
+    readonly List<(TypeModel Type, IdProperty.MappingOptions IdMapping)> _entities = [];
 
     public AutoPersistenceModelConfigurerTemplate(DomainModel _domain)
     {
         foreach (var entity in _domain.Types.Having<Entity>())
         {
-            var idProperty = entity.GetMembers().FirstPropertyOrDefault<IdAttribute>();
+            var idProperty = entity.GetMembers().FirstPropertyOrDefault<IdProperty>();
             if (idProperty is null) { continue; }
             if (!idProperty.PropertyType.Is<Business.Id>()) { continue; }
 
-            var idAttribute = idProperty.Get<IdAttribute>();
+            var idAttribute = idProperty.Get<IdProperty>();
             var mapping = idAttribute.GetMapping();
 
             _entities.Add((entity, mapping));
@@ -57,7 +57,7 @@ public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
         }
     """;
 
-    string ModelOverride(TypeModel typeModel, IdAttribute.MappingOptions idMapping) => $$"""
+    string ModelOverride(TypeModel typeModel, IdProperty.MappingOptions idMapping) => $$"""
         model.Override<{{typeModel.CSharpFriendlyFullName}}>(x =>
         {{If(idMapping.IdentifierGenerator is null, () => $$"""
             x.Id(e => e.{{typeModel.GetIdInfo().PropertyName}}).CustomType<{{idMapping.UserType.GetCSharpFriendlyFullName()}}>().GeneratedBy.Assigned()

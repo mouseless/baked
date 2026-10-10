@@ -41,10 +41,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: (c, r) =>
                     r.Path.Contains("[id]") &&
                     c.Type.TryGetMembers(out var members) &&
-                    members.Properties.Having<IdAttribute>().Any(),
+                    members.Properties.Having<IdProperty>().Any(),
                 attribute: (r, c) =>
                 {
-                    var idAttribute = c.Type.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
+                    var idAttribute = c.Type.GetMembers().FirstProperty<IdProperty>().Get<IdProperty>();
 
                     r.Params[idAttribute.RouteName] = idAttribute.RouteName;
                 },
@@ -206,7 +206,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // hides id data properties
             conventions.EditPropertyAttribute<DataAttribute>(
-                when: c => c.Property.Has<IdAttribute>(),
+                when: c => c.Property.Has<IdProperty>(),
                 attribute: data => data.Visible = false,
                 order: Order.At.Infra
             );

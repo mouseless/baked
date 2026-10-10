@@ -22,7 +22,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
             conventions.SetPropertyAttribute(
                 when: c => c.Property.PropertyType.Is<Business.Id>(),
-                attribute: c => new IdAttribute(c.Property.Name.Camelize()),
+                attribute: c => new IdProperty(c.Property.Name.Camelize()),
                 order: Order.At.Global.Min
             );
         });
@@ -30,7 +30,7 @@ public class IdCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.Domain.ConfigureExportConfigurations(exports =>
         {
             exports.Build("DataAccess", export => export
-                .Include<IdAttribute>()
+                .Include<IdProperty>()
                 .AddProperty(id =>
                 {
                     var type = id.GetMapping().UserType.Name.Kebaberize();

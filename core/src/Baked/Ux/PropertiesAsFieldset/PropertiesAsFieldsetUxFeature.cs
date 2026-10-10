@@ -75,7 +75,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     var members = c.Property.PropertyType.GetMembers();
                     var labelProperty =
                         members.FirstPropertyOrDefault<LabelAttribute>() ??
-                        members.FirstProperty<IdAttribute>();
+                        members.FirstProperty<IdProperty>();
                     var labelData = labelProperty.Get<DataAttribute>();
 
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");

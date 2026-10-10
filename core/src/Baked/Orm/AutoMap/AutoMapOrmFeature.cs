@@ -64,7 +64,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             exports.Build("DataAccess", export =>
             {
                 export.Include<Entity>();
-                export.Include<IdAttribute>();
+                export.Include<IdProperty>();
                 export.Include<Column>();
                 export.Include<ForeignKey>();
                 export.Include<Unique>();

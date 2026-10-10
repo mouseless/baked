@@ -120,6 +120,22 @@ public class BuildingAttributeExportSets : TestSpec
     }
 
     [Test]
+    public void Attribute_is_exported_with_its_export_name_when_it_provides_one()
+    {
+        var domain = GiveMe.TheDomainModel();
+        var attributeExport = new ExportConfiguration("Test");
+        attributeExport.Include<Entity>();
+        attributeExport.Include<IdProperty>();
+        var builder = new ExportSetBuilder(attributeExport, _builders);
+
+        var model = builder.Build(domain);
+
+        var idProperty = model.Types[typeof(Parent)].Properties.First(p => p.Name == nameof(Parent.Id));
+        idProperty.Attributes.ShouldContain(a => a.Type == "Id");
+        idProperty.Attributes.ShouldNotContain(a => a.Type == nameof(IdProperty));
+    }
+
+    [Test]
     public void Included_attribute_can_be_filtered()
     {
         var domain = GiveMe.TheDomainModel();
@@ -308,7 +324,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<Entity>();
-        attributeExport.Include<IdAttribute>();
+        attributeExport.Include<IdProperty>();
         attributeExport.Include<LabelAttribute>();
 
         var builder = new ExportSetBuilder(attributeExport, _builders);
@@ -329,7 +345,7 @@ public class BuildingAttributeExportSets : TestSpec
         var domain = GiveMe.TheDomainModel();
         var attributeExport = new ExportConfiguration("Test");
         attributeExport.Include<Entity>();
-        attributeExport.Include<IdAttribute>();
+        attributeExport.Include<IdProperty>();
         var builder = new ExportSetBuilder(attributeExport, _builders);
 
         var model = builder.Build(domain);
@@ -354,4 +370,5 @@ public class BuildingAttributeExportSets : TestSpec
         var properties = typeExport.Properties;
         properties.Count.ShouldBe(0);
     }
+
 }

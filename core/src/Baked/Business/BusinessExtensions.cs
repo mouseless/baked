@@ -138,7 +138,7 @@ public static class BusinessExtensions
 
         public IdInfo GetIdInfo()
         {
-            var idProperty = type.GetMembers().FirstProperty<IdAttribute>();
+            var idProperty = type.GetMembers().FirstProperty<IdProperty>();
 
             return new(idProperty);
         }
@@ -149,7 +149,7 @@ public static class BusinessExtensions
 
             if (!type.TryGetMembers(out var members)) { return false; }
 
-            var idProperty = members.FirstPropertyOrDefault<IdAttribute>();
+            var idProperty = members.FirstPropertyOrDefault<IdProperty>();
             if (idProperty is null) { return false; }
 
             idInfo = new(idProperty);

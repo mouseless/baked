@@ -12,7 +12,7 @@ public static class IdCodingStyleExtensions
             new();
     }
 
-    extension(IdAttribute id)
+    extension(IdProperty id)
     {
         public void Generated() =>
             id.Mapping = new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
@@ -26,7 +26,7 @@ public static class IdCodingStyleExtensions
         public void AssignedGuid() =>
             id.Mapping = new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(NHibernate.Id.Assigned) };
 
-        public IdAttribute.MappingOptions GetMapping() =>
+        public IdProperty.MappingOptions GetMapping() =>
             id.Mapping ??
             new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
     }

@@ -51,7 +51,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     var members = c.Property.PropertyType.GetMembers();
                     var labelProperty =
                         members.FirstPropertyOrDefault<LabelAttribute>() ??
-                        members.FirstProperty<IdAttribute>();
+                        members.FirstProperty<IdProperty>();
 
                     var rootProp = cc.Path.Contains("footer-template") ? "data" : "row";
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{c.Property.DataProp}.{labelProperty.DataProp}");

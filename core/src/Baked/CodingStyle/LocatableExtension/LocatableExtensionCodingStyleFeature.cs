@@ -21,7 +21,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                     c.Type.IsClass &&
                     !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
-                    members.Properties.Any(p => p.CustomAttributes.Contains<IdAttribute>()) &&
+                    members.Properties.Any(p => p.CustomAttributes.Contains<IdProperty>()) &&
                     members.Methods.Any(m =>
                         m.Has<Initializer>() &&
                         m.DefaultOverload.Parameters.Count == 1 &&
@@ -42,7 +42,7 @@ public class LocatableExtensionCodingStyleFeature : IFeature<CodingStyleConfigur
                 {
                     var locatableExtensionAttribute = c.Type.GetMetadata().Get<LocatableExtensionAttribute>();
 
-                    return c.Domain.Types[locatableExtensionAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdAttribute>()).Get<IdAttribute>();
+                    return c.Domain.Types[locatableExtensionAttribute.LocatableType].GetMembers().Properties.First(p => p.CustomAttributes.Contains<IdProperty>()).Get<IdProperty>();
                 },
                 order: Order.At.Infra + 20
             );

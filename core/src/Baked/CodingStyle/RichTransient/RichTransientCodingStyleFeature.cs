@@ -98,7 +98,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
     static bool TryFindIdProperty(TypeModelMembers members, [NotNullWhen(true)] out PropertyModel? property)
     {
-        property = members.Properties.FirstOrDefault(p => p.CustomAttributes.Contains<IdAttribute>());
+        property = members.Properties.FirstOrDefault(p => p.CustomAttributes.Contains<IdProperty>());
 
         return property is not null;
     }
