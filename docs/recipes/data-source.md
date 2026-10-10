@@ -38,22 +38,22 @@ Bake.New
 |                    | In-Memory                          |                                    |
 |                    | Scoped Memory                      |                                    |
 | Coding Style(s)    | :white_check_mark:                 | :white_check_mark:                 |
-|                    | Add/Remove Child                   |                                    |
-|                    | Command Pattern                    |                                    |
+|                    | Add/Remove Child as Sub Resource   |                                    |
+|                    | Command via Method Name            |                                    |
 |                    | Flags Enum                         |                                    |
-|                    | Id                                 |                                    |
-|                    | Initializable                      |                                    |
-|                    | Label                              |                                    |
-|                    | Locatable                          |                                    |
+|                    | Initializable via Method Name      |                                    |
+|                    | Locate via ID                      |                                    |
+|                    | Name based Label                   |                                    |
 |                    | Namespace as Route                 |                                    |
-|                    | Query                              |                                    |
+|                    | Primitive via Parsable             |                                    |
+|                    | Query via Plural Name              |                                    |
 |                    | Records are DTOs                   |                                    |
 |                    | Remaining Services are Singleton   |                                    |
-|                    | Rich Transient                     |                                    |
-|                    | Scoped by Suffix                   |                                    |
+|                    | Resource via ID Initializer        |                                    |
+|                    | Scoped via Suffix                  |                                    |
+|                    | Type based ID                      |                                    |
 |                    | Use Built-in Types                 |                                    |
 |                    | Use Nullable Types                 |                                    |
-|                    | Value Type                         |                                    |
 | Core               | :white_check_mark: Dotnet          | :white_check_mark: Mock            |
 | Database           | :white_check_mark: Sqlite          | :white_check_mark: In Memory       |
 | Exception Handling | :white_check_mark: Problem Details | :white_check_mark:                 |

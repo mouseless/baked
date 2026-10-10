@@ -3,10 +3,10 @@ using Baked.Binding;
 using Baked.Business;
 using Baked.Caching;
 using Baked.CodingStyle;
-using Baked.CodingStyle.CommandPattern;
-using Baked.CodingStyle.Initializable;
-using Baked.CodingStyle.Label;
-using Baked.CodingStyle.ScopedBySuffix;
+using Baked.CodingStyle.CommandViaMethodName;
+using Baked.CodingStyle.InitializableViaMethodName;
+using Baked.CodingStyle.NameBasedLabel;
+using Baked.CodingStyle.ScopedViaSuffix;
 using Baked.CodingStyle.UseBuiltInTypes;
 using Baked.Core;
 using Baked.Database;
@@ -45,17 +45,17 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
     public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;
 
     // Coding Styles
-    FeatureFunc<CodingStyleConfigurator> _commandPattern = c => c.CommandPattern();
-    public void CommandPattern(Func<CodingStyleConfigurator, CommandPatternCodingStyleFeature> commandPattern) => _commandPattern = c => commandPattern(c);
+    FeatureFunc<CodingStyleConfigurator> _commandViaMethodName = c => c.CommandViaMethodName();
+    public void CommandViaMethodName(Func<CodingStyleConfigurator, CommandViaMethodNameCodingStyleFeature> commandViaMethodName) => _commandViaMethodName = c => commandViaMethodName(c);
 
-    FeatureFunc<CodingStyleConfigurator> _initializable = c => c.Initializable();
-    public void Initializable(Func<CodingStyleConfigurator, InitializableCodingStyleFeature> initializable) => _initializable = c => initializable(c);
+    FeatureFunc<CodingStyleConfigurator> _initializableViaMethodName = c => c.InitializableViaMethodName();
+    public void InitializableViaMethodName(Func<CodingStyleConfigurator, InitializableViaMethodNameCodingStyleFeature> initializableViaMethodName) => _initializableViaMethodName = c => initializableViaMethodName(c);
 
-    FeatureFunc<CodingStyleConfigurator> _label = c => c.Label();
-    public void Label(Func<CodingStyleConfigurator, LabelCodingStyleFeature> label) => _label = c => label(c);
+    FeatureFunc<CodingStyleConfigurator> _nameBasedLabel = c => c.NameBasedLabel();
+    public void NameBasedLabel(Func<CodingStyleConfigurator, NameBasedLabelCodingStyleFeature> nameBasedLabel) => _nameBasedLabel = c => nameBasedLabel(c);
 
-    FeatureFunc<CodingStyleConfigurator> _scopedBySuffix = c => c.ScopedBySuffix();
-    public void ScopedBySuffix(Func<CodingStyleConfigurator, ScopedBySuffixCodingStyleFeature> scopedBySuffix) => _scopedBySuffix = c => scopedBySuffix(c);
+    FeatureFunc<CodingStyleConfigurator> _scopedViaSuffix = c => c.ScopedViaSuffix();
+    public void ScopedViaSuffix(Func<CodingStyleConfigurator, ScopedViaSuffixCodingStyleFeature> scopedViaSuffix) => _scopedViaSuffix = c => scopedViaSuffix(c);
 
     FeatureFunc<CodingStyleConfigurator> _useBuiltInTypes = c => c.UseBuiltInTypes();
     public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) => _useBuiltInTypes = c => useBuiltInTypes(c);
@@ -66,22 +66,22 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
 
     IEnumerable<FeatureFunc<CodingStyleConfigurator>> CodingStyleFeatures => _codingStyles ??
     [
-        c => c.AddRemoveChild(),
-        _commandPattern,
-        c => c.Id(),
+        c => c.AddRemoveChildAsSubResource(),
+        _commandViaMethodName,
         c => c.FlagsEnum(),
-        _initializable,
-        _label,
-        c => c.Locatable(),
+        _initializableViaMethodName,
+        c => c.LocateViaId(),
+        _nameBasedLabel,
         c => c.NamespaceAsRoute(),
-        c => c.Query(),
+        c => c.PrimitiveViaParsable(),
+        c => c.QueryViaPluralName(),
         c => c.RecordsAreDtos(),
         c => c.RemainingServicesAreSingleton(),
         c => c.ResourceViaIdInitializer(),
-        _scopedBySuffix,
+        _scopedViaSuffix,
+        c => c.TypeBasedId(),
         _useBuiltInTypes,
-        c => c.UseNullableTypes(),
-        c => c.PrimitiveViaParsable()
+        c => c.UseNullableTypes()
     ];
 
     public class Run(FeatureFunc<BusinessConfigurator> business)

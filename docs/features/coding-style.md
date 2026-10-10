@@ -6,37 +6,38 @@ Add this feature using `AddCodingStyles()` extension;
 app.Features.AddCodingStyles([...]);
 ```
 
-## Add/Remove Child
+## Add/Remove Child as Sub Resource
 
 Configures method routes in `AddChild` and `RemoveChild(Child)` signature to
 have a resource route `POST /../children` and `DELETE /../children/{childId}`
 respectively.
 
 ```csharp
-c => c.AddRemoveChild()
+c => c.AddRemoveChildAsSubResource()
 ```
 
-## Client
-
-Configures `IXxxClient` interfaces as outgoing clients and removes rest binding
-for their implementations. Also, adds singleton mock override for the interface
-to inject mock instances to domain objects that use client interfaces.
-
-```csharp
-c => c.Client()
-```
-
-## Command Pattern
+## Command via Method Name
 
 Uses class names as route and removes configured method names from route.
 
 ```csharp
-c => c.CommandPattern(methodNames: [...])
+c => c.CommandViaMethodName(methodNames: [...])
 ```
 
 > [!NOTE]
 >
 > Default value of `methodNames` is `["Execute", "Process"]`.
+
+## Extension via Locatable Initializer
+
+Allows classes to extend locatables via composition. This marks a transient
+class as a locatable extension when it has a property with `IdProperty`
+attribute and an initializer with only one parameter that is a locatable.
+Methods of these extension classes are rendered under locatable group.
+
+```csharp
+c => c.ExtensionViaLocatableInitializer()
+```
 
 ## Flags Enum
 
@@ -69,39 +70,7 @@ same representation;
 ["read", "write"]
 ```
 
-## Id
-
-This feature provides `Id` configuration for transient and entity classes.
-
-```csharp
-c => c.Id()
-```
-
-Single property of type `Baked.Business.Id` is marked with `IdProperty`
-attribute. For entities, `Id` properties are mapped with `IdGuidUserType` and
-generated with `IdGuidGenerator` using `DbType.Guid`.
-
-```csharp
-public class Entity(IEntityContext<Parent> _context)
-{
-    public Id Id { get; private set; } = default!;
-    ...
-}
-```
-
-> [!TIP]
->
-> To override ID mapping of an entity, add a property attribute configuration on
-> `IdProperty` as below,
->
-> ```csharp
-> conventions.EditPropertyAttribute<IdProperty>(
->     when: c => c.Type.Is<MyEntity>(),
->     attribute: id => id.Assigned() // or id.AutoIncrement()
-> );
-> ```
-
-## Initializable
+## Initializable via Method Name
 
 Adds `Transient` attribute to the services that has an `Initializer` method.
 This coding style makes usages like `_newEntity().With(name)` possible.
@@ -109,50 +78,39 @@ This coding style makes usages like `_newEntity().With(name)` possible.
 initalizer is invoked with given parameters when constructing target.
 
 ```csharp
-c => c.Initializable(initializerNames: [...])
+c => c.InitializableViaMethodName(initializerNames: [...])
 ```
 
 > [!NOTE]
 >
 > Default value of `initializerNames` is `["With"]`.
 
-## Label
-
-Marks selected string properties as labels by giving `Label` to properties with
-matching names.
-
-```csharp
-c => c.Label(propertyNames: [...])
-```
-
-> [!NOTE]
->
-> Default value of `propertyNames` is `["Display", "Label", "Name", "Title"]`.
-
-## Locatable
+## Locate via ID
 
 Manages binding of `Locatable` targets and api inputs. For `Locatable` types,
 this feature adds id parameter to route, configures finding target and parameter
 lookup expressions by using `Locatable` attribute.
 
+```csharp
+c => c.LocateViaId()
+```
+
 > [!NOTE]
 >
 > Parameter lookup is only supported for `Locatable` types
 
-```csharp
-c => c.Locatable()
-```
+## Name based Label
 
-## Locatable Extension
-
-Allows classes to extend locatables via composition. This marks a transient
-class as a locatable extension when it has a property with `IdProperty`
-attribute and an initializer with only one parameter that is a locatable.
-Methods of these extension classes are rendered under locatable group.
+Marks selected string properties as labels by giving `Label` to properties with
+matching names.
 
 ```csharp
-c => c.LocatableExtension()
+c => c.NameBasedLabel(propertyNames: [...])
 ```
+
+> [!NOTE]
+>
+> Default value of `propertyNames` is `["Display", "Label", "Name", "Title"]`.
 
 ## Namespace as Route
 
@@ -222,7 +180,7 @@ public readonly record struct MyValue : IParsable<MyValue>
 }
 ```
 
-## Query
+## Query via Plural Name
 
 Adds `QueryClass` attribute to the classes that has plural name of a locatable
 class, e.g. assuming `MyLocatable` is a locatable, `MyLocatables` becomes a
@@ -235,7 +193,7 @@ Adds `QueryMethod` to the methods having given name of types with `QueryClass`
 and marks parameters with `Sorting` and `Paging` attributes.
 
 ```csharp
-c => c.Query(
+c => c.QueryViaPluralName(
     queryMethodNames: [...],
     primaryParameterNames: [...],
     takeParameterNames: [...],
@@ -305,27 +263,69 @@ Configures routes and swagger docs to use entity methods as resource actions.
 c => c.RichEntity()
 ```
 
-## Scoped by Suffix
+## Scoped via Suffix
 
 Adds `Scoped` attribute to the services that has name with any of the given
 suffixes.
 
 ```csharp
-c => c.ScopedBySuffix(suffixes: [...])
+c => c.ScopedViaSuffix(suffixes: [...])
 ```
 
 > [!NOTE]
 >
 > Default value of `suffixes` is `["Context"]`.
 
-## Unique
+## Suffix based Client
+
+Configures `IXxxClient` interfaces as outgoing clients and removes rest binding
+for their implementations. Also, adds singleton mock override for the interface
+to inject mock instances to domain objects that use client interfaces.
+
+```csharp
+c => c.SuffixBasedClient()
+```
+
+## Type based ID
+
+This feature provides `Id` configuration for transient and entity classes.
+
+```csharp
+c => c.TypeBasedId()
+```
+
+Single property of type `Baked.Business.Id` is marked with `IdProperty`
+attribute. For entities, `Id` properties are mapped with `IdGuidUserType` and
+generated with `IdGuidGenerator` using `DbType.Guid`.
+
+```csharp
+public class Entity(IEntityContext<Parent> _context)
+{
+    public Id Id { get; private set; } = default!;
+    ...
+}
+```
+
+> [!TIP]
+>
+> To override ID mapping of an entity, add a property attribute configuration on
+> `IdProperty` as below,
+>
+> ```csharp
+> conventions.EditPropertyAttribute<IdProperty>(
+>     when: c => c.Type.Is<MyEntity>(),
+>     attribute: id => id.Assigned() // or id.AutoIncrement()
+> );
+> ```
+
+## Unique via SingleBy
 
 Adds `Unique` attribute to entity properties of which corresponding query class
 has a `SingleBy...` query method, e.g., `User.Username` property would be
 treated as unique if `Users.SingleByUsername` exists.
 
 ```csharp
-c => c.Unique()
+c => c.UniqueViaSingleBy()
 ```
 
 > [!NOTE]
@@ -337,9 +337,9 @@ c => c.Unique()
 
 Adds redirect support to your api endpoints. It configures an endpoint to use
 redirect result when its corresponding method returns `Uri`. Combined with
-`CommandPattern`, it allows you to create callback `GET` endpoints when method
-doesn't have any parameters. For actions that have parameters, it configures
-its corresponding endpoint to accept form instead of a `json` body.
+`CommandViaMethodName`, it allows you to create callback `GET` endpoints when
+method doesn't have any parameters. For actions that have parameters, it
+configures its corresponding endpoint to accept form instead of a `json` body.
 
 ```csharp
 c => c.UriReturnIsRedirect()

@@ -1,5 +1,5 @@
 ﻿using Baked.Playground.Business;
-using Baked.Playground.CodingStyle.LocatableExtension;
+using Baked.Playground.CodingStyle.ExtensionViaLocatableInitializer;
 using Baked.Playground.CodingStyle.PrimitiveViaParsable;
 using Baked.Playground.CodingStyle.ResourceViaIdInitializer;
 using Baked.Playground.Orm;

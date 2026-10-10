@@ -9,7 +9,7 @@ public class LocatorTemplate : CodeTemplateBase
     public static readonly string[] GlobalUsings =
         [
             "Baked.Business",
-            "Baked.CodingStyle.Id",
+            "Baked.CodingStyle.TypeBasedId",
         ];
 
     readonly List<TypeModel> _richTransients = [];

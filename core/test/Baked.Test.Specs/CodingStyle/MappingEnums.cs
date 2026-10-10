@@ -4,7 +4,7 @@ using NHibernate.Type;
 
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
-namespace Baked.Playground.CodingStyle;
+namespace Baked.Test.CodingStyle;
 
 public class MappingEnums : TestSpec
 {

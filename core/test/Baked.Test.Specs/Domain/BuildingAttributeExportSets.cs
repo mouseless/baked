@@ -2,7 +2,7 @@
 using Baked.Domain.Export;
 using Baked.Lifetime;
 using Baked.Playground.Business;
-using Baked.Playground.CodingStyle.Locatable;
+using Baked.Playground.CodingStyle.LocateViaId;
 using Baked.Playground.Orm;
 using Baked.RestApi.Model;
 using Baked.Theme;

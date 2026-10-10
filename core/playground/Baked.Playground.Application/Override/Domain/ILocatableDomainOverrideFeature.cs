@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
-using Baked.Playground.CodingStyle.Locatable;
+using Baked.Playground.CodingStyle.LocateViaId;
 
 namespace Baked.Playground.Override.Domain;
 

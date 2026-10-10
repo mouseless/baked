@@ -21,7 +21,7 @@ public class Parent(
     public LocatableLabel Surname => _newLocatableLabel().With(SurnameInternal);
     // NOTE Calculated reference (directly or over interface) introduces a case
     // where `Orm.AutoMap.ManyToOneFetcherTemplate` and
-    // `CodingStyle.Id.AutoPersistenceModelConfigurerTemplate` fail when they
+    // `CodingStyle.TypeBasedId.AutoPersistenceModelConfigurerTemplate` fail when they
     // don't check property for `IsAutoProperty`
     internal Entity? CalculatedReference => null;
     Entity? IParentInterface.CalculatedReferenceOverInterface => CalculatedReference;

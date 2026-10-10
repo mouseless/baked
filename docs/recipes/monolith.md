@@ -42,28 +42,28 @@ Bake.New
 |                    | In-Memory                                |                                    |
 |                    | Scoped Memory                            |                                    |
 | Coding Style(s)    | :white_check_mark:                       | :white_check_mark:                 |
-|                    | Add/Remove Child                         |                                    |
-|                    | Client                                   |                                    |
-|                    | Command Pattern                          |                                    |
+|                    | Add/Remove Child as Sub Resource         |                                    |
+|                    | Command via Method Name                  |                                    |
+|                    | Extension via Locatable Initializer      |                                    |
 |                    | Flags Enum                               |                                    |
-|                    | Id                                       |                                    |
-|                    | Initializable                            |                                    |
-|                    | Label                                    |                                    |
-|                    | Locatable                                |                                    |
-|                    | Locatable Extension                      |                                    |
+|                    | Initializable via Method Name            |                                    |
+|                    | Locate via ID                            |                                    |
+|                    | Name based Label                         |                                    |
 |                    | Namespace as Route                       |                                    |
 |                    | Object as JSON                           |                                    |
-|                    | Query                                    |                                    |
+|                    | Primitive via Parsable                   |                                    |
+|                    | Query via Plural Name                    |                                    |
 |                    | Records are DTOs                         |                                    |
 |                    | Remaining Services are Singleton         |                                    |
+|                    | Resource via ID Initializer              |                                    |
 |                    | Rich Entity                              |                                    |
-|                    | Rich Transient                           |                                    |
-|                    | Scoped by Suffix                         |                                    |
-|                    | Unique                                   |                                    |
+|                    | Scoped via Suffix                        |                                    |
+|                    | Suffix based Client                      |                                    |
+|                    | Type based ID                            |                                    |
+|                    | Unique via SingleBy                      |                                    |
 |                    | `Uri` Return is Redirect                 |                                    |
 |                    | Use Built-in Types                       |                                    |
 |                    | Use Nullable Types                       |                                    |
-|                    | Value Type                               |                                    |
 | Communication      | :white_check_mark: HTTP                  | :white_check_mark: Mock            |
 | Core               | :white_check_mark: Dotnet                | :white_check_mark: Mock            |
 | Cors               | :white_check_mark: Disabled              | :no_entry:                         |

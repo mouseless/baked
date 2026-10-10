@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
-using Baked.Playground.CodingStyle.Id;
+using Baked.Playground.CodingStyle.TypeBasedId;
 
 namespace Baked.Playground.Override.Domain;
 

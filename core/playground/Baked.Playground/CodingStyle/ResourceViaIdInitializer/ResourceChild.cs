@@ -1,4 +1,4 @@
-﻿using Baked.Playground.CodingStyle.Locatable;
+﻿using Baked.Playground.CodingStyle.LocateViaId;
 
 namespace Baked.Playground.CodingStyle.ResourceViaIdInitializer;
 

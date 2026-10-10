@@ -16,20 +16,37 @@
     `System.ValueType` once the `Attribute` suffix is dropped
   - `RichTransientAttribute` -> `Resource`, since transients are already rich,
     this coding style only makes them locatable by their id
-- Coding styles are renamed to express how they detect types
-  - `ValueType` -> `PrimitiveViaParsable`, e.g., `c.ValueType()` ->
-    `c.PrimitiveViaParsable()`
-  - `RichTransient` -> `ResourceViaIdInitializer`, e.g., `c.RichTransient()` ->
-    `c.ResourceViaIdInitializer()`
-  - `ValueTypeUserType<T>` -> `PrimitiveUserType<T>`
+- Coding styles are renamed to express how they detect types, `via` is used when
+  the mechanism needs naming and `based` when it reads as a qualifier
+  - `AddRemoveChild` -> `AddRemoveChildAsSubResource`
+  - `Client` -> `SuffixBasedClient`
+  - `CommandPattern` -> `CommandViaMethodName`
+  - `Id` -> `TypeBasedId`
+  - `Initializable` -> `InitializableViaMethodName`
+  - `Label` -> `NameBasedLabel`
+  - `Locatable` -> `LocateViaId`
+  - `LocatableExtension` -> `ExtensionViaLocatableInitializer`
+  - `Query` -> `QueryViaPluralName`
+  - `RichTransient` -> `ResourceViaIdInitializer`
+  - `ScopedBySuffix` -> `ScopedViaSuffix`
+  - `Unique` -> `UniqueViaSingleBy`
+  - `ValueType` -> `PrimitiveViaParsable`
+  - To migrate, use the new names in `AddCodingStyles()`, e.g.,
+    `c => c.ValueType()` -> `c => c.PrimitiveViaParsable()`
+  - `RichEntity` and `FlagsEnum` are kept as they are
+- `MonolithRecipe` and `DataSourceRecipe` configuration methods follow their
+  coding styles, e.g., `CommandPattern(...)` -> `CommandViaMethodName(...)`
+- `ValueTypeUserType<T>` -> `PrimitiveUserType<T>`
+- `EntityInitializerIsPostResourceConvention` ->
+  `EntityInitializerIsPostConvention`
 - Domain components are removed, all conventions now come from
   `DefaultThemeFeature` by default
   - To migrate, just use components directly instead of through domain
     components, e.g., `TypeFormPage` -> `B.FormPage()`
 - `EntitySubclassCodingStyle` is removed completely
 - `ICasts` interface and `Caster.Cast()` extension are removed
-- `LocatableExtensionCodingStyle` now does not require extension classes to have
-  an implicit operator
+- `ExtensionViaLocatableInitializerCodingStyle` now does not require extension
+  classes to have an implicit operator
   - Any transient with an initializer method that has one parameter that is
     locatable, e.g., `internal MyExtension With(MyLocatable locatable) { ... }`,
     becomes an extension for that locatable
