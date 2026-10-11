@@ -9,7 +9,7 @@ public class StringDefaultValueConvention : IDomainModelConvention<ParameterMode
     {
         var parameterType = context.Parameter.ParameterType;
         if (!parameterType.Is<string>()) { return; }
-        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ApiParameter>(out var parameter)) { return; }
 
         parameter.DefaultValueRenderer = defaultValue => $"\"{defaultValue}\"";
     }

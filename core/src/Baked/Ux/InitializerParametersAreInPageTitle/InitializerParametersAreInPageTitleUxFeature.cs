@@ -12,15 +12,15 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 when: c =>
-                    c.Type.Has<TransientAttribute>() && c.Type.HasMembers() &&
-                    !c.Type.Has<LocatableAttribute>(),
+                    c.Type.Has<Transient>() && c.Type.HasMembers() &&
+                    !c.Type.Has<Locatable>(),
                 component: (tp, c, cc) =>
                 {
                     var members = c.Type.GetMembers();
                     var initializer =
-                        members.Methods.Having<InitializerAttribute>().SingleOrDefault() ??
+                        members.Methods.Having<Initializer>().SingleOrDefault() ??
                         throw DiagnosticCode.RequiresInitializerAction.Exception(
                             $"{c.Type.Name} is a transient but doesn't have an initializer action." +
                             " Initializer is needed to render its inputs on page title in a tabbed page."
@@ -29,19 +29,19 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                     tp.Schema.Inputs.AddRange(
                         initializer
                             .DefaultOverload.Parameters
-                            .Select(p => p.GenerateSchema<Input>(cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Inputs))))
+                            .Select(p => p.GenerateSchema<Input>(cc.Drill("tabbed-page", "inputs")))
                             .OfType<Input>()
                     );
                 }
             );
 
-            conventions.AddParameterSchemaConfiguration<Input>(
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
+            conventions.EditParameterSchema<Input>(
+                where: cc => cc.Path.EndsWith("tabbed-page", "inputs"),
                 schema: i => i.QueryBound = true
             );
 
-            conventions.AddParameterSchemaConfiguration<Label>(
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs), "*", nameof(ILabeler.Label)),
+            conventions.EditParameterSchema<Labeler>(
+                where: cc => cc.Path.EndsWith("tabbed-page", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {
                     var (_, l) = cc;

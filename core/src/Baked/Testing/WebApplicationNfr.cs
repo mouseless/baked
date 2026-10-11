@@ -1,13 +1,9 @@
-using Baked.Business;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Testing;
 
-// <note>
-// belongs to `Baked.Http` package
-// </note>
 public abstract class WebApplicationNfr : Nfr
 {
     protected static IServiceProvider ServiceProvider { get; private set; } = default!;
@@ -33,7 +29,6 @@ public abstract class WebApplicationNfr : Nfr
     {
         await base.OneTimeSetUp();
 
-        Caster.SetServiceProvider(ServiceProvider);
         Client = CreateClient(new() { AllowAutoRedirect = AllowAutoRedirect });
     }
 

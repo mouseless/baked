@@ -12,9 +12,9 @@ public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.EditMethodSchema<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "user"),
-                when: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "user",
+                when: c => c.Method.TryGet<ClientCache>(out var clientCache) && clientCache.Type == "user",
                 order: Order.At.Infra
             );
         });

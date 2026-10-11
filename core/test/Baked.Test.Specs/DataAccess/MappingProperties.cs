@@ -1,4 +1,5 @@
-﻿using Baked.Playground.Orm;
+﻿using Baked.Playground;
+using Baked.Playground.Orm;
 
 namespace Baked.Test.DataAccess;
 
@@ -25,7 +26,7 @@ public class MappingProperties : TestSpec
 
         Func<Entity> task = () => GiveMe.An<Entity>().With(unique: "eb8dd0a1");
 
-        task.ShouldThrow<MustBeUniqueException>();
+        task.ShouldThrow<Exceptions.UniqueException>();
     }
 
     [Test]

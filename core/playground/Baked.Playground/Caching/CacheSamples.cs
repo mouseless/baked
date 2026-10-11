@@ -1,4 +1,4 @@
-using Baked.Authorization;
+﻿using Baked.Authorization;
 using Baked.Caching;
 using Microsoft.Extensions.Caching.Memory;
 

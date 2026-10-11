@@ -2,11 +2,10 @@
 
 namespace Baked.Ui;
 
-public record InlineData(object Value)
-    : IData
+public record InlineData : IData
 {
     public string Type => "Inline";
-    public object Value { get; set; } = Value;
+    public object Value { get; set; } = new();
 
     [JsonIgnore]
     public bool IsAsync => false;

@@ -1,7 +1,7 @@
-using Baked.Playground.Business;
-using Baked.Playground.CodingStyle.LocatableExtension;
-using Baked.Playground.CodingStyle.RichTransient;
-using Baked.Playground.CodingStyle.ValueType;
+﻿using Baked.Playground.Business;
+using Baked.Playground.CodingStyle.ExtensionViaLocatableInitializer;
+using Baked.Playground.CodingStyle.PrimitiveViaParsable;
+using Baked.Playground.CodingStyle.ResourceViaIdInitializer;
 using Baked.Playground.Orm;
 using Microsoft.Extensions.Logging;
 
@@ -59,20 +59,20 @@ public class NullableSamples(ILogger<NullableSamples> _logger)
         EntityExtension? optionalNullable = default
     ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 
-    public void GetRichTransient(RichTransientWithData notNull, RichTransientWithData? nullable,
-       RichTransientWithData? optionalNullable = default
+    public void GetResource(ResourceWithData notNull, ResourceWithData? nullable,
+       ResourceWithData? optionalNullable = default
    ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 
-    public void RichTransient(RichTransientWithData notNull, RichTransientWithData? nullable,
-        RichTransientWithData? optionalNullable = default
+    public void Resource(ResourceWithData notNull, ResourceWithData? nullable,
+        ResourceWithData? optionalNullable = default
     ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 
-    public IEnumerable<Value?> GetValueTypeParameters(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
+    public IEnumerable<Value?> GetPrimitiveParameters(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<Value?> ValueTypeParameters(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
+    public IEnumerable<Value?> PrimitiveParameters(Value? single, IEnumerable<Value?> enumerable, Value?[] array) =>
         [single, .. enumerable, .. array];
 
-    public IEnumerable<Value?> RecordWithValueType(RecordWith<Value?> record) =>
+    public IEnumerable<Value?> RecordWithPrimitive(RecordWith<Value?> record) =>
         [record.Single, .. record.Enumerable, .. record.Array];
 }

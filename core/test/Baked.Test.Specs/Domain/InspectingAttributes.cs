@@ -1,4 +1,4 @@
-using Baked.Buildtime.Diagnostics;
+﻿using Baked.Buildtime.Diagnostics;
 using Baked.Domain.Configuration;
 using Baked.Domain.Inspection;
 using Baked.Playground.Business;
@@ -78,7 +78,7 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void When_an_attribute_is_added_with_a_non_null_on_the_inspected_property__it_reports_applied_member_and_the_initial_value()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: ca => ca.Value
         );
 
@@ -87,7 +87,7 @@ public class InspectingAttributes : TestSpec
         {
             foreach (var (c, _) in cases)
             {
-                _trace.CaptureAttribute(c, () => new CustomAttribute { Value = "Test" });
+                _trace.CaptureAttribute(c, () => new Custom { Value = "Test" });
             }
         }
 
@@ -107,12 +107,12 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Allows_inspecting_an_attribute_without_any_property()
     {
-        _inspect.Attribute<CustomAttribute>();
+        _inspect.Attribute<Custom>();
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(c, () => new CustomAttribute());
+            _trace.CaptureAttribute(c, () => new Custom());
         }
 
         _messages.ShouldContain(m => m.Message.Contains("<self>"));
@@ -121,9 +121,9 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Multiple_inspections_are_not_supported()
     {
-        _inspect.Attribute<CustomAttribute>();
+        _inspect.Attribute<Custom>();
 
-        var action = () => _inspect.Attribute<CustomAttribute>();
+        var action = () => _inspect.Attribute<Custom>();
 
         action.ShouldThrow<InvalidOperationException>();
     }
@@ -131,7 +131,7 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Provides_when_filter_to_filter_by_type_model_context()
     {
-        _inspect.TypeAttribute<CustomAttribute>(
+        _inspect.TypeAttribute<Custom>(
             when: c => c.Type.Is<Parent>()
         );
         var domain = GiveMe.TheDomainModel();
@@ -140,8 +140,8 @@ public class InspectingAttributes : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(cParent, () => new CustomAttribute());
-            _trace.CaptureAttribute(cChild, () => new CustomAttribute());
+            _trace.CaptureAttribute(cParent, () => new Custom());
+            _trace.CaptureAttribute(cChild, () => new Custom());
         }
 
         _messages.ShouldContain(m => m.Message.Contains("Baked.Playground.Orm.Parent"));
@@ -151,8 +151,8 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Provides_when_filter_to_filter_by_property_model_context()
     {
-        _inspect.PropertyAttribute<CustomAttribute>(
-            when: c => c.Property.Name == nameof(Parent.Id)
+        _inspect.PropertyAttribute<Custom>(
+            when: c => c.Property.Name is nameof(Parent.Id)
         );
         var domain = GiveMe.TheDomainModel();
         var parent = domain.Types[typeof(Parent)].GetMembers();
@@ -161,8 +161,8 @@ public class InspectingAttributes : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(cId, () => new CustomAttribute());
-            _trace.CaptureAttribute(cName, () => new CustomAttribute());
+            _trace.CaptureAttribute(cId, () => new Custom());
+            _trace.CaptureAttribute(cName, () => new Custom());
         }
 
         _messages.ShouldContain(m => m.Message.Contains("Baked.Playground.Orm.Parent.Id"));
@@ -172,8 +172,8 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Provides_when_filter_to_filter_by_method_model_context()
     {
-        _inspect.MethodAttribute<CustomAttribute>(
-            when: c => c.Method.Name == nameof(Parent.AddChild)
+        _inspect.MethodAttribute<Custom>(
+            when: c => c.Method.Name is nameof(Parent.AddChild)
         );
         var domain = GiveMe.TheDomainModel();
         var parent = domain.Types[typeof(Parent)].GetMembers();
@@ -182,8 +182,8 @@ public class InspectingAttributes : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(cAddChild, () => new CustomAttribute());
-            _trace.CaptureAttribute(cGetChildren, () => new CustomAttribute());
+            _trace.CaptureAttribute(cAddChild, () => new Custom());
+            _trace.CaptureAttribute(cGetChildren, () => new Custom());
         }
 
         _messages.ShouldContain(m => m.Message.Contains("Baked.Playground.Orm.Parent.AddChild"));
@@ -193,7 +193,7 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Provides_when_filter_to_filter_by_parameter_model_context()
     {
-        _inspect.ParameterAttribute<CustomAttribute>(
+        _inspect.ParameterAttribute<Custom>(
             when: c => c.Parameter.Name == "name"
         );
         var domain = GiveMe.TheDomainModel();
@@ -218,8 +218,8 @@ public class InspectingAttributes : TestSpec
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(cName, () => new CustomAttribute());
-            _trace.CaptureAttribute(cSurname, () => new CustomAttribute());
+            _trace.CaptureAttribute(cName, () => new Custom());
+            _trace.CaptureAttribute(cSurname, () => new Custom());
         }
 
         _messages.ShouldContain(m => m.Message.Contains("Baked.Playground.Orm.Parent.Update.name"));
@@ -229,12 +229,12 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Reports_member_in_magenta_for_readability()
     {
-        _inspect.Attribute<CustomAttribute>();
+        _inspect.Attribute<Custom>();
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(c, () => new CustomAttribute());
+            _trace.CaptureAttribute(c, () => new Custom());
         }
 
         _messages.ShouldContain(m => m.Message.Contains("[magenta]Baked.Playground.Orm.Parent[/]"));
@@ -243,14 +243,14 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Reports_attribute_type_and_property_name()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: c => c.Value
         );
         var c = new TypeModelContext { Domain = GiveMe.TheDomainModel(), Type = GiveMe.TheTypeModel<Parent>() };
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(c, () => new CustomAttribute { Value = "Test" });
+            _trace.CaptureAttribute(c, () => new Custom { Value = "Test" });
         }
 
         _messages.ShouldContain(m => m.Message.Contains("[[Custom]]"));
@@ -260,14 +260,14 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Reports_value_even_if_initial_value_is_null()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: c => c.NullableValue
         );
         var c = new TypeModelContext { Domain = GiveMe.TheDomainModel(), Type = GiveMe.TheTypeModel<Parent>() };
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(c, () => new CustomAttribute());
+            _trace.CaptureAttribute(c, () => new Custom());
         }
 
         _messages.ShouldContain(m => m.Message.Contains("[darkgoldenrod]NullableValue:[/] [gray]<null>[/]"));
@@ -276,14 +276,14 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Reports_new_value_as_json_when_value_is_anonymous_type()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: c => new { c.Value }
         );
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(c, () => new CustomAttribute { Value = "Test" });
+            _trace.CaptureAttribute(c, () => new Custom { Value = "Test" });
         }
 
         _messages.ShouldNotContain(m => m.Message.Contains("""
@@ -296,28 +296,28 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Reports_new_value_as_tring_when_value_is_any_other_type()
     {
-        _inspect.Attribute<CustomAttribute>();
+        _inspect.Attribute<Custom>();
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            _trace.CaptureAttribute(c, () => new CustomAttribute { Value = "Test" });
+            _trace.CaptureAttribute(c, () => new Custom { Value = "Test" });
         }
 
-        _messages.ShouldContain(m => m.Message.Contains("CustomAttribute"));
+        _messages.ShouldContain(m => m.Message.Contains("Custom"));
     }
 
     [Test]
     public void When_the_inspected_property_of_an_attribute_is_updated__it_reports_only_if_new_value_is_different()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: ca => ca.Value
         );
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            var ca = new CustomAttribute { Value = "initial" };
+            var ca = new Custom { Value = "initial" };
 
             _trace.CaptureAttribute(c, ca, () => ca.Value = "updated");
             _trace.CaptureAttribute(c, ca, () => ca.Value = "updated");
@@ -329,14 +329,14 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Null_updates_are_in_gray_color()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: ca => ca.NullableValue
         );
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            var ca = new CustomAttribute { NullableValue = "initial" };
+            var ca = new Custom { NullableValue = "initial" };
 
             _trace.CaptureAttribute(c, ca, () => ca.NullableValue = null);
         }
@@ -347,14 +347,14 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Capture_returns_the_expected_attribute__so_that_usages_can_return_with_a_single_line()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: ca => ca.Value
         );
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            var ca = _trace.CaptureAttribute(c, () => new CustomAttribute { Value = "test" });
+            var ca = _trace.CaptureAttribute(c, () => new Custom { Value = "test" });
 
             ca.Value.ShouldBe("test");
         }
@@ -363,14 +363,14 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void It_prints_member_name_once_for_consequent_updates()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: ca => ca.Value
         );
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            var ca = _trace.CaptureAttribute(c, () => new CustomAttribute { Value = "1" });
+            var ca = _trace.CaptureAttribute(c, () => new Custom { Value = "1" });
             _trace.CaptureAttribute(c, ca, () => ca.Value = "2");
         }
 
@@ -380,7 +380,7 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void It_groups_and_sort_messages_by_the_member_id_to_be_reported_together()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: ca => ca.Value
         );
         var cParent = GiveMe.ATypeModelContext<Parent>();
@@ -388,8 +388,8 @@ public class InspectingAttributes : TestSpec
 
         using (_diagnostics)
         {
-            var dParent = _trace.CaptureAttribute(cParent, () => new CustomAttribute { Value = "value 3" });
-            var dChild = _trace.CaptureAttribute(cChild, () => new CustomAttribute { Value = "value 1" });
+            var dParent = _trace.CaptureAttribute(cParent, () => new Custom { Value = "value 3" });
+            var dChild = _trace.CaptureAttribute(cChild, () => new Custom { Value = "value 1" });
 
             _trace.CaptureAttribute(cParent, dParent, () => dParent.Value = "value 4");
             _trace.CaptureAttribute(cChild, dChild, () => dChild.Value = "value 2");
@@ -407,14 +407,14 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Capture_does_not_report_when_a_non_inspected_property_is_set_or_updated()
     {
-        _inspect.Attribute<CustomAttribute>(
+        _inspect.Attribute<Custom>(
             attribute: ca => ca.Value
         );
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            var ca = _trace.CaptureAttribute(c, () => new CustomAttribute { NullableValue = "create" });
+            var ca = _trace.CaptureAttribute(c, () => new Custom { NullableValue = "create" });
             _trace.CaptureAttribute(c, ca, () => ca.NullableValue = "update");
         }
 
@@ -424,12 +424,12 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Captures_and_reports_feature_name_from_stack_trace()
     {
-        _inspect.Attribute<CustomAttribute>();
+        _inspect.Attribute<Custom>();
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            new StubFeature(c).Configure(() => new CustomAttribute());
+            new StubFeature(c).Configure(() => new Custom());
         }
 
         _messages.ShouldContain(m => Regex.IsMatch(m.Message, @"\[gray]\[link=.*]StubFeature\[/]:\d+\[/]"), customMessage: _messages.Join(Environment.NewLine));
@@ -438,13 +438,13 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Reports_the_whole_stack_trace_when_feature_is_not_captured()
     {
-        _inspect.Attribute<CustomAttribute>();
+        _inspect.Attribute<Custom>();
         var trace = Trace.Here();
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            trace.CaptureAttribute(c, () => new CustomAttribute());
+            trace.CaptureAttribute(c, () => new Custom());
         }
 
         _messages.ShouldContain(m => m.Message.Contains("<unknown>"));
@@ -458,12 +458,12 @@ public class InspectingAttributes : TestSpec
     [Test]
     public void Reports_order_info_when_provided()
     {
-        _inspect.Attribute<CustomAttribute>();
+        _inspect.Attribute<Custom>();
         var c = GiveMe.ATypeModelContext<Parent>();
 
         using (_diagnostics)
         {
-            new StubFeature(c).Configure(() => new CustomAttribute(), orderInfo: "orderInfo");
+            new StubFeature(c).Configure(() => new Custom(), orderInfo: "orderInfo");
         }
 
         _messages.ShouldContain(m => Regex.IsMatch(m.Message, @"\[gray].*orderInfo.*"), customMessage: _messages.Join(Environment.NewLine));

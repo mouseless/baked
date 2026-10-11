@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Testing;
 using Humanizer;
 using Microsoft.AspNetCore.Builder;

@@ -1,9 +1,9 @@
-using Baked.Ui;
+﻿using Baked.Ui;
 
 namespace Baked.Playground.Ui;
 
-public record ExpectedInputGroup(string TestId)
+public record ExpectedInputGroup
     : IComponentSchema
 {
-    public string TestId { get; set; } = TestId;
+    public string TestId { get; set; } = string.Empty;
 }

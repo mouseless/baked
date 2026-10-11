@@ -4,7 +4,7 @@ public record Select : ISelect, ILabeler
 {
     public bool? AutoSelectFirst { get; set; }
     public bool? Filter { get; set; }
-    public Label? Label { get; set; }
+    public Labeler? Label { get; set; }
     public bool? LocalizeOptionLabels { get; set; }
     public string? OptionLabel { get; set; }
     public string? OptionValue { get; set; }

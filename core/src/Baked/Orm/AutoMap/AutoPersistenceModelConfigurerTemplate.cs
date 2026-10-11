@@ -17,7 +17,7 @@ public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
     {
         _entities = domain
             .Types
-            .Having<EntityAttribute>()
+            .Having<Entity>()
             .Where(type => type.HasMembers())
             .Select(type => type.GetMembers());
 
@@ -36,7 +36,7 @@ public class AutoPersistenceModelConfigurerTemplate : CodeTemplateBase
             {
             {{ForEach(_entities
                 .SelectMany(e => e.Properties
-                    .Having<UniqueAttribute>()
+                    .Having<Unique>()
                     .Select(p => new { Entity = e, Property = p })
                 ), context => $$"""
                 model.Override<{{context.Entity.CSharpFriendlyFullName}}>(x => x.Map(e => e.{{context.Property.Name}}).Unique());

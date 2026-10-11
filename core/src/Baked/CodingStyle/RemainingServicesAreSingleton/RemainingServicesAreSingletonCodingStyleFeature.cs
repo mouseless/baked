@@ -13,13 +13,13 @@ public class RemainingServicesAreSingletonCodingStyleFeature()
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
-               attribute: () => new SingletonAttribute(),
+               attribute: () => new Singleton(),
                when: c =>
                    c.Type.IsClass && !c.Type.IsAbstract &&
                    c.Type.TryGetMembers(out var members) &&
-                   members.Has<ServiceAttribute>() &&
-                   !members.Has<TransientAttribute>() &&
-                   !members.Has<ScopedAttribute>() &&
+                   members.Has<Service>() &&
+                   !members.Has<Transient>() &&
+                   !members.Has<Scoped>() &&
                    members.Properties.All(p => !p.IsPublic),
                order: Order.At.Max
             );

@@ -1,4 +1,4 @@
-using Baked.Buildtime.Diagnostics;
+﻿using Baked.Buildtime.Diagnostics;
 using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
 using Baked.Domain.Model;
@@ -10,25 +10,25 @@ namespace Baked.Test.Domain;
 public class RespectingAttributeUsage : TestSpec
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class TargetAllAttribute : Attribute;
+    public class TargetAll : Attribute;
 
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-    public class TargetAllMultipleAttribute : Attribute;
+    public class TargetAllMultiple : Attribute;
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class TargetClassAttribute : Attribute;
+    public class TargetClass : Attribute;
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class TargetClassMultipleAttribute : Attribute;
+    public class TargetClassMultiple : Attribute;
 
     [AttributeUsage(AttributeTargets.Method)]
-    public class TargetMethodAttribute : Attribute;
+    public class TargetMethod : Attribute;
 
     [AttributeUsage(AttributeTargets.Parameter)]
-    public class TargetParameterAttribute : Attribute;
+    public class TargetParameter : Attribute;
 
     [AttributeUsage(AttributeTargets.Property)]
-    public class TargetPropertyAttribute : Attribute;
+    public class TargetProperty : Attribute;
 
     void Add(TypeModel type, Attribute attribute)
     {
@@ -110,11 +110,11 @@ public class RespectingAttributeUsage : TestSpec
         var domain = GiveMe.TheDomainModel();
         var type = domain.Types[typeof(Parent)].GetMetadata();
 
-        var addAll = () => Add(type, new TargetAllMultipleAttribute());
-        var addClass = () => Add(type, new TargetClassMultipleAttribute());
-        var addMethod = () => Add(type, new TargetMethodAttribute());
-        var addParameter = () => Add(type, new TargetParameterAttribute());
-        var addProperty = () => Add(type, new TargetPropertyAttribute());
+        var addAll = () => Add(type, new TargetAllMultiple());
+        var addClass = () => Add(type, new TargetClassMultiple());
+        var addMethod = () => Add(type, new TargetMethod());
+        var addParameter = () => Add(type, new TargetParameter());
+        var addProperty = () => Add(type, new TargetProperty());
 
         addAll.ShouldNotThrow();
         addClass.ShouldNotThrow();
@@ -130,11 +130,11 @@ public class RespectingAttributeUsage : TestSpec
         var domain = GiveMe.TheDomainModel();
         var type = domain.Types[typeof(Parent)].GetMetadata();
 
-        var addAll = () => Set(type, new TargetAllAttribute());
-        var addClass = () => Set(type, new TargetClassAttribute());
-        var addMethod = () => Set(type, new TargetMethodAttribute());
-        var addParameter = () => Set(type, new TargetParameterAttribute());
-        var addProperty = () => Set(type, new TargetPropertyAttribute());
+        var addAll = () => Set(type, new TargetAll());
+        var addClass = () => Set(type, new TargetClass());
+        var addMethod = () => Set(type, new TargetMethod());
+        var addParameter = () => Set(type, new TargetParameter());
+        var addProperty = () => Set(type, new TargetProperty());
 
         addAll.ShouldNotThrow();
         addClass.ShouldNotThrow();

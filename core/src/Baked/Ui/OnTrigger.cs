@@ -1,9 +1,8 @@
 ﻿namespace Baked.Ui;
 
-public record OnTrigger(string On)
-    : ITrigger
+public record OnTrigger : ITrigger
 {
     public string Type => nameof(On);
-    public string On { get; set; } = On;
+    public required string On { get; set; }
     public IConstraint? Constraint { get; set; }
 }

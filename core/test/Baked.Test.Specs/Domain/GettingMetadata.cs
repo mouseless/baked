@@ -1,25 +1,25 @@
-using Baked.Buildtime.Diagnostics;
+﻿using Baked.Buildtime.Diagnostics;
 
 namespace Baked.Test.Domain;
 
 public class GettingMetadata : TestSpec
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-    public class MultipleAttribute : Attribute;
+    public class Multiple : Attribute;
 
     [AttributeUsage(AttributeTargets.All)]
-    public class SingleAttribute : Attribute;
+    public class Single : Attribute;
 
     [Test]
     public void Get_is_used_to_retrieve_single_attributes()
     {
-        var single = new SingleAttribute();
+        var single = new Single();
         var attributes = GiveMe.AnAttributeCollection(item: single);
 
-        attributes.Get<SingleAttribute>().ShouldBe(single);
-        attributes.Get(typeof(SingleAttribute)).ShouldBe(single);
-        attributes.TryGet<SingleAttribute>(out var actual1).ShouldBeTrue();
-        attributes.TryGet(typeof(SingleAttribute), out var actual2).ShouldBeTrue();
+        attributes.Get<Single>().ShouldBe(single);
+        attributes.Get(typeof(Single)).ShouldBe(single);
+        attributes.TryGet<Single>(out var actual1).ShouldBeTrue();
+        attributes.TryGet(typeof(Single), out var actual2).ShouldBeTrue();
         actual1.ShouldBe(single);
         actual2.ShouldBe(single);
     }
@@ -29,8 +29,8 @@ public class GettingMetadata : TestSpec
     {
         var attributes = GiveMe.AnAttributeCollection();
 
-        attributes.TryGet<SingleAttribute>(out var _).ShouldBeFalse();
-        attributes.TryGet(typeof(SingleAttribute), out var _).ShouldBeFalse();
+        attributes.TryGet<Single>(out var _).ShouldBeFalse();
+        attributes.TryGet(typeof(Single), out var _).ShouldBeFalse();
     }
 
     [Test]
@@ -38,29 +38,29 @@ public class GettingMetadata : TestSpec
     {
         var attributes = GiveMe.AnAttributeCollection();
 
-        var action = () => { attributes.Get<MultipleAttribute>(); };
+        var action = () => { attributes.Get<Multiple>(); };
         action.ShouldThrow<DiagnosticException>();
 
-        action = () => { attributes.Get(typeof(MultipleAttribute)); };
+        action = () => { attributes.Get(typeof(Multiple)); };
         action.ShouldThrow<DiagnosticException>();
 
-        action = () => { attributes.TryGet<MultipleAttribute>(out var _); };
+        action = () => { attributes.TryGet<Multiple>(out var _); };
         action.ShouldThrow<DiagnosticException>();
 
-        action = () => { attributes.TryGet(typeof(MultipleAttribute), out var _); };
+        action = () => { attributes.TryGet(typeof(Multiple), out var _); };
         action.ShouldThrow<DiagnosticException>();
     }
 
     [Test]
     public void GetAll_is_used_to_retrieve_multiple_attributes()
     {
-        var multiple = new MultipleAttribute();
+        var multiple = new Multiple();
         var attributes = GiveMe.AnAttributeCollection(item: multiple);
 
-        attributes.GetAll<MultipleAttribute>().ShouldBe([multiple]);
-        attributes.GetAll(typeof(MultipleAttribute)).ShouldBe([multiple]);
-        attributes.TryGetAll<MultipleAttribute>(out var actual1).ShouldBeTrue();
-        attributes.TryGetAll(typeof(MultipleAttribute), out var actual2).ShouldBeTrue();
+        attributes.GetAll<Multiple>().ShouldBe([multiple]);
+        attributes.GetAll(typeof(Multiple)).ShouldBe([multiple]);
+        attributes.TryGetAll<Multiple>(out var actual1).ShouldBeTrue();
+        attributes.TryGetAll(typeof(Multiple), out var actual2).ShouldBeTrue();
         actual1.ShouldBe([multiple]);
         actual2.ShouldBe([multiple]);
     }
@@ -70,8 +70,8 @@ public class GettingMetadata : TestSpec
     {
         var attributes = GiveMe.AnAttributeCollection();
 
-        attributes.TryGetAll<MultipleAttribute>(out var _).ShouldBeFalse();
-        attributes.TryGetAll(typeof(MultipleAttribute), out var _).ShouldBeFalse();
+        attributes.TryGetAll<Multiple>(out var _).ShouldBeFalse();
+        attributes.TryGetAll(typeof(Multiple), out var _).ShouldBeFalse();
     }
 
     [Test]
@@ -79,16 +79,16 @@ public class GettingMetadata : TestSpec
     {
         var attributes = GiveMe.AnAttributeCollection();
 
-        var action = () => { attributes.GetAll<SingleAttribute>(); };
+        var action = () => { attributes.GetAll<Single>(); };
         action.ShouldThrow<DiagnosticException>();
 
-        action = () => { attributes.GetAll(typeof(SingleAttribute)); };
+        action = () => { attributes.GetAll(typeof(Single)); };
         action.ShouldThrow<DiagnosticException>();
 
-        action = () => { attributes.TryGetAll<SingleAttribute>(out var _); };
+        action = () => { attributes.TryGetAll<Single>(out var _); };
         action.ShouldThrow<DiagnosticException>();
 
-        action = () => { attributes.TryGetAll(typeof(SingleAttribute), out var _); };
+        action = () => { attributes.TryGetAll(typeof(Single), out var _); };
         action.ShouldThrow<DiagnosticException>();
     }
 }

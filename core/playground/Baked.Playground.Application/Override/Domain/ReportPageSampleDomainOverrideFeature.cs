@@ -4,11 +4,6 @@ using Baked.Domain.Configuration;
 using Baked.Playground.Theme;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
-using static Baked.Ui.Datas;
-
-using B = Baked.Ui.Components;
-
 namespace Baked.Playground.Override.Domain;
 
 public class ReportPageSampleDomainOverrideFeature : IFeature
@@ -18,50 +13,58 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Tabs
-            conventions.AddMethodAttributeConfiguration<GroupAttribute>(
+            conventions.EditMethodAttribute<Group>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>(),
-                attribute: group => group.TabName = "SingleValue",
+                attribute: group => group.TabName = "single-value",
                 order: Order.At.Override
             );
-            conventions.AddMethodAttributeConfiguration<GroupAttribute>(
+            conventions.EditMethodAttribute<Group>(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnsList(),
-                attribute: group => group.TabName = "DataTable",
+                attribute: group => group.TabName = "data-table",
                 order: Order.At.Override
             );
-            conventions.AddTypeComponent(
+            conventions.AddTypeComponent<Icon>(
                 when: c => c.Type.Is<ReportPageSample>(),
-                where: cc => cc.Path.EndsWith("SingleValue", nameof(Tab.Icon)),
-                component: () => B.Icon("pi-box"),
+                where: cc => cc.Path.EndsWith("single-value", "icon"),
                 order: Order.At.Override
             );
-            conventions.AddTypeComponent(
+            conventions.EditTypeComponent<Icon>(
                 when: c => c.Type.Is<ReportPageSample>(),
-                where: cc => cc.Path.EndsWith("DataTable", nameof(Tab.Icon)),
-                component: () => B.Icon("pi-table"),
+                where: cc => cc.Path.EndsWith("single-value", "icon"),
+                component: cd => cd.Schema.IconClass = "pi-box",
+                order: Order.At.Override
+            );
+            conventions.AddTypeComponent<Icon>(
+                when: c => c.Type.Is<ReportPageSample>(),
+                where: cc => cc.Path.EndsWith("data-table", "icon"),
+                order: Order.At.Override
+            );
+            conventions.EditTypeComponent<Icon>(
+                when: c => c.Type.Is<ReportPageSample>(),
+                where: cc => cc.Path.EndsWith("data-table", "icon"),
+                component: cd => cd.Schema.IconClass = "pi-table",
                 order: Order.At.Override
             );
 
             // Allowing admin token for report api
-            conventions.AddMethodSchemaConfiguration<RemoteData>(
+            conventions.EditMethodSchema<RemoteData>(
                 when: c => c.Type.Is<ReportPageSample>(),
-                schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
+                schema: rd => rd.Headers = Fetch.Inline(new { Authorization = "token-admin-ui" }),
                 order: Order.At.Override
             );
 
             // Parameter overrides
-            conventions.AddParameterComponent(
-                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.With) && !c.Parameter.IsNullable,
-                component: (c, cc) => ParameterSelect(c.Parameter, cc),
+            conventions.AddParameterComponent<Select>(
+                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name is nameof(ReportPageSample.With) && !c.Parameter.IsNullable,
                 order: Order.At.Override
             );
-            conventions.AddParameterComponent(
-                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.GetFirst) && c.Parameter.Name == "count",
-                component: (c, cc) => ParameterSelect(c.Parameter, cc),
+            conventions.AddParameterComponent<Select>(
+                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name is nameof(ReportPageSample.GetFirst) && c.Parameter.Name is "count",
                 order: Order.At.Override
             );
 
             // Page overrides
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 when: c => c.Type.Is<ReportPageSample>(),
                 component: tp =>
                 {

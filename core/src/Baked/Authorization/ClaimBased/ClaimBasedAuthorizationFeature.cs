@@ -15,13 +15,13 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetMethodAttribute(
-                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>(),
-                attribute: c => c.Type.Get<AllowAnonymousAttribute>(),
+                when: c => !c.Method.Has<RequireUser>() && c.Type.Has<AllowAnonymous>(),
+                attribute: c => c.Type.Get<AllowAnonymous>(),
                 order: Order.At.Infra
             );
             conventions.SetMethodAttribute(
-                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>(),
-                attribute: c => c.Type.Get<RequireUserAttribute>(),
+                when: c => !c.Method.Has<RequireUser>() && c.Type.Has<RequireUser>(),
+                attribute: c => c.Type.Get<RequireUser>(),
                 order: Order.At.Infra
             );
 
@@ -34,7 +34,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         configurator.Domain.ConfigureExportConfigurations(exports =>
         {
             exports.Build("RestApi", export => export
-                .Include<ActionModelAttribute>()
+                .Include<ApiAction>()
                 .AddProperty(action => new("anonymous", Value: action.AdditionalAttributes.Any(a => a.Contains("AllowAnonymous"))))
                 .AddProperty(action =>
                 {

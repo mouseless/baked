@@ -1,36 +1,36 @@
-clear-commanded @controller-model {
+clear-commanded @api-controller {
   execute {
-    @action-model route="DELETE /commanded" required-claims="BaseA, BaseB"
+    @api-action route="DELETE /commanded" required-claims="BaseA, BaseB"
     execute-param {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
 }
 
-commanded @controller-model {
+commanded @api-controller {
   method {
-    @action-model route="POST /commanded/method" required-claims="BaseA, BaseB"
+    @api-action route="POST /commanded/method" required-claims="BaseA, BaseB"
     body {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
 }
 
-execute-commanded @controller-model {
+execute-commanded @api-controller {
   execute {
-    @action-model route="POST /commanded" required-claims="BaseA, BaseB"
+    @api-action route="POST /commanded" required-claims="BaseA, BaseB"
   }
 }
 
-get-commanded @controller-model {
+get-commanded @api-controller {
   execute {
-    @action-model route="GET /commanded" required-claims="BaseA, BaseB"
+    @api-action route="GET /commanded" required-claims="BaseA, BaseB"
   }
 }
 
-update-commanded @controller-model {
+update-commanded @api-controller {
   execute {
-    @action-model route="PATCH /commanded" required-claims="BaseA, BaseB"
+    @api-action route="PATCH /commanded" required-claims="BaseA, BaseB"
   }
 }
 

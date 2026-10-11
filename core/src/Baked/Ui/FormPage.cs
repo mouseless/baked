@@ -1,26 +1,23 @@
 ﻿namespace Baked.Ui;
 
-public record FormPage(string Path, IComponentDescriptor Title, Button Submit)
-    : PageSchemaBase(Path)
+public record FormPage : PageSchemaBase
 {
-    public IComponentDescriptor Title { get; set; } = Title;
-    public Button Submit { get; set; } = Submit;
+    public IComponentDescriptor Title { get; set; } = MissingComponent.Empty;
+    public Button Submit { get; set; } = new();
     public List<Section> Sections { get; init; } = [];
     public List<ValidationComposable>? Validations { get; set; }
     public bool? ShowValidationSummary { get; set; }
 
-    public record Section(string Key, string Label)
-        : IOrderableSchema
+    public record Section : IOrderableSchema
     {
-        public string Key { get; set; } = Key;
-        public string Label { get; set; } = Label;
+        public string Key { get; set; } = string.Empty;
+        public string Label { get; set; } = string.Empty;
         public List<InputGroup> InputGroups { get; init; } = [];
     }
 
-    public record InputGroup(string Key)
-        : IOrderableSchema
+    public record InputGroup : IOrderableSchema
     {
-        public string Key { get; set; } = Key;
+        public string Key { get; set; } = string.Empty;
         public List<Input> Inputs { get; init; } = [];
         public bool? Wide { get; set; }
     }

@@ -15,7 +15,7 @@ public static class UseNullableTypesCodingStyleExtensions
             new();
     }
 
-    extension(ParameterModelAttribute parameter)
+    extension(ApiParameter parameter)
     {
         public bool HasRequiredAttributes =>
             parameter.AdditionalAttributes.Contains(nameof(BindRequiredAttribute)) ||

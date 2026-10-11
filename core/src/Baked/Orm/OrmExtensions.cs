@@ -22,7 +22,7 @@ public static class OrmExtensions
             members.Properties.Where(p =>
                 p.IsAutoProperty &&
                 p.PropertyType.TryGetMetadata(out var metadata) &&
-                metadata.Has<EntityAttribute>()
+                metadata.Has<Entity>()
             );
     }
 

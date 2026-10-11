@@ -1,4 +1,4 @@
-using Microsoft.Extensions.FileProviders;
+﻿using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 
 namespace Baked.Reporting.Fake;

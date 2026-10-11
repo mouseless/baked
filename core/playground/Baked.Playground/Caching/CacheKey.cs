@@ -1,4 +1,4 @@
-namespace Baked.Playground.Caching;
+﻿namespace Baked.Playground.Caching;
 
 public enum CacheKey
 {

@@ -6,12 +6,6 @@ using Baked.RestApi.Model;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainComponents;
-using static Baked.Theme.Default.DomainDatas;
-using static Baked.Ui.Datas;
-
-using B = Baked.Ui.Components;
-
 namespace Baked.Theme.Default;
 
 public class DefaultThemeFeature(IEnumerable<Route> _routes,
@@ -25,47 +19,300 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
-            builder.Index.Type.Add<RouteAttribute>();
-            builder.Index.Property.Add<DataAttribute>();
-            builder.Index.Method.Add<ActionAttribute>();
-            builder.Index.Method.Add<RouteAttribute>();
+            builder.Index.Type.Add<UiRoute>();
+            builder.Index.Property.Add<UiData>();
+            builder.Index.Method.Add<UiAction>();
+            builder.Index.Method.Add<UiRoute>();
 
             builder.ConventionOrderMatrix.Bases.Add("Theme");
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            // Type defaults
-            conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeTabbedPage(c.Type, cc)
-            );
-            conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeSimplePage(c.Type, cc)
-            );
-            conventions.AddTypeAttributeConfiguration<RouteAttribute>(
+            // TYPES
+
+            // configures page route params for types with dynamic page route
+            conventions.EditTypeAttribute<UiRoute>(
                 when: (c, r) =>
                     r.Path.Contains("[id]") &&
                     c.Type.TryGetMembers(out var members) &&
-                    members.Properties.Having<IdAttribute>().Any(),
+                    members.Properties.Having<IdProperty>().Any(),
                 attribute: (r, c) =>
                 {
-                    var idAttribute = c.Type.GetMembers().FirstProperty<IdAttribute>().Get<IdAttribute>();
+                    var idAttribute = c.Type.GetMembers().FirstProperty<IdProperty>().Get<IdProperty>();
 
                     r.Params[idAttribute.RouteName] = idAttribute.RouteName;
                 },
                 order: Order.At.Infra
             );
 
-            // Enum Data
-            conventions.AddTypeSchema(
-                when: c => c.Type.SkipNullable().IsEnum,
-                schema: (c, cc) => EnumInline(c.Type, cc)
+            // adds simple page to types
+            conventions.AddTypeComponent<SimplePage>(
+                where: cc => cc.Path.Is("page", "*")
+            );
+            conventions.EditTypeComponent<SimplePage>(
+                component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("simple-page", "title")),
+                order: Order.At.Min
             );
 
-            // Remote Action
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+            // adds tabbed page to types
+            conventions.AddTypeComponent<TabbedPage>(
+                where: cc => cc.Path.Is("page", "*")
+            );
+            conventions.EditTypeComponent<TabbedPage>(
+                component: (sp, c, cc) => sp.Schema.Title = c.Type.GenerateRequiredComponent(cc.Drill("tabbed-page", "title")),
+                order: Order.At.Min
+            );
+            conventions.EditTypeComponent<TabbedPage>(
+               component: (tp, c, cc) =>
+               {
+                   if (tp.Schema.Tabs.Count <= 1) { return; }
+
+                   var (_, l) = cc;
+
+                   foreach (var tab in tp.Schema.Tabs)
+                   {
+                       tab.Title ??= l(tab.Id.Replace("-", "_").Titleize());
+                   }
+               },
+               order: Order.At.Global.Max
+            );
+
+            // adds tab to type
+            conventions.AddTypeSchema<Tab>(
+                where: cc => cc.Path.EndsWith("tabs", "*")
+            );
+            conventions.EditTypeSchema<Tab>(
+                where: cc => cc.Path.EndsWith("tabs", "*"),
+                schema: (t, c, cc) =>
+                {
+                    t.Id = cc.Path.GetParts().Last();
+                    t.Icon = c.Type.GenerateComponent(cc.Drill("icon"));
+                },
+                order: Order.At.Min
+            );
+
+            // configures content defaults of type
+            conventions.EditTypeSchema<Content>(
+                where: cc => cc.Path.EndsWith("contents", "*", "*"),
+                schema: (cn, c, cc) =>
+                {
+                    cn.Key = cc.Path.GetParts().Last();
+                    cn.Component = c.Type.GenerateRequiredComponent(cc.Drill(cn.Key, "component"));
+                },
+                order: Order.At.Min
+            );
+
+            // adds enum inline data to enum types
+            conventions.AddTypeSchema<InlineData>(
+                when: c => c.Type.SkipNullable().IsEnum
+            );
+            conventions.EditTypeSchema<InlineData>(
+                when: c => c.Type.SkipNullable().IsEnum,
+                schema: (id, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    id.Value = c.Type.SkipNullable().GetEnumNames().Select(name => new
+                    {
+                        label = l($"{c.Type.SkipNullable().Name}.{name}"),
+                        value = name.Camelize()
+                    });
+                    id.RequireLocalization = true;
+                },
+                order: Order.At.Min
+            );
+
+            // adds page title to type
+            conventions.AddTypeComponent<PageTitle>(
+                where: cc => cc.Path.Is("page", "*", "*-page", "title")
+            );
+            conventions.EditTypeComponent<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    pt.Data = Fetch.Inline(l(cc.Route.Title));
+                    pt.Schema.Description = l(cc.Route.Description);
+                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
+                },
+                order: Order.At.Min
+            );
+            conventions.EditTypeComponent<PageTitle>(
+                component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
+                order: Order.At.Global.Max
+            );
+
+            // adds action methods to page title actions
+            conventions.EditTypeComponent<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    foreach (var method in c.Type.GetMembers().Methods.Having<UiAction>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method == HttpMethod.Get) { continue; }
+                        if (method.Has<Initializer>()) { continue; }
+
+                        var actionComponent = method.GenerateComponent(cc.Drill("actions", method.Name));
+                        if (actionComponent is null) { continue; }
+
+                        pt.Schema.Actions.Add(actionComponent);
+                    }
+                },
+                order: Order.At.Min
+            );
+
+            // configures field set defaults for type
+            conventions.EditTypeComponent<Fieldset>(
+                when: c => c.Type.HasMembers(),
+                component: (f, c, cc) =>
+                {
+                    cc = cc.Drill("fieldset");
+
+                    var label = c.Type.GetMembers().FirstPropertyOrDefault<Label>();
+                    if (label is not null && label.TryGet<UiData>(out var labelData))
+                    {
+                        f.Schema.TitleProp = labelData.Prop;
+                    }
+
+                    f.Data =
+                        c.Type.GenerateSchema<InlineData>(cc.Drill("data")) as IData ??
+                        c.Type.GenerateSchema<ComputedData>(cc.Drill("data")) as IData ??
+                        c.Type.GenerateSchema<RemoteData>(cc.Drill("data"))
+                    ;
+                },
+                order: Order.At.Min
+            );
+
+            // configures navlink defaults for routed types
+            conventions.EditTypeComponent<NavLink>(
+                component: (nl, c, cc) =>
+                {
+                    if (!c.Type.TryGet<UiRoute>(out var route))
+                    {
+                        throw DiagnosticCode.TypeWithAttribute.Exception(
+                            $"`{nameof(UiRoute)}` is not found on type (`{c.Type.Name}`) to render as `{nameof(NavLink)}`"
+                        );
+                    }
+
+                    nl.Schema.Path = route.Path;
+                },
+                order: Order.At.Min
+            );
+
+            // PROPERTIES
+
+            // adds data attribute to public properties
+            conventions.SetPropertyAttribute(
+                when: c => c.Property.IsPublic,
+                attribute: c => new UiData(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
+                order: Order.At.Infra - 10
+            );
+
+            // hides id data properties
+            conventions.EditPropertyAttribute<UiData>(
+                when: c => c.Property.Has<IdProperty>(),
+                attribute: data => data.Visible = false,
+                order: Order.At.Infra
+            );
+
+            // adds text component to string, guid, mail address, locatable and value type properties
+            conventions.AddPropertyComponent<Text>(
+                when: c =>
+                    c.Property.PropertyType.Is<string>() ||
+                    c.Property.PropertyType.SkipNullable().Is<Guid>() ||
+                    c.Property.PropertyType.SkipNullable().Is<MailAddress>() ||
+                    c.Property.PropertyType.SkipNullable().TryGetMetadata(out var metadata) &&
+                    (
+                        metadata.Has<Locatable>() ||
+                        metadata.Has<Primitive>()
+                    ),
+                order: Order.At.Min
+            );
+
+            // adds text component to enum properties
+            conventions.AddPropertyComponent<Text>(
+                when: c => c.Property.PropertyType.SkipNullable().IsEnum,
+                order: Order.At.Min
+            );
+
+            // adds text link to uri properties
+            conventions.AddPropertyComponent<TextLink>(
+                when: c => c.Property.PropertyType.SkipNullable().Is<Uri>(),
+                order: Order.At.Min
+            );
+
+            // adds check to boolean properties
+            conventions.AddPropertyComponent<Check>(
+                when: c => c.Property.PropertyType.SkipNullable().Is<bool>(),
+                order: Order.At.Min
+            );
+
+            // adds date to date only properties
+            conventions.AddPropertyComponent<Date>(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
+                order: Order.At.Min
+            );
+            conventions.EditPropertyComponent<Date>(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
+                component: cd => cd.Schema.Format = "dd-MM-yyyy",
+                order: Order.At.Min
+            );
+
+            // adds date to date time properties
+            conventions.AddPropertyComponent<Date>(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
+                order: Order.At.Min
+            );
+            conventions.EditPropertyComponent<Date>(
+                when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
+                component: cd => cd.Schema.Format = "dd-MM-yyyy HH:mm:ss",
+                order: Order.At.Min
+            );
+
+            // configures data table column for property
+            conventions.EditPropertySchema<DataTable.Column>(
+                when: c => c.Property.Has<UiData>(),
+                schema: (dtc, c, cc) =>
+                {
+                    dtc.Key = c.Property.DataProp;
+                    dtc.Component = c.Property.GenerateRequiredComponent(cc.Drill(dtc.Key, "component"));
+                },
+                order: Order.At.Min
+            );
+
+            // configures field for property
+            conventions.EditPropertySchema<Field>(
+                schema: (f, c, cc) =>
+                {
+                    cc = cc.Drill(c.Property.Name);
+                    var (_, l) = cc;
+
+                    f.Key = c.Property.Name.Camelize();
+                    f.Label = l(c.Property.Name.Titleize());
+                    f.Component = c.Property.GenerateRequiredComponent(cc.Drill("component"));
+                },
+                order: Order.At.Min
+            );
+
+            // configures dialog for property
+            conventions.EditPropertyComponent<Dialog>(
+                component: (d, c, cc) =>
+                {
+                    cc = cc.Drill("dialog");
+                    var (_, l) = cc;
+
+                    d.Schema.Header = l(c.Property.Name.Titleize());
+                    d.Schema.Open = c.Property.GenerateRequiredComponent<Button>(cc.Drill("open")).Schema;
+                    d.Schema.Content = c.Property.GenerateRequiredComponent(cc.Drill("content"));
+                },
+                order: Order.At.Min
+            );
+
+            // METHODS
+
+            // validates body nullability for GET, DELETE and TRACE remote actions
+            conventions.EditMethodSchema<RemoteAction>(
                 schema: (ra, c) =>
                 {
                     var method = ra.Method?.ToUpperInvariant();
@@ -81,160 +328,346 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Global.Max
             );
 
-            // Property defaults
-            conventions.SetPropertyAttribute(
-                when: c => c.Property.IsPublic,
-                attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
-                order: Order.At.Infra - 10
-            );
-            conventions.AddPropertyAttributeConfiguration<DataAttribute>(
-                when: c => c.Property.Has<IdAttribute>(),
-                attribute: data => data.Visible = false,
-                order: Order.At.Infra
-            );
-            conventions.AddPropertyComponent(
-                when: c =>
-                    c.Property.PropertyType.Is<string>() ||
-                    c.Property.PropertyType.SkipNullable().Is<Guid>() ||
-                    c.Property.PropertyType.SkipNullable().Is<MailAddress>() ||
-                    c.Property.PropertyType.SkipNullable().TryGetMetadata(out var metadata) &&
-                    (
-                        metadata.Has<LocatableAttribute>() ||
-                        metadata.Has<ValueTypeAttribute>()
-                    ),
-                component: () => B.Text(),
+            // adds remote data to method
+            conventions.AddMethodSchema<RemoteData>();
+            conventions.EditMethodSchema<RemoteData>(
+                schema: (rd, c) =>
+                {
+                    rd.Path = c.Method.GetAction().GetRoute();
+                    rd.Query = Fetch.Computed.UseRoute("query");
+                    if (c.Method.DefaultOverload.Parameters.Any())
+                    {
+                        rd.Query += Fetch.Context.Parent(options: cd => cd.Prop = "parameters");
+                    }
+                },
                 order: Order.At.Min
             );
-            conventions.AddPropertyComponent(
-                when: c => c.Property.PropertyType.SkipNullable().Is<Uri>(),
-                component: () => B.TextLink(),
-                order: Order.At.Min
+            conventions.EditMethodSchema<RemoteData>(
+                when: c => c.Type.Has<Locatable>(),
+                schema: rd => rd.Params = Fetch.Computed.UseRoute("params")
             );
-            conventions.AddPropertyComponent(
-                when: c => c.Property.PropertyType.SkipNullable().Is<bool>(),
-                component: () => B.Check(),
-                order: Order.At.Min
+
+            // adds remote action to method
+            conventions.AddMethodSchema<RemoteAction>(
+                when: c => c.Method.Has<UiAction>()
             );
-            conventions.AddPropertyComponent(
-                when: c => c.Property.PropertyType.SkipNullable().Is<DateOnly>(),
-                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy"),
-                order: Order.At.Min
-            );
-            conventions.AddPropertyComponent(
-                when: c => c.Property.PropertyType.SkipNullable().Is<DateTime>(),
-                component: () => B.Date(options: td => td.Format = "dd-MM-yyyy HH:mm:ss"),
-                order: Order.At.Min
-            );
-            conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),
-                component: (c, cc) => B.InputMoney(),
-                order: Order.At.Min
-            );
-            conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.SkipNullable().Is<double>(),
-                component: (c, cc) => B.InputRate(),
+            conventions.EditMethodSchema<RemoteAction>(
+                schema: (ra, c) =>
+                {
+                    ra.Path = c.Method.GetAction().GetRoute();
+                    ra.Method = c.Method.GetAction().Method.Method;
+                    ra.PostAction = Execute.Publish.Event(c.Method.Name.Kebaberize(),
+                        options: ea => ea.Data = c.Method.DefaultOverload.ReturnsVoid()
+                            ? null
+                            : Fetch.Context.Response()
+                    );
+                },
                 order: Order.At.Min
             );
 
-            // Method Defaults
-            conventions.SetMethodAttribute(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                attribute: () => new ActionAttribute(),
-                order: Order.At.Theme.AbsoluteMin
+            // configures defaults for any inline data added for a method
+            conventions.EditMethodSchema<InlineData>(
+                schema: (id, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    id.Value = l(c.Method.Name);
+                },
+                order: Order.At.Min
             );
-            conventions.AddMethodComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
-                component: (c, cc) => MethodFormPage(c.Method, cc)
-            );
-            conventions.AddMethodSchema(
-                schema: (c, cc) => MethodContent(c.Method, cc)
-            );
-            conventions.AddMethodSchema(
-                schema: c => MethodRemote(c.Method)
-            );
-            conventions.AddMethodSchemaConfiguration<RemoteData>(
-                when: c => c.Type.Has<LocatableAttribute>(),
-                schema: rd => rd.Params = Computed.UseRoute("params")
-            );
-            conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionAttribute>(),
-                schema: (c, cc) => DomainActions.MethodRemote(c.Method)
-            );
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
+
+            // configures request body for methods with parameters
+            conventions.EditMethodSchema<RemoteAction>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
-                schema: ra => ra.Body = Context.Model()
+                schema: ra => ra.Body = Fetch.Context.Model()
             );
-            conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Has<LocatableAttribute>(),
-                where: cc => cc.Path.StartsWith(nameof(Page), "*", "*Page"),
+
+            // configure route params of actions of locatables on their own pages
+            conventions.EditMethodSchema<RemoteAction>(
+                when: c => c.Type.Has<Locatable>(),
+                where: cc => cc.Path.StartsWith("page", "*", "*-page"),
                 schema: (ra, c, cc) =>
                 {
-                    if (!cc.Path.StartsWith(nameof(Page), c.Type.Name)) { return; }
+                    if (!cc.Path.StartsWith("page", c.Type.Name)) { return; }
 
-                    ra.Params = Computed.UseRoute("params");
+                    ra.Params = Fetch.Computed.UseRoute("params");
                 }
             );
 
-            conventions.AddMethodComponent(
-                when: c =>
-                    c.Method.TryGet<ActionModelAttribute>(out var action) &&
-                    action.Method != HttpMethod.Get,
-                where: cc => cc.Path.EndsWith(nameof(Tab.Contents), "*", nameof(Content.Component)),
-                component: (c, cc) => MethodSimpleForm(c.Method, cc)
+            // sets methods as action by default when they are api action
+            conventions.SetMethodAttribute(
+                when: c => c.Method.Has<ApiAction>(),
+                attribute: () => new UiAction(),
+                order: Order.At.Theme.AbsoluteMin
             );
 
-            conventions.AddMethodComponentConfiguration<SimpleForm>(
+            // adds form page to methods
+            conventions.AddMethodComponent<FormPage>(
+                where: cc => cc.Path.Is("page", "*", "*")
+            );
+            conventions.EditMethodComponent<FormPage>(
+                component: (fp, c, cc) =>
+                {
+                    cc = cc.Drill("form-page");
+
+                    fp.Schema.Title = c.Method.GenerateRequiredComponent(cc.Drill("title"));
+                    fp.Schema.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
+                    fp.Action = c.Method.GenerateRequiredSchema<RemoteAction>(cc.Drill("action"));
+                },
+                order: Order.At.Min
+            );
+
+            // adds page title to method
+            conventions.AddMethodComponent<PageTitle>(
+                where: cc => cc.Path.Is("page", "*", "*", "*-page", "title")
+            );
+            conventions.EditMethodComponent<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    pt.Data = Fetch.Inline(l(cc.Route.Title));
+                    pt.Schema.Description = l(cc.Route.Description);
+                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
+                }
+            );
+            conventions.EditMethodComponent<PageTitle>(
+                component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
+                order: Order.At.Global.Max
+            );
+
+            // adds content to method
+            conventions.AddMethodSchema<Content>(
+                where: cc => cc.Path.EndsWith("contents", "*")
+            );
+            conventions.EditMethodSchema<Content>(
+                schema: (cn, c, cc) =>
+                {
+                    cn.Key = c.Method.Name.Kebaberize();
+                    cn.Component = c.Method.GenerateRequiredComponent(cc.Drill(cn.Key, "component"));
+                },
+                order: Order.At.Min
+            );
+
+            // configures data panel defaults for method
+            conventions.EditMethodComponent<DataPanel>(
+                component: (dp, c, cc) =>
+                {
+                    dp.Schema.Title = c.Method.GenerateRequiredSchema<InlineData>(cc.Drill("data-panel", "title"));
+                    dp.Schema.Content = c.Method.GenerateRequiredComponent(cc.Drill("data-panel", "content"));
+                },
+                order: Order.At.Min
+            );
+            conventions.EditMethodComponent<DataPanel>(
+                component: dp => dp.Schema.LocalizeTitle ??= dp.Schema.Title.RequireLocalization,
+                order: Order.At.Global.Max
+            );
+
+            // configures data container defaults for method
+            conventions.EditMethodComponent<DataContainer>(
+                component: (dp, c, cc) => dp.Schema.Content = c.Method.GenerateRequiredComponent(cc.Drill("data-container", "content")),
+                order: Order.At.Min
+            );
+
+            // configures data table defaults for method
+            conventions.EditMethodComponent<DataTable>(
+                component: (dt, c, cc) =>
+                {
+                    cc = cc.Drill("data-table");
+
+                    dt.Schema.ExportOptions = c.Method.GenerateSchema<DataTable.Export>(cc.Drill("export-options"));
+                    dt.Schema.FooterTemplate = c.Method.GenerateSchema<DataTable.Footer>(cc.Drill("footer-template"));
+                    dt.Schema.VirtualScrollerOptions = c.Method.GenerateSchema<DataTable.VirtualScroller>(cc.Drill("virtual-scroller-options"));
+                    dt.Schema.Actions = c.Method.GenerateSchema<DataTable.Column>(cc.Drill("actions"));
+
+                    dt.Data =
+                        c.Method.GenerateSchema<InlineData>(cc.Drill("data")) as IData ??
+                        c.Method.GenerateSchema<ComputedData>(cc.Drill("data")) as IData ??
+                        c.Method.GenerateSchema<RemoteData>(cc.Drill("data"))
+                    ;
+
+                },
+                order: Order.At.Min
+            );
+
+            // configures actions data table column for method
+            conventions.EditMethodSchema<DataTable.Column>(
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
+                schema: dtc =>
+                {
+                    dtc.Key = "actions";
+                    dtc.Component = new Composite().ToDescriptor();
+                },
+                order: Order.At.Min
+            );
+
+            // configures data table export defaults for method
+            conventions.EditMethodSchema<DataTable.Export>(
+                schema: (dte, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    dte.CsvSeparator = ";";
+                    dte.FileName = l($"{c.Method.Name}.ExportFileName");
+                },
+                order: Order.At.Min
+            );
+
+            // configures data table footer defaults for method
+            conventions.EditMethodSchema<DataTable.Footer>(
+                schema: (dte, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    dte.Label = l($"{c.Method.Name}.FooterLabel");
+                },
+                order: Order.At.Min
+            );
+
+            // configures button defaults for method
+            conventions.EditMethodComponent<Button>(
+                component: (b, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    b.Schema.Label = l(c.Method.Name.Titleize());
+                    b.Action =
+                        c.Method.GenerateSchema<LocalAction>(cc.Drill("button", "action")) as IAction ??
+                        c.Method.GenerateSchema<PublishAction>(cc.Drill("button", "action")) as IAction ??
+                        c.Method.GenerateSchema<RemoteAction>(cc.Drill("button", "action"))
+                    ;
+                },
+                order: Order.At.Min
+            );
+
+            // adds simple form to methods
+            conventions.AddMethodComponent<SimpleForm>(
+                when: c =>
+                    c.Method.TryGet<ApiAction>(out var action) &&
+                    action.Method != HttpMethod.Get,
+                where: cc => cc.Path.EndsWith("contents", "*", "*", "component")
+            );
+            conventions.EditMethodComponent<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(SimpleForm), nameof(SimpleForm.Inputs));
+                    cc = cc.Drill("simple-form");
+                    var (_, l) = cc;
+
+                    sf.Action = c.Method.GenerateSchema<RemoteAction>(cc.Drill("action"));
+                    sf.Schema.Title = l(c.Method.Name.Titleize());
+                    sf.Schema.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
+                    sf.Schema.DialogOptions = c.Method.GenerateSchema<SimpleForm.Dialog>(cc.Drill("dialog-options"));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        var input = parameter.GenerateSchema<Input>(cc);
+                        var input = parameter.GenerateSchema<Input>(cc.Drill("inputs"));
                         if (input is null) { continue; }
 
                         sf.Schema.Inputs.Add(input);
                     }
-                }
+                },
+                order: Order.At.Min
             );
-            conventions.AddMethodComponentConfiguration<FormPage>(
+
+            // configures simple form dialog
+            conventions.EditMethodSchema<SimpleForm.Dialog>(
+                schema: (sfd, c, cc) =>
+                {
+                    sfd.Cancel = c.Method.GenerateRequiredComponent<Button>(cc.Drill("cancel")).Schema;
+                    sfd.Open = c.Method.GenerateRequiredComponent<Button>(cc.Drill("open")).Schema;
+                },
+                order: Order.At.Min
+            );
+
+            // configures form page defaults for method
+            conventions.EditMethodComponent<FormPage>(
                 component: (fp, c, cc) =>
                 {
                     var (_, l) = cc;
-                    cc = cc.Drill(nameof(FormPage), nameof(FormPage.Sections));
+                    cc = cc.Drill("form-page", "sections");
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
                         var section = fp.Schema.Sections.FirstOrDefault(s => s.Key == parameter.SectionKey);
                         if (section is null)
                         {
-                            section = B.FormPageSection(parameter.SectionKey, l(parameter.SectionKey.Titleize()));
+                            section = new FormPage.Section
+                            {
+                                Key = parameter.SectionKey,
+                                Label = l(parameter.SectionKey.Titleize())
+                            };
+
                             fp.Schema.Sections.Add(section);
                         }
 
-                        var inputGroup = parameter.GenerateSchema<FormPage.InputGroup>(cc.Drill(parameter.SectionKey, nameof(FormPage.Section.InputGroups)));
+                        var inputGroup = parameter.GenerateSchema<FormPage.InputGroup>(cc.Drill(parameter.SectionKey, "input-groups"));
                         if (inputGroup is null) { continue; }
 
                         section.InputGroups.Add(inputGroup);
                     }
-                }
+                },
+                order: Order.At.Min
             );
 
-            // Parameter defaults
-            conventions.AddParameterAttributeConfiguration<GroupAttribute>(
+            // PARAMETERS
+
+            // configures input group key of parameters to their own name by default
+            conventions.EditParameterAttribute<Group>(
                 attribute: (group, c) => group.InputGroupKey = c.Parameter.Name
             );
 
-            conventions.AddParameterSchema(
-                when: c => c.Parameter.Has<ParameterModelAttribute>(),
-                schema: (c, cc) => ParameterFormPageInputGroup(c.Parameter, cc)
+            // adds form page input group to parameters
+            conventions.AddParameterSchema<FormPage.InputGroup>(
+                when: c => c.Parameter.Has<ApiParameter>()
+            );
+            conventions.EditParameterSchema<FormPage.InputGroup>(
+                schema: (fpig, c, cc) =>
+                {
+                    fpig.Key = c.Parameter.InputGroupKey;
+                    fpig.Inputs.Add(
+                        c.Parameter.GenerateRequiredSchema<Input>(cc.Drill(fpig.Key, "inputs"))
+                    );
+                },
+                order: Order.At.Min
             );
 
-            conventions.AddParameterSchema(
-                when: c => c.Parameter.Has<ParameterModelAttribute>(),
-                schema: (c, cc) => ParameterInput(c.Parameter, cc)
+            // adds input to parameters
+            conventions.AddParameterSchema<Input>(
+                when: c => c.Parameter.Has<ApiParameter>()
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
+                when: c => c.Parameter.Has<ApiParameter>(),
+                schema: (i, c, cc) =>
+                {
+                    i.Name = c.Parameter.Get<ApiParameter>().Name;
+                    i.Component = c.Parameter.GenerateRequiredComponent(cc.Drill(c.Parameter.Name, "component"));
+                },
+                order: Order.At.Min
+            );
+
+            // configures input defaults for parameter
+            conventions.EditParameterSchema<Input>(
+                schema: (i, c, cc) =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+
+                    labeler.Label = c.Parameter.GenerateSchema<Labeler>(cc.Drill(i.Component.Type, "label"));
+                },
+                order: Order.At.Min
+            );
+            conventions.EditParameterSchema<Input>(
+                schema: i =>
+                {
+                    if (i.Component.Schema is not ILabeler labeler) { return; }
+                    if (labeler.Label?.Text is not null) { return; }
+
+                    labeler.Label = null;
+                },
+                order: Order.At.Global.Max
+            );
+
+            // configures number inputs as numeric
+            conventions.EditParameterSchema<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<decimal>() ||
@@ -244,130 +677,154 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.SkipNullable().Is<short>(),
                 schema: input => input.Numeric = true
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
-                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+
+            // configures default value for required inputs
+            conventions.EditParameterSchema<Input>(
+                when: c => c.Parameter.Has<ApiParameter>(),
                 schema: (p, c) =>
                 {
                     p.Required = !c.Parameter.IsNullable ? true : null;
                     p.DefaultValue = c.Parameter.DefaultValue;
                 }
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
-                schema: (i, c, cc) =>
-                {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
 
-                    labeler.Label = c.Parameter.GenerateSchema<Label>(cc.Drill(i.Component.Type, nameof(ILabeler.Label)));
-                }
-            );
-            conventions.AddParameterSchemaConfiguration<Input>(
-                schema: i =>
-                {
-                    if (i.Component.Schema is not ILabeler labeler) { return; }
-                    if (labeler.Label?.Text != null) { return; }
-
-                    labeler.Label = null;
-                },
-                order: Order.At.Max
-            );
             conventions.AddParameterSchema(
-                schema: () => new Label()
+                schema: () => new Labeler()
             );
-            conventions.AddParameterSchemaConfiguration<Label>(
+            conventions.EditParameterSchema<Labeler>(
                 where: cc =>
-                    cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Inputs), "*", nameof(ILabeler.Label)) ||
-                    cc.Path.EndsWith(nameof(FormPage), "**", nameof(FormPage.InputGroup.Inputs), "*", nameof(ILabeler.Label)),
+                    cc.Path.EndsWith("simple-form", "inputs", "*", "label") ||
+                    cc.Path.EndsWith("form-page", "**", "inputs", "*", "label"),
                 schema: label => label.ShowOptionality = true
             );
 
-            conventions.AddParameterComponent(
+            // adds input text to string and value type parameters
+            conventions.AddParameterComponent<InputText>(
                 when: c =>
                     c.Parameter.ParameterType.Is<string>() ||
-                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<ValueTypeAttribute>(),
-                component: (c, cc) => ParameterInputText(c.Parameter, cc),
+                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<Primitive>(),
                 order: Order.At.Min
             );
-            conventions.AddParameterComponent(
+
+            // adds input number to int and long parameters
+            conventions.AddParameterComponent<InputNumber>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().Is<int>() ||
                     c.Parameter.ParameterType.SkipNullable().Is<long>(),
-                component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
                 order: Order.At.Min
             );
-            conventions.AddParameterComponent(
+
+            // adds input money to decimal parameters
+            conventions.AddParameterComponent<InputMoney>(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<decimal>(),
+                order: Order.At.Min
+            );
+
+            // adds input rate to double parameters
+            conventions.AddParameterComponent<InputRate>(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<double>(),
+                order: Order.At.Min
+            );
+
+            // adds input checkbox to bool parameters
+            conventions.AddParameterComponent<InputCheckbox>(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<bool>(),
-                component: (c, cc) => B.InputCheckbox(),
                 order: Order.At.Min
             );
-            conventions.AddParameterComponentConfiguration<InputCheckbox>(
+            conventions.EditParameterComponent<InputCheckbox>(
                 when: c =>
-                    c.Parameter.ParameterType.Is<bool?>() && c.Parameter.Get<ParameterModelAttribute>().FromBodyOrForm,
+                    c.Parameter.ParameterType.Is<bool?>() && c.Parameter.Get<ApiParameter>().FromBodyOrForm,
                 component: ic => ic.Schema.Indeterminate = true
             );
-            conventions.AddParameterComponent(
+
+            // adds input url to uri parameters
+            conventions.AddParameterComponent<InputUrl>(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<Uri>(),
-                component: (c, cc) => B.InputUrl(),
                 order: Order.At.Min
             );
-            conventions.AddParameterComponent(
+
+            // adds input mail address to mail address parameters
+            conventions.AddParameterComponent<InputMailAddress>(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<MailAddress>(),
-                component: (c, cc) => B.InputMailAddress(),
                 order: Order.At.Min
             );
-            conventions.AddParameterComponent(
+
+            // add input date to date only parameters
+            conventions.AddParameterComponent<InputDate>(
                 when: c => c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
-                component: (c, cc) => B.InputDate(options: id =>
+                order: Order.At.Min
+            );
+            conventions.EditParameterComponent<InputDate>(
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<DateOnly>(),
+                component: cd =>
                 {
-                    id.Format = "dd/mm/yy";
-                    id.UsePicker = true;
-                }),
+                    cd.Schema.Format = "dd/mm/yy";
+                    cd.Schema.UsePicker = true;
+                },
                 order: Order.At.Min
             );
 
-            // `PageTitle` defaults
-            conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
-                component: (c, cc) => TypePageTitle(c.Type, cc)
+            // `Select` defaults
+            conventions.EditParameterComponent<Select>(
+                component: (s, c) => s.Schema.ShowClear = c.Parameter.IsNullable ? true : null
             );
-            conventions.AddTypeComponentConfiguration<PageTitle>(
-                component: (pt, c, cc) =>
+
+            // `SelectButton` defaults
+            conventions.EditParameterComponent<SelectButton>(
+                component: (s, c) => s.Schema.AllowEmpty = c.Parameter.IsNullable ? true : null
+            );
+            conventions.EditParameterSchema<Labeler>(
+                where: cc => cc.Path.EndsWith("select-button", "label"),
+                schema: label =>
                 {
-                    cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
+                    if (label.Mode == "ifta") { return; }
 
-                    pt.Schema.Icon = c.Type.GenerateComponent(cc);
-                }
+                    label.None();
+                },
+                order: Order.At.Global.Max
             );
 
-            conventions.AddMethodComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
-                component: (c, cc) => MethodPageTitle(c.Method, cc)
-            );
-            conventions.AddMethodComponentConfiguration<PageTitle>(
-                component: (pt, c, cc) =>
+            // configure select inputs to use inline, computed or remote data
+            // from parameter or its parameter type if not configured already
+            conventions.EditParameterSchema<Input>(
+                schema: (i, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(PageTitle), nameof(PageTitle.Icon));
+                    if (i.Component.Schema is not ISelect select) { return; }
 
-                    pt.Schema.Icon = c.Method.GenerateComponent(cc);
-                }
-            );
+                    cc = cc.Drill(i.Component.Schema.GetType().Name, "data");
 
-            conventions.AddTypeComponentConfiguration<PageTitle>(
-                component: (pt, c, cc) =>
-                {
-                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
+                    i.Component.Data ??=
+                        c.Parameter.GenerateSchema<InlineData>(cc) as IData ??
+                        c.Parameter.GenerateSchema<ComputedData>(cc) as IData ??
+                        c.Parameter.GenerateSchema<RemoteData>(cc);
+                    if (i.Component.Data is null)
                     {
-                        var action = method.GetAction();
-                        if (action.Method == HttpMethod.Get) { continue; }
-                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (!c.Parameter.ParameterType.TryGetMetadata(out var metadata))
+                        {
+                            throw DiagnosticCode.RequiresBuildLevel.Exception(
+                                $"{c.Parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"
+                            );
+                        }
 
-                        var actionComponent = method.GenerateComponent(cc.Drill(nameof(PageTitle.Actions), method.Name));
-                        if (actionComponent is null) { continue; }
-
-                        pt.Schema.Actions.Add(actionComponent);
+                        i.Component.Data =
+                            metadata.GenerateSchema<InlineData>(cc) as IData ??
+                            metadata.GenerateSchema<ComputedData>(cc) as IData ??
+                            metadata.GenerateSchema<RemoteData>(cc) ??
+                            throw DiagnosticCode.MissingRequiredSchema.Exception(
+                                $"`{c.Parameter.CustomAttributes.Name} or {metadata.CustomAttributes.Name}` is required to have descriptor" +
+                                $" for schema type `{nameof(InlineData)}`, `{nameof(ComputedData)}` or `{nameof(RemoteData)}` at path `{cc.Path}`"
+                            );
+                        ;
                     }
-                }
+
+                    select.LocalizeOptionLabels ??= i.Component.Data.RequireLocalization;
+                },
+                order: Order.At.Global.Max
             );
-            conventions.AddParameterSchemaConfiguration<Input>(
+
+            // make required select/select-button inputs in data panel to
+            // select their first item automatically when they have no default
+            conventions.EditParameterSchema<Input>(
                 when: c => !c.Parameter.IsNullable,
                 where: c => c.Path.EndsWith("data-panel", "inputs"),
                 schema: i =>
@@ -387,66 +844,46 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 },
                 order: Order.At.Global.Max
             );
-
-            // `Select` defaults
-            conventions.AddParameterComponentConfiguration<Select>(
-                component: (s, c) => s.Schema.ShowClear = c.Parameter.IsNullable ? true : null
-            );
-
-            // `SelectButton` defaults
-            conventions.AddParameterComponentConfiguration<SelectButton>(
-                component: (s, c) => s.Schema.AllowEmpty = c.Parameter.IsNullable ? true : null
-            );
-            conventions.AddParameterSchemaConfiguration<Label>(
-                where: cc => cc.Path.EndsWith(nameof(SelectButton), nameof(ILabeler.Label)),
-                schema: label =>
-                {
-                    if (label.Mode == "ifta") { return; }
-
-                    label.None();
-                },
-                order: Order.At.Max
-            );
         });
 
         configurator.Ui.ConfigureComponentExports(exports =>
         {
-            exports.AddFromExtensions(typeof(B));
+            exports.AddFromThemeAssembly(this);
         });
 
         configurator.Ui.ConfigureAppDescriptor(app =>
         {
             configurator.Ui.UsingLocalization(l =>
             {
-                app.Error = B.ErrorPage(
-                    options: ep =>
+                var error = new ErrorPage
+                {
+                    SafeLinks = [.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.ToCardLink(l))],
+                    ErrorInfos =
                     {
-                        ep.SafeLinks.AddRange([.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.AsCardLink(l))]);
-                        ep.ErrorInfos[403] = B.ErrorPageInfo(
-                            title: l("Access Denied"),
-                            message: l("You do not have the permission to view the address or data specified."),
-                            options: epi => epi.ShowSafeLinks = true
-                        );
-                        ep.ErrorInfos[404] = B.ErrorPageInfo(
-                            title: l("Page Not Found"),
-                            message: l("The page you want to view is either deleted or outdated."),
-                            options: epi => epi.ShowSafeLinks = true
-                        );
-                        ep.ErrorInfos[500] = B.ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
-                        ep.ErrorInfos[999] = B.ErrorPageInfo(l("Application Error"), l("Please contact system administrator."));
-
-                        _errorPageOptions.Apply(ep);
-                    },
-                    data: Computed.UseError()
-                );
-                app.InlineError = B.Message(
-                    data: default(IData),
-                    options: m =>
-                    {
-                        m.Icon = "pi pi-exclamation-circle";
-                        m.Severity = "error";
+                        [403] = new()
+                        {
+                            Title = l("Access Denied"),
+                            Message = l("You do not have the permission to view the address or data specified."),
+                            ShowSafeLinks = true
+                        },
+                        [404] = new()
+                        {
+                            Title = l("Page Not Found"),
+                            Message = l("The page you want to view is either deleted or outdated."),
+                            ShowSafeLinks = true
+                        },
+                        [500] = new() { Title = l("Unexpected Error"), Message = l("Please contact system administrator.") },
+                        [999] = new() { Title = l("Application Error"), Message = l("Please contact system administrator.") }
                     }
-                );
+                };
+                _errorPageOptions.Apply(error);
+
+                app.Error = error.ToDescriptor(data: Fetch.Computed.UseError());
+                app.InlineError = new Message
+                {
+                    Icon = "pi pi-exclamation-circle",
+                    Severity = "error"
+                }.ToDescriptor();
             });
         });
 
@@ -454,31 +891,31 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
         {
             configurator.Ui.UsingLocalization(l =>
             {
-                layouts.Add(B.DefaultLayout("default", options: dl =>
+                var sideMenu = new SideMenu
                 {
-                    dl.SideMenu = B.SideMenu(
-                        options: sm =>
-                        {
-                            sm.Menu.AddRange([.. _routes.Where(r => r.SideMenu).Select(r => r.AsSideMenuItem(l))]);
+                    Menu = [.. _routes.Where(r => r.SideMenu).Select(r => r.ToSideMenuItem(l))]
+                };
+                _sideMenuOptions.Apply(sideMenu);
 
-                            _sideMenuOptions.Apply(sm);
-                        }
-                    );
-                    dl.Header = B.Header(options: h =>
-                    {
-                        foreach (var route in _routes)
-                        {
-                            if (route.Disabled) { continue; }
+                var header = new Header();
+                foreach (var route in _routes)
+                {
+                    if (route.Disabled) { continue; }
 
-                            h.Sitemap[route.Path] = route.AsHeaderItem(l);
-                        }
+                    header.Sitemap[route.Path] = route.ToHeaderItem(l);
+                }
 
-                        _headerOptions.Apply(h);
-                    });
-                }));
+                _headerOptions.Apply(header);
+
+                layouts.AddLayout(new DefaultLayout
+                {
+                    Path = "default",
+                    SideMenu = sideMenu.ToDescriptor(data: Fetch.Computed.UseRoute()),
+                    Header = header.ToDescriptor(data: Fetch.Computed.UseRoute())
+                });
             });
 
-            layouts.Add(B.ModalLayout("modal"));
+            layouts.AddLayout(new ModalLayout { Path = "modal" });
         });
 
         configurator.Ui.ConfigurePageDescriptors(pages =>

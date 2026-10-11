@@ -74,34 +74,33 @@ public class DomainAssembliesBusinessFeature(
 
             builder.DefaultConventionLevel = "Business.Defaults.Configure";
 
-            builder.Index.Type.Add<ServiceAttribute>();
-            builder.Index.Type.Add<CasterAttribute>();
-            builder.Index.Type.Add<QueryAttribute>();
-            builder.Index.Method.Add<InitializerAttribute>();
-            builder.Index.Property.Add<IdAttribute>();
-            builder.Index.Property.Add<LabelAttribute>();
+            builder.Index.Type.Add<Service>();
+            builder.Index.Type.Add<Query>();
+            builder.Index.Method.Add<Initializer>();
+            builder.Index.Property.Add<IdProperty>();
+            builder.Index.Property.Add<Label>();
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
                 when: _ => true,
-                attribute: () => new GroupAttribute(),
+                attribute: () => new Group(),
                 order: Order.At.Global.Min
             );
             conventions.SetPropertyAttribute(
                 when: _ => true,
-                attribute: () => new GroupAttribute(),
+                attribute: () => new Group(),
                 order: Order.At.Global.Min
             );
             conventions.SetMethodAttribute(
                 when: _ => true,
-                attribute: () => new GroupAttribute(),
+                attribute: () => new Group(),
                 order: Order.At.Global.Min
             );
             conventions.SetParameterAttribute(
                 when: _ => true,
-                attribute: () => new GroupAttribute(),
+                attribute: () => new Group(),
                 order: Order.At.Global.Min
             );
 
@@ -119,13 +118,13 @@ public class DomainAssembliesBusinessFeature(
                             @namespace;
                     });
 
-                    return new NamespaceAttribute(@namespace);
+                    return new Namespace(@namespace);
                 },
                 when: c => setNamespaceWhen(c.Type),
                 order: Order.At.Infra
             );
             conventions.SetTypeAttribute(
-                attribute: () => new ServiceAttribute(),
+                attribute: () => new Service(),
                 when: c =>
                     c.Type.IsPublic &&
                     !c.Type.IsValueType &&
@@ -139,33 +138,29 @@ public class DomainAssembliesBusinessFeature(
             );
 
             conventions.SetMethodAttribute(
-                attribute: () => new ExternalAttribute(),
+                attribute: () => new External(),
                 when: c =>
                     c.Method.DefaultOverload.DeclaringType is not null &&
                     c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
-                    !metadata.Has<ServiceAttribute>(),
+                    !metadata.Has<Service>(),
                 order: Order.At.Infra
             );
 
             conventions.SetMethodAttribute(
-                attribute: () => new ExternalAttribute(),
+                attribute: () => new External(),
                 when: c =>
                     c.Method.DefaultOverload.BaseDefinition is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType.TryGetMetadata(out var metadata) &&
-                    !metadata.Has<ServiceAttribute>(),
-                order: Order.At.Infra
-            );
-
-            conventions.SetTypeAttribute(
-                attribute: () => new CasterAttribute(),
-                when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>)),
+                    !metadata.Has<Service>(),
                 order: Order.At.Infra
             );
         });
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
+            services.AddSingleton<Validate>();
+
             foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
             {
                 if (_addEmbeddedFileProviders)
@@ -180,19 +175,6 @@ public class DomainAssembliesBusinessFeature(
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
         });
 
-        configurator.Buildtime.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
-        {
-            configurator.Domain.UsingDomainModel(domain =>
-            {
-                generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
-                    assembly => assembly
-                        .AddReferenceFrom<DomainAssembliesBusinessFeature>()
-                        .AddCodes(new CasterConfigurerTemplate(domain)),
-                    usings: [.. CasterConfigurerTemplate.GlobalUsings]
-                );
-            });
-        });
-
         configurator.Domain.ConfigureDomainServiceCollection(services =>
         {
             services.References.AddRange(_assemblyDescriptors.Select(ad => ad.assembly));
@@ -201,26 +183,6 @@ public class DomainAssembliesBusinessFeature(
                 "Baked.Runtime",
                 "Microsoft.Extensions.DependencyInjection"
             ]);
-        });
-
-        configurator.Runtime.ConfigureServiceProvider(sp =>
-        {
-            Caster.SetServiceProvider(sp);
-
-            configurator.Buildtime.UsingGeneratedContext(generatedContext =>
-            {
-                generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)]
-                    .CreateRequiredImplementationInstance<ICasterConfigurer>()
-                    .Configure();
-            });
-        });
-
-        configurator.Testing.ConfigureTestConfiguration(test =>
-        {
-            test.SetUps.Add(spec =>
-            {
-                Caster.SetServiceProvider(spec.GiveMe.TheServiceProvider());
-            });
         });
 
         configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>

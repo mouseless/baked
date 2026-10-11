@@ -3,8 +3,9 @@ using Baked.ExceptionHandling;
 using Baked.ExceptionHandling.ProblemDetails;
 using Baked.Orm;
 using Baked.Playground.ExceptionHandling;
-using Baked.Playground.Orm;
 using System.Net;
+
+using Entity = Baked.Playground.Orm.Entity;
 
 namespace Baked.Test.ExceptionHandling;
 

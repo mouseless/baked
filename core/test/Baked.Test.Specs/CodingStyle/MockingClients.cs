@@ -1,4 +1,4 @@
-using Baked.Playground.Communication;
+﻿using Baked.Playground.Communication;
 using Baked.RestApi.Model;
 
 namespace Baked.Test.CodingStyle;
@@ -12,7 +12,7 @@ public class MockingClients : TestSpec
         var gitHubClient = domain.Types[typeof(GitHubClient)];
 
         gitHubClient.TryGetMetadata(out var metadata).ShouldBeTrue();
-        metadata.Has<ControllerModelAttribute>().ShouldBeFalse();
+        metadata.Has<ApiController>().ShouldBeFalse();
     }
 
     [Test]

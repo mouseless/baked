@@ -2,7 +2,7 @@
 
 public interface IGeneratedComponentSchema : IComponentSchema
 {
-    string Path { get; }
+    string Path { get; set; }
 
     public string Name => Path.Split("/")[^1];
     public string Dir => Path.Split("/")[..^1].Join("/");

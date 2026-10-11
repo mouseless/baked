@@ -11,7 +11,7 @@ public class CacheSamplesDomainOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 when: c => c.Type.Is<CacheSamples>(),
                 component: tp =>
                 {

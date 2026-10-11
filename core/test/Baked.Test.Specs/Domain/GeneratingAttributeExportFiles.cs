@@ -30,7 +30,7 @@ public class GeneratingAttributeExportFiles : TestSpec
         };
     }
 
-    class FakeAttribute : Attribute;
+    class Fake : Attribute;
 
     [Test]
     public void Serialize_given_type_metadata_model()
@@ -39,13 +39,13 @@ public class GeneratingAttributeExportFiles : TestSpec
         sample-type @entity {
           @fake camel-case="CamelCase" string="Post" array="System.String[]" bool-true=#true int=1
           name @label {
-            @data prop="Name"
+            @ui-data prop="Name"
           }
           surname @label
           method-name @initializer {
-            @action-model method="Post" route-parts="System.String[]"
+            @api-action method="Post" route-parts="System.String[]"
             id {
-              @parameter-model from="Route"
+              @api-parameter from="Route"
             }
           }
         }
@@ -55,8 +55,8 @@ public class GeneratingAttributeExportFiles : TestSpec
             name: "SampleType",
             attributes:
             [
-                new(nameof(EntityAttribute)),
-                new(nameof(FakeAttribute),
+                new(nameof(Entity)),
+                new(nameof(Fake),
                     ("CamelCase", "CamelCase"),
                     ("String", "Post"),
                     ("Array", new[] { "sample-types", "id" }),
@@ -71,17 +71,17 @@ public class GeneratingAttributeExportFiles : TestSpec
             [
                 new("MethodName",
                 [
-                    new(nameof(InitializerAttribute)),
-                    new(nameof(ActionModelAttribute), ("Method", "Post"), ("RouteParts", new[] { "sample-types", "id" })),
+                    new(nameof(Initializer)),
+                    new(nameof(ApiAction), ("Method", "Post"), ("RouteParts", new[] { "sample-types", "id" })),
                 ])
                 {
-                    Parameters = [new("Id", [new(nameof(ParameterModelAttribute), ("From", ParameterModelFrom.Route))])]
+                    Parameters = [new("Id", [new(nameof(ApiParameter), ("From", ParameterModelFrom.Route))])]
                 },
             ],
             properties:
             [
-                new("Name", [new(nameof(DataAttribute), ("Prop","Name")), new(nameof(LabelAttribute))]),
-                new("Surname", [new(nameof(LabelAttribute))])
+                new("Name", [new(nameof(UiData), ("Prop","Name")), new(nameof(Label))]),
+                new("Surname", [new(nameof(Label))])
             ]
         );
         var exportSet = new ExportSetModel(new(new[] { typeExport }));
@@ -104,7 +104,7 @@ public class GeneratingAttributeExportFiles : TestSpec
             name: "SampleType",
             attributes:
             [
-                new(nameof(FakeAttribute), ("ValueNull", null))
+                new(nameof(Fake), ("ValueNull", null))
             ]
         );
 
@@ -140,7 +140,7 @@ public class GeneratingAttributeExportFiles : TestSpec
            id: "Baked.Domain.Test.SampleTypeC",
            name: "SampleTypeC",
            groupName: "Test",
-           attributes: [new(nameof(EntityAttribute))]
+           attributes: [new(nameof(Entity))]
        );
 
         var exportSet = new ExportSetModel(new(new[] { typeExportA, typeExportB, typeExportC }));

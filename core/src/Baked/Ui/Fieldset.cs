@@ -1,8 +1,7 @@
 ﻿namespace Baked.Ui;
 
-public record Fieldset(string TitleProp)
-    : IComponentSchema
+public record Fieldset : IComponentSchema
 {
-    public string TitleProp { get; set; } = TitleProp;
+    public string TitleProp { get; set; } = string.Empty;
     public List<Field> Fields { get; init; } = [];
 }

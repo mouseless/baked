@@ -1,6 +1,7 @@
 root = true
 
 [*.cs]
+charset = utf-8-bom
 
 # Naming rules
 dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion

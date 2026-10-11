@@ -1,0 +1,74 @@
+﻿using Baked.Business;
+using Baked.CodingStyle;
+using Baked.CodingStyle.ResourceViaIdInitializer;
+using Baked.Domain.Model;
+using Baked.RestApi.Model;
+using Humanizer;
+
+namespace Baked;
+
+public static class ResourceViaIdInitializerCodingStyleExtensions
+{
+    extension(CodingStyleConfigurator _)
+    {
+        public ResourceViaIdInitializerCodingStyleFeature ResourceViaIdInitializer() =>
+            new();
+    }
+
+    extension(ApiAction action)
+    {
+        public ApiParameter AddFactoryAsService(TypeModel transientType)
+        {
+            var parameter =
+                new ApiParameter($"new{transientType.Name.Pascalize()}", $"Func<{transientType.CSharpFriendlyFullName}>", ParameterModelFrom.Services)
+                {
+                    IsInvokeMethodParameter = false,
+                };
+
+            action.Parameter[parameter.Name] = parameter;
+
+            return parameter;
+        }
+    }
+
+    extension(TypeModel type)
+    {
+        public string BuildInitializerById(string valueExpression,
+            string? notNullValueExpression = default,
+            bool nullable = false
+        )
+        {
+            notNullValueExpression ??= valueExpression;
+
+            var initializer = type.GetMembers().Methods.Having<Initializer>().Single();
+            var initializerById = $"new{type.Name.Pascalize()}().{initializer.Name}({notNullValueExpression})";
+            if (initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>())
+            {
+                initializerById = $"(await {initializerById})";
+            }
+
+            if (nullable)
+            {
+                initializerById = $"({valueExpression} != null ? {initializerById} : null)";
+            }
+
+            return initializerById;
+        }
+
+        public string BuildInitializerByIds(string valueExpression,
+            bool isArray = default
+        )
+        {
+            var initializer = type.GetMembers().Methods.Having<Initializer>().Single();
+            var byIds = $"{valueExpression}.Select(id => new{type.Name.Pascalize()}().{initializer.Name}(id))";
+            if (initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>())
+            {
+                byIds = $"(await Task.WhenAll({byIds}))";
+            }
+
+            return isArray
+                ? $"{byIds}.ToArray()"
+                : $"{byIds}.ToList()";
+        }
+    }
+}

@@ -10,6 +10,9 @@ public class ComponentDescriptor<TSchema>(TSchema schema)
     public bool? ActionSkipsEmptyModel { get; set; }
     public Dictionary<string, ITrigger>? Reactions { get; set; }
 
+    public void Override<TNewSchema>()
+        where TNewSchema : TSchema, IComponentOverride<TSchema>, new() => Override(new TNewSchema().ToDescriptor());
+
     public void Override<TNewSchema>(ComponentDescriptor<TNewSchema> component)
         where TNewSchema : TSchema, IComponentOverride<TSchema>
     {

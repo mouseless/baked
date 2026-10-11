@@ -1,4 +1,4 @@
-using Humanizer;
+﻿using Humanizer;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;

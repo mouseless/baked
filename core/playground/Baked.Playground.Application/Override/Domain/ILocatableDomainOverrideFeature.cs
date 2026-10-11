@@ -1,7 +1,7 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
-using Baked.Playground.CodingStyle.Locatable;
+using Baked.Playground.CodingStyle.LocateViaId;
 
 namespace Baked.Playground.Override.Domain;
 
@@ -13,7 +13,7 @@ public class ILocatableDomainOverrideFeature : IFeature
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.Is<ILocatable>(),
-                attribute: () => new LocatableAttribute(),
+                attribute: () => new Locatable(),
                 order: Order.At.Override
             );
         });

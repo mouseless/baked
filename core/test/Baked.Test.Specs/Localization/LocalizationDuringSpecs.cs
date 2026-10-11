@@ -1,4 +1,4 @@
-using Baked.Playground.Localization;
+﻿using Baked.Playground.Localization;
 using Microsoft.Extensions.Localization;
 
 namespace Baked.Test.Localization;

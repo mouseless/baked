@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Playground.Authentication;
 
 namespace Baked.Playground.Override.Domain;

@@ -1,4 +1,4 @@
-namespace Baked.Domain.Configuration;
+﻿namespace Baked.Domain.Configuration;
 
 public readonly struct Order
 {

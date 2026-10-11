@@ -1,4 +1,4 @@
-namespace Baked.Core;
+﻿namespace Baked.Core;
 
 public interface ITextTransformer
 {

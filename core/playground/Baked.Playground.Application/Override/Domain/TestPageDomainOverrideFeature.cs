@@ -1,13 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Configuration;
 using Baked.Playground.Theme;
-using Baked.Theme;
 using Baked.Ui;
-using Humanizer;
-
-using static Baked.Playground.Theme.Custom.DomainComponents;
-
-using B = Baked.Ui.Components;
 
 namespace Baked.Playground.Override.Domain;
 
@@ -17,54 +11,59 @@ public class TestPageDomainOverrideFeature : IFeature
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddTypeComponent(
+            conventions.AddTypeComponent<TabbedPage>(
                 when: c => c.Type.Is<TestPage>(),
-                where: cc => cc.Path.EndsWith(nameof(Page)),
-                component: () => B.TabbedPage("test-page", B.PageTitle("Test Page")),
+                where: cc => cc.Path.EndsWith("page"),
                 order: Order.At.Override
             );
-            conventions.AddTypeComponentConfiguration<TabbedPage>(
+            conventions.EditTypeComponent<TabbedPage>(
                 when: c => c.Type.Is<TestPage>(),
-                component: (tp, c, cc) => tp.Schema.Tabs.AddRange(
-                    c.Type.GenerateSchemas<Tab>(cc.Drill(nameof(TabbedPage.Tabs)))
-                ),
+                component: (tp, c, cc) =>
+                {
+                    tp.Schema.Path = "test-page";
+                    tp.Schema.Title?.Data = Fetch.Inline("Test Page");
+                    tp.Schema.Tabs.Add(
+                        c.Type.GenerateRequiredSchema<Tab>(cc.Drill("tabs", "default"))
+                    );
+                },
                 order: Order.At.Override
             );
-            conventions.AddTypeSchema(
+            conventions.AddTypeSchema<Tab>(
                 when: c => c.Type.Is<TestPage>(),
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage.Tabs)),
-                schema: (c, cc) => B.Tab("default"),
+                where: cc => cc.Path.EndsWith("tabs", "default"),
                 order: Order.At.Override
             );
-            conventions.AddTypeSchemaConfiguration<Tab>(
+            conventions.EditTypeSchema<Tab>(
                 when: c => c.Type.Is<TestPage>(),
-                schema: (t, c, cc) => t.Contents.Add(
-                    c.Type
+                where: cc => cc.Path.EndsWith("tabs", "default"),
+                schema: (t, c, cc) =>
+                {
+                    t.Id = "default";
+                    t.Contents.Add(
+                        c.Type
                         .GetMethod(nameof(TestPage.GetData))
-                        .GenerateRequiredSchema<Content>(cc.Drill(t.Id, nameof(Tab.Contents), 0))
-                ),
+                        .GenerateRequiredSchema<Content>(cc.Drill("contents", t.Contents.Count))
+                    );
+                },
                 order: Order.At.Override
             );
 
-            conventions.AddMethodSchema(
-                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                where: cc => cc.Path.EndsWith(nameof(Tab.Contents), 0),
-                schema: (c, cc) => B.Content(component: c.Method.GenerateRequiredComponent(cc.Drill(nameof(Content.Component))), c.Method.Name.Kebaberize()),
+            conventions.AddMethodSchema<Content>(
+                when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 order: Order.At.Override
             );
-            conventions.AddMethodSchemaConfiguration<Content>(
-                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+            conventions.EditMethodSchema<Content>(
+                when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 schema: tabContent => tabContent.Narrow = true,
                 order: Order.At.Override
             );
-            conventions.AddMethodComponent(
-                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                where: cc => cc.Path.EndsWith(nameof(Content.Component)),
-                component: (c, cc) => MethodText(c.Method, cc),
+            conventions.AddMethodComponent<Text>(
+                when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
+                where: cc => cc.Path.EndsWith("component"),
                 order: Order.At.Override
             );
-            conventions.AddMethodComponentConfiguration<Text>(
-                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+            conventions.EditMethodComponent<Text>(
+                when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
                 component: t => t.Schema.MaxLength = 20,
                 order: Order.At.Override
             );

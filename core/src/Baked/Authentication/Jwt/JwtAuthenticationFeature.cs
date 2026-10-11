@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Authorization;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -49,10 +50,10 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
             {
                 plugin.AnonymousApiRoutes.AddRange(
                     domain.Types
-                        .Having<ControllerModelAttribute>()
-                        .SelectMany(t => t.GetMembers().Methods.Having<ActionModelAttribute>())
-                        .Where(m => m.Has<Authorization.AllowAnonymousAttribute>())
-                        .Select(m => new AnonymousApiRoute(m.Get<ActionModelAttribute>().Method.Method, m.Get<ActionModelAttribute>().GetRoute()))
+                        .Having<ApiController>()
+                        .SelectMany(t => t.GetMembers().Methods.Having<ApiAction>())
+                        .Where(m => m.Has<AllowAnonymous>())
+                        .Select(m => new AnonymousApiRoute(m.Get<ApiAction>().Method.Method, m.Get<ApiAction>().GetRoute()))
                     );
             });
 

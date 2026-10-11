@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Monolith;
 using Baked.Playground.Communication;
 using Baked.Playground.Orm;

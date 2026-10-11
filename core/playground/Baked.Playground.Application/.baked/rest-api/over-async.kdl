@@ -1,6 +1,6 @@
-sync-over-async @controller-model {
+sync-over-async @api-controller {
   execute {
-    @action-model route="POST /over-async" required-claims="BaseA, BaseB"
+    @api-action route="POST /over-async" required-claims="BaseA, BaseB"
   }
 }
 

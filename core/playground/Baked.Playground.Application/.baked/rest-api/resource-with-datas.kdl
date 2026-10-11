@@ -1,0 +1,21 @@
+resource-with-data @api-controller {
+  with {
+    @api-action route="GET /resource-with-datas/{id}" required-claims="BaseA, BaseB"
+    id {
+      @api-parameter required=#true in="route"
+    }
+  }
+  method {
+    @api-action route="POST /resource-with-datas/{id}/method" required-claims="BaseA, BaseB"
+    text {
+      @api-parameter required=#true
+    }
+  }
+}
+
+resource-extension @api-controller {
+  from-extension {
+    @api-action route="POST /resource-with-datas/{id}/from-extension" required-claims="BaseA, BaseB"
+  }
+}
+

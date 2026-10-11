@@ -180,6 +180,39 @@
                   }
                 },
                 {
+                  "name": "flagsEnum",
+                  "component": {
+                    "type": "MultiSelectButton",
+                    "schema": {
+                      "label": {
+                        "text": "Flags Enum",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      },
+                      "localizeOptionLabels": true,
+                      "optionLabel": "label",
+                      "optionValue": "value"
+                    },
+                    "data": {
+                      "type": "Inline",
+                      "value": [
+                        {
+                          "label": "FlagsEnumeration.Flag1",
+                          "value": "flag1"
+                        },
+                        {
+                          "label": "FlagsEnumeration.Flag2",
+                          "value": "flag2"
+                        },
+                        {
+                          "label": "FlagsEnumeration.Flag3",
+                          "value": "flag3"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
                   "name": "dateOnly",
                   "component": {
                     "type": "InputDate",

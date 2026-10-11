@@ -1,10 +1,9 @@
 ﻿namespace Baked.Ui;
 
-public record Button(string Label)
-    : IComponentSchema
+public record Button : IComponentSchema
 {
     public string? Icon { get; set; }
-    public string Label { get; set; } = Label;
+    public string? Label { get; set; }
     public string? Variant { get; set; }
     public string? Severity { get; set; }
     public bool? Rounded { get; set; }

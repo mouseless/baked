@@ -131,7 +131,7 @@ test.describe("Property", () => {
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
       String.raw`conventions.AddPropertyComponent(
-    when: c => c.Type.Is<Record>() && c.Property.Name == nameof(Record.Text),
+    when: c => c.Type.Is<Record>() && c.Property.Name is nameof(Record.Text),
     where: cc => cc.Path.EndsWith("page", "data-table", "columns", "text"),
     component: () => B.Text()
 );`
@@ -161,7 +161,7 @@ test.describe("Method", () => {
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre").nth(0)).toHaveText(
       String.raw`conventions.AddMethodComponent(
-    when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+    when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
     where: cc => cc.Path.EndsWith("page", "data-panel"),
     component: () => B.DataTable()
 );`
@@ -230,7 +230,7 @@ test.describe("Parameter", () => {
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
       String.raw`conventions.AddParameterComponent(
-    when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData) && c.Parameter.Name == "panel",
+    when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData) && c.Parameter.Name is "panel",
     where: cc => cc.Path.EndsWith("page", "data-panel", "parameters"),
     component: () => B.InputText()
 );`

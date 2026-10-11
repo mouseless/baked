@@ -1,8 +1,8 @@
-nested-type-in-api @controller-model {
+nested-type-in-api @api-controller {
   execute {
-    @action-model route="POST /nested-type-in-api" required-claims="BaseA, BaseB"
+    @api-action route="POST /nested-type-in-api" required-claims="BaseA, BaseB"
     input {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
 }

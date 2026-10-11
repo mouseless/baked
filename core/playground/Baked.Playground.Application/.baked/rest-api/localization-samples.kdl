@@ -1,20 +1,20 @@
-localization-samples @controller-model {
+localization-samples @api-controller {
   get-locale-string {
-    @action-model route="GET /localization-samples/locale-string" required-claims="BaseA, BaseB"
+    @api-action route="GET /localization-samples/locale-string" required-claims="BaseA, BaseB"
   }
   get-parameterized {
-    @action-model route="GET /localization-samples/parameterized" required-claims="BaseA, BaseB"
+    @api-action route="GET /localization-samples/parameterized" required-claims="BaseA, BaseB"
     param {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
   }
   get-model-binding-errors {
-    @action-model route="GET /localization-samples/model-binding-errors" required-claims="BaseA, BaseB"
+    @api-action route="GET /localization-samples/model-binding-errors" required-claims="BaseA, BaseB"
     number {
-      @parameter-model required=#true in="query"
+      @api-parameter required=#true in="query"
     }
     enumeration {
-      @parameter-model in="query"
+      @api-parameter in="query"
     }
   }
 }

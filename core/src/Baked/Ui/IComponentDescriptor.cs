@@ -1,6 +1,4 @@
-﻿using B = Baked.Ui.Components;
-
-namespace Baked.Ui;
+﻿namespace Baked.Ui;
 
 public interface IComponentDescriptor : ISupportsReaction
 {
@@ -15,7 +13,7 @@ public interface IComponentDescriptor : ISupportsReaction
         if (left is null) { return right; }
         if (left is not ComponentDescriptor<Composite> composite)
         {
-            composite = B.Composite(options: c => c.Parts.Add(left));
+            composite = new Composite { Parts = { left } }.ToDescriptor();
         }
 
         composite.Schema.Parts.Add(right);

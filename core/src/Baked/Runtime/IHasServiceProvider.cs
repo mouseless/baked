@@ -1,4 +1,4 @@
-namespace Baked.Runtime;
+﻿namespace Baked.Runtime;
 
 public interface IHasServiceProvider
 {

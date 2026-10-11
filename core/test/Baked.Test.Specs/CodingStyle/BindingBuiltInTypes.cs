@@ -6,9 +6,9 @@ namespace Baked.Test.CodingStyle;
 public class BindingBuiltInTypes : TestNfr
 {
     [Test]
-    public async Task PrimitiveParameters()
+    public async Task BuiltInTypeParameters()
     {
-        var response = await Client.PostAsync("/method-samples/primitive-parameters", JsonContent.Create(
+        var response = await Client.PostAsync("/method-samples/built-in-type-parameters", JsonContent.Create(
             new
             {
                 @string = "string",
@@ -21,9 +21,9 @@ public class BindingBuiltInTypes : TestNfr
     }
 
     [Test]
-    public async Task PrimitiveListParameters()
+    public async Task BuiltInTypeListParameters()
     {
-        var response = await Client.PostAsync("/method-samples/primitive-list-parameters", JsonContent.Create(
+        var response = await Client.PostAsync("/method-samples/built-in-type-list-parameters", JsonContent.Create(
             new
             {
                 strings = new[] { "a", "b" },

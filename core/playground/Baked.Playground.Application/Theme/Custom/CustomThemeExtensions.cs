@@ -105,6 +105,6 @@ public static class CustomThemeExtensions
     extension(List<ValidationComposable> validations)
     {
         public void AddFormSampleValidation() =>
-            validations.Add(new("useFormSampleValidation"));
+            validations.Add(new() { Name = "useFormSampleValidation" });
     }
 }

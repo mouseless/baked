@@ -4,8 +4,6 @@ using Baked.Ui;
 using Humanizer;
 using System.ComponentModel.DataAnnotations;
 
-using static Baked.Theme.Default.DomainComponents;
-
 namespace Baked.Ux.EnumParameterIsSelect;
 
 public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
@@ -16,47 +14,72 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Use `SelectButton` when enum member count is <= _maxMemberCountForSelectButton
-            conventions.AddParameterComponent(
+            conventions.AddParameterComponent<SelectButton>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
-                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton,
-                component: (c, cc) => ParameterSelectButton(c.Parameter, cc)
-            );
-            conventions.AddParameterComponentConfiguration<SelectButton>(
-                when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
-                component: (s, c) =>
-                {
-                    s.Schema.OptionLabel = "label";
-                    s.Schema.OptionValue = "value";
-                }
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton
             );
 
             // Use `Select` when enum member count is > _maxMemberCountForSelectButton
-            conventions.AddParameterComponent(
+            conventions.AddParameterComponent<Select>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
-                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton,
-                component: (c, cc) => ParameterSelect(c.Parameter, cc)
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton
             );
-            conventions.AddParameterComponentConfiguration<Select>(
-                when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
-                component: (s, c) =>
-                {
-                    s.Schema.OptionLabel = "label";
-                    s.Schema.OptionValue = "value";
-                }
+
+            // Use `MultiSelectButton` for flags enum, when enum member count is <= _maxMemberCountForSelectButton
+            conventions.AddParameterComponent<MultiSelectButton>(
+                when: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= _maxMemberCountForSelectButton &&
+                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>()
+            );
+
+            // Use `MultiSelect` for flags enum, when enum member count is > _maxMemberCountForSelectButton
+            conventions.AddParameterComponent<MultiSelect>(
+                when: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > _maxMemberCountForSelectButton &&
+                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>()
             );
 
             // Default value of a required enum parameter is set to the first enum
             // member (camelCase) when it is in query or route
-            conventions.AddParameterSchemaConfiguration<Input>(
+            conventions.EditParameterSchema<Input>(
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.Has<RequiredAttribute>() &&
-                    c.Parameter.TryGet<ParameterModelAttribute>(out var api) &&
+                    c.Parameter.TryGet<ApiParameter>(out var api) &&
                     (api.FromQuery || api.FromRoute),
                 schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First().Camelize(),
                 order: 10
+            );
+
+            // Map option label and value for enum data
+            conventions.EditParameterSchema<Input>(
+                when: c => c.Parameter.ParameterType.SkipNullable().IsEnum,
+                schema: i =>
+                {
+                    if (i.Component.Schema is not ISelect select) { return; }
+
+                    select.OptionLabel = "label";
+                    select.OptionValue = "value";
+                }
+            );
+
+            // Use localize option labels for flags enum
+            conventions.EditParameterSchema<Input>(
+                when: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().TryGetMetadata(out var metadata) && metadata.Has<FlagsAttribute>(),
+                schema: (i, _, cc) =>
+                {
+                    if (i.Component.Schema is not ISelect select) { return; }
+
+                    var (_, l) = cc;
+
+                    select.LocalizeOptionLabels = true;
+                }
             );
         });
     }

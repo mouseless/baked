@@ -1,9 +1,9 @@
 ﻿namespace Baked.Ui;
 
-public record DefaultLayout(string Path)
+public record DefaultLayout
     : IGeneratedComponentSchema
 {
-    public string Path { get; set; } = Path;
+    public string Path { get; set; } = string.Empty;
     public IComponentDescriptor? SideMenu { get; set; }
     public IComponentDescriptor? Header { get; set; }
     public ScrollTop? ScrollTopOptions { get; set; }

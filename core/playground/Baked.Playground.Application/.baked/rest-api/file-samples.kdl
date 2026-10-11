@@ -1,0 +1,15 @@
+file-samples @api-controller {
+  read {
+    @api-action route="POST /file-samples/read" required-claims="BaseA, BaseB"
+    sub-path {
+      @api-parameter required=#true
+    }
+  }
+  read-async {
+    @api-action route="POST /file-samples/read-async" required-claims="BaseA, BaseB"
+    sub-path {
+      @api-parameter required=#true
+    }
+  }
+}
+

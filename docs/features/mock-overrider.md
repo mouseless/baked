@@ -1,7 +1,7 @@
 # Mock Overrider
 
 This feature provides an overrider mechanism for overriding default components
-registered in `IServiceColleciton`.
+registered in `IServiceCollection`.
 
 Add this feature using `AddMockOverrrider()` extension;
 

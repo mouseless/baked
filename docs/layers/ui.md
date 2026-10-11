@@ -9,8 +9,8 @@ app.Layers.AddUi();
 
 `UiLayer` provides `IComponentDescriptor`, `IComponentSchema`, `IData` types for
 building UI page metadata. A page metadata will have a component descriptor
-(represented by a `ComponentDescriptorAttribute` instance) at the top in the
-hierarchy containing `Type`, `Schema`, `Name` and `Data` properties.
+(represented by a `ComponentDescriptor` instance) at the top in the hierarchy
+containing `Type`, `Schema`, `Name` and `Data` properties.
 
 > [!NOTE]
 >
@@ -112,8 +112,8 @@ To generate a page descriptor from a domain model, we provide a generator system
 that is added through domain model conventions. There are two generator
 attributes for this purpose;
 
-1. `ComponentGeneratorAttribute<TComponentSchema>`
-2. `GeneratorAttribute<TSchema>`
+1. `ComponentGenerator<TComponentSchema>`
+2. `Generator<TSchema>`
 
 The page generator starts with a `Page` component path to render a domain model
 into a `ComponentDescriptor<TComponentSchema>` instance. To add a component to a
@@ -185,19 +185,18 @@ using `GenerateSchema<TSchema>` or `GenerateSchemas<TSchema>` extension methods.
 ### Configuring Existing Schemas
 
 To add a convention that configures an existing schema, there are
-`Add...ComponentConfiguration<TComponentSchema>` and
-`Add...SchemaConfiguration<TSchema>` helpers. Configuration conventions works
-exactly the same way add conventions. In addition, to make sure there is a
-schema to configure, configuration conventions automatically filter out the
-domain models that don't have the given `TComponentSchema` or `TSchema` at the
-expected component path.
+`Edit...Component<TComponentSchema>` and `Edit...Schema<TSchema>` helpers. Edit
+conventions works exactly the same way add/set conventions. In addition, to make
+sure there is a schema to configure, configuration conventions automatically
+filter out the domain models that don't have the given `TComponentSchema` or
+`TSchema` at the expected component path.
 
 ```csharp
 configurator.Domain.ConfigureConventions(conventions =>
 {
     // This convention will automatically apply only to the types that have a
     // `SimplePage` component
-    conventions.AddTypeComponentConfiguration<SimplePage>(
+    conventions.EditTypeComponent<SimplePage>(
         component: sp =>
         {
             sp.Title = ...;
@@ -215,46 +214,41 @@ page.
 ### Data System
 
 Data system allows `Bake.vue` to fetch data and pass it to the component. Use
-`Baked.Ui.Datas` builder class to create different types of data for a
+`Baked.Ui.Fetch` builder class to create different types of data for a
 component. Below you can find some example data usages.
 
 ```csharp
-using static Baked.Ui.Datas; // static using is handy for builder classes
-
 ...
 // inline a static value
-Inline("a string");
-Inline(new { an: "object" });
+Fetch.Inline("a string");
+Fetch.Inline(new { an: "object" });
 // set a dynamic value that is fetched from an api endpoint
-Remote("some/endpoint", options: rd => ...);
+Fetch.Remote("some/endpoint");
 // set a dynamic value fetched using a composable, `useRoute` in this case
-Computed.UseRoute("query");
+Fetch.Computed.UseRoute("query");
 // set a context value, model in this case
-Context.Model();
+Fetch.Context.Model();
 ...
 ```
 
 ### Action System
 
 Action system allows `Bake.vue` to execute actions upon model change or `submit`
-event of the component. Use `Baked.Ui.Actions` builder class to create different
+event of the component. Use `Baked.Ui.Execute` builder class to create
 types of actions for a component. Below you can find some example action usages.
 
 ```csharp
-using static Baked.Ui.Actions;
-
 ...
 // publishes a page-wide event
-Publish.Event("my-button-clicked");
+Execute.Publish.Event("my-button-clicked");
 // sets value to a page-wide context with given key
-Publish.PageContextValue("my-value");
+Execute.Publish.PageContextValue("my-value");
 // redirects app to given route
-Local.UseRedirect("/return-page");
+Execute.Local.UseRedirect("/return-page");
 // sends configured request to a remote endpoint
-Remote("some/endpoint",
+Execute.Remote("some/endpoint",
   // goes to a page after remote action
-  postAction: Local.UseRedirect("/return-page"),
-  options: ra => ...
+  postAction: Execute.Local.UseRedirect("/return-page")
 );
 ...
 ```
@@ -266,15 +260,15 @@ page context value. Available reactions are `Reload` and `Show`. Below you can
 find some example action usages.
 
 ```csharp
-using static Baked.Ui.Constraints;
-
 // reacts on an event
 component.ReloadOn("my-button-clicked");
 // reacts when a page context value changes
 component.ReloadWhen("my-value");
 // shows/hides component depending on the constraint
-component.ShowOn("input-changed", Is("show"));
+component.ShowOn("input-changed", Evaluate.Is("show"));
 // shows when `selection` value is valid using a custom validator composable
 // `useMyCustomValidator`
-component.ShowWhen("selection", Composable.Use("MyCustomValidator"));
+component.ShowWhen("selection",
+  constraint: Evaluate.Composables.Use("MyCustomValidator")
+);
 ```

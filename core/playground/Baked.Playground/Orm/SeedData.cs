@@ -1,4 +1,4 @@
-namespace Baked.Playground.Orm;
+﻿namespace Baked.Playground.Orm;
 
 public class SeedData(Entities _entities, Func<Entity> _newEntity, Parents _parents, Func<Parent> _newParent)
 {

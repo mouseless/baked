@@ -1,6 +1,6 @@
 ﻿using Baked.Business;
-using Baked.CodingStyle.Id;
-using Baked.Playground.CodingStyle.Id;
+using Baked.CodingStyle.TypeBasedId;
+using Baked.Playground.CodingStyle.TypeBasedId;
 using Baked.Playground.Orm;
 using NHibernate.Mapping;
 

@@ -1,9 +1,9 @@
 ﻿namespace Baked.Ui;
 
-public record ComposableConstraint(string Composable)
+public record ComposableConstraint
     : IConstraint
 {
     public string Type => nameof(Composable);
-    public string Composable { get; set; } = Composable;
+    public required string Composable { get; set; }
     public IData? Options { get; set; }
 }

@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Domain.Configuration;
 
 namespace Baked.CodingStyle.NamespaceAsRoute;

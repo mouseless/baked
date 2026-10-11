@@ -1,7 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public record MenuPage(string Path)
-    : PageSchemaBase(Path)
+public record MenuPage : PageSchemaBase
 {
     public string? FilterEvent { get; set; }
     public IComponentDescriptor? Header { get; set; }

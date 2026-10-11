@@ -2,9 +2,6 @@
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainComponents;
-using static Baked.Theme.Default.DomainDatas;
-
 namespace Baked.Ux.ActionsAsDataPanels;
 
 public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
@@ -13,29 +10,27 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodComponent(
-                where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
-                component: (c, cc) => MethodDataPanel(c.Method, cc)
+            conventions.AddMethodComponent<DataPanel>(
+                where: cc => cc.Path.EndsWith("contents", "*", "*", "component")
             );
-            conventions.AddMethodSchema(
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title)),
-                schema: (c, cc) => MethodNameInline(c.Method, cc)
+            conventions.AddMethodSchema<InlineData>(
+                where: cc => cc.Path.EndsWith("data-panel", "title")
             );
-            conventions.AddMethodComponentConfiguration<DataPanel>(
+            conventions.EditMethodComponent<DataPanel>(
                 when: c => c.Method.GetAction().Method == HttpMethod.Get,
                 component: (dp, c, cc) =>
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        var input = parameter.GenerateSchema<Input>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Inputs)));
+                        var input = parameter.GenerateSchema<Input>(cc.Drill("data-panel", "inputs"));
                         if (input is null) { continue; }
 
                         dp.Schema.Inputs.Add(input);
                     }
                 }
             );
-            conventions.AddParameterSchemaConfiguration<Label>(
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Inputs), "*", nameof(ILabeler.Label)),
+            conventions.EditParameterSchema<Labeler>(
+                where: cc => cc.Path.EndsWith("data-panel", "inputs", "*", "label"),
                 schema: (label, c, cc) =>
                 {
                     var (_, l) = cc;

@@ -20,47 +20,47 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
         configurator.Domain.ConfigureBuilder(builder =>
         {
             // domain attribute indices
-            builder.Index.Type.Add<ControllerModelAttribute>();
-            builder.Index.Type.Add<ApiInputAttribute>();
-            builder.Index.Method.Add<ActionModelAttribute>();
-            builder.Index.Parameter.Add<ParameterModelAttribute>();
+            builder.Index.Type.Add<ApiController>();
+            builder.Index.Type.Add<Bindable>();
+            builder.Index.Method.Add<ApiAction>();
+            builder.Index.Parameter.Add<ApiParameter>();
         });
 
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // domain attribute mutations
             conventions.SetTypeAttribute(
-                attribute: c => new ControllerModelAttribute(),
                 when: c =>
-                  c.Type.Has<ServiceAttribute>() &&
+                  c.Type.Has<Service>() &&
                   c.Type.IsClass &&
                   !c.Type.IsAbstract &&
                   !c.Type.IsGenericType &&
                   c.Type.TryGetMembers(out var members) &&
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName),
-              order: Order.At.Infra + 10
+                attribute: c => new ApiController(),
+                order: Order.At.Infra + 10
             );
             conventions.SetMethodAttribute(
-                attribute: c => new ActionModelAttribute(),
                 when: c =>
-                    !c.Method.Has<ExternalAttribute>() &&
-                    !c.Method.Has<InitializerAttribute>() &&
+                    !c.Method.Has<External>() &&
+                    !c.Method.Has<Initializer>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName &&
-                    c.Method.DefaultOverload.AllParametersAreApiInput(),
+                    c.Method.DefaultOverload.AllParametersAreBindable(),
+                attribute: c => new ApiAction(),
                 order: Order.At.Max
             );
             conventions.SetParameterAttribute(
-                attribute: c => new ParameterModelAttribute(),
-                when: c => c.Parameter.IsApiInput,
+                when: c => c.Parameter.IsBindable,
+                attribute: c => new ApiParameter(),
                 order: Order.At.Max
             );
 
             // init before any domain convention
             conventions.Add(new InitApiModelConvention(), order: Order.At.Global.AbsoluteMin);
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+            conventions.EditMethodAttribute<ApiAction>(
                 attribute: (action, context) =>
-                    action.Parameter[ParameterModelAttribute.TargetParameterName] =
-                        new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
+                    action.Parameter[ApiParameter.TargetParameterName] =
+                        new(ApiParameter.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
                 order: Order.At.Global.AbsoluteMin
             );
 
@@ -75,32 +75,32 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             conventions.Add(new RemoveFromRouteConvention(["Get"]), order: Order.At.Infra);
             conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]), order: Order.At.Infra);
             conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]), order: Order.At.Infra);
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
-                attribute: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
+            conventions.EditMethodAttribute<ApiAction>(
                 when: (_, action) => action.HasBody,
+                attribute: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
                 order: Order.At.Infra + 10
             );
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
-                attribute: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
+            conventions.EditMethodAttribute<ApiAction>(
                 when: (_, action) => !action.ReturnIsVoid,
+                attribute: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
                 order: Order.At.Infra + 10
             );
             conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: Order.At.Infra + 10);
-            conventions.AddMethodAttributeConfiguration<ActionModelAttribute>((action, context) =>
-                action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")"),
+            conventions.EditMethodAttribute<ApiAction>((action, context) =>
+                action.AdditionalAttributes.Add($"{typeof(MappedMethod).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")"),
                 order: Order.At.Infra
             );
         });
 
         configurator.Domain.ConfigureAttributeProperties(properties =>
         {
-            properties.Set<ActionModelAttribute>(action =>
+            properties.Set<ApiAction>(action =>
             [
                 new("route", Value: $"{action.Method} /{action.GetRoute()}"),
                 new("form", Value: action.UseForm),
                 new("flat-request-body", Value: !action.UseRequestClassForBody)
             ]);
-            properties.Set<ParameterModelAttribute>(parameter =>
+            properties.Set<ApiParameter>(parameter =>
             [
                 new("required", parameter.FromRoute || parameter.HasRequiredAttributes),
                 new("in", Value: parameter.FromBodyOrForm ? null : $"{parameter.From}".Kebaberize()),
@@ -113,13 +113,13 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             exports.Build("RestApi", export =>
             {
                 export
-                    .Include<ControllerModelAttribute>()
+                    .Include<ApiController>()
                     .AddFilter(controller => controller.Actions.Any())
                 ;
-                export.Include<ActionModelAttribute>();
-                export.Include<ParameterModelAttribute>();
+                export.Include<ApiAction>();
+                export.Include<ApiParameter>();
                 export.TypeGroupName(type =>
-                    type.TryGetControllerModel(out var controller) ? controller.GroupName :
+                    type.TryGetApiController(out var controller) ? controller.GroupName :
                     type.Name
                 );
             });
@@ -131,11 +131,11 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
             configurator.Domain.UsingDomainModel(domain =>
             {
-                foreach (var type in domain.Types.Having<ControllerModelAttribute>())
+                foreach (var type in domain.Types.Having<ApiController>())
                 {
                     if (!type.TryGetMetadata(out var metadata)) { continue; }
 
-                    var controller = metadata.Get<ControllerModelAttribute>();
+                    var controller = metadata.Get<ApiController>();
                     if (!controller.Action.Any()) { continue; }
 
                     api.Controllers.Add(controller);

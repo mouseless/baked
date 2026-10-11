@@ -6,10 +6,6 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Ui.Actions;
-
-using B = Baked.Ui.Components;
-
 namespace Baked;
 
 public static class DefaultThemeExtensions
@@ -39,92 +35,119 @@ public static class DefaultThemeExtensions
 
                 if (context.Route.Index)
                 {
-                    return B.MenuPage(context.Route.Name,
-                        links: context.Sitemap
-                            .Where(smp => smp.SideMenu && !smp.Index)
-                            .Select(smp => smp.AsCardLink(l))
-                    );
+                    return new MenuPage
+                    {
+                        Sections =
+                        {
+                            new()
+                            {
+                                Links =
+                                [
+                                    ..context.Sitemap
+                                        .Where(smp => smp.SideMenu && !smp.Index)
+                                        .Select(smp => smp.ToCardLink(l))
+                                        .Select(l => new Filterable { Component = l })
+                                ]
+                            }
+                        }
+                    }.ToDescriptor();
                 }
 
                 var sections = context.Sitemap.GroupBy(smp => smp.Section);
                 if (sections.Count() <= 1)
                 {
-                    return B.MenuPage(context.Route.Name,
-                        links: context.Sitemap
-                            .Where(r => r.ParentPath == context.Route.Path)
-                            .Select(r => r.AsCardLink(l)),
-                        options: mp =>
+                    return new MenuPage
+                    {
+                        Sections =
                         {
-                            mp.Header = B.PageTitle(
-                                title: l(context.Route.Title),
-                                options: pt => pt.Description = l(context.Route.Description)
-                            );
-                        }
-                    );
+                            new()
+                            {
+                                Links =
+                                [
+                                    ..context.Sitemap
+                                        .Where(r => r.ParentPath == context.Route.Path)
+                                        .Select(r => r.ToCardLink(l))
+                                        .Select(l => new Filterable { Component = l })
+                                ]
+                            }
+                        },
+                        Header = new PageTitle
+                        {
+                            LocalizeTitle = true,
+                            Description = l(context.Route.Description)
+                        }.ToDescriptor(data: Fetch.Inline(l(context.Route.Title)))
+                    }.ToDescriptor();
                 }
 
-                return B.MenuPage(context.Route.Name,
-                    options: mp =>
+                return new MenuPage
+                {
+                    FilterEvent = "filter-changed",
+                    Header = new PageTitle
                     {
-                        mp.Header = B.PageTitle(context.Route.Title, options: pt =>
+                        LocalizeTitle = true,
+                        Description = l(context.Route.Description),
+                        Actions =
                         {
-                            pt.Description = l(context.Route.Description);
-                            pt.Actions.Add(B.Filter(
-                                options: f => f.Placeholder = l("Filter"),
-                                action: Publish.Event("filter-changed")
-                            ));
-                        });
-                        mp.FilterEvent = "filter-changed";
-                        mp.Sections.AddRange(
-                            sections.Select(g => B.MenuPageSection(
-                                options: mps =>
-                                {
-                                    mps.Title = l(g.Key);
-                                    mps.Links.AddRange(g
-                                        .Where(r => r.ParentPath == context.Route.Path)
-                                        .Select(r => B.Filterable(r.AsCardLink(l), options: f => f.Title = l(r.Title)))
-                                    );
-                                }
-                            )).Where(s => s.Links.Any())
-                        );
-                    }
-                );
+                            new Filter { Placeholder = l("Filter") }
+                                .ToDescriptor(action: Execute.Publish.Event("filter-changed"))
+                        }
+                    }.ToDescriptor(data: Fetch.Inline(context.Route.Title)),
+                    Sections =
+                    [
+                        ..sections
+                            .Select(g => new MenuPage.Section
+                            {
+                                Title = l(g.Key),
+                                Links =
+                                [
+                                    .. g.Where(r => r.ParentPath == context.Route.Path)
+                                        .Select(r => new Filterable { Component = r.ToCardLink(l), Title = l(r.Title) })
+                                ]
+                            })
+                            .Where(s => s.Links.Any())
+                    ]
+                }.ToDescriptor();
             };
     }
 
     extension(Route route)
     {
-        public IComponentDescriptor AsCardLink(NewLocaleKey l) =>
-            B.CardLink(route.Path, l(route.Title), options: cl =>
+        public IComponentDescriptor ToCardLink(NewLocaleKey l) =>
+            new CardLink
             {
-                cl.Icon = route.Icon;
-                cl.Description = l(route.Description);
-                cl.Disabled = route.Disabled ? true : null;
-                cl.DisabledReason = l(route.DisabledReason);
-            });
+                Route = route.Path,
+                Title = l(route.Title),
+                Icon = route.Icon,
+                Description = l(route.Description),
+                Disabled = route.Disabled ? true : null,
+                DisabledReason = l(route.DisabledReason)
+            }.ToDescriptor();
 
-        public SideMenu.Item AsSideMenuItem(NewLocaleKey l) =>
-            B.SideMenuItem(route.Path, route.Icon ?? throw new($"Icon is required for pages in side menu: `{route.Path}`"), options: smi =>
+        public SideMenu.Item ToSideMenuItem(NewLocaleKey l) =>
+            new()
             {
-                smi.Title = l(route.SideMenuTitle);
-                smi.Disabled = route.Disabled ? true : null;
-            });
+                Route = route.Path,
+                Icon = route.Icon ?? throw new($"Icon is required for pages in side menu: `{route.Path}`"),
+                Title = l(route.SideMenuTitle),
+                Disabled = route.Disabled ? true : null
+            };
 
-        public Header.Item AsHeaderItem(NewLocaleKey l) =>
-            B.HeaderItem(route.Path, options: hi =>
+        public Header.Item ToHeaderItem(NewLocaleKey l) =>
+            new()
             {
-                hi.Title = l(route.HeaderTitle);
-                hi.Icon = route.Icon;
-                hi.ParentRoute = route.ParentPath;
-            });
+                Route = route.Path,
+                Title = l(route.HeaderTitle),
+                Icon = route.Icon,
+                ParentRoute = route.ParentPath
+            };
     }
 
     extension(ModelCollection<PropertyModel> properties)
     {
         public IEnumerable<PropertyModel> GetDataProperties() =>
             properties
-                .Having<DataAttribute>()
-                .Select(p => (property: p, data: p.Get<DataAttribute>()))
+                .Having<UiData>()
+                .Select(p => (property: p, data: p.Get<UiData>()))
                 .Where(pd => pd.data.Visible)
                 .OrderBy(pd => pd.data.Order)
                 .Select(pd => pd.property);
@@ -136,7 +159,7 @@ public static class DefaultThemeExtensions
         {
             conventions.SetTypeAttribute(
                 when: c => c.Type.Is<T>(),
-                attribute: c => new RouteAttribute(routePath)
+                attribute: c => new UiRoute(routePath)
             );
         }
 
@@ -144,12 +167,12 @@ public static class DefaultThemeExtensions
         {
             conventions.SetMethodAttribute(
                 when: c => c.Type.Is<T>() && c.Method.Name == methodName,
-                attribute: c => new RouteAttribute(routePath)
+                attribute: c => new UiRoute(routePath)
             );
         }
     }
 
-    extension(GroupAttribute group)
+    extension(Group group)
     {
         public string InputGroupKey { get => group[nameof(FormPage.InputGroup)]; set => group[nameof(FormPage.InputGroup)] = value; }
         public string SectionKey { get => group[nameof(FormPage.Section)]; set => group[nameof(FormPage.Section)] = value; }
@@ -159,13 +182,13 @@ public static class DefaultThemeExtensions
     extension(ICustomAttributesModel model)
     {
         public string InputGroupKey =>
-            model.Get<GroupAttribute>().InputGroupKey;
+            model.Get<Group>().InputGroupKey;
 
         public string SectionKey =>
-            model.Get<GroupAttribute>().SectionKey;
+            model.Get<Group>().SectionKey;
 
         public string TabName =>
-            model.Get<GroupAttribute>().TabName.Kebaberize();
+            model.Get<Group>().TabName.Kebaberize();
     }
 
     extension<T>(IEnumerable<T> models) where T : ICustomAttributesModel

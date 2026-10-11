@@ -3,8 +3,6 @@ using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
-
 namespace Baked.Ux.ListIsDataTable;
 
 public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
@@ -13,24 +11,23 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddMethodComponent(
+            conventions.AddMethodComponent<DataTable>(
                 when: c => c.Method.DefaultOverload.ReturnsList(),
-                where: cc => cc.Path.EndsWith("*Panel", "Content") || cc.Path.EndsWith("*Container", "Content"),
-                component: (c, cc) => MethodDataTable(c.Method, cc)
+                where: cc => cc.Path.EndsWith("*-panel", "content") || cc.Path.EndsWith("*-container", "content")
             );
-            conventions.AddMethodComponentConfiguration<DataTable>(
+            conventions.EditMethodComponent<DataTable>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
                     elementType.HasMembers(),
                 component: (dt, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(DataTable));
+                    cc = cc.Drill("data-table");
 
                     var members = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();
                     foreach (var property in members.Properties.GetDataProperties())
                     {
-                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        var column = property.GenerateSchema<DataTable.Column>(cc.Drill("columns"));
                         if (column is null) { continue; }
 
                         dt.Schema.Columns.Add(column);
@@ -43,28 +40,27 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                 },
                 order: -10
             );
-            conventions.AddMethodSchema(
+            conventions.AddMethodSchema<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
                     elementType.TryGetMembers(out var elementMembers) &&
-                    elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: () => ActionsDataTableColumn()
+                    elementMembers.Methods.Having<UiAction>().Any(m => !m.Get<UiAction>().HideInLists),
+                where: cc => cc.Path.EndsWith("data-table", "actions")
             );
-            conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+            conventions.EditMethodSchema<DataTable.Column>(
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var itemType) &&
                     itemType.HasMembers(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+                where: cc => cc.Path.EndsWith("data-table", "actions"),
                 schema: (col, c, cc) =>
                 {
                     var itemMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();
-                    foreach (var method in itemMembers.Methods.Having<ActionAttribute>())
+                    foreach (var method in itemMembers.Methods.Having<UiAction>())
                     {
-                        if (method.Get<ActionAttribute>().HideInLists) { continue; }
-                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.Get<UiAction>().HideInLists) { continue; }
+                        if (method.Has<Initializer>()) { continue; }
                         if (method.GetAction().Method == HttpMethod.Get) { continue; }
 
                         var component = method.GenerateComponent(cc.Drill(method.Name));

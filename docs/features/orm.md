@@ -15,7 +15,7 @@ Auto maps domain types with `Entity` attribute using default opinions of
 `FluentNHibernate` and registers `IEntityContext<>`, `IQueryContext<>` and
 `ILocator<>` services for entities.
 
-Configures properties with `UniqueAttribute` to have unique constraint, unless
+Configures properties with `Unique` attribute to have unique constraint, unless
 the properties are overridden explicitly in another feature.
 
 ```csharp

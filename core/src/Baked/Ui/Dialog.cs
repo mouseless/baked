@@ -1,10 +1,9 @@
 ﻿namespace Baked.Ui;
 
-public record Dialog(Button Open, string Header, IComponentDescriptor Content)
-    : IComponentSchema
+public record Dialog : IComponentSchema
 {
-    public IComponentDescriptor Content { get; set; } = Content;
-    public Button Open { get; set; } = Open;
-    public string Header { get; set; } = Header;
+    public IComponentDescriptor Content { get; set; } = MissingComponent.Empty;
+    public Button Open { get; set; } = new();
+    public string Header { get; set; } = string.Empty;
     public Button? Submit { get; set; }
 }

@@ -8,8 +8,8 @@ public class AddRequireUserClaimsAsAuthorizePolicyConvention : IDomainModelConve
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMembers(out var members)) { return; }
-        if (!members.TryGet<ControllerModelAttribute>(out var controller)) { return; }
-        if (!members.TryGet<RequireUserAttribute>(out var requireUser)) { return; }
+        if (!members.TryGet<ApiController>(out var controller)) { return; }
+        if (!members.TryGet<RequireUser>(out var requireUser)) { return; }
 
         foreach (var (key, action) in controller.Action)
         {
@@ -21,8 +21,8 @@ public class AddRequireUserClaimsAsAuthorizePolicyConvention : IDomainModelConve
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
-        if (!context.Method.TryGet<RequireUserAttribute>(out var requireUser)) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
+        if (!context.Method.TryGet<RequireUser>(out var requireUser)) { return; }
 
         action.AdditionalAttributes.AddRange(requireUser.Claims.Select(claim => $"Authorize(Policy = \"{claim}\")"));
     }

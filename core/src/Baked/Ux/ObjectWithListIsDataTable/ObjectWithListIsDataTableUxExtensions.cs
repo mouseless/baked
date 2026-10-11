@@ -18,7 +18,7 @@ public static class ObjectWithListIsDataTableUxExtensions
         public bool TryGetListProperty([NotNullWhen(true)] out PropertyModel? result)
         {
             if (!type.TryGetMembers(out var returnMembers)) { result = null; return false; }
-            if (!returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList)) { result = null; return false; }
+            if (!returnMembers.TryGet<ObjectWithList>(out var objectWithList)) { result = null; return false; }
 
             result = returnMembers.Properties[objectWithList.ListPropertyName];
 
@@ -30,7 +30,7 @@ public static class ObjectWithListIsDataTableUxExtensions
             if (!type.TryGetListProperty(out var result))
             {
                 throw DiagnosticCode.PropertyWithAttribute.Exception(
-                    $"{type.Name} is expected to have members and at least one property with `{nameof(ObjectWithListAttribute)}`"
+                    $"{type.Name} is expected to have members and at least one property with `{nameof(ObjectWithList)}`"
                 );
             }
 

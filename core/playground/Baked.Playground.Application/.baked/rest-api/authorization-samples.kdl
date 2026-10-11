@@ -1,24 +1,24 @@
-authorization-samples @controller-model {
+authorization-samples @api-controller {
   anonymous {
-    @action-model route="POST /authorization-samples/anonymous" anonymous=#true
+    @api-action route="POST /authorization-samples/anonymous" anonymous=#true
   }
   admin {
-    @action-model route="POST /authorization-samples/admin" required-claims="BaseA, BaseB, Admin"
+    @api-action route="POST /authorization-samples/admin" required-claims="BaseA, BaseB, Admin"
   }
   user {
-    @action-model route="POST /authorization-samples/user" required-claims="BaseA, BaseB, User"
+    @api-action route="POST /authorization-samples/user" required-claims="BaseA, BaseB, User"
   }
   authenticated {
-    @action-model route="POST /authorization-samples/authenticated"
+    @api-action route="POST /authorization-samples/authenticated"
   }
   base-claims {
-    @action-model route="POST /authorization-samples/base-claims" required-claims="BaseA, BaseB"
+    @api-action route="POST /authorization-samples/base-claims" required-claims="BaseA, BaseB"
   }
   given-claims {
-    @action-model route="POST /authorization-samples/given-claims" required-claims="GivenA, GivenB"
+    @api-action route="POST /authorization-samples/given-claims" required-claims="GivenA, GivenB"
   }
   given-and-base-claims {
-    @action-model route="POST /authorization-samples/given-and-base-claims" required-claims="BaseA, BaseB, GivenA, GivenB"
+    @api-action route="POST /authorization-samples/given-and-base-claims" required-claims="BaseA, BaseB, GivenA, GivenB"
   }
 }
 

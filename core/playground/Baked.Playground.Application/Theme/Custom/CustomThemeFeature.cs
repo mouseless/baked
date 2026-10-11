@@ -1,30 +1,28 @@
 ﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Baked.Playground.Caching;
 using Baked.Playground.Orm;
 using Baked.Playground.Ui;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Humanizer;
 
-using static Baked.Playground.Theme.Custom.DomainComponents;
-using static Baked.Theme.Default.DomainDatas;
-
-using B = Baked.Ui.Components;
-using C = Baked.Playground.Ui.Components;
 using Route = Baked.Theme.Route;
 
 namespace Baked.Playground.Theme.Custom;
 
 public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
     : DefaultThemeFeature(routes.Select(r => r(new())),
-        _sideMenuOptions: sm => sm.Footer = B.LanguageSwitcher(),
+        _sideMenuOptions: sm => sm.Footer = new LanguageSwitcher().ToDescriptor(),
         _errorPageOptions: ep =>
         {
-            ep.ErrorInfos[503] = B.ErrorPageInfo(
-                title: "Service Unavailable",
-                message: "The service is currently unavailable. Please try again later.",
-                options: epi => epi.CustomMessage = true
-            );
+            ep.ErrorInfos[503] = new()
+            {
+                Title = "Service Unavailable",
+                Message = "The service is currently unavailable. Please try again later.",
+                CustomMessage = true
+            };
         }
     )
 {
@@ -35,7 +33,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Custom theme CSV formatter settings
-            conventions.AddMethodSchemaConfiguration<DataTable.Export>(
+            conventions.EditMethodSchema<DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
                     var (_, l) = cc;
@@ -49,18 +47,22 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // String api rendering
-            conventions.AddMethodComponent(
+            conventions.AddMethodComponent<Text>(
                 when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: (c, cc) => MethodText(c.Method, cc)
+                where: cc => cc.Path.EndsWith("data-panel", "content")
             );
-            conventions.AddMethodComponentConfiguration<Text>(
-                component: t => t.Override(C.MyText())
+            conventions.EditMethodComponent<Text>(
+                when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
+                component: (t, c, cc) => t.Data = c.Method.GenerateSchema<RemoteData>(cc.Drill("data")),
+                order: Order.At.Min
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
+                component: t => t.Override<MyText>()
+            );
+            conventions.EditMethodComponent<Text>(
                 component: t => t.Schema.MaxLength = 100
             );
-            conventions.AddMethodComponentConfiguration<Text>(
+            conventions.EditMethodComponent<Text>(
                 component: t =>
                 {
                     if (t.Schema is not MyText mt) { return; }
@@ -70,9 +72,17 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // Non-localized enums
-            conventions.AddTypeSchema(
-                schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
-                when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
+            conventions.EditTypeSchema<InlineData>(
+                when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>(),
+                schema: (id, c, cc) =>
+                {
+                    id.Value = c.Type.SkipNullable().GetEnumNames().Select(name => new
+                    {
+                        label = name,
+                        value = name.Camelize()
+                    });
+                    id.RequireLocalization = null;
+                }
             );
 
             // Custom routes
@@ -83,15 +93,15 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
         configurator.Ui.ConfigureComponentExports(c =>
         {
-            c.AddFromExtensions(typeof(C));
+            c.AddFromThemeAssembly(this);
         });
 
         configurator.Ui.ConfigurePageDescriptors(pages =>
         {
-            pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
-            pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
-            pages.Add(C.RoutedPage("first/[id]", lp => lp.Layout = "default"));
-            pages.Add(C.RoutedPage("first/[firstId]/second/[secondId]", lp => lp.Layout = "default"));
+            pages.AddPage(new LoginPage { Path = "login", Layout = "modal" });
+            pages.AddPage(new RoutedPage { Path = "page/with/route/pageWithRoute", Layout = "default" });
+            pages.AddPage(new RoutedPage { Path = "first/[id]", Layout = "default" });
+            pages.AddPage(new RoutedPage { Path = "first/[firstId]/second/[secondId]", Layout = "default" });
         });
     }
 }

@@ -1,4 +1,4 @@
-namespace Baked.Binding.Rest;
+﻿namespace Baked.Binding.Rest;
 
 public class SwaggerSchemaHelper
 {

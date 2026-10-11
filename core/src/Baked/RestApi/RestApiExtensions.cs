@@ -84,7 +84,7 @@ public static class RestApiExtensions
             assemblies.Add(typeof(T).Assembly);
     }
 
-    extension(ActionModelAttribute action)
+    extension(ApiAction action)
     {
         public void AddAttribute<T>() where T : Attribute =>
             action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
@@ -98,7 +98,7 @@ public static class RestApiExtensions
         }
     }
 
-    extension(ParameterModelAttribute parameter)
+    extension(ApiParameter parameter)
     {
         public string GetRouteString()
         {
@@ -150,7 +150,7 @@ public static class RestApiExtensions
             List<string>? routeParts = default,
             bool? useForm = default,
             bool? useRequestClassForBody = default,
-            Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
+            Action<Dictionary<string, ApiParameter>>? parameter = default
         )
         {
             conventions.Add(
@@ -171,7 +171,7 @@ public static class RestApiExtensions
             List<string>? routeParts = default,
             bool? useForm = default,
             bool? useRequestClassForBody = default,
-            Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
+            Action<Dictionary<string, ApiParameter>>? parameter = default
         )
         {
             conventions.Add(

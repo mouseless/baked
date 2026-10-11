@@ -1,9 +1,8 @@
 ﻿namespace Baked.Ui;
 
-public record Tab(string Id)
-    : ISupportsReaction, IOrderableSchema
+public record Tab : ISupportsReaction, IOrderableSchema
 {
-    public string Id { get; set; } = Id;
+    public string Id { get; set; } = string.Empty;
     public string? Title { get; set; }
     public List<Content> Contents { get; init; } = [];
     public bool? FullScreen { get; set; }

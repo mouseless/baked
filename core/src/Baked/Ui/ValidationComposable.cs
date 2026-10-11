@@ -1,3 +1,6 @@
-namespace Baked.Ui;
+﻿namespace Baked.Ui;
 
-public record ValidationComposable(string Name);
+public record ValidationComposable
+{
+    public required string Name { get; set; }
+}

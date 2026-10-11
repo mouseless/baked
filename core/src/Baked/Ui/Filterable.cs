@@ -1,8 +1,7 @@
 ﻿namespace Baked.Ui;
 
-public record Filterable(IComponentDescriptor Component)
-    : IComponentSchema
+public record Filterable
 {
     public string Title { get; set; } = string.Empty;
-    public IComponentDescriptor Component { get; set; } = Component;
+    public IComponentDescriptor Component { get; set; } = MissingComponent.Empty;
 }

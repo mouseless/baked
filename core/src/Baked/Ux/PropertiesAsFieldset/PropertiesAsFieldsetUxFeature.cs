@@ -1,11 +1,8 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
-
-using static Baked.Theme.Default.DomainComponents;
-using static Baked.Ui.Datas;
 
 namespace Baked.Ux.PropertiesAsFieldset;
 
@@ -15,42 +12,40 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            conventions.AddTypeComponentConfiguration<SimplePage>(
+            conventions.EditTypeComponent<SimplePage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
                 component: (sp, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(SimplePage), nameof(SimplePage.Contents));
+                    cc = cc.Drill("simple-page", "contents", sp.Schema.Contents.Count);
 
-                    var content = c.Type.GenerateSchema<Content>(cc.Drill("Fields"));
+                    var content = c.Type.GenerateSchema<Content>(cc.Drill("fields"));
                     if (content is null) { return; }
 
                     sp.Schema.Contents.Add(content);
                 },
                 order: -10
             );
-            conventions.AddTypeSchema(
+            conventions.AddTypeSchema<Content>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
-                where: cc => cc.Path.EndsWith("Fields"),
-                schema: (c, cc) => TypeContent(c.Type, cc, "fields")
+                where: cc => cc.Path.EndsWith("fields")
             );
-            conventions.AddTypeComponent(
+            conventions.AddTypeComponent<Fieldset>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
-                where: cc => cc.Path.EndsWith("Fields", nameof(Content.Component)),
-                component: (c, cc) => TypeFieldset(c.Type.GetMembers(), cc)
+                where: cc => cc.Path.EndsWith("fields", "component")
             );
-            conventions.AddTypeComponentConfiguration<Fieldset>(
+            conventions.EditTypeComponent<Fieldset>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Properties.GetDataProperties().Any(),
                 component: (f, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(Fieldset), nameof(Fieldset.Fields));
+                    cc = cc.Drill("fieldset", "fields");
 
                     foreach (var property in c.Type.GetMembers().Properties.GetDataProperties())
                     {
@@ -61,32 +56,30 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                     }
                 }
             );
-            conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyField(c.Property, cc)
-            );
-            conventions.AddPropertySchemaConfiguration<Field>(
+            conventions.AddPropertySchema<Field>();
+            conventions.EditPropertySchema<Field>(
                 when: c =>
-                    c.Property.Has<DataAttribute>() &&
-                    c.Property.PropertyType.TryGetMembers(out var members) && members.Has<LocatableAttribute>(),
+                    c.Property.Has<UiData>() &&
+                    c.Property.PropertyType.TryGetMembers(out var members) && members.Has<Locatable>(),
                 schema: (dtc, c, cc) =>
                 {
-                    var data = c.Property.Get<DataAttribute>();
+                    var data = c.Property.Get<UiData>();
                     var members = c.Property.PropertyType.GetMembers();
                     var labelProperty =
-                        members.FirstPropertyOrDefault<LabelAttribute>() ??
-                        members.FirstProperty<IdAttribute>();
-                    var labelData = labelProperty.Get<DataAttribute>();
+                        members.FirstPropertyOrDefault<Label>() ??
+                        members.FirstProperty<IdProperty>();
+                    var labelData = labelProperty.Get<UiData>();
 
-                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
+                    dtc.Component.Data ??= Fetch.Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
                 }
             );
-            conventions.AddPropertySchemaConfiguration<Field>(
-                when: c => c.Property.Has<DataAttribute>(),
+            conventions.EditPropertySchema<Field>(
+                when: c => c.Property.Has<UiData>(),
                 schema: (f, c) =>
                 {
-                    var prop = c.Property.Get<DataAttribute>().Prop;
+                    var prop = c.Property.Get<UiData>().Prop;
 
-                    f.Component.Data ??= Context.Parent(options: cd => cd.Prop = $"data.{prop}");
+                    f.Component.Data ??= Fetch.Context.Parent(options: cd => cd.Prop = $"data.{prop}");
                 },
                 order: Order.At.Theme.Max
             );

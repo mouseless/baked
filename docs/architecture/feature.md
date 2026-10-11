@@ -96,7 +96,7 @@ public class GreetingConfigurator
 
 ## Configuring Layers
 
-To configure layers, a `LayerCofigurator` instance is passed to the
+To configure layers, a `LayerConfigurator` instance is passed to the
 `Configure()` method of the `IFeature` interface. Using extension methods on
 the given configurator, a feature accesses configuration targets of layers.
 

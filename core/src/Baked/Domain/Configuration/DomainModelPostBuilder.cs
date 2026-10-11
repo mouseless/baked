@@ -1,4 +1,4 @@
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 
 namespace Baked.Domain.Configuration;
 

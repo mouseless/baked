@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Domain.Configuration;
-using Baked.RestApi.Model;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -16,7 +16,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetTypeAttribute(
-                attribute: () => new ApiInputAttribute(),
+                attribute: () => new Bindable(),
                 when: c =>
                   c.Type.IsEnum ||
                   c.Type.Is<Uri>() ||
@@ -25,20 +25,20 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
               order: Order.At.Infra.Min
             );
             conventions.SetTypeAttribute(
-                attribute: () => new ApiInputAttribute(),
+                attribute: () => new Bindable(),
                 when: c =>
                     c.Type.IsAssignableTo(typeof(IEnumerable<>)) &&
                     c.Type.IsGenericType && c.Type.TryGetGenerics(out var generics) &&
                     generics.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgMetadata) == true &&
-                    genericArgMetadata.Has<ApiInputAttribute>(),
+                    genericArgMetadata.Has<Bindable>(),
                 order: Order.At.Infra + 20
             );
             conventions.SetTypeAttribute(
-                attribute: () => new ApiInputAttribute(),
+                attribute: () => new Bindable(),
                 when: c =>
                     c.Type.IsArray && c.Type.TryGetGenerics(out var generics) &&
                     generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&
-                    elementMetadata.Has<ApiInputAttribute>(),
+                    elementMetadata.Has<Bindable>(),
                 order: Order.At.Infra + 20
             );
 

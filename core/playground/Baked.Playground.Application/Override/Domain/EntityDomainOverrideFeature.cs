@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Playground.Orm;
@@ -19,7 +19,7 @@ public class EntityDomainOverrideFeature : IFeature
 
             conventions.SetPropertyAttribute(
                 when: c => c.Type.Is<Entity>() && c.Property.Name is nameof(Entity.Unique),
-                attribute: () => new LabelAttribute(),
+                attribute: () => new Label(),
                 order: Order.At.Override
             );
 
@@ -28,12 +28,12 @@ public class EntityDomainOverrideFeature : IFeature
                 order: Order.At.Override
             );
 
-            conventions.RemovePropertyAttribute<DataAttribute>(
-                when: c => c.Type.Is<Entity>() && c.Property.Name is nameof(Entity.Dynamic) or nameof(Entity.Guid) or nameof(Entity.TimeOnly) or nameof(Entity.Enum),
+            conventions.RemovePropertyAttribute<UiData>(
+                when: c => c.Type.Is<Entity>() && c.Property.Name is nameof(Entity.Dynamic) or nameof(Entity.Guid) or nameof(Entity.TimeOnly) or nameof(Entity.Enum) or nameof(Entity.FlagsEnum),
                 order: Order.At.Override
             );
 
-            conventions.RemoveMethodAttribute<ActionAttribute>(
+            conventions.RemoveMethodAttribute<UiAction>(
                 when: c => c.Type.Is<Entity>() && c.Method.Name is nameof(Entity.UpdateString) or nameof(Entity.LockAndIncrementInt32),
                 order: Order.At.Theme.Override
             );

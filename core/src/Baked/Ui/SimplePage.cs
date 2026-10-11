@@ -1,8 +1,7 @@
 ﻿namespace Baked.Ui;
 
-public record SimplePage(string Path, IComponentDescriptor Title)
-    : PageSchemaBase(Path)
+public record SimplePage : PageSchemaBase
 {
-    public IComponentDescriptor Title { get; set; } = Title;
+    public IComponentDescriptor Title { get; set; } = MissingComponent.Empty;
     public List<Content> Contents { get; init; } = [];
 }

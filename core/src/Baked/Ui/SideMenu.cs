@@ -7,10 +7,10 @@ public record SideMenu : IComponentSchema
     public List<Item> Menu { get; init; } = [];
     public IComponentDescriptor? Footer { get; set; }
 
-    public record Item(string Route, string Icon)
+    public record Item
     {
-        public string Route { get; set; } = Route;
-        public string Icon { get; set; } = Icon;
+        public string Route { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
         public string? Title { get; set; }
         public bool? Disabled { get; set; }
     }

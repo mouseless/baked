@@ -1,21 +1,21 @@
-redirect-samples @controller-model {
+redirect-samples @api-controller {
   form-post {
-    @action-model route="POST /redirect-samples/form-post" form=#true required-claims="BaseA, BaseB"
+    @api-action route="POST /redirect-samples/form-post" form=#true required-claims="BaseA, BaseB"
     key {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   form-post-async {
-    @action-model route="POST /redirect-samples/form-post-async" form=#true required-claims="BaseA, BaseB"
+    @api-action route="POST /redirect-samples/form-post-async" form=#true required-claims="BaseA, BaseB"
     key {
-      @parameter-model required=#true
+      @api-parameter required=#true
     }
   }
   callback {
-    @action-model route="GET /redirect-samples/callback" required-claims="BaseA, BaseB"
+    @api-action route="GET /redirect-samples/callback" required-claims="BaseA, BaseB"
   }
   callback-async {
-    @action-model route="GET /redirect-samples/callback-async" required-claims="BaseA, BaseB"
+    @api-action route="GET /redirect-samples/callback-async" required-claims="BaseA, BaseB"
   }
 }
 

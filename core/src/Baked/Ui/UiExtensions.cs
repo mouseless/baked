@@ -43,34 +43,34 @@ public static class UiExtensions
     extension(PropertyModel property)
     {
         public bool IsData =>
-            property.Has<DataAttribute>();
+            property.Has<UiData>();
 
         public string DataName =>
             property.Name;
 
         public string DataProp =>
-            property.Get<DataAttribute>().Prop;
+            property.Get<UiData>().Prop;
     }
 
     extension(ISupportsReaction source)
     {
         public void ReloadOn(string @event,
             IConstraint? constraint = default
-        ) => source.AddReaction("reload", new OnTrigger(@event) { Constraint = constraint });
+        ) => source.AddReaction("reload", new OnTrigger { On = @event, Constraint = constraint });
 
         public void ReloadWhen(string prop,
             string? key = default,
             IConstraint? constraint = default
-        ) => source.AddReaction("reload", new WhenTrigger(prop) { Constraint = constraint, Key = key });
+        ) => source.AddReaction("reload", new WhenTrigger { When = prop, Constraint = constraint, Key = key });
 
         public void ShowOn(string @event,
             IConstraint? constraint = default
-        ) => source.AddReaction("show", new OnTrigger(@event) { Constraint = constraint });
+        ) => source.AddReaction("show", new OnTrigger { On = @event, Constraint = constraint });
 
         public void ShowWhen(string prop,
             string? key = default,
             IConstraint? constraint = default
-        ) => source.AddReaction("show", new WhenTrigger(prop) { Constraint = constraint, Key = key });
+        ) => source.AddReaction("show", new WhenTrigger { When = prop, Constraint = constraint, Key = key });
 
         public void AddReaction(string reaction, ITrigger trigger)
         {
@@ -153,6 +153,15 @@ public static class UiExtensions
     extension(List<ValidationComposable> validations)
     {
         public void AddComposable(string name) =>
-            validations.Add(new(name));
+            validations.Add(new() { Name = name });
+    }
+
+    extension<TSchema>(TSchema schema) where TSchema : IComponentSchema
+    {
+        public ComponentDescriptor<TSchema> ToDescriptor(
+            IData? data = default,
+            IAction? action = default,
+            Action<ComponentDescriptor<TSchema>>? options = default
+        ) => options.Apply(new(schema) { Data = data, Action = action });
     }
 }

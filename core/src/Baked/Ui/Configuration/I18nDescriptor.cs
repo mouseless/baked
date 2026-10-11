@@ -1,4 +1,4 @@
-using Baked.Localization;
+﻿using Baked.Localization;
 
 namespace Baked.Ui.Configuration;
 

@@ -3,7 +3,6 @@ using Baked.Domain.Configuration;
 
 namespace Baked.Test.Domain;
 
-[TestFixture]
 public class ManagingOrders
 {
     ICollection<string> _levelCollection = [

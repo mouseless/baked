@@ -1,4 +1,4 @@
-namespace Baked.Communication;
+﻿namespace Baked.Communication;
 
 public record Request(
     string UrlOrPath,

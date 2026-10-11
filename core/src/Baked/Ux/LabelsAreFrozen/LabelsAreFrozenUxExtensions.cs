@@ -1,4 +1,4 @@
-using Baked.Ux;
+﻿using Baked.Ux;
 using Baked.Ux.LabelsAreFrozen;
 
 namespace Baked;

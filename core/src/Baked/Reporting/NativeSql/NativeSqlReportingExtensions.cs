@@ -1,4 +1,4 @@
-using Baked.Reporting;
+﻿using Baked.Reporting;
 using Baked.Reporting.NativeSql;
 using Baked.Runtime;
 

@@ -1,4 +1,4 @@
-namespace Baked.Test.Localization;
+﻿namespace Baked.Test.Localization;
 
 public class LocalizeMessages : TestNfr
 {

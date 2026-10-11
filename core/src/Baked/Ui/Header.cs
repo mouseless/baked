@@ -4,9 +4,9 @@ public record Header : IComponentSchema
 {
     public Dictionary<string, Item> Sitemap { get; init; } = [];
 
-    public record Item(string Route)
+    public record Item
     {
-        public string Route { get; set; } = Route;
+        public string Route { get; set; } = string.Empty;
         public string? Icon { get; set; }
         public string? Title { get; set; }
         public string? ParentRoute { get; set; }

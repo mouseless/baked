@@ -8,8 +8,8 @@ public class RequireUserIsAuthorizeConvention : IDomainModelConvention<TypeModel
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMembers(out var members)) { return; }
-        if (!members.TryGet<ControllerModelAttribute>(out var controller)) { return; }
-        if (!members.Has<RequireUserAttribute>()) { return; }
+        if (!members.TryGet<ApiController>(out var controller)) { return; }
+        if (!members.Has<RequireUser>()) { return; }
 
         foreach (var (key, action) in controller.Action)
         {
@@ -21,8 +21,8 @@ public class RequireUserIsAuthorizeConvention : IDomainModelConvention<TypeModel
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
-        if (!context.Method.Has<RequireUserAttribute>()) { return; }
+        if (!context.Method.TryGet<ApiAction>(out var action)) { return; }
+        if (!context.Method.Has<RequireUser>()) { return; }
 
         action.AdditionalAttributes.Add("Authorize");
     }

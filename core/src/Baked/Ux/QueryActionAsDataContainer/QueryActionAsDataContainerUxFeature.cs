@@ -3,12 +3,6 @@ using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Ui;
 
-using static Baked.Theme.Default.DomainComponents;
-using static Baked.Ui.Actions;
-using static Baked.Ui.Datas;
-
-using B = Baked.Ui.Components;
-
 namespace Baked.Ux.QueryActionAsDataContainer;
 
 public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
@@ -22,33 +16,31 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Order is set to -10 to allow DataPanel override
-            conventions.AddMethodComponent(
-                when: c => c.Method.Has<QueryMethodAttribute>(),
-                where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
-                component: (c, cc) => MethodDataContainer(c.Method, cc),
+            conventions.AddMethodComponent<DataContainer>(
+                when: c => c.Method.Has<QueryMethod>(),
+                where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
                 order: -10
             );
-            conventions.AddMethodComponent(
-                when: c => c.Method.Has<QueryMethodAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: (c, cc) => MethodDataContainer(c.Method, cc)
+            conventions.AddMethodComponent<DataContainer>(
+                when: c => c.Method.Has<QueryMethod>(),
+                where: cc => cc.Path.EndsWith("data-panel", "content")
             );
 
             // Add sort and paging parameters to RemoteData query
-            conventions.AddMethodSchemaConfiguration<RemoteData>(
-                when: c => c.Method.Has<QueryMethodAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataContainer), nameof(DataContainer.Content), "*", nameof(IComponentDescriptor.Data)),
-                schema: rd => rd.Query += Context.Parent(options: cd => cd.Prop = "container-parameters"),
+            conventions.EditMethodSchema<RemoteData>(
+                when: c => c.Method.Has<QueryMethod>(),
+                where: cc => cc.Path.EndsWith("data-container", "content", "*", "data"),
+                schema: rd => rd.Query += Fetch.Context.Parent(options: cd => cd.Prop = "container-parameters"),
                 order: 20
             );
 
             // Add all inputs to DataContainer
-            conventions.AddMethodComponentConfiguration<DataContainer>(
+            conventions.EditMethodComponent<DataContainer>(
                 component: (dc, c, cc) =>
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        var input = parameter.GenerateSchema<Input>(cc.Drill(nameof(DataContainer), nameof(DataContainer.Inputs)));
+                        var input = parameter.GenerateSchema<Input>(cc.Drill("data-container", "inputs"));
                         if (input is null) { continue; }
 
                         dc.Schema.Inputs.Add(input);
@@ -57,8 +49,8 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             );
 
             // Set paging inputs to be required and numeric
-            conventions.AddParameterSchemaConfiguration<Input>(
-                when: c => c.Parameter.Has<PagingAttribute>(),
+            conventions.EditParameterSchema<Input>(
+                when: c => c.Parameter.Has<Paging>(),
                 schema: input =>
                 {
                     input.Required = true;
@@ -70,18 +62,18 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             // Split inputs between `DataPanel` and `DataContainer` when
             // container is under a panel, keeping only sorting and paging in
             // container while keeping the rest in panel
-            conventions.AddMethodComponentConfiguration<DataPanel>(
-                when: c => c.Method.Has<QueryMethodAttribute>(),
+            conventions.EditMethodComponent<DataPanel>(
+                when: c => c.Method.Has<QueryMethod>(),
                 component: (dp, c) =>
                 {
                     if (dp.Schema.Content.Schema is not DataContainer dc) { return; }
 
                     var dpInputs = dp.Schema.Inputs.ToDictionary(i => i.Name, i => i);
                     var dcInputs = dc.Inputs.ToDictionary(i => i.Name, i => i);
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters.Having<ParameterModelAttribute>())
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters.Having<ApiParameter>())
                     {
-                        var api = parameter.Get<ParameterModelAttribute>();
-                        if (parameter.Has<SortingAttribute>() || parameter.Has<PagingAttribute>())
+                        var api = parameter.Get<ApiParameter>();
+                        if (parameter.Has<Sorting>() || parameter.Has<Paging>())
                         {
                             if (!dpInputs.TryGetValue(api.Name, out var input)) { continue; }
 
@@ -100,13 +92,13 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
 
             // Disable virtual scroll, configure paginator and publish
             // data length when skip parameter exists
-            conventions.AddMethodComponentConfiguration<DataTable>(
-                where: cc => cc.Path.Contains(nameof(DataContainer)),
+            conventions.EditMethodComponent<DataTable>(
+                where: cc => cc.Path.Contains("data-container"),
                 component: (dt, c) =>
                 {
                     dt.Schema.VirtualScrollerOptions = default;
 
-                    if (c.Method.DefaultOverload.Parameters.Any(p => p.TryGet<PagingAttribute>(out var paging) && paging.IsSkip))
+                    if (c.Method.DefaultOverload.Parameters.Any(p => p.TryGet<Paging>(out var paging) && paging.IsSkip))
                     {
                         dt.Schema.Paginator = default;
                         dt.Schema.DataLengthContextKey = $"{c.Type.Name}:{c.Method.Name}:{_lengthContextKeySuffix}";
@@ -116,15 +108,14 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             );
 
             // Skip
-            conventions.AddParameterComponent(
-                when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsSkip,
-                component: () => B.Paginator()
+            conventions.AddParameterComponent<Paginator>(
+                when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsSkip
             );
-            conventions.AddParameterComponentConfiguration<Paginator>(
+            conventions.EditParameterComponent<Paginator>(
                 component: (p, c) =>
                 {
                     var prop = $"{c.Type.Name}:{c.Method.Name}:{_lengthContextKeySuffix}";
-                    p.Data = Context.Page(o =>
+                    p.Data = Fetch.Context.Page(o =>
                     {
                         o.Prop = prop;
                         o.TargetProp = "length";
@@ -134,49 +125,47 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 }
             );
             // When there is no take parameter, set take to 10
-            conventions.AddParameterComponentConfiguration<Paginator>(
-                when: c => !c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
-                component: p => p.Data += Inline(new { take = 10 })
+            conventions.EditParameterComponent<Paginator>(
+                when: c => !c.Method.DefaultOverload.Parameters.Having<Paging>().Any(p => p.Get<Paging>().IsTake),
+                component: p => p.Data += Fetch.Inline(new { take = 10 })
             );
             // When there is take parameter, use take parameter's value from page context
-            conventions.AddParameterComponentConfiguration<Paginator>(
-                when: c => c.Method.DefaultOverload.Parameters.Having<PagingAttribute>().Any(p => p.Get<PagingAttribute>().IsTake),
+            conventions.EditParameterComponent<Paginator>(
+                when: c => c.Method.DefaultOverload.Parameters.Having<Paging>().Any(p => p.Get<Paging>().IsTake),
                 component: (p, c) =>
                 {
                     var prop = $"{c.Type.Name}:{c.Method.Name}:{_takeContextKeySuffix}";
-                    p.Data += Context.Page(o =>
+                    p.Data += Fetch.Context.Page(o =>
                     {
                         o.Prop = prop;
                         o.TargetProp = "take";
                     });
+
                     p.ReloadWhen(prop);
                 }
             );
 
             // Take
-            conventions.AddParameterComponent(
-                when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
-                component: (c, cc) =>
+            conventions.AddParameterComponent<Select>(
+                when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsTake
+            );
+            conventions.EditParameterComponent<Select>(
+                when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsTake,
+                component: s =>
                 {
-                    cc = cc.Drill(nameof(Select));
-                    var (_, l) = cc;
-
-                    return B.Select(Inline(_pageSizeOptions, options: i => i.RequireLocalization = false));
+                    s.Data = Fetch.Inline(_pageSizeOptions, options: i => i.RequireLocalization = false);
+                    s.Override<PageSize>();
                 }
             );
-            conventions.AddParameterComponentConfiguration<Select>(
-                when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
-                component: s => s.Override(B.PageSize())
-            );
-            conventions.AddParameterComponentConfiguration<Select>(
-                when: c => c.Parameter.TryGet<PagingAttribute>(out var paging) && paging.IsTake,
+            conventions.EditParameterComponent<Select>(
+                when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsTake,
                 component: (s, c) =>
                 {
                     s.Schema.ShowClear = null;
                     s.Schema.Stateful = true;
-                    s.Action = Publish.PageContextValue(
+                    s.Action = Execute.Publish.PageContextValue(
                         $"{c.Type.Name}:{c.Method.Name}:{_takeContextKeySuffix}",
-                        o => o.Data = Context.Model()
+                        o => o.Data = Fetch.Context.Model()
                     );
                 },
                 order: 10

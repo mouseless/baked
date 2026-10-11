@@ -7,8 +7,10 @@ public record ErrorPage : IComponentSchema
     public List<IComponentDescriptor> SafeLinks { get; init; } = [];
     public string? SafeLinksMessage { get; set; }
 
-    public record Info(string Title, string Message)
+    public record Info
     {
+        public string Title { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
         public bool? ShowSafeLinks { get; set; }
         public bool? CustomMessage { get; set; }
     }

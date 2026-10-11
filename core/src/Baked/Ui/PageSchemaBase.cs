@@ -1,8 +1,14 @@
 ﻿namespace Baked.Ui;
 
-public record PageSchemaBase(string Path)
-    : IPageSchema
+public abstract record PageSchemaBase : IPageSchema
 {
-    public string Path { get; set; } = Path;
+    string _path = string.Empty;
+
+    public string Path
+    {
+        get => _path;
+        set => _path = value.Trim('/');
+    }
+
     public string? Layout { get; set; }
 }

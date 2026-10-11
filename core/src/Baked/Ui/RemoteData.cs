@@ -2,11 +2,10 @@
 
 namespace Baked.Ui;
 
-public record RemoteData(string Path)
-    : IData
+public record RemoteData : IData
 {
     public string Type => "Remote";
-    public string Path { get; set; } = Path;
+    public string Path { get; set; } = string.Empty;
     public IData? Headers { get; set; }
     public IData? Query { get; set; }
     public IData? Params { get; set; }

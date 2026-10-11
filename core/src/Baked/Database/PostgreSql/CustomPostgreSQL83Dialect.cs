@@ -1,4 +1,4 @@
-using NHibernate;
+﻿using NHibernate;
 using NHibernate.Dialect.Function;
 
 namespace Baked.Database.PostgreSql;

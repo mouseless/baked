@@ -9,7 +9,7 @@ public class MappedMethodLogScopeMiddleware(ILogger<MappedMethodLogScopeMiddlewa
 {
     public async Task Invoke(HttpContext context)
     {
-        var mappedMethod = context.Features.Get<IEndpointFeature>()?.Endpoint?.Metadata.GetMetadata<MappedMethodAttribute>();
+        var mappedMethod = context.Features.Get<IEndpointFeature>()?.Endpoint?.Metadata.GetMetadata<MappedMethod>();
         if (mappedMethod is null)
         {
             await _next(context);

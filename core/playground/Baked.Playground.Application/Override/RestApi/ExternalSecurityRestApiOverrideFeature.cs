@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi;
 

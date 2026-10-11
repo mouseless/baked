@@ -2,5 +2,4 @@
 
 namespace Baked.Playground.Ui;
 
-public record RoutedPage(string Path)
-    : PageSchemaBase(Path);
+public record RoutedPage : PageSchemaBase;

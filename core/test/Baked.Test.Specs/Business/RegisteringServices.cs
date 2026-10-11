@@ -58,9 +58,9 @@ public class RegisteringServices : TestSpec
     [Test]
     public void Attributes_are_not_registered()
     {
-        var action = () => GiveMe.The<CustomAttribute>();
+        var action = () => GiveMe.The<Custom>();
 
-        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(CustomAttribute));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(Custom));
     }
 
     [Test]

@@ -1,4 +1,4 @@
-using Baked.Playground.CodingStyle.UseNullableTypes;
+﻿using Baked.Playground.CodingStyle.UseNullableTypes;
 
 namespace Baked.Test.CodingStyle;
 

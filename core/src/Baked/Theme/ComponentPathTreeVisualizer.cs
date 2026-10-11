@@ -1,4 +1,4 @@
-using Spectre.Console;
+﻿using Spectre.Console;
 
 namespace Baked.Theme;
 

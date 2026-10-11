@@ -1,7 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public record Icon(string IconClass)
-    : IComponentSchema
+public record Icon : IComponentSchema
 {
-    public string IconClass { get; set; } = IconClass;
+    public string IconClass { get; set; } = string.Empty;
 }

@@ -1,4 +1,4 @@
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using System.Linq.Expressions;
 
 namespace Baked.Domain.Inspection;
