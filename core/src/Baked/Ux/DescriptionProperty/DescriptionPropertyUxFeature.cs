@@ -4,8 +4,6 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Ui.Datas;
-
 namespace Baked.Ux.DescriptionProperty;
 
 public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
@@ -65,7 +63,7 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
                 }
             );
             conventions.EditPropertyComponent<Dialog>(
-                component: d => d.Schema.Content.Data ??= Context.Parent()
+                component: d => d.Schema.Content.Data ??= Fetch.Context.Parent()
             );
         });
     }

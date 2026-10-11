@@ -6,8 +6,6 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Ui.Actions;
-
 namespace Baked;
 
 public static class DefaultThemeExtensions
@@ -77,7 +75,7 @@ public static class DefaultThemeExtensions
                         {
                             LocalizeTitle = true,
                             Description = l(context.Route.Description)
-                        }.ToDescriptor(data: Datas.Inline(l(context.Route.Title)))
+                        }.ToDescriptor(data: Fetch.Inline(l(context.Route.Title)))
                     }.ToDescriptor();
                 }
 
@@ -91,9 +89,9 @@ public static class DefaultThemeExtensions
                         Actions =
                         {
                             new Filter { Placeholder = l("Filter") }
-                                .ToDescriptor(action: Publish.Event("filter-changed"))
+                                .ToDescriptor(action: Execute.Publish.Event("filter-changed"))
                         }
-                    }.ToDescriptor(data: Datas.Inline(context.Route.Title)),
+                    }.ToDescriptor(data: Fetch.Inline(context.Route.Title)),
                     Sections =
                     [
                         ..sections

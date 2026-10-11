@@ -3,9 +3,6 @@ using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Ui;
 
-using static Baked.Ui.Actions;
-using static Baked.Ui.Datas;
-
 namespace Baked.Ux.QueryActionAsDataContainer;
 
 public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
@@ -33,7 +30,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             conventions.EditMethodSchema<RemoteData>(
                 when: c => c.Method.Has<QueryMethod>(),
                 where: cc => cc.Path.EndsWith("data-container", "content", "*", "data"),
-                schema: rd => rd.Query += Context.Parent(options: cd => cd.Prop = "container-parameters"),
+                schema: rd => rd.Query += Fetch.Context.Parent(options: cd => cd.Prop = "container-parameters"),
                 order: 20
             );
 
@@ -118,7 +115,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 component: (p, c) =>
                 {
                     var prop = $"{c.Type.Name}:{c.Method.Name}:{_lengthContextKeySuffix}";
-                    p.Data = Context.Page(o =>
+                    p.Data = Fetch.Context.Page(o =>
                     {
                         o.Prop = prop;
                         o.TargetProp = "length";
@@ -130,7 +127,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
             // When there is no take parameter, set take to 10
             conventions.EditParameterComponent<Paginator>(
                 when: c => !c.Method.DefaultOverload.Parameters.Having<Paging>().Any(p => p.Get<Paging>().IsTake),
-                component: p => p.Data += Inline(new { take = 10 })
+                component: p => p.Data += Fetch.Inline(new { take = 10 })
             );
             // When there is take parameter, use take parameter's value from page context
             conventions.EditParameterComponent<Paginator>(
@@ -138,7 +135,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 component: (p, c) =>
                 {
                     var prop = $"{c.Type.Name}:{c.Method.Name}:{_takeContextKeySuffix}";
-                    p.Data += Context.Page(o =>
+                    p.Data += Fetch.Context.Page(o =>
                     {
                         o.Prop = prop;
                         o.TargetProp = "take";
@@ -156,7 +153,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsTake,
                 component: s =>
                 {
-                    s.Data = Inline(_pageSizeOptions, options: i => i.RequireLocalization = false);
+                    s.Data = Fetch.Inline(_pageSizeOptions, options: i => i.RequireLocalization = false);
                     s.Override<PageSize>();
                 }
             );
@@ -166,9 +163,9 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 {
                     s.Schema.ShowClear = null;
                     s.Schema.Stateful = true;
-                    s.Action = Publish.PageContextValue(
+                    s.Action = Execute.Publish.PageContextValue(
                         $"{c.Type.Name}:{c.Method.Name}:{_takeContextKeySuffix}",
-                        o => o.Data = Context.Model()
+                        o => o.Data = Fetch.Context.Model()
                     );
                 },
                 order: 10

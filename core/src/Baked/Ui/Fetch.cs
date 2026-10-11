@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public static class Datas
+public static class Fetch
 {
     public static Composables Computed { get; } = new();
     public static ContextDatas Context { get; } = new();
@@ -11,29 +11,29 @@ public static class Datas
 
     public static InlineData Inline(object value,
         Action<InlineData>? options = default
-    ) => options.Apply(new(value));
+    ) => options.Apply(new() { Value = value });
 
     public static RemoteData Remote(string path,
         Action<RemoteData>? options = default
-    ) => options.Apply(new(path));
+    ) => options.Apply(new() { Path = path });
 
     public class ContextDatas
     {
         public ContextData Model(
             Action<ContextData>? options = default
-        ) => options.Apply(new("model"));
+        ) => options.Apply(new() { Key = "model" });
 
         public ContextData Page(
             Action<ContextData>? options = default
-        ) => options.Apply(new("page"));
+        ) => options.Apply(new() { Key = "page" });
 
         public ContextData Parent(
             Action<ContextData>? options = default
-        ) => options.Apply(new("parent") { Prop = "data" });
+        ) => options.Apply(new() { Key = "parent", Prop = "data" });
 
         public ContextData Response(
             Action<ContextData>? options = default
-        ) => options.Apply(new("response"));
+        ) => options.Apply(new() { Key = "response" });
     }
 
     public class Composables
@@ -56,6 +56,6 @@ public static class Datas
         public ComputedData Use(string composable,
             bool isAsync = false,
             Action<ComputedData>? options = default
-        ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}", isAsync));
+        ) => options.Apply(new(isAsync) { Composable = composable.StartsWith("use") ? composable : $"use{composable}" });
     }
 }

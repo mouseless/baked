@@ -4,8 +4,6 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Ui.Actions;
-
 namespace Baked.Ux.ActionsAsButtons;
 
 public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
@@ -53,7 +51,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodSchema(
                 when: c => c.Method.Has<UiAction>() && c.Method.Has<UiRoute>(),
                 where: cc => cc.Path.EndsWith("actions", "*", "button", "action"),
-                schema: c => Local.UseRedirect(c.Method.Get<UiRoute>().Path)
+                schema: c => Execute.Local.UseRedirect(c.Method.Get<UiRoute>().Path)
             );
 
             // configures post action to be a redirect back to the configured route path back for methods under the form page
@@ -68,7 +66,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                             $"`{nameof(UiAction.RoutePathBack)}` can't be null here"
                         );
 
-                    ra.PostAction = Local.UseRedirect(routeBack);
+                    ra.PostAction = Execute.Local.UseRedirect(routeBack);
                 }
             );
 
@@ -137,7 +135,7 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
             // adds redirect back action to back button
             conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("back", "button", "action"),
-                schema: () => Local.UseRedirectBack()
+                schema: () => Execute.Local.UseRedirectBack()
             );
 
             // clears action of cancel button

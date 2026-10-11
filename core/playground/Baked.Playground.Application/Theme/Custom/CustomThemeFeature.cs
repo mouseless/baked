@@ -6,8 +6,7 @@ using Baked.Playground.Ui;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
-
-using static Baked.Theme.Default.DomainDatas;
+using Humanizer;
 
 using Route = Baked.Theme.Route;
 
@@ -18,11 +17,12 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         _sideMenuOptions: sm => sm.Footer = new LanguageSwitcher().ToDescriptor(),
         _errorPageOptions: ep =>
         {
-            ep.ErrorInfos[503] = new(
-                Title: "Service Unavailable",
-                Message: "The service is currently unavailable. Please try again later."
-            )
-            { CustomMessage = true };
+            ep.ErrorInfos[503] = new()
+            {
+                Title = "Service Unavailable",
+                Message = "The service is currently unavailable. Please try again later.",
+                CustomMessage = true
+            };
         }
     )
 {
@@ -72,9 +72,17 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // Non-localized enums
-            conventions.AddTypeSchema(
-                schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
-                when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
+            conventions.EditTypeSchema<InlineData>(
+                when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>(),
+                schema: (id, c, cc) =>
+                {
+                    id.Value = c.Type.SkipNullable().GetEnumNames().Select(name => new
+                    {
+                        label = name,
+                        value = name.Camelize()
+                    });
+                    id.RequireLocalization = null;
+                }
             );
 
             // Custom routes

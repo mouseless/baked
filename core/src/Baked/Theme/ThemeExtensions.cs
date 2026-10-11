@@ -13,8 +13,6 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
-using static Baked.Ui.Datas;
-
 namespace Baked;
 
 public static class ThemeExtensions
@@ -135,7 +133,7 @@ public static class ThemeExtensions
                         );
                     }
 
-                    return Remote(locate.GetRoute(), o => o.Params = Computed.UseRoute("params"));
+                    return Fetch.Remote(locate.GetRoute(), o => o.Params = Fetch.Computed.UseRoute("params"));
                 },
                 order: Order.At.Override
             );

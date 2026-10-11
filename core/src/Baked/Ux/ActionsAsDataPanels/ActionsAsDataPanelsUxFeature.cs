@@ -2,8 +2,6 @@
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainDatas;
-
 namespace Baked.Ux.ActionsAsDataPanels;
 
 public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
@@ -15,9 +13,8 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
             conventions.AddMethodComponent<DataPanel>(
                 where: cc => cc.Path.EndsWith("contents", "*", "*", "component")
             );
-            conventions.AddMethodSchema(
-                where: cc => cc.Path.EndsWith("data-panel", "title"),
-                schema: (c, cc) => MethodNameInline(c.Method, cc)
+            conventions.AddMethodSchema<InlineData>(
+                where: cc => cc.Path.EndsWith("data-panel", "title")
             );
             conventions.EditMethodComponent<DataPanel>(
                 when: c => c.Method.GetAction().Method == HttpMethod.Get,

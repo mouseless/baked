@@ -4,8 +4,6 @@ using Baked.Domain.Configuration;
 using Baked.Playground.Theme;
 using Baked.Ui;
 
-using static Baked.Ui.Datas;
-
 namespace Baked.Playground.Override.Domain;
 
 public class ReportPageSampleDomainOverrideFeature : IFeature
@@ -51,7 +49,7 @@ public class ReportPageSampleDomainOverrideFeature : IFeature
             // Allowing admin token for report api
             conventions.EditMethodSchema<RemoteData>(
                 when: c => c.Type.Is<ReportPageSample>(),
-                schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
+                schema: rd => rd.Headers = Fetch.Inline(new { Authorization = "token-admin-ui" }),
                 order: Order.At.Override
             );
 

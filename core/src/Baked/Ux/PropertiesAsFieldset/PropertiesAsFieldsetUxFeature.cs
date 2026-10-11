@@ -4,8 +4,6 @@ using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Ui.Datas;
-
 namespace Baked.Ux.PropertiesAsFieldset;
 
 public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
@@ -72,7 +70,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                         members.FirstProperty<IdProperty>();
                     var labelData = labelProperty.Get<UiData>();
 
-                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
+                    dtc.Component.Data ??= Fetch.Context.Parent(options: o => o.Prop = $"data.{data.Prop}.{labelData.Prop}");
                 }
             );
             conventions.EditPropertySchema<Field>(
@@ -81,7 +79,7 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                 {
                     var prop = c.Property.Get<UiData>().Prop;
 
-                    f.Component.Data ??= Context.Parent(options: cd => cd.Prop = $"data.{prop}");
+                    f.Component.Data ??= Fetch.Context.Parent(options: cd => cd.Prop = $"data.{prop}");
                 },
                 order: Order.At.Theme.Max
             );

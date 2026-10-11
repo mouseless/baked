@@ -2,7 +2,7 @@
 
 public record DataPanel : IComponentSchema
 {
-    public IData Title { get; set; } = Datas.Inline(nameof(MissingComponent));
+    public IData Title { get; set; } = Fetch.Inline(nameof(MissingComponent));
     public bool? Collapsed { get; set; }
     public bool? LocalizeTitle { get; set; }
     public List<Input> Inputs { get; init; } = [];

@@ -5,8 +5,6 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Ui.Datas;
-
 namespace Baked.Ux.DataTableDefaults;
 
 public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
@@ -51,7 +49,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                         members.FirstProperty<IdProperty>();
 
                     var rootProp = cc.Path.Contains("footer-template") ? "data" : "row";
-                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{c.Property.DataProp}.{labelProperty.DataProp}");
+                    dtc.Component.Data ??= Fetch.Context.Parent(options: o => o.Prop = $"{rootProp}.{c.Property.DataProp}.{labelProperty.DataProp}");
                 }
             );
             conventions.EditPropertySchema<DataTable.Column>(
@@ -60,7 +58,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                     var data = c.Property.Get<UiData>();
 
                     var rootProp = cc.Path.Contains("footer-template") ? "data" : "row";
-                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
+                    dtc.Component.Data ??= Fetch.Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
                 },
                 order: Order.At.Theme.Max
             );
@@ -75,7 +73,7 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
             conventions.EditMethodSchema<RemoteAction>(
                 when: c => c.Method.Has<UiAction>(),
                 where: cc => cc.Path.Contains("data-table", "actions"),
-                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row"),
+                schema: ra => ra.Params = Fetch.Context.Parent(options: o => o.Prop = "row"),
                 order: 10
             );
 

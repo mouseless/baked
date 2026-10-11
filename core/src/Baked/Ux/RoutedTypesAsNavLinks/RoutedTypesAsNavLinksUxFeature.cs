@@ -3,8 +3,6 @@ using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Ui.Datas;
-
 namespace Baked.Ux.RoutedTypesAsNavLinks;
 
 public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
@@ -34,7 +32,7 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
                 {
                     foreach (var (param, prop) in c.Type.Get<UiRoute>().Params)
                     {
-                        link.Schema.Params += Context.Parent(options: o =>
+                        link.Schema.Params += Fetch.Context.Parent(options: o =>
                         {
                             o.Prop = $"row.{prop}";
                             o.TargetProp = param;

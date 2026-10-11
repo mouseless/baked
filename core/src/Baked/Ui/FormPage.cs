@@ -8,11 +8,10 @@ public record FormPage : PageSchemaBase
     public List<ValidationComposable>? Validations { get; set; }
     public bool? ShowValidationSummary { get; set; }
 
-    public record Section(string Key, string Label)
-        : IOrderableSchema
+    public record Section : IOrderableSchema
     {
-        public string Key { get; set; } = Key;
-        public string Label { get; set; } = Label;
+        public string Key { get; set; } = string.Empty;
+        public string Label { get; set; } = string.Empty;
         public List<InputGroup> InputGroups { get; init; } = [];
     }
 

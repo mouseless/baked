@@ -10,6 +10,6 @@ public record Input : IOrderableSchema
     public bool? QueryBound { get; set; }
     public IComponentDescriptor Component { get; set; } = MissingComponent.Empty;
 
-    public object? DefaultValue { set => Default = value is not null && value != DBNull.Value ? Datas.Inline(value) : null; }
+    public object? DefaultValue { set => Default = value is not null && value != DBNull.Value ? Fetch.Inline(value) : null; }
     string IOrderableSchema.Key => Name;
 }

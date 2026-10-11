@@ -1,9 +1,8 @@
 ﻿namespace Baked.Ui;
 
-public record LocalAction(string Composable)
-    : IAction
+public record LocalAction : IAction
 {
     public string Type => "Local";
-    public string Composable { get; set; } = Composable;
+    public string Composable { get; set; } = string.Empty;
     public IData? Options { get; set; }
 }

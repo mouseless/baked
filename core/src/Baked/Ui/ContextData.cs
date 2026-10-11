@@ -2,11 +2,11 @@
 
 namespace Baked.Ui;
 
-public record ContextData(string Key)
+public record ContextData
     : IData
 {
     public string Type => "Context";
-    public string Key { get; set; } = Key;
+    public required string Key { get; set; }
     public string? Prop { get; set; }
     public string? TargetProp { get; set; }
 

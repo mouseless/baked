@@ -21,7 +21,7 @@ public class TestPageDomainOverrideFeature : IFeature
                 component: (tp, c, cc) =>
                 {
                     tp.Schema.Path = "test-page";
-                    tp.Schema.Title?.Data = Datas.Inline("Test Page");
+                    tp.Schema.Title?.Data = Fetch.Inline("Test Page");
                     tp.Schema.Tabs.Add(
                         c.Type.GenerateRequiredSchema<Tab>(cc.Drill("tabs", "default"))
                     );

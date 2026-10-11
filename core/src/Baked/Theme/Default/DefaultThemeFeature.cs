@@ -6,9 +6,6 @@ using Baked.RestApi.Model;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.DomainDatas;
-using static Baked.Ui.Datas;
-
 namespace Baked.Theme.Default;
 
 public class DefaultThemeFeature(IEnumerable<Route> _routes,
@@ -107,9 +104,23 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // adds enum inline data to enum types
-            conventions.AddTypeSchema(
+            conventions.AddTypeSchema<InlineData>(
+                when: c => c.Type.SkipNullable().IsEnum
+            );
+            conventions.EditTypeSchema<InlineData>(
                 when: c => c.Type.SkipNullable().IsEnum,
-                schema: (c, cc) => EnumInline(c.Type, cc)
+                schema: (id, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    id.Value = c.Type.SkipNullable().GetEnumNames().Select(name => new
+                    {
+                        label = l($"{c.Type.SkipNullable().Name}.{name}"),
+                        value = name.Camelize()
+                    });
+                    id.RequireLocalization = true;
+                },
+                order: Order.At.Min
             );
 
             // adds page title to type
@@ -121,7 +132,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 {
                     var (_, l) = cc;
 
-                    pt.Data = Inline(l(cc.Route.Title));
+                    pt.Data = Fetch.Inline(l(cc.Route.Title));
                     pt.Schema.Description = l(cc.Route.Description);
                     pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
                 },
@@ -318,24 +329,57 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // adds remote data to method
-            conventions.AddMethodSchema(
-                schema: c => MethodRemote(c.Method)
+            conventions.AddMethodSchema<RemoteData>();
+            conventions.EditMethodSchema<RemoteData>(
+                schema: (rd, c) =>
+                {
+                    rd.Path = c.Method.GetAction().GetRoute();
+                    rd.Query = Fetch.Computed.UseRoute("query");
+                    if (c.Method.DefaultOverload.Parameters.Any())
+                    {
+                        rd.Query += Fetch.Context.Parent(options: cd => cd.Prop = "parameters");
+                    }
+                },
+                order: Order.At.Min
             );
             conventions.EditMethodSchema<RemoteData>(
                 when: c => c.Type.Has<Locatable>(),
-                schema: rd => rd.Params = Computed.UseRoute("params")
+                schema: rd => rd.Params = Fetch.Computed.UseRoute("params")
             );
 
             // adds remote action to method
-            conventions.AddMethodSchema(
-                when: c => c.Method.Has<UiAction>(),
-                schema: c => DomainActions.MethodRemote(c.Method)
+            conventions.AddMethodSchema<RemoteAction>(
+                when: c => c.Method.Has<UiAction>()
+            );
+            conventions.EditMethodSchema<RemoteAction>(
+                schema: (ra, c) =>
+                {
+                    ra.Path = c.Method.GetAction().GetRoute();
+                    ra.Method = c.Method.GetAction().Method.Method;
+                    ra.PostAction = Execute.Publish.Event(c.Method.Name.Kebaberize(),
+                        options: ea => ea.Data = c.Method.DefaultOverload.ReturnsVoid()
+                            ? null
+                            : Fetch.Context.Response()
+                    );
+                },
+                order: Order.At.Min
+            );
+
+            // configures defaults for any inline data added for a method
+            conventions.EditMethodSchema<InlineData>(
+                schema: (id, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    id.Value = l(c.Method.Name);
+                },
+                order: Order.At.Min
             );
 
             // configures request body for methods with parameters
             conventions.EditMethodSchema<RemoteAction>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
-                schema: ra => ra.Body = Context.Model()
+                schema: ra => ra.Body = Fetch.Context.Model()
             );
 
             // configure route params of actions of locatables on their own pages
@@ -346,7 +390,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 {
                     if (!cc.Path.StartsWith("page", c.Type.Name)) { return; }
 
-                    ra.Params = Computed.UseRoute("params");
+                    ra.Params = Fetch.Computed.UseRoute("params");
                 }
             );
 
@@ -382,7 +426,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 {
                     var (_, l) = cc;
 
-                    pt.Data = Inline(l(cc.Route.Title));
+                    pt.Data = Fetch.Inline(l(cc.Route.Title));
                     pt.Schema.Description = l(cc.Route.Description);
                     pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
                 }
@@ -547,7 +591,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         var section = fp.Schema.Sections.FirstOrDefault(s => s.Key == parameter.SectionKey);
                         if (section is null)
                         {
-                            section = new FormPage.Section(parameter.SectionKey, l(parameter.SectionKey.Titleize()));
+                            section = new FormPage.Section
+                            {
+                                Key = parameter.SectionKey,
+                                Label = l(parameter.SectionKey.Titleize())
+                            };
 
                             fp.Schema.Sections.Add(section);
                         }
@@ -812,23 +860,25 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     SafeLinks = [.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.ToCardLink(l))],
                     ErrorInfos =
                     {
-                        [403] = new(
-                            Title: l("Access Denied"),
-                            Message: l("You do not have the permission to view the address or data specified.")
-                        )
-                        { ShowSafeLinks = true },
-                        [404] = new(
-                            Title: l("Page Not Found"),
-                            Message: l("The page you want to view is either deleted or outdated.")
-                        )
-                        { ShowSafeLinks = true },
-                        [500] = new(l("Unexpected Error"), l("Please contact system administrator.")),
-                        [999] = new(l("Application Error"), l("Please contact system administrator."))
+                        [403] = new()
+                        {
+                            Title = l("Access Denied"),
+                            Message = l("You do not have the permission to view the address or data specified."),
+                            ShowSafeLinks = true
+                        },
+                        [404] = new()
+                        {
+                            Title = l("Page Not Found"),
+                            Message = l("The page you want to view is either deleted or outdated."),
+                            ShowSafeLinks = true
+                        },
+                        [500] = new() { Title = l("Unexpected Error"), Message = l("Please contact system administrator.") },
+                        [999] = new() { Title = l("Application Error"), Message = l("Please contact system administrator.") }
                     }
                 };
                 _errorPageOptions.Apply(error);
 
-                app.Error = error.ToDescriptor(data: Computed.UseError());
+                app.Error = error.ToDescriptor(data: Fetch.Computed.UseError());
                 app.InlineError = new Message
                 {
                     Icon = "pi pi-exclamation-circle",
@@ -860,8 +910,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 layouts.AddLayout(new DefaultLayout
                 {
                     Path = "default",
-                    SideMenu = sideMenu.ToDescriptor(data: Computed.UseRoute()),
-                    Header = header.ToDescriptor(data: Computed.UseRoute())
+                    SideMenu = sideMenu.ToDescriptor(data: Fetch.Computed.UseRoute()),
+                    Header = header.ToDescriptor(data: Fetch.Computed.UseRoute())
                 });
             });
 
