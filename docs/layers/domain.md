@@ -25,7 +25,7 @@ app.Layers.AddDomain();
 ## Configuration Targets
 
 This layer provides `IDomainTypeCollection` and `DomainModelBuilderOptions`
-configuration targets for building `DomainModel`, `AttributeDatas` and
+configuration targets for building `DomainModel`, `AttributeProperties` and
 `ExportConfigurations` for exporting attribute metadata in `Generate` mode. It
 also provides `DomainServiceCollection` configuration target for features to add
 `DomainServiceDescriptor` for domain types which then be used to generate an

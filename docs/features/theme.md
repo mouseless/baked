@@ -125,8 +125,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
         configurator.Ui.ConfigureComponentExports(c =>
         {
-            // Add your component exports using your own `Components` extensions
-            // c.AddFromExtensions(typeof(Components));
+            // Add component exports from your own theme assembly
+            c.AddFromThemeAssembly(this);
         });
 
         configurator.Ui.ConfigurePageDescriptors(pages =>
@@ -163,7 +163,7 @@ experiences, see [UX Feature](ux.md)
 |              | `string` parameters render using `InputText`                                             |
 |              | parameters with type that has `Primitive` attribute render using `InputText`             |
 |              | `int` and `long` parameters render using `InputNumber`                                   |
-| Enum         | Enum types render inline with `EnumInline`                                               |
+| Enum         | Enum types render inline with `InlineData`                                               |
 | Page Title   | `PageTitle` is added for any type at component path `/page/*/*page/title`                |
 |              | `PageTitle` is added for any method at component path `/page/*/*/*page/title`            |
 |              | Actions of type is added to actions section of page title component                      |

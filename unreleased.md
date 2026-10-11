@@ -5,80 +5,52 @@
 - `Business` namespace now provides `Validate` object to perform business
   validations
 - `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
-- `IExportOptions` is introduced in `Baked.Binding` so that an attribute
-  can control the name it is exported with, e.g., `IdProperty` attribute is
-  exported as `@id`
-  - Attributes named after their target do not carry that noise to exports,
-    `CommandMethod` is exported as `@command`, `MappedMethod` as `@mapped` and
-    `QueryMethod` as `@query`
+- `IExportOptions` in `Baked.Binding` lets an attribute set the name it is
+  exported with, e.g., `IdProperty` is exported as `@id`
+- All component, data, action, trigger and constraint schemas now have a
+  parameterless constructor, so a convention can add any of them by its type,
+  e.g., `conventions.AddMethodComponent<DataPanel>()`
+- Values are no longer set while adding, they are set by edit conventions, so
+  adding and configuring a schema are separate concerns
+- Default theme provides default conventions for the schemas it adds at
+  `Order.At.Min`, so an added schema comes configured without any extra
+  convention
+  - To change a default, add an edit convention at default order, e.g.,
+    `conventions.EditMethodSchema<RemoteData>(schema: rd => ...)`
+- A schema is turned into a component descriptor with `ToDescriptor()`, which
+  also accepts `data` and `action`
 
 ## Breaking Changes
 
-- Attributes that are used in conventions are renamed, the `Attribute`
-  suffix is removed and some are renamed further to avoid clashes
-  | from                             | to                           |
-  | -------------------------------- | ---------------------------- |
-  | `ActionAttribute`                | `UiAction`                   |
-  | `ActionModelAttribute`           | `ApiAction`                  |
-  | `AllowAnonymousAttribute`        | `AllowAnonymous`             |
-  | `AllParametersAreApiInput()`     | `AllParametersAreBindable()` |
-  | `ApiInputAttribute`              | `Bindable`                   |
-  | `ClientAttribute`                | `Client`                     |
-  | `ClientCacheAttribute`           | `ClientCache`                |
-  | `ColumnAttribute`                | `Column`                     |
-  | `CommandAttribute`               | `Command`                    |
-  | `CommandMethodAttribute`         | `CommandMethod`              |
-  | `ComponentGeneratorAttribute<T>` | `ComponentGenerator<T>`      |
-  | `ContextBasedComponent.Filter`   | `FilterDelegate`             |
-  | `ContextBasedComponentAttribute` | `ContextBasedComponent`      |
-  | `ControllerModelAttribute`       | `ApiController`              |
-  | `DataAttribute`                  | `UiData`                     |
-  | `DescriptionAttribute`           | `UiDescription`              |
-  | `EntityAttribute`                | `Entity`                     |
-  | `ExternalAttribute`              | `External`                   |
-  | `ForeignKeyAttribute`            | `ForeignKey`                 |
-  | `GeneratorAttribute<T>`          | `Generator<T>`               |
-  | `GroupAttribute`                 | `Group`                      |
-  | `IdAttribute`                    | `IdProperty`                 |
-  | `InitializerAttribute`           | `Initializer`                |
-  | `IsApiInput`                     | `IsBindable`                 |
-  | `LabelAttribute`                 | `Label`                      |
-  | `LocatableAttribute`             | `Locatable`                  |
-  | `LocatableExtensionAttribute`    | `LocatableExtension`         |
-  | `MappedMethodAttribute`          | `MappedMethod`               |
-  | `NamespaceAttribute`             | `Namespace`                  |
-  | `NoTransactionAttribute`         | `NoTransaction`              |
-  | `ObjectWithListAttribute`        | `ObjectWithList`             |
-  | `PagingAttribute`                | `Paging`                     |
-  | `ParameterModelAttribute`        | `ApiParameter`               |
-  | `QueryAttribute`                 | `Query`                      |
-  | `QueryMethodAttribute`           | `QueryMethod`                |
-  | `RequireUserAttribute`           | `RequireUser`                |
-  | `RichTransientAttribute`         | `Resource`                   |
-  | `RouteAttribute`                 | `UiRoute`                    |
-  | `ScopedAttribute`                | `Scoped`                     |
-  | `ServiceAttribute`               | `Service`                    |
-  | `SingletonAttribute`             | `Singleton`                  |
-  | `SortingAttribute`               | `Sorting`                    |
-  | `TransientAttribute`             | `Transient`                  |
-  | `TryGetLocatableAttribute()`     | `TryGetLocatable()`          |
-  | `UniqueAttribute`                | `Unique`                     |
-  | `ValueTypeAttribute`             | `Primitive`                  |
-  - `Bindable` is moved from `Baked.RestApi.Model` to `Baked.Binding`, since it
-    marks types that can be bound from a request and is only used by rest
-    binding
-  - `Primitive` avoids clashing with `System.ValueType`
-  - `Resource` is used since transients are already rich, this coding style
-    only makes them locatable by their id
-  - `Generator<T>` renames its `Generator` and `Filter` properties as
-    `GeneratorDelegate` and `FilterDelegate`
-  - Names in exported `.kdl` files do not change, the `Attribute` suffix was
-    already being stripped during export
-- `AllowAnonymous`, `ClientCache` and `NoTransaction` attributes now declare
-  `[AttributeUsage]`, so they are no longer included in every export target
+- Attributes used in conventions no longer have the `Attribute` suffix, e.g.,
+  `LabelAttribute` -> `Label`. These also changed beyond the suffix;
+  | old                        | new             |
+  | -------------------------- | --------------- |
+  | `ControllerModelAttribute` | `ApiController` |
+  | `ActionModelAttribute`     | `ApiAction`     |
+  | `ParameterModelAttribute`  | `ApiParameter`  |
+  | `ActionAttribute`          | `UiAction`      |
+  | `DataAttribute`            | `UiData`        |
+  | `DescriptionAttribute`     | `UiDescription` |
+  | `RouteAttribute`           | `UiRoute`       |
+  | `ApiInputAttribute`        | `Bindable`      |
+  | `IdAttribute`              | `IdProperty`    |
+  | `RichTransientAttribute`   | `Resource`      |
+  | `ValueTypeAttribute`       | `Primitive`     |
+  - `Bindable` moved from `Baked.RestApi.Model` to `Baked.Binding`
+- Members named after a renamed attribute follow it;
+  | old                          | new                          |
+  | ---------------------------- | ---------------------------- |
+  | `GetControllerModel()`       | `GetApiController()`         |
+  | `TryGetControllerModel()`    | `TryGetApiController()`      |
+  | `GetActionModel()`           | `GetAction()`                |
+  | `IsApiInput`                 | `IsBindable`                 |
+  | `AllParametersAreApiInput()` | `AllParametersAreBindable()` |
+  | `TryGetLocatableAttribute()` | `TryGetLocatable()`          |
+  | `ValueTypeUserType<T>`       | `PrimitiveUserType<T>`       |
 - Coding styles are renamed to express how they detect types, `via` is used when
-  the mechanism needs naming and `based` when it reads as a qualifier
-  | from                 | to                                 |
+  the mechanism needs naming and `based` when it reads as a qualifier;
+  | old                  | new                                |
   | -------------------- | ---------------------------------- |
   | `AddRemoveChild`     | `AddRemoveChildAsSubResource`      |
   | `Client`             | `SuffixBasedClient`                |
@@ -93,51 +65,93 @@
   | `ScopedBySuffix`     | `ScopedViaSuffix`                  |
   | `Unique`             | `UniqueViaSingleBy`                |
   | `ValueType`          | `PrimitiveViaParsable`             |
-  - To migrate, use the new names in `AddCodingStyles()`, e.g.,
-    `c => c.ValueType()` -> `c => c.PrimitiveViaParsable()`
-  - `RichEntity` and `FlagsEnum` are kept as they are
-- `MonolithRecipe` and `DataSourceRecipe` configuration methods follow their
-  coding styles, e.g., `CommandPattern(...)` -> `CommandViaMethodName(...)`
-- `ValueTypeUserType<T>` -> `PrimitiveUserType<T>`
-- `EntityInitializerIsPostResourceConvention` ->
-  `EntityInitializerIsPostConvention`
-- Conventions that configure an existing attribute are renamed as edits, and
-  are now regular conventions added via `conventions.Add()`
-  | from                                      | to                            |
-  | ----------------------------------------- | ----------------------------- |
-  | `AddTypeAttributeConfiguration<T>()`      | `EditTypeAttribute<T>()`      |
-  | `AddPropertyAttributeConfiguration<T>()`  | `EditPropertyAttribute<T>()`  |
-  | `AddMethodAttributeConfiguration<T>()`    | `EditMethodAttribute<T>()`    |
-  | `AddParameterAttributeConfiguration<T>()` | `EditParameterAttribute<T>()` |
-  | `AddTypeComponentConfiguration<T>()`      | `EditTypeComponent<T>()`      |
-  | `AddPropertyComponentConfiguration<T>()`  | `EditPropertyComponent<T>()`  |
-  | `AddMethodComponentConfiguration<T>()`    | `EditMethodComponent<T>()`    |
-  | `AddParameterComponentConfiguration<T>()` | `EditParameterComponent<T>()` |
-  | `AddTypeSchemaConfiguration<T>()`         | `EditTypeSchema<T>()`         |
-  | `AddPropertySchemaConfiguration<T>()`     | `EditPropertySchema<T>()`     |
-  | `AddMethodSchemaConfiguration<T>()`       | `EditMethodSchema<T>()`       |
-  | `AddParameterSchemaConfiguration<T>()`    | `EditParameterSchema<T>()`    |
-- `Label` component is renamed as `Labeler`
-- `QueryMethodCodingStyle` is merged into `QueryCodingStyle`, which is now
-  `QueryViaPluralNameCodingStyle`
-- Lifetime features are renamed after the lifetime they provide
-  | from        | to            |
+- Lifetime features are renamed after the lifetime they provide;
+  | old         | new           |
   | ----------- | ------------- |
   | `Singleton` | `Application` |
   | `Scoped`    | `Scope`       |
   | `Transient` | `Instance`    |
-- Domain components are removed, all conventions now come from
-  `DefaultThemeFeature` by default
-  - To migrate, just use components directly instead of through domain
-    components, e.g., `TypeFormPage` -> `B.FormPage()`
+- Conventions that configure an existing attribute, component or schema are
+  renamed as edits
+  ```csharp
+  // was
+  conventions.AddTypeAttributeConfiguration<Entity>(...);
+  conventions.AddMethodComponentConfiguration<Button>(...);
+  conventions.AddParameterSchemaConfiguration<Select>(...);
+
+  // now
+  conventions.EditTypeAttribute<Entity>(...);
+  conventions.EditMethodComponent<Button>(...);
+  conventions.EditParameterSchema<Select>(...);
+  ```
+- All schemas now have a parameterless constructor, their constructor parameters
+  became settable properties, except that constraint and trigger properties
+  became `required`
+  > [!NOTE]
+  >
+  > Page `Path` is set from the route when it is left empty
+- `DomainComponents`, `DomainDatas`, `DomainActions` and `Components` builder
+  classes are removed, their defaults are now handled by the default theme. A
+  schema is built with its own constructor and turned into a descriptor with
+  `ToDescriptor()`
+  ```csharp
+  // was
+  using B = Baked.Ui.Components;
+
+  B.Filter(
+      options: f => f.Placeholder = l("Filter"),
+      action: Publish.Event("filter-changed")
+  );
+  B.PageTitle(options: pt => pt.LocalizeTitle = true);
+
+  // now
+  new Filter { Placeholder = l("Filter") }
+      .ToDescriptor(action: Execute.Publish.Event("filter-changed"));
+  new PageTitle { LocalizeTitle = true }.ToDescriptor();
+  ```
+  - `options` parameters are gone, `using static` and `using B =` are no longer
+    needed
+  - `Label` component is renamed as `Labeler`
+- `Datas`, `Actions` and `Constraints` builder classes are renamed as `Fetch`,
+  `Execute` and `Evaluate`
+  ```csharp
+  // was
+  using static Baked.Ui.Datas;
+  using static Baked.Ui.Actions;
+  using static Baked.Ui.Constraints;
+
+  conventions.AddMethodComponentConfiguration<Button>(component: c =>
+  {
+      c.Data = Remote("some/endpoint");
+      c.Action = Publish.Event("saved");
+      c.ShowWhen("state", constraint: Is("editing"));
+  });
+
+  // now
+  conventions.EditMethodComponent<Button>(component: c =>
+  {
+      c.Data = Fetch.Remote("some/endpoint");
+      c.Action = Execute.Publish.Event("saved");
+      c.ShowWhen("state", constraint: Evaluate.Is("editing"));
+  });
+  ```
+- `ExtensionViaLocatableInitializerCodingStyle` no longer requires extension
+  classes to have an implicit operator, any transient with an initializer that
+  has one locatable parameter becomes an extension for it
+  > [!WARNING]
+  >
+  > This might make unintended classes an extension and change their API
+  > endpoint routes, removing `LocatableExtension` attribute from them, or
+  > adding another parameter to the initializer, resolves it
+- `QueryMethodCodingStyle` is merged into `QueryViaPluralNameCodingStyle`
 - `EntitySubclassCodingStyle` is removed completely
 - `ICasts` interface and `Caster.Cast()` extension are removed
-- `ExtensionViaLocatableInitializerCodingStyle` now does not require extension
-  classes to have an implicit operator
-  - Any transient with an initializer method that has one parameter that is
-    locatable, e.g., `internal MyExtension With(MyLocatable locatable) { ... }`,
-    becomes an extension for that locatable
-  - This might result unintended classes to become an extension causing their
-    API endpoint routes to change, removing `LocatableExtension` attribute
-    from unwanted classes, or adding another parameter to the initializer,
-    will resolve the issue
+- `AllowAnonymous`, `ClientCache` and `NoTransaction` now declare
+  `[AttributeUsage]`, so they are no longer included in every export target
+- Additional renamings are as below
+  | old                                         | new                                    |
+  | ------------------------------------------- | -------------------------------------- |
+  | `Generator<T>.Generator`                    | `Generator<T>.GeneratorDelegate`       |
+  | `Generator<T>.Filter`                       | `Generator<T>.FilterDelegate`          |
+  | `ContextBasedComponent.Filter`              | `ContextBasedComponent.FilterDelegate` |
+  | `EntityInitializerIsPostResourceConvention` | `EntityInitializerIsPostConvention`    |
