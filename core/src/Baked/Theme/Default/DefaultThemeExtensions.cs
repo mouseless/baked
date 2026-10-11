@@ -113,7 +113,7 @@ public static class DefaultThemeExtensions
     extension(Route route)
     {
         public IComponentDescriptor ToCardLink(NewLocaleKey l) =>
-            new ComponentDescriptor<CardLink>(new CardLink
+            new CardLink
             {
                 Route = route.Path,
                 Title = l(route.Title),
@@ -121,7 +121,7 @@ public static class DefaultThemeExtensions
                 Description = l(route.Description),
                 Disabled = route.Disabled ? true : null,
                 DisabledReason = l(route.DisabledReason)
-            });
+            }.ToDescriptor();
 
         public SideMenu.Item ToSideMenuItem(NewLocaleKey l) =>
             new()
