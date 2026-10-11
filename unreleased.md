@@ -4,6 +4,8 @@
 
 - `Business` namespace now provides `Validate` object to perform business
   validations
+- `ValidatableCodingStyle` is introduced to allow validating records via
+  `IValidatableObject` standard interface
 - `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
 - `IExportOptions` in `Baked.Binding` lets an attribute set the name it is
   exported with, e.g., `IdProperty` is exported as `@id`
@@ -19,6 +21,10 @@
     `conventions.EditMethodSchema<RemoteData>(schema: rd => ...)`
 - A schema is turned into a component descriptor with `ToDescriptor()`, which
   also accepts `data` and `action`
+- New display components are added; `Tag` and `Avatar`
+- Button with dialog mode of `SimpleForm` is migrated to `Button`
+  - You can now simplify conventions by configuring methods as buttons with
+    dialogs instead of simple form in dialog mode
 
 ## Breaking Changes
 
@@ -148,6 +154,8 @@
 - `ICasts` interface and `Caster.Cast()` extension are removed
 - `AllowAnonymous`, `ClientCache` and `NoTransaction` now declare
   `[AttributeUsage]`, so they are no longer included in every export target
+- `SimpleForm` no more provides a dialog mode, switch to `Button` to render
+  methods as button with a dialog
 - Additional renamings are as below
   | old                                         | new                                    |
   | ------------------------------------------- | -------------------------------------- |
@@ -155,3 +163,22 @@
   | `Generator<T>.Filter`                       | `Generator<T>.FilterDelegate`          |
   | `ContextBasedComponent.Filter`              | `ContextBasedComponent.FilterDelegate` |
   | `EntityInitializerIsPostResourceConvention` | `EntityInitializerIsPostConvention`    |
+  | `AuthorizedContent`                         | `Authorize`                            |
+
+## Improvements
+
+- `Authorization` improvements
+  - It now supports claim type-value based restriction in API layer
+  - `RequireUser` can now contain allowed values
+  - It no longer requires all claims to exist in token separately and publishes
+    roles under one claim name: `user_roles`
+- `Authorize` improvements
+  - It now supports claim based content hiding
+  - You can now show a fallback component when user is not authorized
+- `SideMenu` items can now be hidden depending on authentication and claims
+- C# friendly name calculation is now fully compliant with C# language standards
+- `Enum` defaults wasn't getting camelized in `Input`, fixed
+- `Bake.vue` now waits until data is loaded to show a component when there is a
+  show reaction in the descriptor
+  - It was showing the components that reacts to `showWhen: is null` causing to
+    render unintended components while page is loading
