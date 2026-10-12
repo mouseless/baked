@@ -1,5 +1,6 @@
 import {
-    Button,
+    Avatar,
+	Button,
 	CardLink,
 	Check,
 	Composite,
@@ -57,7 +58,8 @@ import {
 } from "#components";
 
 export {
-    Button,
+    Avatar,
+	Button,
 	CardLink,
 	Check,
 	Composite,

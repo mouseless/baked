@@ -41,6 +41,7 @@ public static class CustomThemeExtensions
                 r => r.Child("/specs/toast", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },
 
                 // Display
+                r => r.Child("/specs/avatar", "/specs") with { Icon = "pi pi-microchip", Section = "Display" },
                 r => r.Child("/specs/check", "/specs") with { Icon = "pi pi-microchip", Section = "Display" },
                 r => r.Child("/specs/card-link", "/specs") with { Icon = "pi pi-microchip", Section = "Display" },
                 r => r.Child("/specs/data-table", "/specs") with { Icon = "pi pi-microchip", Section = "Display" },

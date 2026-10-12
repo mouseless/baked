@@ -170,6 +170,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
+            // configures route icon to type avatar
+            conventions.EditTypeComponent<Avatar>(
+                where: cc => cc.Path.EndsWith("page-title", "icon"),
+                component: (a, _, cc) => a.Schema.Icon ??= cc.Route.Icon
+            );
+
             // configures field set defaults for type
             conventions.EditTypeComponent<Fieldset>(
                 when: c => c.Type.HasMembers(),
@@ -457,6 +463,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.EditMethodComponent<PageTitle>(
                 component: pt => pt.Schema.LocalizeTitle ??= pt.Data?.RequireLocalization,
                 order: Order.At.Global.Max
+            );
+
+            // configures route icon to method avatar
+            conventions.EditMethodComponent<Avatar>(
+                where: cc => cc.Path.EndsWith("page-title", "icon"),
+                component: (a, _, cc) => a.Schema.Icon ??= cc.Route.Icon
             );
 
             // adds content to method

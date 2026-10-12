@@ -1,4 +1,8 @@
 export default {
+  avatar: {
+    base: ".p-avatar",
+    icon: ".p-avatar-icon"
+  },
   button: {
     base: ".p-button",
     icon: ".p-button-icon",

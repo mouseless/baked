@@ -165,6 +165,12 @@
             "title": "/specs/toast:Title",
             "parentRoute": "/specs"
           },
+          "/specs/avatar": {
+            "route": "/specs/avatar",
+            "icon": "pi pi-microchip",
+            "title": "/specs/avatar:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/check": {
             "route": "/specs/check",
             "icon": "pi pi-microchip",

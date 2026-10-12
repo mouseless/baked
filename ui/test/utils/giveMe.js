@@ -28,6 +28,14 @@ export default {
     return { sample: "response" };
   },
 
+  anAvatar({ data, icon, size } = {}) {
+    return {
+      type: "Avatar",
+      schema: { icon, size },
+      data
+    };
+  },
+
   aButton({ action, icon, label, variant, severity, size, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
