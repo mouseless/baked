@@ -182,3 +182,17 @@
   show reaction in the descriptor
   - It was showing the components that reacts to `showWhen: is null` causing to
     render unintended components while page is loading
+
+## Library Upgrades
+
+| NuGet Package                             | Old Version | New Version |
+| ---                                       | ---         | ---         |
+| Microsoft.Testing.Extensions.CodeCoverage | 18.11.2     | 18.12.0     |
+| Microsoft.Testing.Extensions.TrxReport    | 2.4.1       | 2.5.1       |
+| NUnit3TestAdapter                         | 6.3.0       | 6.3.1       |
+| Swashbuckle.AspNetCore                    | 10.2.3      | 10.3.0      |
+| Swashbuckle.AspNetCore.Annotations        | 10.2.3      | 10.3.0      |
+
+| npm Package | Old Version | New Version |
+| ---         | ---         | ---         |
+| playwright  | 1.63.0      | 1.64.0      |
