@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Authorization;
 using Baked.Binding;
 using Baked.Business;
 using Baked.Caching;
@@ -108,8 +107,8 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
         IEnumerable<FeatureFunc<AuthenticationFeature.Configurator>> _authentications = [c => c.FixedBearerToken()];
         public void Authentications(params IEnumerable<FeatureFunc<AuthenticationFeature.Configurator>> authentications) => _authentications = authentications;
 
-        FeatureFunc<AuthorizationConfigurator> _authorization = c => c.ClaimBased();
-        public void Authorization(FeatureFunc<AuthorizationConfigurator> authorization) => _authorization = authorization;
+        FeatureFunc<AuthorizationFeature.Configurator> _authorization = c => c.ClaimBased();
+        public void Authorization(FeatureFunc<AuthorizationFeature.Configurator> authorization) => _authorization = authorization;
 
         FeatureFunc<CommunicationConfigurator> _communication = c => c.Http();
         public void Communication(FeatureFunc<CommunicationConfigurator> communication) => _communication = communication;
