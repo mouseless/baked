@@ -7,7 +7,7 @@ using NHibernate.Cfg;
 
 namespace Baked.Database.InMemory;
 
-public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
+public class InMemoryDatabaseFeature : IFeature<DatabaseFeature.Configurator>
 {
     IStatelessSession? _globalSession;
 

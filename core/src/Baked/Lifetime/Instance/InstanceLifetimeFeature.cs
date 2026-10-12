@@ -1,10 +1,14 @@
 ﻿using Baked.Architecture;
+using Baked.Domain;
+using Baked.Domain.Model;
+using Baked.Lifetime;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.Lifetime.Instance;
+namespace Baked;
 
-public class InstanceLifetimeFeature : IFeature<LifetimeConfigurator>
+public static class InstanceLifetimeFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<LifetimeFeature.Configurator> Instance(this LifetimeFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -18,5 +22,13 @@ public class InstanceLifetimeFeature : IFeature<LifetimeConfigurator>
                 services.AddTransient(transient, useFactory: true);
             }
         });
+    });
+
+    extension(DomainServiceCollection services)
+    {
+        public void AddTransient(TypeModel type,
+            bool useFactory = true,
+            bool forward = false
+        ) => services.Add(type, ServiceLifetime.Transient, useFactory: useFactory, forward: forward);
     }
 }

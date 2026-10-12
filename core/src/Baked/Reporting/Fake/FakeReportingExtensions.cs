@@ -8,7 +8,7 @@ namespace Baked;
 
 public static class FakeReportingExtensions
 {
-    extension(ReportingConfigurator _)
+    extension(ReportingFeature.Configurator _)
     {
         public FakeReportingFeature Fake(
             Setting<string>? basePath = default

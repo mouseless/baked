@@ -1,17 +1,16 @@
 ﻿using Baked.Architecture;
-using Baked.Database;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 
 namespace Baked;
 
-public static class DatabaseExtensions
+public static class DatabaseFeature
 {
-    extension(List<IFeature> features)
-    {
-        public void AddDatabase(FeatureFunc<DatabaseConfigurator> configure) =>
-            features.Add(configure(new()));
-    }
+    public static void AddDatabase(this List<IFeature> features,
+        FeatureFunc<Configurator> configure
+    ) => features.Add(configure(new()));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
 
     extension(PropertyPart propertyPart)
     {

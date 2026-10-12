@@ -1,12 +1,11 @@
-﻿using Baked.Database;
-using Baked.Database.PostgreSql;
+﻿using Baked.Database.PostgreSql;
 using Baked.Runtime;
 
 namespace Baked;
 
 public static class PostgreSqlDatabaseExtensions
 {
-    extension(DatabaseConfigurator _)
+    extension(DatabaseFeature.Configurator _)
     {
         public PostgreSqlDatabaseFeature PostgreSql(
             Setting<string>? connectionString = default,

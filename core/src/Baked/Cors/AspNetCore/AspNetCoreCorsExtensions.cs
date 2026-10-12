@@ -1,5 +1,4 @@
-﻿using Baked.Cors;
-using Baked.Cors.AllowOrigin;
+﻿using Baked.Cors.AllowOrigin;
 using Baked.Runtime;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
@@ -7,7 +6,7 @@ namespace Baked;
 
 public static class AspNetCoreCorsExtensions
 {
-    extension(CorsConfigurator configurator)
+    extension(CorsFeature.Configurator configurator)
     {
         /// <note>
         /// Returns 'AspNetCoreCors' feature with a single policy setup with given origins,

@@ -16,7 +16,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     Action<SideMenu>? _sideMenuOptions = default,
     Action<Header>? _headerOptions = default,
     ComponentPath.Debug? _debugComponentPaths = default
-) : IFeature<ThemeConfigurator>
+) : IFeature<ThemeFeature.Configurator>
 {
     protected static readonly JsonSerializerSettings JsonSettings = new()
     {

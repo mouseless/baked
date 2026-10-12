@@ -2,14 +2,13 @@
 using Baked.Playground.Orm;
 using Baked.Playground.Theme;
 using Baked.Playground.Theme.Custom;
-using Baked.Theme;
 using Baked.Ui;
 
 namespace Baked;
 
 public static class CustomThemeExtensions
 {
-    extension(ThemeConfigurator _)
+    extension(ThemeFeature.Configurator _)
     {
         public CustomThemeFeature Custom() =>
             new(

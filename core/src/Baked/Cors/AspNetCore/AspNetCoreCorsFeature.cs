@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Baked.Cors.AllowOrigin;
 
 public class AspNetCoreCorsFeature(Action<CorsOptions> _optionsBuilder, string _defaultPolicyName)
-    : IFeature<CorsConfigurator>
+    : IFeature<CorsFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

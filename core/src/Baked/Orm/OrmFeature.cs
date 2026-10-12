@@ -8,13 +8,13 @@ using Shouldly;
 
 namespace Baked;
 
-public static class OrmExtensions
+public static class OrmFeature
 {
-    extension(List<IFeature> features)
-    {
-        public void AddOrm(FeatureFunc<OrmConfigurator> configure) =>
-            features.Add(configure(new()));
-    }
+    public static void AddOrm(this List<IFeature> features,
+        FeatureFunc<Configurator> configure
+    ) => features.Add(configure(new()));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
 
     extension(TypeModelMembers members)
     {

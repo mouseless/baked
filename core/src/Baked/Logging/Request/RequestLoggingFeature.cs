@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace Baked.Logging.Request;
 
 public class RequestLoggingFeature(bool singleLine)
-    : IFeature<LoggingConfigurator>
+    : IFeature<LoggingFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

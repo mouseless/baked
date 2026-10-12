@@ -1,11 +1,10 @@
-﻿using Baked.Database;
-using Baked.Database.InMemory;
+﻿using Baked.Database.InMemory;
 
 namespace Baked;
 
 public static class InMemoryDatabaseExtensions
 {
-    extension(DatabaseConfigurator _)
+    extension(DatabaseFeature.Configurator _)
     {
         public InMemoryDatabaseFeature InMemory() =>
             new();

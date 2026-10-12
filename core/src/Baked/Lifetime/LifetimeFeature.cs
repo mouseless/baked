@@ -2,18 +2,17 @@
 using Baked.Business;
 using Baked.Domain;
 using Baked.Domain.Model;
-using Baked.Lifetime;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked;
 
-public static class LifetimeExtensions
+public static class LifetimeFeature
 {
-    extension(List<IFeature> features)
-    {
-        public void AddLifetimes(IEnumerable<FeatureFunc<LifetimeConfigurator>> configures) =>
-            features.AddRange(configures.Select(configure => configure(new())));
-    }
+    public static void AddLifetimes(this List<IFeature> features,
+        IEnumerable<FeatureFunc<Configurator>> configures
+    ) => features.AddRange(configures.Select(configure => configure(new())));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
 
     extension(DomainServiceCollection services)
     {

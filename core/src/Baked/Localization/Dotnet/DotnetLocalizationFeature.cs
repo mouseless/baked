@@ -13,7 +13,7 @@ namespace Baked.Localization.Dotnet;
 
 public class DotnetLocalizationFeature(CultureInfo _language,
     IEnumerable<CultureInfo>? _otherLanguages = default
-) : IFeature<LocalizationConfigurator>
+) : IFeature<LocalizationFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

@@ -1,12 +1,11 @@
-﻿using Baked.Database;
-using Baked.Database.Oracle;
+﻿using Baked.Database.Oracle;
 using Baked.Runtime;
 
 namespace Baked;
 
 public static class OracleDatabaseExtensions
 {
-    extension(DatabaseConfigurator _)
+    extension(DatabaseFeature.Configurator _)
     {
         public OracleDatabaseFeature Oracle(
             Setting<string>? connectionString = default,

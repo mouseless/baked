@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Baked.Reporting.Fake;
 
 public class FakeReportingFeature(Setting<string> _basePath) :
-    IFeature<ReportingConfigurator>
+    IFeature<ReportingFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

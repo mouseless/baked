@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Baked.Database.MySql;
 
 public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema)
-    : IFeature<DatabaseConfigurator>
+    : IFeature<DatabaseFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

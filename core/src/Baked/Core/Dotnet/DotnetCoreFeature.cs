@@ -7,7 +7,7 @@ using System.Reflection;
 namespace Baked.Core.Dotnet;
 
 public class DotnetCoreFeature(Assembly? _entryAssembly, Func<Assembly, string?> _baseNamespace)
-    : IFeature<CoreConfigurator>
+    : IFeature<CoreFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

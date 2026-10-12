@@ -8,7 +8,7 @@ using System.Net;
 namespace Baked.ExceptionHandling.ProblemDetails;
 
 public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFormat, Setting<bool>? _showUnhandled)
-    : IFeature<ExceptionHandlingConfigurator>
+    : IFeature<ExceptionHandlingFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

@@ -9,7 +9,7 @@ using NHibernate.Driver;
 namespace Baked.Database.Oracle;
 
 public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema)
-    : IFeature<DatabaseConfigurator>
+    : IFeature<DatabaseFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

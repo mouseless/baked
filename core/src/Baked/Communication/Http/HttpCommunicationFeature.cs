@@ -1,12 +1,14 @@
 ﻿using Baked.Architecture;
+using Baked.Communication;
+using Baked.Communication.Http;
 using Baked.HttpClient;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.Communication.Http;
+namespace Baked;
 
-public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
+public static class HttpCommunicationFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CommunicationFeature.Configurator> Http(this CommunicationFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureDomainTypeCollection(types => types.Add(typeof(IClient<>)));
 
@@ -32,5 +34,5 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
             serviceCollection.AddSingleton(typeof(HttpClientFactory<>));
             serviceCollection.AddSingleton(typeof(IClient<>), typeof(Client<>));
         });
-    }
+    });
 }

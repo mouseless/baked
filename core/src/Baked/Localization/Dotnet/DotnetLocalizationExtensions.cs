@@ -1,12 +1,11 @@
-﻿using Baked.Localization;
-using Baked.Localization.Dotnet;
+﻿using Baked.Localization.Dotnet;
 using System.Globalization;
 
 namespace Baked;
 
 public static class DotnetLocalizationExtensions
 {
-    extension(LocalizationConfigurator _)
+    extension(LocalizationFeature.Configurator _)
     {
         public DotnetLocalizationFeature Dotnet(
             CultureInfo? language = null,

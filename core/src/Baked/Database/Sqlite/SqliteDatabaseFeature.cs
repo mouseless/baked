@@ -9,7 +9,7 @@ using NHConfiguration = NHibernate.Cfg.Configuration;
 namespace Baked.Database.Sqlite;
 
 public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _autoExportSchema)
-    : IFeature<DatabaseConfigurator>
+    : IFeature<DatabaseFeature.Configurator>
 {
     string FullFilePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), _fileName);
 

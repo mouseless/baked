@@ -15,13 +15,13 @@ using System.Linq.Expressions;
 
 namespace Baked;
 
-public static class ThemeExtensions
+public static class ThemeFeature
 {
-    extension(List<IFeature> features)
-    {
-        public void AddTheme(FeatureFunc<ThemeConfigurator> configure) =>
-            features.Add(configure(new()));
-    }
+    public static void AddTheme(this List<IFeature> features,
+        FeatureFunc<Configurator> configure
+    ) => features.Add(configure(new()));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
 
     extension(DiagnosticCode)
     {

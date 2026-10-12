@@ -1,12 +1,11 @@
-﻿using Baked.Database;
-using Baked.Database.Sqlite;
+﻿using Baked.Database.Sqlite;
 using Baked.Runtime;
 
 namespace Baked;
 
 public static class SqliteDatabaseExtensions
 {
-    extension(DatabaseConfigurator _)
+    extension(DatabaseFeature.Configurator _)
     {
         public SqliteDatabaseFeature Sqlite(
             Setting<string>? fileName = default,

@@ -1,11 +1,10 @@
-﻿using Baked.Logging;
-using Baked.Logging.Request;
+﻿using Baked.Logging.Request;
 
 namespace Baked;
 
 public static class RequestLoggingExtensions
 {
-    extension(LoggingConfigurator _)
+    extension(LoggingFeature.Configurator _)
     {
         public RequestLoggingFeature Request(
             bool singleLine = false

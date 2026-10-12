@@ -20,12 +20,3 @@ c => c.ConcurrencyLimiter()
 >
 > This feature will set `permitLimit` count as `MinThreadCount`
 > and twice the value as `MaxThreadCount`
-
-
-## Disabled
-
-You can disable this feature by calling `Disabled()` method;
-
-```csharp
-c => c.Disabled()
-```

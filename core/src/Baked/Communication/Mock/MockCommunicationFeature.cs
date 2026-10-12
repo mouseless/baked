@@ -3,7 +3,7 @@
 namespace Baked.Communication.Mock;
 
 public class MockCommunicationFeature(Action<DefaultResponseBuilder> _setupDefaultResponses)
-    : IFeature<CommunicationConfigurator>
+    : IFeature<CommunicationFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

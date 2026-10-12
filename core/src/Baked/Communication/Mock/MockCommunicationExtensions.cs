@@ -8,7 +8,7 @@ namespace Baked;
 
 public static class MockCommunicationExtensions
 {
-    extension(CommunicationConfigurator _)
+    extension(CommunicationFeature.Configurator _)
     {
         public MockCommunicationFeature Mock(
             Action<DefaultResponseBuilder>? defaultResponses = default

@@ -11,7 +11,7 @@ namespace Baked.RateLimiter.Concurrency;
 public class ConcurrencyRateLimiterFeature(
     Setting<int>? _permitLimit = default,
     Setting<int>? _queueLimit = default
-) : IFeature<RateLimiterConfigurator>
+) : IFeature<RateLimiterFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

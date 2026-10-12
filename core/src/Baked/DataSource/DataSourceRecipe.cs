@@ -4,16 +4,6 @@ using Baked.CodingStyle.InitializableViaMethodName;
 using Baked.CodingStyle.NameBasedLabel;
 using Baked.CodingStyle.ScopedViaSuffix;
 using Baked.CodingStyle.UseBuiltInTypes;
-using Baked.Core;
-using Baked.Database;
-using Baked.ExceptionHandling;
-using Baked.Greeting;
-using Baked.Lifetime;
-using Baked.Localization;
-using Baked.Logging;
-using Baked.MockOverrider;
-using Baked.RateLimiter;
-using Baked.Reporting;
 
 namespace Baked.DataSource;
 
@@ -31,14 +21,14 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessFeature.Configurator>
     IEnumerable<FeatureFunc<CodingStyleFeature.Configurator>>? _codingStyles;
     public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleFeature.Configurator>> codingStyles) => _codingStyles = codingStyles;
 
-    FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
-    public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
+    FeatureFunc<ExceptionHandlingFeature.Configurator> _exceptionHandling = c => c.ProblemDetails();
+    public void ExceptionHandling(FeatureFunc<ExceptionHandlingFeature.Configurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
 
-    IEnumerable<FeatureFunc<LifetimeConfigurator>> _lifetimes = [c => c.Application(), c => c.Scope(), c => c.Instance()];
-    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
+    IEnumerable<FeatureFunc<LifetimeFeature.Configurator>> _lifetimes = [c => c.Application(), c => c.Scope(), c => c.Instance()];
+    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeFeature.Configurator>> lifetimes) => _lifetimes = lifetimes;
 
-    FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
-    public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;
+    FeatureFunc<LocalizationFeature.Configurator> _localization = c => c.Dotnet();
+    public void Localization(FeatureFunc<LocalizationFeature.Configurator> localization) => _localization = localization;
 
     // Coding Styles
     FeatureFunc<CodingStyleFeature.Configurator> _commandViaMethodName = c => c.CommandViaMethodName();
@@ -83,23 +73,23 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessFeature.Configurator>
     public class Run(FeatureFunc<BusinessFeature.Configurator> business)
         : DataSourceRecipe(business)
     {
-        FeatureFunc<CoreConfigurator> _core = c => c.Dotnet();
-        public void Core(FeatureFunc<CoreConfigurator> core) => _core = core;
+        FeatureFunc<CoreFeature.Configurator> _core = c => c.Dotnet();
+        public void Core(FeatureFunc<CoreFeature.Configurator> core) => _core = core;
 
-        FeatureFunc<DatabaseConfigurator> _database = c => c.Sqlite();
-        public void Database(FeatureFunc<DatabaseConfigurator> database) => _database = database;
+        FeatureFunc<DatabaseFeature.Configurator> _database = c => c.Sqlite();
+        public void Database(FeatureFunc<DatabaseFeature.Configurator> database) => _database = database;
 
-        FeatureFunc<GreetingConfigurator> _greeting = c => c.Swagger();
-        public void Greeting(FeatureFunc<GreetingConfigurator> greeting) => _greeting = greeting;
+        FeatureFunc<GreetingFeature.Configurator> _greeting = c => c.Swagger();
+        public void Greeting(FeatureFunc<GreetingFeature.Configurator> greeting) => _greeting = greeting;
 
-        FeatureFunc<LoggingConfigurator> _logging = c => c.Request();
-        public void Logging(FeatureFunc<LoggingConfigurator> logging) => _logging = logging;
+        FeatureFunc<LoggingFeature.Configurator> _logging = c => c.Request();
+        public void Logging(FeatureFunc<LoggingFeature.Configurator> logging) => _logging = logging;
 
-        FeatureFunc<RateLimiterConfigurator> _rateLimiter = c => c.Concurrency();
-        public void RateLimiter(FeatureFunc<RateLimiterConfigurator> rateLimiter) => _rateLimiter = rateLimiter;
+        FeatureFunc<RateLimiterFeature.Configurator> _rateLimiter = c => c.Concurrency();
+        public void RateLimiter(FeatureFunc<RateLimiterFeature.Configurator> rateLimiter) => _rateLimiter = rateLimiter;
 
-        FeatureFunc<ReportingConfigurator> _reporting = c => c.NativeSql();
-        public void Reporting(FeatureFunc<ReportingConfigurator> reporting) => _reporting = reporting;
+        FeatureFunc<ReportingFeature.Configurator> _reporting = c => c.NativeSql();
+        public void Reporting(FeatureFunc<ReportingFeature.Configurator> reporting) => _reporting = reporting;
 
         public override void Apply(ApplicationDescriptor app)
         {
@@ -131,17 +121,17 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessFeature.Configurator>
     public class Test(FeatureFunc<BusinessFeature.Configurator> business)
         : DataSourceRecipe(business)
     {
-        FeatureFunc<CoreConfigurator> _core = c => c.Mock();
-        public void Core(FeatureFunc<CoreConfigurator> core) => _core = core;
+        FeatureFunc<CoreFeature.Configurator> _core = c => c.Mock();
+        public void Core(FeatureFunc<CoreFeature.Configurator> core) => _core = core;
 
-        FeatureFunc<DatabaseConfigurator> _database = c => c.InMemory();
-        public void Database(FeatureFunc<DatabaseConfigurator> database) => _database = database;
+        FeatureFunc<DatabaseFeature.Configurator> _database = c => c.InMemory();
+        public void Database(FeatureFunc<DatabaseFeature.Configurator> database) => _database = database;
 
-        FeatureFunc<MockOverriderConfigurator> _mockOverrider = c => c.FirstInterface();
-        public void MockOverrider(FeatureFunc<MockOverriderConfigurator> mockOverrider) => _mockOverrider = mockOverrider;
+        FeatureFunc<MockOverriderFeature.Configurator> _mockOverrider = c => c.FirstInterface();
+        public void MockOverrider(FeatureFunc<MockOverriderFeature.Configurator> mockOverrider) => _mockOverrider = mockOverrider;
 
-        FeatureFunc<ReportingConfigurator> _reporting = c => c.Mock();
-        public void Reporting(FeatureFunc<ReportingConfigurator> reporting) => _reporting = reporting;
+        FeatureFunc<ReportingFeature.Configurator> _reporting = c => c.Mock();
+        public void Reporting(FeatureFunc<ReportingFeature.Configurator> reporting) => _reporting = reporting;
 
         public override void Apply(ApplicationDescriptor app)
         {

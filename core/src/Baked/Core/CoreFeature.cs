@@ -10,8 +10,14 @@ using System.Text.RegularExpressions;
 
 namespace Baked;
 
-public static class CoreExtensions
+public static class CoreFeature
 {
+    public static void AddCore(this List<IFeature> features,
+        FeatureFunc<Configurator> configure
+    ) => features.Add(configure(new()));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
+
     // WARNING
     //
     // Do NOT remove this warning disable section unintentionally.
@@ -24,15 +30,9 @@ public static class CoreExtensions
     });
 #pragma warning restore IDE0052
 
-    static CoreExtensions()
+    static CoreFeature()
     {
         _buildConsole.Profile.Width = int.MaxValue;
-    }
-
-    extension(List<IFeature> features)
-    {
-        public void AddCore(FeatureFunc<CoreConfigurator> configure) =>
-            features.Add(configure(new()));
     }
 
     extension(Console)

@@ -5,13 +5,13 @@ using Moq;
 
 namespace Baked;
 
-public static class ReportingExtensions
+public static class ReportingFeature
 {
-    extension(List<IFeature> features)
-    {
-        public void AddReporting(FeatureFunc<ReportingConfigurator> configure) =>
-            features.Add(configure(new()));
-    }
+    public static void AddReporting(this List<IFeature> features,
+        FeatureFunc<Configurator> configure
+    ) => features.Add(configure(new()));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
 
     extension(Mocker mockMe)
     {
@@ -42,7 +42,7 @@ public static class ReportingExtensions
         }
     }
 
-    extension(IReportContext dataFetcher)
+    extension(IReportContext context)
     {
         public void VerifyExecute(
             string? queryName = default,
@@ -52,7 +52,7 @@ public static class ReportingExtensions
         {
             parameters ??= parameter is not null ? [parameter.Value] : [];
 
-            Mock.Get(dataFetcher).Verify(
+            Mock.Get(context).Verify(
                 df => df.Execute(
                     It.Is<string>(q => queryName == null || q == queryName),
                     It.Is<Dictionary<string, object?>>(p =>

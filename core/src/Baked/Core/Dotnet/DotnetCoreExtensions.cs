@@ -6,7 +6,7 @@ namespace Baked;
 
 public static class DotnetCoreExtensions
 {
-    extension(CoreConfigurator _)
+    extension(CoreFeature.Configurator _)
     {
         public DotnetCoreFeature Dotnet(
             Assembly? entryAssembly = default,

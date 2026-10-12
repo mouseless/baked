@@ -10,7 +10,7 @@ namespace Baked;
 
 public static class DefaultThemeExtensions
 {
-    extension(ThemeConfigurator _)
+    extension(ThemeFeature.Configurator _)
     {
         public DefaultThemeFeature Default(Func<Router, Route> index,
             IEnumerable<Func<Router, Route>>? routes = default,

@@ -5,13 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked;
 
-public static class MockOverriderExtensions
+public static class MockOverriderFeature
 {
-    extension(List<IFeature> features)
-    {
-        public void AddMockOverrider(FeatureFunc<MockOverriderConfigurator> configure) =>
-            features.Add(configure(new()));
-    }
+    public static void AddMockOverrider(this List<IFeature> features,
+        FeatureFunc<Configurator> configure
+    ) => features.Add(configure(new()));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
 
     extension(Stubber giveMe)
     {

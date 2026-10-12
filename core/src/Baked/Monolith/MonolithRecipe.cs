@@ -5,19 +5,6 @@ using Baked.CodingStyle.NameBasedLabel;
 using Baked.CodingStyle.QueryViaPluralName;
 using Baked.CodingStyle.ScopedViaSuffix;
 using Baked.CodingStyle.UseBuiltInTypes;
-using Baked.Communication;
-using Baked.Core;
-using Baked.Cors;
-using Baked.Database;
-using Baked.ExceptionHandling;
-using Baked.Greeting;
-using Baked.Lifetime;
-using Baked.Localization;
-using Baked.Logging;
-using Baked.MockOverrider;
-using Baked.Orm;
-using Baked.RateLimiter;
-using Baked.Theme;
 
 namespace Baked.Monolith;
 
@@ -35,17 +22,17 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessFeature.Configurator> b
     IEnumerable<FeatureFunc<CodingStyleFeature.Configurator>>? _codingStyles;
     public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleFeature.Configurator>> codingStyles) => _codingStyles = codingStyles;
 
-    FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
-    public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
+    FeatureFunc<ExceptionHandlingFeature.Configurator> _exceptionHandling = c => c.ProblemDetails();
+    public void ExceptionHandling(FeatureFunc<ExceptionHandlingFeature.Configurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
 
-    IEnumerable<FeatureFunc<LifetimeConfigurator>> _lifetimes = [c => c.Scope(), c => c.Application(), c => c.Instance()];
-    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
+    IEnumerable<FeatureFunc<LifetimeFeature.Configurator>> _lifetimes = [c => c.Scope(), c => c.Application(), c => c.Instance()];
+    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeFeature.Configurator>> lifetimes) => _lifetimes = lifetimes;
 
-    FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
-    public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;
+    FeatureFunc<LocalizationFeature.Configurator> _localization = c => c.Dotnet();
+    public void Localization(FeatureFunc<LocalizationFeature.Configurator> localization) => _localization = localization;
 
-    FeatureFunc<OrmConfigurator> _orm = c => c.AutoMap();
-    public void Orm(FeatureFunc<OrmConfigurator> orm) => _orm = orm;
+    FeatureFunc<OrmFeature.Configurator> _orm = c => c.AutoMap();
+    public void Orm(FeatureFunc<OrmFeature.Configurator> orm) => _orm = orm;
 
     // Coding Styles
     FeatureFunc<CodingStyleFeature.Configurator> _commandViaMethodName = c => c.CommandViaMethodName();
@@ -106,29 +93,29 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessFeature.Configurator> b
         FeatureFunc<AuthorizationFeature.Configurator> _authorization = c => c.ClaimBased();
         public void Authorization(FeatureFunc<AuthorizationFeature.Configurator> authorization) => _authorization = authorization;
 
-        FeatureFunc<CommunicationConfigurator> _communication = c => c.Http();
-        public void Communication(FeatureFunc<CommunicationConfigurator> communication) => _communication = communication;
+        FeatureFunc<CommunicationFeature.Configurator> _communication = c => c.Http();
+        public void Communication(FeatureFunc<CommunicationFeature.Configurator> communication) => _communication = communication;
 
-        FeatureFunc<CoreConfigurator> _core = c => c.Dotnet();
-        public void Core(FeatureFunc<CoreConfigurator> core) => _core = core;
+        FeatureFunc<CoreFeature.Configurator> _core = c => c.Dotnet();
+        public void Core(FeatureFunc<CoreFeature.Configurator> core) => _core = core;
 
-        FeatureFunc<CorsConfigurator> _cors = c => c.Disabled();
-        public void Cors(FeatureFunc<CorsConfigurator> cors) => _cors = cors;
+        FeatureFunc<CorsFeature.Configurator> _cors = c => c.Disabled();
+        public void Cors(FeatureFunc<CorsFeature.Configurator> cors) => _cors = cors;
 
-        FeatureFunc<DatabaseConfigurator> _database = c => c.Sqlite();
-        public void Database(FeatureFunc<DatabaseConfigurator> database) => _database = database;
+        FeatureFunc<DatabaseFeature.Configurator> _database = c => c.Sqlite();
+        public void Database(FeatureFunc<DatabaseFeature.Configurator> database) => _database = database;
 
-        FeatureFunc<GreetingConfigurator> _greeting = c => c.Swagger();
-        public void Greeting(FeatureFunc<GreetingConfigurator> greeting) => _greeting = greeting;
+        FeatureFunc<GreetingFeature.Configurator> _greeting = c => c.Swagger();
+        public void Greeting(FeatureFunc<GreetingFeature.Configurator> greeting) => _greeting = greeting;
 
-        FeatureFunc<LoggingConfigurator> _logging = c => c.Request();
-        public void Logging(FeatureFunc<LoggingConfigurator> logging) => _logging = logging;
+        FeatureFunc<LoggingFeature.Configurator> _logging = c => c.Request();
+        public void Logging(FeatureFunc<LoggingFeature.Configurator> logging) => _logging = logging;
 
-        FeatureFunc<RateLimiterConfigurator> _rateLimiter = c => c.Concurrency();
-        public void RateLimiter(FeatureFunc<RateLimiterConfigurator> rateLimiter) => _rateLimiter = rateLimiter;
+        FeatureFunc<RateLimiterFeature.Configurator> _rateLimiter = c => c.Concurrency();
+        public void RateLimiter(FeatureFunc<RateLimiterFeature.Configurator> rateLimiter) => _rateLimiter = rateLimiter;
 
-        FeatureFunc<ThemeConfigurator>? _theme = default;
-        public void Theme(FeatureFunc<ThemeConfigurator>? theme) => _theme = theme;
+        FeatureFunc<ThemeFeature.Configurator>? _theme = default;
+        public void Theme(FeatureFunc<ThemeFeature.Configurator>? theme) => _theme = theme;
 
         FeatureFunc<UxFeature.Configurator> _enumParameterIsSelect = c => c.EnumParameterIsSelect();
         public void EnumParameterIsSelect(FeatureFunc<UxFeature.Configurator> enumParameterIsSelect) => _enumParameterIsSelect = enumParameterIsSelect;
@@ -198,17 +185,17 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessFeature.Configurator> b
     public class Test(FeatureFunc<BusinessFeature.Configurator> _business)
         : MonolithRecipe(_business)
     {
-        FeatureFunc<MockOverriderConfigurator> _mockOverrider = c => c.FirstInterface();
-        public void MockOverrider(FeatureFunc<MockOverriderConfigurator> mockOverrider) => _mockOverrider = mockOverrider;
+        FeatureFunc<MockOverriderFeature.Configurator> _mockOverrider = c => c.FirstInterface();
+        public void MockOverrider(FeatureFunc<MockOverriderFeature.Configurator> mockOverrider) => _mockOverrider = mockOverrider;
 
-        FeatureFunc<CommunicationConfigurator> _communication = c => c.Mock();
-        public void Communication(FeatureFunc<CommunicationConfigurator> communication) => _communication = communication;
+        FeatureFunc<CommunicationFeature.Configurator> _communication = c => c.Mock();
+        public void Communication(FeatureFunc<CommunicationFeature.Configurator> communication) => _communication = communication;
 
-        FeatureFunc<CoreConfigurator> _core = c => c.Mock();
-        public void Core(FeatureFunc<CoreConfigurator> core) => _core = core;
+        FeatureFunc<CoreFeature.Configurator> _core = c => c.Mock();
+        public void Core(FeatureFunc<CoreFeature.Configurator> core) => _core = core;
 
-        FeatureFunc<DatabaseConfigurator> _database = c => c.InMemory();
-        public void Database(FeatureFunc<DatabaseConfigurator> database) => _database = database;
+        FeatureFunc<DatabaseFeature.Configurator> _database = c => c.InMemory();
+        public void Database(FeatureFunc<DatabaseFeature.Configurator> database) => _database = database;
 
         public override void Apply(ApplicationDescriptor app)
         {

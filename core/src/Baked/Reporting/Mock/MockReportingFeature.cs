@@ -1,14 +1,15 @@
 ﻿using Baked.Architecture;
+using Baked.Reporting;
 
-namespace Baked.Reporting.Mock;
+namespace Baked;
 
-public class MockReportingFeature : IFeature<ReportingConfigurator>
+public static class MockReportingFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<ReportingFeature.Configurator> Mock(this ReportingFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Testing.ConfigureTestConfiguration(test =>
         {
             test.Mocks.Add<IReportContext>(singleton: true);
         });
-    }
+    });
 }
