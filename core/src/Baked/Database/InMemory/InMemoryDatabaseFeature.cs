@@ -1,51 +1,57 @@
 ﻿using Baked.Architecture;
 using Baked.DataAccess.Sqlite;
+using Baked.Database.InMemory;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace Baked.Database.InMemory;
+using ITransaction = Baked.Database.ITransaction;
 
-public class InMemoryDatabaseFeature : IFeature<DatabaseFeature.Configurator>
+namespace Baked;
+
+public static class InMemoryDatabaseFeature
 {
-    IStatelessSession? _globalSession;
-
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<DatabaseFeature.Configurator> InMemory(this DatabaseFeature.Configurator x)
     {
-        configurator.Runtime.ConfigureServiceCollection(services =>
-        {
-            services.AddSingleton<ITransaction, SkippedTransaction>();
-        });
+        IStatelessSession? globalSession = null;
 
-        configurator.DataAccess.ConfigurePersistence(persistence =>
+        return x.Define(configurator =>
         {
-            persistence.Configurer = SQLiteConfiguration.Microsoft.InMemory(cache: SqliteCacheMode.Shared);
-        });
-
-        configurator.DataAccess.ConfigureDatabaseInitializationCollection((initializations, sp) =>
-        {
-            initializations.AddInitializer(sf =>
+            configurator.Runtime.ConfigureServiceCollection(services =>
             {
-                // In memory db is disposed when last connection is closed, this connection is to keep the db open
-                _globalSession = sf.OpenStatelessSession();
-
-                sp.GetRequiredService<Configuration>().ExportSchema(false, true, false, _globalSession.Connection);
-            });
-        });
-
-        configurator.Testing.ConfigureTestConfiguration(test =>
-        {
-            test.SetUps.Add(spec =>
-            {
-                spec.GiveMe.TheSession().BeginTransaction();
+                services.AddSingleton<ITransaction, SkippedTransaction>();
             });
 
-            test.TearDowns.Add(spec =>
+            configurator.DataAccess.ConfigurePersistence(persistence =>
             {
-                spec.GiveMe.TheSession().Flush();
-                spec.GiveMe.TheSession().GetCurrentTransaction().Rollback();
-                spec.GiveMe.TheSession().Clear();
+                persistence.Configurer = SQLiteConfiguration.Microsoft.InMemory(cache: SqliteCacheMode.Shared);
+            });
+
+            configurator.DataAccess.ConfigureDatabaseInitializationCollection((initializations, sp) =>
+            {
+                initializations.AddInitializer(sf =>
+                {
+                    // In memory db is disposed when last connection is closed, this connection is to keep the db open
+                    globalSession = sf.OpenStatelessSession();
+
+                    sp.GetRequiredService<Configuration>().ExportSchema(false, true, false, globalSession.Connection);
+                });
+            });
+
+            configurator.Testing.ConfigureTestConfiguration(test =>
+            {
+                test.SetUps.Add(spec =>
+                {
+                    spec.GiveMe.TheSession().BeginTransaction();
+                });
+
+                test.TearDowns.Add(spec =>
+                {
+                    spec.GiveMe.TheSession().Flush();
+                    spec.GiveMe.TheSession().GetCurrentTransaction().Rollback();
+                    spec.GiveMe.TheSession().Clear();
+                });
             });
         });
     }
