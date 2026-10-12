@@ -2,6 +2,7 @@
 using Baked.Business;
 using Baked.Core;
 using Baked.Domain.Configuration;
+using Baked.Lifetime;
 using Baked.RestApi.Model;
 using Baked.Runtime;
 using Baked.Ui;
@@ -171,9 +172,19 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // configures route icon to type avatar
+            conventions.AddTypeComponent<Avatar>(
+                when: c => c.Type.Has<Locatable>() || c.Type.Has<Singleton>(),
+                where: cc =>
+                    cc.Route.Icon is not null &&
+                    cc.Path.Is("page", "*", "simple-page", "**", "page-title", "icon")
+            );
             conventions.EditTypeComponent<Avatar>(
                 where: cc => cc.Path.EndsWith("page-title", "icon"),
-                component: (a, _, cc) => a.Schema.Icon ??= cc.Route.Icon
+                component: (a, _, cc) =>
+                {
+                    a.Schema.Icon ??= cc.Route.Icon;
+                    a.Schema.Size ??= "xlarge";
+                }
             );
 
             // configures field set defaults for type
@@ -468,7 +479,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // configures route icon to method avatar
             conventions.EditMethodComponent<Avatar>(
                 where: cc => cc.Path.EndsWith("page-title", "icon"),
-                component: (a, _, cc) => a.Schema.Icon ??= cc.Route.Icon
+                component: (a, _, cc) =>
+                {
+                    a.Schema.Icon ??= cc.Route.Icon;
+                    a.Schema.Size ??= "xlarge";
+                }
             );
 
             // adds content to method
