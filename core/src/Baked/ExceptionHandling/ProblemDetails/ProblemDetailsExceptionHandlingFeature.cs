@@ -1,16 +1,20 @@
 ﻿using Baked.Architecture;
+using Baked.ExceptionHandling;
+using Baked.ExceptionHandling.ProblemDetails;
 using Baked.Runtime;
 using Baked.Ui;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 
-namespace Baked.ExceptionHandling.ProblemDetails;
+namespace Baked;
 
-public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFormat, Setting<bool>? _showUnhandled)
-    : IFeature<ExceptionHandlingFeature.Configurator>
+public static class ProblemDetailsExceptionHandlingFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<ExceptionHandlingFeature.Configurator> ProblemDetails(this ExceptionHandlingFeature.Configurator x,
+        Setting<string>? typeUrlFormat = default,
+        Setting<bool>? showUnhandled = default
+    ) => x.Define(configurator =>
     {
         configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
@@ -36,7 +40,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
             services.AddSingleton<IExceptionHandler, UnauthorizedAccessExceptionHandler>();
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
-            services.AddSingleton(new ExceptionHandlerSettings(_typeUrlFormat, _showUnhandled ?? false));
+            services.AddSingleton(new ExceptionHandlerSettings(typeUrlFormat, showUnhandled ?? false));
             services.AddExceptionHandler<ExceptionHandler>();
             services.AddProblemDetails();
         });
@@ -69,5 +73,5 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
                 ]
             });
         });
-    }
+    });
 }

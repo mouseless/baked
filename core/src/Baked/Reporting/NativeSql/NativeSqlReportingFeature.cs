@@ -1,14 +1,19 @@
 ﻿using Baked.Architecture;
+using Baked.Reporting;
+using Baked.Reporting.NativeSql;
 using Baked.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.Reporting.NativeSql;
+namespace Baked;
 
-public class NativeSqlReportingFeature(Setting<string> _basePath)
-    : IFeature<ReportingFeature.Configurator>
+public static class NativeSqlReportingFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<ReportingFeature.Configurator> NativeSql(this ReportingFeature.Configurator x,
+        Setting<string>? basePath = default
+    ) => x.Define(configurator =>
     {
+        basePath ??= string.Empty;
+
         configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
@@ -25,8 +30,8 @@ public class NativeSqlReportingFeature(Setting<string> _basePath)
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton(new ReportOptions(_basePath));
+            services.AddSingleton(new ReportOptions(basePath));
             services.AddSingleton<IReportContext, ReportContext>();
         });
-    }
+    });
 }
