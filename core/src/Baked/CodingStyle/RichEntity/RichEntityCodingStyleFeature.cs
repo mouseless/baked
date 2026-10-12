@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Binding;
 using Baked.Business;
+using Baked.CodingStyle.RichEntity;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.Orm;
@@ -8,11 +9,11 @@ using Baked.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Baked.CodingStyle.RichEntity;
+namespace Baked;
 
-public class RichEntityCodingStyleFeature : IFeature<CodingStyleFeature.Configurator>
+public static class RichEntityCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> RichEntity(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -56,9 +57,9 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleFeature.Configur
                 return result;
             };
         });
-    }
+    });
 
-    bool TryGetEntityContextParameter(TypeModelMembers type, [NotNullWhen(true)] out ParameterModel? parameter)
+    static bool TryGetEntityContextParameter(TypeModelMembers type, [NotNullWhen(true)] out ParameterModel? parameter)
     {
         parameter = type.Constructors
             .Select(o => o.Parameters.SingleOrDefault(p => p.ParameterType.IsAssignableTo(typeof(IEntityContext<>))))

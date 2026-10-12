@@ -2,14 +2,13 @@
 using Baked.Business;
 using Baked.Domain.Configuration;
 
-namespace Baked.CodingStyle.NameBasedLabel;
+namespace Baked;
 
-public class NameBasedLabelCodingStyleFeature(IEnumerable<string> propertyNames)
-    : IFeature<CodingStyleFeature.Configurator>
+public static class NameBasedLabelCodingStyleFeature
 {
-    readonly HashSet<string> _propertyNames = [.. propertyNames];
-
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> NameBasedLabel(this CodingStyleFeature.Configurator x,
+        IEnumerable<string>? propertyNames = default
+    ) => x.Define(new HashSet<string>(propertyNames ?? ["Display", "Label", "Name", "Title"]), (configurator, propertyNames) =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -20,10 +19,10 @@ public class NameBasedLabelCodingStyleFeature(IEnumerable<string> propertyNames)
                         c.Property.PropertyType.Is<string>() ||
                         c.Property.PropertyType.TryGetMetadata(out var metadata) && metadata.Has<Primitive>()
                     ) &&
-                    _propertyNames.Contains(c.Property.Name),
+                    propertyNames.Contains(c.Property.Name),
                 attribute: () => new Label(),
                 order: Order.At.Infra + 10
             );
         });
-    }
+    });
 }

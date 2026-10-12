@@ -1,17 +1,17 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.CodingStyle.InitializableViaMethodName;
 using Baked.Domain.Configuration;
 using Baked.Lifetime;
 using NHibernate.Util;
 
-namespace Baked.CodingStyle.InitializableViaMethodName;
+namespace Baked;
 
-public class InitializableViaMethodNameCodingStyleFeature(IEnumerable<string> initalizerNames)
-    : IFeature<CodingStyleFeature.Configurator>
+public static class InitializableViaMethodNameCodingStyleFeature
 {
-    readonly HashSet<string> _initializerNames = [.. initalizerNames];
-
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> InitializableViaMethodName(this CodingStyleFeature.Configurator x,
+        string[]? initializerNames = default
+    ) => x.Define(new HashSet<string>(initializerNames ?? ["With"]), (configurator, initializerNames) =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -20,13 +20,13 @@ public class InitializableViaMethodNameCodingStyleFeature(IEnumerable<string> in
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<Service>() &&
-                    _initializerNames.Any(i => members.Methods.Contains(i)),
+                    initializerNames.Any(i => members.Methods.Contains(i)),
                 attribute: () => new Transient(),
                 order: Order.At.Infra
             );
 
             conventions.SetMethodAttribute(
-                when: c => _initializerNames.Contains(c.Method.Name),
+                when: c => initializerNames.Contains(c.Method.Name),
                 attribute: () => new Initializer(),
                 order: Order.At.Infra
             );
@@ -35,5 +35,5 @@ public class InitializableViaMethodNameCodingStyleFeature(IEnumerable<string> in
             conventions.Add(new TargetUsingInitializerConvention(), order: Order.At.Max);
             conventions.Add(new RemoveInitializerNameFromRouteConvention(), order: Order.At.AbsoluteMax);
         });
-    }
+    });
 }

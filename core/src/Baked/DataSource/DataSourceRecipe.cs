@@ -1,9 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.CodingStyle.CommandViaMethodName;
-using Baked.CodingStyle.InitializableViaMethodName;
-using Baked.CodingStyle.NameBasedLabel;
-using Baked.CodingStyle.ScopedViaSuffix;
-using Baked.CodingStyle.UseBuiltInTypes;
 
 namespace Baked.DataSource;
 
@@ -32,19 +27,19 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessFeature.Configurator>
 
     // Coding Styles
     FeatureFunc<CodingStyleFeature.Configurator> _commandViaMethodName = c => c.CommandViaMethodName();
-    public void CommandViaMethodName(Func<CodingStyleFeature.Configurator, CommandViaMethodNameCodingStyleFeature> commandViaMethodName) => _commandViaMethodName = c => commandViaMethodName(c);
+    public void CommandViaMethodName(FeatureFunc<CodingStyleFeature.Configurator> commandViaMethodName) => _commandViaMethodName = commandViaMethodName;
 
     FeatureFunc<CodingStyleFeature.Configurator> _initializableViaMethodName = c => c.InitializableViaMethodName();
-    public void InitializableViaMethodName(Func<CodingStyleFeature.Configurator, InitializableViaMethodNameCodingStyleFeature> initializableViaMethodName) => _initializableViaMethodName = c => initializableViaMethodName(c);
+    public void InitializableViaMethodName(FeatureFunc<CodingStyleFeature.Configurator> initializableViaMethodName) => _initializableViaMethodName = initializableViaMethodName;
 
     FeatureFunc<CodingStyleFeature.Configurator> _nameBasedLabel = c => c.NameBasedLabel();
-    public void NameBasedLabel(Func<CodingStyleFeature.Configurator, NameBasedLabelCodingStyleFeature> nameBasedLabel) => _nameBasedLabel = c => nameBasedLabel(c);
+    public void NameBasedLabel(FeatureFunc<CodingStyleFeature.Configurator> nameBasedLabel) => _nameBasedLabel = nameBasedLabel;
 
     FeatureFunc<CodingStyleFeature.Configurator> _scopedViaSuffix = c => c.ScopedViaSuffix();
-    public void ScopedViaSuffix(Func<CodingStyleFeature.Configurator, ScopedViaSuffixCodingStyleFeature> scopedViaSuffix) => _scopedViaSuffix = c => scopedViaSuffix(c);
+    public void ScopedViaSuffix(FeatureFunc<CodingStyleFeature.Configurator> scopedViaSuffix) => _scopedViaSuffix = scopedViaSuffix;
 
     FeatureFunc<CodingStyleFeature.Configurator> _useBuiltInTypes = c => c.UseBuiltInTypes();
-    public void UseBuiltInTypes(Func<CodingStyleFeature.Configurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) => _useBuiltInTypes = c => useBuiltInTypes(c);
+    public void UseBuiltInTypes(FeatureFunc<CodingStyleFeature.Configurator> useBuiltInTypes) => _useBuiltInTypes = useBuiltInTypes;
 
     // Configure
     Action<ApplicationDescriptor> _configure = _ => { };

@@ -1,22 +1,32 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.CodingStyle.QueryViaPluralName;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.RestApi.Conventions;
 using Humanizer;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Baked.CodingStyle.QueryViaPluralName;
+namespace Baked;
 
-public class QueryViaPluralNameCodingStyleFeature(
-    HashSet<string> _queryMethodNames,
-    HashSet<string> _primaryParameterNames,
-    HashSet<string> _takeParameterNames,
-    HashSet<string> _skipParameterNames,
-    HashSet<string> _sortingParameterNames
-) : IFeature<CodingStyleFeature.Configurator>
+public static class QueryViaPluralNameCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> QueryViaPluralName(this CodingStyleFeature.Configurator x,
+        HashSet<string>? queryMethodNames = default,
+        HashSet<string>? primaryParameterNames = default,
+        HashSet<string>? takeParameterNames = default,
+        HashSet<string>? skipParameterNames = default,
+        HashSet<string>? sortingParameterNames = default
+    ) => x.Define((
+        queryMethodNames ?? ["By"],
+        primaryParameterNames ?? ["searchText"],
+        takeParameterNames ?? ["take"],
+        skipParameterNames ?? ["skip"],
+        sortingParameterNames ?? ["sort"]
+    ), (configurator, args) =>
     {
+        var (queryMethodNames, primaryParameterNames, takeParameterNames, skipParameterNames, sortingParameterNames) = args;
+
         configurator.Domain.ConfigureBuilder(builder =>
         {
             builder.Index.Method.Add<QueryMethod>();
@@ -52,7 +62,7 @@ public class QueryViaPluralNameCodingStyleFeature(
             ), order: Order.At.Infra);
 
             conventions.SetMethodAttribute(
-                when: c => c.Type.Has<Query>() && _queryMethodNames.Contains(c.Method.Name),
+                when: c => c.Type.Has<Query>() && queryMethodNames.Contains(c.Method.Name),
                 attribute: () => new QueryMethod(),
                 order: Order.At.Infra + 40
             );
@@ -62,13 +72,13 @@ public class QueryViaPluralNameCodingStyleFeature(
                 order: Order.At.Infra
             );
             conventions.EditMethodAttribute<QueryMethod>(
-                when: c => c.Method.DefaultOverload.Parameters.Any(p => _primaryParameterNames.Contains(p.Name)),
+                when: c => c.Method.DefaultOverload.Parameters.Any(p => primaryParameterNames.Contains(p.Name)),
                 attribute: (qm, c) =>
                 {
                     var primaryParameter =
-                        c.Method.DefaultOverload.Parameters.FirstOrDefault(p => _primaryParameterNames.Contains(p.Name)) ??
+                        c.Method.DefaultOverload.Parameters.FirstOrDefault(p => primaryParameterNames.Contains(p.Name)) ??
                         throw DiagnosticCode.InvalidState.Exception(
-                            $"{c.Type.Name}.{c.Method.Name} is expected to contain a parameter with name that matches one of ({_primaryParameterNames.Join(", ")})"
+                            $"{c.Type.Name}.{c.Method.Name} is expected to contain a parameter with name that matches one of ({primaryParameterNames.Join(", ")})"
                         );
 
                     qm.PrimaryParameterName = primaryParameter.Name;
@@ -77,22 +87,48 @@ public class QueryViaPluralNameCodingStyleFeature(
             );
 
             conventions.SetParameterAttribute(
-                when: c => c.Method.Has<QueryMethod>() && _takeParameterNames.Contains(c.Parameter.Name),
+                when: c => c.Method.Has<QueryMethod>() && takeParameterNames.Contains(c.Parameter.Name),
                 attribute: () => new Paging(Paging.Role.Take),
                 order: Order.At.Infra + 40
             );
 
             conventions.SetParameterAttribute(
-                when: c => c.Method.Has<QueryMethod>() && _skipParameterNames.Contains(c.Parameter.Name),
+                when: c => c.Method.Has<QueryMethod>() && skipParameterNames.Contains(c.Parameter.Name),
                 attribute: () => new Paging(Paging.Role.Skip),
                 order: Order.At.Infra + 40
             );
 
             conventions.SetParameterAttribute(
-                when: c => c.Method.Has<QueryMethod>() && _sortingParameterNames.Contains(c.Parameter.Name),
+                when: c => c.Method.Has<QueryMethod>() && sortingParameterNames.Contains(c.Parameter.Name),
                 attribute: () => new Sorting(),
                 order: Order.At.Infra + 40
             );
         });
+    });
+
+    extension(TypeModel type)
+    {
+        public bool TryGetQuery([NotNullWhen(true)] out Query? query)
+        {
+            query = default;
+
+            return
+                type.TryGetMetadata(out var metadata) &&
+                metadata.TryGet(out query);
+        }
+
+        public bool TryGetLocatableType(DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)
+        {
+            if (!type.TryGetQuery(out var query))
+            {
+                locatableType = default;
+
+                return false;
+            }
+
+            locatableType = domain.Types[query.LocatableType];
+
+            return true;
+        }
     }
 }
