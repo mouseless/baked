@@ -13,13 +13,13 @@ using System.Reflection;
 
 namespace Baked;
 
-public static class BusinessExtensions
+public static class BusinessFeature
 {
-    extension(List<IFeature> features)
-    {
-        public void AddBusiness(FeatureFunc<BusinessConfigurator> configure) =>
-            features.Add(configure(new()));
-    }
+    public static void AddBusiness(this List<IFeature> features,
+        FeatureFunc<Configurator> configure
+    ) => features.Add(configure(new()));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
 
     extension(DiagnosticCode)
     {

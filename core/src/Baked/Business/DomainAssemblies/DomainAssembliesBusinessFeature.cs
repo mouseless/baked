@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -6,23 +7,61 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 
-namespace Baked.Business.DomainAssemblies;
+namespace Baked;
 
-public class DomainAssembliesBusinessFeature(
-    IEnumerable<(Assembly assembly, string baseNamespace)> _assemblyDescriptors,
-    Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector,
-    bool _addEmbeddedFileProviders,
-    Func<TypeModel, bool> setNamespaceWhen
-) : IFeature<BusinessConfigurator>
+public static class DomainAssembliesBusinessFeature
 {
+    public static IFeature<BusinessFeature.Configurator> DomainAssemblies(this BusinessFeature.Configurator x,
+        Assembly assembly,
+        string? baseNamespace = default,
+        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
+        bool addEmbeddedFileProviders = true,
+        Func<TypeModel, bool>? setNamespaceWhen = default
+    ) => x.DomainAssemblies([assembly],
+        baseNamespace: baseNamespace is not null ? _ => baseNamespace : null,
+        defaultOverloadSelector: defaultOverloadSelector,
+        addEmbeddedFileProviders: addEmbeddedFileProviders,
+        setNamespaceWhen: setNamespaceWhen
+    );
 
-    Dictionary<Assembly, string> BaseNamespaces { get; } = _assemblyDescriptors.ToDictionary(kvp => kvp.assembly, kvp => kvp.baseNamespace);
-
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<BusinessFeature.Configurator> DomainAssemblies(this BusinessFeature.Configurator x,
+        IEnumerable<Assembly> assemblies,
+        Func<Assembly, string>? baseNamespace = default,
+        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
+        bool addEmbeddedFileProviders = true,
+        Func<TypeModel, bool>? setNamespaceWhen = default
+    )
     {
+        baseNamespace ??= (a => a.GetName().Name ?? string.Empty);
+
+        return x.DomainAssemblies(assemblies.Select(a => (a, baseNamespace(a))),
+            defaultOverloadSelector: defaultOverloadSelector,
+            addEmbeddedFileProviders: addEmbeddedFileProviders,
+            setNamespaceWhen: setNamespaceWhen
+        );
+    }
+
+    public static IFeature<BusinessFeature.Configurator> DomainAssemblies(this BusinessFeature.Configurator x,
+        IEnumerable<(Assembly assembly, string baseNamespace)> assemblyDescriptors,
+        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
+        bool addEmbeddedFileProviders = true,
+        Func<TypeModel, bool>? setNamespaceWhen = default
+    ) => x.Define(configurator =>
+    {
+        defaultOverloadSelector ??= overloads =>
+            overloads.FirstPublicInstanceWithMostParametersOrDefault() ??
+            overloads.FirstNonPublicInstanceWithMostParametersOrDefault() ??
+            overloads.FirstPublicStaticWithMostParametersOrDefault() ??
+            overloads.FirstNonPublicStaticWithMostParametersOrDefault() ??
+            overloads.FirstWithMostParametersOrDefault() ??
+            throw new($"Method without an overload should not exist");
+        setNamespaceWhen ??= t => true;
+
+        var baseNamespaces = assemblyDescriptors.ToDictionary(kvp => kvp.assembly, kvp => kvp.baseNamespace);
+
         configurator.Domain.ConfigureDomainTypeCollection(types =>
         {
-            foreach (var (assembly, _) in _assemblyDescriptors)
+            foreach (var (assembly, _) in assemblyDescriptors)
             {
                 types.AddFromAssembly(assembly,
                     except: type =>
@@ -55,7 +94,7 @@ public class DomainAssembliesBusinessFeature(
             builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
             builder.BindingFlags.Property = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
-            builder.DefaultOverloadSelector = _defaultOverloadSelector;
+            builder.DefaultOverloadSelector = defaultOverloadSelector;
 
             builder.BuildLevels.Add(context => context.DomainTypesContain(context.Type), BuildLevels.Members);
             builder.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
@@ -112,7 +151,7 @@ public class DomainAssembliesBusinessFeature(
                     var @namespace = context.Type.Namespace ?? string.Empty;
                     context.Type.Apply(t =>
                     {
-                        if (!BaseNamespaces.TryGetValue(t.Assembly, out var baseNamespace)) { return; }
+                        if (!baseNamespaces.TryGetValue(t.Assembly, out var baseNamespace)) { return; }
 
                         @namespace =
                             @namespace == baseNamespace ? string.Empty :
@@ -163,9 +202,9 @@ public class DomainAssembliesBusinessFeature(
         {
             services.AddSingleton<Validate>();
 
-            foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
+            foreach (var (assembly, baseNamespace) in assemblyDescriptors)
             {
-                if (_addEmbeddedFileProviders)
+                if (addEmbeddedFileProviders)
                 {
                     services.AddFileProvider(new EmbeddedFileProvider(assembly, baseNamespace));
                 }
@@ -174,12 +213,12 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.RestApi.ConfigureApiModel(api =>
         {
-            api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
+            api.References.AddRange(assemblyDescriptors.Select(a => a.assembly));
         });
 
         configurator.Domain.ConfigureDomainServiceCollection(services =>
         {
-            services.References.AddRange(_assemblyDescriptors.Select(ad => ad.assembly));
+            services.References.AddRange(assemblyDescriptors.Select(ad => ad.assembly));
             services.Usings.AddRange([
                 "Baked.Business",
                 "Baked.Runtime",
@@ -189,7 +228,7 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            foreach (var (assembly, _) in _assemblyDescriptors)
+            foreach (var (assembly, _) in assemblyDescriptors)
             {
                 var xmlPath = XmlComments.GetPath(assembly);
                 if (xmlPath is null) { continue; }
@@ -197,5 +236,37 @@ public class DomainAssembliesBusinessFeature(
                 swaggerGenOptions.IncludeXmlComments(xmlPath);
             }
         });
+    });
+
+    extension(IEnumerable<MethodOverloadModel> overloads)
+    {
+        public MethodOverloadModel? FirstPublicInstanceWithMostParametersOrDefault() =>
+            overloads
+                .Where(o => o.IsPublic && !o.IsStatic)
+                .OrderByDescending(o => o.Parameters.Count)
+                .FirstOrDefault();
+
+        public MethodOverloadModel? FirstNonPublicInstanceWithMostParametersOrDefault() =>
+            overloads
+                .Where(o => !o.IsPublic && !o.IsStatic)
+                .OrderByDescending(o => o.Parameters.Count)
+                .FirstOrDefault();
+
+        public MethodOverloadModel? FirstPublicStaticWithMostParametersOrDefault() =>
+            overloads
+                .Where(o => o.IsPublic && o.IsStatic)
+                .OrderByDescending(o => o.Parameters.Count)
+                .FirstOrDefault();
+
+        public MethodOverloadModel? FirstNonPublicStaticWithMostParametersOrDefault() =>
+            overloads
+                .Where(o => !o.IsPublic && o.IsStatic)
+                .OrderByDescending(o => o.Parameters.Count)
+                .FirstOrDefault();
+
+        public MethodOverloadModel? FirstWithMostParametersOrDefault() =>
+            overloads
+                .OrderByDescending(o => o.Parameters.Count)
+                .FirstOrDefault();
     }
 }

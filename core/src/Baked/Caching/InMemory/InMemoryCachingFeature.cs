@@ -1,16 +1,23 @@
 ﻿using Baked.Architecture;
+using Baked.Caching;
+using Baked.Caching.InMemory;
 using Baked.Domain.Configuration;
+using Baked.Testing;
 using Baked.Ui;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
-namespace Baked.Caching.InMemory;
+namespace Baked;
 
-public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options)
-    : IFeature<CachingConfigurator>
+public static class InMemoryCachingFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CachingFeature.Configurator> InMemory(this CachingFeature.Configurator x,
+        Action<MemoryCacheOptions>? options = default
+    ) => x.Define(configurator =>
     {
+        options ??= _ => { };
+
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.EditMethodSchema<RemoteData>(
@@ -22,7 +29,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options)
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            services.AddMemoryCache(_options);
+            services.AddMemoryCache(options);
         });
 
         configurator.Ui.ConfigureAppDescriptor(app =>
@@ -37,5 +44,24 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options)
                 spec.GiveMe.TheMemoryCache(clear: true);
             });
         });
+    });
+
+    extension(Stubber giveMe)
+    {
+        public IMemoryCache TheMemoryCache(
+            bool clear = false
+        )
+        {
+            var memoryCache = giveMe.The<IMemoryCache>();
+
+            if (clear)
+            {
+                if (memoryCache is not MemoryCache concreteMemoryCache) { throw new AssertionException("Cache cannot be cleared because it is not a `MemoryCache` instance"); }
+
+                concreteMemoryCache.Clear();
+            }
+
+            return memoryCache;
+        }
     }
 }

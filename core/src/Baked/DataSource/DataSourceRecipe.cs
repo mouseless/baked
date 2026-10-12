@@ -1,7 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Binding;
-using Baked.Business;
-using Baked.Caching;
 using Baked.CodingStyle;
 using Baked.CodingStyle.CommandViaMethodName;
 using Baked.CodingStyle.InitializableViaMethodName;
@@ -21,16 +18,16 @@ using Baked.Reporting;
 
 namespace Baked.DataSource;
 
-public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> business)
+public abstract class DataSourceRecipe(FeatureFunc<BusinessFeature.Configurator> business)
 {
     // Features
-    FeatureFunc<BusinessConfigurator> _business = business;
+    FeatureFunc<BusinessFeature.Configurator> _business = business;
 
-    IEnumerable<FeatureFunc<BindingConfigurator>> _bindings = [c => c.Rest()];
-    public void Bindings(params IEnumerable<FeatureFunc<BindingConfigurator>> bindings) => _bindings = bindings;
+    IEnumerable<FeatureFunc<BindingFeature.Configurator>> _bindings = [c => c.Rest()];
+    public void Bindings(params IEnumerable<FeatureFunc<BindingFeature.Configurator>> bindings) => _bindings = bindings;
 
-    IEnumerable<FeatureFunc<CachingConfigurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
-    public void Cachings(params IEnumerable<FeatureFunc<CachingConfigurator>> cachings) => _cachings = cachings;
+    IEnumerable<FeatureFunc<CachingFeature.Configurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
+    public void Cachings(params IEnumerable<FeatureFunc<CachingFeature.Configurator>> cachings) => _cachings = cachings;
 
     IEnumerable<FeatureFunc<CodingStyleConfigurator>>? _codingStyles;
     public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleConfigurator>> codingStyles) => _codingStyles = codingStyles;
@@ -84,7 +81,7 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
         c => c.UseNullableTypes()
     ];
 
-    public class Run(FeatureFunc<BusinessConfigurator> business)
+    public class Run(FeatureFunc<BusinessFeature.Configurator> business)
         : DataSourceRecipe(business)
     {
         FeatureFunc<CoreConfigurator> _core = c => c.Dotnet();
@@ -132,7 +129,7 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
         }
     }
 
-    public class Test(FeatureFunc<BusinessConfigurator> business)
+    public class Test(FeatureFunc<BusinessFeature.Configurator> business)
         : DataSourceRecipe(business)
     {
         FeatureFunc<CoreConfigurator> _core = c => c.Mock();

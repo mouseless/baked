@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 using Baked.Testing;
 
 namespace Baked.Monolith;
@@ -13,7 +12,7 @@ public abstract class MonolithSpec : Spec
     }
 
     protected static void Init(
-        FeatureFunc<BusinessConfigurator> business,
+        FeatureFunc<BusinessFeature.Configurator> business,
         Action<MonolithRecipe.Test>? options = default
     )
     {
