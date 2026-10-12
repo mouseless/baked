@@ -3,11 +3,11 @@ using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Orm;
 
-namespace Baked.CodingStyle.UniqueViaSingleBy;
+namespace Baked;
 
-public class UniqueViaSingleByCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class UniqueViaSingleByCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> UniqueViaSingleBy(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -22,5 +22,5 @@ public class UniqueViaSingleByCodingStyleFeature : IFeature<CodingStyleConfigura
                 order: Order.At.Infra + 30
             );
         });
-    }
+    });
 }

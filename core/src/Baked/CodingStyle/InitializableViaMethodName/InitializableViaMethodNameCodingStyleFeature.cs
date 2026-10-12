@@ -7,7 +7,7 @@ using NHibernate.Util;
 namespace Baked.CodingStyle.InitializableViaMethodName;
 
 public class InitializableViaMethodNameCodingStyleFeature(IEnumerable<string> initalizerNames)
-    : IFeature<CodingStyleConfigurator>
+    : IFeature<CodingStyleFeature.Configurator>
 {
     readonly HashSet<string> _initializerNames = [.. initalizerNames];
 

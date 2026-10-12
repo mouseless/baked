@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.RichEntity;
 
-public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class RichEntityCodingStyleFeature : IFeature<CodingStyleFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.ResourceViaIdInitializer;
 
-public class ResourceViaIdInitializerCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class ResourceViaIdInitializerCodingStyleFeature : IFeature<CodingStyleFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

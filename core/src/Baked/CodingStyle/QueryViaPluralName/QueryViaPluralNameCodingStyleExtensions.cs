@@ -1,5 +1,4 @@
 ﻿using Baked.Business;
-using Baked.CodingStyle;
 using Baked.CodingStyle.QueryViaPluralName;
 using Baked.Domain.Model;
 using System.Diagnostics.CodeAnalysis;
@@ -8,7 +7,7 @@ namespace Baked;
 
 public static class QueryViaPluralNameCodingStyleExtensions
 {
-    extension(CodingStyleConfigurator _)
+    extension(CodingStyleFeature.Configurator _)
     {
         public QueryViaPluralNameCodingStyleFeature QueryViaPluralName(
             HashSet<string>? queryMethodNames = default,

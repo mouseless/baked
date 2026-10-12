@@ -1,15 +1,16 @@
 ﻿using Baked.Architecture;
 using Baked.Binding;
+using Baked.CodingStyle.ObjectAsJson;
 using Baked.Domain.Configuration;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
 
-namespace Baked.CodingStyle.ObjectAsJson;
+namespace Baked;
 
-public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class ObjectAsJsonCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> ObjectAsJson(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -36,5 +37,5 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
             swaggerGenOptions.SchemaFilter<NullTypesAreObjectSchemaFilter>();
             swaggerGenOptions.OperationFilter<ObjectResponseOperationFilter>();
         });
-    }
+    });
 }

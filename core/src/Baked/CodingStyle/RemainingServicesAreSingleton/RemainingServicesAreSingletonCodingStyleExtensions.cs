@@ -1,11 +1,10 @@
-﻿using Baked.CodingStyle;
-using Baked.CodingStyle.RemainingServicesAreSingleton;
+﻿using Baked.CodingStyle.RemainingServicesAreSingleton;
 
 namespace Baked;
 
 public static class RemainingServicesAreSingletonCodingStyleExtensions
 {
-    extension(CodingStyleConfigurator _)
+    extension(CodingStyleFeature.Configurator _)
     {
         public RemainingServicesAreSingletonCodingStyleFeature RemainingServicesAreSingleton() =>
             new();

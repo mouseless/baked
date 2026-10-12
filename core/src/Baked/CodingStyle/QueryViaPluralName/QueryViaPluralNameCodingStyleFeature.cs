@@ -13,7 +13,7 @@ public class QueryViaPluralNameCodingStyleFeature(
     HashSet<string> _takeParameterNames,
     HashSet<string> _skipParameterNames,
     HashSet<string> _sortingParameterNames
-) : IFeature<CodingStyleConfigurator>
+) : IFeature<CodingStyleFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

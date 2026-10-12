@@ -6,7 +6,7 @@ using Baked.Lifetime;
 namespace Baked.CodingStyle.RemainingServicesAreSingleton;
 
 public class RemainingServicesAreSingletonCodingStyleFeature()
-    : IFeature<CodingStyleConfigurator>
+    : IFeature<CodingStyleFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

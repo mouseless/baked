@@ -9,7 +9,7 @@ using Newtonsoft.Json.Serialization;
 namespace Baked.CodingStyle.UseBuiltInTypes;
 
 public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textPropertySuffixes)
-    : IFeature<CodingStyleConfigurator>
+    : IFeature<CodingStyleFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

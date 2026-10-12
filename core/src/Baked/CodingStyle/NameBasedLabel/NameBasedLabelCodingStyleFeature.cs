@@ -5,7 +5,7 @@ using Baked.Domain.Configuration;
 namespace Baked.CodingStyle.NameBasedLabel;
 
 public class NameBasedLabelCodingStyleFeature(IEnumerable<string> propertyNames)
-    : IFeature<CodingStyleConfigurator>
+    : IFeature<CodingStyleFeature.Configurator>
 {
     readonly HashSet<string> _propertyNames = [.. propertyNames];
 

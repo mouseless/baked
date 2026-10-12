@@ -1,5 +1,4 @@
-﻿using Baked.CodingStyle;
-using Baked.CodingStyle.UseBuiltInTypes;
+﻿using Baked.CodingStyle.UseBuiltInTypes;
 using Baked.Domain.Model;
 using System.Diagnostics.CodeAnalysis;
 
@@ -7,7 +6,7 @@ namespace Baked;
 
 public static class UseBuiltInTypesCodingStyleExtensions
 {
-    extension(CodingStyleConfigurator _)
+    extension(CodingStyleFeature.Configurator _)
     {
         public UseBuiltInTypesCodingStyleFeature UseBuiltInTypes(
             IEnumerable<string>? textPropertySuffixes = default

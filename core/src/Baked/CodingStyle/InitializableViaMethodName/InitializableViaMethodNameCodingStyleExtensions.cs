@@ -1,11 +1,10 @@
-﻿using Baked.CodingStyle;
-using Baked.CodingStyle.InitializableViaMethodName;
+﻿using Baked.CodingStyle.InitializableViaMethodName;
 
 namespace Baked;
 
 public static class InitializableViaMethodNameCodingStyleExtensions
 {
-    extension(CodingStyleConfigurator _)
+    extension(CodingStyleFeature.Configurator _)
     {
         public InitializableViaMethodNameCodingStyleFeature InitializableViaMethodName(
             string[]? initializerNames = default

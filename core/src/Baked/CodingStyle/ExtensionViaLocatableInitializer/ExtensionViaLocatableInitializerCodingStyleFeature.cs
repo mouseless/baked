@@ -1,13 +1,16 @@
 ﻿using Baked.Architecture;
 using Baked.Binding;
 using Baked.Business;
+using Baked.CodingStyle.ExtensionViaLocatableInitializer;
 using Baked.Domain.Configuration;
+using Baked.Domain.Model;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Baked.CodingStyle.ExtensionViaLocatableInitializer;
+namespace Baked;
 
-public class ExtensionViaLocatableInitializerCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class ExtensionViaLocatableInitializerCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> ExtensionViaLocatableInitializer(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -83,7 +86,7 @@ public class ExtensionViaLocatableInitializerCodingStyleFeature : IFeature<Codin
             {
                 generatedAssemblies.Add(nameof(ExtensionViaLocatableInitializerCodingStyleFeature),
                     assembly => assembly
-                        .AddReferenceFrom<ExtensionViaLocatableInitializerCodingStyleFeature>()
+                        .AddReferenceFrom<CodingStyleFeature.Configurator>()
                         .AddCodes(new LocatorTemplate(domain)),
                     usings: [.. LocatorTemplate.GlobalUsings]
                 );
@@ -97,5 +100,20 @@ public class ExtensionViaLocatableInitializerCodingStyleFeature : IFeature<Codin
                 services.AddFromAssembly(context.Assemblies[nameof(ExtensionViaLocatableInitializerCodingStyleFeature)]);
             });
         });
+    });
+
+    extension(TypeModel type)
+    {
+        public bool TryGetLocatableTypeFromExtension(DomainModel domain, [NotNullWhen(true)] out TypeModel? locatableType)
+        {
+            locatableType = default;
+
+            if (!type.TryGetMetadata(out var metadata)) { return false; }
+            if (!metadata.TryGet<LocatableExtension>(out var locatableExtension)) { return false; }
+
+            locatableType = domain.Types[locatableExtension.LocatableType];
+
+            return true;
+        }
     }
 }

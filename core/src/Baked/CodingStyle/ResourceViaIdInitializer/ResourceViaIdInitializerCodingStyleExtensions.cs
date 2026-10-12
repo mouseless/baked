@@ -1,5 +1,4 @@
 ﻿using Baked.Business;
-using Baked.CodingStyle;
 using Baked.CodingStyle.ResourceViaIdInitializer;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
@@ -9,7 +8,7 @@ namespace Baked;
 
 public static class ResourceViaIdInitializerCodingStyleExtensions
 {
-    extension(CodingStyleConfigurator _)
+    extension(CodingStyleFeature.Configurator _)
     {
         public ResourceViaIdInitializerCodingStyleFeature ResourceViaIdInitializer() =>
             new();

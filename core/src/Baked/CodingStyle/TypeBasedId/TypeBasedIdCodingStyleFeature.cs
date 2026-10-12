@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.CodingStyle.TypeBasedId;
 using Baked.Domain.Configuration;
 using Baked.Orm;
 using Baked.RestApi;
@@ -8,11 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
 using NHibernate.Id;
 
-namespace Baked.CodingStyle.TypeBasedId;
+namespace Baked;
 
-public class TypeBasedIdCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class TypeBasedIdCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> TypeBasedId(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -58,7 +59,7 @@ public class TypeBasedIdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             {
                 generatedAssemblies.Add(nameof(TypeBasedIdCodingStyleFeature),
                     assembly => assembly
-                        .AddReferenceFrom<TypeBasedIdCodingStyleFeature>()
+                        .AddReferenceFrom<CodingStyleFeature.Configurator>()
                         .AddCodes(new AutoPersistenceModelConfigurerTemplate(domain)),
                     usings: [.. AutoPersistenceModelConfigurerTemplate.GlobalUsings]
                 );
@@ -88,5 +89,24 @@ public class TypeBasedIdCodingStyleFeature : IFeature<CodingStyleConfigurator>
             // instead of only '$ref' in schemas
             swaggerGenOptions.MapType<Id>(() => new OpenApiSchema { Type = JsonSchemaType.String });
         });
+    });
+
+    extension(IdProperty id)
+    {
+        public void Generated() =>
+            id.Mapping = new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
+
+        public void AutoIncrement() =>
+            id.Mapping = new(typeof(IdIntUserType)) { IdentifierGenerator = typeof(IdentityGenerator) };
+
+        public void Assigned() =>
+            id.Mapping = new(typeof(IdStringUserType)) { IdentifierGenerator = typeof(Assigned) };
+
+        public void AssignedGuid() =>
+            id.Mapping = new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(Assigned) };
+
+        public IdProperty.MappingOptions GetMapping() =>
+            id.Mapping ??
+            new(typeof(IdGuidUserType)) { IdentifierGenerator = typeof(IdGuidGenerator) };
     }
 }

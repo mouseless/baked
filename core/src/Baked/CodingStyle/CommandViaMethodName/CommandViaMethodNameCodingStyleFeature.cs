@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Baked.CodingStyle.CommandViaMethodName;
 
 public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodNames)
-    : IFeature<CodingStyleConfigurator>
+    : IFeature<CodingStyleFeature.Configurator>
 {
     readonly HashSet<string> _methodNames = [.. _methodNames];
 

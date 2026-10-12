@@ -1,11 +1,10 @@
-﻿using Baked.CodingStyle;
-using Baked.CodingStyle.NameBasedLabel;
+﻿using Baked.CodingStyle.NameBasedLabel;
 
 namespace Baked;
 
 public static class NameBasedLabelCodingStyleExtensions
 {
-    extension(CodingStyleConfigurator _)
+    extension(CodingStyleFeature.Configurator _)
     {
         public NameBasedLabelCodingStyleFeature NameBasedLabel(
             IEnumerable<string>? propertyNames = default

@@ -1,15 +1,16 @@
 ﻿using Baked.Architecture;
+using Baked.CodingStyle.AddRemoveChildAsSubResource;
 using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Baked.CodingStyle.AddRemoveChildAsSubResource;
+namespace Baked;
 
-public class AddRemoveChildAsSubResourceCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class AddRemoveChildAsSubResourceCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> AddRemoveChildAsSubResource(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -28,5 +29,5 @@ public class AddRemoveChildAsSubResourceCodingStyleFeature : IFeature<CodingStyl
             conventions.Add(new OnlyLocatableParameterIsInRouteForDeleteChildConvention(), order: Order.At.Infra);
             conventions.Add(new RemoveFromRouteConvention(["Add", "Create", "New"]), order: Order.At.Infra);
         });
-    }
+    });
 }

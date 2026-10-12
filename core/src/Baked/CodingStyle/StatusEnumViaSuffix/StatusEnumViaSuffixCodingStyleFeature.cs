@@ -1,11 +1,11 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 
-namespace Baked.CodingStyle.StatusEnumViaSuffix;
+namespace Baked;
 
-public class StatusEnumViaSuffixCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class StatusEnumViaSuffixCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> StatusEnumViaSuffix(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -45,5 +45,5 @@ public class StatusEnumViaSuffixCodingStyleFeature : IFeature<CodingStyleConfigu
                 attribute: () => new Status()
             );
         });
-    }
+    });
 }

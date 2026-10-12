@@ -1,5 +1,4 @@
-﻿using Baked.CodingStyle;
-using Baked.CodingStyle.UseNullableTypes;
+﻿using Baked.CodingStyle.UseNullableTypes;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
@@ -9,7 +8,7 @@ namespace Baked;
 
 public static class UseNullableTypesCodingStyleExtensions
 {
-    extension(CodingStyleConfigurator _)
+    extension(CodingStyleFeature.Configurator _)
     {
         public UseNullableTypesCodingStyleFeature UseNullableTypes() =>
             new();

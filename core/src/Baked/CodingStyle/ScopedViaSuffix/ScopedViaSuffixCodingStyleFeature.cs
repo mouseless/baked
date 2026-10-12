@@ -6,7 +6,7 @@ using Baked.Lifetime;
 namespace Baked.CodingStyle.ScopedViaSuffix;
 
 public class ScopedViaSuffixCodingStyleFeature(IEnumerable<string> _suffixes)
-    : IFeature<CodingStyleConfigurator>
+    : IFeature<CodingStyleFeature.Configurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

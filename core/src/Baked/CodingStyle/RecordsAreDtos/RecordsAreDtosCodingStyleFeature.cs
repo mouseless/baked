@@ -2,11 +2,11 @@
 using Baked.Binding;
 using Baked.Domain.Configuration;
 
-namespace Baked.CodingStyle.RecordsAreDtos;
+namespace Baked;
 
-public class RecordsAreDtosCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class RecordsAreDtosCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> RecordsAreDtos(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -18,5 +18,5 @@ public class RecordsAreDtosCodingStyleFeature : IFeature<CodingStyleConfigurator
                 order: Order.At.Infra
             );
         });
-    }
+    });
 }

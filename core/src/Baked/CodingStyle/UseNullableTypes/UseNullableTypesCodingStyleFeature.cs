@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Baked.CodingStyle.UseNullableTypes;
 
-public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleFeature.Configurator>
 {
     NullabilityInfoContext _nullability = new();
 

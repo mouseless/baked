@@ -1,15 +1,16 @@
 ﻿using Baked.Architecture;
+using Baked.CodingStyle.NamespaceAsRoute;
 using Baked.Domain.Configuration;
 
-namespace Baked.CodingStyle.NamespaceAsRoute;
+namespace Baked;
 
-public class NamespaceAsRouteCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class NamespaceAsRouteCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> NamespaceAsRoute(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.Add(new UseNamespaceForBaseRouteConvention(), order: Order.At.Max);
         });
-    }
+    });
 }
