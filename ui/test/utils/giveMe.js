@@ -1087,6 +1087,17 @@ export default {
     };
   },
 
+  aTag({ value, data, localizationPrefix, localizeText } = {}) {
+    value = $(value, "Test string");
+    data = $(data, this.anInlineData(value));
+
+    return {
+      type: "Tag",
+      schema: { localizationPrefix, localizeText },
+      data
+    };
+  },
+
   aText({ value, data, maxLength, prop } = {}) {
     value = $(value, "Test string");
     data = $(data, this.anInlineData(value));

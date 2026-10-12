@@ -237,6 +237,12 @@
             "title": "/specs/rate:Title",
             "parentRoute": "/specs"
           },
+          "/specs/tag": {
+            "route": "/specs/tag",
+            "icon": "pi pi-microchip",
+            "title": "/specs/tag:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/text": {
             "route": "/specs/text",
             "icon": "pi pi-microchip",

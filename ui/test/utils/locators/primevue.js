@@ -96,7 +96,8 @@ export default {
     base: ".p-tab"
   },
   tag: {
-    base: ".p-tag"
+    base: ".p-tag",
+    success: ".p-tag-success"
   },
   textarea: {
     base: ".p-textarea"

@@ -129,6 +129,8 @@
   "/specs/simple-page:Title": "Simple Page",
   "/specs/tabbed-page:Description": "Renders more complicated pages with input in title and tab panel support",
   "/specs/tabbed-page:Title": "Tabbed Page",
+  "/specs/tag:Description": "Renders string values as a tag",
+  "/specs/tag:Title": "Tag",
   "/specs/text-link:Description": "Shows url value as a link",
   "/specs/text-link:Title": "Text Link",
   "/specs/text:Description": "Renders string values",

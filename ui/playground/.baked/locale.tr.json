@@ -129,6 +129,8 @@
   "/specs/simple-page:Title": "Sade Sayfa",
   "/specs/tabbed-page:Description": "Daha karmaşık sayfaları başlık kısmında kullanıcı girdileri ve sekmeli panel ile görselleştirir",
   "/specs/tabbed-page:Title": "Sekmeli Sayfa",
+  "/specs/tag:Description": "Metin değerlerini etiket olarak gösterir",
+  "/specs/tag:Title": "Etiket",
   "/specs/text-link:Description": "Url değerlerini bağlantı olarak gösterir",
   "/specs/text-link:Title": "Bağlantı Metni",
   "/specs/text:Description": "Metin değerlerini gösterir",
