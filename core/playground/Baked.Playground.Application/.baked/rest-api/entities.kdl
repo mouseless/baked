@@ -15,6 +15,7 @@ entity {
     dynamic @api-parameter
     enum @api-parameter
     flags-enum @api-parameter
+    status @api-parameter
     date-time @api-parameter
     date-only @api-parameter
     time-only @api-parameter
@@ -34,6 +35,7 @@ entity {
     dynamic @api-parameter
     enum @api-parameter
     flags-enum @api-parameter
+    status @api-parameter
     date-time @api-parameter
     date-only @api-parameter
     use-transaction @api-parameter

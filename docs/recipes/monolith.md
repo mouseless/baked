@@ -57,6 +57,7 @@ Bake.New
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Resource via ID Initializer              |                                    |
 |                    | Rich Entity                              |                                    |
+|                    | Status Enum via Suffix                   |                                    |
 |                    | Scoped via Suffix                        |                                    |
 |                    | Suffix based Client                      |                                    |
 |                    | Type based ID                            |                                    |

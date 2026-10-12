@@ -3,8 +3,10 @@ using Baked.Business;
 using Baked.Core;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
+using Baked.Runtime;
 using Baked.Ui;
 using Humanizer;
+using Newtonsoft.Json;
 
 namespace Baked.Theme.Default;
 
@@ -15,6 +17,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     ComponentPath.Debug? _debugComponentPaths = default
 ) : IFeature<ThemeConfigurator>
 {
+    protected static readonly JsonSerializerSettings JsonSettings = new()
+    {
+        ContractResolver = new AttributeAwareCamelCasePropertyNamesContractResolver(),
+        NullValueHandling = NullValueHandling.Ignore,
+    };
+
     public virtual void Configure(LayerConfigurator configurator)
     {
         configurator.Domain.ConfigureBuilder(builder =>
@@ -230,9 +238,24 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // adds text component to enum properties
-            conventions.AddPropertyComponent<Text>(
+            // adds tag component to enum properties
+            conventions.AddPropertyComponent<Tag>(
                 when: c => c.Property.PropertyType.SkipNullable().IsEnum,
+                order: Order.At.Min
+            );
+
+            // configures enum localization for tag
+            conventions.EditPropertyComponent<Tag>(
+                when: c => c.Property.PropertyType.SkipNullable().IsEnum,
+                component: (t, c, cc) =>
+                {
+                    // NOTE forces enum localizations to get hit
+                    var schema = c.Property.PropertyType.SkipNullable().GetMetadata().GenerateSchema<InlineData>(cc.Drill("data"));
+                    schema?.ToJsonString();
+
+                    t.Schema.LocalizationPrefix = c.Property.PropertyType.SkipNullable().Name;
+                    t.Schema.LocalizeText = true;
+                },
                 order: Order.At.Min
             );
 
@@ -684,10 +707,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: (p, c) =>
                 {
                     p.Required = !c.Parameter.IsNullable ? true : null;
-                    p.DefaultValue = c.Parameter.DefaultValue;
+                    p.DefaultValue =
+                        c.Parameter.ParameterType.IsEnum ? c.Parameter.DefaultValue?.ToString()?.Camelize() :
+                        c.Parameter.DefaultValue;
                 }
             );
 
+            // adds labeler to parameter schema
             conventions.AddParameterSchema(
                 schema: () => new Labeler()
             );
@@ -844,6 +870,23 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 },
                 order: Order.At.Global.Max
             );
+        });
+
+        configurator.Buildtime.ConfigureGeneratedFileCollection(files =>
+        {
+            configurator.Domain.UsingDomainModel(domain =>
+            {
+                var severities = new Dictionary<string, Dictionary<string, string>>();
+                foreach (var type in domain.Types.Having<Severities>())
+                {
+                    severities[type.Name] = type.GetMetadata().Get<Severities>().Value;
+                }
+
+                files.AddAsJson("severities", severities,
+                    outdir: "Ui",
+                    settings: JsonSettings
+                );
+            });
         });
 
         configurator.Ui.ConfigureComponentExports(exports =>

@@ -263,6 +263,37 @@ Configures routes and swagger docs to use entity methods as resource actions.
 c => c.RichEntity()
 ```
 
+## Status Enum via Suffix
+
+Adds `Status` attribute to enum properties with the enum name ending with
+`Status`. It also configures `Severities` using enum values using table below.
+
+```csharp
+c => c.StatusEnumViaSuffix()
+```
+
+| Range   | Severity |
+| ---     | ---      |
+| 100-199 | info     |
+| 200-299 | succcess |
+| 400-499 | warn     |
+| 500-599 | danger   |
+
+Below is an example status enum;
+
+```csharp
+public enum RecordStatus
+{
+    Draft          = 000,
+    Preparing      = 100, // info
+    Ready          = 101, // info
+    Sent           = 200, // success
+    SentWithIssues = 400, // warn
+    NeedsRevision  = 401, // warn
+    NotSend        = 500  // danger
+}
+```
+
 ## Scoped via Suffix
 
 Adds `Scoped` attribute to the services that has name with any of the given

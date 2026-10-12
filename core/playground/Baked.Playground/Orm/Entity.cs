@@ -41,6 +41,7 @@ public class Entity(
     public object? Dynamic { get; private set; } = default!;
     public Enumeration? Enum { get; private set; } = default!;
     public FlagsEnumeration? FlagsEnum { get; private set; } = default!;
+    public EntityStatus Status { get; private set; } = default!;
     public DateTime? DateTime { get; private set; } = default!;
     public DateOnly? DateOnly { get; private set; } = default!;
     public TimeOnly? TimeOnly { get; private set; } = default!;
@@ -59,6 +60,7 @@ public class Entity(
         object? @dynamic = default,
         Enumeration? @enum = default,
         FlagsEnumeration? flagsEnum = default,
+        EntityStatus status = EntityStatus.Default,
         DateTime? dateTime = default,
         DateOnly? dateOnly = default,
         TimeOnly? timeOnly = default
@@ -78,6 +80,7 @@ public class Entity(
             @dynamic: @dynamic,
             @enum: @enum,
             flagsEnum: flagsEnum,
+            status: status,
             dateTime: dateTime,
             dateOnly: dateOnly,
             timeOnly: timeOnly
@@ -100,6 +103,7 @@ public class Entity(
         object? @dynamic = default,
         Enumeration? @enum = default,
         FlagsEnumeration? flagsEnum = default,
+        EntityStatus? status = default,
         DateTime? dateTime = default,
         DateOnly? dateOnly = default,
         bool useTransaction = false,
@@ -123,6 +127,7 @@ public class Entity(
                     @dynamic: @dynamic,
                     @enum: @enum,
                     flagsEnum: flagsEnum,
+                    status: status,
                     dateTime: dateTime,
                     dateOnly: dateOnly
                )
@@ -144,6 +149,7 @@ public class Entity(
                 @dynamic: @dynamic,
                 @enum: @enum,
                 flagsEnum: flagsEnum,
+                status: status,
                 dateTime: dateTime,
                 dateOnly: dateOnly
             );
@@ -187,6 +193,7 @@ public class Entity(
         object? @dynamic = default,
         Enumeration? @enum = default,
         FlagsEnumeration? flagsEnum = default,
+        EntityStatus? status = default,
         DateTime? dateTime = default,
         DateOnly? dateOnly = default,
         TimeOnly? timeOnly = default
@@ -210,6 +217,7 @@ public class Entity(
         Dynamic = @dynamic ?? Dynamic;
         Enum = @enum ?? Enum;
         FlagsEnum = flagsEnum ?? FlagsEnum;
+        Status = status ?? Status;
         DateTime = dateTime ?? DateTime;
         DateOnly = dateOnly ?? DateOnly;
         TimeOnly = timeOnly ?? TimeOnly;

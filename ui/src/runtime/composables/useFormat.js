@@ -19,6 +19,23 @@ export default function() {
     { threshold: Number.MIN_VALUE, divisor: 1, suffix: "", fraction: true }
   ];
 
+  /**
+    * AI-GEN
+    *
+    * Write a camelcase util function with js Converts a string to camelCase
+    * @param {string} str - Input string (supports space, kebab, snake, PascalCase)
+    * @returns {string} camelCase version of the input
+    */
+  function asCamelCase(str) {
+    if(!str) { return; }
+    if(typeof str !== "string") { return str; }
+
+    return str
+      .trim()
+      .replace(/[-_\s]+(.)/g, (_, char) => char.toUpperCase())
+      .replace(/^(.)/, char => char.toLowerCase());
+  }
+
   function asClasses(path,
     prefix = "b--"
   ) {
@@ -92,6 +109,7 @@ export default function() {
   }
 
   return {
+    asCamelCase,
     asClasses,
     asCurrency,
     asDecimal,

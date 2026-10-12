@@ -51,8 +51,8 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
                     c.Parameter.Has<RequiredAttribute>() &&
                     c.Parameter.TryGet<ApiParameter>(out var api) &&
                     (api.FromQuery || api.FromRoute),
-                schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First().Camelize(),
-                order: 10
+                schema: (p, c) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First().Camelize(),
+                order: 20
             );
 
             // Map option label and value for enum data

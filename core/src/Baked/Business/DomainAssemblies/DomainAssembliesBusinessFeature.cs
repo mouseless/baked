@@ -76,9 +76,11 @@ public class DomainAssembliesBusinessFeature(
 
             builder.Index.Type.Add<Service>();
             builder.Index.Type.Add<Query>();
+            builder.Index.Type.Add<Severities>();
             builder.Index.Method.Add<Initializer>();
             builder.Index.Property.Add<IdProperty>();
             builder.Index.Property.Add<Label>();
+            builder.Index.Property.Add<Status>();
         });
 
         configurator.Domain.ConfigureConventions(conventions =>

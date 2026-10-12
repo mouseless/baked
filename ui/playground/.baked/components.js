@@ -50,6 +50,7 @@ import {
 	SimpleForm,
 	SimplePage,
 	TabbedPage,
+	Tag,
 	Text,
 	Textarea,
 	TextLink
@@ -107,6 +108,7 @@ export {
 	SimpleForm,
 	SimplePage,
 	TabbedPage,
+	Tag,
 	Text,
 	Textarea,
 	TextLink

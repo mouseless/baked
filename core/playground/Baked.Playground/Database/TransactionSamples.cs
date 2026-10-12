@@ -48,7 +48,7 @@ public class TransactionSamples(
 
     public void RollbackMultiple(string @string)
     {
-        var parent = _newParent().With("ParentName: " + @string, "ParentSurname: " + @string, Status.Active, Role.Admin);
+        var parent = _newParent().With("ParentName: " + @string, "ParentSurname: " + @string, ActiveStatus.Active, Role.Admin);
         _newChild().With(parent.Name + " Child", parent);
 
         throw new();

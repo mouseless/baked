@@ -15,7 +15,7 @@ public class Parent(
     public string Name { get; set; } = default!;
     internal string SurnameInternal { get; set; } = default!;
     public string? Description { get; set; } = default!;
-    public Status? Status { get; set; } = default;
+    public ActiveStatus? Status { get; set; } = default;
     public Role? Role { get; set; } = default!;
 
     public LocatableLabel Surname => _newLocatableLabel().With(SurnameInternal);
@@ -26,7 +26,7 @@ public class Parent(
     internal Entity? CalculatedReference => null;
     Entity? IParentInterface.CalculatedReferenceOverInterface => CalculatedReference;
 
-    public Parent With(string name, string surname, Status? status, Role? role)
+    public Parent With(string name, string surname, ActiveStatus? status, Role? role)
     {
         Name = name;
         SurnameInternal = surname;

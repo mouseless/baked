@@ -1,0 +1,11 @@
+{
+  "activeStatus": {
+    "active": "success"
+  },
+  "entityStatus": {
+    "info": "info",
+    "success": "success",
+    "warning": "warn",
+    "error": "danger"
+  }
+}

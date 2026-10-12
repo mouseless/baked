@@ -213,6 +213,48 @@
                   }
                 },
                 {
+                  "name": "status",
+                  "component": {
+                    "type": "Select",
+                    "schema": {
+                      "label": {
+                        "text": "Status",
+                        "mode": "ifta",
+                        "showOptionality": true
+                      },
+                      "localizeOptionLabels": true,
+                      "optionLabel": "label",
+                      "optionValue": "value",
+                      "showClear": true
+                    },
+                    "data": {
+                      "type": "Inline",
+                      "value": [
+                        {
+                          "label": "EntityStatus.Default",
+                          "value": "default"
+                        },
+                        {
+                          "label": "EntityStatus.Info",
+                          "value": "info"
+                        },
+                        {
+                          "label": "EntityStatus.Success",
+                          "value": "success"
+                        },
+                        {
+                          "label": "EntityStatus.Warning",
+                          "value": "warning"
+                        },
+                        {
+                          "label": "EntityStatus.Error",
+                          "value": "error"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
                   "name": "dateOnly",
                   "component": {
                     "type": "InputDate",
@@ -432,6 +474,22 @@
                     "type": "Context",
                     "key": "parent",
                     "prop": "data.mailAddress"
+                  }
+                }
+              },
+              {
+                "key": "status",
+                "label": "Status",
+                "component": {
+                  "type": "Tag",
+                  "schema": {
+                    "localizationPrefix": "EntityStatus",
+                    "localizeText": true
+                  },
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.status"
                   }
                 }
               },

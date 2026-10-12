@@ -97,6 +97,7 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
         c => c.ResourceViaIdInitializer(),
         c => c.RichEntity(),
         _scopedViaSuffix,
+        c => c.StatusEnumViaSuffix(),
         c => c.SuffixBasedClient(),
         c => c.TypeBasedId(),
         c => c.UniqueViaSingleBy(),

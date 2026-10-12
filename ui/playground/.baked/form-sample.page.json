@@ -217,6 +217,23 @@
                     "exportable": true
                   },
                   {
+                    "key": "status",
+                    "component": {
+                      "type": "Tag",
+                      "schema": {
+                        "localizationPrefix": "EntityStatus",
+                        "localizeText": true
+                      },
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.status"
+                      }
+                    },
+                    "title": "Status",
+                    "exportable": true
+                  },
+                  {
                     "key": "dateTime",
                     "component": {
                       "type": "Date",
@@ -467,6 +484,48 @@
                                       {
                                         "label": "FlagsEnumeration.Flag3",
                                         "value": "flag3"
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "name": "status",
+                                "component": {
+                                  "type": "Select",
+                                  "schema": {
+                                    "label": {
+                                      "text": "Status",
+                                      "mode": "ifta",
+                                      "showOptionality": true
+                                    },
+                                    "localizeOptionLabels": true,
+                                    "optionLabel": "label",
+                                    "optionValue": "value",
+                                    "showClear": true
+                                  },
+                                  "data": {
+                                    "type": "Inline",
+                                    "value": [
+                                      {
+                                        "label": "EntityStatus.Default",
+                                        "value": "default"
+                                      },
+                                      {
+                                        "label": "EntityStatus.Info",
+                                        "value": "info"
+                                      },
+                                      {
+                                        "label": "EntityStatus.Success",
+                                        "value": "success"
+                                      },
+                                      {
+                                        "label": "EntityStatus.Warning",
+                                        "value": "warning"
+                                      },
+                                      {
+                                        "label": "EntityStatus.Error",
+                                        "value": "error"
                                       }
                                     ]
                                   }
@@ -818,8 +877,11 @@
                       {
                         "key": "status",
                         "component": {
-                          "type": "Text",
-                          "schema": {},
+                          "type": "Tag",
+                          "schema": {
+                            "localizationPrefix": "ActiveStatus",
+                            "localizeText": true
+                          },
                           "data": {
                             "type": "Context",
                             "key": "parent",
@@ -832,8 +894,11 @@
                       {
                         "key": "role",
                         "component": {
-                          "type": "Text",
-                          "schema": {},
+                          "type": "Tag",
+                          "schema": {
+                            "localizationPrefix": "Role",
+                            "localizeText": true
+                          },
                           "data": {
                             "type": "Context",
                             "key": "parent",
@@ -1195,8 +1260,11 @@
                       {
                         "key": "role",
                         "component": {
-                          "type": "Text",
-                          "schema": {},
+                          "type": "Tag",
+                          "schema": {
+                            "localizationPrefix": "Role",
+                            "localizeText": true
+                          },
                           "data": {
                             "type": "Context",
                             "key": "parent",

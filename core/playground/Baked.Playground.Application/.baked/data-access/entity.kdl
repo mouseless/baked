@@ -15,6 +15,7 @@ entity @entity {
   dynamic @column
   enum @column @unique
   flags-enum @column
+  status @column
   date-time @column
   date-only @column
   time-only @column

@@ -190,8 +190,11 @@
                 "key": "status",
                 "label": "Status",
                 "component": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "Tag",
+                  "schema": {
+                    "localizationPrefix": "ActiveStatus",
+                    "localizeText": true
+                  },
                   "data": {
                     "type": "Context",
                     "key": "parent",
@@ -203,8 +206,11 @@
                 "key": "role",
                 "label": "Role",
                 "component": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "Tag",
+                  "schema": {
+                    "localizationPrefix": "Role",
+                    "localizeText": true
+                  },
                   "data": {
                     "type": "Context",
                     "key": "parent",

@@ -45,13 +45,6 @@ public class FormSampleDomainOverrideFeature : IFeature
                 },
                 order: Order.At.Override
             );
-
-            // Properties
-            conventions.AddPropertyComponent<Text>(
-                when: c => c.Property.PropertyType.SkipNullable().IsEnum,
-                where: cc => cc.Path.StartsWith("page", "form-sample"),
-                order: Order.At.Override
-            );
         });
     }
 }

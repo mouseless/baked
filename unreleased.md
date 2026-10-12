@@ -5,6 +5,8 @@
 - `Business` namespace now provides `Validate` object to perform business
   validations
 - `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
+- `StatusEnumCodingStyle` is now available that provides a status enum system
+  using codes that are similar to HTTP status codes
 - `IExportOptions` in `Baked.Binding` lets an attribute set the name it is
   exported with, e.g., `IdProperty` is exported as `@id`
 - All component, data, action, trigger and constraint schemas now have a
@@ -167,6 +169,7 @@
 
 - It was impossible to validate records have locatables in their constructor due
   to late initialization, fixed
+- `useFormat` now provides `asCamelCase` helper function
 - `Authorization` improvements
   - It now supports claim type-value based restriction in API layer
   - `RequireUser` can now contain allowed values
@@ -182,6 +185,7 @@
   show reaction in the descriptor
   - It was showing the components that reacts to `showWhen: is null` causing to
     render unintended components while page is loading
+- Minor improvements in `components.css`
 
 ## Library Upgrades
 
