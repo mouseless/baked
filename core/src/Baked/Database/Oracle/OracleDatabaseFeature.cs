@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Database;
 using Baked.Domain.Configuration;
 using Baked.Runtime;
 using FluentNHibernate.Cfg.Db;
@@ -6,13 +7,18 @@ using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 
-namespace Baked.Database.Oracle;
+namespace Baked;
 
-public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema)
-    : IFeature<DatabaseFeature.Configurator>
+public static class OracleDatabaseFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<DatabaseFeature.Configurator> Oracle(this DatabaseFeature.Configurator x,
+        Setting<string>? connectionString = default,
+        Setting<bool>? autoUpdateSchema = default
+    ) => x.Define(configurator =>
     {
+        connectionString ??= Settings.Required<string>("Database:Oracle:ConnectionString");
+        autoUpdateSchema ??= Settings.Optional("Database:Oracle:AutoUpdateSchema", false);
+
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.Add(new AddTransactionFilterToActionConvention(), order: Order.At.Global.Max);
@@ -30,17 +36,17 @@ public class OracleDatabaseFeature(Setting<string> _connectionString, Setting<bo
                 OracleDataClientConfiguration.Oracle10
                     .Driver<OracleManagedDataClientDriver>()
                     .Dialect<Oracle12cDialect>()
-                    .ConnectionString(_connectionString);
+                    .ConnectionString(connectionString);
         });
 
         configurator.DataAccess.ConfigureFluentConfiguration(fluent =>
         {
-            if (_autoUpdateSchema)
+            if (autoUpdateSchema)
             {
                 fluent.UpdateSchema(false, true);
             }
 
             fluent.ExposeConfiguration(c => c.SetProperty(NHibernate.Cfg.Environment.OracleSuppressDecimalInvalidCastException, "true"));
         });
-    }
+    });
 }
