@@ -8,13 +8,13 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked;
 
-public static class AuthenticationExtensions
+public static class AuthenticationFeature
 {
-    extension(List<IFeature> features)
-    {
-        public void AddAuthentications(IEnumerable<FeatureFunc<AuthenticationConfigurator>> configures) =>
-            features.AddRange(configures.Select(configure => configure(new())));
-    }
+    public static void AddAuthentications(this List<IFeature> features,
+        IEnumerable<FeatureFunc<Configurator>> configures
+    ) => features.AddRange(configures.Select(configure => configure(new())));
+
+    public class Configurator : FeatureConfigurator<Configurator>;
 
     extension(SwaggerGenOptions swaggerGenOptions)
     {

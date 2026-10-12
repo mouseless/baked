@@ -1,13 +1,12 @@
 ﻿using Baked.Architecture;
-using Baked.Authentication;
+using Baked.Playground.Authentication.ApiKey;
 using Microsoft.AspNetCore.Authentication;
 
-namespace Baked.Playground.Authentication.ApiKey;
+namespace Baked;
 
-public class ApiKeyAuthenticationFeature()
-    : IFeature<AuthenticationConfigurator>
+public static class ApiKeyAuthenticationFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<AuthenticationFeature.Configurator> ApiKey(this AuthenticationFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
         {
@@ -20,5 +19,5 @@ public class ApiKeyAuthenticationFeature()
                 handles: context => context.Request.Headers.ContainsKey("X-Api-Key")
             );
         });
-    }
+    });
 }
