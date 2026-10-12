@@ -37,6 +37,14 @@ public class DefiningAFeature : ArchitectureSpec
     }
 
     [Test]
+    public void Id_of_a_feature_defined_with_arguments_is_also_the_name_of_the_method_defining_it()
+    {
+        var feature = new AFeature.Configurator().Z();
+
+        feature.Id.ShouldBe("A.Z");
+    }
+
+    [Test]
     public void Feature_configurator_provides_a_disabled_feature_to_allow_a_disabled_option()
     {
         var feature = new AFeature.Configurator().Disabled();
@@ -61,6 +69,9 @@ public static class AFeature
 
     public static IFeature<Configurator> X(this Configurator x) =>
         x.Define(configurator => { });
+
+    public static IFeature<Configurator> Z(this Configurator x) =>
+        x.Define(0, (configurator, args) => { });
 }
 
 public static class BFeature

@@ -35,16 +35,6 @@ public static class ThemeFeature
         public static DiagnosticCode MethodDoesNotSupportBody => new(108, "method-does-not-support-body");
     }
 
-    extension<T>(Action<T>? action)
-    {
-        public T Apply(T result)
-        {
-            action?.Invoke(result);
-
-            return result;
-        }
-    }
-
     extension(Router router)
     {
         public Route Index(

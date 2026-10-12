@@ -12,10 +12,8 @@ public static class FakeReportingFeature
 {
     public static IFeature<ReportingFeature.Configurator> Fake(this ReportingFeature.Configurator x,
         Setting<string>? basePath = default
-    ) => x.Define(configurator =>
+    ) => x.Define(basePath ?? string.Empty, (configurator, basePath) =>
     {
-        basePath ??= string.Empty;
-
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
             services.AddSingleton(new ReportOptions(basePath));

@@ -287,4 +287,14 @@ public static class CoreFeature
             method.GetParameters().First().ParameterType.ShouldBe<T>();
         }
     }
+
+    extension<T>(Action<T>? action)
+    {
+        public T Apply(T result)
+        {
+            action?.Invoke(result);
+
+            return result;
+        }
+    }
 }

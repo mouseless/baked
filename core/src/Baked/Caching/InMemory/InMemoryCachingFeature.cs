@@ -14,10 +14,8 @@ public static class InMemoryCachingFeature
 {
     public static IFeature<CachingFeature.Configurator> InMemory(this CachingFeature.Configurator x,
         Action<MemoryCacheOptions>? options = default
-    ) => x.Define(configurator =>
+    ) => x.Define(options ?? (_ => { }), (configurator, options) =>
     {
-        options ??= _ => { };
-
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.EditMethodSchema<RemoteData>(

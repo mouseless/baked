@@ -18,10 +18,8 @@ public static class DotnetLocalizationFeature
     public static IFeature<LocalizationFeature.Configurator> Dotnet(this LocalizationFeature.Configurator x,
         CultureInfo? language = null,
         IEnumerable<CultureInfo>? otherLanguages = null
-    ) => x.Define(configurator =>
+    ) => x.Define(language ?? new("en"), (configurator, language) =>
     {
-        language ??= new("en");
-
         configurator.Buildtime.ConfigureGeneratedFileCollection(files =>
         {
             if (configurator.IsNfr) { return; }

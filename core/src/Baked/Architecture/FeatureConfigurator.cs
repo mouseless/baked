@@ -21,6 +21,10 @@ public abstract class FeatureConfigurator<TSelf>
     public IFeature<TSelf> Define(string id, Action<LayerConfigurator> configure) =>
         new Feature<TSelf>($"{_abstraction}.{id}", configure);
 
+    public IFeature<TSelf> Define<TArgs>(TArgs args, Action<LayerConfigurator, TArgs> configure,
+        [CallerMemberName] string id = ""
+    ) => Define(id, configurator => configure(configurator, args));
+
     public IFeature<TSelf> Disabled() =>
         Define(configurator => { });
 }

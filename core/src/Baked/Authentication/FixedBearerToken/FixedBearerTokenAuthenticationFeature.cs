@@ -20,86 +20,82 @@ public static class FixedBearerTokenAuthenticationFeature
         IEnumerable<string>? formPostParameters = default,
         IEnumerable<string>? documentNames = default,
         string description = "Enter your token provided by the development team"
-    )
+    ) => x.Define((
+        (configure ?? (tokens => tokens.Add("Default"))).Apply([]),
+        formPostParameters ?? [],
+        documentNames ?? [string.Empty]
+    ), (configurator, args) =>
     {
-        configure ??= tokens => tokens.Add("Default");
-        formPostParameters ??= [];
-        documentNames ??= [string.Empty];
+        var (tokens, formPostParameters, documentNames) = args;
 
-        var tokens = new List<Token>();
-        configure(tokens);
-
-        return x.Define(configurator =>
+        configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
         {
-            configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
+            authentications.Add(
+                scheme: "FixedBearerToken",
+                useBuilder: builder => builder
+                    .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
+                        "FixedBearerToken",
+                        opts => { }
+                    ),
+                handles: context =>
+                    context.Request.Headers.Authorization.Any() ||
+                    (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash"))
+            );
+        });
+
+        configurator.Runtime.ConfigureServiceCollection(services =>
+        {
+            services.AddSingleton(new TokenOptions(tokens));
+        });
+
+        configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            foreach (var documentName in documentNames)
             {
-                authentications.Add(
-                    scheme: "FixedBearerToken",
-                    useBuilder: builder => builder
-                        .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
-                            "FixedBearerToken",
-                            opts => { }
-                        ),
-                    handles: context =>
-                        context.Request.Headers.Authorization.Any() ||
-                        (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash"))
-                );
-            });
-
-            configurator.Runtime.ConfigureServiceCollection(services =>
-            {
-                services.AddSingleton(new TokenOptions(tokens));
-            });
-
-            configurator.RestApi.ConfigureSwaggerGenOptions(swaggerGenOptions =>
-            {
-                foreach (var documentName in documentNames)
-                {
-                    swaggerGenOptions.AddSecurityDefinition(nameof(FixedBearerToken),
-                        new()
-                        {
-                            Type = SecuritySchemeType.Http,
-                            Scheme = "Bearer",
-                            Description = description
-                        },
-                        documentName: documentName
-                    );
-
-                    swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>([nameof(FixedBearerToken)],
-                        documentName: documentName
-                    );
-
-                    foreach (var name in formPostParameters)
+                swaggerGenOptions.AddSecurityDefinition(nameof(FixedBearerToken),
+                    new()
                     {
-                        swaggerGenOptions.AddFormParameterToRedirectOperationsThatUse<AuthorizeAttribute>(
-                            name,
-                            new()
-                            {
-                                Type = JsonSchemaType.String,
-                                Description = Settings.Optional($"Authentication:FixedBearerToken:Description:{name}", name)
-                            },
-                            documentName: documentName
-                        );
-                    }
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "Bearer",
+                        Description = description
+                    },
+                    documentName: documentName
+                );
 
+                swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>([nameof(FixedBearerToken)],
+                    documentName: documentName
+                );
+
+                foreach (var name in formPostParameters)
+                {
                     swaggerGenOptions.AddFormParameterToRedirectOperationsThatUse<AuthorizeAttribute>(
-                        "hash",
+                        name,
                         new()
                         {
                             Type = JsonSchemaType.String,
-                            Description = Settings.Optional(
-                                "Authentication:FixedBearerToken:Description:hash",
-                                "Concatenate all form post parameters with secret " +
-                                "token at the end, then hash it using `sha256` and " +
-                                "convert it to `base64`"
-                            )
+                            Description = Settings.Optional($"Authentication:FixedBearerToken:Description:{name}", name)
                         },
                         documentName: documentName
                     );
                 }
-            });
+
+                swaggerGenOptions.AddFormParameterToRedirectOperationsThatUse<AuthorizeAttribute>(
+                    "hash",
+                    new()
+                    {
+                        Type = JsonSchemaType.String,
+                        Description = Settings.Optional(
+                            "Authentication:FixedBearerToken:Description:hash",
+                            "Concatenate all form post parameters with secret " +
+                            "token at the end, then hash it using `sha256` and " +
+                            "convert it to `base64`"
+                        )
+                    },
+                    documentName: documentName
+                );
+            }
         });
-    }
+    });
 
     extension(List<Token> tokens)
     {

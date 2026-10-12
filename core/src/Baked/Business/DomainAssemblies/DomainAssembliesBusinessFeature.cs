@@ -46,18 +46,20 @@ public static class DomainAssembliesBusinessFeature
         Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
         bool addEmbeddedFileProviders = true,
         Func<TypeModel, bool>? setNamespaceWhen = default
-    ) => x.Define(configurator =>
-    {
-        defaultOverloadSelector ??= overloads =>
+    ) => x.Define((
+        defaultOverloadSelector ?? (overloads =>
             overloads.FirstPublicInstanceWithMostParametersOrDefault() ??
             overloads.FirstNonPublicInstanceWithMostParametersOrDefault() ??
             overloads.FirstPublicStaticWithMostParametersOrDefault() ??
             overloads.FirstNonPublicStaticWithMostParametersOrDefault() ??
             overloads.FirstWithMostParametersOrDefault() ??
-            throw new($"Method without an overload should not exist");
-        setNamespaceWhen ??= t => true;
-
-        var baseNamespaces = assemblyDescriptors.ToDictionary(kvp => kvp.assembly, kvp => kvp.baseNamespace);
+            throw new($"Method without an overload should not exist")
+        ),
+        setNamespaceWhen ?? (t => true),
+        assemblyDescriptors.ToDictionary(kvp => kvp.assembly, kvp => kvp.baseNamespace)
+    ), (configurator, args) =>
+    {
+        var (defaultOverloadSelector, setNamespaceWhen, baseNamespaces) = args;
 
         configurator.Domain.ConfigureDomainTypeCollection(types =>
         {

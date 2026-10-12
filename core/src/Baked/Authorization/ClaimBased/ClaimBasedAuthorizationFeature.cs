@@ -14,10 +14,12 @@ public static class ClaimBasedAuthorizationFeature
     public static IFeature<AuthorizationFeature.Configurator> ClaimBased(this AuthorizationFeature.Configurator x,
         IEnumerable<string>? claims = default,
         IEnumerable<string>? baseClaims = default
-    ) => x.Define(configurator =>
+    ) => x.Define((
+        claims ?? [],
+        baseClaims ?? []
+    ), (configurator, args) =>
     {
-        claims ??= [];
-        baseClaims ??= [];
+        var (claims, baseClaims) = args;
 
         configurator.Domain.ConfigureConventions(conventions =>
         {

@@ -10,10 +10,8 @@ public static class NativeSqlReportingFeature
 {
     public static IFeature<ReportingFeature.Configurator> NativeSql(this ReportingFeature.Configurator x,
         Setting<string>? basePath = default
-    ) => x.Define(configurator =>
+    ) => x.Define(basePath ?? string.Empty, (configurator, basePath) =>
     {
-        basePath ??= string.Empty;
-
         configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""

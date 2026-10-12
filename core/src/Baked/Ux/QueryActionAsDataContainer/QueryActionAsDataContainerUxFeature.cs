@@ -12,10 +12,8 @@ public static class QueryActionAsDataContainerUxFeature
 
     public static IFeature<UxFeature.Configurator> QueryActionAsDataContainer(this UxFeature.Configurator x,
         int[]? pageSizeOptions = default
-    ) => x.Define(configurator =>
+    ) => x.Define(pageSizeOptions ?? [10, 20, 50, 100], (configurator, pageSizeOptions) =>
     {
-        pageSizeOptions ??= [10, 20, 50, 100];
-
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Order is set to -10 to allow DataPanel override

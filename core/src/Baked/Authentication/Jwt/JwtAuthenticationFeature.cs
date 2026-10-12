@@ -21,9 +21,8 @@ public static class JwtAuthenticationFeature
     public static IFeature<AuthenticationFeature.Configurator> Jwt(this AuthenticationFeature.Configurator x,
         Action<JwtBearerOptions>? configureOptions = default,
         Action<JwtAuthenticationPlugin>? configurePlugin = default
-    ) => x.Define(configurator =>
-    {
-        configureOptions ??= new(options =>
+    ) => x.Define((
+        configureOptions ?? (options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
@@ -36,8 +35,11 @@ public static class JwtAuthenticationFeature
                 ValidAudience = Settings.Required<string>("Authentication:Jwt:Audience"),
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.Required<string>("Authentication:Jwt:Key")))
             };
-        });
-        configurePlugin ??= new(_ => { });
+        }),
+        configurePlugin ?? (_ => { })
+    ), (configurator, args) =>
+    {
+        var (configureOptions, configurePlugin) = args;
 
         configurator.HttpServer.ConfigureAuthenticationCollection(authentications =>
         {

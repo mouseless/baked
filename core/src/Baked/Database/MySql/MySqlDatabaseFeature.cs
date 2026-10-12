@@ -13,10 +13,12 @@ public static class MySqlDatabaseFeature
     public static IFeature<DatabaseFeature.Configurator> MySql(this DatabaseFeature.Configurator x,
         Setting<string>? connectionString = default,
         Setting<bool>? autoUpdateSchema = default
-    ) => x.Define(configurator =>
+    ) => x.Define((
+        connectionString ?? Settings.Required<string>("Database:MySql:ConnectionString"),
+        autoUpdateSchema ?? Settings.Optional("Database:MySql:AutoUpdateSchema", false)
+    ), (configurator, args) =>
     {
-        connectionString ??= Settings.Required<string>("Database:MySql:ConnectionString");
-        autoUpdateSchema ??= Settings.Optional("Database:MySql:AutoUpdateSchema", false);
+        var (connectionString, autoUpdateSchema) = args;
 
         configurator.Domain.ConfigureConventions(conventions =>
         {

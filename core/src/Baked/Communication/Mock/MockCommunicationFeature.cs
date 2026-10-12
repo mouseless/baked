@@ -11,10 +11,8 @@ public static class MockCommunicationFeature
 {
     public static IFeature<CommunicationFeature.Configurator> Mock(this CommunicationFeature.Configurator x,
         Action<DefaultResponseBuilder>? defaultResponses = default
-    ) => x.Define(configurator =>
+    ) => x.Define(defaultResponses ?? (_ => { }), (configurator, defaultResponses) =>
     {
-        defaultResponses ??= _ => { };
-
         configurator.Testing.ConfigureTestConfiguration(tests =>
         {
             var builder = new DefaultResponseBuilder();

@@ -13,10 +13,12 @@ public static class PostgreSqlDatabaseFeature
     public static IFeature<DatabaseFeature.Configurator> PostgreSql(this DatabaseFeature.Configurator x,
         Setting<string>? connectionString = default,
         Setting<bool>? autoUpdateSchema = default
-    ) => x.Define(configurator =>
+    ) => x.Define((
+        connectionString ?? Settings.Required<string>("Database:PostgreSql:ConnectionString"),
+        autoUpdateSchema ?? Settings.Optional("Database:PostgreSql:AutoUpdateSchema", false)
+    ), (configurator, args) =>
     {
-        connectionString ??= Settings.Required<string>("Database:PostgreSql:ConnectionString");
-        autoUpdateSchema ??= Settings.Optional("Database:PostgreSql:AutoUpdateSchema", false);
+        var (connectionString, autoUpdateSchema) = args;
 
         configurator.Domain.ConfigureConventions(conventions =>
         {

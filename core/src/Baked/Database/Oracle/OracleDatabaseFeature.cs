@@ -14,10 +14,12 @@ public static class OracleDatabaseFeature
     public static IFeature<DatabaseFeature.Configurator> Oracle(this DatabaseFeature.Configurator x,
         Setting<string>? connectionString = default,
         Setting<bool>? autoUpdateSchema = default
-    ) => x.Define(configurator =>
+    ) => x.Define((
+        connectionString ?? Settings.Required<string>("Database:Oracle:ConnectionString"),
+        autoUpdateSchema ?? Settings.Optional("Database:Oracle:AutoUpdateSchema", false)
+    ), (configurator, args) =>
     {
-        connectionString ??= Settings.Required<string>("Database:Oracle:ConnectionString");
-        autoUpdateSchema ??= Settings.Optional("Database:Oracle:AutoUpdateSchema", false);
+        var (connectionString, autoUpdateSchema) = args;
 
         configurator.Domain.ConfigureConventions(conventions =>
         {

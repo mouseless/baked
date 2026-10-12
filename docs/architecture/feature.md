@@ -136,14 +136,12 @@ configurator.RestApi.ConfigureApiModel(api =>
 
 Since the action given to `Define()` is called multiple times, a variable
 declared in it does not survive between calls. To keep a state across
-configurations, declare it before `Define()`;
+configurations, give it to `Define()` as an argument. Arguments are evaluated
+once and given to every call;
 
 ```csharp
-public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeature.Configurator x)
-{
-    var visits = new VisitCounter();
-
-    return x.Define(configurator =>
+public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeature.Configurator x) =>
+    x.Define(new VisitCounter(), (configurator, visits) =>
     {
         configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
         {
@@ -154,6 +152,21 @@ public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeatur
         {
             services.AddSingleton(visits);
         });
+    });
+```
+
+When the state is assigned in a configuration action, declare it before
+`Define()` instead;
+
+```csharp
+public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeature.Configurator x)
+{
+    var greeting = string.Empty;
+
+    return x.Define(configurator =>
+    {
+        configurator.Configure((GreetingOptions options) => greeting = options.Text);
+        ...
     });
 }
 ```
@@ -166,22 +179,44 @@ public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeatur
 ### Including an Option
 
 To include an option in a feature, take the option as a parameter in the
-extension method and use it in the action given to `Define()` as shown below;
+extension method and give it to `Define()` with its default value. The action
+receives it with the same name;
 
 `WelcomeGreetingFeature.cs`
 ```csharp
 public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeature.Configurator x,
     string? path = default
-) => x.Define(configurator =>
+) => x.Define(path ?? "/", (configurator, path) =>
 {
-    path ??= "/";
-
     configurator.HttpServer.ConfigureMiddlewareCollection(middlewares =>
     {
         middlewares.Add(app => app.UseWelcomePage(path));
     });
 });
 ```
+
+For more than one option, give them as a tuple and deconstruct it in the action;
+
+```csharp
+public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeature.Configurator x,
+    string? path = default,
+    string? title = default
+) => x.Define((
+    path ?? "/",
+    title ?? "Welcome"
+), (configurator, args) =>
+{
+    var (path, title) = args;
+
+    ...
+});
+```
+
+> [!WARNING]
+>
+> Do __NOT__ apply defaults in the action given to `Define()`, e.g., `path ??=
+> "/"`. The action is called multiple times and this assigns a variable that is
+> shared by all calls.
 
 ## Guide
 
