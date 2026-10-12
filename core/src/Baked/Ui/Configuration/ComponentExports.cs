@@ -5,8 +5,8 @@ namespace Baked.Ui.Configuration;
 
 public class ComponentExports : List<string>
 {
-    public void AddFromThemeAssembly<TTheme>(TTheme _) where TTheme : IFeature<ThemeFeature.Configurator> =>
-        AddFromAssembly(typeof(TTheme).Assembly);
+    public void AddFromThemeAssembly(Type theme) =>
+        AddFromAssembly(theme.Assembly);
 
     public void AddFromAssembly(Assembly assembly)
     {

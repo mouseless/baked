@@ -43,6 +43,8 @@
   ```
   - Every abstraction now provides `Disabled()`, `Feature.Empty<T>()` is
     removed
+  - Custom themes no longer inherit `DefaultThemeFeature`, they give their
+    configuration to `c.Default(configure: ...)` instead
 - Attributes used in conventions no longer have the `Attribute` suffix, e.g.,
   `LabelAttribute` -> `Label`. These also changed beyond the suffix;
   | old                        | new             |
@@ -133,6 +135,15 @@
   - `options` parameters are gone, `using static` and `using B =` are no longer
     needed
   - `Label` component is renamed as `Labeler`
+  - Component exports are now collected from the theme assembly instead of
+    builder classes
+    ```csharp
+    // was
+    exports.AddFromExtensions(typeof(C));
+
+    // now
+    exports.AddFromThemeAssembly(typeof(CustomThemeFeature));
+    ```
 - `Datas`, `Actions` and `Constraints` builder classes are renamed as `Fetch`,
   `Execute` and `Evaluate`
   ```csharp
@@ -184,6 +195,7 @@
 
 - It was impossible to validate records have locatables in their constructor due
   to late initialization, fixed
+- `DefaultThemeFeature.JsonSettings` is now public to be used in custom themes
 - `useFormat` now provides `asCamelCase` helper function
 - `Authorization` improvements
   - It now supports claim type-value based restriction in API layer

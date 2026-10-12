@@ -4,6 +4,12 @@ This feature implementations configures `DomainModel` metadata attributes and
 extracts component descriptors for ui theme pages and components of an
 application.
 
+Add this feature using `AddTheme()` extension;
+
+```csharp
+app.Features.AddTheme(...);
+```
+
 This feature abstraction provides following extensions to
 `DomainModelConventionCollection`;
 
@@ -91,42 +97,37 @@ c => c.Default(
     errorPageOptions: ep => ...,
     sideMenuOptions: sm => ...,
     headerOptions: h => ...,
-    debugComponentPaths: ...
+    debugComponentPaths: ...,
+    configure: configurator => ...
 )
 ```
 
-Or you may prefer to create your custom theme on top of this default theme;
+Or you may prefer to create your custom theme on top of this default theme. Give
+your custom configuration to `configure`, it runs after default theme rules;
 
 ```csharp
-public static class CustomThemeExtensions
+public static class CustomThemeFeature
 {
-    extension(ThemeConfigurator _)
-    {
-        public static CustomThemeFeature Custom() =>
-            new(
-            [
-                // All app routes
-            ]);
-    }
-}
+    public static IFeature<ThemeFeature.Configurator> Custom(this ThemeFeature.Configurator x) => x.Default(
+        index: r => r.Index(),
+        routes:
+        [
+            // All app routes
+        ],
+        configure: Configure
+    );
 
-public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
-    : DefaultThemeFeature(routes.Select(r => r(new())))
-{
-    public override void Configure(LayerConfigurator configurator)
+    static void Configure(LayerConfigurator configurator)
     {
-        // Applies default theme rules
-        base.Configure(configurator);
-
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Your custom conventions and page overrides
         });
 
-        configurator.Ui.ConfigureComponentExports(c =>
+        configurator.Ui.ConfigureComponentExports(exports =>
         {
             // Add component exports from your own theme assembly
-            c.AddFromThemeAssembly(this);
+            exports.AddFromThemeAssembly(typeof(CustomThemeFeature));
         });
 
         configurator.Ui.ConfigurePageDescriptors(pages =>
