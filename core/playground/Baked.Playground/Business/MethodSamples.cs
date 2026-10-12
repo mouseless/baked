@@ -159,4 +159,7 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
 
     internal Internal Internal() =>
         new();
+
+    public Validatable Validatable(Validatable validatable) =>
+        validatable;
 }

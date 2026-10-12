@@ -234,5 +234,11 @@ method-samples @api-controller {
       @api-parameter required=#true
     }
   }
+  validatable {
+    @api-action route="POST /method-samples/validatable" required-claims="BaseA, BaseB"
+    validatable {
+      @api-parameter required=#true
+    }
+  }
 }
 

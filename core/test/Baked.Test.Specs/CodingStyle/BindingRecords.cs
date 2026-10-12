@@ -34,4 +34,21 @@ public class BindingRecords : TestNfr
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
+
+    [Test]
+    public async Task ValidatingRecords()
+    {
+        var response = await Client.PostAsync("/method-samples/validatable", JsonContent.Create(
+            new
+            {
+                validatable = new
+                {
+                    left = new { id = "left" },
+                    right = new { id = "right" }
+                }
+            }
+        ));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
 }

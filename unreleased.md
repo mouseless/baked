@@ -4,8 +4,6 @@
 
 - `Business` namespace now provides `Validate` object to perform business
   validations
-- `ValidatableCodingStyle` is introduced to allow validating records via
-  `IValidatableObject` standard interface
 - `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
 - `IExportOptions` in `Baked.Binding` lets an attribute set the name it is
   exported with, e.g., `IdProperty` is exported as `@id`
@@ -167,6 +165,8 @@
 
 ## Improvements
 
+- It was impossible to validate records have locatables in their constructor due
+  to late initialization, fixed
 - `Authorization` improvements
   - It now supports claim type-value based restriction in API layer
   - `RequireUser` can now contain allowed values

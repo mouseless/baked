@@ -76,18 +76,22 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]), order: Order.At.Infra);
             conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]), order: Order.At.Infra);
             conventions.EditMethodAttribute<ApiAction>(
-                when: (_, action) => action.HasBody,
-                attribute: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
+                when: (_, a) => a.HasBody,
+                attribute: a => a.AdditionalAttributes.Add("Consumes(\"application/json\")"),
                 order: Order.At.Infra + 10
             );
             conventions.EditMethodAttribute<ApiAction>(
-                when: (_, action) => !action.ReturnIsVoid,
-                attribute: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
+                when: (_, a) => !a.ReturnIsVoid,
+                attribute: a => a.AdditionalAttributes.Add("Produces(\"application/json\")"),
                 order: Order.At.Infra + 10
             );
             conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: Order.At.Infra + 10);
-            conventions.EditMethodAttribute<ApiAction>((action, context) =>
-                action.AdditionalAttributes.Add($"{typeof(MappedMethod).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")"),
+            conventions.EditMethodAttribute<ApiAction>(
+                (a, c) =>
+                {
+                    a.AdditionalAttributes.Add($"ServiceFilter(typeof({typeof(ValidateInitializedModelsFilter).FullName}), Order = 1)");
+                    a.AdditionalAttributes.Add($"{typeof(MappedMethod).FullName}(\"{c.Type.FullName}\", \"{c.Method.Name}\")");
+                },
                 order: Order.At.Infra
             );
         });
@@ -127,6 +131,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
         configurator.RestApi.ConfigureApiModel(api =>
         {
+            api.References.Add<RestBindingFeature>();
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
             configurator.Domain.UsingDomainModel(domain =>
@@ -147,6 +152,11 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
         {
             files.AddAsJson(_tagDescriptions);
             files.AddAsJson(_examples);
+        });
+
+        configurator.Runtime.ConfigureServiceCollection(services =>
+        {
+            services.AddSingleton<ValidateInitializedModelsFilter>();
         });
 
         configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>

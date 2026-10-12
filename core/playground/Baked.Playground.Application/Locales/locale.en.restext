@@ -28,13 +28,14 @@ The service is currently unavailable. Please try again later.=The service is cur
 {0} should be unique={0} should be unique
 A handled exception was thrown=A handled exception was thrown
 Child#{0} does not belong this parent=Child#{0} does not belong this parent
-Must Be Unique=Must Be Unique
+Left and right must be the same=Left and right must be the same
 Not My Child=Not My Child
 Param=Parameter
 Parameter value is '{0}'=Parameter value is '{0}'
 Test Service Handled=Test Service Handled
 This is a label=This is a label
 This should be a very long text=This should be a very long text
+Validatable Not Valid=Validatable Not Valid
 
 // test case specific keys =//
 test=This is test message from English resource file.
