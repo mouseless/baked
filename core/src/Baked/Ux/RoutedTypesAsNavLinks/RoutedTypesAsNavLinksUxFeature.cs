@@ -3,11 +3,11 @@ using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-namespace Baked.Ux.RoutedTypesAsNavLinks;
+namespace Baked;
 
-public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
+public static class RoutedTypesAsNavLinksUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> RoutedTypesAsNavLinks(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -41,5 +41,5 @@ public class RoutedTypesAsNavLinksUxFeature : IFeature<UxConfigurator>
                 }
             );
         });
-    }
+    });
 }

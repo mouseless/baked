@@ -4,11 +4,11 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-namespace Baked.Ux.ActionsAsButtons;
+namespace Baked;
 
-public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
+public static class ActionsAsButtonsUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> ActionsAsButtons(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -174,5 +174,5 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 }
             );
         });
-    }
+    });
 }

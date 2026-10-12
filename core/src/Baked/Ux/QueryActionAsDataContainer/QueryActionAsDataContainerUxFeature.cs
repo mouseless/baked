@@ -3,16 +3,19 @@ using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Ui;
 
-namespace Baked.Ux.QueryActionAsDataContainer;
+namespace Baked;
 
-public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
-    : IFeature<UxConfigurator>
+public static class QueryActionAsDataContainerUxFeature
 {
     static readonly string _lengthContextKeySuffix = "length";
     static readonly string _takeContextKeySuffix = "take";
 
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> QueryActionAsDataContainer(this UxFeature.Configurator x,
+        int[]? pageSizeOptions = default
+    ) => x.Define(configurator =>
     {
+        pageSizeOptions ??= [10, 20, 50, 100];
+
         configurator.Domain.ConfigureConventions(conventions =>
         {
             // Order is set to -10 to allow DataPanel override
@@ -153,7 +156,7 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 when: c => c.Parameter.TryGet<Paging>(out var paging) && paging.IsTake,
                 component: s =>
                 {
-                    s.Data = Fetch.Inline(_pageSizeOptions, options: i => i.RequireLocalization = false);
+                    s.Data = Fetch.Inline(pageSizeOptions, options: i => i.RequireLocalization = false);
                     s.Override<PageSize>();
                 }
             );
@@ -171,5 +174,5 @@ public class QueryActionAsDataContainerUxFeature(int[] _pageSizeOptions)
                 order: 10
             );
         });
-    }
+    });
 }

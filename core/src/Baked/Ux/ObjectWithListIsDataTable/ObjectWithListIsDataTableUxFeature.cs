@@ -1,15 +1,18 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
+using Baked.Domain.Model;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Baked.Ux.ObjectWithListIsDataTable;
 using Humanizer;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Baked.Ux.ObjectWithListIsDataTable;
+namespace Baked;
 
-public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
+public static class ObjectWithListIsDataTableUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> ObjectWithListIsDataTable(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -171,5 +174,30 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 order: 10
             );
         });
+    });
+
+    extension(TypeModel type)
+    {
+        public bool TryGetListProperty([NotNullWhen(true)] out PropertyModel? result)
+        {
+            if (!type.TryGetMembers(out var returnMembers)) { result = null; return false; }
+            if (!returnMembers.TryGet<ObjectWithList>(out var objectWithList)) { result = null; return false; }
+
+            result = returnMembers.Properties[objectWithList.ListPropertyName];
+
+            return true;
+        }
+
+        public PropertyModel GetListProperty()
+        {
+            if (!type.TryGetListProperty(out var result))
+            {
+                throw DiagnosticCode.PropertyWithAttribute.Exception(
+                    $"{type.Name} is expected to have members and at least one property with `{nameof(ObjectWithList)}`"
+                );
+            }
+
+            return result;
+        }
     }
 }

@@ -5,11 +5,11 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-namespace Baked.Ux.DataTableDefaults;
+namespace Baked;
 
-public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
+public static class DataTableDefaultsUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> DataTableDefaults(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -128,5 +128,5 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 button.Schema.Rounded = true;
             }
         });
-    }
+    });
 }

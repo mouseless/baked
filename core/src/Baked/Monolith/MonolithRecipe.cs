@@ -24,9 +24,6 @@ using Baked.MockOverrider;
 using Baked.Orm;
 using Baked.RateLimiter;
 using Baked.Theme;
-using Baked.Ux;
-using Baked.Ux.EnumParameterIsSelect;
-using Baked.Ux.QueryActionAsDataContainer;
 
 namespace Baked.Monolith;
 
@@ -139,11 +136,11 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessConfigurator> business)
         FeatureFunc<ThemeConfigurator>? _theme = default;
         public void Theme(FeatureFunc<ThemeConfigurator>? theme) => _theme = theme;
 
-        FeatureFunc<UxConfigurator> _enumParameterIsSelect = c => c.EnumParameterIsSelect();
-        public void EnumParameterIsSelect(Func<UxConfigurator, EnumParameterIsSelectUxFeature> enumParameterIsSelect) => _enumParameterIsSelect = c => enumParameterIsSelect(c);
+        FeatureFunc<UxFeature.Configurator> _enumParameterIsSelect = c => c.EnumParameterIsSelect();
+        public void EnumParameterIsSelect(FeatureFunc<UxFeature.Configurator> enumParameterIsSelect) => _enumParameterIsSelect = enumParameterIsSelect;
 
-        FeatureFunc<UxConfigurator> _queryActionAsDataContainer = c => c.QueryActionAsDataContainer();
-        public void QueryActionAsDataContainer(Func<UxConfigurator, QueryActionAsDataContainerUxFeature> queryActionAsDataContainer) => _queryActionAsDataContainer = c => queryActionAsDataContainer(c);
+        FeatureFunc<UxFeature.Configurator> _queryActionAsDataContainer = c => c.QueryActionAsDataContainer();
+        public void QueryActionAsDataContainer(FeatureFunc<UxFeature.Configurator> queryActionAsDataContainer) => _queryActionAsDataContainer = queryActionAsDataContainer;
 
         public override void Apply(ApplicationDescriptor app)
         {

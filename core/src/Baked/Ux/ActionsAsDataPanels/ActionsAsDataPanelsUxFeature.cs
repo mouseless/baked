@@ -2,11 +2,11 @@
 using Baked.Ui;
 using Humanizer;
 
-namespace Baked.Ux.ActionsAsDataPanels;
+namespace Baked;
 
-public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
+public static class ActionsAsDataPanelsUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> ActionsAsDataPanels(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -39,5 +39,5 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                 }
             );
         });
-    }
+    });
 }
