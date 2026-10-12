@@ -8,7 +8,7 @@ public abstract class FeatureConfigurator<TSelf>
     static readonly string _abstraction = TrimSuffix(
         typeof(TSelf).DeclaringType?.Name ??
         throw new InvalidOperationException($"`{typeof(TSelf).Name}` should be nested in its abstraction class, e.g. `CoreFeature.Configurator`"),
-        nameof(Feature)
+        "Feature"
     );
 
     static string TrimSuffix(string name, string suffix) =>
