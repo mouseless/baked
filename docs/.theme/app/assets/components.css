@@ -124,6 +124,10 @@
           @apply leading-[1.5em];
         }
       }
+
+      &.language-text code {
+        @apply leading-[1.5em];
+      }
     }
 
     ul, ol {

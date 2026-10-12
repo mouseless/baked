@@ -68,7 +68,7 @@ Features are added using one of the implementations available in given
 configurator;
 
 ```csharp
-app.Features.AddGreeting(c => c.WelcomePage());
+app.Features.AddGreeting(c => c.Welcome());
 app.Features.AddDatabase(c => c.MySql());
 ```
 
@@ -85,16 +85,15 @@ app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true));
 
 #### Overriding A Configuration
 
-To override configurations of added features, follow
-[feature conventions](feature.md#conventions), create a
-`ConfigurationOverrider` feature and add your overrider after all other
-features as shown below;
+To override configurations of added features, create an `OverrideFeature`
+with an `AddOverrides()` method, see [Overrides](feature.md#overrides), and add
+your overrides after all other features as shown below;
 
 ```csharp
-app.Features.AddGreeting(c => c.WelcomePage());
+app.Features.AddGreeting(c => c.Welcome());
 app.Features.AddDatabase(c => c.MySql());
 ...
-app.Features.AddConfigurationOverrider();
+app.Features.AddOverrides();
 ```
 
 ## Running an Application

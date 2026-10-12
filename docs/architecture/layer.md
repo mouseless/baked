@@ -2,8 +2,8 @@
 
 Each `ILayer` implementation represents an internal system component of the
 software you develop. A layer provides application features with configuration
-of this system component so that the features can bind domain objects and
-system components together.
+of this system component so that the features can bind domain objects and system
+components together.
 
 Let's take relational database as an example. A relational database is treated
 as an internal system component and is introduced by the `DataAccessLayer` along
@@ -16,35 +16,10 @@ Core framework into your application. It provides three phases, as mentioned in
 `IEndpointRouteBuilder` objects as its configuration API. This way, any feature
 has the ability to use a middleware or add routes to the application.
 
-## Conventions
-
-For a consistent developer experience, follow below conventions when
-implementing a new layer;
-
-1. Place all layer related classes under the same folder named after layer,
-   e.g., `Runtime/`
-1. Use `Layer` suffix in layer class name, e.g.,
-   `Runtime/RuntimeLayer.cs`
-1. Provide extension methods in `Baked` namespace, e.g.,
-   `Runtime/RuntimeExtensions.cs`;
-   1. `Add` extension to `List<ILayer>`, e.g., `AddRuntime()`
-   1. `Get` extensions to `ApplicationContext`, e.g.,
-      `GetWebApplicationBuilder()`, `GetWebApplication()`
-    1. A nested `Configurator` class that wraps `LayerConfigurator` and exposes
-        `Configure*` or other layer-specific methods per configuration target,
-        e.g., `ConfigureServiceCollection()`
-    1. An extension to `LayerConfigurator` that returns the layer-specific
-        configurator, e.g., `configurator.Runtime`, `configurator.HttpClient`
-1. Place phase implementations as nested classes under the layer class
-1. Don't use any suffix for phases and use method-like names, e.g., `Build` and
-   `Run`
-
-Please refer to existing layers in [github.com/mouseless/baked][] for examples.
-
 ## Creating A Layer
 
-To create a layer, create a class using above conventions and extend
-`LayerBase`.
+To create a layer, create a class that extends `LayerBase`. See [Guide](#guide)
+for naming and placing it.
 
 ```csharp
 public class LayerX : LayerBase
@@ -62,8 +37,8 @@ public class LayerX : LayerBase
 ### `Id` of a Layer
 
 `ILayer` has an `Id` property which should be a unique per `Application`
-instance. `LayerBase` sets the `Id` as name of the concrete class e.g.,
-`LayerX` at above example.
+instance. `LayerBase` sets the `Id` as name of the concrete class e.g., `LayerX`
+at above example.
 
 You can override its value in layer implementation class as shown below;
 
@@ -78,8 +53,8 @@ public class LayerX : LayerBase
 ## Adding Phases
 
 By default `LayerBase` returns no phases. To add one or more phases into the
-application, you need to override `GetStartPhases()` or `GetGeneratePhases()` methods
-as shown below;
+application, you need to override `GetStartPhases()` or `GetGeneratePhases()`
+methods as shown below;
 
 ```csharp
 public class SampleLayer : LayerBase
@@ -99,8 +74,8 @@ public class SampleLayer : LayerBase
 }
 ```
 
-Here `SampleLayer` adds two phases, `DoA` to `Start` mode and `DoB` to `Generate`
-mode of the application.
+Here `SampleLayer` adds two phases, `DoA` to `Start` mode and `DoB` to
+`Generate` mode of the application.
 
 > [!TIP]
 >
@@ -154,14 +129,14 @@ public class Build : PhaseBase<WebApplicationBuilder>
 
 > [!NOTE]
 >
-> You can provide more than one dependency for a phase. E.g., `Phase<X, Y>`
-> will require `Initialize(X x, Y y)` method to be implemented.
+> You can provide more than one dependency for a phase. E.g., `Phase<X, Y>` will
+> require `Initialize(X x, Y y)` method to be implemented.
 
 > [!WARNING]
 >
 > Type of the dependency provided, must be exactly the same as the type of
-> dependency in `ApplicationContext`. For more information
-> [Running an Application](../architecture/application.md#running-an-application)
+> dependency in `ApplicationContext`. For more information [Running an
+> Application](../architecture/application.md#running-an-application)
 
 Phases can also define context dependencies from other phase artifacts. For
 example `HttpServerLayer.Build` phase can require `IServiceCollection` which
@@ -284,9 +259,9 @@ public class LayerX : LayerBase<AddServices>
 
 > [!WARNING]
 >
-> `GetContext()` method is called for every layer before applying any of them
-> to features. And `onDispose:` actions are called after applying these
-> contexts to all features.
+> `GetContext()` method is called for every layer before applying any of them to
+> features. And `onDispose:` actions are called after applying these contexts to
+> all features.
 
 ### Providing Multiple Targets
 
@@ -311,15 +286,13 @@ public class LayerX : LayerBase<AddServices>
 This phase context will require an action with two parameter in a feature;
 
 ```csharp
-...
-public void Configure(LayerConfigurator configurator)
+... => x.Define(configurator =>
 {
     configurator.Configure((Configuration1 configuration1, Configuration2 configuration2) =>
     {
         // use both objects to configure
     });
-}
-...
+});
 ```
 
 See [Feature](./feature.md) for more information on using layer configurators
@@ -347,8 +320,7 @@ public class LayerX : LayerBase<AddServices>
 This phase context will require two different actions in a feature;
 
 ```csharp
-...
-public void Configure(LayerConfigurator configurator)
+... => x.Define(configurator =>
 {
     configurator.Configure((Configuration1 configuration1) =>
     {
@@ -359,8 +331,7 @@ public void Configure(LayerConfigurator configurator)
     {
         // configure one by one
     });
-}
-...
+});
 ```
 
 > [!TIP]
@@ -394,4 +365,75 @@ This phase context will require two different actions;
    Configuration2 configuration2)`
 1. For the last configuration object: `(Configuration3 configuration3)`.
 
-[github.com/mouseless/baked]:https://github.com/mouseless/baked
+## Guide
+
+For a consistent developer experience, follow below conventions when
+implementing a new layer;
+
+```
+Runtime/
+├─ RuntimeLayer.cs        // layer, with phases as nested classes
+├─ RuntimeExtensions.cs   // extensions, in Baked namespace
+└─ ThreadOptions.cs       // configuration class, if any
+```
+
+`RuntimeLayer.cs`
+```csharp
+namespace Baked.Runtime;
+
+public class RuntimeLayer : LayerBase<AddServices>
+{
+    ...
+
+    // no suffix, method-like names
+    public class AddServices() : PhaseBase<...> { ... }
+}
+```
+
+`RuntimeExtensions.cs`
+```csharp
+namespace Baked;
+
+public static class RuntimeExtensions
+{
+    // one Configure* method per configuration target
+    public class Configurator(LayerConfigurator _configurator)
+    {
+        public void ConfigureServiceCollection(Action<IServiceCollection> configuration) =>
+            _configurator.Configure(configuration);
+    }
+
+    // layer-specific configurator, e.g., configurator.Runtime
+    extension(LayerConfigurator configurator)
+    {
+        public Configurator Runtime => new(configurator);
+    }
+
+    extension(List<ILayer> layers)
+    {
+        public void AddRuntime() =>
+            layers.Add(new RuntimeLayer());
+    }
+
+    // Get* methods for phase artifacts
+    extension(ApplicationContext context)
+    {
+        public IServiceCollection GetServiceCollection() =>
+            context.Get<IServiceCollection>();
+    }
+}
+```
+
+Then features use this configurator as shown below;
+
+```csharp
+configurator.Runtime.ConfigureServiceCollection(services =>
+{
+    ...
+});
+```
+
+> [!NOTE]
+>
+> Unlike features, layers are not defined with `Define()`. A layer is a class
+> that extends `LayerBase`, see [Creating A Layer](#creating-a-layer).

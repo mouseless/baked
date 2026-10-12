@@ -28,6 +28,21 @@
 
 ## Breaking Changes
 
+- Features are now defined with `Define()` of their abstraction configurator,
+  feature classes and `XConfigurator` classes are removed
+  ```csharp
+  // was
+  public class WelcomeGreetingFeature : IFeature<GreetingConfigurator>
+  {
+      public void Configure(LayerConfigurator configurator) { ... }
+  }
+
+  // now
+  public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeature.Configurator x) =>
+      x.Define(configurator => { ... });
+  ```
+  - Every abstraction now provides `Disabled()`, `Feature.Empty<T>()` is
+    removed
 - Attributes used in conventions no longer have the `Attribute` suffix, e.g.,
   `LabelAttribute` -> `Label`. These also changed beyond the suffix;
   | old                        | new             |
