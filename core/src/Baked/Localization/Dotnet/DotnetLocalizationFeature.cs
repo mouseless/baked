@@ -24,10 +24,15 @@ public static class DotnetLocalizationFeature
         {
             if (configurator.IsNfr) { return; }
 
-            var localeDir = Path.Combine(
-                Assembly.GetEntryAssembly()?.Location ??
-                throw new("'EntryAssembly' should have existed"), "../../../../Locales"
-            );
+            // project directory is given by `Generate` target, falls back to
+            // default output layout when generate is run manually
+            var projectDir = Environment.GetEnvironmentVariable("BAKED_PROJECT_DIR") ??
+                Path.Combine(
+                    Assembly.GetEntryAssembly()?.Location ??
+                    throw new("'EntryAssembly' should have existed"),
+                    "../../../.."
+                );
+            var localeDir = Path.Combine(projectDir, "Locales");
 
             configurator.Ui.UsingLocaleTemplate(localeTemplate =>
             {

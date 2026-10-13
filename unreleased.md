@@ -212,6 +212,8 @@
   show reaction in the descriptor
   - It was showing the components that reacts to `showWhen: is null` causing to
     render unintended components while page is loading
+- Locale files were not found when build output path was customized, e.g.,
+  `--artifacts-path`, causing keys to be generated as values, fixed
 - Minor improvements in `components.css`
 
 ## Library Upgrades

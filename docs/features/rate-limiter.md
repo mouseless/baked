@@ -7,13 +7,13 @@ Add this feature using `AddRateLimiter()` extension;
 app.Features.AddRateLimiter(...);
 ```
 
-## Concurrency Limiter
+## Concurrency
 
 This feature registers .NET concurrency limiter services and middleware with
 `permitLimit` and `queueLimit` options 
 
 ```csharp
-c => c.ConcurrencyLimiter()
+c => c.Concurrency()
 ```
 
 > [!TIP]

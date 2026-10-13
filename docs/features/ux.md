@@ -154,7 +154,7 @@ c => c.LabelsAreFrozen()
 Shows list results of controller actions as a `DataTable` inside a `DataPanel`.
 
 ```csharp
-c => c.ListDataTable()
+c => c.ListIsDataTable()
 ```
 
 - Methods with `ApiAction` attribute that return a list are rendered as

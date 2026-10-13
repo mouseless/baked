@@ -17,7 +17,7 @@ namespace Baked;
 
 public static class DefaultThemeFeature
 {
-    public static readonly JsonSerializerSettings JsonSettings = new()
+    public static JsonSerializerSettings JsonSettings => new()
     {
         ContractResolver = new AttributeAwareCamelCasePropertyNamesContractResolver(),
         NullValueHandling = NullValueHandling.Ignore,
