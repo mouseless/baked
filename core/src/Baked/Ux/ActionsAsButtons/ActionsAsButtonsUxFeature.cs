@@ -12,44 +12,15 @@ public static class ActionsAsButtonsUxFeature
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
-            // `Button`
+            // adds button to methods under actions
             conventions.AddMethodComponent<Button>(
-                when: c => c.Method.Has<UiAction>() && !c.Method.DefaultOverload.Parameters.Any(),
+                when: c => c.Method.Has<UiAction>(),
                 where: cc => cc.Path.EndsWith("actions", "*")
             );
 
-            // `SimpleForm` with dialog options
-            conventions.AddMethodComponent<SimpleForm>(
-                when: c =>
-                    c.Method.Has<UiAction>() &&
-                    (
-                        c.Method.DefaultOverload.Parameters.Any() ||
-                        c.Method.GetAction().Method == HttpMethod.Delete
-                    ),
-                where: cc => cc.Path.EndsWith("actions", "*")
-            );
-            conventions.AddMethodSchema<SimpleForm.Dialog>(
-                where: cc => cc.Path.EndsWith("actions", "*", "simple-form", "dialog-options")
-            );
-            conventions.EditMethodSchema<SimpleForm.Dialog>(
-                when: c => !c.Method.DefaultOverload.Parameters.Any(),
-                schema: (sfd, _, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    sfd.Message = l("Are you sure?");
-                }
-            );
-
-            // adds button to the methods with a route
-            conventions.AddMethodComponent<Button>(
-                when: c => c.Method.Has<UiAction>() && c.Method.Has<UiRoute>(),
-                where: cc => cc.Path.EndsWith("actions", "*")
-            );
-
-            // adds redirect action for methods with a route
+            // adds redirect action to methods with a route under actions
             conventions.AddMethodSchema(
-                when: c => c.Method.Has<UiAction>() && c.Method.Has<UiRoute>(),
+                when: c => c.Method.Has<UiRoute>(),
                 where: cc => cc.Path.EndsWith("actions", "*", "button", "action"),
                 schema: c => Execute.Local.UseRedirect(c.Method.Get<UiRoute>().Path)
             );
@@ -70,25 +41,62 @@ public static class ActionsAsButtonsUxFeature
                 }
             );
 
-            // Open button (for dialog)
-            conventions.AddMethodComponent<Button>(
-                where: cc => cc.Path.EndsWith("dialog-options", "open")
+            // adds dialog for parametrized or delete methods that have no route
+            conventions.AddMethodSchema<Button.Dialog>(
+                when: c =>
+                    !c.Method.Has<UiRoute>() &&
+                    (
+                        c.Method.DefaultOverload.Parameters.Any() ||
+                        c.Method.GetAction().Method == HttpMethod.Delete
+                    ),
+                where: cc => cc.Path.EndsWith("actions", "*", "button", "dialog-options")
             );
 
-            // Submit button (for dialog and page)
+            // adds confirmation text to methods as dialog content
+            conventions.AddMethodComponent<Text>(
+                where: cc => cc.Path.EndsWith("button", "dialog-options", "content")
+            );
+            conventions.EditMethodComponent<Text>(
+                where: cc => cc.Path.EndsWith("button", "dialog-options", "content"),
+                component: (t, _, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    t.Data = Fetch.Computed.UseLocalization(l("Are you sure?"));
+                }
+            );
+
+            // adds simple form to parameterized methods as dialog content
+            conventions.AddMethodComponent<SimpleForm>(
+                when: c => c.Method.DefaultOverload.Parameters.Any(),
+                where: cc => cc.Path.EndsWith("button", "dialog-options", "form")
+            );
+
+            // add submit button to any method
             conventions.AddMethodComponent<Button>(
-                when: c => c.Method.Has<UiAction>(),
                 where: cc => cc.Path.EndsWith("submit")
             );
+
+            // configures submit as primary
             conventions.EditMethodComponent<Button>(
                 where: cc => cc.Path.EndsWith("submit"),
                 component: b => b.Schema.Severity = "primary"
             );
+
+            // configures post action of remote action to be close dialog under dialog
+            conventions.EditMethodSchema<RemoteAction>(
+                where: cc => cc.Path.EndsWith("dialog-options", "form", "*", "action"),
+                schema: ra => ra.PostAction = Execute.Publish.CloseDialog()
+            );
+
+            // configures delete methods as dangerous
             conventions.EditMethodComponent<Button>(
                 when: c => c.Method.GetAction().Method == HttpMethod.Delete,
                 where: cc => cc.Path.EndsWith("submit"),
                 component: b => b.Schema.Severity = "danger"
             );
+
+            // submit is save when in form page
             conventions.EditMethodComponent<Button>(
                 where: cc => cc.Path.EndsWith("form-page", "submit"),
                 component: (b, _, cc) =>
@@ -153,12 +161,7 @@ public static class ActionsAsButtonsUxFeature
             // Icons
             conventions.EditMethodComponent<Button>(
                 when: c => c.Method.Has<UiAction>(),
-                where: cc =>
-                    !cc.Path.Contains("form-page") &&
-                    (
-                        cc.Path.EndsWith("actions", "*") ||
-                        cc.Path.EndsWith("*dialog*", "open")
-                    ),
+                where: cc => cc.Path.EndsWith("actions", "*") && !cc.Path.Contains("form-page"),
                 component: (b, c) =>
                 {
                     var action = c.Method.GetAction();

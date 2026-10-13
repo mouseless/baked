@@ -8,58 +8,84 @@
         "description": "/parents/[id]:Description",
         "actions": [
           {
-            "type": "SimpleForm",
+            "type": "Button",
             "schema": {
-              "title": "Update",
-              "submit": {
-                "label": "Update",
-                "severity": "primary"
-              },
-              "inputs": [
-                {
-                  "name": "name",
-                  "component": {
-                    "type": "InputText",
-                    "schema": {
-                      "label": {
-                        "text": "Name",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                },
-                {
-                  "name": "surname",
-                  "component": {
-                    "type": "InputText",
-                    "schema": {
-                      "label": {
-                        "text": "Surname",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                },
-                {
-                  "name": "description",
-                  "component": {
-                    "type": "Textarea",
-                    "schema": {
-                      "label": {
-                        "text": "Description",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                }
-              ],
+              "icon": "pi pi-pencil",
+              "label": "Update",
               "dialogOptions": {
-                "open": {
-                  "icon": "pi pi-pencil",
-                  "label": "Update"
+                "title": "Update",
+                "form": {
+                  "type": "SimpleForm",
+                  "schema": {
+                    "submit": {
+                      "label": "Update",
+                      "severity": "primary"
+                    },
+                    "inputs": [
+                      {
+                        "name": "name",
+                        "component": {
+                          "type": "InputText",
+                          "schema": {
+                            "label": {
+                              "text": "Name",
+                              "mode": "ifta",
+                              "showOptionality": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "name": "surname",
+                        "component": {
+                          "type": "InputText",
+                          "schema": {
+                            "label": {
+                              "text": "Surname",
+                              "mode": "ifta",
+                              "showOptionality": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "name": "description",
+                        "component": {
+                          "type": "Textarea",
+                          "schema": {
+                            "label": {
+                              "text": "Description",
+                              "mode": "ifta",
+                              "showOptionality": true
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "action": {
+                    "type": "Remote",
+                    "path": "parents/{id}/",
+                    "method": "PUT",
+                    "params": {
+                      "type": "Computed",
+                      "composable": "useNuxtRoute",
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "params"
+                        }
+                      }
+                    },
+                    "body": {
+                      "type": "Context",
+                      "key": "model"
+                    },
+                    "postAction": {
+                      "type": "Publish",
+                      "event": "close-dialog"
+                    }
+                  }
                 },
                 "cancel": {
                   "label": "Cancel",
@@ -68,48 +94,42 @@
               }
             },
             "action": {
-              "type": "Remote",
-              "path": "parents/{id}/",
-              "method": "PUT",
-              "params": {
-                "type": "Computed",
-                "composable": "useNuxtRoute",
-                "options": {
-                  "type": "Inline",
-                  "value": {
-                    "property": "params"
-                  }
-                }
-              },
-              "body": {
-                "type": "Context",
-                "key": "model"
-              },
-              "postAction": {
-                "type": "Publish",
-                "event": "update"
-              }
+              "type": "Publish",
+              "event": "update"
             }
           },
           {
-            "type": "SimpleForm",
+            "type": "Button",
             "schema": {
-              "title": "Delete",
-              "submit": {
-                "label": "Delete",
-                "severity": "danger"
-              },
-              "inputs": [],
+              "icon": "pi pi-trash",
+              "label": "Delete",
               "dialogOptions": {
-                "open": {
-                  "icon": "pi pi-trash",
-                  "label": "Delete"
+                "title": "Delete",
+                "content": {
+                  "type": "MyText",
+                  "schema": {
+                    "somethingExtra": "this is extra!",
+                    "maxLength": 100
+                  },
+                  "data": {
+                    "type": "Computed",
+                    "composable": "useLocalization",
+                    "options": {
+                      "type": "Inline",
+                      "value": {
+                        "key": "Are you sure?"
+                      }
+                    }
+                  }
+                },
+                "submit": {
+                  "label": "Delete",
+                  "severity": "danger"
                 },
                 "cancel": {
                   "label": "Cancel",
                   "variant": "text"
-                },
-                "message": "Are you sure?"
+                }
               }
             },
             "action": {
@@ -361,8 +381,7 @@
                   }
                 }
               }
-            ],
-            "alwaysShowTitle": true
+            ]
           },
           "action": {
             "type": "Remote",

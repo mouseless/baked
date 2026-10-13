@@ -32,24 +32,37 @@
             }
           },
           {
-            "type": "SimpleForm",
+            "type": "Button",
             "schema": {
-              "title": "Clear Parents",
-              "submit": {
-                "label": "Clear Parents",
-                "severity": "danger"
-              },
-              "inputs": [],
+              "icon": "pi pi-trash",
+              "label": "Clear Parents",
               "dialogOptions": {
-                "open": {
-                  "icon": "pi pi-trash",
-                  "label": "Clear Parents"
+                "title": "Clear Parents",
+                "content": {
+                  "type": "MyText",
+                  "schema": {
+                    "somethingExtra": "this is extra!",
+                    "maxLength": 100
+                  },
+                  "data": {
+                    "type": "Computed",
+                    "composable": "useLocalization",
+                    "options": {
+                      "type": "Inline",
+                      "value": {
+                        "key": "Are you sure?"
+                      }
+                    }
+                  }
+                },
+                "submit": {
+                  "label": "Clear Parents",
+                  "severity": "danger"
                 },
                 "cancel": {
                   "label": "Cancel",
                   "variant": "text"
-                },
-                "message": "Are you sure?"
+                }
               }
             },
             "action": {
@@ -292,274 +305,295 @@
                     "schema": {
                       "parts": [
                         {
-                          "type": "SimpleForm",
+                          "type": "Button",
                           "schema": {
-                            "title": "Update",
-                            "submit": {
-                              "label": "Update",
-                              "severity": "primary"
-                            },
-                            "inputs": [
-                              {
-                                "name": "string",
-                                "component": {
-                                  "type": "InputText",
-                                  "schema": {
-                                    "label": {
-                                      "text": "String",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "stringData",
-                                "component": {
-                                  "type": "InputText",
-                                  "schema": {
-                                    "label": {
-                                      "text": "String Data",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "int32",
-                                "numeric": true,
-                                "component": {
-                                  "type": "InputNumber",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Int 32",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "decimal",
-                                "numeric": true,
-                                "component": {
-                                  "type": "InputMoney",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Decimal",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "double",
-                                "numeric": true,
-                                "component": {
-                                  "type": "InputRate",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Double",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "boolean",
-                                "component": {
-                                  "type": "InputCheckbox",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Boolean",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    },
-                                    "indeterminate": true
-                                  }
-                                }
-                              },
-                              {
-                                "name": "unique",
-                                "component": {
-                                  "type": "InputText",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Unique",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "uri",
-                                "component": {
-                                  "type": "InputUrl",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Uri",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "mailAddress",
-                                "component": {
-                                  "type": "InputMailAddress",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Mail Address",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    }
-                                  }
-                                }
-                              },
-                              {
-                                "name": "enum",
-                                "component": {
-                                  "type": "Select",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Enum",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    },
-                                    "localizeOptionLabels": true,
-                                    "optionLabel": "label",
-                                    "optionValue": "value",
-                                    "showClear": true
-                                  },
-                                  "data": {
-                                    "type": "Inline",
-                                    "value": [
-                                      {
-                                        "label": "Enumeration.Member1",
-                                        "value": "member1"
-                                      },
-                                      {
-                                        "label": "Enumeration.Member2",
-                                        "value": "member2"
-                                      },
-                                      {
-                                        "label": "Enumeration.Member3",
-                                        "value": "member3"
-                                      },
-                                      {
-                                        "label": "Enumeration.Member4",
-                                        "value": "member4"
-                                      },
-                                      {
-                                        "label": "Enumeration.Member5",
-                                        "value": "member5"
-                                      }
-                                    ]
-                                  }
-                                }
-                              },
-                              {
-                                "name": "flagsEnum",
-                                "component": {
-                                  "type": "MultiSelectButton",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Flags Enum",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    },
-                                    "localizeOptionLabels": true,
-                                    "optionLabel": "label",
-                                    "optionValue": "value"
-                                  },
-                                  "data": {
-                                    "type": "Inline",
-                                    "value": [
-                                      {
-                                        "label": "FlagsEnumeration.Flag1",
-                                        "value": "flag1"
-                                      },
-                                      {
-                                        "label": "FlagsEnumeration.Flag2",
-                                        "value": "flag2"
-                                      },
-                                      {
-                                        "label": "FlagsEnumeration.Flag3",
-                                        "value": "flag3"
-                                      }
-                                    ]
-                                  }
-                                }
-                              },
-                              {
-                                "name": "status",
-                                "component": {
-                                  "type": "Select",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Status",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    },
-                                    "localizeOptionLabels": true,
-                                    "optionLabel": "label",
-                                    "optionValue": "value",
-                                    "showClear": true
-                                  },
-                                  "data": {
-                                    "type": "Inline",
-                                    "value": [
-                                      {
-                                        "label": "EntityStatus.Default",
-                                        "value": "default"
-                                      },
-                                      {
-                                        "label": "EntityStatus.Info",
-                                        "value": "info"
-                                      },
-                                      {
-                                        "label": "EntityStatus.Success",
-                                        "value": "success"
-                                      },
-                                      {
-                                        "label": "EntityStatus.Warning",
-                                        "value": "warning"
-                                      },
-                                      {
-                                        "label": "EntityStatus.Error",
-                                        "value": "error"
-                                      }
-                                    ]
-                                  }
-                                }
-                              },
-                              {
-                                "name": "dateOnly",
-                                "component": {
-                                  "type": "InputDate",
-                                  "schema": {
-                                    "label": {
-                                      "text": "Date Only",
-                                      "mode": "ifta",
-                                      "showOptionality": true
-                                    },
-                                    "format": "dd/mm/yy",
-                                    "usePicker": true
-                                  }
-                                }
-                              }
-                            ],
+                            "icon": "pi pi-pencil",
+                            "label": "",
+                            "variant": "text",
+                            "rounded": true,
                             "dialogOptions": {
-                              "open": {
-                                "icon": "pi pi-pencil",
-                                "label": "",
-                                "variant": "text",
-                                "rounded": true
+                              "title": "Update",
+                              "form": {
+                                "type": "SimpleForm",
+                                "schema": {
+                                  "submit": {
+                                    "label": "Update",
+                                    "severity": "primary"
+                                  },
+                                  "inputs": [
+                                    {
+                                      "name": "string",
+                                      "component": {
+                                        "type": "InputText",
+                                        "schema": {
+                                          "label": {
+                                            "text": "String",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "stringData",
+                                      "component": {
+                                        "type": "InputText",
+                                        "schema": {
+                                          "label": {
+                                            "text": "String Data",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "int32",
+                                      "numeric": true,
+                                      "component": {
+                                        "type": "InputNumber",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Int 32",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "decimal",
+                                      "numeric": true,
+                                      "component": {
+                                        "type": "InputMoney",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Decimal",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "double",
+                                      "numeric": true,
+                                      "component": {
+                                        "type": "InputRate",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Double",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "boolean",
+                                      "component": {
+                                        "type": "InputCheckbox",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Boolean",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          },
+                                          "indeterminate": true
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "unique",
+                                      "component": {
+                                        "type": "InputText",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Unique",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "uri",
+                                      "component": {
+                                        "type": "InputUrl",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Uri",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "mailAddress",
+                                      "component": {
+                                        "type": "InputMailAddress",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Mail Address",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "enum",
+                                      "component": {
+                                        "type": "Select",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Enum",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          },
+                                          "localizeOptionLabels": true,
+                                          "optionLabel": "label",
+                                          "optionValue": "value",
+                                          "showClear": true
+                                        },
+                                        "data": {
+                                          "type": "Inline",
+                                          "value": [
+                                            {
+                                              "label": "Enumeration.Member1",
+                                              "value": "member1"
+                                            },
+                                            {
+                                              "label": "Enumeration.Member2",
+                                              "value": "member2"
+                                            },
+                                            {
+                                              "label": "Enumeration.Member3",
+                                              "value": "member3"
+                                            },
+                                            {
+                                              "label": "Enumeration.Member4",
+                                              "value": "member4"
+                                            },
+                                            {
+                                              "label": "Enumeration.Member5",
+                                              "value": "member5"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "flagsEnum",
+                                      "component": {
+                                        "type": "MultiSelectButton",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Flags Enum",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          },
+                                          "localizeOptionLabels": true,
+                                          "optionLabel": "label",
+                                          "optionValue": "value"
+                                        },
+                                        "data": {
+                                          "type": "Inline",
+                                          "value": [
+                                            {
+                                              "label": "FlagsEnumeration.Flag1",
+                                              "value": "flag1"
+                                            },
+                                            {
+                                              "label": "FlagsEnumeration.Flag2",
+                                              "value": "flag2"
+                                            },
+                                            {
+                                              "label": "FlagsEnumeration.Flag3",
+                                              "value": "flag3"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "status",
+                                      "component": {
+                                        "type": "Select",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Status",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          },
+                                          "localizeOptionLabels": true,
+                                          "optionLabel": "label",
+                                          "optionValue": "value",
+                                          "showClear": true
+                                        },
+                                        "data": {
+                                          "type": "Inline",
+                                          "value": [
+                                            {
+                                              "label": "EntityStatus.Default",
+                                              "value": "default"
+                                            },
+                                            {
+                                              "label": "EntityStatus.Info",
+                                              "value": "info"
+                                            },
+                                            {
+                                              "label": "EntityStatus.Success",
+                                              "value": "success"
+                                            },
+                                            {
+                                              "label": "EntityStatus.Warning",
+                                              "value": "warning"
+                                            },
+                                            {
+                                              "label": "EntityStatus.Error",
+                                              "value": "error"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "name": "dateOnly",
+                                      "component": {
+                                        "type": "InputDate",
+                                        "schema": {
+                                          "label": {
+                                            "text": "Date Only",
+                                            "mode": "ifta",
+                                            "showOptionality": true
+                                          },
+                                          "format": "dd/mm/yy",
+                                          "usePicker": true
+                                        }
+                                      }
+                                    }
+                                  ]
+                                },
+                                "action": {
+                                  "type": "Remote",
+                                  "path": "entities/{id}/",
+                                  "method": "PUT",
+                                  "params": {
+                                    "type": "Context",
+                                    "key": "parent",
+                                    "prop": "row"
+                                  },
+                                  "body": {
+                                    "type": "Context",
+                                    "key": "model"
+                                  },
+                                  "postAction": {
+                                    "type": "Publish",
+                                    "event": "close-dialog"
+                                  }
+                                }
                               },
                               "cancel": {
                                 "label": "Cancel",
@@ -568,45 +602,44 @@
                             }
                           },
                           "action": {
-                            "type": "Remote",
-                            "path": "entities/{id}/",
-                            "method": "PUT",
-                            "params": {
-                              "type": "Context",
-                              "key": "parent",
-                              "prop": "row"
-                            },
-                            "body": {
-                              "type": "Context",
-                              "key": "model"
-                            },
-                            "postAction": {
-                              "type": "Publish",
-                              "event": "update"
-                            }
+                            "type": "Publish",
+                            "event": "entity:update"
                           }
                         },
                         {
-                          "type": "SimpleForm",
+                          "type": "Button",
                           "schema": {
-                            "title": "Delete",
-                            "submit": {
-                              "label": "Delete",
-                              "severity": "danger"
-                            },
-                            "inputs": [],
+                            "icon": "pi pi-trash",
+                            "label": "",
+                            "variant": "text",
+                            "rounded": true,
                             "dialogOptions": {
-                              "open": {
-                                "icon": "pi pi-trash",
-                                "label": "",
-                                "variant": "text",
-                                "rounded": true
+                              "title": "Delete",
+                              "content": {
+                                "type": "MyText",
+                                "schema": {
+                                  "somethingExtra": "this is extra!",
+                                  "maxLength": 100
+                                },
+                                "data": {
+                                  "type": "Computed",
+                                  "composable": "useLocalization",
+                                  "options": {
+                                    "type": "Inline",
+                                    "value": {
+                                      "key": "Are you sure?"
+                                    }
+                                  }
+                                }
+                              },
+                              "submit": {
+                                "label": "Delete",
+                                "severity": "danger"
                               },
                               "cancel": {
                                 "label": "Cancel",
                                 "variant": "text"
-                              },
-                              "message": "Are you sure?"
+                              }
                             }
                           },
                           "action": {
@@ -620,7 +653,7 @@
                             },
                             "postAction": {
                               "type": "Publish",
-                              "event": "delete"
+                              "event": "entity:delete"
                             }
                           }
                         }
@@ -652,11 +685,11 @@
                   "parts": [
                     {
                       "type": "On",
-                      "on": "update"
+                      "on": "entity:update"
                     },
                     {
                       "type": "On",
-                      "on": "delete"
+                      "on": "entity:delete"
                     }
                   ]
                 }
@@ -934,60 +967,81 @@
                         "schema": {
                           "parts": [
                             {
-                              "type": "SimpleForm",
+                              "type": "Button",
                               "schema": {
-                                "title": "Update",
-                                "submit": {
-                                  "label": "Update",
-                                  "severity": "primary"
-                                },
-                                "inputs": [
-                                  {
-                                    "name": "name",
-                                    "component": {
-                                      "type": "InputText",
-                                      "schema": {
-                                        "label": {
-                                          "text": "Name",
-                                          "mode": "ifta",
-                                          "showOptionality": true
-                                        }
-                                      }
-                                    }
-                                  },
-                                  {
-                                    "name": "surname",
-                                    "component": {
-                                      "type": "InputText",
-                                      "schema": {
-                                        "label": {
-                                          "text": "Surname",
-                                          "mode": "ifta",
-                                          "showOptionality": true
-                                        }
-                                      }
-                                    }
-                                  },
-                                  {
-                                    "name": "description",
-                                    "component": {
-                                      "type": "Textarea",
-                                      "schema": {
-                                        "label": {
-                                          "text": "Description",
-                                          "mode": "ifta",
-                                          "showOptionality": true
-                                        }
-                                      }
-                                    }
-                                  }
-                                ],
+                                "icon": "pi pi-pencil",
+                                "label": "",
+                                "variant": "text",
+                                "rounded": true,
                                 "dialogOptions": {
-                                  "open": {
-                                    "icon": "pi pi-pencil",
-                                    "label": "",
-                                    "variant": "text",
-                                    "rounded": true
+                                  "title": "Update",
+                                  "form": {
+                                    "type": "SimpleForm",
+                                    "schema": {
+                                      "submit": {
+                                        "label": "Update",
+                                        "severity": "primary"
+                                      },
+                                      "inputs": [
+                                        {
+                                          "name": "name",
+                                          "component": {
+                                            "type": "InputText",
+                                            "schema": {
+                                              "label": {
+                                                "text": "Name",
+                                                "mode": "ifta",
+                                                "showOptionality": true
+                                              }
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "name": "surname",
+                                          "component": {
+                                            "type": "InputText",
+                                            "schema": {
+                                              "label": {
+                                                "text": "Surname",
+                                                "mode": "ifta",
+                                                "showOptionality": true
+                                              }
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "name": "description",
+                                          "component": {
+                                            "type": "Textarea",
+                                            "schema": {
+                                              "label": {
+                                                "text": "Description",
+                                                "mode": "ifta",
+                                                "showOptionality": true
+                                              }
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "action": {
+                                      "type": "Remote",
+                                      "path": "parents/{id}/",
+                                      "method": "PUT",
+                                      "params": {
+                                        "type": "Context",
+                                        "key": "parent",
+                                        "prop": "row"
+                                      },
+                                      "body": {
+                                        "type": "Context",
+                                        "key": "model"
+                                      },
+                                      "postAction": {
+                                        "type": "Publish",
+                                        "event": "close-dialog"
+                                      }
+                                    }
                                   },
                                   "cancel": {
                                     "label": "Cancel",
@@ -996,45 +1050,44 @@
                                 }
                               },
                               "action": {
-                                "type": "Remote",
-                                "path": "parents/{id}/",
-                                "method": "PUT",
-                                "params": {
-                                  "type": "Context",
-                                  "key": "parent",
-                                  "prop": "row"
-                                },
-                                "body": {
-                                  "type": "Context",
-                                  "key": "model"
-                                },
-                                "postAction": {
-                                  "type": "Publish",
-                                  "event": "update"
-                                }
+                                "type": "Publish",
+                                "event": "parent:update"
                               }
                             },
                             {
-                              "type": "SimpleForm",
+                              "type": "Button",
                               "schema": {
-                                "title": "Delete",
-                                "submit": {
-                                  "label": "Delete",
-                                  "severity": "danger"
-                                },
-                                "inputs": [],
+                                "icon": "pi pi-trash",
+                                "label": "",
+                                "variant": "text",
+                                "rounded": true,
                                 "dialogOptions": {
-                                  "open": {
-                                    "icon": "pi pi-trash",
-                                    "label": "",
-                                    "variant": "text",
-                                    "rounded": true
+                                  "title": "Delete",
+                                  "content": {
+                                    "type": "MyText",
+                                    "schema": {
+                                      "somethingExtra": "this is extra!",
+                                      "maxLength": 100
+                                    },
+                                    "data": {
+                                      "type": "Computed",
+                                      "composable": "useLocalization",
+                                      "options": {
+                                        "type": "Inline",
+                                        "value": {
+                                          "key": "Are you sure?"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "submit": {
+                                    "label": "Delete",
+                                    "severity": "danger"
                                   },
                                   "cancel": {
                                     "label": "Cancel",
                                     "variant": "text"
-                                  },
-                                  "message": "Are you sure?"
+                                  }
                                 }
                               },
                               "action": {
@@ -1048,7 +1101,7 @@
                                 },
                                 "postAction": {
                                   "type": "Publish",
-                                  "event": "delete"
+                                  "event": "parent:delete"
                                 }
                               }
                             }
@@ -1096,11 +1149,11 @@
                       "parts": [
                         {
                           "type": "On",
-                          "on": "update"
+                          "on": "parent:update"
                         },
                         {
                           "type": "On",
-                          "on": "delete"
+                          "on": "parent:delete"
                         }
                       ]
                     }

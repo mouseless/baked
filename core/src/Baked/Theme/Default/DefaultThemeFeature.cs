@@ -585,19 +585,52 @@ public static class DefaultThemeFeature
             conventions.EditMethodComponent<Button>(
                 component: (b, c, cc) =>
                 {
+                    cc = cc.Drill("button");
                     var (_, l) = cc;
 
                     b.Schema.Label = l(c.Method.Name.Titleize());
+                    b.Schema.DialogOptions = c.Method.GenerateSchema<Button.Dialog>(cc.Drill("dialog-options"));
                     b.Action =
-                        c.Method.GenerateSchema<LocalAction>(cc.Drill("button", "action")) as IAction ??
-                        c.Method.GenerateSchema<PublishAction>(cc.Drill("button", "action")) as IAction ??
-                        c.Method.GenerateSchema<RemoteAction>(cc.Drill("button", "action"))
+                        b.Schema.DialogOptions?.Form is not null ? Execute.Publish.Event(c.Method.Name.Kebaberize(), options: pa => pa.Data = null) :
+                        c.Method.GenerateSchema<LocalAction>(cc.Drill("action")) as IAction ??
+                        c.Method.GenerateSchema<PublishAction>(cc.Drill("action")) as IAction ??
+                        c.Method.GenerateSchema<RemoteAction>(cc.Drill("action"))
                     ;
                 },
                 order: Order.At.Min
             );
 
-            // adds simple form to methods
+            // configures button dialog defaults for method
+            conventions.EditMethodSchema<Button.Dialog>(
+                schema: (bd, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    bd.Title = l(c.Method.Name.Titleize());
+                    bd.Cancel = c.Method.GenerateRequiredComponent<Button>(cc.Drill("cancel")).Schema;
+                    bd.Form = c.Method.GenerateComponent(cc.Drill("form"));
+
+                    if (bd.Form is null)
+                    {
+                        bd.Content = c.Method.GenerateComponent(cc.Drill("content"));
+                    }
+
+                    if (bd.Form is null && bd.Content is null)
+                    {
+                        throw DiagnosticCode.MissingRequiredComponent.Exception(
+                            $"Button.Dialog requires either Form or Content to be configured at path `{cc.Path}` for method `{c.Method.CustomAttributes.Name}`"
+                        );
+                    }
+
+                    if (bd.Content is not null)
+                    {
+                        bd.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
+                    }
+                },
+                order: Order.At.Min
+            );
+
+            // adds simple form to methods under content component
             conventions.AddMethodComponent<SimpleForm>(
                 when: c =>
                     c.Method.TryGet<ApiAction>(out var action) &&
@@ -608,12 +641,9 @@ public static class DefaultThemeFeature
                 component: (sf, c, cc) =>
                 {
                     cc = cc.Drill("simple-form");
-                    var (_, l) = cc;
 
                     sf.Action = c.Method.GenerateSchema<RemoteAction>(cc.Drill("action"));
-                    sf.Schema.Title = l(c.Method.Name.Titleize());
                     sf.Schema.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
-                    sf.Schema.DialogOptions = c.Method.GenerateSchema<SimpleForm.Dialog>(cc.Drill("dialog-options"));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
@@ -626,14 +656,15 @@ public static class DefaultThemeFeature
                 order: Order.At.Min
             );
 
-            // configures simple form dialog
-            conventions.EditMethodSchema<SimpleForm.Dialog>(
-                schema: (sfd, c, cc) =>
+            // configures title for simple form directly under content component
+            conventions.EditMethodComponent<SimpleForm>(
+                where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
+                component: (sf, c, cc) =>
                 {
-                    sfd.Cancel = c.Method.GenerateRequiredComponent<Button>(cc.Drill("cancel")).Schema;
-                    sfd.Open = c.Method.GenerateRequiredComponent<Button>(cc.Drill("open")).Schema;
-                },
-                order: Order.At.Min
+                    var (_, l) = cc;
+
+                    sf.Schema.Title = l(c.Method.Name.Titleize());
+                }
             );
 
             // configures form page defaults for method

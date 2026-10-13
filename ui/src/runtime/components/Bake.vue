@@ -66,7 +66,7 @@ const { name, descriptor } = defineProps({
   descriptor: { type: null, required: true }
 });
 const model = defineModel({ type: null });
-const emit = defineEmits(["loaded", "executed"]);
+const emit = defineEmits(["loaded"]);
 
 const parentPath = context.injectPath();
 const parentLoading = context.injectLoading();

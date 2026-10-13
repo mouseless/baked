@@ -63,6 +63,9 @@ public static class Execute
 
     public class Publishes
     {
+        public PublishAction CloseDialog() =>
+            Event("close-dialog", options: pa => pa.Data = null);
+
         public PublishAction Event(string @event,
             Action<PublishAction>? options = default
         ) => options.Apply(new() { Event = @event, Data = Fetch.Context.Model() });

@@ -8,20 +8,22 @@ public record Button : IComponentSchema
     public string? Severity { get; set; }
     public bool? Rounded { get; set; }
     public string? Size { get; set; }
-    public Overlay? OverlayOptions { get; set; }
+    public Dialog? DialogOptions { get; set; }
 
-    public record Overlay
+    public record Dialog
     {
         public string Title { get; set; } = string.Empty;
-        public IComponentDescriptor Form { get; set; } = MissingComponent.Empty;
-        public OverlayMode? Mode { get; set; }
+        public DialogMode? Mode { get; set; }
         public bool? DismissableMask { get; set; }
+        public IComponentDescriptor? Content { get; set; }
+        public IComponentDescriptor? Form { get; set; }
+        public Button? Submit { get; set; }
         public Button Cancel { get; set; } = new();
     }
 
-    public enum OverlayMode
+    public enum DialogMode
     {
         Popover,
-        Dialog
+        Modal
     }
 }

@@ -208,10 +208,16 @@
 - `SideMenu` items can now be hidden depending on authentication and claims
 - C# friendly name calculation is now fully compliant with C# language standards
 - `Enum` defaults wasn't getting camelized in `Input`, fixed
-- `Bake.vue` now waits until data is loaded to show a component when there is a
-  show reaction in the descriptor
-  - It was showing the components that reacts to `showWhen: is null` causing to
-    render unintended components while page is loading
+- `Bake.vue` improvements
+  - It now waits until data is loaded to show a component when there is a show
+    reaction in the descriptor
+    - It was showing the components that reacts to `showWhen: is null` causing
+      to render unintended components while page is loading
+  - It now emits `executed` event with success value
+- Modal form was closing before action is completed, now it executes and closes
+  only if action is success
+- `useLocalization` can now be used as a computed data through
+  `Fetch.Computed.UseLocalization(l("..."))`
 - Locale files were not found when build output path was customized, e.g.,
   `--artifacts-path`, causing keys to be generated as values, fixed
 - Minor improvements in `components.css`
