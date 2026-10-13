@@ -1,5 +1,4 @@
-﻿using Baked.Architecture;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Baked.Ui.Configuration;
 
