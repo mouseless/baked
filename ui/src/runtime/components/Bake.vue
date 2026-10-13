@@ -39,7 +39,15 @@
 </template>
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useActionExecuter, useBakeError, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
+import {
+  useActionExecuter,
+  useBakeError,
+  useComponentResolver,
+  useContext,
+  useDataFetcher,
+  useFormat,
+  useReactionHandler
+} from "#imports";
 import { ErrorPopover, InlineError } from "#components";
 
 const actionExecuter = useActionExecuter();
@@ -58,7 +66,7 @@ const { name, descriptor } = defineProps({
   descriptor: { type: null, required: true }
 });
 const model = defineModel({ type: null });
-const emit = defineEmits(["loaded"]);
+const emit = defineEmits(["loaded", "executed"]);
 
 const parentPath = context.injectPath();
 const parentLoading = context.injectLoading();
