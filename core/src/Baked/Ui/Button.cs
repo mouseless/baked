@@ -12,13 +12,13 @@ public record Button : IComponentSchema
 
     public record Dialog
     {
-        public string Title { get; set; } = string.Empty;
         public DialogMode? Mode { get; set; }
+        public string Header { get; set; } = string.Empty;
         public bool? DismissableMask { get; set; }
         public IComponentDescriptor? Content { get; set; }
         public IComponentDescriptor? Form { get; set; }
         public Button? Submit { get; set; }
-        public Button Cancel { get; set; } = new();
+        public Button? Cancel { get; set; }
     }
 
     public enum DialogMode

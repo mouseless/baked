@@ -40,7 +40,7 @@
           :ready
           class="min-w-min"
           :class="[
-            { 'mt-4': !horizontal && inputs.length },
+            { 'mt-4': !horizontal && inputs.length && !submitTarget },
             { 'text-nowrap self-start': horizontal }
           ]"
           @submit="$emit('submit', model)"

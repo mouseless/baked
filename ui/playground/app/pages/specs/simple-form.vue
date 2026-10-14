@@ -30,8 +30,7 @@ const variants = [
         })
       ],
       submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
-      title: "Spec: Simple Form",
-      alwaysShowTitle: true
+      title: "Spec: Simple Form"
     })
   },
   {
@@ -55,7 +54,8 @@ const variants = [
       action: giveMe.aLocalAction({ showMessage: "ok" }),
       inputs: [ giveMe.anInput() ],
       submit: giveMe.aButton().schema,
-      horizontal: true
+      horizontal: true,
+      title: null
     })
   },
   {
@@ -66,56 +66,8 @@ const variants = [
         giveMe.anInput({ name: "param-1" }),
         giveMe.anInput({ name: "param-2" }),
         giveMe.anInput({ name: "param-3" })
-      ]
-    })
-  },
-  {
-    name: "Dialog",
-    descriptor: giveMe.aSimpleForm({
-      action: giveMe.aCompositeAction([
-        giveMe.aLocalAction({ delay: 100 }),
-        giveMe.aLocalAction({
-          composable: "useShowMessage",
-          options: giveMe.aContextData({
-            key: "model",
-            prop: "text",
-            targetProp: "message"
-          })
-        })
-      ]),
-      dialogOptions: giveMe.aSimpleFormDialog({
-        open: giveMe.aButton({ label: "Spec: Simple Form" }).schema,
-        cancel: giveMe.aButton({ label: "Spec: Cancel" }).schema,
-        message: "Spec: Message"
-      }),
-      inputs: [
-        giveMe.anInput({
-          name: "input",
-          required: true
-        })
       ],
-      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
-      title: "Spec: Simple Form"
-    })
-  },
-  {
-    name: "Dialog Error",
-    descriptor: giveMe.aSimpleForm({
-      action: giveMe.aRemoteAction({ path: "/exception-samples/handled" }),
-      title: "Spec: Title",
-      description: "Spec: Description",
-      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
-      dialogOptions: giveMe.aSimpleFormDialog({
-        open: giveMe.aButton({ label: "Spec: Simple Form" }).schema,
-        cancel: giveMe.aButton({ label: "Spec: Cancel" }).schema,
-        message: "Spec: Message"
-      }),
-      inputs: [
-        giveMe.anInput({
-          name: "text",
-          component: giveMe.anExpectedInput({ testId: "input" })
-        })
-      ]
+      title: null
     })
   },
   {

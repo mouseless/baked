@@ -606,8 +606,7 @@ public static class DefaultThemeFeature
                 {
                     var (_, l) = cc;
 
-                    bd.Title = l(c.Method.Name.Titleize());
-                    bd.Cancel = c.Method.GenerateRequiredComponent<Button>(cc.Drill("cancel")).Schema;
+                    bd.Header = l(c.Method.Name.Titleize());
                     bd.Form = c.Method.GenerateComponent(cc.Drill("form"));
 
                     if (bd.Form is null)
@@ -626,6 +625,8 @@ public static class DefaultThemeFeature
                     {
                         bd.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
                     }
+
+                    bd.Cancel = c.Method.GenerateComponent<Button>(cc.Drill("cancel"))?.Schema;
                 },
                 order: Order.At.Min
             );

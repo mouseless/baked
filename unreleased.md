@@ -25,6 +25,9 @@
 - Button with dialog mode of `SimpleForm` is migrated to `Button`
   - You can now simplify conventions by configuring methods as buttons with
     dialogs instead of simple form in dialog mode
+- `Wrap` is introduced to help wrap multi children depending on a condition
+  - It strips out any comment node when condition is false to make sure a single
+    child node renders on its own allowing directives to work properly
 
 ## Breaking Changes
 
@@ -182,6 +185,8 @@
   `[AttributeUsage]`, so they are no longer included in every export target
 - `SimpleForm` no more provides a dialog mode, switch to `Button` to render
   methods as button with a dialog
+- `Dialog.Submit` became redundant and removed, use `Button` to render a dialog
+  action
 - Additional renamings are as below
   | old                                         | new                                    |
   | ------------------------------------------- | -------------------------------------- |

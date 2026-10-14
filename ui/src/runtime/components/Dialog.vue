@@ -12,22 +12,11 @@
     modal
     dismissable-mask
     :draggable="false"
-    @after-hide="emitSubmit"
   >
     <Bake
       name="dialog/content"
       :descriptor="content"
     />
-    <template
-      v-if="submit"
-      #footer
-    >
-      <Button
-        :schema="submit"
-        class="w-full"
-        @click="execute"
-      />
-    </template>
   </Dialog>
 </template>
 <script setup>
@@ -41,22 +30,9 @@ const { localize: l } = useLocalization();
 const { schema } = defineProps({
   schema: { type: Object, required: true }
 });
-const emit = defineEmits(["submit"]);
+defineEmits(["submit"]);
 
-const { content, header, open, submit } = schema;
+const { content, header, open } = schema;
+
 const visible = ref(false);
-const submitted = ref(false);
-
-function execute() {
-  visible.value = false;
-  submitted.value = true;
-}
-
-function emitSubmit() {
-  if(submitted.value) {
-    submitted.value = false;
-
-    emit("submit");
-  }
-}
 </script>

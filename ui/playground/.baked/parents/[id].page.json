@@ -13,7 +13,7 @@
               "icon": "pi pi-pencil",
               "label": "Update",
               "dialogOptions": {
-                "title": "Update",
+                "header": "Update",
                 "form": {
                   "type": "SimpleForm",
                   "schema": {
@@ -104,7 +104,7 @@
               "icon": "pi pi-trash",
               "label": "Delete",
               "dialogOptions": {
-                "title": "Delete",
+                "header": "Delete",
                 "content": {
                   "type": "MyText",
                   "schema": {

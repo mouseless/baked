@@ -37,7 +37,7 @@
               "icon": "pi pi-trash",
               "label": "Clear Parents",
               "dialogOptions": {
-                "title": "Clear Parents",
+                "header": "Clear Parents",
                 "content": {
                   "type": "MyText",
                   "schema": {
@@ -312,7 +312,7 @@
                             "variant": "text",
                             "rounded": true,
                             "dialogOptions": {
-                              "title": "Update",
+                              "header": "Update",
                               "form": {
                                 "type": "SimpleForm",
                                 "schema": {
@@ -614,7 +614,7 @@
                             "variant": "text",
                             "rounded": true,
                             "dialogOptions": {
-                              "title": "Delete",
+                              "header": "Delete",
                               "content": {
                                 "type": "MyText",
                                 "schema": {
@@ -974,7 +974,7 @@
                                 "variant": "text",
                                 "rounded": true,
                                 "dialogOptions": {
-                                  "title": "Update",
+                                  "header": "Update",
                                   "form": {
                                     "type": "SimpleForm",
                                     "schema": {
@@ -1062,7 +1062,7 @@
                                 "variant": "text",
                                 "rounded": true,
                                 "dialogOptions": {
-                                  "title": "Delete",
+                                  "header": "Delete",
                                   "content": {
                                     "type": "MyText",
                                     "schema": {

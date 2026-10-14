@@ -1,6 +1,6 @@
 <template>
-  <span>
-    <ButtonRaw
+  <Wrap :when="dialogOptions">
+    <PrimeButton
       :disabled="!ready || executing"
       :loading="executing"
       :icon
@@ -14,14 +14,14 @@
     <Dialog
       v-if="dialogOptions"
       v-model:visible="dialogVisible"
-      :header="l(dialogOptions.title)"
+      :header="l(dialogOptions.header)"
       :style="{ width: 'min(700px, 90vw)' }"
       :pt="{
         content: 'flex flex-col gap-8'
       }"
       closable
       modal
-      :dismissable-mask
+      :dismissable-mask="dialogOptions.dismissableMask"
       :draggable="false"
       @after-hide="dialogHidden"
     >
@@ -38,26 +38,31 @@
       />
       <template #footer>
         <Button
+          v-if="dialogOptions.cancel"
           :schema="dialogOptions.cancel"
+          class="w-full"
           @submit="() => dialogVisible = false"
         />
         <div
           v-if="dialogOptions.form"
           :id="submitId"
+          class="w-full [&_.p-button]:w-full"
         />
         <Button
           v-if="dialogOptions.submit"
           :schema="dialogOptions.submit"
+          class="w-full"
           @submit="submitClicked"
         />
       </template>
     </Dialog>
-  </span>
+  </Wrap>
 </template>
 <script setup>
 import { ref, useId } from "vue";
-import { Button as ButtonRaw, Dialog } from "primevue";
+import { Button as PrimeButton, Dialog } from "primevue";
 import { useContext, useLocalization } from "#imports";
+import { Wrap } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -72,13 +77,15 @@ const emit = defineEmits(["submit"]);
 const {
   icon,
   label,
-  dialogOptions,
-  dismissableMask = true,
   rounded,
   severity = "secondary",
   size,
   variant
 } = schema;
+const dialogOptions = schema.dialogOptions && {
+  dismissableMask: true,
+  ...schema.dialogOptions
+};
 
 const executing = context.injectExecuting();
 const events = context.injectEvents();
