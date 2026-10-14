@@ -957,7 +957,7 @@ public static class DefaultThemeFeature
 
         configurator.Ui.ConfigureComponentExports(exports =>
         {
-            exports.AddFromThemeAssembly(typeof(DefaultThemeFeature));
+            exports.AddFromAssembly(typeof(DefaultThemeFeature));
         });
 
         configurator.Ui.ConfigureAppDescriptor(app =>

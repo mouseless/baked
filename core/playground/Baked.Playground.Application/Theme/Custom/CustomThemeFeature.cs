@@ -180,7 +180,7 @@ public static class CustomThemeFeature
 
         configurator.Ui.ConfigureComponentExports(c =>
         {
-            c.AddFromThemeAssembly(typeof(CustomThemeFeature));
+            c.AddFromAssembly(typeof(CustomThemeFeature));
         });
 
         configurator.Ui.ConfigurePageDescriptors(pages =>

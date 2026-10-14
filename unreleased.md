@@ -145,7 +145,7 @@
     exports.AddFromExtensions(typeof(C));
 
     // now
-    exports.AddFromThemeAssembly(typeof(CustomThemeFeature));
+    exports.AddFromAssembly(typeof(CustomThemeFeature));
     ```
 - `Datas`, `Actions` and `Constraints` builder classes are renamed as `Fetch`,
   `Execute` and `Evaluate`

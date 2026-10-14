@@ -1,6 +1,6 @@
 <template>
   <Wrap :when="dialogOptions">
-    <PrimeButton
+    <PrimeVueButon
       :disabled="!ready || executing"
       :loading="executing"
       :icon
@@ -60,7 +60,7 @@
 </template>
 <script setup>
 import { ref, useId } from "vue";
-import { Button as PrimeButton, Dialog } from "primevue";
+import { Button as PrimeVueButon, Dialog } from "primevue";
 import { useContext, useLocalization } from "#imports";
 import { Wrap } from "#components";
 

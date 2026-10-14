@@ -127,7 +127,7 @@ public static class CustomThemeFeature
         configurator.Ui.ConfigureComponentExports(exports =>
         {
             // Add component exports from your own theme assembly
-            exports.AddFromThemeAssembly(typeof(CustomThemeFeature));
+            exports.AddFromAssembly(typeof(CustomThemeFeature));
         });
 
         configurator.Ui.ConfigurePageDescriptors(pages =>
