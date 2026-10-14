@@ -4,8 +4,8 @@ namespace Baked.Ui.Configuration;
 
 public class ComponentExports : List<string>
 {
-    public void AddFromAssembly(Type theme) =>
-        AddFromAssembly(theme.Assembly);
+    public void AddFromAssembly(Type type) =>
+        AddFromAssembly(type.Assembly);
 
     public void AddFromAssembly(Assembly assembly)
     {
