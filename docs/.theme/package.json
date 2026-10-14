@@ -26,7 +26,7 @@
     "yaml": "2.9.1"
   },
   "dependencies": {
-    "mermaid": "12.0.0",
+    "mermaid": "12.2.0",
     "@tailwindcss/vite": "4.3.3",
     "tailwindcss": "4.3.3"
   },
