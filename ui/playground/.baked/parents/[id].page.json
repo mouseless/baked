@@ -13,14 +13,11 @@
               "icon": "pi pi-pencil",
               "label": "Update",
               "dialogOptions": {
+                "mode": "Confirm",
                 "header": "Update",
                 "form": {
                   "type": "SimpleForm",
                   "schema": {
-                    "submit": {
-                      "label": "Update",
-                      "severity": "primary"
-                    },
                     "inputs": [
                       {
                         "name": "name",
@@ -61,7 +58,11 @@
                           }
                         }
                       }
-                    ]
+                    ],
+                    "submit": {
+                      "label": "Update",
+                      "severity": "primary"
+                    }
                   },
                   "action": {
                     "type": "Remote",
@@ -104,11 +105,11 @@
               "icon": "pi pi-trash",
               "label": "Delete",
               "dialogOptions": {
+                "mode": "Confirm",
                 "header": "Delete",
                 "content": {
-                  "type": "MyText",
+                  "type": "Text",
                   "schema": {
-                    "somethingExtra": "this is extra!",
                     "maxLength": 100
                   },
                   "data": {
@@ -362,10 +363,6 @@
           "type": "SimpleForm",
           "schema": {
             "title": "Add Child",
-            "submit": {
-              "label": "Add Child",
-              "severity": "primary"
-            },
             "inputs": [
               {
                 "name": "name",
@@ -381,7 +378,11 @@
                   }
                 }
               }
-            ]
+            ],
+            "submit": {
+              "label": "Add Child",
+              "severity": "primary"
+            }
           },
           "action": {
             "type": "Remote",

@@ -64,11 +64,12 @@ public static class Execute
     public class Publishes
     {
         public PublishAction CloseDialog() =>
-            Event("close-dialog", options: pa => pa.Data = null);
+            Event("close-dialog", empty: true);
 
         public PublishAction Event(string @event,
+            bool empty = default,
             Action<PublishAction>? options = default
-        ) => options.Apply(new() { Event = @event, Data = Fetch.Context.Model() });
+        ) => options.Apply(new() { Event = @event, Data = empty ? null : Fetch.Context.Model() });
 
         public PublishAction PageContextValue(string key,
             Action<PublishAction>? options = default

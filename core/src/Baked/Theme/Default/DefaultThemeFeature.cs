@@ -591,7 +591,7 @@ public static class DefaultThemeFeature
                     b.Schema.Label = l(c.Method.Name.Titleize());
                     b.Schema.DialogOptions = c.Method.GenerateSchema<Button.Dialog>(cc.Drill("dialog-options"));
                     b.Action =
-                        b.Schema.DialogOptions?.Form is not null ? Execute.Publish.Event(c.Method.Name.Kebaberize(), options: pa => pa.Data = null) :
+                        b.Schema.DialogOptions?.Form is not null ? Execute.Publish.Event(c.Method.Name.Kebaberize(), empty: true) :
                         c.Method.GenerateSchema<LocalAction>(cc.Drill("action")) as IAction ??
                         c.Method.GenerateSchema<PublishAction>(cc.Drill("action")) as IAction ??
                         c.Method.GenerateSchema<RemoteAction>(cc.Drill("action"))

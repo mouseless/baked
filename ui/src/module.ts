@@ -171,6 +171,7 @@ export default defineNuxtModule<ModuleOptions>({
     // default plugins (last add, first run)
     addPlugin(resolver.metaUrl.resolve("./runtime/plugins/mutex"));
     addPlugin(resolver.metaUrl.resolve("./runtime/plugins/toast"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/confirmation"));
     addPlugin(resolver.metaUrl.resolve("./runtime/plugins/trailingSlash"));
     addPlugin(resolver.metaUrl.resolve("./runtime/plugins/baked"));
     addPlugin(resolver.metaUrl.resolve("./runtime/plugins/primeVue"));

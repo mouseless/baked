@@ -61,7 +61,7 @@ export default {
     });
   },
 
-  aButtonDialog({ dismissableMask, header, content, form, submit, cancel }) {
+  aButtonDialog({ mode, header, dismissableMask, content, form, submit, cancel }) {
     header = $(header, "Spec: Test");
 
     if(!form) {
@@ -73,8 +73,9 @@ export default {
     }
 
     return $$({
-      dismissableMask,
+      mode,
       header,
+      dismissableMask,
       content,
       form,
       submit,

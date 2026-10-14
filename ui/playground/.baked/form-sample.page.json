@@ -37,11 +37,11 @@
               "icon": "pi pi-trash",
               "label": "Clear Parents",
               "dialogOptions": {
+                "mode": "Confirm",
                 "header": "Clear Parents",
                 "content": {
-                  "type": "MyText",
+                  "type": "Text",
                   "schema": {
-                    "somethingExtra": "this is extra!",
                     "maxLength": 100
                   },
                   "data": {
@@ -71,7 +71,7 @@
               "method": "DELETE",
               "postAction": {
                 "type": "Publish",
-                "event": "clear-parents"
+                "event": "parent:update"
               }
             }
           }
@@ -316,10 +316,6 @@
                               "form": {
                                 "type": "SimpleForm",
                                 "schema": {
-                                  "submit": {
-                                    "label": "Update",
-                                    "severity": "primary"
-                                  },
                                   "inputs": [
                                     {
                                       "name": "string",
@@ -574,7 +570,11 @@
                                         }
                                       }
                                     }
-                                  ]
+                                  ],
+                                  "submit": {
+                                    "label": "Update",
+                                    "severity": "primary"
+                                  }
                                 },
                                 "action": {
                                   "type": "Remote",
@@ -614,11 +614,11 @@
                             "variant": "text",
                             "rounded": true,
                             "dialogOptions": {
+                              "mode": "Confirm",
                               "header": "Delete",
                               "content": {
-                                "type": "MyText",
+                                "type": "Text",
                                 "schema": {
-                                  "somethingExtra": "this is extra!",
                                   "maxLength": 100
                                 },
                                 "data": {
@@ -974,14 +974,11 @@
                                 "variant": "text",
                                 "rounded": true,
                                 "dialogOptions": {
+                                  "mode": "Confirm",
                                   "header": "Update",
                                   "form": {
                                     "type": "SimpleForm",
                                     "schema": {
-                                      "submit": {
-                                        "label": "Update",
-                                        "severity": "primary"
-                                      },
                                       "inputs": [
                                         {
                                           "name": "name",
@@ -1022,7 +1019,11 @@
                                             }
                                           }
                                         }
-                                      ]
+                                      ],
+                                      "submit": {
+                                        "label": "Update",
+                                        "severity": "primary"
+                                      }
                                     },
                                     "action": {
                                       "type": "Remote",
@@ -1062,11 +1063,11 @@
                                 "variant": "text",
                                 "rounded": true,
                                 "dialogOptions": {
+                                  "mode": "Confirm",
                                   "header": "Delete",
                                   "content": {
-                                    "type": "MyText",
+                                    "type": "Text",
                                     "schema": {
-                                      "somethingExtra": "this is extra!",
                                       "maxLength": 100
                                     },
                                     "data": {
@@ -1375,6 +1376,12 @@
                           "prop": "container-parameters"
                         }
                       ]
+                    }
+                  },
+                  "reactions": {
+                    "reload": {
+                      "type": "On",
+                      "on": "parent:update"
                     }
                   }
                 }

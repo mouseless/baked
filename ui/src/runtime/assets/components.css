@@ -359,6 +359,10 @@
 
   /* PAGE TITLE */
   .b-component--PageTitle {
+    .b-button-wrapper {
+      @apply flex self-stretch;
+    }
+
     .p-button {
       @apply self-stretch;
 

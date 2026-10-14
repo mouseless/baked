@@ -8,7 +8,9 @@ namespace Baked;
 
 public static class ActionsAsButtonsUxFeature
 {
-    public static IFeature<UxFeature.Configurator> ActionsAsButtons(this UxFeature.Configurator x) => x.Define(configurator =>
+    public static IFeature<UxFeature.Configurator> ActionsAsButtons(this UxFeature.Configurator x,
+        int maxParameterCountForConfirm = 3
+    ) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -50,6 +52,15 @@ public static class ActionsAsButtonsUxFeature
                         c.Method.GetAction().Method == HttpMethod.Delete
                     ),
                 where: cc => cc.Path.EndsWith("actions", "*", "button", "dialog-options")
+            );
+
+            // configures delete or any form with less than max params count for confirm to confirm mode
+            conventions.EditMethodSchema<Button.Dialog>(
+                when: c =>
+                    c.Method.DefaultOverload.Parameters.Count <= maxParameterCountForConfirm ||
+                    c.Method.GetAction().Method == HttpMethod.Delete,
+                where: cc => cc.Path.EndsWith("actions", "*", "button", "dialog-options"),
+                schema: d => d.Mode = Button.DialogMode.Confirm
             );
 
             // adds confirmation text to methods as dialog content

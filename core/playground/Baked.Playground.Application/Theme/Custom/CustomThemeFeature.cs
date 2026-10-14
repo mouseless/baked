@@ -144,6 +144,7 @@ public static class CustomThemeFeature
                 order: Order.At.Min
             );
             conventions.EditMethodComponent<Text>(
+                where: cc => cc.Path.EndsWith("data-panel", "content"),
                 component: t => t.Override<MyText>()
             );
             conventions.EditMethodComponent<Text>(

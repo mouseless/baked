@@ -18,6 +18,11 @@ export default {
   checkbox: {
     base: ".p-checkbox"
   },
+  confirm: {
+    base: ".p-confirmpopup",
+    content: ".p-confirmpopup-content",
+    footer: ".p-confirmpopup-footer"
+  },
   datatable: {
     container: ".p-datatable-table-container",
     header: ".p-datatable-header",

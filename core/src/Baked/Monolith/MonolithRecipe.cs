@@ -111,6 +111,9 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessFeature.Configurator> b
         FeatureFunc<ThemeFeature.Configurator>? _theme = default;
         public void Theme(FeatureFunc<ThemeFeature.Configurator>? theme) => _theme = theme;
 
+        FeatureFunc<UxFeature.Configurator> _actionsAsButtons = c => c.ActionsAsButtons();
+        public void ActionsAsButtons(FeatureFunc<UxFeature.Configurator> actionsAsButtons) => _actionsAsButtons = actionsAsButtons;
+
         FeatureFunc<UxFeature.Configurator> _enumParameterIsSelect = c => c.EnumParameterIsSelect();
         public void EnumParameterIsSelect(FeatureFunc<UxFeature.Configurator> enumParameterIsSelect) => _enumParameterIsSelect = enumParameterIsSelect;
 
@@ -151,7 +154,7 @@ public abstract class MonolithRecipe(FeatureFunc<BusinessFeature.Configurator> b
 
                 app.Features.AddUx(
                 [
-                    c => c.ActionsAsButtons(),
+                    _actionsAsButtons,
                     c => c.ActionsAreContents(),
                     c => c.ActionsAsDataPanels(),
                     c => c.DataTableDefaults(),

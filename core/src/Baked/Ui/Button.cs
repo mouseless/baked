@@ -23,7 +23,7 @@ public record Button : IComponentSchema
 
     public enum DialogMode
     {
-        Popover,
-        Modal
+        Dialog,
+        Confirm
     }
 }

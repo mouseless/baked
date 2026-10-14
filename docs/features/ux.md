@@ -19,7 +19,7 @@ app.Features.AddUx([...]);
 Renders non-`GET` actions as buttons under paths ending with `actions/*`.
 
 ```csharp
-c => c.ActionsAsButtons()
+c => c.ActionsAsButtons(maxParameterCountForConfirm: ...)
 ```
 
 - Parameterized actions are rendered as forms in dialogs
@@ -27,10 +27,17 @@ c => c.ActionsAsButtons()
     routes to the indicated path
 - Submit buttons are rendered using `primary` severity
 - Cancel and back buttons are rendered using `text` variant
+- Mode for dialog is `Dialog` by default
+  - `DELETE` dialogs use `Confirm` mode
+  - Any method with <= `maxParameterCountForConfirm` use `Confirm` mode
 - Default icons of buttons are added based on their HTTP method
   - `PUT` and `PATCH` use `pi pi-pencil`
   - `DELETE` use `pi pi-trash` with `danger` severity
   - `POST` that starts with add, create or new use `pi pi-plus`
+
+> [!NOTE]
+>
+> Default value of `maxParameterCountForConfirm` is `3`.
 
 ## Actions are Contents
 

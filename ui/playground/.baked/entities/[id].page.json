@@ -17,10 +17,6 @@
                 "form": {
                   "type": "SimpleForm",
                   "schema": {
-                    "submit": {
-                      "label": "Update",
-                      "severity": "primary"
-                    },
                     "inputs": [
                       {
                         "name": "string",
@@ -275,7 +271,11 @@
                           }
                         }
                       }
-                    ]
+                    ],
+                    "submit": {
+                      "label": "Update",
+                      "severity": "primary"
+                    }
                   },
                   "action": {
                     "type": "Remote",
@@ -318,11 +318,11 @@
               "icon": "pi pi-trash",
               "label": "Delete",
               "dialogOptions": {
+                "mode": "Confirm",
                 "header": "Delete",
                 "content": {
-                  "type": "MyText",
+                  "type": "Text",
                   "schema": {
-                    "somethingExtra": "this is extra!",
                     "maxLength": 100
                   },
                   "data": {
