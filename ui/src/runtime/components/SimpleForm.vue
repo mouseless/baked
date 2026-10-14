@@ -16,6 +16,11 @@
       class="flex gap-4"
       :class="{ 'flex-col': !horizontal }"
     >
+      <Bake
+        v-if="message"
+        name="message"
+        :descriptor="message"
+      />
       <Inputs
         v-if="inputs"
         :inputs
@@ -55,7 +60,7 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import { useBakeError, useLocalization, useValidation } from "#imports";
-import { Button, ErrorPopover, InlineError, Inputs } from "#components";
+import { Bake, Button, ErrorPopover, InlineError, Inputs } from "#components";
 
 const { handle: handleError } = useBakeError();
 const { localize: l } = useLocalization();
@@ -67,7 +72,7 @@ const { schema } = defineProps({
 });
 defineEmits(["submit"]);
 
-const { inputs, horizontal, submit, title, validations = [], showValidationSummary } = schema;
+const { message, inputs, title, horizontal, submit, validations = [], showValidationSummary } = schema;
 
 const model = ref({});
 const readyData = ref({});

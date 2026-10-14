@@ -22,6 +22,10 @@ const variants = [
           })
         })
       ]),
+      message: giveMe.anExpected({
+        testId: "message",
+        value: "Message"
+      }),
       inputs: [
         giveMe.anInput({
           name: "input",

@@ -22,9 +22,6 @@
 - A schema is turned into a component descriptor with `ToDescriptor()`, which
   also accepts `data` and `action`
 - New display components are added; `Tag` and `Avatar`
-- Button with dialog mode of `SimpleForm` is migrated to `Button`
-  - You can now simplify conventions by configuring methods as buttons with
-    dialogs instead of simple form in dialog mode
 - `Wrap` is introduced to help wrap multi children depending on a condition
   - It strips out any comment node when condition is false to make sure a single
     child node renders on its own allowing directives to work properly
@@ -198,33 +195,32 @@
 
 ## Improvements
 
-- It was impossible to validate records have locatables in their constructor due
-  to late initialization, fixed
-- `DefaultThemeFeature.JsonSettings` is now public to be used in custom themes
-- `useFormat` now provides `asCamelCase` helper function
-- `Authorization` improvements
-  - It now supports claim type-value based restriction in API layer
-  - `RequireUser` can now contain allowed values
-  - It no longer requires all claims to exist in token separately and publishes
-    roles under one claim name: `user_roles`
-- `Authorize` improvements
-  - It now supports claim based content hiding
-  - You can now show a fallback component when user is not authorized
-- `SideMenu` items can now be hidden depending on authentication and claims
+- Locale files were not found when build output path was customized, e.g.,
+  `--artifacts-path`, causing keys to be generated as values, fixed
 - C# friendly name calculation is now fully compliant with C# language standards
-- `Enum` defaults wasn't getting camelized in `Input`, fixed
+- It was not possible to validate records have locatables in their constructor
+  due to late initialization, fixed
+- `Enum` defaults weren't getting camelized in `Input`, fixed
+- `DefaultThemeFeature.JsonSettings` is now public to be used in custom themes
 - `Bake.vue` improvements
   - It now waits until data is loaded to show a component when there is a show
     reaction in the descriptor
     - It was showing the components that reacts to `showWhen: is null` causing
       to render unintended components while page is loading
-  - It now emits `executed` event with success value
-- Modal form was closing before action is completed, now it executes and closes
-  only if action is success
+- `AwaitLoading` no more shows skeleton during a reload, instead a page-wide
+  loading indicator is displayed
+- Dialog mode is migrated from `SimpleForm` to `Button`
+  - You can now simplify conventions by configuring methods as buttons with
+    dialogs instead of simple form in dialog mode
+  - Modal form was closing before action is completed, now it executes and
+    closes only if action is success
+  - `Publish.Event.CloseDialog()` helper is introduced to achieve the dialog
+    close after a form action
+- Validation tooltip is replaced with a check list popover
+- `SideMenu` UI is improved to distract the user less
+- `useFormat` now provides `asCamelCase` helper function
 - `useLocalization` can now be used as a computed data through
   `Fetch.Computed.UseLocalization(l("..."))`
-- Locale files were not found when build output path was customized, e.g.,
-  `--artifacts-path`, causing keys to be generated as values, fixed
 - Minor improvements in `components.css`
 
 ## Library Upgrades

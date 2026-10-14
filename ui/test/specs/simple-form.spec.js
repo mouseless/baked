@@ -27,7 +27,7 @@ test.describe("Base", () => {
     await expect(title).toHaveText("Simple Form");
   });
 
-  test.skip("message", async({ page }) => {
+  test("message", async({ page }) => {
     const component = page.getByTestId(id);
     const message = component.getByTestId("message");
 

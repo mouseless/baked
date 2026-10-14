@@ -1096,7 +1096,7 @@ export default {
     return $$({ route, icon, title, disabled });
   },
 
-  aSimpleForm({ horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
+  aSimpleForm({ action, message, inputs, submit, horizontal, title, validations, showValidationSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
@@ -1107,9 +1107,10 @@ export default {
       type: "SimpleForm",
       schema: $$({
         horizontal,
+        title,
+        message,
         inputs,
         submit,
-        title,
         validations: validations.map(name => ({ name })),
         showValidationSummary
       }),
