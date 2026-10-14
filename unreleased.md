@@ -225,13 +225,26 @@
 
 ## Library Upgrades
 
-| NuGet Package                             | Old Version | New Version |
-| ---                                       | ---         | ---         |
-| Microsoft.Testing.Extensions.CodeCoverage | 18.11.2     | 18.12.0     |
-| Microsoft.Testing.Extensions.TrxReport    | 2.4.1       | 2.5.1       |
-| NUnit3TestAdapter                         | 6.3.0       | 6.3.1       |
-| Swashbuckle.AspNetCore                    | 10.2.3      | 10.3.0      |
-| Swashbuckle.AspNetCore.Annotations        | 10.2.3      | 10.3.0      |
+| NuGet Package                                    | Old Version | New Version |
+| ---                                              | ---         | ---         |
+| Microsoft.AspNetCore.Authentication.JwtBearer    | 10.0.12     | 10.0.13     |
+| Microsoft.AspNetCore.Mvc.NewtonsoftJson          | 10.0.12     | 10.0.13     |
+| Microsoft.AspNetCore.Mvc.Testing                 | 10.0.12     | 10.0.13     |
+| Microsoft.Data.Sqlite.Core                       | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Caching.Abstractions        | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Configuration.Abstractions  | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Configuration.Binder        | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.FileProviders.Abstractions  | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Localization.Abstractions   | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Logging.Abstractions        | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.TimeProvider.Testing        | 10.10.0     | 10.11.0     |
+| Microsoft.NET.Test.Sdk                           | 18.10.1     | 18.11.0     |
+| Microsoft.Testing.Extensions.CodeCoverage        | 18.11.2     | 18.12.0     |
+| Microsoft.Testing.Extensions.TrxReport           | 2.4.1       | 2.5.1       |
+| NUnit3TestAdapter                                | 6.3.0       | 6.3.1       |
+| Swashbuckle.AspNetCore                           | 10.2.3      | 10.3.0      |
+| Swashbuckle.AspNetCore.Annotations               | 10.2.3      | 10.3.0      |
+| System.Security.Cryptography.Pkcs (_transitive_) | 8.0.1       | 10.0.13     |
 
 | npm Package | Old Version | New Version |
 | ---         | ---         | ---         |
