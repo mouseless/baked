@@ -2,7 +2,17 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import baked from "../utils/locators/baked.js";
 import primevue from "../utils/locators/primevue.js";
 
-test.beforeEach(async({ goto }) => {
+test.beforeEach(async({ page, goto }) => {
+  await page.route("*/**/exception-samples/handled", async route => {
+    await route.fulfill({
+      status: 400,
+      json: {
+        title: "Test Service Handled",
+        detail: "A handled exception was thrown"
+      }
+    });
+  });
+
   await goto("/specs/button", { waitUntil: "hydration" });
 });
 
@@ -79,66 +89,8 @@ test.describe("Large", () => {
   });
 });
 
-test.describe.skip("Dialog", () => {
+test.describe("Dialog", () => {
   const id = "Dialog";
-
-  test("submit button", async({ page }) => {
-    const component = page.getByTestId(id);
-    const button = component.locator(primevue.button.base);
-    const dialog = page.locator(primevue.dialog.base);
-
-    await button.click();
-
-    await expect(dialog.locator(primevue.dialog.footer)).toBeAttached();
-    await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base)).toBeAttached();
-    await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base)).toHaveText("Submit");
-  });
-
-  test("execute action", async({ page }) => {
-    const component = page.getByTestId(id);
-    const button = component.locator(primevue.button.base);
-    const dialog = page.locator(primevue.dialog.base);
-    const dialogAction = dialog.locator(primevue.dialog.footer).locator(primevue.button.base);
-
-    await button.click();
-    await dialogAction.click();
-
-    await expect(page.locator(primevue.toast.base)).toBeVisible();
-    await expect(page.locator(primevue.toast.summary)).toHaveText("Execute Action");
-    await expect(dialog).not.toBeAttached();
-  });
-
-  test("does not execute action when closed", async({ page }) => {
-    const component = page.getByTestId(id);
-    const button = component.locator(primevue.button.base);
-    const dialog = page.locator(primevue.dialog.base);
-    const dialogClose = dialog.locator(primevue.dialog.close);
-
-    await button.click();
-    await dialogClose.click();
-
-    await expect(page.locator(primevue.toast.base)).not.toBeVisible();
-  });
-
-  test.fixme("dismiss", () => { });
-
-  test("visual", { tag: "@visual" }, async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component).toHaveScreenshot();
-  });
-});
-
-test.describe.skip("Dialog Form", () => {
-  const id = "Dialog Form";
-
-  test("open button", async({ page }) => {
-    const component = page.getByTestId(id);
-    const button = component.locator(primevue.button.base);
-
-    await expect(button).toBeAttached();
-    await expect(button).toHaveText("Simple Form");
-  });
 
   test("header", async({ page }) => {
     const component = page.getByTestId(id);
@@ -147,17 +99,98 @@ test.describe.skip("Dialog Form", () => {
 
     await button.click();
 
-    await expect(dialog.locator(primevue.dialog.header)).toHaveText("Simple Form");
+    await expect(dialog.locator(primevue.dialog.header)).toHaveText("Header");
   });
 
-  test("message", async({ page }) => {
+  test("content", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const content = dialog.getByTestId("content");
+
+    await button.click();
+
+    await expect(content).toBeAttached();
+    await expect(content).toHaveText("Message");
+  });
+
+  test("buttons", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const footer = dialog.locator(primevue.dialog.footer);
+    const cancel = footer.locator(primevue.button.base).nth(0);
+    const submit = footer.locator(primevue.button.base).nth(1);
+
+    await button.click();
+
+    await expect(footer).toBeAttached();
+    await expect(cancel).toBeAttached();
+    await expect(cancel).toHaveText("Cancel");
+    await expect(submit).toBeAttached();
+    await expect(submit).toHaveText("Submit");
+  });
+
+  test("execute action", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const footer = dialog.locator(primevue.dialog.footer);
+    const submit = footer.locator(primevue.button.base).nth(1);
+
+    await button.click();
+    await submit.click();
+
+    await expect(page.locator(primevue.toast.base)).toBeVisible();
+    await expect(page.locator(primevue.toast.summary)).toHaveText("Confirmed!");
+    await expect(dialog).not.toBeAttached();
+  });
+
+  test("no action when closed", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const close = dialog.locator(primevue.dialog.close);
+
+    await button.click();
+    await close.click();
+
+    await expect(dialog).not.toBeAttached();
+    await expect(page.locator(primevue.toast.base)).not.toBeVisible();
+  });
+
+  test("dismiss", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await button.click();
+    await page.mouse.click(1, 1);
+
+    await expect(dialog).not.toBeAttached();
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
 
     await button.click();
 
-    await expect(dialog.locator(primevue.dialog.content)).toHaveText(/Message/);
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toHaveScreenshot();
+  });
+});
+
+test.describe("Dialog Form", () => {
+  const id = "Dialog Form";
+
+  test("open button", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await expect(button).toBeAttached();
+    await expect(button).toHaveText("Button");
   });
 
   test("input", async({ page }) => {
@@ -194,7 +227,7 @@ test.describe.skip("Dialog Form", () => {
     await expect(tooltip.locator(".p-tooltip-text")).toContainText("- Input cannot be empty");
   });
 
-  test("executes action after close", async({ page }) => {
+  test("executes action before close", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -205,11 +238,12 @@ test.describe.skip("Dialog Form", () => {
     await text.fill("text");
     await submitButton.click();
 
-    await expect(dialog).not.toBeAttached();
+    await expect(dialog).toBeVisible();
     await expect(page.locator(primevue.toast.base)).toBeVisible();
+    await expect(dialog).not.toBeAttached();
   });
 
-  test("does not execute action when closed", async({ page }) => {
+  test("no action when closed", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -227,38 +261,64 @@ test.describe.skip("Dialog Form", () => {
     await expect(page.locator(primevue.toast.base)).not.toBeVisible();
   });
 
-  test.fixme("prevents dismiss", () => { });
+  test("prevents dismiss", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await button.click();
+    await page.mouse.click(1, 1);
+    await page.waitForTimeout(500); // make sure enough time pass for dialog to close, otherwise it is a false-positive
+
+    await expect(dialog).toBeAttached();
+  });
 
   test("visual with transported submit", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const submit = dialog.locator(primevue.button.base).nth(1);
 
-    await expect(component).toHaveScreenshot();
+    await button.click();
+
+    await expect(dialog).toBeVisible();
+    await expect(submit).toBeVisible();
+    await expect(dialog).toHaveScreenshot();
   });
 });
 
-test.describe.skip("Dialog Form Error", () => {
+test.describe("Dialog Form Error", () => {
   const id = "Dialog Form Error";
 
   test("shows error using inline error in a popover", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
-    const submitButton = dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(1);
+    const footer = dialog.locator(primevue.dialog.footer);
+    const submit = footer.locator(primevue.button.base).nth(0);
     const popover = page.locator(primevue.popover.base);
+    const message = popover.locator(baked.message.base);
 
     await button.click();
-    await submitButton.click();
+    await submit.click();
 
     await expect(popover).toBeAttached();
-    await expect(popover.locator(baked.message.base)).toHaveClass(/b--error/);
-    await expect(popover.locator(baked.message.base)).toHaveClass(/message-error/);
-    await expect(popover.locator(baked.message.base)).toHaveText(/Test Service Handled/);
-    await expect(popover.locator(baked.message.base)).toHaveText(/A handled exception was thrown/);
+    await expect(message).toHaveClass(/b--error/);
+    await expect(message).toHaveClass(/message-error/);
+    await expect(message).toHaveText(/Test Service Handled/);
+    await expect(message).toHaveText(/A handled exception was thrown/);
   });
 
   test("visual without cancel", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const submit = dialog.locator(primevue.button.base).nth(1);
 
-    await expect(component).toHaveScreenshot();
+    await button.click();
+
+    await expect(dialog).toBeVisible();
+    await expect(submit).toBeVisible();
+    await expect(dialog).toHaveScreenshot();
   });
 });

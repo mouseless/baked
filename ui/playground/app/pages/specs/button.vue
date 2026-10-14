@@ -47,20 +47,13 @@ const variants = [
     name: "Dialog",
     descriptor: giveMe.aButton({
       action: giveMe.aCompositeAction([
-        giveMe.aLocalAction({ delay: 100 }),
-        giveMe.aLocalAction({
-          composable: "useShowMessage",
-          options: giveMe.aContextData({
-            key: "model",
-            prop: "text",
-            targetProp: "message"
-          })
-        })
+        giveMe.aLocalAction({ showMessage: "Confirmed!" })
       ]),
       label: "Spec: Button",
       dialogOptions: giveMe.aButtonDialog({
         header: "Spec: Header",
-        content: giveMe.aText({
+        content: giveMe.anExpected({
+          testId: "content",
           data: giveMe.aComputedData({
             composable: "useLocalization",
             options: giveMe.anInlineData({ key: "Spec: Message" })
@@ -77,31 +70,22 @@ const variants = [
   {
     name: "Dialog Form",
     descriptor: giveMe.aButton({
-      action: giveMe.aCompositeAction([
-        giveMe.aLocalAction({ delay: 100 }),
-        giveMe.aLocalAction({
-          composable: "useShowMessage",
-          options: giveMe.aContextData({
-            key: "model",
-            prop: "text",
-            targetProp: "message"
-          })
-        })
-      ]),
+      action: null,
       label: "Spec: Button",
       dialogOptions: giveMe.aButtonDialog({
         dismissableMask: false,
         form: giveMe.aSimpleForm({
           action: giveMe.aCompositeAction([
-            giveMe.aLocalAction({ delay: 100 }),
             giveMe.aLocalAction({
               composable: "useShowMessage",
               options: giveMe.aContextData({
                 key: "model",
-                prop: "text",
+                prop: "input",
                 targetProp: "message"
               })
-            })
+            }),
+            giveMe.aLocalAction({ delay: 500 }), // wait for toast to show
+            giveMe.aPublishAction({ event: "close-dialog" })
           ]),
           inputs: [
             giveMe.anInput({
