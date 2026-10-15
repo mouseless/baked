@@ -5,9 +5,19 @@
     @apply max-xs:text-[smaller];
   }
 
-  html,
+  html, .bg-layout {
+    @apply bg-slate-100 dark:bg-zinc-900;
+  }
+
   .bg-body {
     @apply bg-white dark:bg-zinc-925;
+  }
+
+  /* BUTTON */
+  .b-Button--confirm {
+    .p-confirmpopup-footer {
+      @apply pb-2 px-2;
+    }
   }
 
   /* CONTENTS */
@@ -177,8 +187,8 @@
 
     &.message-info {
       @apply
-        bg-blue-50/95 text-blue-600 border-blue-200
-        dark:bg-blue-950/95 dark:text-blue-500 dark:border-blue-700/65;
+        bg-sky-50/95 text-sky-600 border-sky-200
+        dark:bg-sky-950/95 dark:text-sky-500 dark:border-sky-700/65;
     }
 
     &.message-error {
@@ -289,7 +299,7 @@
 
   /* SCROLL TOP */
   .p-scrolltop {
-    @apply right-6 bottom-6 max-md:bottom-24 py-icon-only-width;
+    @apply right-6 bottom-6 max-md:bottom-20 py-icon-only-width;
   }
 
   /* SELECT */

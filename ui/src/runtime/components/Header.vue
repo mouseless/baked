@@ -1,7 +1,7 @@
 <template>
   <header
-    :class="{ 'mb-4': shown || loading }"
-    class="mt-4"
+    :class="{ 'py-3': shown || loading }"
+    class="bg-layout pl-4"
   >
     <AwaitLoading :skeleton="{ height: '1.25em', width: '15em' }">
       <Breadcrumb

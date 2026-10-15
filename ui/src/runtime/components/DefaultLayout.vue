@@ -2,18 +2,20 @@
   <div
     v-bind="$attrs"
     class="
+      h-screen
       flex flex-row
-      max-md:flex-col-reverse
+      max-md:flex-col
     "
   >
     <Bake
+      v-if="isMd"
       name="sideMenu"
       :descriptor="sideMenu"
     />
     <article
       class="
-        w-full px-4 flex flex-col bg-body mb-[5.5rem]
-        max-md:mb-24
+        w-full flex flex-col
+        max-md:flex-1
       "
     >
       <Bake
@@ -21,18 +23,29 @@
         name="header"
         :descriptor="header"
       />
-      <slot />
+      <div class="bg-body flex-1 md:rounded-tl-xl">
+        <div class="mb-[5.5rem] max-md:mb-24 px-4 pt-4">
+          <slot />
+        </div>
+      </div>
     </article>
+    <Bake
+      v-if="isMaxMd"
+      name="sideMenu"
+      :descriptor="sideMenu"
+    />
   </div>
   <ScrollTop
     v-bind="scrollTopOptions"
   />
 </template>
 <script setup>
-import { useRoute } from "#app";
 import { ScrollTop } from "primevue";
+import { useRoute } from "#app";
+import { useBreakpoints } from "#imports";
 import { Bake } from "#components";
 
+const { isMaxMd, isMd } = useBreakpoints();
 // do NOT remove this without testing. using $route in template doesn't trigger
 // header refresh properly, using setup variable solved the issue.
 const route = useRoute();

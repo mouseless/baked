@@ -2,31 +2,35 @@
   <div
     class="
       b-component--SideMenu--placeholder
-      min-w-[5.25rem]
-      max-md:min-h-16 max-md:mt-1 max-md:w-full
-      2xl:min-w-64
+      min-w-12
+      max-md:min-h-10 max-md:mt-1 max-md:w-full
+      2xl:min-w-50
     "
   />
   <nav
     v-bind="$attrs"
     class="
       fixed z-10
-      p-4 bg-slate-100 dark:bg-zinc-900
+      bg-slate-100 dark:bg-zinc-900
       flex flex-col justify-start gap-2
       md:top-0 md:left-0 md:h-screen
-      max-md:bottom-0 max-md:w-full max-md:p-2
+      max-md:bottom-0 max-md:w-full max-md:px-2
       max-md:flex-row max-md:justify-between max-md:items-center
       max-md:border-t max-md:border-slate-300 max-md:dark:border-zinc-800
       max-md:drop-shadow-[0_-2px_2px_rgba(0,0,0,0.1)]
-      2xl:min-w-64
+      2xl:min-w-50
     "
   >
     <RouterLink
       to="/"
       class="
-        flex mt-4 mb-8 w-full min-w-[3.25rem]
+        flex self-center
+        my-4 w-32
+        max-2xl:max-w-3
+        max-2xl:mt-1 max-2xl:mb-7 max-2xl:mx-0
         max-2xs:hidden
-        max-md:my-0 max-md:w-10
+        max-md:my-0 max-md:mx-2
+        logo
       "
     >
       <Logo
@@ -46,8 +50,8 @@
       "
     >
       <template v-if="loading">
-        <Skeleton class="py-6 min-w-[3.25rem] max-md:snap-start" />
-        <Skeleton class="py-6 min-w-[3.25rem] max-md:snap-start" />
+        <Skeleton class="py-[1.375rem] min-w-12 rounded-none max-md:snap-start" />
+        <Skeleton class="py-[1.375rem] min-w-12 rounded-none max-md:snap-start" />
       </template>
       <template v-else-if="data">
         <SideMenuItem
@@ -75,7 +79,7 @@
         <Button
           severity="secondary"
           icon="pi pi-cog"
-          class="w-[3.25rem] h-[3.25rem]"
+          class="w-10 h-10"
           variant="text"
           rounded
           @click="togglePopover"

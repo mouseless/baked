@@ -20,6 +20,7 @@
       v-if="dialogOptions?.mode == 'Dialog'"
       v-model:visible="dialogVisible"
       :header="l(dialogOptions.header)"
+      class="b-Button--dialog-options b-Button--dialog"
       :style="{ width: 'min(700px, 90vw)' }"
       :pt="{ content: 'flex flex-col gap-8' }"
       closable
@@ -65,7 +66,7 @@
       :pt="{ transition: { onAfterLeave: dialogHidden } }"
     >
       <template #container="{ acceptCallback, rejectCallback }">
-        <div class="flex flex-col text-sm min-w-64 [&_input]:text-sm">
+        <div class="b-Button--dialog-options b-Button--confirm flex flex-col text-sm min-w-64 [&_input]:text-sm">
           <Bake
             v-if="dialogOptions.content"
             name="dialog-options/content"

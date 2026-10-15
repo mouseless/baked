@@ -1,9 +1,6 @@
 <template>
   <span :data-testid="testId">
-    <AwaitLoading
-      :skeleton="{ height: '1.5em', width: '10em' }"
-      no-error
-    >
+    <AwaitLoading no-error>
       {{ value }}
     </AwaitLoading>
   </span>
