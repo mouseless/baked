@@ -1,9 +1,13 @@
-import { useComposableResolver, useDataFetcher } from "#imports";
+import { useComposableResolver, useContext, useDataFetcher } from "#imports";
 
 export default function() {
+  const context = useContext();
+
+  const loading = context.injectLoading();
+
   const constraints = {
     "Composable": Composable(),
-    "Is": Is(),
+    "Is": Is(loading),
     "IsNot": IsNot()
   };
 
@@ -37,9 +41,11 @@ function Composable() {
   };
 }
 
-function Is() {
+function Is(loading) {
   async function evaluate({ constraint, value }) {
-    if(constraint["null"]) { return value == null; }
+    if(constraint["null"]) {
+      return !loading.value && value == null;
+    }
 
     return constraint.is === value;
   }

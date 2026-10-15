@@ -247,7 +247,7 @@ const variants = [
           }
         })
       ],
-      data: giveMe.anInlineData({ key: "expected" })
+      data: giveMe.aDelayedData({ key: "expected" }, { ms: 200 })
     })
   }
 ];

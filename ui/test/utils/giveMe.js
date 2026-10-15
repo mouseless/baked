@@ -771,7 +771,7 @@ export default {
     });
   },
 
-  aMessage({ message, icon, severity, localizeMessage, action, data, variant } = {}) {
+  aMessage({ message, icon, severity, localizeMessage, action, data, variant, reactions } = {}) {
     message = $(message, "Spec: This is a message");
     localizeMessage = $(localizeMessage, true);
     data = $(data, this.anInlineData(message));
@@ -786,7 +786,8 @@ export default {
         variant,
         action
       }),
-      data
+      data,
+      reactions
     });
   },
 
