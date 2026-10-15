@@ -78,7 +78,7 @@
             name="dialog-options/form"
             :descriptor="dialogOptions.form"
             :submit-target="`#${submitId}`"
-            class="p-confirmpopup-content "
+            class="p-confirmpopup-content"
           />
           <div class="p-confirmpopup-footer [&_.p-button]:py-1 [&_.p-button]:text-sm">
             <Button

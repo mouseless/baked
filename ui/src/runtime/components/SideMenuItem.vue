@@ -10,8 +10,9 @@
       variant="text"
       size="large"
       class="
-        py-3 w-full
+        py-3
         rounded-none
+        2xl:w-full 2xl:py-4
         2xl:justify-start 2xl:gap-4
       "
       :class="{ 'bg-slate-200 dark:bg-zinc-800': selected }"

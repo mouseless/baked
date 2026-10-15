@@ -18,11 +18,13 @@
         max-md:flex-1
       "
     >
-      <Bake
-        :key="route.path"
-        name="header"
-        :descriptor="header"
-      />
+      <div class="px-4">
+        <Bake
+          :key="route.path"
+          name="header"
+          :descriptor="header"
+        />
+      </div>
       <div class="bg-body flex-1 md:rounded-tl-xl">
         <div class="mb-[5.5rem] max-md:mb-24 px-4 pt-4">
           <slot />

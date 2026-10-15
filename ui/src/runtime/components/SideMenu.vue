@@ -2,23 +2,22 @@
   <div
     class="
       b-component--SideMenu--placeholder
-      min-w-12
+      min-w-12 2xl:min-w-50
       max-md:min-h-10 max-md:mt-1 max-md:w-full
-      2xl:min-w-50
     "
   />
   <nav
     v-bind="$attrs"
     class="
-      fixed z-10
-      bg-slate-100 dark:bg-zinc-900
+      fixed z-10 bg-layout
       flex flex-col justify-start gap-2
+      min-w-12 2xl:min-w-50
       md:top-0 md:left-0 md:h-screen
+      md:bg-transparent!
       max-md:bottom-0 max-md:w-full max-md:px-2
       max-md:flex-row max-md:justify-between max-md:items-center
       max-md:border-t max-md:border-slate-300 max-md:dark:border-zinc-800
       max-md:drop-shadow-[0_-2px_2px_rgba(0,0,0,0.1)]
-      2xl:min-w-50
     "
   >
     <RouterLink

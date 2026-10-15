@@ -13,7 +13,7 @@
       {{ l(title) }}
     </h2>
     <div
-      class="flex gap-4"
+      class="flex gap-4 w-full"
       :class="{ 'flex-col': !horizontal }"
     >
       <Bake

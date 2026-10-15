@@ -56,7 +56,7 @@ test.describe("Action", () => {
 
 test.describe("Severity", () => {
   [
-    { id: "Info", expected: "oklch(0.546 0.245 262.881)" }, // blue-600
+    { id: "Info", expected: "oklch(0.588 0.158 241.966)" }, // sky-600
     { id: "Warning", expected: "oklch(0.681 0.162 75.834)" }, // yellow-600
     { id: "Error", expected: "oklch(0.577 0.245 27.325)" }, // red-600
     { id: "Success", expected: "oklch(0.627 0.194 149.214)" }, // green-600

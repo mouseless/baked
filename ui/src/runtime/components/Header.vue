@@ -1,8 +1,5 @@
 <template>
-  <header
-    :class="{ 'py-3': shown || loading }"
-    class="bg-layout pl-4"
-  >
+  <header :class="{ 'my-3': shown || loading }">
     <AwaitLoading :skeleton="{ height: '1.25em', width: '15em' }">
       <Breadcrumb
         v-if="data && shown"
