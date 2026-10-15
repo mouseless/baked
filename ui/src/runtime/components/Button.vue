@@ -1,10 +1,11 @@
 <template>
   <Wrap
-    :when="dialogOptions"
+    :when="dialogOptions || validationSummary"
     as="div"
     class="b-button-wrapper"
   >
     <PrimeVueButon
+      ref="buttonRef"
       :disabled="!ready || executing"
       :loading="executing"
       :icon
@@ -15,7 +16,35 @@
       :variant
       class="text-nowrap"
       @click="clicked"
+      @touchstart="showValidationSummary"
+      @mouseover="showValidationSummary"
+      @mouseout="hideValidationSummary"
     />
+    <ErrorPopover
+      v-if="validationSummary"
+      ref="validationSummaryRef"
+    >
+      <!-- TODO cont design -->
+      <div
+        class="
+          flex flex-col gap-1 px-2
+          b-component--Message
+          message-error message-outlined
+        "
+      >
+        <Message
+          v-for="m in validationSummary?.messages.value ?? []"
+          :key="m.message"
+          :schema="{
+            icon: 'pi pi-exclamation-circle',
+            severity: m.severity,
+            variant: 'simple'
+          }"
+          :data="m.message"
+          class="b-component--Message"
+        />
+      </div>
+    </ErrorPopover>
     <Dialog
       v-if="dialogOptions?.mode == 'Dialog'"
       v-model:visible="dialogVisible"
@@ -108,7 +137,7 @@
 import { ref, useId } from "vue";
 import { Button as PrimeVueButon, ConfirmPopup, Dialog, useConfirm } from "primevue";
 import { useContext, useLocalization } from "#imports";
-import { Wrap } from "#components";
+import { ErrorPopover, Message, Wrap } from "#components";
 
 const confirm = useConfirm();
 const context = useContext();
@@ -116,9 +145,10 @@ const { localize: l } = useLocalization();
 const submitId = useId();
 const confirmId = useId();
 
-const { schema } = defineProps({
+const { schema, ready } = defineProps({
   schema: { type: null, required: true },
-  ready: { type: Boolean, default: true }
+  ready: { type: Boolean, default: true },
+  validationSummary: { type: null, default: null }
 });
 const emit = defineEmits(["submit"]);
 
@@ -140,6 +170,8 @@ const executing = context.injectExecuting();
 const events = context.injectEvents();
 const formSuccess = ref(false);
 const dialogVisible = ref(false);
+const buttonRef = ref();
+const validationSummaryRef = ref();
 
 function clicked(event) {
   if(!dialogOptions) {
@@ -177,5 +209,15 @@ function dialogHidden() {
 
   formSuccess.value = false;
   emit("submit");
+}
+
+function showValidationSummary() {
+  if(ready) { return; }
+
+  validationSummaryRef.value.show(buttonRef);
+}
+
+function hideValidationSummary() {
+  validationSummaryRef.value.hide();
 }
 </script>

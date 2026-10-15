@@ -58,16 +58,15 @@ test.describe("Base", () => {
     await expect(button).toBeDisabled();
   });
 
-  test("button shows validation tooltip when inputs are not ready", async({ page }) => {
+  test("button shows validation when inputs are not ready", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
-    const tooltip = page.locator(".p-tooltip");
 
     await input.fill("");
     await button.hover();
 
-    await expect(tooltip.locator(".p-tooltip-text")).toContainText("- Input cannot be empty");
+    await expect(page.locator(primevue.popover.base)).toContainText("- Input cannot be empty");
   });
 
   test("button is enabled when inputs are ready", async({ page }) => {

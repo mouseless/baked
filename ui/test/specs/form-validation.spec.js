@@ -33,7 +33,7 @@ test.describe("Base", () => {
     await expect(label).toHaveText("Test Label (Optional)");
   });
 
-  test("doesn't show error messages on tooltip", async({ page }) => {
+  test("doesn't show info messages", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("param-3");
     const button = component.locator(primevue.button.base);
@@ -42,8 +42,8 @@ test.describe("Base", () => {
     await button.scrollIntoViewIfNeeded();
     await button.hover();
 
-    await expect(page.locator(primevue.tooltip.top)).toBeVisible();
-    await expect(page.locator(primevue.tooltip.top)).not.toContainText("Param-3 value is info");
+    await expect(page.locator(primevue.popover.base)).toBeVisible();
+    await expect(page.locator(primevue.popover.base)).not.toContainText("Param-3 value is info");
   });
 });
 
@@ -74,7 +74,7 @@ test.describe("Mutable", () => {
     await expect(button).toBeDisabled();
   });
 
-  test("show validation result on submit button with tooltip", async({ page }) => {
+  test("show validation result on submit button", async({ page }) => {
     const component = page.getByTestId(id);
     const input1 = component.getByTestId("input-1");
     const button = component.locator(primevue.button.base);
@@ -84,8 +84,8 @@ test.describe("Mutable", () => {
     await button.hover();
 
     await expect(button).toBeDisabled();
-    await expect(page.locator(primevue.tooltip.top)).toBeVisible();
-    await expect(page.locator(primevue.tooltip.top)).toContainText("error is restricted");
+    await expect(page.locator(primevue.popover.base)).toBeVisible();
+    await expect(page.locator(primevue.popover.base)).toContainText("error is restricted");
   });
 
   test("shows error using mutable validation", async({ page }) => {

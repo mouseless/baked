@@ -36,11 +36,7 @@
       >
         <Button
           ref="submitRef"
-          v-tooltip.top="{
-            disabled: !showValidationSummary,
-            value: messages,
-            pt: { text: 'text-sm' }
-          }"
+          :validation-summary
           :schema="submit"
           :ready
           class="min-w-min"
@@ -87,6 +83,9 @@ const { isValid, messages } = validate({
   model,
   composables: validations
 });
+
+// pass an object { disabled: !showValidationSummary, messages } as before
+const validationSummary = computed(() => showValidationSummary ? { messages } : null);
 
 watch(error, newError => {
   if(newError) {
