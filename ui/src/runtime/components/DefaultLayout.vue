@@ -37,9 +37,7 @@
       :descriptor="sideMenu"
     />
   </div>
-  <ScrollTop
-    v-bind="scrollTopOptions"
-  />
+  <ScrollTop v-bind="scrollTopOptions" />
 </template>
 <script setup>
 import { ScrollTop } from "primevue";
