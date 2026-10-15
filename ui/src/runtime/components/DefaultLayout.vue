@@ -18,7 +18,7 @@
         max-md:flex-1
       "
     >
-      <div class="px-4">
+      <div class="px-4 my-3 h-4">
         <Bake
           :key="route.path"
           name="header"

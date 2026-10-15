@@ -48,7 +48,8 @@
         "sitemap": {
           "/": {
             "route": "/",
-            "icon": "pi pi-home"
+            "icon": "pi pi-home",
+            "title": "Home"
           },
           "/cache-samples": {
             "route": "/cache-samples",

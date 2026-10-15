@@ -12,7 +12,7 @@ public record Route(
     public bool Disabled { get; set; }
     public string? DisabledReason { get; set; }
     public bool ErrorSafeLink { get; set; }
-    public string? HeaderTitle { get; set; } = Path == "/" ? null : Title;
+    public string? HeaderTitle { get; set; } = Title;
     public string? Icon { get; set; }
     public bool Index { get; set; } = Path == "/";
     public string Name { get; set; } = Path == "/" ? "index" : Path.TrimStart('/');
