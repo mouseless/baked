@@ -25,7 +25,7 @@
           :descriptor="header"
         />
       </div>
-      <div class="bg-body flex-1 md:rounded-tl-xl">
+      <div class="bg-body flex-1 md:rounded-tl-2xl">
         <div class="mb-[5.5rem] max-md:mb-24 px-4 pt-4">
           <slot />
         </div>

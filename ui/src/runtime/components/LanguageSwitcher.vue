@@ -14,7 +14,7 @@
         justify-start gap-4
         max-md:w-full max-md:py-2
         md:rounded-none
-        2xl:w-full 2xl:py-2
+        2xl:w-full 2xl:py-2 2xl:rounded-full
       "
       type="button"
       severity="secondary"

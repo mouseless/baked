@@ -18,6 +18,7 @@
       max-md:flex-row max-md:justify-between max-md:items-center
       max-md:border-t max-md:border-slate-300 max-md:dark:border-zinc-800
       max-md:drop-shadow-[0_-2px_2px_rgba(0,0,0,0.1)]
+      2xl:px-2 2xl:pb-2
     "
   >
     <RouterLink
@@ -49,8 +50,8 @@
       "
     >
       <template v-if="loading">
-        <Skeleton class="py-[1.375rem] min-w-12 rounded-none max-md:snap-start" />
-        <Skeleton class="py-[1.375rem] min-w-12 rounded-none max-md:snap-start" />
+        <Skeleton class="py-[1.375rem] min-w-12 rounded-full max-md:snap-start" />
+        <Skeleton class="py-[1.375rem] min-w-12 rounded-full max-md:snap-start" />
       </template>
       <template v-else-if="data">
         <SideMenuItem

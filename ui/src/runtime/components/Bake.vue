@@ -170,11 +170,8 @@ onBeforeUnmount(() => {
 });
 
 async function load({ isReload } = {}) {
-  if(isReload) {
-    reloading.value = true;
-  } else {
-    loading.value = true;
-  }
+  reloading.value = isReload;
+  loading.value = !isReload;
 
   try {
     data.value = await dataFetcher.fetch({
