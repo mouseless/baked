@@ -3,11 +3,11 @@ using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Ui;
 
-namespace Baked.Ux.ActionsAreContents;
+namespace Baked;
 
-public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
+public static class ActionsAreContentsUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> ActionsAreContents(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -65,5 +65,5 @@ public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
                 order: -10
             );
         });
-    }
+    });
 }

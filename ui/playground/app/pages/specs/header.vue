@@ -9,7 +9,10 @@ const variants = [
     name: "Multi Level",
     descriptor: giveMe.aHeader({
       sitemapItems: [
-        giveMe.aHeaderItem({ route: "/" }),
+        giveMe.aHeaderItem({
+          route: "/",
+          title: "Spec: Home"
+        }),
         giveMe.aHeaderItem({
           route: "/root",
           icon: "pi pi-heart",
@@ -35,38 +38,23 @@ const variants = [
     name: "Wildcard",
     descriptor: giveMe.aHeader({
       sitemapItems: [
-        giveMe.aHeaderItem({ route: "/" }),
+        giveMe.aHeaderItem({
+          route: "/",
+          title: "Spec: Home"
+        }),
         giveMe.aHeaderItem({ route: "/entity/[id]", title: "Spec: Entity" })
       ],
       data: { path: "/entity/adf-123" }
     })
   },
   {
-    name: "Hidden at Home",
-    descriptor: giveMe.aHeader({
-      sitemapItems: [ giveMe.aHeaderItem({ route: "/" }) ],
-      data: { path: "/" }
-    })
-  },
-  {
-    name: "Hidden at Unknown",
-    descriptor: giveMe.aHeader({
-      sitemapItems: [
-        giveMe.aHeaderItem({ route: "/" }),
-        giveMe.aHeaderItem({
-          route: "/known",
-          icon: "pi pi-heart",
-          title: "Known Page"
-        })
-      ],
-      data: { path: "/unknown" }
-    })
-  },
-  {
     name: "No Title",
     descriptor: giveMe.aHeader({
       sitemapItems: [
-        giveMe.aHeaderItem({ route: "/" }),
+        giveMe.aHeaderItem({
+          route: "/",
+          title: null
+        }),
         giveMe.aHeaderItem({
           route: "/no-title",
           icon: "pi pi-wave-pulse",
@@ -80,7 +68,10 @@ const variants = [
     name: "No Icon",
     descriptor: giveMe.aHeader({
       sitemapItems: [
-        giveMe.aHeaderItem({ route: "/" }),
+        giveMe.aHeaderItem({
+          route: "/",
+          title: "Spec: Home"
+        }),
         giveMe.aHeaderItem({
           route: "/no-icon",
           icon: null,

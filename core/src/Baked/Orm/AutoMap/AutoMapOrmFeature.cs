@@ -1,6 +1,8 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Configuration;
+using Baked.Orm;
+using Baked.Orm.AutoMap;
 using Baked.RestApi;
 using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
@@ -13,11 +15,14 @@ using NHibernate;
 using NHibernate.Exceptions;
 using NHibernate.Proxy;
 
-namespace Baked.Orm.AutoMap;
+using ForeignKey = Baked.Orm.ForeignKey;
+using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 
-public class AutoMapOrmFeature : IFeature<OrmConfigurator>
+namespace Baked;
+
+public static class AutoMapOrmFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<OrmFeature.Configurator> AutoMap(this OrmFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
@@ -77,7 +82,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             {
                 generatedAssemblies.Add(nameof(AutoMapOrmFeature),
                     assembly => assembly
-                        .AddReferenceFrom<AutoMapOrmFeature>()
+                        .AddReferenceFrom<OrmFeature.Configurator>()
                         .AddCodes(new AutoPersistenceModelConfigurerTemplate(domain))
                         .AddCodes(new ManyToOneFetcherTemplate(domain))
                         .AddCodes(new TypeModelTypeSourceTemplate(domain)),
@@ -146,7 +151,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     catch (GenericADOException e)
                     {
                         context.RequestServices
-                            .GetRequiredService<ILogger<AutoMapOrmFeature>>()
+                            .GetRequiredService<ILoggerFactory>()
+                            .CreateLogger(typeof(AutoMapOrmFeature))
                             .LogError(e.InnerException, e.InnerException?.Message);
 
                         throw;
@@ -177,5 +183,5 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             });
             contractResolver.SetIsUnitializedProxy(value => value is INHibernateProxy proxy && proxy.HibernateLazyInitializer.IsUninitialized);
         });
-    }
+    });
 }

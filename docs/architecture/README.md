@@ -118,8 +118,8 @@ design or technology, e.g. `Authentication.Jwt` and `Database.MySql`.
 > [!TIP]
 >
 > `Lifetime` represents lifetime feature that provides an API to your domain to
-> register services in different lifetimes. `Lifetime.Singleton` and
-> `Lifetime.Transient` are two different implementations of how you register and
+> register services in different lifetimes. `Lifetime.Application` and
+> `Lifetime.Instance` are two different implementations of how you register and
 > retrieve your domain objects from dependency injection.
 
 In conclusion, feature implementations serve as bridges, connecting layers to

@@ -3,18 +3,21 @@
     <Button
       v-tooltip="{ value: l(item.title), showDelay: 300, class: '2xl:!hidden max-md:!hidden' }"
       :text="!selected"
+      :icon="item.icon"
+      :label="l(item.title)"
+      :disabled="item.disabled"
+      severity="secondary"
+      variant="text"
+      size="large"
+      class="
+        py-3 text-sm rounded-none
+        2xl:rounded-full 2xl:w-full
+        2xl:justify-start 2xl:gap-3
+      "
+      :class="{ 'bg-slate-200 dark:bg-zinc-800': selected }"
       :pt="{
         label: { class: 'max-2xl:hidden leading-none' }
       }"
-      :icon="item.icon"
-      :severity="selected ? 'primary':'secondary'"
-      size="large"
-      class="
-        px-4 py-3.5 w-full
-        2xl:justify-start 2xl:gap-4
-      "
-      :label="l(item.title)"
-      :disabled="item.disabled"
     />
   </RouterLink>
 </template>

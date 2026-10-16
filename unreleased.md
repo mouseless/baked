@@ -2,11 +2,24 @@
 
 ## Features
 
+### Domain
+
 - `Business` namespace now provides `Validate` object to perform business
   validations
 - `FlagsEnumCodingStyle` is now available that supports enums with `[Flags]`
+- `StatusEnumViaSuffixCodingStyle` is now available that provides a status enum
+  system using codes that are similar to HTTP status codes
+  - Enums with `Status` suffix get `Severities` attribute mapping their values
+    to a severity, e.g., `2xx` is `success`, `4xx` is `warn`
+  - Properties of a status enum type get `Status` attribute
+  - Severities are exported to `severities.json` and are available through
+    `useSeverities` composable
+  - It is included in `MonolithRecipe` by default
 - `IExportOptions` in `Baked.Binding` lets an attribute set the name it is
   exported with, e.g., `IdProperty` is exported as `@id`
+
+### Schemas and Conventions
+
 - All component, data, action, trigger and constraint schemas now have a
   parameterless constructor, so a convention can add any of them by its type,
   e.g., `conventions.AddMethodComponent<DataPanel>()`
@@ -20,7 +33,44 @@
 - A schema is turned into a component descriptor with `ToDescriptor()`, which
   also accepts `data` and `action`
 
+### Components
+
+- New display components are added; `Tag` and `Avatar`
+  - Enum properties are rendered as `Tag` with localized text by default, and
+    status enums are colored with their severity
+  - Page titles of routes with an icon render an `Avatar` by default
+- `Button` now has `DialogOptions` to render a dialog before executing its
+  action, with `Dialog` and `Confirm` modes
+  - `ActionsAsButtons` renders delete methods and methods with up to
+    `maxParameterCountForConfirm` parameters (default `3`) as a confirm popup
+- `SimpleForm` now accepts a `Message` component to render before its inputs
+- `Wrap` is introduced to help wrap multi children depending on a condition
+  - It strips out any comment node when condition is false to make sure a single
+    child node renders on its own allowing directives to work properly
+
 ## Breaking Changes
+
+### Feature Definitions
+
+- Features are now defined with `Define()` of their abstraction configurator,
+  feature classes and `XConfigurator` classes are removed
+  ```csharp
+  // was
+  public class WelcomeGreetingFeature : IFeature<GreetingConfigurator>
+  {
+      public void Configure(LayerConfigurator configurator) { ... }
+  }
+
+  // now
+  public static IFeature<GreetingFeature.Configurator> Welcome(this GreetingFeature.Configurator x) =>
+      x.Define(configurator => { ... });
+  ```
+  - Every abstraction now provides `Disabled()`, `Feature.Empty<T>()` is
+    removed
+  - Custom themes no longer inherit `DefaultThemeFeature`, they give their
+    configuration to `c.Default(configure: ...)` instead
+
+### Renamings
 
 - Attributes used in conventions no longer have the `Attribute` suffix, e.g.,
   `LabelAttribute` -> `Label`. These also changed beyond the suffix;
@@ -71,6 +121,16 @@
   | `Singleton` | `Application` |
   | `Scoped`    | `Scope`       |
   | `Transient` | `Instance`    |
+- Additional renamings are as below
+  | old                                         | new                                    |
+  | ------------------------------------------- | -------------------------------------- |
+  | `Generator<T>.Generator`                    | `Generator<T>.GeneratorDelegate`       |
+  | `Generator<T>.Filter`                       | `Generator<T>.FilterDelegate`          |
+  | `ContextBasedComponent.Filter`              | `ContextBasedComponent.FilterDelegate` |
+  | `EntityInitializerIsPostResourceConvention` | `EntityInitializerIsPostConvention`    |
+
+### Schemas and Conventions
+
 - Conventions that configure an existing attribute, component or schema are
   renamed as edits
   ```csharp
@@ -112,6 +172,15 @@
   - `options` parameters are gone, `using static` and `using B =` are no longer
     needed
   - `Label` component is renamed as `Labeler`
+  - Component exports are now collected from the theme assembly instead of
+    builder classes
+    ```csharp
+    // was
+    exports.AddFromExtensions(typeof(C));
+
+    // now
+    exports.AddFromAssembly(typeof(CustomThemeFeature));
+    ```
 - `Datas`, `Actions` and `Constraints` builder classes are renamed as `Fetch`,
   `Execute` and `Evaluate`
   ```csharp
@@ -135,6 +204,32 @@
       c.ShowWhen("state", constraint: Evaluate.Is("editing"));
   });
   ```
+
+### Components
+
+- `SimpleForm` no more provides a dialog mode, switch to `Button` to render
+  methods as button with a dialog
+- `Dialog.Submit` became redundant and removed, use `Button` to render a dialog
+  action
+- `SimpleForm.AlwaysShowTitle` is removed, title is rendered whenever it is set
+  and `SimpleForm.Title` is now optional
+
+### Authentication
+
+- `FixedBearerToken` form post `hash` is now an `HMAC-SHA256` signature of form
+  parameters, so that a value can no longer be shifted to another field
+  ```
+  // was
+  base64(sha256("12" + "3" + token))
+
+  // now
+  base64(hmacsha256(key: token, message: "amount=12&fee=3"))
+  ```
+  - Parameters are sorted by key, URL encoded as `key=value` pairs and joined
+    with `&`, see [Authentication](../features/authentication.md) for details
+
+### Coding Styles
+
 - `ExtensionViaLocatableInitializerCodingStyle` no longer requires extension
   classes to have an implicit operator, any transient with an initializer that
   has one locatable parameter becomes an extension for it
@@ -145,13 +240,112 @@
   > adding another parameter to the initializer, resolves it
 - `QueryMethodCodingStyle` is merged into `QueryViaPluralNameCodingStyle`
 - `EntitySubclassCodingStyle` is removed completely
+
+### Others
+
 - `ICasts` interface and `Caster.Cast()` extension are removed
 - `AllowAnonymous`, `ClientCache` and `NoTransaction` now declare
   `[AttributeUsage]`, so they are no longer included in every export target
-- Additional renamings are as below
-  | old                                         | new                                    |
-  | ------------------------------------------- | -------------------------------------- |
-  | `Generator<T>.Generator`                    | `Generator<T>.GeneratorDelegate`       |
-  | `Generator<T>.Filter`                       | `Generator<T>.FilterDelegate`          |
-  | `ContextBasedComponent.Filter`              | `ContextBasedComponent.FilterDelegate` |
-  | `EntityInitializerIsPostResourceConvention` | `EntityInitializerIsPostConvention`    |
+- `messages` returned from `useValidation().validate()` is now an array of
+  validation results instead of a joined string
+
+## Improvements
+
+### Build and Domain
+
+- Locale files were not found when build output path was customized, e.g.,
+  `--artifacts-path`, causing keys to be generated as values, fixed
+- C# friendly name calculation is now fully compliant with C# language standards
+- It was not possible to validate records have locatables in their constructor
+  due to late initialization, fixed
+  - Records implementing `IValidatableObject` are validated once more after
+    they are initialized, only for actions that have such parameters
+  - Their validation results are returned as `ValidationProblemDetails`, same
+    as any other model validation error
+- `DefaultThemeFeature.JsonSettings` is now public to be used in custom themes
+
+### Authentication
+
+- `FixedBearerToken` is hardened
+  - Tokens and form post hashes are compared in constant time
+  - Only the leading `Bearer` scheme is trimmed from authorization header, and
+    the scheme is now case insensitive
+  - Tokens configured with an empty value are ignored
+
+### Loading
+
+- `Bake.vue` improvements
+  - It now waits until data is loaded to show a component when there is a show
+    reaction in the descriptor
+    - It was showing the components that reacts to `showWhen: is null` causing
+      to render unintended components while page is loading
+  - Reactions to a page context value now wait until the component writing
+    that value is loaded, e.g., `DataTable` with `DataLengthContextKey`, see
+    `usePageContext` below
+- `AwaitLoading` no more shows skeleton during a reload, instead a page-wide
+  loading indicator is displayed
+
+### Forms and Dialogs
+
+- Dialog mode is migrated from `SimpleForm` to `Button`
+  - You can now simplify conventions by configuring methods as buttons with
+    dialogs instead of simple form in dialog mode
+  - Modal form was closing before action is completed, now it executes and
+    closes only if action is success
+  - `Execute.Publish.CloseDialog()` helper is introduced to achieve the dialog
+    close after a form action
+  - `Execute.Publish.Event()` now accepts `empty` to publish an event without
+    data
+- Validation tooltip is replaced with a check list popover
+- `Enum` defaults weren't getting camelized in `Input`, fixed
+
+### Look and Feel
+
+- `SideMenu` UI is improved to distract the user less
+- `DefaultLayout` now places header in a fixed area above a rounded page body
+- `PageTitle` and `Button` are made more compact, and page title is more
+  responsive
+- Header now renders on home page as well, `Route.HeaderTitle` is set for index
+  route too
+- Minor improvements in `components.css`
+
+### Composables
+
+- `useFormat` now provides `asCamelCase` helper function
+- `useLocalization` can now be used as a computed data through
+  `Fetch.Computed.UseLocalization(l("..."))`
+- `usePageContext` is introduced to read and write page context values
+  - `set` marks a value as pending while the writing component is loading, so
+    that reactions to it wait until it is written
+  - Use `usePageContext({ trackLoading: false })` when the value is not loaded,
+    e.g., in actions
+- `useContext` now provides `providePageScope` to provide events, page context
+  and pending values of a page at once, e.g., in a custom page or layout
+  component
+
+## Library Upgrades
+
+| NuGet Package                                    | Old Version | New Version |
+| ---                                              | ---         | ---         |
+| Microsoft.AspNetCore.Authentication.JwtBearer    | 10.0.12     | 10.0.13     |
+| Microsoft.AspNetCore.Mvc.NewtonsoftJson          | 10.0.12     | 10.0.13     |
+| Microsoft.AspNetCore.Mvc.Testing                 | 10.0.12     | 10.0.13     |
+| Microsoft.Data.Sqlite.Core                       | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Caching.Abstractions        | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Configuration.Abstractions  | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Configuration.Binder        | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.FileProviders.Abstractions  | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Localization.Abstractions   | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.Logging.Abstractions        | 10.0.12     | 10.0.13     |
+| Microsoft.Extensions.TimeProvider.Testing        | 10.10.0     | 10.11.0     |
+| Microsoft.NET.Test.Sdk                           | 18.10.1     | 18.11.0     |
+| Microsoft.Testing.Extensions.CodeCoverage        | 18.11.2     | 18.12.0     |
+| Microsoft.Testing.Extensions.TrxReport           | 2.4.1       | 2.5.1       |
+| NUnit3TestAdapter                                | 6.3.0       | 6.3.1       |
+| Swashbuckle.AspNetCore                           | 10.2.3      | 10.3.0      |
+| Swashbuckle.AspNetCore.Annotations               | 10.2.3      | 10.3.0      |
+| System.Security.Cryptography.Pkcs (_transitive_) | 8.0.1       | 10.0.13     |
+
+| npm Package | Old Version | New Version |
+| ---         | ---         | ---         |
+| playwright  | 1.63.0      | 1.64.0      |

@@ -1,5 +1,5 @@
 import { watch, unref } from "vue";
-import { useConstraintEvaluator, useContext } from "#imports";
+import { useConstraintEvaluator, useContext, usePageContext } from "#imports";
 
 export default function() {
   const constraintEvaluator = useConstraintEvaluator();
@@ -7,11 +7,12 @@ export default function() {
 
   const events = context.injectEvents();
   const contextData = context.injectContextData();
+  const pageContext = usePageContext();
 
   function create(eventId, reactions) {
     const handlers = {
       "On": On({ evaluate, events, eventId }),
-      "When": When({ contextData, evaluate }),
+      "When": When({ contextData, evaluate, pageContext }),
       "Composite": Composite({ parentBind: bindInternal })
     };
 
@@ -72,10 +73,17 @@ function On({ evaluate, eventId, events }) {
   };
 }
 
-function When({ contextData, evaluate }) {
+function When({ contextData, evaluate, pageContext }) {
   function bind({ trigger, react }) {
-    watch(() => access(contextData[trigger.key ?? "page"], trigger.when), async value => {
+    const key = trigger.key ?? "page";
+
+    watch([
+      () => access(contextData[key], trigger.when),
+      () => key === "page" && pageContext.isPending(trigger.when.split(".")[0])
+    ], async([value, pending]) => {
       react(false);
+      if(pending) { return; }
+
       react(await evaluate(trigger.constraint, value));
     }, { immediate: true });
 

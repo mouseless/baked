@@ -48,7 +48,8 @@
         "sitemap": {
           "/": {
             "route": "/",
-            "icon": "pi pi-home"
+            "icon": "pi pi-home",
+            "title": "Home"
           },
           "/cache-samples": {
             "route": "/cache-samples",
@@ -65,27 +66,29 @@
             "title": "/form-sample/parents/new:Title",
             "parentRoute": "/form-sample"
           },
+          "/entities/[id]": {
+            "route": "/entities/[id]",
+            "title": "/entities/[id]:Title",
+            "parentRoute": "/form-sample"
+          },
+          "/parents/[id]": {
+            "route": "/parents/[id]",
+            "title": "/parents/[id]:Title",
+            "parentRoute": "/form-sample"
+          },
           "/report-page-sample": {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
             "title": "/report-page-sample:Title"
           },
+          "/route-parameters-sample/[id]": {
+            "route": "/route-parameters-sample/[id]",
+            "title": "/route-parameters-sample/[id]:Title"
+          },
           "/specs": {
             "route": "/specs",
             "icon": "pi pi-list-check",
             "title": "/specs:Title"
-          },
-          "/entities/[id]": {
-            "route": "/entities/[id]",
-            "title": "/entities/[id]:Title"
-          },
-          "/parents/[id]": {
-            "route": "/parents/[id]",
-            "title": "/parents/[id]:Title"
-          },
-          "/route-parameters-sample/[id]": {
-            "route": "/route-parameters-sample/[id]",
-            "title": "/route-parameters-sample/[id]:Title"
           },
           "/specs/await-loading": {
             "route": "/specs/await-loading",
@@ -165,6 +168,12 @@
             "title": "/specs/toast:Title",
             "parentRoute": "/specs"
           },
+          "/specs/avatar": {
+            "route": "/specs/avatar",
+            "icon": "pi pi-microchip",
+            "title": "/specs/avatar:Title",
+            "parentRoute": "/specs"
+          },
           "/specs/check": {
             "route": "/specs/check",
             "icon": "pi pi-microchip",
@@ -235,6 +244,12 @@
             "route": "/specs/rate",
             "icon": "pi pi-microchip",
             "title": "/specs/rate:Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/tag": {
+            "route": "/specs/tag",
+            "icon": "pi pi-microchip",
+            "title": "/specs/tag:Title",
             "parentRoute": "/specs"
           },
           "/specs/text": {

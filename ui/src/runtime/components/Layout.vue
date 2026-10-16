@@ -17,20 +17,18 @@
   </Bake>
 </template>
 <script setup>
-import { reactive, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "#app";
 import { Toast } from "primevue";
-import { useContext, useEvents, useLayouts, usePages } from "#imports";
+import { useContext, useLayouts, usePages } from "#imports";
 import { Bake } from "#components";
 
 const context = useContext();
-const events = useEvents();
 const layouts = useLayouts();
 const pages = usePages();
 const route = useRoute();
 
-context.provideEvents(events);
-context.providePageContext(reactive({}));
+context.providePageScope();
 
 const descriptor = ref(await findLayout(route.matched[0].name));
 watch(

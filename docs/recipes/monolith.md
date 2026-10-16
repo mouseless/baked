@@ -57,6 +57,7 @@ Bake.New
 |                    | Remaining Services are Singleton         |                                    |
 |                    | Resource via ID Initializer              |                                    |
 |                    | Rich Entity                              |                                    |
+|                    | Status Enum via Suffix                   |                                    |
 |                    | Scoped via Suffix                        |                                    |
 |                    | Suffix based Client                      |                                    |
 |                    | Type based ID                            |                                    |
@@ -71,9 +72,9 @@ Bake.New
 | Exception Handling | :white_check_mark: Problem Details       | :white_check_mark:                 |
 | Greeting           | :white_check_mark: Swagger               | :no_entry:                         |
 | Lifetime(s)        | :white_check_mark:                       | :white_check_mark:                 |
-|                    | Singleton                                |                                    |
-|                    | Scoped                                   |                                    |
-|                    | Transient                                |                                    |
+|                    | Application                              |                                    |
+|                    | Instance                                 |                                    |
+|                    | Scope                                    |                                    |
 | Localization       | :white_check_mark: .NET                  | :white_check_mark:                 |
 | Logging            | :white_check_mark: Request               | :no_entry:                         |
 | Mocking Overrider  | :no_entry:                               | :white_check_mark: First Interface |

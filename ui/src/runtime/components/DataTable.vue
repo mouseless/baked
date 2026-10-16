@@ -154,7 +154,7 @@ import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useContext, useDataFetcher, useLocalization } from "#imports";
+import { useComposableResolver, useContext, useDataFetcher, useLocalization, usePageContext } from "#imports";
 import { AwaitLoading, Bake, ProvideParentContext } from "#components";
 
 const context = useContext();
@@ -182,6 +182,7 @@ const virtualScrollerOptions = schema.virtualScrollerOptions && {
 
 const contextData = context.injectContextData();
 const dataDescriptor = context.injectDataDescriptor();
+const pageContext = usePageContext();
 
 const LABEL_COLUMN_BP = 5;
 const dataTable = ref();
@@ -213,8 +214,8 @@ const footerColSpan = computed(() => columns.length - footerTemplate?.columns.le
 const exportFilename = ref(exportOptions?.fileName ? l(exportOptions.fileName) : null);
 let formatter = null;
 
-if(dataLengthContextKey && data) {
-  contextData.page[dataLengthContextKey] = data?.length;
+if(dataLengthContextKey) {
+  pageContext.set(dataLengthContextKey, data?.length);
 }
 
 if(exportOptions) {

@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Binding;
 using Baked.Business;
+using Baked.CodingStyle.CommandViaMethodName;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.Lifetime;
@@ -8,14 +9,13 @@ using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.CodingStyle.CommandViaMethodName;
+namespace Baked;
 
-public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodNames)
-    : IFeature<CodingStyleConfigurator>
+public static class CommandViaMethodNameCodingStyleFeature
 {
-    readonly HashSet<string> _methodNames = [.. _methodNames];
-
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> CommandViaMethodName(this CodingStyleFeature.Configurator x,
+        IEnumerable<string>? methodNames = default
+    ) => x.Define(new HashSet<string>(methodNames ?? ["Execute", "Process"]), (configurator, methodNames) =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -27,7 +27,7 @@ public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodN
                         members.Has<Transient>() && !members.Has<Locatable>()
                     ) &&
                     TryGetSinglePotentialAction(members, c, out var action) &&
-                    _methodNames.Contains(action.Name),
+                    methodNames.Contains(action.Name),
                 apply: (c, set) =>
                 {
                     set(c.Type, new Command());
@@ -35,7 +35,7 @@ public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodN
                     var members = c.Type.GetMembers();
                     foreach (var method in members.Methods)
                     {
-                        if (!_methodNames.Contains(method.Name)) { continue; }
+                        if (!methodNames.Contains(method.Name)) { continue; }
 
                         set(method, new CommandMethod());
                     }
@@ -65,7 +65,7 @@ public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodN
             ), order: Order.At.Infra - 10);
 
             conventions.Add(new RemoveFromRouteConvention(
-                _parts: _methodNames,
+                _parts: methodNames,
                 _whenContext: c => c.Method.Has<CommandMethod>()
             ), order: Order.At.Infra);
 
@@ -98,17 +98,17 @@ public class CommandViaMethodNameCodingStyleFeature(IEnumerable<string> _methodN
             configurator.Buildtime.UsingGeneratedContext(generatedContext =>
             {
                 var examples = generatedContext.ReadFileAsJson<RequestResponseExamples>() ?? [];
-                swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, examples);
+                swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(methodNames, examples);
             });
         });
-    }
+    });
 
     static bool IsPotentialAction(MethodModel m, TypeModelMetadataContext c) =>
         !m.Has<Initializer>() &&
         m.DefaultOverload.DeclaringType == c.Type &&
         m.DefaultOverload.IsPublicInstanceWithNoSpecialName;
 
-    bool TryGetSinglePotentialAction(
+    static bool TryGetSinglePotentialAction(
         TypeModelMembers members,
         TypeModelMetadataContext c,
         [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out MethodModel? action

@@ -4,11 +4,11 @@ using Baked.Lifetime;
 using Baked.Ui;
 using Humanizer;
 
-namespace Baked.Ux.InitializerParametersAreInPageTitle;
+namespace Baked;
 
-public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigurator>
+public static class InitializerParametersAreInPageTitleUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> InitializerParametersAreInPageTitle(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -50,5 +50,5 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                 }
             );
         });
-    }
+    });
 }

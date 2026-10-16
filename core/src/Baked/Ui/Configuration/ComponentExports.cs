@@ -1,13 +1,11 @@
-﻿using Baked.Architecture;
-using Baked.Theme;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Baked.Ui.Configuration;
 
 public class ComponentExports : List<string>
 {
-    public void AddFromThemeAssembly<TTheme>(TTheme _) where TTheme : IFeature<ThemeConfigurator> =>
-        AddFromAssembly(typeof(TTheme).Assembly);
+    public void AddFromAssembly(Type type) =>
+        AddFromAssembly(type.Assembly);
 
     public void AddFromAssembly(Assembly assembly)
     {

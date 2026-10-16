@@ -39,8 +39,6 @@ export default function() {
     const messages = computed(() =>
       [...Object.values(validations.value), ...Object.values(mutableValidations).map(v => v.value)]
         .filter(v => v.message && v.severity === "error")
-        .map((v, i) => `${i > 0 ? "\n" : ""} - ${v.message}`)
-        .join("")
     );
 
     return { isValid, messages, validations };

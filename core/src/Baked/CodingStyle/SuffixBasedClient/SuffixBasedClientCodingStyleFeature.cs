@@ -1,12 +1,13 @@
 ﻿using Baked.Architecture;
+using Baked.CodingStyle.SuffixBasedClient;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
-namespace Baked.CodingStyle.SuffixBasedClient;
+namespace Baked;
 
-public class SuffixBasedClientCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class SuffixBasedClientCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> SuffixBasedClient(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -33,7 +34,7 @@ public class SuffixBasedClientCodingStyleFeature : IFeature<CodingStyleConfigura
             {
                 generatedAssemblies.Add(nameof(SuffixBasedClientCodingStyleFeature),
                     assembly => assembly
-                        .AddReferenceFrom<SuffixBasedClientCodingStyleFeature>()
+                        .AddReferenceFrom<CodingStyleFeature.Configurator>()
                         .AddCodes(new ClientTemplate(domain)),
                     usings: [.. ClientTemplate.GlobalUsings]
                 );
@@ -54,5 +55,5 @@ public class SuffixBasedClientCodingStyleFeature : IFeature<CodingStyleConfigura
                 }
             });
         });
-    }
+    });
 }

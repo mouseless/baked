@@ -49,17 +49,17 @@ This feature abstraction provides following extensions to
   conventions.SetTypeAttribute(...);
   conventions.SetPropertyAttribute(...);
   conventions.SetMethodAttribute(...);
-  conventions.SetParametereAttribute(...);
+  conventions.SetParameterAttribute(...);
 
   conventions.AddTypeAttribute(...);
   conventions.AddPropertyAttribute(...);
   conventions.AddMethodAttribute(...);
-  conventions.AddParametereAttribute(...);
+  conventions.AddParameterAttribute(...);
 
   conventions.RemoveTypeAttribute(...);
   conventions.RemovePropertyAttribute(...);
   conventions.RemoveMethodAttribute(...);
-  conventions.RemoveParametereAttribute(...);
+  conventions.RemoveParameterAttribute(...);
   ```
 - Executes after building index and `Order` is defaulted to
   `Business.Defaults.Configure`
@@ -67,7 +67,7 @@ This feature abstraction provides following extensions to
   conventions.EditTypeAttribute(...);
   conventions.EditPropertyAttribute(...);
   conventions.EditMethodAttribute(...);
-  conventions.EditParametereAttribute(...);
+  conventions.EditParameterAttribute(...);
   ```
 
 > [!TIP]

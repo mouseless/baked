@@ -3,7 +3,7 @@
 This feature provides an overrider mechanism for overriding default components
 registered in `IServiceCollection`.
 
-Add this feature using `AddMockOverrrider()` extension;
+Add this feature using `AddMockOverrider()` extension;
 
 ```csharp
 app.Features.AddMockOverrider(...);

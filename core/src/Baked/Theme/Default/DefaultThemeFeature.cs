@@ -1,21 +1,37 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Core;
+using Baked.Domain;
 using Baked.Domain.Configuration;
+using Baked.Domain.Model;
+using Baked.Lifetime;
 using Baked.RestApi.Model;
+using Baked.Runtime;
+using Baked.Theme;
+using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
+using Newtonsoft.Json;
 
-namespace Baked.Theme.Default;
+namespace Baked;
 
-public class DefaultThemeFeature(IEnumerable<Route> _routes,
-    Action<ErrorPage>? _errorPageOptions = default,
-    Action<SideMenu>? _sideMenuOptions = default,
-    Action<Header>? _headerOptions = default,
-    ComponentPath.Debug? _debugComponentPaths = default
-) : IFeature<ThemeConfigurator>
+public static class DefaultThemeFeature
 {
-    public virtual void Configure(LayerConfigurator configurator)
+    public static JsonSerializerSettings JsonSettings => new()
+    {
+        ContractResolver = new AttributeAwareCamelCasePropertyNamesContractResolver(),
+        NullValueHandling = NullValueHandling.Ignore,
+    };
+
+    public static IFeature<ThemeFeature.Configurator> Default(this ThemeFeature.Configurator x,
+        Func<Router, Route> index,
+        IEnumerable<Func<Router, Route>>? routes = default,
+        Action<ErrorPage>? errorPageOptions = default,
+        Action<SideMenu>? sideMenuOptions = default,
+        Action<Header>? headerOptions = default,
+        ComponentPath.Debug? debugComponentPaths = default,
+        Action<LayerConfigurator>? configure = default
+    ) => x.Define(BuildRoutes(index, routes), (configurator, routes) =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -162,6 +178,22 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
+            // configures route icon to type avatar
+            conventions.AddTypeComponent<Avatar>(
+                when: c => c.Type.Has<Locatable>() || c.Type.Has<Singleton>(),
+                where: cc =>
+                    cc.Route.Icon is not null &&
+                    cc.Path.Is("page", "*", "simple-page", "**", "page-title", "icon")
+            );
+            conventions.EditTypeComponent<Avatar>(
+                where: cc => cc.Path.EndsWith("page-title", "icon"),
+                component: (a, _, cc) =>
+                {
+                    a.Schema.Icon ??= cc.Route.Icon;
+                    a.Schema.Size ??= "large";
+                }
+            );
+
             // configures field set defaults for type
             conventions.EditTypeComponent<Fieldset>(
                 when: c => c.Type.HasMembers(),
@@ -230,9 +262,24 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // adds text component to enum properties
-            conventions.AddPropertyComponent<Text>(
+            // adds tag component to enum properties
+            conventions.AddPropertyComponent<Tag>(
                 when: c => c.Property.PropertyType.SkipNullable().IsEnum,
+                order: Order.At.Min
+            );
+
+            // configures enum localization for tag
+            conventions.EditPropertyComponent<Tag>(
+                when: c => c.Property.PropertyType.SkipNullable().IsEnum,
+                component: (t, c, cc) =>
+                {
+                    // NOTE forces enum localizations to get hit
+                    var schema = c.Property.PropertyType.SkipNullable().GetMetadata().GenerateSchema<InlineData>(cc.Drill("data"));
+                    schema?.ToJsonString();
+
+                    t.Schema.LocalizationPrefix = c.Property.PropertyType.SkipNullable().Name;
+                    t.Schema.LocalizeText = true;
+                },
                 order: Order.At.Min
             );
 
@@ -436,6 +483,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Global.Max
             );
 
+            // configures route icon to method avatar
+            conventions.EditMethodComponent<Avatar>(
+                where: cc => cc.Path.EndsWith("page-title", "icon"),
+                component: (a, _, cc) =>
+                {
+                    a.Schema.Icon ??= cc.Route.Icon;
+                    a.Schema.Size ??= "xlarge";
+                }
+            );
+
             // adds content to method
             conventions.AddMethodSchema<Content>(
                 where: cc => cc.Path.EndsWith("contents", "*")
@@ -528,19 +585,53 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             conventions.EditMethodComponent<Button>(
                 component: (b, c, cc) =>
                 {
+                    cc = cc.Drill("button");
                     var (_, l) = cc;
 
                     b.Schema.Label = l(c.Method.Name.Titleize());
+                    b.Schema.DialogOptions = c.Method.GenerateSchema<Button.Dialog>(cc.Drill("dialog-options"));
                     b.Action =
-                        c.Method.GenerateSchema<LocalAction>(cc.Drill("button", "action")) as IAction ??
-                        c.Method.GenerateSchema<PublishAction>(cc.Drill("button", "action")) as IAction ??
-                        c.Method.GenerateSchema<RemoteAction>(cc.Drill("button", "action"))
+                        b.Schema.DialogOptions?.Form is not null ? Execute.Publish.Event(c.Method.Name.Kebaberize(), empty: true) :
+                        c.Method.GenerateSchema<LocalAction>(cc.Drill("action")) as IAction ??
+                        c.Method.GenerateSchema<PublishAction>(cc.Drill("action")) as IAction ??
+                        c.Method.GenerateSchema<RemoteAction>(cc.Drill("action"))
                     ;
                 },
                 order: Order.At.Min
             );
 
-            // adds simple form to methods
+            // configures button dialog defaults for method
+            conventions.EditMethodSchema<Button.Dialog>(
+                schema: (bd, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    bd.Header = l(c.Method.Name.Titleize());
+                    bd.Form = c.Method.GenerateComponent(cc.Drill("form"));
+
+                    if (bd.Form is null)
+                    {
+                        bd.Content = c.Method.GenerateComponent(cc.Drill("content"));
+                    }
+
+                    if (bd.Form is null && bd.Content is null)
+                    {
+                        throw DiagnosticCode.MissingRequiredComponent.Exception(
+                            $"Button.Dialog requires either Form or Content to be configured at path `{cc.Path}` for method `{c.Method.CustomAttributes.Name}`"
+                        );
+                    }
+
+                    if (bd.Content is not null)
+                    {
+                        bd.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
+                    }
+
+                    bd.Cancel = c.Method.GenerateComponent<Button>(cc.Drill("cancel"))?.Schema;
+                },
+                order: Order.At.Min
+            );
+
+            // adds simple form to methods under content component
             conventions.AddMethodComponent<SimpleForm>(
                 when: c =>
                     c.Method.TryGet<ApiAction>(out var action) &&
@@ -551,12 +642,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 component: (sf, c, cc) =>
                 {
                     cc = cc.Drill("simple-form");
-                    var (_, l) = cc;
 
                     sf.Action = c.Method.GenerateSchema<RemoteAction>(cc.Drill("action"));
-                    sf.Schema.Title = l(c.Method.Name.Titleize());
                     sf.Schema.Submit = c.Method.GenerateRequiredComponent<Button>(cc.Drill("submit")).Schema;
-                    sf.Schema.DialogOptions = c.Method.GenerateSchema<SimpleForm.Dialog>(cc.Drill("dialog-options"));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
@@ -569,14 +657,15 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: Order.At.Min
             );
 
-            // configures simple form dialog
-            conventions.EditMethodSchema<SimpleForm.Dialog>(
-                schema: (sfd, c, cc) =>
+            // configures title for simple form directly under content component
+            conventions.EditMethodComponent<SimpleForm>(
+                where: cc => cc.Path.EndsWith("contents", "*", "*", "component"),
+                component: (sf, c, cc) =>
                 {
-                    sfd.Cancel = c.Method.GenerateRequiredComponent<Button>(cc.Drill("cancel")).Schema;
-                    sfd.Open = c.Method.GenerateRequiredComponent<Button>(cc.Drill("open")).Schema;
-                },
-                order: Order.At.Min
+                    var (_, l) = cc;
+
+                    sf.Schema.Title = l(c.Method.Name.Titleize());
+                }
             );
 
             // configures form page defaults for method
@@ -684,10 +773,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: (p, c) =>
                 {
                     p.Required = !c.Parameter.IsNullable ? true : null;
-                    p.DefaultValue = c.Parameter.DefaultValue;
+                    p.DefaultValue =
+                        c.Parameter.ParameterType.IsEnum ? c.Parameter.DefaultValue?.ToString()?.Camelize() :
+                        c.Parameter.DefaultValue;
                 }
             );
 
+            // adds labeler to parameter schema
             conventions.AddParameterSchema(
                 schema: () => new Labeler()
             );
@@ -846,9 +938,26 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
         });
 
+        configurator.Buildtime.ConfigureGeneratedFileCollection(files =>
+        {
+            configurator.Domain.UsingDomainModel(domain =>
+            {
+                var severities = new Dictionary<string, Dictionary<string, string>>();
+                foreach (var type in domain.Types.Having<Severities>())
+                {
+                    severities[type.Name] = type.GetMetadata().Get<Severities>().Value;
+                }
+
+                files.AddAsJson("severities", severities,
+                    outdir: "Ui",
+                    settings: JsonSettings
+                );
+            });
+        });
+
         configurator.Ui.ConfigureComponentExports(exports =>
         {
-            exports.AddFromThemeAssembly(this);
+            exports.AddFromAssembly(typeof(DefaultThemeFeature));
         });
 
         configurator.Ui.ConfigureAppDescriptor(app =>
@@ -857,7 +966,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             {
                 var error = new ErrorPage
                 {
-                    SafeLinks = [.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.ToCardLink(l))],
+                    SafeLinks = [.. routes.Where(r => r.ErrorSafeLink).Select(r => r.ToCardLink(l))],
                     ErrorInfos =
                     {
                         [403] = new()
@@ -876,7 +985,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                         [999] = new() { Title = l("Application Error"), Message = l("Please contact system administrator.") }
                     }
                 };
-                _errorPageOptions.Apply(error);
+                errorPageOptions.Apply(error);
 
                 app.Error = error.ToDescriptor(data: Fetch.Computed.UseError());
                 app.InlineError = new Message
@@ -893,19 +1002,19 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             {
                 var sideMenu = new SideMenu
                 {
-                    Menu = [.. _routes.Where(r => r.SideMenu).Select(r => r.ToSideMenuItem(l))]
+                    Menu = [.. routes.Where(r => r.SideMenu).Select(r => r.ToSideMenuItem(l))]
                 };
-                _sideMenuOptions.Apply(sideMenu);
+                sideMenuOptions.Apply(sideMenu);
 
                 var header = new Header();
-                foreach (var route in _routes)
+                foreach (var route in routes)
                 {
                     if (route.Disabled) { continue; }
 
                     header.Sitemap[route.Path] = route.ToHeaderItem(l);
                 }
 
-                _headerOptions.Apply(header);
+                headerOptions.Apply(header);
 
                 layouts.AddLayout(new DefaultLayout
                 {
@@ -924,11 +1033,193 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             {
                 configurator.Ui.UsingLocalization(l =>
                 {
-                    pages.AddPages(_routes, domain, l,
-                        debugComponentPaths: _debugComponentPaths
+                    pages.AddPages(routes, domain, l,
+                        debugComponentPaths: debugComponentPaths
                     );
                 });
             });
         });
+
+        configure.Apply(configurator);
+    });
+
+    static List<Route> BuildRoutes(Func<Router, Route> index, IEnumerable<Func<Router, Route>>? routes) =>
+        [index(new()), .. routes?.Select(r => r(new())) ?? []];
+
+    extension(Page.Describer _)
+    {
+        public PageBuilder Menu() =>
+            context =>
+            {
+                var (_, l) = context;
+
+                if (context.Route.Index)
+                {
+                    return new MenuPage
+                    {
+                        Sections =
+                        {
+                            new()
+                            {
+                                Links =
+                                [
+                                    ..context.Sitemap
+                                        .Where(smp => smp.SideMenu && !smp.Index)
+                                        .Select(smp => smp.ToCardLink(l))
+                                        .Select(l => new Filterable { Component = l })
+                                ]
+                            }
+                        }
+                    }.ToDescriptor();
+                }
+
+                var sections = context.Sitemap.GroupBy(smp => smp.Section);
+                if (sections.Count() <= 1)
+                {
+                    return new MenuPage
+                    {
+                        Sections =
+                        {
+                            new()
+                            {
+                                Links =
+                                [
+                                    ..context.Sitemap
+                                        .Where(r => r.ParentPath == context.Route.Path)
+                                        .Select(r => r.ToCardLink(l))
+                                        .Select(l => new Filterable { Component = l })
+                                ]
+                            }
+                        },
+                        Header = new PageTitle
+                        {
+                            LocalizeTitle = true,
+                            Description = l(context.Route.Description)
+                        }.ToDescriptor(data: Fetch.Inline(l(context.Route.Title)))
+                    }.ToDescriptor();
+                }
+
+                return new MenuPage
+                {
+                    FilterEvent = "filter-changed",
+                    Header = new PageTitle
+                    {
+                        LocalizeTitle = true,
+                        Description = l(context.Route.Description),
+                        Actions =
+                        {
+                            new Filter { Placeholder = l("Filter") }
+                                .ToDescriptor(action: Execute.Publish.Event("filter-changed"))
+                        }
+                    }.ToDescriptor(data: Fetch.Inline(context.Route.Title)),
+                    Sections =
+                    [
+                        ..sections
+                            .Select(g => new MenuPage.Section
+                            {
+                                Title = l(g.Key),
+                                Links =
+                                [
+                                    .. g.Where(r => r.ParentPath == context.Route.Path)
+                                        .Select(r => new Filterable { Component = r.ToCardLink(l), Title = l(r.Title) })
+                                ]
+                            })
+                            .Where(s => s.Links.Any())
+                    ]
+                }.ToDescriptor();
+            };
+    }
+
+    extension(Route route)
+    {
+        public IComponentDescriptor ToCardLink(NewLocaleKey l) =>
+            new CardLink
+            {
+                Route = route.Path,
+                Title = l(route.Title),
+                Icon = route.Icon,
+                Description = l(route.Description),
+                Disabled = route.Disabled ? true : null,
+                DisabledReason = l(route.DisabledReason)
+            }.ToDescriptor();
+
+        public SideMenu.Item ToSideMenuItem(NewLocaleKey l) =>
+            new()
+            {
+                Route = route.Path,
+                Icon = route.Icon ?? throw new($"Icon is required for pages in side menu: `{route.Path}`"),
+                Title = l(route.SideMenuTitle),
+                Disabled = route.Disabled ? true : null
+            };
+
+        public Header.Item ToHeaderItem(NewLocaleKey l) =>
+            new()
+            {
+                Route = route.Path,
+                Title = l(route.HeaderTitle),
+                Icon = route.Icon,
+                ParentRoute = route.ParentPath
+            };
+    }
+
+    extension(ModelCollection<PropertyModel> properties)
+    {
+        public IEnumerable<PropertyModel> GetDataProperties() =>
+            properties
+                .Having<UiData>()
+                .Select(p => (property: p, data: p.Get<UiData>()))
+                .Where(pd => pd.data.Visible)
+                .OrderBy(pd => pd.data.Order)
+                .Select(pd => pd.property);
+    }
+
+    extension(IDomainModelConventionCollection conventions)
+    {
+        public void SetTypeRoute<T>(string routePath)
+        {
+            conventions.SetTypeAttribute(
+                when: c => c.Type.Is<T>(),
+                attribute: c => new UiRoute(routePath)
+            );
+        }
+
+        public void SetMethodRoute<T>(string methodName, string routePath)
+        {
+            conventions.SetMethodAttribute(
+                when: c => c.Type.Is<T>() && c.Method.Name == methodName,
+                attribute: c => new UiRoute(routePath)
+            );
+        }
+    }
+
+    extension(Group group)
+    {
+        public string InputGroupKey { get => group[nameof(FormPage.InputGroup)]; set => group[nameof(FormPage.InputGroup)] = value; }
+        public string SectionKey { get => group[nameof(FormPage.Section)]; set => group[nameof(FormPage.Section)] = value; }
+        public string TabName { get => group[nameof(Tab)]; set => group[nameof(Tab)] = value; }
+    }
+
+    extension(ICustomAttributesModel model)
+    {
+        public string InputGroupKey =>
+            model.Get<Group>().InputGroupKey;
+
+        public string SectionKey =>
+            model.Get<Group>().SectionKey;
+
+        public string TabName =>
+            model.Get<Group>().TabName.Kebaberize();
+    }
+
+    extension<T>(IEnumerable<T> models) where T : ICustomAttributesModel
+    {
+        public IEnumerable<string> GetInputGroupKeys() =>
+            models.Select(m => m.InputGroupKey).Distinct();
+
+        public IEnumerable<string> GetSectionKeys() =>
+            models.Select(m => m.SectionKey).Distinct();
+
+        public IEnumerable<string> GetTabNames() =>
+            models.Select(m => m.TabName).Distinct();
     }
 }

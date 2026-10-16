@@ -1,70 +1,51 @@
 ﻿using Baked.Architecture;
-using Baked.Binding;
-using Baked.Business;
-using Baked.Caching;
-using Baked.CodingStyle;
-using Baked.CodingStyle.CommandViaMethodName;
-using Baked.CodingStyle.InitializableViaMethodName;
-using Baked.CodingStyle.NameBasedLabel;
-using Baked.CodingStyle.ScopedViaSuffix;
-using Baked.CodingStyle.UseBuiltInTypes;
-using Baked.Core;
-using Baked.Database;
-using Baked.ExceptionHandling;
-using Baked.Greeting;
-using Baked.Lifetime;
-using Baked.Localization;
-using Baked.Logging;
-using Baked.MockOverrider;
-using Baked.RateLimiter;
-using Baked.Reporting;
 
 namespace Baked.DataSource;
 
-public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> business)
+public abstract class DataSourceRecipe(FeatureFunc<BusinessFeature.Configurator> business)
 {
     // Features
-    FeatureFunc<BusinessConfigurator> _business = business;
+    FeatureFunc<BusinessFeature.Configurator> _business = business;
 
-    IEnumerable<FeatureFunc<BindingConfigurator>> _bindings = [c => c.Rest()];
-    public void Bindings(params IEnumerable<FeatureFunc<BindingConfigurator>> bindings) => _bindings = bindings;
+    IEnumerable<FeatureFunc<BindingFeature.Configurator>> _bindings = [c => c.Rest()];
+    public void Bindings(params IEnumerable<FeatureFunc<BindingFeature.Configurator>> bindings) => _bindings = bindings;
 
-    IEnumerable<FeatureFunc<CachingConfigurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
-    public void Cachings(params IEnumerable<FeatureFunc<CachingConfigurator>> cachings) => _cachings = cachings;
+    IEnumerable<FeatureFunc<CachingFeature.Configurator>> _cachings = [c => c.InMemory(), c => c.ScopedMemory()];
+    public void Cachings(params IEnumerable<FeatureFunc<CachingFeature.Configurator>> cachings) => _cachings = cachings;
 
-    IEnumerable<FeatureFunc<CodingStyleConfigurator>>? _codingStyles;
-    public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleConfigurator>> codingStyles) => _codingStyles = codingStyles;
+    IEnumerable<FeatureFunc<CodingStyleFeature.Configurator>>? _codingStyles;
+    public void CodingStyles(IEnumerable<FeatureFunc<CodingStyleFeature.Configurator>> codingStyles) => _codingStyles = codingStyles;
 
-    FeatureFunc<ExceptionHandlingConfigurator> _exceptionHandling = c => c.ProblemDetails();
-    public void ExceptionHandling(FeatureFunc<ExceptionHandlingConfigurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
+    FeatureFunc<ExceptionHandlingFeature.Configurator> _exceptionHandling = c => c.ProblemDetails();
+    public void ExceptionHandling(FeatureFunc<ExceptionHandlingFeature.Configurator> exceptionHandling) => _exceptionHandling = exceptionHandling;
 
-    IEnumerable<FeatureFunc<LifetimeConfigurator>> _lifetimes = [c => c.Application(), c => c.Scope(), c => c.Instance()];
-    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeConfigurator>> lifetimes) => _lifetimes = lifetimes;
+    IEnumerable<FeatureFunc<LifetimeFeature.Configurator>> _lifetimes = [c => c.Application(), c => c.Scope(), c => c.Instance()];
+    public void Lifetimes(IEnumerable<FeatureFunc<LifetimeFeature.Configurator>> lifetimes) => _lifetimes = lifetimes;
 
-    FeatureFunc<LocalizationConfigurator> _localization = c => c.Dotnet();
-    public void Localization(FeatureFunc<LocalizationConfigurator> localization) => _localization = localization;
+    FeatureFunc<LocalizationFeature.Configurator> _localization = c => c.Dotnet();
+    public void Localization(FeatureFunc<LocalizationFeature.Configurator> localization) => _localization = localization;
 
     // Coding Styles
-    FeatureFunc<CodingStyleConfigurator> _commandViaMethodName = c => c.CommandViaMethodName();
-    public void CommandViaMethodName(Func<CodingStyleConfigurator, CommandViaMethodNameCodingStyleFeature> commandViaMethodName) => _commandViaMethodName = c => commandViaMethodName(c);
+    FeatureFunc<CodingStyleFeature.Configurator> _commandViaMethodName = c => c.CommandViaMethodName();
+    public void CommandViaMethodName(FeatureFunc<CodingStyleFeature.Configurator> commandViaMethodName) => _commandViaMethodName = commandViaMethodName;
 
-    FeatureFunc<CodingStyleConfigurator> _initializableViaMethodName = c => c.InitializableViaMethodName();
-    public void InitializableViaMethodName(Func<CodingStyleConfigurator, InitializableViaMethodNameCodingStyleFeature> initializableViaMethodName) => _initializableViaMethodName = c => initializableViaMethodName(c);
+    FeatureFunc<CodingStyleFeature.Configurator> _initializableViaMethodName = c => c.InitializableViaMethodName();
+    public void InitializableViaMethodName(FeatureFunc<CodingStyleFeature.Configurator> initializableViaMethodName) => _initializableViaMethodName = initializableViaMethodName;
 
-    FeatureFunc<CodingStyleConfigurator> _nameBasedLabel = c => c.NameBasedLabel();
-    public void NameBasedLabel(Func<CodingStyleConfigurator, NameBasedLabelCodingStyleFeature> nameBasedLabel) => _nameBasedLabel = c => nameBasedLabel(c);
+    FeatureFunc<CodingStyleFeature.Configurator> _nameBasedLabel = c => c.NameBasedLabel();
+    public void NameBasedLabel(FeatureFunc<CodingStyleFeature.Configurator> nameBasedLabel) => _nameBasedLabel = nameBasedLabel;
 
-    FeatureFunc<CodingStyleConfigurator> _scopedViaSuffix = c => c.ScopedViaSuffix();
-    public void ScopedViaSuffix(Func<CodingStyleConfigurator, ScopedViaSuffixCodingStyleFeature> scopedViaSuffix) => _scopedViaSuffix = c => scopedViaSuffix(c);
+    FeatureFunc<CodingStyleFeature.Configurator> _scopedViaSuffix = c => c.ScopedViaSuffix();
+    public void ScopedViaSuffix(FeatureFunc<CodingStyleFeature.Configurator> scopedViaSuffix) => _scopedViaSuffix = scopedViaSuffix;
 
-    FeatureFunc<CodingStyleConfigurator> _useBuiltInTypes = c => c.UseBuiltInTypes();
-    public void UseBuiltInTypes(Func<CodingStyleConfigurator, UseBuiltInTypesCodingStyleFeature> useBuiltInTypes) => _useBuiltInTypes = c => useBuiltInTypes(c);
+    FeatureFunc<CodingStyleFeature.Configurator> _useBuiltInTypes = c => c.UseBuiltInTypes();
+    public void UseBuiltInTypes(FeatureFunc<CodingStyleFeature.Configurator> useBuiltInTypes) => _useBuiltInTypes = useBuiltInTypes;
 
     // Configure
     Action<ApplicationDescriptor> _configure = _ => { };
     public void Configure(Action<ApplicationDescriptor> configure) => _configure = configure;
 
-    IEnumerable<FeatureFunc<CodingStyleConfigurator>> CodingStyleFeatures => _codingStyles ??
+    IEnumerable<FeatureFunc<CodingStyleFeature.Configurator>> CodingStyleFeatures => _codingStyles ??
     [
         c => c.AddRemoveChildAsSubResource(),
         _commandViaMethodName,
@@ -84,26 +65,26 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
         c => c.UseNullableTypes()
     ];
 
-    public class Run(FeatureFunc<BusinessConfigurator> business)
+    public class Run(FeatureFunc<BusinessFeature.Configurator> business)
         : DataSourceRecipe(business)
     {
-        FeatureFunc<CoreConfigurator> _core = c => c.Dotnet();
-        public void Core(FeatureFunc<CoreConfigurator> core) => _core = core;
+        FeatureFunc<CoreFeature.Configurator> _core = c => c.Dotnet();
+        public void Core(FeatureFunc<CoreFeature.Configurator> core) => _core = core;
 
-        FeatureFunc<DatabaseConfigurator> _database = c => c.Sqlite();
-        public void Database(FeatureFunc<DatabaseConfigurator> database) => _database = database;
+        FeatureFunc<DatabaseFeature.Configurator> _database = c => c.Sqlite();
+        public void Database(FeatureFunc<DatabaseFeature.Configurator> database) => _database = database;
 
-        FeatureFunc<GreetingConfigurator> _greeting = c => c.Swagger();
-        public void Greeting(FeatureFunc<GreetingConfigurator> greeting) => _greeting = greeting;
+        FeatureFunc<GreetingFeature.Configurator> _greeting = c => c.Swagger();
+        public void Greeting(FeatureFunc<GreetingFeature.Configurator> greeting) => _greeting = greeting;
 
-        FeatureFunc<LoggingConfigurator> _logging = c => c.Request();
-        public void Logging(FeatureFunc<LoggingConfigurator> logging) => _logging = logging;
+        FeatureFunc<LoggingFeature.Configurator> _logging = c => c.Request();
+        public void Logging(FeatureFunc<LoggingFeature.Configurator> logging) => _logging = logging;
 
-        FeatureFunc<RateLimiterConfigurator> _rateLimiter = c => c.Concurrency();
-        public void RateLimiter(FeatureFunc<RateLimiterConfigurator> rateLimiter) => _rateLimiter = rateLimiter;
+        FeatureFunc<RateLimiterFeature.Configurator> _rateLimiter = c => c.Concurrency();
+        public void RateLimiter(FeatureFunc<RateLimiterFeature.Configurator> rateLimiter) => _rateLimiter = rateLimiter;
 
-        FeatureFunc<ReportingConfigurator> _reporting = c => c.NativeSql();
-        public void Reporting(FeatureFunc<ReportingConfigurator> reporting) => _reporting = reporting;
+        FeatureFunc<ReportingFeature.Configurator> _reporting = c => c.NativeSql();
+        public void Reporting(FeatureFunc<ReportingFeature.Configurator> reporting) => _reporting = reporting;
 
         public override void Apply(ApplicationDescriptor app)
         {
@@ -132,20 +113,20 @@ public abstract class DataSourceRecipe(FeatureFunc<BusinessConfigurator> busines
         }
     }
 
-    public class Test(FeatureFunc<BusinessConfigurator> business)
+    public class Test(FeatureFunc<BusinessFeature.Configurator> business)
         : DataSourceRecipe(business)
     {
-        FeatureFunc<CoreConfigurator> _core = c => c.Mock();
-        public void Core(FeatureFunc<CoreConfigurator> core) => _core = core;
+        FeatureFunc<CoreFeature.Configurator> _core = c => c.Mock();
+        public void Core(FeatureFunc<CoreFeature.Configurator> core) => _core = core;
 
-        FeatureFunc<DatabaseConfigurator> _database = c => c.InMemory();
-        public void Database(FeatureFunc<DatabaseConfigurator> database) => _database = database;
+        FeatureFunc<DatabaseFeature.Configurator> _database = c => c.InMemory();
+        public void Database(FeatureFunc<DatabaseFeature.Configurator> database) => _database = database;
 
-        FeatureFunc<MockOverriderConfigurator> _mockOverrider = c => c.FirstInterface();
-        public void MockOverrider(FeatureFunc<MockOverriderConfigurator> mockOverrider) => _mockOverrider = mockOverrider;
+        FeatureFunc<MockOverriderFeature.Configurator> _mockOverrider = c => c.FirstInterface();
+        public void MockOverrider(FeatureFunc<MockOverriderFeature.Configurator> mockOverrider) => _mockOverrider = mockOverrider;
 
-        FeatureFunc<ReportingConfigurator> _reporting = c => c.Mock();
-        public void Reporting(FeatureFunc<ReportingConfigurator> reporting) => _reporting = reporting;
+        FeatureFunc<ReportingFeature.Configurator> _reporting = c => c.Mock();
+        public void Reporting(FeatureFunc<ReportingFeature.Configurator> reporting) => _reporting = reporting;
 
         public override void Apply(ApplicationDescriptor app)
         {

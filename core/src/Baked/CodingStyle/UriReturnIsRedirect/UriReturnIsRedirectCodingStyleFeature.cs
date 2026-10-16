@@ -1,11 +1,12 @@
 ﻿using Baked.Architecture;
+using Baked.CodingStyle.UriReturnIsRedirect;
 using Baked.Domain.Configuration;
 
-namespace Baked.CodingStyle.UriReturnIsRedirect;
+namespace Baked;
 
-public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class UriReturnIsRedirectCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> UriReturnIsRedirect(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -18,5 +19,5 @@ public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigu
         {
             api.Usings.Add("System.Net");
         });
-    }
+    });
 }

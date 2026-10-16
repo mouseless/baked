@@ -1,4 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Localization;
+using Baked.Localization.Dotnet;
 using Baked.Testing;
 using Humanizer;
 using Microsoft.AspNetCore.Builder;
@@ -9,33 +11,39 @@ using Microsoft.Extensions.Localization;
 using System.Globalization;
 using System.Reflection;
 
-namespace Baked.Localization.Dotnet;
+namespace Baked;
 
-public class DotnetLocalizationFeature(CultureInfo _language,
-    IEnumerable<CultureInfo>? _otherLanguages = default
-) : IFeature<LocalizationConfigurator>
+public static class DotnetLocalizationFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<LocalizationFeature.Configurator> Dotnet(this LocalizationFeature.Configurator x,
+        CultureInfo? language = null,
+        IEnumerable<CultureInfo>? otherLanguages = null
+    ) => x.Define(language ?? new("en"), (configurator, language) =>
     {
         configurator.Buildtime.ConfigureGeneratedFileCollection(files =>
         {
             if (configurator.IsNfr) { return; }
 
-            var localeDir = Path.Combine(
-                Assembly.GetEntryAssembly()?.Location ??
-                throw new("'EntryAssembly' should have existed"), "../../../../Locales"
-            );
+            // project directory is given by `Generate` target, falls back to
+            // default output layout when generate is run manually
+            var projectDir = Environment.GetEnvironmentVariable("BAKED_PROJECT_DIR") ??
+                Path.Combine(
+                    Assembly.GetEntryAssembly()?.Location ??
+                    throw new("'EntryAssembly' should have existed"),
+                    "../../../.."
+                );
+            var localeDir = Path.Combine(projectDir, "Locales");
 
             configurator.Ui.UsingLocaleTemplate(localeTemplate =>
             {
-                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir),
-                    name: $"locale.{_language.Name}",
+                files.AddAsJson(new LocalizedTexts(language, localeTemplate).With(localeDir),
+                    name: $"locale.{language.Name}",
                     outdir: "Ui"
                 );
-                foreach (var language in _otherLanguages ?? [])
+                foreach (var otherLanguage in otherLanguages ?? [])
                 {
-                    files.AddAsJson(new LocalizedTexts(language, localeTemplate).With(localeDir),
-                        name: $"locale.{language.Name}",
+                    files.AddAsJson(new LocalizedTexts(otherLanguage, localeTemplate).With(localeDir),
+                        name: $"locale.{otherLanguage.Name}",
                         outdir: "Ui"
                     );
                 }
@@ -100,10 +108,10 @@ public class DotnetLocalizationFeature(CultureInfo _language,
         {
             middlewares.Add(app =>
                 {
-                    List<CultureInfo> supportedCultures = [_language, .. _otherLanguages ?? []];
+                    List<CultureInfo> supportedCultures = [language, .. otherLanguages ?? []];
                     var localizationOptions = new RequestLocalizationOptions
                     {
-                        DefaultRequestCulture = new(_language.Name),
+                        DefaultRequestCulture = new(language.Name),
                         SupportedCultures = supportedCultures,
                         SupportedUICultures = supportedCultures
                     };
@@ -120,12 +128,12 @@ public class DotnetLocalizationFeature(CultureInfo _language,
 
         configurator.Ui.ConfigureAppDescriptor(app =>
         {
-            app.I18n.DefaultLanguage = new(_language.Name, _language.EnglishName);
+            app.I18n.DefaultLanguage = new(language.Name, language.EnglishName);
             app.I18n.SupportedLanguages.Add(app.I18n.DefaultLanguage);
 
-            if (_otherLanguages is not null)
+            if (otherLanguages is not null)
             {
-                app.I18n.SupportedLanguages.AddRange(_otherLanguages.Select(l => new Language(l.Name, l.EnglishName)));
+                app.I18n.SupportedLanguages.AddRange(otherLanguages.Select(l => new Language(l.Name, l.EnglishName)));
             }
 
             app.Plugins.Add(new LocalizationPlugin()
@@ -133,5 +141,5 @@ public class DotnetLocalizationFeature(CultureInfo _language,
                 SupportedLanguages = app.I18n.SupportedLanguages
             });
         });
-    }
+    });
 }

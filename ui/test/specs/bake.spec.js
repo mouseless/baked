@@ -401,4 +401,54 @@ test.describe.serial("Reaction", () => {
 
     await expect(component.getByTestId("null")).not.toBeAttached();
   });
+
+  test("reactions with is null constraint is not rendered during loading state", async({ page, goto }) => {
+    await page.clock.install();
+    await goto("/specs/bake?val=2", { waitUntil: "hydration" });
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("null")).not.toBeAttached({ timeout: 100 });
+    await expect(component.getByTestId("not null")).not.toBeAttached({ timeout: 100 });
+
+    await page.clock.runFor(500);
+
+    await expect(component.getByTestId("null")).not.toBeAttached();
+    await expect(component.getByTestId("not null")).toBeAttached();
+  });
+});
+
+test.describe("Reaction - Page Context", () => {
+  const id = "Reaction - Page Context";
+
+  test("reactions to a page context value are not rendered while its writer is loading", async({ page, goto }) => {
+    await page.clock.install();
+    await goto("/specs/bake?val=2", { waitUntil: "hydration" });
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("null")).not.toBeAttached({ timeout: 100 });
+    await expect(component.getByTestId("not null")).not.toBeAttached({ timeout: 100 });
+
+    await page.clock.runFor(500);
+
+    await expect(component.locator("tbody tr")).toHaveCount(2);
+    await expect(component.getByTestId("null")).not.toBeAttached();
+    await expect(component.getByTestId("not null")).toBeAttached();
+  });
+});
+
+test.describe("Reaction - Page Context Writer Removed", () => {
+  const id = "Reaction - Page Context Writer Removed";
+
+  test("reactions to a page context value are evaluated when its writer is removed while loading", async({ page, goto }) => {
+    await page.clock.install();
+    await goto("/specs/bake?val=2", { waitUntil: "hydration" });
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("null")).not.toBeAttached({ timeout: 100 });
+
+    await component.locator(primevue.button.base).click();
+
+    await expect(component.locator("table")).not.toBeAttached();
+    await expect(component.getByTestId("null")).toBeAttached();
+  });
 });

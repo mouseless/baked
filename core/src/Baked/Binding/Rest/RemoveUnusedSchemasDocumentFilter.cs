@@ -1,4 +1,4 @@
-﻿// AI-GEN(Claude AI Sonnet 4.6)
+﻿// AI-GEN (Claude AI Sonnet 4.6)
 //
 // swashbuckle c# (.net 10 / Microsoft.OpenApi v2):
 //

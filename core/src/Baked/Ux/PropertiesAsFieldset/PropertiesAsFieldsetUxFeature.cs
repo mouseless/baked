@@ -4,11 +4,11 @@ using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-namespace Baked.Ux.PropertiesAsFieldset;
+namespace Baked;
 
-public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
+public static class PropertiesAsFieldsetUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> PropertiesAsFieldset(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -84,5 +84,5 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                 order: Order.At.Theme.Max
             );
         });
-    }
+    });
 }

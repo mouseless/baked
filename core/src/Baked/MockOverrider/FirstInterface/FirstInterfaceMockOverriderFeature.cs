@@ -1,11 +1,15 @@
 ﻿using Baked.Architecture;
+using Baked.MockOverrider;
+using Baked.MockOverrider.FirstInterface;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.MockOverrider.FirstInterface;
+using FirstInterfaceMockOverrider = Baked.MockOverrider.FirstInterface.MockOverrider;
 
-public class FirstInterfaceMockOverriderFeature : IFeature<MockOverriderConfigurator>
+namespace Baked;
+
+public static class FirstInterfaceMockOverriderFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<MockOverriderFeature.Configurator> FirstInterface(this MockOverriderFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Testing.ConfigureTestConfiguration(test =>
         {
@@ -18,8 +22,8 @@ public class FirstInterfaceMockOverriderFeature : IFeature<MockOverriderConfigur
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton<MockOverrider>();
-            services.AddSingleton<IMockOverrider>(sp => sp.GetRequiredService<MockOverrider>());
+            services.AddSingleton<FirstInterfaceMockOverrider>();
+            services.AddSingleton<IMockOverrider>(sp => sp.GetRequiredService<FirstInterfaceMockOverrider>());
         });
-    }
+    });
 }

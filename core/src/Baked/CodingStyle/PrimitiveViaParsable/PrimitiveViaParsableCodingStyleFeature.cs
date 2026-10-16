@@ -1,16 +1,17 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.CodingStyle.PrimitiveViaParsable;
 using Baked.Domain.Configuration;
 using Baked.RestApi;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
 using Newtonsoft.Json;
 
-namespace Baked.CodingStyle.PrimitiveViaParsable;
+namespace Baked;
 
-public class PrimitiveViaParsableCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class PrimitiveViaParsableCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> PrimitiveViaParsable(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -37,7 +38,7 @@ public class PrimitiveViaParsableCodingStyleFeature : IFeature<CodingStyleConfig
             {
                 generatedAssemblies.Add(nameof(PrimitiveViaParsableCodingStyleFeature),
                     assembly => assembly
-                        .AddReferenceFrom<PrimitiveViaParsableCodingStyleFeature>()
+                        .AddReferenceFrom<CodingStyleFeature.Configurator>()
                         .AddCodes(new PrimitiveTemplate(domain)),
                     usings: [.. PrimitiveTemplate.GlobalUsings]
                 );
@@ -94,5 +95,5 @@ public class PrimitiveViaParsableCodingStyleFeature : IFeature<CodingStyleConfig
                 }
             });
         });
-    }
+    });
 }

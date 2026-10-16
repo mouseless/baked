@@ -1,10 +1,14 @@
 ﻿using Baked.Architecture;
+using Baked.Domain;
+using Baked.Domain.Model;
+using Baked.Lifetime;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.Lifetime.Scope;
+namespace Baked;
 
-public class ScopeLifetimeFeature : IFeature<LifetimeConfigurator>
+public static class ScopeLifetimeFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<LifetimeFeature.Configurator> Scope(this LifetimeFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -18,5 +22,13 @@ public class ScopeLifetimeFeature : IFeature<LifetimeConfigurator>
                 services.AddScoped(scoped, useFactory: true);
             }
         });
+    });
+
+    extension(DomainServiceCollection services)
+    {
+        public void AddScoped(TypeModel type,
+            bool useFactory = true,
+            bool forward = false
+        ) => services.Add(type, ServiceLifetime.Scoped, useFactory: useFactory, forward: forward);
     }
 }

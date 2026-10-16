@@ -3,11 +3,11 @@
     id="page-title"
     class="sticky top-[-1px] z-10 space-y-4 bg-body"
   >
-    <div class="flex justify-between items-center gap-2">
+    <div class="flex justify-between gap-2">
       <div
         class="
-          w-full flex justify-between
-          max-2xs:flex-col gap-2
+          w-full flex justify-between gap-2
+          max-2xs:justify-center max-2xs:flex-col
         "
         :class="{
           'max-2xs:flex-col': actions.length < earlyWrapActionsAt,
@@ -19,15 +19,15 @@
             v-if="icon"
             name="icon"
             :descriptor="icon"
-            class="min-w-16 max-md:hidden"
+            class="shrink-0 max-md:hidden"
           />
           <div
             class="
-              w-full mt-1
-              flex flex-row
-              items-center justify-start
-              md:flex-col md:items-start md:mt-2
-              max-md:gap-2
+              w-full h-full
+              flex flex-row gap-2
+              items-center justify-center
+              max-xs:justify-start
+              md:flex-col md:items-start md:gap-2
             "
           >
             <AwaitLoading
@@ -38,7 +38,7 @@
               }"
             >
               <div class="grid">
-                <h1 class="font-bold text-xl truncate">
+                <h1 class="font-bold text-xl truncate leading-none">
                   {{ title }}
                 </h1>
               </div>
@@ -51,20 +51,22 @@
         </div>
         <div
           v-if="actions.length || $slots.actions"
-          class="
-            actions
-            min-w-min flex gap-2 row-span-2 items-end text-nowrap
-            max-xs:text-xs max-md:text-sm
-            md:max-md:items-center md:pt-6
-          "
+          class="flex items-end actions"
         >
-          <Bake
-            v-for="action in actions"
-            :key="action.schema.name"
-            :name="`actions/${action.schema.name}`"
-            :descriptor="action"
-          />
-          <slot name="actions" />
+          <div
+            class="
+              flex gap-2 row-span-2
+              text-nowrap
+            "
+          >
+            <Bake
+              v-for="action in actions"
+              :key="action.schema.name"
+              :name="`actions/${action.schema.name}`"
+              :descriptor="action"
+            />
+            <slot name="actions" />
+          </div>
         </div>
       </div>
       <div
@@ -72,7 +74,7 @@
         v-focustrap
         class="
           min-w-min flex gap-2 row-span-2 items-end text-nowrap
-          max-md:text-sm md:max-md:items-center md:pt-6
+          max-md:text-sm md:max-md:items-center
         "
       >
         <template v-if="isLg">

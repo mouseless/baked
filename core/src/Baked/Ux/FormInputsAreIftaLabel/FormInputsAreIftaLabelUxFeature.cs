@@ -2,11 +2,11 @@
 using Baked.Ui;
 using Humanizer;
 
-namespace Baked.Ux.FormInputsAreIftaLabelUxExtensions;
+namespace Baked;
 
-public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
+public static class FormInputsAreIftaLabelUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> FormInputsAreIftaLabel(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -22,5 +22,5 @@ public class FormInputsAreIftaLabelUxFeature : IFeature<UxConfigurator>
                 }
             );
         });
-    }
+    });
 }

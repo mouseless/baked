@@ -11,6 +11,12 @@ const adminUiToken = "token-admin-ui";
 function $(value, defaultValue) {
   return value === undefined ? defaultValue : value;
 }
+
+// drops undefined props, for schemas that shouldn't carry missing keys
+function $$(object) {
+  return Object.fromEntries(Object.entries(object).filter(([, v]) => v !== undefined));
+}
+
 // screens breakpoints of tailwind
 const screens = [
   { name: "2xs", width: 340, height: 800 },
@@ -25,18 +31,56 @@ const screens = [
 
 export default {
   anApiResponse() {
-    return { sample: "response" };
+    return $$({ sample: "response" });
   },
 
-  aButton({ action, icon, label, variant, severity, size, rounded } = {}) {
+  anAvatar({ data, icon, size } = {}) {
+    return $$({
+      type: "Avatar",
+      schema: $$({ icon, size }),
+      data
+    });
+  },
+
+  aButton({ action, dialogOptions, icon, label, variant, severity, size, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
 
-    return {
+    return $$({
       type: "Button",
-      schema: { icon, label, variant, severity, size, rounded },
+      schema: $$({
+        dialogOptions,
+        icon,
+        label,
+        variant,
+        severity,
+        size,
+        rounded
+      }),
       action
-    };
+    });
+  },
+
+  aButtonDialog({ mode, header, dismissableMask, content, form, submit, cancel }) {
+    header = $(header, "Spec: Test");
+
+    if(!form) {
+      content = $(content, this.aText());
+    }
+
+    if(content) {
+      submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
+    }
+
+    return $$({
+      mode,
+      header,
+      dismissableMask,
+      content,
+      form,
+      submit,
+      cancel
+    });
   },
 
   aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
@@ -47,37 +91,37 @@ export default {
     disabled = $(disabled, false);
     disabledReason = $(disabledReason, disabled ? "REASON" : "");
 
-    return {
+    return $$({
       type: "CardLink",
-      schema: { route, icon, title, description, disabled, disabledReason }
-    };
+      schema: $$({ route, icon, title, description, disabled, disabledReason })
+    });
   },
 
   aCheck({ data } = {}) {
     data = $(data, true);
 
-    return {
+    return $$({
       type: "Check",
       data: this.anInlineData(data)
-    };
+    });
   },
 
   aComposite(parts) {
     parts = $(parts, []);
 
-    return {
+    return $$({
       type: "Composite",
-      schema: { parts }
-    };
+      schema: $$({ parts })
+    });
   },
 
   aCompositeAction(parts) {
     parts = $(parts, []);
 
-    return {
+    return $$({
       type: "Composite",
       parts
-    };
+    });
   },
 
   aCompositeData(parts) {
@@ -113,40 +157,40 @@ export default {
 
   aConstraint({ is, isNull, isNot, isNotNull, composable, options }) {
     if(composable) {
-      return {
+      return $$({
         type: "Composable",
         composable,
         options
-      };
+      });
     }
 
     if(isNotNull) {
-      return {
+      return $$({
         type: "IsNot",
         "null": true
-      };
+      });
     }
 
     if(isNot) {
-      return {
+      return $$({
         type: "IsNot",
         isNot
-      };
+      });
     }
 
     if(isNull) {
-      return {
+      return $$({
         type: "Is",
         "null": true
-      };
+      });
     }
 
     is = $(is, "expected");
 
-    return {
+    return $$({
       type: "Is",
       is
-    };
+    });
   },
 
   aContainer({ content, contents, data } = {}) {
@@ -154,11 +198,11 @@ export default {
     contents = $(contents, [content]);
     data = $(data, this.anInlineData("Test value"));
 
-    return {
+    return $$({
       type: "Container",
-      schema: { contents },
+      schema: $$({ contents }),
       data
-    };
+    });
   },
 
   aContent({ component, narrow, key, side } = {}) {
@@ -166,7 +210,7 @@ export default {
     narrow = $(narrow, false);
     key = $(key, "content");
 
-    return { component, narrow, key, side };
+    return $$({ component, narrow, key, side });
   },
 
   aContextData({ key, prop, targetProp, parent } = {}) {
@@ -179,12 +223,12 @@ export default {
           : undefined
     );
 
-    return {
+    return $$({
       type: "Context",
       key,
       prop,
       targetProp
-    };
+    });
   },
 
   aDataContainer({ actions, inputs, content } = {}) {
@@ -192,10 +236,10 @@ export default {
     inputs = $(inputs, []);
     content = $(content, this.anExpected());
 
-    return {
+    return $$({
       type: "DataContainer",
-      schema: { actions, inputs, content }
-    };
+      schema: $$({ actions, inputs, content })
+    });
   },
 
   aDataPanel({ title, collapsed, localizeTitle, inputs, content, toggleable } = {}) {
@@ -206,13 +250,13 @@ export default {
     toggleable = $(toggleable, true);
     localizeTitle = $(localizeTitle, title.type === "Inline");
 
-    return {
+    return $$({
       type: "DataPanel",
-      schema: { title, collapsed, localizeTitle, inputs, content, toggleable }
-    };
+      schema: $$({ title, collapsed, localizeTitle, inputs, content, toggleable })
+    });
   },
 
-  aDataTable({ actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
+  aDataTable({ actions, columns, dataKey, dataLengthContextKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data, delay, reactions } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -227,11 +271,12 @@ export default {
       { test: "value 3" }
     ]);
 
-    return {
+    return $$({
       type: "DataTable",
-      schema: { actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
-      data: this.anInlineData(data)
-    };
+      schema: $$({ actions, columns, dataKey, dataLengthContextKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions }),
+      data: delay ? this.aDelayedData(data, { ms: delay }) : this.anInlineData(data),
+      reactions
+    });
   },
 
   aDataTableColumn({ title, key, alignRight, minWidth, component, exportable, frozen, footer } = {}) {
@@ -248,7 +293,7 @@ export default {
     );
     exportable = $(exportable, false);
 
-    return {
+    return $$({
       title,
       key,
       alignRight,
@@ -256,7 +301,7 @@ export default {
       component,
       exportable,
       frozen
-    };
+    });
   },
 
   aDataTableExport({ csvSeparator, fileName, formatter, buttonIcon, buttonLabel } = {}) {
@@ -265,13 +310,13 @@ export default {
     buttonIcon = $(buttonIcon, "pi pi-external-link");
     buttonLabel = $(buttonLabel, "");
 
-    return {
+    return $$({
       csvSeparator,
       fileName,
       formatter,
       buttonIcon,
       buttonLabel
-    };
+    });
   },
 
   aDate({ value, data, format, prop } = {}) {
@@ -280,11 +325,11 @@ export default {
     format = $(format, "dd/MM/yyyy");
     prop = $(prop, undefined);
 
-    return {
+    return $$({
       type: "Date",
-      schema: { format, prop },
+      schema: $$({ format, prop }),
       data
-    };
+    });
   },
 
   aDelayedData(data, { ms = 1 } = {}) {
@@ -300,16 +345,16 @@ export default {
     content = $(content, this.aText({ label: "Dialog Header" }));
     open = $(open, { label: "Spec: Show" });
 
-    return {
+    return $$({
       type: "Dialog",
-      schema: {
+      schema: $$({
         content,
         header,
         open,
         submit
-      },
+      }),
       action
-    };
+    });
   },
 
   anError({ name, title, detail, statusCode } = {}) {
@@ -343,11 +388,11 @@ export default {
       }
     }), {});
 
-    return {
+    return $$({
       type: "ErrorPage",
-      schema: { errorInfos, footerInfo, safeLinks, safeLinksMessage },
+      schema: $$({ errorInfos, footerInfo, safeLinks, safeLinksMessage }),
       data: this.anInlineData(data)
-    };
+    });
   },
 
   anErrorPageInfo({ statusCode, title, message, showSafeLinks, customMessage } = {}) {
@@ -357,13 +402,13 @@ export default {
     showSafeLinks = $(showSafeLinks, false);
     customMessage = $(customMessage, false);
 
-    return {
+    return $$({
       statusCode,
       title,
       message,
       showSafeLinks,
       customMessage
-    };
+    });
   },
 
   anExpected({ testId, showDataParams, value, data, reactions } = {}) {
@@ -372,43 +417,43 @@ export default {
     value = $(value, "");
     data = $(data, this.anInlineData(value));
 
-    return {
+    return $$({
       type: "Expected",
-      schema: {
+      schema: $$({
         testId,
         showDataParams
-      },
+      }),
       data,
       reactions
-    };
+    });
   },
 
   anExpectedInput({ action, defaultValue, hint, number, restrictedValue, testId, actionSkipsEmptyModel } = {}) {
     testId = $(testId, "test-id");
 
-    return {
+    return $$({
       type: "ExpectedInput",
-      schema: {
+      schema: $$({
         defaultValue,
         hint,
         number,
         restrictedValue,
         testId
-      },
+      }),
       action,
       actionSkipsEmptyModel
-    };
+    });
   },
 
   anExpectedInputGroup({ testId } = {}) {
     testId = $(testId, "test-id");
 
-    return {
+    return $$({
       type: "ExpectedInputGroup",
-      schema: {
+      schema: $$({
         testId
-      }
-    };
+      })
+    });
   },
 
   aField({ key, label, wide, component, testId } = {}) {
@@ -416,12 +461,12 @@ export default {
     label = $(label, "Spec: Data");
     component = $(component, this.anExpected({ testId, data: this.aContextData({ parent: `data.${key}` }) }));
 
-    return {
+    return $$({
       key,
       label,
       wide,
       component
-    };
+    });
   },
 
   aFieldset({ titleProp, fields, data } = {}) {
@@ -429,35 +474,35 @@ export default {
     fields = $(fields, [this.aField()]);
     data = $(data, this.anInlineData({ title: "Test Title", data: "Value" }));
 
-    return {
+    return $$({
       type: "Fieldset",
-      schema: { titleProp, fields },
+      schema: $$({ titleProp, fields }),
       data
-    };
+    });
   },
 
   aFilter({ placeholder, action, whiteSpaceSensitive } = {}) {
     placeholder = $(placeholder, "Filter");
     whiteSpaceSensitive = $(whiteSpaceSensitive, false);
 
-    return {
+    return $$({
       type: "Filter",
-      schema: {
+      schema: $$({
         placeholder,
         whiteSpaceSensitive
-      },
+      }),
       action
-    };
+    });
   },
 
   aFilterable({ title, component } = {}) {
     title = $(title, "filter title");
     component = $(component, this.anExpected());
 
-    return {
+    return $$({
       title,
       component
-    };
+    });
   },
 
   aFormPage({ action, title, description, submit, inputs, sections, validations, showValidationSummary } = {}) {
@@ -468,28 +513,28 @@ export default {
     validations = $(validations, ["useFakeValidation"]);
     showValidationSummary = $(showValidationSummary, true);
 
-    return {
+    return $$({
       type: "FormPage",
-      schema: {
+      schema: $$({
         title,
         submit,
         sections,
         validations: validations.map(name => ({ name })),
         showValidationSummary
-      },
+      }),
       action
-    };
+    });
   },
 
   aFormPageInputGroup({ key, wide, inputs } = {}) {
     inputs = $(inputs, [this.anInput()]);
     key = $(key, inputs[0]?.name || "default");
 
-    return {
+    return $$({
       key,
       wide,
       inputs
-    };
+    });
   },
 
   aFormPageSection({ key, label, inputs, inputGroups } = {}) {
@@ -500,49 +545,49 @@ export default {
       inputs.map(input => this.aFormPageInputGroup({ inputs: [input], wide: true }))
     );
 
-    return { key, label, inputGroups };
+    return $$({ key, label, inputGroups });
   },
 
   aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
 
-    return {
+    return $$({
       type: "Header",
-      schema: {
+      schema: $$({
         sitemap: sitemapItems
           .reduce((result, item) => ({
             ...result,
             [item.route]: item
           }), {})
-      },
+      }),
       data: this.anInlineData(data)
-    };
+    });
   },
 
   aHeaderItem({ route, icon, title, parentRoute } = {}) {
     route = $(route, "/item");
     icon = $(icon, route === "/" ? "pi pi-home" : "pi pi-heart");
 
-    return { route, icon, title, parentRoute };
+    return $$({ route, icon, title, parentRoute });
   },
 
   anIcon({ iconClass } = {}) {
     iconClass = $(iconClass, "pi-heart");
 
-    return {
+    return $$({
       type: "Icon",
-      schema: { iconClass }
-    };
+      schema: $$({ iconClass })
+    });
   },
 
   anInlineData(value) {
     value = $(value, null);
 
-    return {
+    return $$({
       type: "Inline",
       value
-    };
+    });
   },
 
   anInput({ name, required, defaultValue, default_, defaultSelfManaged, numeric, queryBound, component } = {}) {
@@ -553,7 +598,7 @@ export default {
     defaultSelfManaged = $(defaultSelfManaged, false);
     queryBound = $(queryBound, undefined);
 
-    return { name, required, default: default_, defaultSelfManaged, numeric, queryBound, component };
+    return $$({ name, required, default: default_, defaultSelfManaged, numeric, queryBound, component });
   },
 
   anInputRate({ disabled, label, max } = {}) {
@@ -561,14 +606,14 @@ export default {
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
-    return {
+    return $$({
       type: "InputRate",
-      schema: {
+      schema: $$({
         disabled,
         label,
         max
-      }
-    };
+      })
+    });
   },
 
   anInputCheckbox({ label, indeterminate } = {}) {
@@ -576,13 +621,13 @@ export default {
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
-    return {
+    return $$({
       type: "InputCheckbox",
-      schema: {
+      schema: $$({
         label,
         indeterminate
-      }
-    };
+      })
+    });
   },
 
   anInputDate({ label, format, usePicker } = {}) {
@@ -591,14 +636,14 @@ export default {
       : $(label, this.aLabel());
     format = $(format, "dd/MM/yyyy");
 
-    return {
+    return $$({
       type: "InputDate",
-      schema: {
+      schema: $$({
         label,
         format,
         usePicker
-      }
-    };
+      })
+    });
   },
 
   anInputMailAddress({ label } = {}) {
@@ -606,12 +651,12 @@ export default {
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
-    return {
+    return $$({
       type: "InputMailAddress",
-      schema: {
+      schema: $$({
         label
-      }
-    };
+      })
+    });
   },
 
   anInputMoney({ label, icon } = {}) {
@@ -619,13 +664,13 @@ export default {
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
-    return {
+    return $$({
       type: "InputMoney",
-      schema: {
+      schema: $$({
         label,
         icon
-      }
-    };
+      })
+    });
   },
 
   anInputNumber({ label, noGrouping } = {}) {
@@ -633,13 +678,13 @@ export default {
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
-    return {
+    return $$({
       type: "InputNumber",
-      schema: {
+      schema: $$({
         label,
         noGrouping
-      }
-    };
+      })
+    });
   },
 
   anInputText({ label, targetProp } = {}) {
@@ -648,13 +693,13 @@ export default {
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
-    return {
+    return $$({
       type: "InputText",
-      schema: {
+      schema: $$({
         label,
         targetProp
-      }
-    };
+      })
+    });
   },
 
   anInputUrl({ label } = {}) {
@@ -662,12 +707,12 @@ export default {
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
-    return {
+    return $$({
       type: "InputUrl",
-      schema: {
+      schema: $$({
         label
-      }
-    };
+      })
+    });
   },
 
   aLabel({ text, mode, variant, showOptionality } = {}) {
@@ -676,19 +721,19 @@ export default {
     variant = $(variant, "on");
     showOptionality = $(showOptionality, false);
 
-    return {
+    return $$({
       text,
       mode,
       variant,
       showOptionality
-    };
+    });
   },
 
   aLanguageSwitcher() {
-    return {
+    return $$({
       type: "LanguageSwitcher",
-      schema: {}
-    };
+      schema: $$({})
+    });
   },
 
   aLocalAction({ composable, options, showMessage, delay, redirect } = {}) {
@@ -709,70 +754,71 @@ export default {
       options.parts.push(this.anInlineData({ route: redirect }));
     }
 
-    return {
+    return $$({
       type: "Local",
       composable,
       options
-    };
+    });
   },
 
   aNavLink({ icon, maxLength, labelProp, path, query, params, summary, data } = {}) {
     path = $(path, "/some-object/{0}");
     data = $(data, this.anInlineData("Test"));
 
-    return {
+    return $$({
       type: "NavLink",
-      schema: { icon, maxLength, labelProp, path, query, params, summary },
+      schema: $$({ icon, maxLength, labelProp, path, query, params, summary }),
       data: data
-    };
+    });
   },
 
-  aMessage({ message, icon, severity, localizeMessage, action, data, variant } = {}) {
+  aMessage({ message, icon, severity, localizeMessage, action, data, variant, reactions } = {}) {
     message = $(message, "Spec: This is a message");
     localizeMessage = $(localizeMessage, true);
     data = $(data, this.anInlineData(message));
     variant = $(variant, "outlined");
 
-    return {
+    return $$({
       type: "Message",
-      schema: {
+      schema: $$({
         icon,
         severity,
         localizeMessage,
         variant,
         action
-      },
-      data
-    };
+      }),
+      data,
+      reactions
+    });
   },
 
   aMoney({ data } = {}) {
     data = $(data, 100_000);
 
-    return {
+    return $$({
       type: "Money",
       data: this.anInlineData(data)
-    };
+    });
   },
 
   aMenuPage({ header, sections, filterEvent } = {}) {
     header = $(header, this.anExpected());
     sections = $(sections, this.aMenuPageSection());
 
-    return {
+    return $$({
       type: "MenuPage",
-      schema: { header, sections, filterEvent }
-    };
+      schema: $$({ header, sections, filterEvent })
+    });
   },
 
   aMenuPageSection({ title, links } = {}) {
     title = $(title, null);
     links = $(links, [this.aFilterable()]);
 
-    return {
+    return $$({
       title,
       links
-    };
+    });
   },
 
   aMissingComponent({ data, component, path, source } = {}) {
@@ -781,24 +827,24 @@ export default {
     path = $(path, []);
     source = $(source, null);
 
-    return {
+    return $$({
       type: "MissingComponent",
-      schema: {
+      schema: $$({
         component,
         path,
         source
-      },
+      }),
       data: this.anInlineData(data)
-    };
+    });
   },
 
   aNumber({ data } = {}) {
     data = $(data, 100_000);
 
-    return {
+    return $$({
       type: "Number",
       data: this.anInlineData(data)
-    };
+    });
   },
 
   aPageTitle({ title, titleProp, localizeTitle, icon, infoFields, description, actions, earlyWrapActionsAt } = {}) {
@@ -807,9 +853,9 @@ export default {
     description = $(description, "Spec: Test description is given for testing purposes");
     actions = $(actions, []);
 
-    return {
+    return $$({
       type: "PageTitle",
-      schema: {
+      schema: $$({
         titleProp,
         localizeTitle,
         icon,
@@ -817,16 +863,16 @@ export default {
         description,
         actions,
         earlyWrapActionsAt
-      },
+      }),
       data: this.anInlineData(title)
-    };
+    });
   },
 
   theParentContext() {
-    return {
+    return $$({
       type: "Context",
       key: "parent"
-    };
+    });
   },
 
   aPublishAction({ event, pageContextKey, data }) {
@@ -836,12 +882,12 @@ export default {
 
     data = $(data, this.aContextData({ key: "model" }));
 
-    return {
+    return $$({
       type: "Publish",
       event,
       pageContextKey,
       data
-    };
+    });
   },
 
   theQueryData() {
@@ -854,10 +900,10 @@ export default {
   aRate({ data } = {}) {
     data = $(data, 0.5);
 
-    return {
+    return $$({
       type: "Rate",
       data: this.anInlineData(data)
-    };
+    });
   },
 
   aRemoteAction({ path, method, headers, query, params, body, postAction } = {}) {
@@ -865,7 +911,7 @@ export default {
     method = $(method, "POST");
     postAction = $(postAction, this.aLocalAction());
 
-    return {
+    return $$({
       type: "Remote",
       path,
       method,
@@ -874,30 +920,30 @@ export default {
       params,
       body,
       postAction
-    };
+    });
   },
 
   aRemoteData({ path, query, params, headers, attributes } = {}) {
     path = $(path, "/fake-remote");
 
-    return {
+    return $$({
       type: "Remote",
       path,
       query,
       params,
       headers,
       attributes
-    };
+    });
   },
 
   aSimplePage({ title, contents } = {}) {
     title = $(title, this.anExpected({ value: "Test Simple Page" }));
     contents = $(contents, [this.aContent()]);
 
-    return {
+    return $$({
       type: "SimplePage",
-      schema: { title, contents }
-    };
+      schema: $$({ title, contents })
+    });
   },
 
   aTab({ id, title, contents, fullScreen, icon, overflow, reactions } = {}) {
@@ -909,7 +955,7 @@ export default {
     overflow = $(overflow, false);
     reactions = $(reactions, undefined);
 
-    return { id, title, contents, fullScreen, icon, overflow, reactions };
+    return $$({ id, title, contents, fullScreen, icon, overflow, reactions });
   },
 
   aTabbedPage({ title, description, inputs, tabs } = {}) {
@@ -917,10 +963,10 @@ export default {
     inputs = $(inputs, []);
     tabs = $(tabs, [this.aTab()]);
 
-    return {
+    return $$({
       type: "TabbedPage",
-      schema: { title, inputs, tabs }
-    };
+      schema: $$({ title, inputs, tabs })
+    });
   },
 
   aScreenSize({ name } = {}) {
@@ -947,12 +993,12 @@ export default {
         isAsync: true
       });
 
-    return {
+    return $$({
       type: "Select",
-      schema: { label, autoSelectFirst, filter, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp },
+      schema: $$({ label, autoSelectFirst, filter, localizeOptionLabels, optionLabel, optionValue, showClear, stateful, targetProp }),
       data,
       action
-    };
+    });
   },
 
   aSelectButton({ action, allowEmpty, autoSelectFirst, data, inline, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp } = {}) {
@@ -972,12 +1018,12 @@ export default {
         isAsync: true
       });
 
-    return {
+    return $$({
       type: "SelectButton",
-      schema: { label, autoSelectFirst, localizeOptionLabels, allowEmpty, optionLabel, optionValue, stateful, targetProp },
+      schema: $$({ label, autoSelectFirst, localizeOptionLabels, allowEmpty, optionLabel, optionValue, stateful, targetProp }),
       data,
       action
-    };
+    });
   },
 
   aMultiSelect({ action, data, inline, label, localizeOptionLabels, maxSelectedLabels, optionLabel, optionValue, showClear, showToggleAll, stateful, targetProp } = {}) {
@@ -998,12 +1044,12 @@ export default {
         isAsync: true
       });
 
-    return {
+    return $$({
       type: "MultiSelect",
-      schema: { label, localizeOptionLabels, maxSelectedLabels, optionLabel, optionValue, showClear, showToggleAll, stateful, targetProp },
+      schema: $$({ label, localizeOptionLabels, maxSelectedLabels, optionLabel, optionValue, showClear, showToggleAll, stateful, targetProp }),
       data,
       action
-    };
+    });
   },
 
   aMultiSelectButton({ action, allowEmpty, data, inline, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp } = {}) {
@@ -1023,12 +1069,12 @@ export default {
         isAsync: true
       });
 
-    return {
+    return $$({
       type: "MultiSelectButton",
-      schema: { allowEmpty, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp },
+      schema: $$({ allowEmpty, label, localizeOptionLabels, optionLabel, optionValue, stateful, targetProp }),
       data,
       action
-    };
+    });
   },
 
   aSideMenu({ logo, largeLogo, menu, data, footer } = {}) {
@@ -1038,11 +1084,11 @@ export default {
     data = $(data, { path: "/test" });
     footer = $(footer, this.anExpected());
 
-    return {
+    return $$({
       type: "SideMenu",
-      schema: { logo, largeLogo, menu, footer },
+      schema: $$({ logo, largeLogo, menu, footer }),
       data: this.anInlineData(data)
-    };
+    });
   },
 
   aSideMenuItem({ route, icon, title, disabled } = {}) {
@@ -1050,41 +1096,40 @@ export default {
     icon = $(icon, "pi pi-home");
     disabled = $(disabled, false);
 
-    return { route, icon, title, disabled };
+    return $$({ route, icon, title, disabled });
   },
 
-  aSimpleForm({ alwaysShowTitle, dialogOptions, horizontal, inputs, submit, title, action, validations, showValidationSummary }) {
+  aSimpleForm({ action, message, inputs, submit, horizontal, title, validations, showValidationSummary }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
     submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
     validations = $(validations, ["useFakeValidation"]);
     showValidationSummary = $(showValidationSummary, true);
 
-    return {
+    return $$({
       type: "SimpleForm",
-      schema: {
-        alwaysShowTitle,
-        dialogOptions,
+      schema: $$({
         horizontal,
+        title,
+        message,
         inputs,
         submit,
-        title,
         validations: validations.map(name => ({ name })),
         showValidationSummary
-      },
+      }),
       action
-    };
+    });
   },
 
-  aSimpleFormDialog({ open, cancel, message }) {
-    open = $(open, this.aButton({ label: "Spec: Open" }).schema);
-    cancel = $(cancel, this.aButton({ label: "Spec: Cancel" }).schema);
+  aTag({ value, data, localizationPrefix, localizeText } = {}) {
+    value = $(value, "Test string");
+    data = $(data, this.anInlineData(value));
 
-    return {
-      open,
-      cancel,
-      message
-    };
+    return $$({
+      type: "Tag",
+      schema: $$({ localizationPrefix, localizeText }),
+      data
+    });
   },
 
   aText({ value, data, maxLength, prop } = {}) {
@@ -1092,11 +1137,11 @@ export default {
     data = $(data, this.anInlineData(value));
     prop = $(prop, undefined);
 
-    return {
+    return $$({
       type: "Text",
-      schema: { maxLength, prop },
+      schema: $$({ maxLength, prop }),
       data
-    };
+    });
   },
 
   aTextarea({ label } = {}) {
@@ -1104,12 +1149,12 @@ export default {
       ? this.aLabel({ text: label })
       : $(label, this.aLabel());
 
-    return {
+    return $$({
       type: "Textarea",
-      schema: {
+      schema: $$({
         label
-      }
-    };
+      })
+    });
   },
 
   aTextLink({ value, data, maxLength, icon } = {}) {
@@ -1118,11 +1163,11 @@ export default {
     maxLength = $(maxLength, 50);
     icon = $(icon, "pi pi-external-link");
 
-    return {
+    return $$({
       type: "TextLink",
-      schema: { maxLength, icon },
+      schema: $$({ maxLength, icon }),
       data
-    };
+    });
   },
 
   aToken({ accessExpired, admin, expiresAt } = {}) {
@@ -1140,35 +1185,35 @@ export default {
       access = `eyJhbGciOiJIUzI1NiJ9.${payload}.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0`;
     }
 
-    return {
+    return $$({
       access,
       refresh: refreshToken
-    };
+    });
   },
 
   aTrigger({ on, when, parts, constraint, key } = {}) {
     if(when) {
-      return {
+      return $$({
         type: "When",
         key,
         when,
         constraint
-      };
+      });
     }
 
     if(parts) {
-      return {
+      return $$({
         type: "Composite",
         parts
-      };
+      });
     }
 
     on = $(on, "something-happened");
 
-    return {
+    return $$({
       type: "On",
       on,
       constraint
-    };
+    });
   }
 };

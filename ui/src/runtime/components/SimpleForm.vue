@@ -1,101 +1,50 @@
 <template>
-  <template v-if="dialogOptions">
-    <Button
-      ref="submitRef"
-      :schema="dialogOptions.open"
-      v-bind="$attrs"
-      @click="visible = true"
-    />
-    <Dialog
-      v-model:visible="visible"
-      :header="l(title)"
-      :style="{ width: 'min(700px, 90vw)' }"
-      :pt="{
-        content: 'flex flex-col gap-8'
-      }"
-      closable
-      modal
-      dismissable-mask
-      :draggable="false"
-      @after-hide="emitSubmit"
+  <div
+    class="flex flex-col gap-4"
+    :class="[
+      { 'gap-8': !horizontal },
+      { 'horizontal': horizontal }
+    ]"
+  >
+    <h2
+      v-if="title"
+      class="font-bold text-xl truncate"
     >
-      <div v-if="dialogOptions.message">
-        {{ l(dialogOptions.message) }}
-      </div>
-      <div
-        v-if="inputs.length > 0"
-        class="flex flex-col gap-4"
-        :class="{ 'pt-[--p-dialog-header-padding]': !dialogOptions.message }"
-      >
-        <Inputs
-          v-if="inputs"
-          :inputs
-          form-mode
-          input-class="w-full"
-          @ready="onReady"
-          @changed="onChanged"
-        />
-      </div>
-      <template #footer>
-        <Button
-          :schema="dialogOptions.cancel"
-          @submit="() => visible = false"
-        />
-        <Button
-          v-tooltip.top="{
-            disabled: !showValidationSummary,
-            value: messages,
-            pt: { text: 'text-sm' }
-          }"
-          :schema="submit"
-          :ready
-          @submit="execute"
-        />
-      </template>
-    </Dialog>
-    <ErrorPopover ref="errorPopoverRef">
-      <InlineError :error />
-    </ErrorPopover>
-  </template>
-  <template v-else>
+      {{ l(title) }}
+    </h2>
     <div
-      v-bind="$attrs"
-      class="flex flex-col gap-4"
-      :class="[
-        { 'gap-8': !horizontal },
-        { 'horizontal': horizontal }
-      ]"
+      class="flex gap-4 w-full"
+      :class="{ 'flex-col': !horizontal }"
     >
-      <h2
-        v-if="alwaysShowTitle"
-        class="font-bold text-xl truncate"
+      <Bake
+        v-if="message"
+        name="message"
+        :descriptor="message"
+      />
+      <Inputs
+        v-if="inputs"
+        :inputs
+        form-mode
+        input-class="w-full"
+        @ready="onReady"
+        @changed="onChanged"
+      />
+      <Teleport
+        defer
+        :to="submitTarget"
+        :disabled="!submitTarget"
       >
-        {{ l(title) }}
-      </h2>
-      <div
-        class="flex gap-4"
-        :class="{ 'flex-col': !horizontal }"
-      >
-        <Inputs
-          v-if="inputs"
-          :inputs
-          form-mode
-          input-class="w-full"
-          @ready="onReady"
-          @changed="onChanged"
-        />
         <Button
           ref="submitRef"
-          v-tooltip.top="{
+          :validation-summary="{
             disabled: !showValidationSummary,
-            value: messages,
-            pt: { text: 'text-sm' }
+            messages
           }"
           :schema="submit"
           :ready
           class="min-w-min"
           :class="[
-            { 'mt-4': !horizontal && inputs.length },
+            { 'mt-4': !horizontal && inputs.length && !submitTarget },
             { 'text-nowrap self-start': horizontal }
           ]"
           @submit="$emit('submit', model)"
@@ -103,31 +52,29 @@
         <ErrorPopover ref="errorPopoverRef">
           <InlineError :error />
         </ErrorPopover>
-      </div>
+      </Teleport>
     </div>
-  </template>
+  </div>
 </template>
 <script setup>
 import { computed, ref, watch } from "vue";
-import { Dialog } from "primevue";
 import { useBakeError, useLocalization, useValidation } from "#imports";
-import { Button, ErrorPopover, InlineError, Inputs } from "#components";
+import { Bake, Button, ErrorPopover, InlineError, Inputs } from "#components";
 
 const { handle: handleError } = useBakeError();
 const { localize: l } = useLocalization();
 const { validate } = useValidation();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true }
+  schema: { type: null, required: true },
+  submitTarget: { type: String, default: null }
 });
-const emit = defineEmits(["submit"]);
+defineEmits(["submit"]);
 
-const { alwaysShowTitle, dialogOptions, inputs, horizontal, submit, title, validations = [], showValidationSummary } = schema;
+const { message, inputs, title, horizontal, submit, validations = [], showValidationSummary } = schema;
 
 const model = ref({});
 const readyData = ref({});
-const submitted = ref(false);
-const visible = ref(false);
 const submitRef = ref();
 const errorPopoverRef = ref();
 const { error } = handleError();
@@ -154,19 +101,5 @@ function onReady(value) {
 
 function onChanged({ values }) {
   model.value = values;
-}
-
-function execute() {
-  if(!ready.value) { return; }
-
-  submitted.value = true;
-  visible.value = false;
-}
-
-function emitSubmit() {
-  if(submitted.value && ready.value) {
-    submitted.value = false;
-    emit("submit", model.value);
-  }
 }
 </script>

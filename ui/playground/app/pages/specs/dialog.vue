@@ -15,16 +15,6 @@ const variants = [
       header: "Spec: Dialog Header",
       open: giveMe.aButton({ label: "Spec: Dialog Button" }).schema
     })
-  },
-  {
-    name: "Action",
-    descriptor: giveMe.aDialog({
-      action: giveMe.aCompositeAction([
-        giveMe.aLocalAction({ delay: 100 }),
-        giveMe.aLocalAction({ showMessage: "Execute Action" })
-      ]),
-      submit: giveMe.aButton({ label: "Spec: Submit" }).schema
-    })
   }
 ];
 </script>

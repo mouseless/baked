@@ -352,12 +352,12 @@ min/max values or a specific position within the level.
 ```csharp
 conventions.Add(
     ...,
-    order: Order.WithLevel("LevelA").Min
+    order: Order.At.WithLevel("LevelA").Min
 );
 
 conventions.Add(
     ...,
-    order: Order.WithLevel("LevelA") + 10
+    order: Order.At.WithLevel("LevelA") + 10
 );
 ```
 
@@ -380,7 +380,7 @@ configurator.Domain.ConfigureBuilder(builder =>
 configurator.Domain.ConfigureConventions(conventions => {
     conventions.Add(
         ...,
-        order: Order.Level("LevelA").Min
+        order: Order.At.WithLevel("LevelA").Min
     );
 });
 ```
@@ -394,15 +394,15 @@ configurator.Domain.ConfigureConventions(conventions => {
 ### Possible Order Usages
 
 ```csharp
-Order.Global.AbsoluteMin
-Order.Global.Min
+Order.At.Global.AbsoluteMin
+Order.At.Global.Min
 Order.At.AbsoluteMin
 Order.At.Min
 Order.At.Zero
 Order.At.Max
 Order.At.AbsoluteMax
-Order.Global.Max
-Order.Global.AbsoluteMax
+Order.At.Global.Max
+Order.At.Global.AbsoluteMax
 
 Order.At.WithBase("BaseA");
 Order.At.WithBase("BaseA").WithLevel("LevelA");
@@ -420,9 +420,9 @@ Following operatior overloads are implemented
 {Order} = {int}
 
 // e.g.
-order: Order.WithLevel("my-level") + 10
-order: Order.Max - 10
-order: 10 // Order.Zero + 10
+order: Order.At.WithLevel("my-level") + 10
+order: Order.At.Max - 10
+order: 10 // Order.At.Zero + 10
 ```
 
 > [!NOTE]

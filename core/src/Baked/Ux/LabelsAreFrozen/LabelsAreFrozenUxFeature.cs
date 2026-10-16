@@ -4,12 +4,11 @@ using Baked.Domain.Configuration;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-namespace Baked.Ux.LabelsAreFrozen;
+namespace Baked;
 
-public class LabelsAreFrozenUxFeature()
-    : IFeature<UxConfigurator>
+public static class LabelsAreFrozenUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> LabelsAreFrozen(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -35,5 +34,5 @@ public class LabelsAreFrozenUxFeature()
                 }
             );
         });
-    }
+    });
 }

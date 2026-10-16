@@ -1,11 +1,11 @@
 ﻿using Baked.Architecture;
 using Microsoft.AspNetCore.Builder;
 
-namespace Baked.Greeting.Swagger;
+namespace Baked;
 
-public class SwaggerGreetingFeature : IFeature<GreetingConfigurator>
+public static class SwaggerGreetingFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<GreetingFeature.Configurator> Swagger(this GreetingFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.HttpServer.ConfigureEndpointRouteBuilder(endpoints =>
         {
@@ -16,5 +16,5 @@ public class SwaggerGreetingFeature : IFeature<GreetingConfigurator>
                 return Task.CompletedTask;
             });
         });
-    }
+    });
 }

@@ -7,25 +7,16 @@ Add this feature using `AddRateLimiter()` extension;
 app.Features.AddRateLimiter(...);
 ```
 
-## Concurrency Limiter
+## Concurrency
 
 This feature registers .NET concurrency limiter services and middleware with
 `permitLimit` and `queueLimit` options 
 
 ```csharp
-c => c.ConcurrencyLimiter()
+c => c.Concurrency()
 ```
 
 > [!TIP]
 >
 > This feature will set `permitLimit` count as `MinThreadCount`
 > and twice the value as `MaxThreadCount`
-
-
-## Disabled
-
-You can disable this feature by calling `Disabled()` method;
-
-```csharp
-c => c.Disabled()
-```

@@ -28,6 +28,10 @@
   "TabbedPage": {
     "Select required values to view this page": "Bu sayfayı görüntülemek için gerekli seçimleri yapın"
   },
+  "ValidationSummaryPopover": {
+    "1 issue to fix": "Gidermeniz gereken 1 sorun var",
+    "{count} issues to fix": "Gidermeniz gereken {count} sorun var"
+  },
   "useDefaultValidation": {
     "{label} cannot be empty": "{label} boş bırakılamaz"
   },
@@ -89,6 +93,8 @@
   "Spec: Admin role requires Active status": "Yönetici rolü Aktif durumunda olmalı",
   "Spec: B link": "B bağlantısı",
   "Spec: Button": "Buton",
+  "Spec: Button Small": "Buton Küçük",
+  "Spec: Button Large": "Buton Büyük",
   "Spec: Cancel": "Vazgeç",
   "Spec: Custom Exception Message": "Özel Exception Mesajı",
   "Spec: Data": "Veri",
@@ -107,19 +113,21 @@
   "Spec: Dialog Button": "İletişim Düğmesi",
   "Spec: Dialog Header": "İletişim Başlığı",
   "Spec: Disabled": "Devre dışı",
-  "Spec: Entity": "Varlık",
+  "Spec: Entity": "Entite",
   "Spec: Footer info": "Alt bilgi",
   "Spec: Float:On Mode": "Float:On Modu",
   "Spec: Float:In Mode": "Float:In Modu",
   "Spec: GET Button": "GET Butonu",
-  "Spec: Ifta Mode": "Ifta Modu",
+  "Spec: Header": "Başlık",
+  "Spec: Home": "Ana Sayfa",
+  "Spec: Ifta Mode": "İfta Modu",
   "Spec: Info 1": "Bilgi 1",
   "Spec: Info 2": "Bilgi 2",
   "Spec: Message": "Mesaj",
   "Spec: Mid Page": "Orta Sayfa",
   "Spec: NavLink": "Navigasyon Bağlantısı",
   "Spec: Name": "İsim",
-  "Spec: No Icon": "Icon Yok",
+  "Spec: No Icon": "İcon Yok",
   "Spec: Not Selected": "Seçili değil",
   "Spec: Label": "Etiket",
   "Spec: Label 1": "Etiket 1",
@@ -154,7 +162,7 @@
   "Spec: Nulls are filter out": "Null değerler alınmaz",
   "Spec: Test Title": "Test Başlığı",
   "Spec: Test description is given for testing purposes": "Test açıklaması test etme amacıyla verilmiştir",
-  "Spec: Test Submit": "Spec: Onay Test",
+  "Spec: Test Submit": "Onay Test",
   "Spec: Title": "Başlık",
   "Spec: This is a very very very very long label": "Bu çok ama çok ama çok ama çok uzun bir etikettir",
   "Spec: This is a message": "Bu bir mesajdır",
