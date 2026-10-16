@@ -10,7 +10,10 @@
       >
         <Button
           ref="submitRef"
-          :validation-summary
+          :validation-summary="{
+            disabled: !showValidationSummary,
+            messages
+          }"
           :schema="submit"
           :ready
           @submit="onSubmit"
@@ -113,9 +116,6 @@ const { isValid, messages } = validate({
   inputs: inputs.value,
   composables: validations
 });
-
-// pass an object { disabled: !showValidationSummary, messages } as before
-const validationSummary = computed(() => showValidationSummary ? { messages } : null);
 
 watch(error, newError => {
   if(newError) {

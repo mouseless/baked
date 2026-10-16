@@ -28,6 +28,10 @@
   "TabbedPage": {
     "Select required values to view this page": "Select required values to view this page"
   },
+  "ValidationSummaryPopover": {
+    "1 issue to fix": "1 issue to fix",
+    "{count} issues to fix": "{count} issues to fix"
+  },
   "useDefaultValidation": {
     "{label} cannot be empty": "{label} cannot be empty"
   },

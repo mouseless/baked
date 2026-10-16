@@ -28,6 +28,10 @@
   "TabbedPage": {
     "Select required values to view this page": "Bu sayfayı görüntülemek için gerekli seçimleri yapın"
   },
+  "ValidationSummaryPopover": {
+    "1 issue to fix": "Gidermeniz gereken 1 sorun var",
+    "{count} issues to fix": "Gidermeniz gereken {count} sorun var"
+  },
   "useDefaultValidation": {
     "{label} cannot be empty": "{label} boş bırakılamaz"
   },

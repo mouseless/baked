@@ -188,30 +188,30 @@
     &.message-info {
       @apply
         bg-sky-50/95 text-sky-600 border-sky-200
-        dark:bg-sky-950/95 dark:text-sky-500 dark:border-sky-700/65;
+        dark:bg-sky-950/95 dark:text-sky-400 dark:border-sky-700/65;
     }
 
     &.message-error {
       @apply
         bg-red-50/95 text-red-600 border-red-200
-        dark:bg-red-950/95 dark:text-red-500 dark:border-red-700/65;
+        dark:bg-red-950/95 dark:text-red-400 dark:border-red-700/65;
     }
 
     &.message-warn {
       @apply
         bg-yellow-50/95 text-yellow-600 border-yellow-200
-        dark:bg-yellow-950/95 dark:text-yellow-500 dark:border-yellow-700/65;
+        dark:bg-yellow-950/95 dark:text-yellow-400 dark:border-yellow-700/65;
     }
 
     &.message-success {
       @apply
         bg-green-50/95 text-green-600 border-green-200
-        dark:bg-green-950/95 dark:text-green-500 dark:border-green-700/65;
+        dark:bg-green-950/95 dark:text-green-400 dark:border-green-700/65;
     }
 
     &.message-secondary {
       @apply
-        bg-transparent text-slate-500 border-slate-500
+        bg-transparent text-slate-600 border-slate-500
         dark:text-zinc-400 dark:border-zinc-400;
     }
 
