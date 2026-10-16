@@ -4,7 +4,7 @@
     class="before:content-none after:content-none"
   >
     <div class="flex flex-col gap-2">
-      <h3 class="mb-2 flex items-center gap-2 font-bold text-red-700 dark:text-red-400">
+      <h3 class="mb-1 flex items-center gap-2 text-sm text-red-700 dark:text-red-400">
         <i class="pi pi-exclamation-circle" />
         <template v-if="messages.length === 1">
           {{ lc('1 issue to fix') }}

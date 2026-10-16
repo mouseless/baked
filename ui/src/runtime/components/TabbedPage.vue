@@ -55,7 +55,8 @@
     />
     <div
       v-if="ready"
-      class="pt-4 flex flex-col gap-4 items-center"
+      class="flex flex-col gap-4 items-center"
+      :class="{ 'pt-4': shownTabs.length > 1 }"
     >
       <DeferredTabContent
         v-for="tab in shownTabs"

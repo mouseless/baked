@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      relative h-8 flex items-center gap-2
+      relative flex items-center gap-2
       text-sm text-gray-600 dark:text-gray-400
     "
   >
@@ -11,7 +11,7 @@
         :key="field.key"
         class="flex gap-1 items-center text-nowrap max-xs:hidden"
       >
-        <span class="max-md:hidden">{{ l(field.label) }}:</span>
+        <span class="max-lg:hidden">{{ l(field.label) }}:</span>
         <Bake
           :name="`fields-${field.key}`"
           :descriptor="field.component"
@@ -44,12 +44,13 @@
         v-tooltip.focus.bottom="{ value: l(description) }"
         :class="{
           'md:hidden': !infoFields.length,
-          'xl:hidden': infoFields.length
+          'xl:hidden xs:ml-2': infoFields.length
         }"
         icon="pi pi-info-circle"
         variant="text"
         size="small"
         rounded
+        class="inline p-0 border-none w-4 h-4"
       />
     </template>
   </div>

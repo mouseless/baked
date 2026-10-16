@@ -190,7 +190,7 @@ public static class DefaultThemeFeature
                 component: (a, _, cc) =>
                 {
                     a.Schema.Icon ??= cc.Route.Icon;
-                    a.Schema.Size ??= "xlarge";
+                    a.Schema.Size ??= "large";
                 }
             );
 

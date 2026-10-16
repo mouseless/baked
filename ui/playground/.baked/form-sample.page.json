@@ -9,7 +9,7 @@
           "type": "Avatar",
           "schema": {
             "icon": "pi pi-file-edit",
-            "size": "xlarge"
+            "size": "large"
           }
         },
         "description": "/form-sample:Description",
