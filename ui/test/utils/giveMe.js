@@ -256,7 +256,7 @@ export default {
     });
   },
 
-  aDataTable({ actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
+  aDataTable({ actions, columns, dataKey, dataLengthContextKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data, delay } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -273,8 +273,8 @@ export default {
 
     return $$({
       type: "DataTable",
-      schema: $$({ actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions }),
-      data: this.anInlineData(data)
+      schema: $$({ actions, columns, dataKey, dataLengthContextKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions }),
+      data: delay ? this.aDelayedData(data, { ms: delay }) : this.anInlineData(data)
     });
   },
 

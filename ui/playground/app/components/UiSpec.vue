@@ -139,10 +139,9 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
 import { Divider } from "primevue";
-import { useContext, useEvents } from "#imports";
+import { useContext } from "#imports";
 
 const context = useContext();
-const events = useEvents();
 
 const { variants, noLoadingVariant, useModel, noValidationVariant } = defineProps({
   variants: { type: Array, default: () => [] },
@@ -189,8 +188,7 @@ const allVariants = computed(() => {
   return result;
 });
 
-context.provideEvents(events);
-context.providePageContext(pageContext);
+context.providePageScope({ pageContext });
 
 function camelize(str) {
   return str

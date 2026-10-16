@@ -1,6 +1,9 @@
-import { inject, provide, ref } from "vue";
+import { inject, provide, reactive, ref } from "vue";
+import { useEvents } from "#imports";
 
 export default function() {
+  const events = useEvents();
+
   function providePath(value) {
     provide("__bake_path", value);
   }
@@ -95,6 +98,20 @@ export default function() {
     provide("__bake_page_context", value);
   }
 
+  function injectPagePending() {
+    return inject("__bake_page_pending", reactive(new Set()));
+  }
+
+  function providePagePending(value) {
+    provide("__bake_page_pending", value);
+  }
+
+  function providePageScope({ pageContext = reactive({}) } = {}) {
+    provideEvents(events);
+    providePageContext(pageContext);
+    providePagePending(reactive(new Set()));
+  }
+
   function injectParentContext() {
     return inject("__bake_parent_context", null);
   }
@@ -147,6 +164,9 @@ export default function() {
     provideMutableValidation,
     injectPageContext,
     providePageContext,
+    injectPagePending,
+    providePagePending,
+    providePageScope,
     injectParentContext,
     provideParentContext,
     injectValidations,

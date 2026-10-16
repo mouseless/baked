@@ -279,6 +279,9 @@
     reaction in the descriptor
     - It was showing the components that reacts to `showWhen: is null` causing
       to render unintended components while page is loading
+  - Reactions to a page context value now wait until the component writing
+    that value is loaded, e.g., `DataTable` with `DataLengthContextKey`, see
+    `usePageContext` below
 - `AwaitLoading` no more shows skeleton during a reload, instead a page-wide
   loading indicator is displayed
 
@@ -311,6 +314,14 @@
 - `useFormat` now provides `asCamelCase` helper function
 - `useLocalization` can now be used as a computed data through
   `Fetch.Computed.UseLocalization(l("..."))`
+- `usePageContext` is introduced to read and write page context values
+  - `set` marks a value as pending while the writing component is loading, so
+    that reactions to it wait until it is written
+  - Use `usePageContext({ trackLoading: false })` when the value is not loaded,
+    e.g., in actions
+- `useContext` now provides `providePageScope` to provide events, page context
+  and pending values of a page at once, e.g., in a custom page or layout
+  component
 
 ## Library Upgrades
 

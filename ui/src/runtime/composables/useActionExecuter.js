@@ -1,5 +1,5 @@
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useContext, useDataFetcher, usePathBuilder, useUnref, useValidation } from "#imports";
+import { useComposableResolver, useContext, useDataFetcher, usePageContext, usePathBuilder, useUnref, useValidation } from "#imports";
 import { bfetch } from "../utils/bfetch";
 
 export default function() {
@@ -61,6 +61,7 @@ function Local() {
 
 function Publish() {
   const dataFetcher = useDataFetcher();
+  const pageContext = usePageContext({ trackLoading: false });
 
   async function execute({ action, contextData, events }) {
     const data = action.data ? await dataFetcher.fetch({ data: action.data, contextData }) : undefined;
@@ -70,7 +71,7 @@ function Publish() {
     }
 
     if(action.pageContextKey) {
-      contextData.page[action.pageContextKey] = data;
+      pageContext.set(action.pageContextKey, data);
     }
   }
 

@@ -249,6 +249,38 @@ const variants = [
       ],
       data: giveMe.aDelayedData({ key: "expected" }, { ms: 200 })
     })
+  },
+  {
+    name: "Reaction - Page Context",
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aDataTable({
+          dataLengthContextKey: "rows:length",
+          data: [{ test: "value 1" }, { test: "value 2" }],
+          delay: 200
+        }),
+        giveMe.anExpected({
+          testId: "null",
+          value: "NULL",
+          reactions: {
+            show: giveMe.aTrigger({
+              when: "rows:length",
+              constraint: giveMe.aConstraint({ isNull: true })
+            })
+          }
+        }),
+        giveMe.anExpected({
+          testId: "not null",
+          value: "NOT NULL",
+          reactions: {
+            show: giveMe.aTrigger({
+              when: "rows:length",
+              constraint: giveMe.aConstraint({ isNotNull: true })
+            })
+          }
+        })
+      ]
+    })
   }
 ];
 </script>
