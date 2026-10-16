@@ -1159,7 +1159,7 @@ public static class ThemeFeature
                         Route = route,
                         Sitemap = sitemap,
                         Domain = domain,
-                        NewLocaleKey = l
+                        Localize = l
                     });
                     if (page is null) { continue; }
 
@@ -1518,7 +1518,7 @@ public static class ThemeFeature
                 Route = new(path, title),
                 Sitemap = [],
                 Domain = giveMe.TheDomainModel(),
-                NewLocaleKey = s => s
+                Localize = s => s
             };
         }
 

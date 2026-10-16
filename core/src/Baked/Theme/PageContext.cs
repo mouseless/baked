@@ -9,7 +9,7 @@ public record PageContext
     public required Route Route { get; init; }
     public required IReadOnlyList<Route> Sitemap { get; init; }
     public required DomainModel Domain { get; init; }
-    public required NewLocaleKey NewLocaleKey { get; init; }
+    public required NewLocaleKey Localize { get; init; }
 
     // NOTE this is intentionally left as null to make sure build fails if
     // there is a bug in setting this value
@@ -18,7 +18,7 @@ public record PageContext
     public void Deconstruct(out DomainModel domain, out NewLocaleKey l)
     {
         domain = Domain;
-        l = NewLocaleKey;
+        l = Localize;
     }
 
     public virtual ComponentContext Drill(params object[] paths) =>
@@ -27,7 +27,7 @@ public record PageContext
             Route = Route,
             Sitemap = Sitemap,
             Domain = Domain,
-            NewLocaleKey = NewLocaleKey,
+            Localize = Localize,
             Path = new(paths)
         };
 }

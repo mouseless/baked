@@ -526,6 +526,13 @@ public static class DefaultThemeFeature
                 order: Order.At.Min
             );
 
+            // configures buttons in data container actions as small
+            conventions.EditMethodComponent<Button>(
+                where: cc => cc.Path.EndsWith("data-container", "actions", "*"),
+                component: b => b.Schema.Size = "small",
+                order: Order.At.Min
+            );
+
             // configures data table defaults for method
             conventions.EditMethodComponent<DataTable>(
                 component: (dt, c, cc) =>

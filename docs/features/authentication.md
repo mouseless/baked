@@ -57,8 +57,8 @@ hash:    bfegZ/mTBlu4zHtPGwUVYdO9szVG1ii+5VQZR9l/yHM=
 
 > [!NOTE]
 >
-> Form post authentication will only work if there is no authorization header
-> exists in the request.
+> Form post authentication is only used when the request has no authorization
+> header.
 
 ## Jwt
 
@@ -72,3 +72,23 @@ c => c.Jwt(
   configureOptions: options => { ... },
   configurePlugin: plugin => { ... }
 )
+```
+
+Issuer, audience, signing key and clock skew are required settings. Token
+lifetimes are optional and default to `20` minutes, they can be set per token as
+below, or once for both, e.g., `"ExpiresInMinutes": 30`;
+
+```json
+"Authentication": {
+  "Jwt": {
+    "Issuer": "my-app",
+    "Audience": "my-app",
+    "Key": "AT_LEAST_32_CHARACTERS_LONG_SECRET",
+    "ClockSkewInSeconds": 10,
+    "ExpiresInMinutes": {
+      "Access": 5,
+      "Refresh": 60
+    }
+  }
+}
+```

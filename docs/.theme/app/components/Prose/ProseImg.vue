@@ -1,14 +1,23 @@
 <template>
-  <img
-    :src="refinedSrc"
-    :alt="alt"
-    :width="width"
-    :height="height"
-    :class="[ alt ]"
-    class="max-w-full"
-  >
+  <picture>
+    <source
+      v-if="darkSrc"
+      :srcset="darkSrc"
+      media="(prefers-color-scheme: dark)"
+    >
+    <img
+      :src="refinedSrc"
+      :alt="alt"
+      :width="width"
+      :height="height"
+      :class="[ alt ]"
+      class="max-w-full my-4 rounded-xs shadow-md"
+      @error="darkMissing = true"
+    >
+  </picture>
 </template>
 <script setup>
+import { ref } from "vue";
 import { withTrailingSlash, withLeadingSlash, joinURL } from "ufo";
 import { useRuntimeConfig, computed, useRoute } from "#imports";
 
@@ -32,6 +41,13 @@ const props = defineProps({
 });
 
 const route = useRoute();
+const darkMissing = ref(false);
+
+const darkSrc = computed(() => {
+  if(darkMissing.value || props.src.startsWith("//")) { return null; }
+
+  return refinedSrc.value.replace(/(\.[^./]+)$/, "-dark$1");
+});
 
 const refinedSrc = computed(() => {
   if(props.src.startsWith("//")) {
@@ -45,16 +61,12 @@ const refinedSrc = computed(() => {
   return result;
 });
 
-function parsePath(path) {
-  const pieces = path.params.contentpage;
-
-  if(pieces[pieces.length - 1] === "")
-  {
-    pieces.pop();
-  }
+function parsePath(route) {
+  const param = route.params.contentpage;
+  const pieces = (Array.isArray(param) ? param : [param]).filter(piece => piece);
 
   return pieces.length > 1
     ? joinURL(...pieces.slice(0, pieces.length - 1))
-    : pieces[0];
+    : pieces[0] ?? "/";
 }
 </script>

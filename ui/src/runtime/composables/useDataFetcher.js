@@ -30,6 +30,8 @@ export default function() {
   }
 
   async function fetch({ data, contextData }) {
+    if(!data) { throw new Error("Cannot fetch, because data is not given"); }
+
     const fetcher = datas[data?.type];
     if(!fetcher) { throw new Error(`${data?.type} is not a valid data type`); }
 

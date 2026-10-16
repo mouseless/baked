@@ -59,8 +59,8 @@
     <Column
       v-if="exportOptions || actions"
       :pt="{
-        bodyCell: { class: 'max-xs:!inset-auto' },
         headerCell: { class: 'max-xs:!inset-auto' },
+        bodyCell: { class: 'max-xs:!inset-auto' },
         columnHeaderContent: 'justify-end'
       }"
       :exportable="false"
@@ -99,7 +99,7 @@
             :data="row.$getRow()"
             data-key="row"
           >
-            <div class="flex text-nowrap">
+            <div class="flex text-nowrap justify-end">
               <Bake
                 :name="`rows/${index}/actions`"
                 :descriptor="actions.component"
