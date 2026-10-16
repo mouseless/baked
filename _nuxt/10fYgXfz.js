@@ -1,0 +1,1 @@
+import{B as e,I as t,m as n}from"./_AOun4go.js";import{t as r}from"./BDNMzG2s.js";var i={};function a(r,i){return t(),n(`td`,null,[e(r.$slots,`default`)])}var o=Object.assign(r(i,[[`render`,a]]),{__name:`ProseTd`});export{o as default};

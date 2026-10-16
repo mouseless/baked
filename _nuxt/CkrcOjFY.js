@@ -1,1 +1,0 @@
-import"./DHwB1DNv.js";import{M as e}from"./CmvnEPtD.js";export{e as createArchitectureServices};

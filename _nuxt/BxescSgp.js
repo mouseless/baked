@@ -1,0 +1,1 @@
+import"./C2Wy9Xmz.js";export{M as createArchitectureServices}from"./BRmuk-MC.js";

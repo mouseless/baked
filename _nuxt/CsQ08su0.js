@@ -1,0 +1,2 @@
+import{n as e}from"./DsF7k-Jl.js";import{m as t}from"./0uz3bQic.js";import{c as n}from"./EwWIoebl.js";import{a as r}from"#entry";import{n as i}from"./BRmuk-MC.js";var a={parse:e(async e=>{let n=await i(`info`,e);t.debug(n)},`parse`)},o={version:`12.2.0`},s={parser:a,db:{getVersion:e(()=>o.version,`getVersion`)},renderer:{draw:e((e,i,a)=>{t.debug(`rendering info diagram
+`+e);let o=r(i);n(o,100,400,!0),o.append(`g`).append(`text`).attr(`x`,100).attr(`y`,40).attr(`class`,`version`).attr(`font-size`,32).style(`text-anchor`,`middle`).text(`v${a}`)},`draw`)}};export{s as diagram};
