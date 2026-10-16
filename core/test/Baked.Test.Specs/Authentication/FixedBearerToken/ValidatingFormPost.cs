@@ -108,6 +108,33 @@ public class ValidatingFormPost : TestSpec
     }
 
     [Test]
+    public async Task Hash_is_ignored_when_authorization_header_is_given()
+    {
+        var request = GiveMe.AnHttpRequest(
+            header: GiveMe.ADictionary([("Authorization", "Bearer header_token")]),
+            form: GiveMe.ADictionary(
+                ("hash", "invalid-hash"),
+                ("amount", "12")
+            )
+        );
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+            tokens =>
+            {
+                tokens.Add("Header", claims: ["HeaderClaim"]);
+                tokens.Add("Form", claims: ["FormClaim"]);
+            }
+        );
+        MockMe.ASetting(key: "Authentication:FixedBearerToken:Header", value: "header_token");
+        MockMe.ASetting(key: "Authentication:FixedBearerToken:Form", value: "token");
+
+        var authenticateResult = await handler.AuthenticateAsync();
+
+        authenticateResult.Succeeded.ShouldBeTrue();
+        authenticateResult.Principal.ShouldNotBeNull();
+        authenticateResult.Principal.Claims.FirstOrDefault(c => c.Type == "HeaderClaim").ShouldNotBeNull();
+    }
+
+    [Test]
     public async Task Does_not_validate_request_when_hash_is_not_provided_and_returns_no_result()
     {
         var request = GiveMe.AnHttpRequest(

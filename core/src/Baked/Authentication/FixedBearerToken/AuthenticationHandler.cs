@@ -26,8 +26,6 @@ public class AuthenticationHandler(
     static bool FixedTimeEquals(string left, string right) =>
         CryptographicOperations.FixedTimeEquals(left.ToSHA256(), right.ToSHA256());
 
-    // NOTE fields are url encoded `key=value` pairs sorted by key and joined
-    // with `&`, so that a value cannot be shifted to another field
     static string Sign(IFormCollection form, string token)
     {
         var message = string.Join("&", form
@@ -56,8 +54,7 @@ public class AuthenticationHandler(
                 return Task.FromResult(AuthenticateResult.Fail("Invalid credentials"));
             }
         }
-
-        if (Context.Request.HasFormContentType && Context.Request.Form.ContainsKey(HASH_KEY))
+        else if (Context.Request.HasFormContentType && Context.Request.Form.ContainsKey(HASH_KEY))
         {
             var form = Context.Request.Form;
             var hash = $"{form[HASH_KEY]}";

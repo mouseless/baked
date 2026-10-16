@@ -281,6 +281,38 @@ const variants = [
         })
       ]
     })
+  },
+  {
+    name: "Reaction - Page Context Writer Removed",
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aButton({
+          label: "Spec: Hide Table",
+          action: giveMe.aPublishAction({ event: "table-visibility", data: giveMe.anInlineData("hide") })
+        }),
+        giveMe.aDataTable({
+          dataLengthContextKey: "removed-rows:length",
+          data: [{ test: "value 1" }, { test: "value 2" }],
+          delay: 200,
+          reactions: {
+            show: giveMe.aTrigger({
+              on: "table-visibility",
+              constraint: giveMe.aConstraint({ is: "show" })
+            })
+          }
+        }),
+        giveMe.anExpected({
+          testId: "null",
+          value: "NULL",
+          reactions: {
+            show: giveMe.aTrigger({
+              when: "removed-rows:length",
+              constraint: giveMe.aConstraint({ isNull: true })
+            })
+          }
+        })
+      ]
+    })
   }
 ];
 </script>

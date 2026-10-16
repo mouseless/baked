@@ -435,3 +435,20 @@ test.describe("Reaction - Page Context", () => {
     await expect(component.getByTestId("not null")).toBeAttached();
   });
 });
+
+test.describe("Reaction - Page Context Writer Removed", () => {
+  const id = "Reaction - Page Context Writer Removed";
+
+  test("reactions to a page context value are evaluated when its writer is removed while loading", async({ page, goto }) => {
+    await page.clock.install();
+    await goto("/specs/bake?val=2", { waitUntil: "hydration" });
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("null")).not.toBeAttached({ timeout: 100 });
+
+    await component.locator(primevue.button.base).click();
+
+    await expect(component.locator("table")).not.toBeAttached();
+    await expect(component.getByTestId("null")).toBeAttached();
+  });
+});
