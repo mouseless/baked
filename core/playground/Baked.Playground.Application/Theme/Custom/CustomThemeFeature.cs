@@ -16,14 +16,18 @@ public static class CustomThemeFeature
         routes:
         [
             r => r.Root<CacheSamples, TabbedPage>("/cache-samples", "pi pi-database"),
+
             r => r.Root<FormSample, SimplePage>("/form-sample", "pi pi-file-edit"),
             r => r.Child<FormSample, FormPage>("/form-sample/parents/new", "/form-sample", nameof(FormSample.NewParent)),
-            r => r.Root<ReportPageSample, TabbedPage>("/report-page-sample", "pi pi-file"),
-            r => r.Root("/specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()) },
+            r => r.ChildDynamic<Entity, SimplePage>("/entities/[id]", "/form-sample"),
+            r => r.ChildDynamic<Parent, SimplePage>("/parents/[id]", "/form-sample"),
 
-            r => r.RootDynamic<Entity, SimplePage>("/entities/[id]"),
-            r => r.RootDynamic<Parent, SimplePage>("/parents/[id]"),
+            r => r.Root<ReportPageSample, TabbedPage>("/report-page-sample", "pi pi-file"),
+
             r => r.RootDynamic<RouteParametersSample, SimplePage>("/route-parameters-sample/[id]"),
+
+            // Specs
+            r => r.Root("/specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()) },
 
             // Behavior
             r => r.Child("/specs/await-loading", "/specs") with { Icon = "pi pi-microchip", Section = "Behavior" },

@@ -15,13 +15,13 @@
       :size
       :variant
       class="text-nowrap"
-      @click="clicked"
-      @touchstart="showValidationSummary"
-      @mouseenter="showValidationSummary"
-      @mouseleave="hideValidationSummary"
+      @click="dialogOptions ? dialogRef.show($event) : $emit('submit')"
+      @touchstart="validationSummaryRef?.show($event)"
+      @mouseenter="validationSummaryRef?.show($event)"
+      @mouseleave="validationSummaryRef?.hide()"
     />
     <ValidationSummaryPopover
-      v-if="validationSummary && !validationSummary.disabled"
+      v-if="!ready && validationSummary && !validationSummary.disabled"
       ref="validationSummaryRef"
       :messages="validationSummary.messages"
     />
@@ -49,7 +49,7 @@ const { schema, ready } = defineProps({
   ready: { type: Boolean, default: true },
   validationSummary: { type: null, default: null }
 });
-const emit = defineEmits(["submit"]);
+defineEmits(["submit"]);
 
 const {
   icon,
@@ -68,24 +68,4 @@ const dialogOptions = schema.dialogOptions && {
 const executing = context.injectExecuting();
 const validationSummaryRef = ref();
 const dialogRef = ref();
-
-function showValidationSummary(event) {
-  if(ready) { return; }
-
-  validationSummaryRef.value?.show(event);
-}
-
-function hideValidationSummary() {
-  validationSummaryRef.value?.hide();
-}
-
-function clicked(event) {
-  if(!dialogOptions) {
-    emit("submit");
-
-    return;
-  }
-
-  dialogRef.value.show(event);
-}
 </script>
