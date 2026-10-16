@@ -7,5 +7,10 @@
     "success": "success",
     "warning": "warn",
     "error": "danger"
+  },
+  "longBasedStatus": {
+    "waiting": "info",
+    "done": "success",
+    "failed": "danger"
   }
 }

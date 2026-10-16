@@ -269,6 +269,6 @@ component.ShowOn("input-changed", Evaluate.Is("show"));
 // shows when `selection` value is valid using a custom validator composable
 // `useMyCustomValidator`
 component.ShowWhen("selection",
-  constraint: Evaluate.Composables.Use("MyCustomValidator")
+  constraint: Evaluate.Composable.Use("MyCustomValidator")
 );
 ```

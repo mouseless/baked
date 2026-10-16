@@ -12,7 +12,7 @@
       class="
         py-3 text-sm rounded-none
         2xl:rounded-full 2xl:w-full
-        2xl:justify-start 2xl:gap-4
+        2xl:justify-start 2xl:gap-3
       "
       :class="{ 'bg-slate-200 dark:bg-zinc-800': selected }"
       :pt="{

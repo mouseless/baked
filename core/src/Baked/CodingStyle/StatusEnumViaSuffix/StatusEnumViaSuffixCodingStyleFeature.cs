@@ -25,7 +25,7 @@ public static class StatusEnumViaSuffixCodingStyleFeature
                     var values = c.Type.SkipNullable().Apply(t => Enum.GetValues(t));
                     foreach (var value in values)
                     {
-                        var severity = (int)value switch
+                        var severity = Convert.ToInt64(value) switch
                         {
                             >= 100 and < 200 => "info",
                             >= 200 and < 300 => "success",
@@ -41,7 +41,7 @@ public static class StatusEnumViaSuffixCodingStyleFeature
             );
 
             conventions.SetPropertyAttribute(
-                when: c => c.Property.PropertyType.SkipNullable().IsEnum && c.Property.PropertyType.Name.EndsWith("Status"),
+                when: c => c.Property.PropertyType.SkipNullable().IsEnum && c.Property.PropertyType.SkipNullable().Name.EndsWith("Status"),
                 attribute: () => new Status()
             );
         });

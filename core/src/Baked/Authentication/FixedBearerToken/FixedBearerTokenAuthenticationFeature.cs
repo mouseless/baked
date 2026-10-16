@@ -86,9 +86,10 @@ public static class FixedBearerTokenAuthenticationFeature
                         Type = JsonSchemaType.String,
                         Description = Settings.Optional(
                             "Authentication:FixedBearerToken:Description:hash",
-                            "Concatenate all form post parameters with secret " +
-                            "token at the end, then hash it using `sha256` and " +
-                            "convert it to `base64`"
+                            "Sort all other form post parameters by key, url " +
+                            "encode them as `key=value` pairs joined with `&`, " +
+                            "then sign it using `HMAC-SHA256` with the secret " +
+                            "token as key and convert it to `base64`"
                         )
                     },
                     documentName: documentName

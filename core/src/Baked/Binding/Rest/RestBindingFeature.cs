@@ -98,11 +98,12 @@ public static class RestBindingFeature
             );
             conventions.Add(new UseDocumentationAsDescriptionConvention(tagDescriptions, examples), order: Order.At.Infra + 10);
             conventions.EditMethodAttribute<ApiAction>(
-                (a, c) =>
-                {
-                    a.AdditionalAttributes.Add($"ServiceFilter(typeof({typeof(ValidateInitializedModelsFilter).FullName}), Order = 1)");
-                    a.AdditionalAttributes.Add($"{typeof(MappedMethod).FullName}(\"{c.Type.FullName}\", \"{c.Method.Name}\")");
-                },
+                (a, c) => a.AdditionalAttributes.Add($"{typeof(MappedMethod).FullName}(\"{c.Type.FullName}\", \"{c.Method.Name}\")"),
+                order: Order.At.Infra
+            );
+            conventions.EditMethodAttribute<ApiAction>(
+                when: c => c.Method.DefaultOverload.Parameters.Any(p => p.IsValidatable),
+                attribute: a => a.AdditionalAttributes.Add($"ServiceFilter(typeof({typeof(RevalidateValidatableObjectsFilter).FullName}), Order = 1)"),
                 order: Order.At.Infra
             );
         });
@@ -167,7 +168,7 @@ public static class RestBindingFeature
 
         configurator.Runtime.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton<ValidateInitializedModelsFilter>();
+            services.AddSingleton<RevalidateValidatableObjectsFilter>();
         });
 
         configurator.RestApi.ConfigureMvcNewtonsoftJsonOptions(options =>
@@ -275,6 +276,9 @@ public static class RestBindingFeature
     {
         public bool IsBindable =>
             parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<Bindable>();
+
+        public bool IsValidatable =>
+            parameter.ParameterType.SkipNullable().Apply(RevalidateValidatableObjectsFilter.IsValidatable);
     }
 
     extension(ApiDescription apiDescription)

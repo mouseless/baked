@@ -58,4 +58,52 @@ public class ValidatingAuthorizationHeader : TestSpec
 
         authenticateResult.Succeeded.ShouldBeTrue();
     }
+
+    [Test]
+    public async Task Bearer_scheme_is_case_insensitive()
+    {
+        var request = GiveMe.AnHttpRequest(
+            header: GiveMe.ADictionary(("Authorization", "bearer test_token"))
+        );
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+            tokens => tokens.Add("Default", claims: ["User"])
+        );
+        MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
+
+        var authenticateResult = await handler.AuthenticateAsync();
+
+        authenticateResult.Succeeded.ShouldBeTrue();
+    }
+
+    [Test]
+    public async Task Only_leading_bearer_scheme_is_trimmed()
+    {
+        var request = GiveMe.AnHttpRequest(
+            header: GiveMe.ADictionary(("Authorization", "Bearer test_Bearer_token"))
+        );
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+            tokens => tokens.Add("Default", claims: ["User"])
+        );
+        MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_Bearer_token");
+
+        var authenticateResult = await handler.AuthenticateAsync();
+
+        authenticateResult.Succeeded.ShouldBeTrue();
+    }
+
+    [Test]
+    public async Task Empty_configured_tokens_are_ignored()
+    {
+        var request = GiveMe.AnHttpRequest(
+            header: GiveMe.ADictionary(("Authorization", "Bearer "))
+        );
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+            tokens => tokens.Add("Default", claims: ["User"])
+        );
+        MockMe.ASetting("Authentication:FixedBearerToken:Default", string.Empty);
+
+        var authenticateResult = await handler.AuthenticateAsync();
+
+        authenticateResult.Succeeded.ShouldBeFalse();
+    }
 }

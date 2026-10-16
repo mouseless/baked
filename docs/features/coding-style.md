@@ -198,7 +198,7 @@ c => c.QueryViaPluralName(
     primaryParameterNames: [...],
     takeParameterNames: [...],
     skipParameterNames: [...],
-    sortParameterNames: [...]
+    sortingParameterNames: [...]
 )
 ```
 
@@ -225,6 +225,20 @@ record parameters render as api endpoints.
 ```csharp
 c => c.RecordsAreDtos()
 ```
+
+> [!WARNING]
+>
+> Validation attributes of a record are only validated when they target its
+> properties. Attributes given to primary constructor parameters are ignored
+> without any error.
+>
+> ```csharp
+> // ignored
+> public record MyRecord([Range(1, 10)] int Value);
+>
+> // validated
+> public record MyRecord([property: Range(1, 10)] int Value);
+> ```
 
 ## Remaining Services are Singleton
 
@@ -275,7 +289,7 @@ c => c.StatusEnumViaSuffix()
 | Range   | Severity |
 | ---     | ---      |
 | 100-199 | info     |
-| 200-299 | succcess |
+| 200-299 | success  |
 | 400-499 | warn     |
 | 500-599 | danger   |
 
@@ -290,7 +304,7 @@ public enum RecordStatus
     Sent           = 200, // success
     SentWithIssues = 400, // warn
     NeedsRevision  = 401, // warn
-    NotSend        = 500  // danger
+    NotSent        = 500  // danger
 }
 ```
 
