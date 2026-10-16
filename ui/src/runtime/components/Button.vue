@@ -4,7 +4,7 @@
     as="div"
     class="b-button-wrapper"
   >
-    <PrimeVueButon
+    <Button
       ref="buttonRef"
       :disabled="!ready || executing"
       :loading="executing"
@@ -37,28 +37,21 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { Button as PrimeVueButon } from "primevue";
+import { Button } from "primevue";
 import { useContext, useLocalization } from "#imports";
 import { ButtonDialog, ValidationSummaryPopover, Wrap } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
 
-const { schema, ready } = defineProps({
+const { schema } = defineProps({
   schema: { type: null, required: true },
   ready: { type: Boolean, default: true },
   validationSummary: { type: null, default: null }
 });
 defineEmits(["submit"]);
 
-const {
-  icon,
-  label,
-  rounded,
-  severity = "secondary",
-  size,
-  variant
-} = schema;
+const { icon, label, rounded, severity = "secondary", size, variant } = schema;
 const dialogOptions = schema.dialogOptions && {
   mode: "Dialog",
   dismissableMask: true,
