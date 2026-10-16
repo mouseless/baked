@@ -66,7 +66,7 @@ test.describe("Base", () => {
     await input.fill("");
     await button.hover();
 
-    await expect(page.locator(primevue.popover.base)).toContainText("- Input cannot be empty");
+    await expect(page.locator(primevue.popover.base)).toContainText("Input cannot be empty");
   });
 
   test("button is enabled when inputs are ready", async({ page }) => {

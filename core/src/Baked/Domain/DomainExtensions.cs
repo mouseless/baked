@@ -20,6 +20,59 @@ public static class DomainExtensions
 {
 #pragma warning disable IDE0052
     static readonly ConcurrentDictionary<Type, AttributeUsageAttribute?> _attributeUsageCache = new();
+
+    // BEGIN AI-GEN (Claude - Opus 5.5 High)
+    //
+    // Investigate this (github.com/mouseless/baked) repository and build a
+    // `BuildCSharpFriendlyName` helper and `GetCSharpFriendlyFullName`
+    // (below) extension that prints out type name in code format that
+    // compiles to be used in code generation.
+    static readonly Dictionary<Type, string> _cSharpKeywords = new()
+    {
+        [typeof(void)] = "void",
+        [typeof(object)] = "object",
+        [typeof(string)] = "string",
+        [typeof(bool)] = "bool",
+        [typeof(char)] = "char",
+        [typeof(decimal)] = "decimal",
+        [typeof(double)] = "double",
+        [typeof(float)] = "float",
+        [typeof(byte)] = "byte",
+        [typeof(sbyte)] = "sbyte",
+        [typeof(short)] = "short",
+        [typeof(ushort)] = "ushort",
+        [typeof(int)] = "int",
+        [typeof(uint)] = "uint",
+        [typeof(long)] = "long",
+        [typeof(ulong)] = "ulong",
+        [typeof(nint)] = "nint",
+        [typeof(nuint)] = "nuint"
+    };
+
+    static string BuildCSharpFriendlyName(this Type type, Type[] args)
+    {
+        var name = type.Name;
+        var arity = 0;
+        var tick = name.IndexOf('`');
+        if (tick >= 0 && int.TryParse(name[(tick + 1)..], out arity))
+        {
+            name = name[..tick];
+        }
+
+        var parentArgs = args[..(args.Length - arity)];
+        var ownArgs = args[(args.Length - arity)..];
+
+        var prefix =
+            type.IsNested && type.DeclaringType is not null ? $"{BuildCSharpFriendlyName(type.DeclaringType, parentArgs)}." :
+            string.IsNullOrEmpty(type.Namespace) ? string.Empty :
+            $"{type.Namespace}.";
+
+        return arity == 0
+            ? $"{prefix}{name}"
+            : $"{prefix}{name}<{string.Join(", ", ownArgs.Select(a => a.GetCSharpFriendlyFullName()))}>";
+    }
+
+    // END AI-GEN
 #pragma warning restore IDE0052
 
     public class Configurator(LayerConfigurator _configurator)
@@ -155,12 +208,36 @@ public static class DomainExtensions
             type.Name.Contains("AnonymousType") &&
             Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute));
 
-        public string GetCSharpFriendlyFullName() =>
-            type.IsArray ? $"{type.GetElementType()?.GetCSharpFriendlyFullName()}[]" :
-            !type.IsGenericType ? type.FullName ?? type.Name :
-            type.GetGenericTypeDefinition() == typeof(Nullable<>) ? $"{type.GenericTypeArguments.First().GetCSharpFriendlyFullName()}?" :
-            type.Name.IndexOf('`') < 0 ? type.FullName ?? type.Name :
-            $"{type.Namespace}.{type.Name[..type.Name.IndexOf('`')]}<{string.Join(", ", type.GenericTypeArguments.Select(GetCSharpFriendlyFullName))}>";
+        public string GetCSharpFriendlyFullName()
+        {
+            if (type.IsGenericParameter) { return type.Name; }
+            if (type.IsByRef) { return type.GetElementType()?.GetCSharpFriendlyFullName() ?? throw new($"`{type.FullName}` was expected to have element type but it didn't"); }
+            if (type.IsPointer) { return $"{type.GetElementType()?.GetCSharpFriendlyFullName()}*" ?? throw new($"`{type.FullName}` was expected to have element type but it didn't"); }
+            if (_cSharpKeywords.TryGetValue(type, out var keyword)) { return keyword; }
+
+            if (type.IsArray)
+            {
+                // C# writes ranks outermost-first: int[][,] is an array of int[,]
+                var ranks = new List<string>();
+                var element = type;
+                while (element.IsArray)
+                {
+                    ranks.Add($"[{new string(',', element.GetArrayRank() - 1)}]");
+                    element = element.GetElementType() ?? throw new($"`{type.FullName}` was expected to have element type but it didn't");
+                }
+
+                return $"{element.GetCSharpFriendlyFullName()}{string.Concat(ranks)}";
+            }
+
+            if (Nullable.GetUnderlyingType(type) is { } underlying)
+            {
+                return $"{underlying.GetCSharpFriendlyFullName()}?";
+            }
+
+            // GetGenericArguments works for both constructed types and definitions,
+            // and includes the declaring types' arguments for nested generics
+            return BuildCSharpFriendlyName(type, type.IsGenericType ? type.GetGenericArguments() : Type.EmptyTypes);
+        }
     }
 
     extension(ICollection<TypeBuildLevelFilter> filters)

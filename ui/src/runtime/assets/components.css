@@ -358,6 +358,10 @@
         }
       }
     }
+
+    .p-button {
+      @apply w-full;
+    }
   }
 
   /* PAGE SIZE */

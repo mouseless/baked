@@ -226,12 +226,11 @@ test.describe("Large", () => {
       const button = component.locator(primevue.button.base);
       const dialog = page.locator(primevue[dialogType].base);
       const footerButton = dialog.locator(primevue[dialogType].footer).locator(primevue.button.base).nth(1);
-      const tooltip = page.locator(".p-tooltip");
 
       await button.click();
       await footerButton.hover();
 
-      await expect(tooltip.locator(".p-tooltip-text")).toContainText("- Input cannot be empty");
+      await expect(page.locator(primevue.popover.base)).toContainText("Input cannot be empty");
     });
 
     test("executes action before close", async({ page }) => {

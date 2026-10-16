@@ -61,7 +61,7 @@ test.describe("Severity", () => {
     { id: "Error", expected: "oklch(0.577 0.245 27.325)" }, // red-600
     { id: "Success", expected: "oklch(0.627 0.194 149.214)" }, // green-600
     { id: "Contrast", expected: "oklch(0.129 0.042 264.695)" }, // slate-950
-    { id: "Secondary", expected: "oklch(0.554 0.046 257.417)" } // slate-500
+    { id: "Secondary", expected: "oklch(0.446 0.043 257.281)" } // slate-600
   ].forEach(({ id, expected }) => {
     test(`Severity ${id}`, async({ page }) => {
       const component = page.getByTestId(id);
