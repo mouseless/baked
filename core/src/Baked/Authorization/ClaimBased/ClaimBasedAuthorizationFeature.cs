@@ -1,17 +1,26 @@
 ﻿using Baked.Architecture;
+using Baked.Authorization;
+using Baked.Authorization.ClaimBased;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.Authorization.ClaimBased;
+namespace Baked;
 
-public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumerable<string> _baseClaims)
-    : IFeature<AuthorizationConfigurator>
+public static class ClaimBasedAuthorizationFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<AuthorizationFeature.Configurator> ClaimBased(this AuthorizationFeature.Configurator x,
+        IEnumerable<string>? claims = default,
+        IEnumerable<string>? baseClaims = default
+    ) => x.Define((
+        claims ?? [],
+        baseClaims ?? []
+    ), (configurator, args) =>
     {
+        var (claims, baseClaims) = args;
+
         configurator.Domain.ConfigureConventions(conventions =>
         {
             conventions.SetMethodAttribute(
@@ -27,7 +36,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 
             conventions.Add(new AllowAnonymousIsAllowAnonymousConvention(), order: Order.At.Max);
             conventions.Add(new RequireUserIsAuthorizeConvention(), order: Order.At.Max);
-            conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims), order: Order.At.Max);
+            conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(baseClaims), order: Order.At.Max);
             conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention(), order: Order.At.Max);
         });
 
@@ -40,12 +49,12 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
                 {
                     const string before = "Authorize(Policy = \"";
                     const string after = "\")";
-                    var claims = action.AdditionalAttributes
+                    var requiredClaims = action.AdditionalAttributes
                         .Where(a => a.StartsWith(before) && a.EndsWith(after))
                         .Select(a => a[before.Length..^after.Length])
                     ;
 
-                    return new("required-claims", Value: claims.Any() ? claims.Join(", ") : null);
+                    return new("required-claims", Value: requiredClaims.Any() ? requiredClaims.Join(", ") : null);
                 })
             );
         });
@@ -54,7 +63,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         {
             services.AddAuthorization(options =>
             {
-                foreach (var claim in _claims)
+                foreach (var claim in claims)
                 {
                     options.AddPolicy(claim, policy => policy.RequireClaim(claim));
                 }
@@ -72,5 +81,5 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         {
             api.Usings.Add("Microsoft.AspNetCore.Authorization");
         });
-    }
+    });
 }

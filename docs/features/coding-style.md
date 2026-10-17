@@ -100,6 +100,16 @@ c => c.LocateViaId()
 >
 > Parameter lookup is only supported for types with `Locatable` attribute
 
+A locatable does not get an endpoint to fetch it by its id, e.g.,
+`GET /todos/{id}`, unless it is added explicitly with below extension;
+
+```csharp
+configurator.Domain.ConfigureConventions(conventions =>
+{
+    conventions.AddLocateAction<Todo>();
+});
+```
+
 ## Name based Label
 
 Marks selected string properties as labels by giving `Label` attribute to
@@ -198,7 +208,7 @@ c => c.QueryViaPluralName(
     primaryParameterNames: [...],
     takeParameterNames: [...],
     skipParameterNames: [...],
-    sortParameterNames: [...]
+    sortingParameterNames: [...]
 )
 ```
 
@@ -225,6 +235,20 @@ record parameters render as api endpoints.
 ```csharp
 c => c.RecordsAreDtos()
 ```
+
+> [!WARNING]
+>
+> Validation attributes of a record are only validated when they target its
+> properties. Attributes given to primary constructor parameters are ignored
+> without any error.
+>
+> ```csharp
+> // ignored
+> public record MyRecord([Range(1, 10)] int Value);
+>
+> // validated
+> public record MyRecord([property: Range(1, 10)] int Value);
+> ```
 
 ## Remaining Services are Singleton
 
@@ -261,6 +285,37 @@ Configures routes and swagger docs to use entity methods as resource actions.
 
 ```csharp
 c => c.RichEntity()
+```
+
+## Status Enum via Suffix
+
+Adds `Status` attribute to enum properties with the enum name ending with
+`Status`. It also configures `Severities` using enum values using table below.
+
+```csharp
+c => c.StatusEnumViaSuffix()
+```
+
+| Range   | Severity |
+| ---     | ---      |
+| 100-199 | info     |
+| 200-299 | success  |
+| 400-499 | warn     |
+| 500-599 | danger   |
+
+Below is an example status enum;
+
+```csharp
+public enum RecordStatus
+{
+    Draft          = 000,
+    Preparing      = 100, // info
+    Ready          = 101, // info
+    Sent           = 200, // success
+    SentWithIssues = 400, // warn
+    NeedsRevision  = 401, // warn
+    NotSent        = 500  // danger
+}
 ```
 
 ## Scoped via Suffix

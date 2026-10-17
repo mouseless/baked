@@ -3,11 +3,11 @@ using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-namespace Baked.Ux.ListIsDataTable;
+namespace Baked;
 
-public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
+public static class ListIsDataTableUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> ListIsDataTable(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -71,5 +71,5 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                 }
             );
         });
-    }
+    });
 }

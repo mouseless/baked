@@ -14,7 +14,7 @@ public class FormSample(IStringLocalizer _l, Entities _entities, Parents _parent
     public void NewParent(string surname,
         string? name = default,
         Role? role = default,
-        Status? status = default,
+        ActiveStatus? status = default,
         string? description = default
     )
     {

@@ -114,6 +114,21 @@ method-samples @api-controller {
       @api-parameter required=#true
     }
   }
+  annotated-record-parameters {
+    @api-action route="POST /method-samples/annotated-record-parameters" required-claims="BaseA, BaseB"
+    record {
+      @api-parameter required=#true
+    }
+  }
+  annotated-record-with-validatable {
+    @api-action route="POST /method-samples/annotated-record-with-validatable" required-claims="BaseA, BaseB"
+    record {
+      @api-parameter required=#true
+    }
+    validatable {
+      @api-parameter required=#true
+    }
+  }
   get-primitive-parameters {
     @api-action route="GET /method-samples/primitive-parameters" required-claims="BaseA, BaseB"
     single {
@@ -231,6 +246,18 @@ method-samples @api-controller {
   record-with-resource-async {
     @api-action route="POST /method-samples/record-with-resource-async" required-claims="BaseA, BaseB"
     record {
+      @api-parameter required=#true
+    }
+  }
+  validatable {
+    @api-action route="POST /method-samples/validatable" required-claims="BaseA, BaseB"
+    validatable {
+      @api-parameter required=#true
+    }
+  }
+  validatable-with-results {
+    @api-action route="POST /method-samples/validatable-with-results" required-claims="BaseA, BaseB"
+    validatable {
       @api-parameter required=#true
     }
   }

@@ -1,11 +1,11 @@
 ﻿using Baked.Architecture;
 using Baked.Ui;
 
-namespace Baked.Ux.NumericValuesAreFormatted;
+namespace Baked;
 
-public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
+public static class NumericValuesAreFormattedUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> NumericValuesAreFormatted(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -29,5 +29,5 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
                 when: c => c.Property.PropertyType.SkipNullable().Is<double>()
             );
         });
-    }
+    });
 }

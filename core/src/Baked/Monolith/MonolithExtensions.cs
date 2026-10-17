@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 using Baked.Monolith;
 
 namespace Baked;
@@ -8,7 +7,7 @@ public static class MonolithExtensions
 {
     extension(Bake bake)
     {
-        public Application Monolith(FeatureFunc<BusinessConfigurator> business,
+        public Application Monolith(FeatureFunc<BusinessFeature.Configurator> business,
             Action<MonolithRecipe.Run>? options = default
         )
         {

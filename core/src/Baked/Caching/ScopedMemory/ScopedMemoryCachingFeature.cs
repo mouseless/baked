@@ -1,14 +1,18 @@
 ﻿using Baked.Architecture;
+using Baked.Caching;
+using Baked.Caching.ScopedMemory;
 using Baked.Domain.Configuration;
+using Baked.Testing;
 using Baked.Ui;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
-namespace Baked.Caching.ScopedMemory;
+namespace Baked;
 
-public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
+public static class ScopedMemoryCachingFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CachingFeature.Configurator> ScopedMemory(this CachingFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -37,5 +41,25 @@ public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
                 spec.GiveMe.AMemoryCache(clear: true);
             });
         });
+    });
+
+    extension(Stubber giveMe)
+    {
+        public IMemoryCache AMemoryCache(
+            bool clear = false
+        )
+        {
+            var getMemoryCache = giveMe.The<Func<IMemoryCache>>();
+            var memoryCache = getMemoryCache();
+
+            if (clear)
+            {
+                if (memoryCache is not MemoryCache concreteMemoryCache) { throw new AssertionException("Cache cannot be cleared because it is not a `MemoryCache` instance"); }
+
+                concreteMemoryCache.Clear();
+            }
+
+            return memoryCache;
+        }
     }
 }

@@ -3,12 +3,13 @@ using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Lifetime;
 
-namespace Baked.CodingStyle.ScopedViaSuffix;
+namespace Baked;
 
-public class ScopedViaSuffixCodingStyleFeature(IEnumerable<string> _suffixes)
-    : IFeature<CodingStyleConfigurator>
+public static class ScopedViaSuffixCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> ScopedViaSuffix(this CodingStyleFeature.Configurator x,
+        IEnumerable<string>? suffixes = default
+    ) => x.Define(suffixes ?? ["Context"], (configurator, suffixes) =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -18,9 +19,9 @@ public class ScopedViaSuffixCodingStyleFeature(IEnumerable<string> _suffixes)
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMetadata(out var metadata) &&
                     metadata.Has<Service>() &&
-                    _suffixes.Any(suffix => c.Type.Name.EndsWith(suffix)),
+                    suffixes.Any(suffix => c.Type.Name.EndsWith(suffix)),
                 order: Order.At.Infra
             );
         });
-    }
+    });
 }

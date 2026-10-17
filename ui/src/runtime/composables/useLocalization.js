@@ -25,10 +25,15 @@ export default function({ group } = {}) {
     return result === keyWithGroup ? key : result;
   }
 
+  function compute({ key } = {}) {
+    return localize(key);
+  }
+
   return {
-    localize,
     locale,
     getLocales,
-    setLocale
+    setLocale,
+    localize,
+    compute
   };
 }

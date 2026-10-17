@@ -9,5 +9,5 @@ public record RemoteAction : IAction
     public IData? Query { get; set; }
     public IData? Params { get; set; }
     public IData? Body { get; set; }
-    public IAction PostAction { get; set; } = Execute.Publish.Event("remote-action-complete");
+    public IAction PostAction { get; set; } = Execute.Publish.Event("remote-action-complete", options: pa => pa.Data = Fetch.Context.Response());
 }

@@ -1,11 +1,11 @@
 ﻿using Baked.Architecture;
 using Baked.Ui;
 
-namespace Baked.Ux.PanelParametersAreStateful;
+namespace Baked;
 
-public class PanelParametersAreStatefulUxFeature : IFeature<UxConfigurator>
+public static class PanelParametersAreStatefulUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> PanelParametersAreStateful(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -18,5 +18,5 @@ public class PanelParametersAreStatefulUxFeature : IFeature<UxConfigurator>
                 component: sb => sb.Schema.Stateful = true
             );
         });
-    }
+    });
 }

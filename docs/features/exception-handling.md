@@ -54,9 +54,9 @@ simple detail message.
 
 ### Adding Custom Exception Handlers
 
-To add a custom exception handler, you can create a
-`Baked.IExceptionHandler` implementation and register it in
-`ConfigurationOverriderFeature`.
+To add a custom exception handler, you can create a `Baked.IExceptionHandler`
+implementation and register it in an override feature, see
+[Overrides](../architecture/feature.md#overrides).
 
 Below is a sample for how to create and register an exception handler
 
@@ -71,9 +71,9 @@ public class SampleExceptionHandler : IExceptionHandler
 }
 
 //
-// Add to service collection in ConfigurationOverriderFeature
+// Add to service collection in an override feature
 //
-public class ConfigurationOverriderFeature : IFeature
+public class ServicesRuntimeOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

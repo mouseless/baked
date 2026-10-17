@@ -1,4 +1,8 @@
 export default {
+  avatar: {
+    base: ".p-avatar",
+    icon: ".p-avatar-icon"
+  },
   button: {
     base: ".p-button",
     icon: ".p-button-icon",
@@ -13,6 +17,11 @@ export default {
   },
   checkbox: {
     base: ".p-checkbox"
+  },
+  confirm: {
+    base: ".p-confirmpopup",
+    content: ".p-confirmpopup-content",
+    footer: ".p-confirmpopup-footer"
   },
   datatable: {
     container: ".p-datatable-table-container",
@@ -96,7 +105,8 @@ export default {
     base: ".p-tab"
   },
   tag: {
-    base: ".p-tag"
+    base: ".p-tag",
+    success: ".p-tag-success"
   },
   textarea: {
     base: ".p-textarea"

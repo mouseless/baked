@@ -4,7 +4,7 @@
       :is="component"
       v-if="visible"
       ref="componentRef"
-      :key="loading"
+      :key="`${loading}-${reloading}`"
       :class="classes"
       v-bind="{
         ...$attrs,
@@ -29,6 +29,7 @@
     >
       <InlineError :error />
     </ErrorPopover>
+    <Reloading :reloading />
   </template>
   <InlineError
     v-else
@@ -39,8 +40,16 @@
 </template>
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useActionExecuter, useBakeError, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
-import { ErrorPopover, InlineError } from "#components";
+import {
+  useActionExecuter,
+  useBakeError,
+  useComponentResolver,
+  useContext,
+  useDataFetcher,
+  useFormat,
+  useReactionHandler
+} from "#imports";
+import { ErrorPopover, InlineError, Reloading } from "#components";
 
 const actionExecuter = useActionExecuter();
 const { normalize: normalizeError } = useBakeError();
@@ -71,6 +80,7 @@ const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = !parentLoading.value && dataFetcher.shouldLoad(descriptor.data);
 const loading = ref(shouldLoad);
+const reloading = ref(false);
 const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 const baseAttrs = { };
@@ -137,8 +147,9 @@ if(descriptor.reactions) {
   reactions = reactionHandler.create(`${path}:bake`, {
     reload(success) {
       if(!success) { return; }
+      if(!descriptor.data) { throw new Error(`'${path}' cannot reload, because it has no data`); }
 
-      load();
+      load({ isReload: true });
     },
     show(success) {
       visible.value = success;
@@ -159,8 +170,10 @@ onBeforeUnmount(() => {
   }
 });
 
-async function load() {
-  loading.value = true;
+async function load({ isReload } = {}) {
+  reloading.value = isReload;
+  loading.value = !isReload;
+
   try {
     data.value = await dataFetcher.fetch({
       data: descriptor.data,
@@ -172,6 +185,7 @@ async function load() {
     rawError.value = err;
   }
   loading.value = false;
+  reloading.value = false;
   emit("loaded");
 }
 

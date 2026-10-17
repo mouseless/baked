@@ -1,12 +1,9 @@
 <template>
-  <header
-    :class="{ 'mb-4': shown || loading }"
-    class="mt-4"
-  >
+  <header>
     <AwaitLoading :skeleton="{ height: '1.25em', width: '15em' }">
       <Breadcrumb
-        v-if="data && shown"
-        :home="sitemap['/']"
+        v-if="data"
+        :home="!atHome ? sitemap['/'] : null"
         :model="parts"
         class="!bg-inherit text-sm !p-0"
       >
@@ -33,10 +30,9 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { Breadcrumb } from "primevue";
-import { useContext, useLocalization } from "#imports";
+import { useLocalization } from "#imports";
 import { AwaitLoading } from "#components";
 
-const context = useContext();
 const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
@@ -46,7 +42,6 @@ const { schema, data } = defineProps({
 
 const { sitemap } = schema;
 
-const loading = context.injectLoading();
 const parts = computed(() => {
   if(!data) { return []; }
 
@@ -61,7 +56,7 @@ const parts = computed(() => {
 
   return result;
 });
-const shown = computed(() => data?.path !== "/" && parts.value.length > 0);
+const atHome = computed(() => data?.path === "/");
 
 function findItem(route) {
   if(sitemap[route]) { return sitemap[route]; }

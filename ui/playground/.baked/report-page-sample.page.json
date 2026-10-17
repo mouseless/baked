@@ -266,7 +266,7 @@
                     "required": true,
                     "default": {
                       "type": "Inline",
-                      "value": "Default"
+                      "value": "default"
                     },
                     "component": {
                       "type": "Select",
@@ -428,7 +428,7 @@
                     "required": true,
                     "default": {
                       "type": "Inline",
-                      "value": "Default"
+                      "value": "default"
                     },
                     "component": {
                       "type": "SelectButton",

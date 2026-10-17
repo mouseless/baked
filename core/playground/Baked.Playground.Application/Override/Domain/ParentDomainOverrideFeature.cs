@@ -2,7 +2,6 @@
 using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Playground.Orm;
-using Baked.RestApi.Model;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
@@ -36,9 +35,8 @@ public class ParentDomainOverrideFeature : IFeature
                     component: (pt, c) =>
                     {
                         var addChild = c.Type.GetMembers().Methods[nameof(Parent.AddChild)];
-                        var addChildRoute = addChild.Get<ApiAction>().GetRoute();
 
-                        pt.Schema.Actions.RemoveAll(a => a.Action is RemoteAction ra && ra.Path == addChildRoute);
+                        pt.Schema.Actions.RemoveAll(a => a.Action is PublishAction pa && pa.Event == nameof(Parent.AddChild).Kebaberize());
                     },
                     order: Order.At.Override
                 );
@@ -60,12 +58,6 @@ public class ParentDomainOverrideFeature : IFeature
             conventions.EditMethodSchema<Content>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.AddChild),
                 schema: s => s.Side = true,
-                order: Order.At.Override
-            );
-
-            conventions.EditMethodComponent<SimpleForm>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name is nameof(Parent.AddChild),
-                component: sf => sf.Schema.AlwaysShowTitle = true,
                 order: Order.At.Override
             );
 

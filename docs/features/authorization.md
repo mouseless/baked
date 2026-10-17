@@ -3,7 +3,7 @@
 Add this feature using `AddAuthorization()` extension;
 
 ```csharp
-app.Features.AddAuthorization();
+app.Features.AddAuthorization(...);
 ```
 
 ## Claim Based
@@ -46,11 +46,3 @@ and this handler directly throws;
 - `UnauthorizedAccessException` when forbidden
 
 instead of using `IAuthenticationHandler` fallback methods.
-
-## Disabled
-
-You can disable this feature by calling `Disabled()` method;
-
-```csharp
-c => c.Disabled()
-```

@@ -59,7 +59,7 @@ public class ConfiguringEntityIds : TestSpec
     {
         var newParent = GiveMe.The<Func<Parent>>();
 
-        var parent = newParent().With(GiveMe.AString(), GiveMe.AString(), GiveMe.AnEnum<Status>(), GiveMe.AnEnum<Role>());
+        var parent = newParent().With(GiveMe.AString(), GiveMe.AString(), GiveMe.AnEnum<ActiveStatus>(), GiveMe.AnEnum<Role>());
 
         Guid.TryParse(parent.Id.ToString(), out _).ShouldBeTrue();
     }

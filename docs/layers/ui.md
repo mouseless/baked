@@ -12,20 +12,46 @@ building UI page metadata. A page metadata will have a component descriptor
 (represented by a `ComponentDescriptor` instance) at the top in the hierarchy
 containing `Type`, `Schema`, `Name` and `Data` properties.
 
+## UI Application
+
+Generated metadata is rendered by `@mouseless/baked`, a Nuxt module. Create a
+Nuxt application, install the module and add it to `nuxt.config.ts`;
+
+```bash
+npm install @mouseless/baked
+```
+
+```js
+import Aura from "@primeuix/themes/aura";
+
+export default defineNuxtConfig({
+  modules: ["@mouseless/baked"],
+  baked: {
+    apiBaseURL: "http://localhost:5151",
+    primevue: {
+      theme: Aura
+    }
+  }
+});
+```
+
+Generated UI metadata files are saved to `Ui` folder at `$(OutDir)` of your
+project. To use them in the UI application, set below properties in your
+application's `.csproj` file, so that they are copied to `.baked` folder of the
+UI application on every build;
+
+```xml
+<PropertyGroup>
+  <CopyComponentDescriptors>true</CopyComponentDescriptors>
+  <UiAppDir>$(ProjectDir)..\admin</UiAppDir>
+</PropertyGroup>
+```
+
 > [!NOTE]
 >
-> The generated UI metadata files will be saved to `Ui` folder at `$(OutDir)` of
-> your project, you can add below properties to your `.csproj` file to copy
-> generated files to given directory
->
->```xml
-> <Target Name="SetCopyComponentDescriptors" BeforeTargets="Generate">
->   <PropertyGroup>
->     <CopyComponentDescriptors>true</CopyComponentDescriptors>
->     <UiAppDir>$(ProjectDir)..\admin</UiAppDir>
->   </PropertyGroup>
-> </Target>
->```
+> UI layer is only added when a theme is set, e.g., `Monolith` recipe adds it
+> with `options: o => o.Theme(c => c.Default(...))`, see
+> [Theme](../features/theme.md)
 
 ## Configuration Targets
 
@@ -269,6 +295,6 @@ component.ShowOn("input-changed", Evaluate.Is("show"));
 // shows when `selection` value is valid using a custom validator composable
 // `useMyCustomValidator`
 component.ShowWhen("selection",
-  constraint: Evaluate.Composables.Use("MyCustomValidator")
+  constraint: Evaluate.Composable.Use("MyCustomValidator")
 );
 ```

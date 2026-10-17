@@ -145,12 +145,12 @@
                     "type": "Inline",
                     "value": [
                       {
-                        "label": "Status.Active",
-                        "value": "active"
+                        "label": "ActiveStatus.Passive",
+                        "value": "passive"
                       },
                       {
-                        "label": "Status.Passive",
-                        "value": "passive"
+                        "label": "ActiveStatus.Active",
+                        "value": "active"
                       }
                     ]
                   }

@@ -94,6 +94,12 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public void RecordListParameters(List<Record> records) =>
         _logger.LogInformation($"{nameof(RecordParameters)} was called with {records.Join(", ")}");
 
+    public void AnnotatedRecordParameters(AnnotatedRecord record) =>
+        _logger.LogInformation($"{nameof(AnnotatedRecordParameters)} was called with {record}");
+
+    public void AnnotatedRecordWithValidatable(AnnotatedRecord record, ValidatableWithResults validatable) =>
+        _logger.LogInformation($"{nameof(AnnotatedRecordWithValidatable)} was called with {record} and {validatable}");
+
     public IEnumerable<Value> GetPrimitiveParameters(Value single, IEnumerable<Value> enumerable, Value[] array) =>
         [single, .. enumerable, .. array];
 
@@ -159,4 +165,10 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
 
     internal Internal Internal() =>
         new();
+
+    public Validatable Validatable(Validatable validatable) =>
+        validatable;
+
+    public ValidatableWithResults ValidatableWithResults(ValidatableWithResults validatable) =>
+        validatable;
 }

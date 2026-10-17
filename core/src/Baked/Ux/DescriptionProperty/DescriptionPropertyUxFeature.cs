@@ -4,11 +4,11 @@ using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
-namespace Baked.Ux.DescriptionProperty;
+namespace Baked;
 
-public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
+public static class DescriptionPropertyUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> DescriptionProperty(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -66,5 +66,5 @@ public class DescriptionPropertyUxFeature : IFeature<UxConfigurator>
                 component: d => d.Schema.Content.Data ??= Fetch.Context.Parent()
             );
         });
-    }
+    });
 }

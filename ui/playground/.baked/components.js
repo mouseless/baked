@@ -1,5 +1,6 @@
 import {
-    Button,
+    Avatar,
+	Button,
 	CardLink,
 	Check,
 	Composite,
@@ -50,13 +51,15 @@ import {
 	SimpleForm,
 	SimplePage,
 	TabbedPage,
+	Tag,
 	Text,
 	Textarea,
 	TextLink
 } from "#components";
 
 export {
-    Button,
+    Avatar,
+	Button,
 	CardLink,
 	Check,
 	Composite,
@@ -107,6 +110,7 @@ export {
 	SimpleForm,
 	SimplePage,
 	TabbedPage,
+	Tag,
 	Text,
 	Textarea,
 	TextLink

@@ -29,6 +29,7 @@ test.describe("Multi Level", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.breadcrumb.label)).toHaveText([
+      "Home",
       "Root Page",
       "Mid Page",
       "Leaf Page"
@@ -60,26 +61,6 @@ test.describe("Wildcard", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.breadcrumb.link).last()).toHaveText("Entity");
-  });
-});
-
-test.describe("Hidden at Home", () => {
-  const id = "Hidden at Home";
-
-  test("breadcrumb not attached", async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(primevue.breadcrumb.base)).not.toBeAttached();
-  });
-});
-
-test.describe("Hidden at Unknown", () => {
-  const id = "Hidden at Unknown";
-
-  test("breadcrumb not attached", async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(primevue.breadcrumb.base)).not.toBeAttached();
   });
 });
 

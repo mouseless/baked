@@ -1,10 +1,11 @@
 ﻿using Baked.Architecture;
+using Baked.CodingStyle.FlagsEnum;
 
-namespace Baked.CodingStyle.FlagsEnum;
+namespace Baked;
 
-public class FlagsEnumCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class FlagsEnumCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> FlagsEnum(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.DataAccess.ConfigureAutoPersistenceModel(model =>
         {
@@ -15,5 +16,5 @@ public class FlagsEnumCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             options.SerializerSettings.Converters.Insert(0, new FlagsEnumJsonConverter());
         });
-    }
+    });
 }

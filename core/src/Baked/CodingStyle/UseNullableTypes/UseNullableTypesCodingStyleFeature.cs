@@ -1,17 +1,19 @@
 ﻿using Baked.Architecture;
 using Baked.Binding;
+using Baked.CodingStyle.UseNullableTypes;
 using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Baked.CodingStyle.UseNullableTypes;
+namespace Baked;
 
-public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public static class UseNullableTypesCodingStyleFeature
 {
-    NullabilityInfoContext _nullability = new();
-
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> UseNullableTypes(this CodingStyleFeature.Configurator x) => x.Define(new NullabilityInfoContext(), (configurator, nullability) =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -30,7 +32,7 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                     var nullable = c.Parameter.ParameterType.IsAssignableTo(typeof(Nullable<>));
                     c.Parameter.Apply(p =>
                     {
-                        nullable = nullable || _nullability.Create(p).WriteState is NullabilityState.Nullable;
+                        nullable = nullable || nullability.Create(p).WriteState is NullabilityState.Nullable;
                     });
 
                     return !nullable;
@@ -57,5 +59,28 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                 "System.ComponentModel.DataAnnotations"
             ]);
         });
+    });
+
+    extension(ApiParameter parameter)
+    {
+        public bool HasRequiredAttributes =>
+            parameter.AdditionalAttributes.Contains(nameof(BindRequiredAttribute)) ||
+            parameter.AdditionalAttributes.Contains(nameof(RequiredAttribute));
+
+        public void AddRequiredAttributes(bool isValueType)
+        {
+            if (parameter.FromRoute || parameter.FromServices) { return; }
+
+            if (isValueType)
+            {
+                parameter.AdditionalAttributes.Add(nameof(BindRequiredAttribute));
+            }
+            else
+            {
+                parameter.AdditionalAttributes.Add(nameof(RequiredAttribute));
+            }
+
+            parameter.AdditionalAttributes.Add($"{nameof(JsonPropertyAttribute)}(Required = {nameof(Required)}.{Required.Always})");
+        }
     }
 }

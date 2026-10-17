@@ -100,8 +100,8 @@ test.describe("Highlight", () => {
   test("button color", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("button").nth(0)).toHaveClass(/p-button-primary/);
-    await expect(component.locator("button").nth(1)).toHaveClass(/p-button-secondary/);
+    await expect(component.locator("button").nth(0)).toHaveClass(/bg-slate-200 dark:bg-zinc-800/);
+    await expect(component.locator("button").nth(1)).not.toHaveClass(/bg-slate-200 dark:bg-zinc-800/);
   });
 });
 

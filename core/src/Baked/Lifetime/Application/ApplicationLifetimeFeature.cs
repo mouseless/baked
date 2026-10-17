@@ -1,10 +1,14 @@
 ﻿using Baked.Architecture;
+using Baked.Domain;
+using Baked.Domain.Model;
+using Baked.Lifetime;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.Lifetime.Application;
+namespace Baked;
 
-public class ApplicationLifetimeFeature : IFeature<LifetimeConfigurator>
+public static class ApplicationLifetimeFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<LifetimeFeature.Configurator> Application(this LifetimeFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureBuilder(builder =>
         {
@@ -18,5 +22,12 @@ public class ApplicationLifetimeFeature : IFeature<LifetimeConfigurator>
                 services.AddSingleton(singleton, forward: true);
             }
         });
+    });
+
+    extension(DomainServiceCollection services)
+    {
+        public void AddSingleton(TypeModel type,
+            bool forward = false
+        ) => services.Add(type, ServiceLifetime.Singleton, forward: forward);
     }
 }

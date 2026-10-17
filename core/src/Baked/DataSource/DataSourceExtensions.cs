@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 using Baked.DataSource;
 
 namespace Baked;
@@ -8,7 +7,7 @@ public static class DataSourceExtensions
 {
     extension(Bake bake)
     {
-        public Application DataSource(FeatureFunc<BusinessConfigurator> business,
+        public Application DataSource(FeatureFunc<BusinessFeature.Configurator> business,
             Action<DataSourceRecipe.Run>? options = default
         )
         {

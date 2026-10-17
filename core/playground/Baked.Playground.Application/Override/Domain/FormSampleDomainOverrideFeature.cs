@@ -34,6 +34,17 @@ public class FormSampleDomainOverrideFeature : IFeature
                 order: Order.At.Infra
             );
 
+            conventions.EditMethodSchema<RemoteAction>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name is nameof(FormSample.ClearParents),
+                schema: b => b.PostAction = Execute.Publish.Event("parent:update", empty: true),
+                order: Order.At.Override
+            );
+            conventions.EditMethodComponent<DataTable>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name is nameof(FormSample.GetParentsRole),
+                component: dt => dt.ReloadOn("parent:update"),
+                order: Order.At.Override
+            );
+
             conventions.EditMethodComponent<FormPage>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name is nameof(FormSample.NewParent),
                 component: fp =>
@@ -43,13 +54,6 @@ public class FormSampleDomainOverrideFeature : IFeature
                     fp.Schema.Validations ??= [];
                     fp.Schema.Validations.AddFormSampleValidation();
                 },
-                order: Order.At.Override
-            );
-
-            // Properties
-            conventions.AddPropertyComponent<Text>(
-                when: c => c.Property.PropertyType.SkipNullable().IsEnum,
-                where: cc => cc.Path.StartsWith("page", "form-sample"),
                 order: Order.At.Override
             );
         });

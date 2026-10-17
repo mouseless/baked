@@ -10,12 +10,13 @@
         label: { class: 'hidden max-md:inline 2xl:inline' }
       }"
       class="
-        py-3 px-4 gap-4 justify-start
+        w-full py-3 px-4
+        justify-start gap-4
         max-md:w-full max-md:py-2
-        2xl:w-full 2xl:py-2
+        md:rounded-none
+        2xl:w-full 2xl:py-2 2xl:rounded-full
       "
       type="button"
-      size="large"
       severity="secondary"
       aria-haspopup="true"
       aria-controls="overlay_menu"

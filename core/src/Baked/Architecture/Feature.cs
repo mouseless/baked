@@ -1,12 +1,10 @@
 ﻿namespace Baked.Architecture;
 
-public sealed class Feature
+internal class Feature<T>(string _id, Action<LayerConfigurator> _configure)
+    : IFeature<T>
 {
-    public static IFeature<T> Empty<T>() => new EmptyFeature<T>();
+    public string Id => _id;
 
-    class EmptyFeature<T> : IFeature<T>
-    {
-        public string Id => $"{nameof(EmptyFeature<>)}<{typeof(T).Name}>";
-        public void Configure(LayerConfigurator configurator) { }
-    }
+    public void Configure(LayerConfigurator configurator) =>
+        _configure(configurator);
 }

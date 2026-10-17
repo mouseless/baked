@@ -17,6 +17,9 @@ public static class Exceptions
             extraData: new() { [nameof(id)] = id.ToString() }
         );
 
+    public class ValidatableNotValidException()
+        : HandledException("Left and right must be the same");
+
     extension(Validate validate)
     {
         public Validate Unique<T>(T? value, T? current, Func<T, object?> find,

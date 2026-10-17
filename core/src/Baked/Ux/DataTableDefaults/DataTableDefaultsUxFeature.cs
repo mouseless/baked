@@ -4,12 +4,13 @@ using Baked.Domain.Configuration;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Humanizer;
 
-namespace Baked.Ux.DataTableDefaults;
+namespace Baked;
 
-public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
+public static class DataTableDefaultsUxFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<UxFeature.Configurator> DataTableDefaults(this UxFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -77,6 +78,28 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 order: 10
             );
 
+            // fix publish event names under data table actions to avoid name collision
+            conventions.EditMethodComponent<Button>(
+                where: cc => cc.Path.Contains("data-table", "actions"),
+                component: (b, c) =>
+                {
+                    if (b.Action is not PublishAction publish) { return; }
+                    if (publish.Event != c.Method.Name.Kebaberize()) { return; }
+
+                    publish.Event = $"{c.Type.Name.Kebaberize()}:{publish.Event}";
+                }
+            );
+            conventions.EditMethodSchema<RemoteAction>(
+                where: cc => cc.Path.Contains("data-table", "actions"),
+                schema: (ra, c) =>
+                {
+                    if (ra.PostAction is not PublishAction publish) { return; }
+                    if (publish.Event != c.Method.Name.Kebaberize()) { return; }
+
+                    publish.Event = $"{c.Type.Name.Kebaberize()}:{publish.Event}";
+                }
+            );
+
             conventions.EditMethodComponent<DataTable>(
                 component: dt =>
                 {
@@ -85,11 +108,13 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
 
                     foreach (var component in composite.Parts)
                     {
-                        if (component.Action is not RemoteAction remote) { continue; }
-                        if (remote.PostAction is not PublishAction publish) { continue; }
-                        if (publish.Event is null) { continue; }
+                        var @event =
+                            component.Action is RemoteAction remote && remote.PostAction is PublishAction postPublish ? postPublish.Event :
+                            component.Action is PublishAction publish ? publish.Event :
+                            null;
+                        if (@event is null) { continue; }
 
-                        dt.ReloadOn(publish.Event);
+                        dt.ReloadOn(@event);
                     }
                 }
             );
@@ -128,5 +153,5 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 button.Schema.Rounded = true;
             }
         });
-    }
+    });
 }

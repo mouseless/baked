@@ -1,10 +1,9 @@
 <template>
-  <AwaitLoading
-    :skeleton="{ height: '1.5em', width: '10em' }"
-    no-error
-  >
-    <span :data-testid="testId">{{ value }}</span>
-  </AwaitLoading>
+  <span :data-testid="testId">
+    <AwaitLoading no-error>
+      {{ value }}
+    </AwaitLoading>
+  </span>
 </template>
 <script setup>
 import { onMounted, ref } from "vue";

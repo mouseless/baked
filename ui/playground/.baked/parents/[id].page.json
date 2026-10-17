@@ -8,58 +8,85 @@
         "description": "/parents/[id]:Description",
         "actions": [
           {
-            "type": "SimpleForm",
+            "type": "Button",
             "schema": {
-              "title": "Update",
-              "submit": {
-                "label": "Update",
-                "severity": "primary"
-              },
-              "inputs": [
-                {
-                  "name": "name",
-                  "component": {
-                    "type": "InputText",
-                    "schema": {
-                      "label": {
-                        "text": "Name",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                },
-                {
-                  "name": "surname",
-                  "component": {
-                    "type": "InputText",
-                    "schema": {
-                      "label": {
-                        "text": "Surname",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                },
-                {
-                  "name": "description",
-                  "component": {
-                    "type": "Textarea",
-                    "schema": {
-                      "label": {
-                        "text": "Description",
-                        "mode": "ifta",
-                        "showOptionality": true
-                      }
-                    }
-                  }
-                }
-              ],
+              "icon": "pi pi-pencil",
+              "label": "Update",
               "dialogOptions": {
-                "open": {
-                  "icon": "pi pi-pencil",
-                  "label": "Update"
+                "mode": "Confirm",
+                "header": "Update",
+                "form": {
+                  "type": "SimpleForm",
+                  "schema": {
+                    "inputs": [
+                      {
+                        "name": "name",
+                        "component": {
+                          "type": "InputText",
+                          "schema": {
+                            "label": {
+                              "text": "Name",
+                              "mode": "ifta",
+                              "showOptionality": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "name": "surname",
+                        "component": {
+                          "type": "InputText",
+                          "schema": {
+                            "label": {
+                              "text": "Surname",
+                              "mode": "ifta",
+                              "showOptionality": true
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "name": "description",
+                        "component": {
+                          "type": "Textarea",
+                          "schema": {
+                            "label": {
+                              "text": "Description",
+                              "mode": "ifta",
+                              "showOptionality": true
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "submit": {
+                      "label": "Update",
+                      "severity": "primary"
+                    }
+                  },
+                  "action": {
+                    "type": "Remote",
+                    "path": "parents/{id}/",
+                    "method": "PUT",
+                    "params": {
+                      "type": "Computed",
+                      "composable": "useNuxtRoute",
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "params"
+                        }
+                      }
+                    },
+                    "body": {
+                      "type": "Context",
+                      "key": "model"
+                    },
+                    "postAction": {
+                      "type": "Publish",
+                      "event": "close-dialog"
+                    }
+                  }
                 },
                 "cancel": {
                   "label": "Cancel",
@@ -68,48 +95,42 @@
               }
             },
             "action": {
-              "type": "Remote",
-              "path": "parents/{id}/",
-              "method": "PUT",
-              "params": {
-                "type": "Computed",
-                "composable": "useNuxtRoute",
-                "options": {
-                  "type": "Inline",
-                  "value": {
-                    "property": "params"
-                  }
-                }
-              },
-              "body": {
-                "type": "Context",
-                "key": "model"
-              },
-              "postAction": {
-                "type": "Publish",
-                "event": "update"
-              }
+              "type": "Publish",
+              "event": "update"
             }
           },
           {
-            "type": "SimpleForm",
+            "type": "Button",
             "schema": {
-              "title": "Delete",
-              "submit": {
-                "label": "Delete",
-                "severity": "danger"
-              },
-              "inputs": [],
+              "icon": "pi pi-trash",
+              "label": "Delete",
               "dialogOptions": {
-                "open": {
-                  "icon": "pi pi-trash",
-                  "label": "Delete"
+                "mode": "Confirm",
+                "header": "Delete",
+                "content": {
+                  "type": "Text",
+                  "schema": {
+                    "maxLength": 100
+                  },
+                  "data": {
+                    "type": "Computed",
+                    "composable": "useLocalization",
+                    "options": {
+                      "type": "Inline",
+                      "value": {
+                        "key": "Are you sure?"
+                      }
+                    }
+                  }
+                },
+                "submit": {
+                  "label": "Delete",
+                  "severity": "danger"
                 },
                 "cancel": {
                   "label": "Cancel",
                   "variant": "text"
-                },
-                "message": "Are you sure?"
+                }
               }
             },
             "action": {
@@ -190,8 +211,11 @@
                 "key": "status",
                 "label": "Status",
                 "component": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "Tag",
+                  "schema": {
+                    "localizationPrefix": "ActiveStatus",
+                    "localizeText": true
+                  },
                   "data": {
                     "type": "Context",
                     "key": "parent",
@@ -203,8 +227,11 @@
                 "key": "role",
                 "label": "Role",
                 "component": {
-                  "type": "Text",
-                  "schema": {},
+                  "type": "Tag",
+                  "schema": {
+                    "localizationPrefix": "Role",
+                    "localizeText": true
+                  },
                   "data": {
                     "type": "Context",
                     "key": "parent",
@@ -336,10 +363,6 @@
           "type": "SimpleForm",
           "schema": {
             "title": "Add Child",
-            "submit": {
-              "label": "Add Child",
-              "severity": "primary"
-            },
             "inputs": [
               {
                 "name": "name",
@@ -356,7 +379,10 @@
                 }
               }
             ],
-            "alwaysShowTitle": true
+            "submit": {
+              "label": "Add Child",
+              "severity": "primary"
+            }
           },
           "action": {
             "type": "Remote",

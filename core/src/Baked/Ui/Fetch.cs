@@ -42,6 +42,9 @@ public static class Fetch
             Action<ComputedData>? options = default
         ) => Use("NuxtError", options: options);
 
+        public ComputedData UseLocalization(string key) =>
+            Use("Localization", options: cd => cd.Options = Inline(new { key }));
+
         public ComputedData UseLoginRedirect(
             Action<ComputedData>? options = default
         ) => Use("LoginRedirect", options: options);

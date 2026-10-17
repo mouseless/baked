@@ -1,12 +1,14 @@
 ﻿using Baked.Architecture;
+using Baked.Logging.Request;
 using Microsoft.Extensions.Logging;
 
-namespace Baked.Logging.Request;
+namespace Baked;
 
-public class RequestLoggingFeature(bool singleLine)
-    : IFeature<LoggingConfigurator>
+public static class RequestLoggingFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<LoggingFeature.Configurator> Request(this LoggingFeature.Configurator x,
+        bool singleLine = false
+    ) => x.Define(configurator =>
     {
         configurator.Runtime.ConfigureConfigurationBuilder(configuration =>
         {
@@ -36,5 +38,5 @@ public class RequestLoggingFeature(bool singleLine)
         {
             middlewares.Add<MappedMethodLogScopeMiddleware>(order: -20);
         });
-    }
+    });
 }

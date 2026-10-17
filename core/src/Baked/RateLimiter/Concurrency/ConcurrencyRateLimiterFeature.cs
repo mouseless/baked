@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
-namespace Baked.RateLimiter.Concurrency;
+namespace Baked;
 
-public class ConcurrencyRateLimiterFeature(
-    Setting<int>? _permitLimit = default,
-    Setting<int>? _queueLimit = default
-) : IFeature<RateLimiterConfigurator>
+public static class ConcurrencyRateLimiterFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<RateLimiterFeature.Configurator> Concurrency(this RateLimiterFeature.Configurator x,
+        Setting<int>? permitLimit = default,
+        Setting<int>? queueLimit = default
+    ) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -28,16 +28,16 @@ public class ConcurrencyRateLimiterFeature(
             services.AddRateLimiter(options =>
                 options.AddConcurrencyLimiter(policyName: "Concurrency", options =>
                 {
-                    options.PermitLimit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment ? 5 : 20);
+                    options.PermitLimit = permitLimit?.GetValue() ?? (configurator.IsDevelopment ? 5 : 20);
                     options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                    options.QueueLimit = _queueLimit?.GetValue() ?? (configurator.IsDevelopment ? 100 : 1000);
+                    options.QueueLimit = queueLimit?.GetValue() ?? (configurator.IsDevelopment ? 100 : 1000);
                 })
             );
         });
 
         configurator.Runtime.ConfigureThreadOptions(options =>
         {
-            var limit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment ? 5 : 20);
+            var limit = permitLimit?.GetValue() ?? (configurator.IsDevelopment ? 5 : 20);
             options.MinThreadCount = limit * 2;
             options.MaxThreadCount = limit * 4;
         });
@@ -51,5 +51,5 @@ public class ConcurrencyRateLimiterFeature(
         {
             api.Usings.Add("Microsoft.AspNetCore.RateLimiting");
         });
-    }
+    });
 }

@@ -3,12 +3,11 @@ using Baked.Business;
 using Baked.Domain.Configuration;
 using Baked.Lifetime;
 
-namespace Baked.CodingStyle.RemainingServicesAreSingleton;
+namespace Baked;
 
-public class RemainingServicesAreSingletonCodingStyleFeature()
-    : IFeature<CodingStyleConfigurator>
+public static class RemainingServicesAreSingletonCodingStyleFeature
 {
-    public void Configure(LayerConfigurator configurator)
+    public static IFeature<CodingStyleFeature.Configurator> RemainingServicesAreSingleton(this CodingStyleFeature.Configurator x) => x.Define(configurator =>
     {
         configurator.Domain.ConfigureConventions(conventions =>
         {
@@ -24,5 +23,5 @@ public class RemainingServicesAreSingletonCodingStyleFeature()
                order: Order.At.Max
             );
         });
-    }
+    });
 }

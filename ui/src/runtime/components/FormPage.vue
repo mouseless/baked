@@ -10,10 +10,9 @@
       >
         <Button
           ref="submitRef"
-          v-tooltip.left="{
+          :validation-summary="{
             disabled: !showValidationSummary,
-            value: messages,
-            pt: { text: 'text-sm' }
+            messages
           }"
           :schema="submit"
           :ready
