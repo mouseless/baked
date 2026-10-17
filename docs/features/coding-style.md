@@ -100,6 +100,16 @@ c => c.LocateViaId()
 >
 > Parameter lookup is only supported for types with `Locatable` attribute
 
+A locatable does not get an endpoint to fetch it by its id, e.g.,
+`GET /todos/{id}`, unless it is added explicitly with below extension;
+
+```csharp
+configurator.Domain.ConfigureConventions(conventions =>
+{
+    conventions.AddLocateAction<Todo>();
+});
+```
+
 ## Name based Label
 
 Marks selected string properties as labels by giving `Label` attribute to

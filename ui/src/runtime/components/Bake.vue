@@ -147,6 +147,7 @@ if(descriptor.reactions) {
   reactions = reactionHandler.create(`${path}:bake`, {
     reload(success) {
       if(!success) { return; }
+      if(!descriptor.data) { throw new Error(`'${path}' cannot reload, because it has no data`); }
 
       load({ isReload: true });
     },

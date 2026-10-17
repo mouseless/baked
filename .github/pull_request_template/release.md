@@ -9,6 +9,7 @@
   - [ ] npm packages
     - [ ] Apply `npm audit fix`
 - [ ] Add release notes
+- [ ] Update docs to fix any inconsistencies
 - [ ] Update `baked` version
     - [ ] `core/src/Directory.Build.props`
     - [ ] `ui/package.json`

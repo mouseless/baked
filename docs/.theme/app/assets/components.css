@@ -160,6 +160,10 @@
   }
 
   /* OUTER CONTENT */
+  .c--column pre {
+    @apply text-[smaller];
+  }
+
   .c--outer-content {
     @apply grid grid-rows-[65px_1fr] grid-cols-(--width-side);
     grid-template-areas:
