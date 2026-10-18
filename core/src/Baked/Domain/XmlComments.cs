@@ -6,7 +6,8 @@ namespace Baked.Domain;
 
 public class XmlComments
 {
-    static ConcurrentDictionary<Assembly, XmlNode> _comments = new();
+    static readonly ConcurrentDictionary<Assembly, XmlNode> _comments = new();
+    static readonly ConcurrentDictionary<Assembly, Dictionary<string, XmlNode>> _members = new();
 
     public static string? GetPath(Assembly? assembly)
     {
@@ -40,27 +41,21 @@ public class XmlComments
     {
         if (type is null) { return null; }
 
-        return
-            Get(type.Assembly)
-            ?.SelectSingleNode(MemberPath(XmlName(type)));
+        return GetMember(type.Assembly, XmlName(type));
     }
 
     public static XmlNode? Get(PropertyInfo? propertyInfo)
     {
         if (propertyInfo is null) { return null; }
 
-        return
-            Get(propertyInfo.ReflectedType?.Assembly)
-            ?.SelectSingleNode(MemberPath(XmlName(propertyInfo)));
+        return GetMember(propertyInfo.ReflectedType?.Assembly, XmlName(propertyInfo));
     }
 
     public static XmlNode? Get(MethodInfo? methodInfo)
     {
         if (methodInfo is null) { return null; }
 
-        return
-            Get(methodInfo.ReflectedType?.Assembly)
-            ?.SelectSingleNode(MemberPath(XmlName(methodInfo)));
+        return GetMember(methodInfo.ReflectedType?.Assembly, XmlName(methodInfo));
     }
 
     public static XmlNode? Get(ParameterInfo? parameterInfo, XmlNode? methodDocumentation)
@@ -71,8 +66,26 @@ public class XmlComments
         return methodDocumentation?.SelectSingleNode(ParamPath(parameterInfo.Name));
     }
 
-    static string MemberPath(string name) =>
-        $"members/member[@name='{name}']";
+    static XmlNode? GetMember(Assembly? assembly, string name)
+    {
+        if (assembly is null) { return null; }
+
+        return _members.GetOrAdd(assembly, static a => IndexMembers(Get(a))).GetValueOrDefault(name);
+    }
+
+    static Dictionary<string, XmlNode> IndexMembers(XmlNode? document)
+    {
+        var result = new Dictionary<string, XmlNode>();
+        foreach (var member in document?.SelectNodes("members/member")?.OfType<XmlNode>() ?? [])
+        {
+            var name = member.Attributes?["name"]?.Value;
+            if (name is null) { continue; }
+
+            result.TryAdd(name, member);
+        }
+
+        return result;
+    }
 
     static string ParamPath(string? name) =>
         $"param[@name='{name}']";
