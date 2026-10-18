@@ -25,6 +25,10 @@ public class DomainLayer : LayerBase<Prepare, Generate, AddServices>
 
     protected override PhaseContext GetContext(Prepare phase)
     {
+        // NOTE humanizer builds its pluralization rules on first use, so it is
+        // warmed up in background while domain model is being built
+        Task.Run(() => "warm-up".Pluralize());
+
         Context.Add(_domainTypes);
         IDisposable diagnostics = Diagnostics.Start(nameof(DomainLayer));
 
