@@ -5,12 +5,11 @@ using Baked.Domain.Export;
 using Humanizer;
 
 using static Baked.Buildtime.BuildtimeLayer;
-using static Baked.Domain.DomainLayer;
 using static Baked.Runtime.RuntimeLayer;
 
 namespace Baked.Domain;
 
-public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
+public class DomainLayer : LayerBase<Prepare, Generate, AddServices>
 {
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
@@ -24,8 +23,9 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
         _conventions = new DomainModelConventionCollection(_builderOptions);
     }
 
-    protected override PhaseContext GetContext(AddDomainTypes phase)
+    protected override PhaseContext GetContext(Prepare phase)
     {
+        Context.Add(_domainTypes);
         IDisposable diagnostics = Diagnostics.Start(nameof(DomainLayer));
 
         return phase.CreateContextBuilder()
@@ -93,17 +93,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, Generate, AddServices>
 
     protected override IEnumerable<IPhase> GetGeneratePhases()
     {
-        yield return new AddDomainTypes(_domainTypes);
         yield return new BuildDomainModel(_builderOptions, _conventions);
-    }
-
-    public class AddDomainTypes(IDomainTypeCollection _domainTypes)
-        : PhaseBase(PhaseOrder.Earliest)
-    {
-        protected override void Initialize()
-        {
-            Context.Add(_domainTypes);
-        }
     }
 
     public class BuildDomainModel(DomainModelBuilderOptions _builderOptions, IDomainModelConventionCollection _conventions)

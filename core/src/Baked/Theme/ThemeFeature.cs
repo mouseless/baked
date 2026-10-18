@@ -1241,7 +1241,7 @@ public static class ThemeFeature
         public TSchema GenerateRequiredSchema<TSchema>(ComponentContext context) =>
             metadata.GenerateSchema<TSchema>(context) ??
             throw DiagnosticCode.MissingRequiredSchema.Exception(
-                $"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`"
+                $"`{metadata.CustomAttributes.Name}` doesn't have a generator for schema type `{typeof(TSchema).Name}` at path `{context.Path}`"
             );
 
         public TSchema? GenerateSchema<TSchema>(ComponentContext context)
@@ -1260,7 +1260,7 @@ public static class ThemeFeature
         public ComponentDescriptor<T> GenerateRequiredComponent<T>(ComponentContext context) where T : IComponentSchema =>
             metadata.GenerateRequiredComponent(context, componentType: typeof(T), omitWarningMessage: true) as ComponentDescriptor<T> ??
             throw DiagnosticCode.MissingRequiredComponentOfType.Exception(
-                $"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`"
+                $"`{metadata.CustomAttributes.Name}` doesn't have a component generator of type `{typeof(T).Name}` at path `{context.Path}`"
             );
 
         public IComponentDescriptor GenerateRequiredComponent(ComponentContext context,
@@ -1274,7 +1274,7 @@ public static class ThemeFeature
             if (!omitWarningMessage)
             {
                 var message =
-                    $"`{metadata.CustomAttributes.Name}` doesn't have any component descriptor" +
+                    $"`{metadata.CustomAttributes.Name}` doesn't have any component generator" +
                     $"{(componentType is null ? string.Empty : $" of type {componentType.Name}")}" +
                     $" at path `{context.Path}`";
 

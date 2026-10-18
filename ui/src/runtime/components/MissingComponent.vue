@@ -116,34 +116,30 @@ const highlightedData = computed(() => {
 });
 
 function renderTypeSample([ type ]) {
-  return String.raw`conventions.AddTypeComponent${component ? `<${component}>` : ""}(
+  return String.raw`conventions.AddTypeComponent<${component ?? "Text"}>(
     when: c => c.Type.Is<${type}>(),
-    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
-    component: () => ${component ? "..." : "B.Text()"}
+    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")})
 );`;
 }
 
 function renderPropertySample([ type, property ]) {
-  return String.raw`conventions.AddPropertyComponent${component ? `<${component}>` : ""}(
+  return String.raw`conventions.AddPropertyComponent<${component ?? "Text"}>(
     when: c => c.Type.Is<${type}>() && c.Property.Name is nameof(${type}.${property}),
-    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
-    component: () => ${component ? "..." : "B.Text()"}
+    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")})
 );`;
 }
 
 function renderMethodSample([ type, method ]) {
-  return String.raw`conventions.AddMethodComponent${component ? `<${component}>` : ""}(
+  return String.raw`conventions.AddMethodComponent<${component ?? "DataTable"}>(
     when: c => c.Type.Is<${type}>() && c.Method.Name is nameof(${type}.${method}),
-    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
-    component: () => ${component ? "..." : "B.DataTable()"}
+    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")})
 );`;
 }
 
 function renderParameterSample([ type, method, parameter ]) {
-  return String.raw`conventions.AddParameterComponent${component ? `<${component}>` : ""}(
+  return String.raw`conventions.AddParameterComponent<${component ?? "InputText"}>(
     when: c => c.Type.Is<${type}>() && c.Method.Name is nameof(${type}.${method}) && c.Parameter.Name is "${parameter}",
-    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
-    component: () => ${component ? "..." : "B.InputText()"}
+    where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")})
 );`;
 }
 

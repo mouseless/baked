@@ -20,7 +20,7 @@
   <Target Name="Generate" AfterTargets="AfterBuild" Condition="'$(SkipGenerate)' != 'true'">
     <Exec
       Command="dotnet $(TargetPath) --no-build --no-start --generate $(GenerateArgs) -c $(Configuration)"
-      EnvironmentVariables="BAKED_PROJECT_DIR=$(MSBuildProjectDirectory)"
+      EnvironmentVariables="BAKED_PROJECT_DIR=$(MSBuildProjectDirectory);DOTNET_TieredPGO=0"
       IgnoreStandardErrorWarningFormat="true"
     />
   </Target>

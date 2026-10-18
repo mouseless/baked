@@ -23,6 +23,11 @@ public static class BuildtimeExtensions
             _configurator.Use(configuration);
     }
 
+    extension(DiagnosticCode)
+    {
+        public static DiagnosticCode CompileError => new(401, "compile-error");
+    }
+
     extension(LayerConfigurator configurator)
     {
         public Configurator Buildtime => new(configurator);

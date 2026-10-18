@@ -13,6 +13,23 @@ public class CompilerErrors : TestSpec
     }
 
     [Test]
+    public void Compiler_error_starts_with_assembly_name_and_error_count()
+    {
+        var compiler = GiveMe.ACompiler(code: """
+        public class Sample
+        {
+            public int Foo() => "foo";
+            public int Bar() => "bar";
+        }
+        """);
+
+        var compile = () => compiler.Compile(GiveMe.ALocation());
+
+        var message = compile.ShouldThrow<Exception>().Message;
+        message.Split(Environment.NewLine)[0].ShouldBe("`Baked.g.Test` failed with 2 compile error(s)");
+    }
+
+    [Test]
     public void Compiler_throws_error_with_closest_method_decleration()
     {
         var compiler = GiveMe.ACompiler(code: """

@@ -910,7 +910,7 @@ public static class DefaultThemeFeature
                             metadata.GenerateSchema<ComputedData>(cc) as IData ??
                             metadata.GenerateSchema<RemoteData>(cc) ??
                             throw DiagnosticCode.MissingRequiredSchema.Exception(
-                                $"`{c.Parameter.CustomAttributes.Name} or {metadata.CustomAttributes.Name}` is required to have descriptor" +
+                                $"`{c.Parameter.CustomAttributes.Name} or {metadata.CustomAttributes.Name}` is required to have a generator" +
                                 $" for schema type `{nameof(InlineData)}`, `{nameof(ComputedData)}` or `{nameof(RemoteData)}` at path `{cc.Path}`"
                             );
                         ;

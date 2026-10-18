@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text;
 
@@ -7,6 +8,29 @@ namespace Baked.Buildtime;
 
 public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 {
+    static readonly ConcurrentDictionary<string, MetadataReference> _metadataReferences = new();
+
+    internal static void WarmUp(Assembly assembly) =>
+        Task.Run(() =>
+        {
+            var compiler = new Compiler(new("WarmUp"));
+            compiler.AddReference(assembly);
+
+            CSharpCompilation.Create(
+                assemblyName: "WarmUp",
+                syntaxTrees: [CSharpSyntaxTree.ParseText("""
+                    using System.Linq;
+
+                    public class WarmUp
+                    {
+                        public int Sum(int[] items) => items.Where(i => i > 0).Sum();
+                    }
+                    """)],
+                references: compiler._references.Values,
+                options: new(OutputKind.DynamicallyLinkedLibrary)
+            ).Emit(Stream.Null);
+        });
+
     readonly Dictionary<string, MetadataReference> _references = new();
 
     public string Compile(string assemblyLocation,
@@ -72,7 +96,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
                 errors.AppendLine();
             }
 
-            throw new Exception($"{errors}");
+            throw new Exception($"`{assemblyName}` failed with {failures.Count()} compile error(s){errors}");
         }
 
         ms.Seek(0, SeekOrigin.Begin);
@@ -84,7 +108,11 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
     {
         if (_references.ContainsKey(assembly.Location)) { return; }
 
-        _references.Add(assembly.Location, MetadataReference.CreateFromFile(assembly.Location));
+        _references.Add(assembly.Location,
+            _metadataReferences.GetOrAdd(assembly.Location,
+                static location => MetadataReference.CreateFromFile(location)
+            )
+        );
         foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
         {
             AddReference(Assembly.Load(referencedAssembly));

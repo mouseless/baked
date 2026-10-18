@@ -34,7 +34,7 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
 
         result?.Messages.ShouldContain(m =>
             m.Level == "error" &&
-            m.Message == "`TestPage` doesn't have any component descriptor at path `/page/with-no-config`" &&
+            m.Message == "`TestPage` doesn't have any component generator at path `/page/with-no-config`" &&
             m.Code.HasValue &&
             m.Code.Value.Number == 101 &&
             m.Code.Value.Key == "missing-required-component"

@@ -74,10 +74,9 @@ test.describe("Type", () => {
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
-      String.raw`conventions.AddTypeComponent(
+      String.raw`conventions.AddTypeComponent<Text>(
     when: c => c.Type.Is<TestPage>(),
-    where: cc => cc.Path.EndsWith("page"),
-    component: () => B.Text()
+    where: cc => cc.Path.EndsWith("page")
 );`
     );
   });
@@ -130,10 +129,9 @@ test.describe("Property", () => {
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
-      String.raw`conventions.AddPropertyComponent(
+      String.raw`conventions.AddPropertyComponent<Text>(
     when: c => c.Type.Is<Record>() && c.Property.Name is nameof(Record.Text),
-    where: cc => cc.Path.EndsWith("page", "data-table", "columns", "text"),
-    component: () => B.Text()
+    where: cc => cc.Path.EndsWith("page", "data-table", "columns", "text")
 );`
     );
   });
@@ -160,10 +158,9 @@ test.describe("Method", () => {
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre").nth(0)).toHaveText(
-      String.raw`conventions.AddMethodComponent(
+      String.raw`conventions.AddMethodComponent<DataTable>(
     when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData),
-    where: cc => cc.Path.EndsWith("page", "data-panel"),
-    component: () => B.DataTable()
+    where: cc => cc.Path.EndsWith("page", "data-panel")
 );`
     );
   });
@@ -229,10 +226,9 @@ test.describe("Parameter", () => {
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
-      String.raw`conventions.AddParameterComponent(
+      String.raw`conventions.AddParameterComponent<InputText>(
     when: c => c.Type.Is<TestPage>() && c.Method.Name is nameof(TestPage.GetData) && c.Parameter.Name is "panel",
-    where: cc => cc.Path.EndsWith("page", "data-panel", "parameters"),
-    component: () => B.InputText()
+    where: cc => cc.Path.EndsWith("page", "data-panel", "parameters")
 );`
     );
   });
