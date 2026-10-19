@@ -475,7 +475,7 @@ public static class DefaultThemeFeature
 
                     pt.Data = Fetch.Inline(l(cc.Route.Title));
                     pt.Schema.Description = l(cc.Route.Description);
-                    pt.Schema.Icon = c.Type.GenerateComponent(cc.Drill("page-title", "icon"));
+                    pt.Schema.Icon = c.Method.GenerateComponent(cc.Drill("page-title", "icon"));
                 }
             );
             conventions.EditMethodComponent<PageTitle>(
@@ -489,7 +489,7 @@ public static class DefaultThemeFeature
                 component: (a, _, cc) =>
                 {
                     a.Schema.Icon ??= cc.Route.Icon;
-                    a.Schema.Size ??= "xlarge";
+                    a.Schema.Size ??= "large";
                 }
             );
 
