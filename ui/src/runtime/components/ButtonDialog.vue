@@ -52,7 +52,7 @@
     <template #container="{ acceptCallback, rejectCallback }">
       <div
         v-bind="$attrs"
-        class="b-Button--confirm flex flex-col text-sm min-w-64 [&_input]:text-sm"
+        class="b-Button--confirm flex flex-col text-sm min-w-64 max-w-80 [&_input]:text-sm"
       >
         <Bake
           v-if="content"
