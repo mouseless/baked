@@ -169,7 +169,7 @@ public static class DefaultThemeFeature
                         if (action.Method == HttpMethod.Get) { continue; }
                         if (method.Has<Initializer>()) { continue; }
 
-                        var actionComponent = method.GenerateComponent(cc.Drill("actions", method.Name));
+                        var actionComponent = method.GenerateComponent(cc.Drill("page-title", "actions", method.Name));
                         if (actionComponent is null) { continue; }
 
                         pt.Schema.Actions.Add(actionComponent);
