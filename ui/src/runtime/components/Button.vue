@@ -2,7 +2,6 @@
   <Wrap
     :when="dialogOptions || validationSummary"
     as="div"
-    class="b-button-wrapper"
   >
     <Button
       ref="buttonRef"

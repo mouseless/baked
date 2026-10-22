@@ -13,6 +13,10 @@
     @apply bg-white dark:bg-zinc-925;
   }
 
+  .p-confirmpopup-footer .p-button {
+    @apply w-full;
+  }
+
   /* BUTTON */
   .b-Button--confirm {
     .p-confirmpopup-footer {
@@ -358,10 +362,6 @@
         }
       }
     }
-
-    .p-button {
-      @apply w-full;
-    }
   }
 
   /* PAGE SIZE */
@@ -375,16 +375,6 @@
   .b-component--PageTitle {
     .p-button .p-button-icon+.p-button-label {
       @apply max-sm:hidden;
-    }
-
-    .actions {
-      .b-button-wrapper {
-        @apply flex self-stretch;
-      }
-
-      .p-button {
-        @apply self-stretch;
-      }
     }
   }
 

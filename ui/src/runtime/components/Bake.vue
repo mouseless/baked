@@ -147,7 +147,7 @@ if(descriptor.reactions) {
   reactions = reactionHandler.create(`${path}:bake`, {
     reload(success) {
       if(!success) { return; }
-      if(!descriptor.data) { throw new Error(`'${path}' cannot reload, because it has no data`); }
+      if(!descriptor.data) { return; }
 
       load({ isReload: true });
     },
@@ -184,6 +184,7 @@ async function load({ isReload } = {}) {
 
     rawError.value = err;
   }
+
   loading.value = false;
   reloading.value = false;
   emit("loaded");
