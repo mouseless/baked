@@ -144,9 +144,9 @@ onMounted(() => {
     ([e]) => {
       toggleClasses(e.target, e.intersectionRatio < 1,
         [
-          "sticked", "-mx-4", "-mb-4", "p-4",
-          "border-b", "border-slate-300", "dark:border-zinc-800",
-          "drop-shadow", "z-[9]"
+          "sticked", "-mx-4", "-mb-4", "p-4", "z-10",
+          "bg-body/90!", "backdrop-blur",
+          "border-b", "border-slate-300", "dark:border-zinc-800"
         ]
       );
     },

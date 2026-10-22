@@ -6,6 +6,13 @@
       "type": "PageTitle",
       "schema": {
         "localizeTitle": true,
+        "icon": {
+          "type": "Avatar",
+          "schema": {
+            "icon": "pi pi-list-check",
+            "size": "large"
+          }
+        },
         "description": "/specs:Description",
         "actions": [
           {

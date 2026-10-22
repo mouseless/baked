@@ -9,10 +9,6 @@
     @apply bg-slate-100 dark:bg-zinc-900;
   }
 
-  .bg-body {
-    @apply bg-white dark:bg-zinc-925;
-  }
-
   .p-confirmpopup-footer .p-button {
     @apply w-full;
   }

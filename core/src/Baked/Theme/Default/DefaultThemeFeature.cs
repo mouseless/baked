@@ -4,7 +4,6 @@ using Baked.Core;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
-using Baked.Lifetime;
 using Baked.RestApi.Model;
 using Baked.Runtime;
 using Baked.Theme;
@@ -178,12 +177,9 @@ public static class DefaultThemeFeature
                 order: Order.At.Min
             );
 
-            // configures route icon to type avatar
+            // add avatar to page title icon
             conventions.AddTypeComponent<Avatar>(
-                when: c => c.Type.Has<Locatable>() || c.Type.Has<Singleton>(),
-                where: cc =>
-                    cc.Route.Icon is not null &&
-                    cc.Path.Is("page", "*", "simple-page", "**", "page-title", "icon")
+                where: cc => cc.Path.Is("page", "**", "page-title", "icon") && cc.Route.Icon is not null
             );
             conventions.EditTypeComponent<Avatar>(
                 where: cc => cc.Path.EndsWith("page-title", "icon"),
@@ -483,7 +479,10 @@ public static class DefaultThemeFeature
                 order: Order.At.Global.Max
             );
 
-            // configures route icon to method avatar
+            // add avatar to page title icon
+            conventions.AddMethodComponent<Avatar>(
+                where: cc => cc.Path.Is("page", "**", "page-title", "icon") && cc.Route.Icon is not null
+            );
             conventions.EditMethodComponent<Avatar>(
                 where: cc => cc.Path.EndsWith("page-title", "icon"),
                 component: (a, _, cc) =>
@@ -1101,7 +1100,10 @@ public static class DefaultThemeFeature
                         Header = new PageTitle
                         {
                             LocalizeTitle = true,
-                            Description = l(context.Route.Description)
+                            Description = l(context.Route.Description),
+                            Icon = context.Route.Icon is not null
+                                ? new Avatar { Icon = context.Route.Icon, Size = "large" }.ToDescriptor()
+                                : null
                         }.ToDescriptor(data: Fetch.Inline(l(context.Route.Title)))
                     }.ToDescriptor();
                 }
@@ -1113,6 +1115,9 @@ public static class DefaultThemeFeature
                     {
                         LocalizeTitle = true,
                         Description = l(context.Route.Description),
+                        Icon = context.Route.Icon is not null
+                            ? new Avatar { Icon = context.Route.Icon, Size = "large" }.ToDescriptor()
+                            : null,
                         Actions =
                         {
                             new Filter { Placeholder = l("Filter") }
