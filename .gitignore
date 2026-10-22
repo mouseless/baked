@@ -16,3 +16,6 @@
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Scratch for temporary work
+.scratch/
