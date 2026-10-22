@@ -1,5 +1,5 @@
 <template>
-  <AwaitLoading :skeleton="{ height }">
+  <AwaitLoading :skeleton="{ height, width: height }">
     <Avatar
       :icon
       :image

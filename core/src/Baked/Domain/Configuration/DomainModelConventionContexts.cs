@@ -4,15 +4,25 @@ namespace Baked.Domain.Configuration;
 
 public class DomainModelConventionContexts
 {
-    record Context<TModel>(IEnumerable<TModel> Models)
+    record Context<TModel>(IEnumerable<TModel> Source)
+        where TModel : DomainModelContext
     {
+        List<TModel> Models => field ??= [.. Source];
+
         public void Apply(IDomainModelConvention<TModel> convention)
         {
             foreach (var model in Models)
             {
                 Diagnostics.Current.Diagnose(() =>
                 {
-                    convention.Apply(model);
+                    try
+                    {
+                        convention.Apply(model);
+                    }
+                    finally
+                    {
+                        model.ClearTrace();
+                    }
                 });
             }
         }

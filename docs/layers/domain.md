@@ -36,7 +36,7 @@ layer also provides an `Inspect` object to inspect on metadata while
 
 ### `IDomainTypeCollection`
 
-This target is provided in `AddDomainTypes` phase. To configure it in a feature;
+This target is provided in `Prepare` phase. To configure it in a feature;
 
 ```csharp
 configurator.Domain.ConfigureDomainTypeCollection(types =>
@@ -48,7 +48,7 @@ configurator.Domain.ConfigureDomainTypeCollection(types =>
 ### `DomainModelBuilderOptions`
 
 This target exposes options for configuring built-in `DomainModelBuilder` and is
-provided in `AddDomainTypes` phase. To configure it in a feature;
+provided in `Prepare` phase. To configure it in a feature;
 
 ```csharp
 configurator.Domain.ConfigureBuilder(builder =>
@@ -60,7 +60,7 @@ configurator.Domain.ConfigureBuilder(builder =>
 ### `IDomainModelConventionCollection`
 
 This target exposes options for configuring domain conventions and levels and is
-provided in `AddDomainTypes` phase. To configure it in a feature;
+provided in `Prepare` phase. To configure it in a feature;
 
 ```csharp
 configurator.Domain.ConfigureConventions(conventions =>
@@ -113,10 +113,14 @@ configurator.Domain.ConfigureExportConfigurations(exports =>
 
 This layer introduces following `Generate` phases to the application it is added;
 
-- `AddDomainTypes`: This phase adds an `IDomainTypeCollection` instance to the
-  application context
 - `BuildDomainModel`: This phase uses domain types to build and add a
   `DomainModel` instance to the application context
+
+> [!NOTE]
+>
+> Domain layer adds its `IDomainTypeCollection` instance to the application
+> context during `Prepare` phase of buildtime layer, which makes
+> `BuildDomainModel` phase ready to run
 
 > [!TIP]
 >
@@ -449,8 +453,8 @@ order: 10 // Order.At.Zero + 10
 
 We provide a tool to debug domain model generation process during a generate phase.
 
-This target is provided from `DomainModelBuilderOptions` in `AddDomainTypes`
-phase. To configure it in a feature;
+This target is provided from `DomainModelBuilderOptions` in `Prepare` phase. To
+configure it in a feature;
 
 ```csharp
 configurator.Domain.ConfigureBuilder(builder =>

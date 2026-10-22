@@ -5,6 +5,13 @@
       "type": "PageTitle",
       "schema": {
         "localizeTitle": true,
+        "icon": {
+          "type": "Avatar",
+          "schema": {
+            "icon": "pi pi-file",
+            "size": "large"
+          }
+        },
         "description": "/report-page-sample:Description",
         "actions": []
       },

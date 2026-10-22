@@ -46,7 +46,7 @@
       <Bake
         name="action"
         class="max-md:w-full"
-        :descriptor="{ ...action, schema: { ...action.schema, severity } }"
+        :descriptor="{ ...action, schema: { severity, ...action.schema } }"
       />
     </div>
   </div>

@@ -1,7 +1,6 @@
 <template>
   <UiSpec
     :variants
-    no-loading-variant
     test-id="Inputs"
   >
     <div>
@@ -27,7 +26,8 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aPageTitle({
       title: "Spec: Title",
-      description: "Spec: Description"
+      description: "Spec: Description",
+      icon: giveMe.anAvatar({ size: "large" })
     })
   },
   {

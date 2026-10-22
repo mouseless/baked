@@ -5,7 +5,7 @@
       text-sm text-gray-600 dark:text-gray-400
     "
   >
-    <AwaitLoading :skeleton="{ width: '10rem' }">
+    <AwaitLoading :skeleton="{ width: '10rem', class: 'max-xs:hidden' }">
       <div
         v-for="field in infoFields"
         :key="field.key"
@@ -19,7 +19,7 @@
         />
       </div>
     </AwaitLoading>
-    <template v-if="description">
+    <template v-if="description && !loading">
       <div
         class="flex gap-2 items-center"
         :class="{
@@ -56,13 +56,16 @@
   </div>
 </template>
 <script setup>
-import { useLocalization } from "#imports";
+import { useContext, useLocalization } from "#imports";
 import { Button } from "primevue";
 
+const context = useContext();
 const { localize: l } = useLocalization();
 
 const { description, infoFields } = defineProps({
   description: { type: String, default: null },
   infoFields: { type: Array, default: () => [] }
 });
+
+const loading = context.injectLoading();
 </script>

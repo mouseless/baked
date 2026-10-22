@@ -38,6 +38,16 @@ attribute is not in your codebase, it means you'll have to create a similar
 custom attribute with a proper target list and use this new attribute instead of
 the one you're trying to add/set.
 
+## `compile-error`
+
+This error occurs when generated code of an assembly fails to compile during
+generate. The error lists compiler messages along with the closest scoped code
+under the name of the generated assembly, e.g., `Baked.g.DomainLayer`.
+
+This usually means a convention or a feature generates code that is not valid
+for your domain. Check the code in the error to find the domain member it was
+generated for, and the convention or feature that generates it.
+
 ## `method-does-not-support-body`
 
 This error occurs when a `Remote` action configuration uses the `GET`, `DELETE`
@@ -88,26 +98,49 @@ sure the name (or the filter you've given) has a corresponding in the list.
 
 ## `missing-required-schema`
 
-This error occurs when a schema is required to build a component in page but it
-is not configured through a convention.
+This error occurs when a schema is required to build a component in page but
+the domain member doesn't have a generator for that schema type.
 
-To fix, you need to add a convention that covers the indicated path in the error.
+To fix, add a convention that adds a schema of the given type for the domain
+member at the indicated path;
+
+```csharp
+conventions.AddMethodSchema<RemoteData>(
+    when: c => c.Type.Is<MyType>() && c.Method.Name is nameof(MyType.MyMethod),
+    where: cc => cc.Path.EndsWith("data")
+);
+```
 
 ## `missing-required-component`
 
-This error occurs when a component is required but not configured through a
-convention.
+This error occurs when a component is required but the domain member doesn't
+have any component generator at the indicated path.
 
-To fix, you need to add a convention that adds a component for the domain member
-at the indicated path.
+To fix, add a convention that adds a component for the domain member at the
+indicated path;
+
+```csharp
+conventions.AddPropertyComponent<Text>(
+    when: c => c.Type.Is<MyType>() && c.Property.Name is nameof(MyType.Name),
+    where: cc => cc.Path.EndsWith("columns", "name")
+);
+```
+
+> [!TIP]
+>
+> Set `<GenerateArgs>--warn-for-missing-component</GenerateArgs>` in your
+> project file to report this error as a warning. Then a `MissingComponent` is
+> rendered in place of the missing component, which shows a convention sample
+> for that domain member and path when clicked.
 
 ## `missing-required-component-of-type`
 
-This error occurs when a component of given type is required but not configured
-through a convention.
+This error occurs when a component of given type is required but the domain
+member doesn't have a component generator of that type at the indicated path.
 
-To fix this, you need to add a convention that adds a component of the given
-type for the domain member at the indicated path.
+To fix this, add a convention that adds a component of the given type for the
+domain member at the indicated path, e.g.,
+`conventions.AddMethodComponent<SimpleForm>(...)`.
 
 > [!NOTE]
 >

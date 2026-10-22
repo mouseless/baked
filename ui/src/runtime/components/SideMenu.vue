@@ -17,7 +17,6 @@
       max-md:bottom-0 max-md:w-full max-md:px-2
       max-md:flex-row max-md:justify-between max-md:items-center
       max-md:border-t max-md:border-slate-300 max-md:dark:border-zinc-800
-      max-md:drop-shadow-[0_-2px_2px_rgba(0,0,0,0.1)]
       2xl:px-2 2xl:pb-2
     "
   >

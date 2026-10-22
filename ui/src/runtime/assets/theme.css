@@ -19,6 +19,12 @@
 
   --spacing-icon-only-width: calc(var(--p-button-icon-only-width) / 2);
 
-  /* zinc-925 custom color */
+  --color-body: var(--color-white);
   --color-zinc-925: #121214;
+}
+
+:root {
+  @variant dark {
+    --color-body: var(--color-zinc-925);
+  }
 }

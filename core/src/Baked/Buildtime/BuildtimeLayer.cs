@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Model;
+using Spectre.Console;
 using System.Reflection;
 
 using static Baked.Buildtime.BuildtimeLayer;
@@ -82,6 +83,7 @@ public class BuildtimeLayer : LayerBase<Generate, Compile, BuildConfiguration>
 
     protected override IEnumerable<IPhase> GetGeneratePhases()
     {
+        yield return new Prepare();
         yield return new Generate(_generatedAssemblies, _generatedFiles);
         yield return new Compile(Location,
             onCompiled: RemoveFromRemainingFiles
@@ -103,6 +105,15 @@ public class BuildtimeLayer : LayerBase<Generate, Compile, BuildConfiguration>
         }
     }
 
+    public class Prepare()
+        : PhaseBase(PhaseOrder.Earliest)
+    {
+        protected override void Initialize()
+        {
+            Compiler.WarmUp(Assembly.GetEntryAssembly() ?? typeof(BuildtimeLayer).Assembly);
+        }
+    }
+
     public class Generate(IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
         : PhaseBase<DomainModel>(PhaseOrder.Early)
     {
@@ -119,10 +130,35 @@ public class BuildtimeLayer : LayerBase<Generate, Compile, BuildConfiguration>
     {
         protected override void Initialize(IGeneratedAssemblyCollection generatedAssemblies)
         {
-            foreach (var descriptor in generatedAssemblies)
+            var assemblyPaths = new string[generatedAssemblies.Count];
+            var errors = new Exception?[generatedAssemblies.Count];
+            Parallel.For(0, generatedAssemblies.Count, i =>
             {
-                var assemblyPath = new Compiler(descriptor).Compile(_location, $"Baked.g.{descriptor.Name}");
+                try
+                {
+                    assemblyPaths[i] = new Compiler(generatedAssemblies[i]).Compile(_location, $"Baked.g.{generatedAssemblies[i].Name}");
+                }
+                catch (Exception ex)
+                {
+                    errors[i] = ex;
+                }
+            });
 
+            using (Baked.Diagnostics.Start(nameof(Compile)))
+            {
+                foreach (var error in errors.OfType<Exception>())
+                {
+                    var lines = error.Message.Split(Environment.NewLine, 2);
+                    Baked.Diagnostics.Current.ReportError(DiagnosticCode.CompileError, Markup.Escape(lines[0]));
+                    if (lines.Length > 1)
+                    {
+                        Baked.Diagnostics.Current.ReportInfo($"[gray]{Markup.Escape(lines[1].Trim())}[/]");
+                    }
+                }
+            }
+
+            foreach (var assemblyPath in assemblyPaths)
+            {
                 onCompiled?.Invoke(assemblyPath);
             }
         }

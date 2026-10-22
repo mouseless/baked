@@ -179,6 +179,7 @@ experiences, see [UX Feature](ux.md).
 - `NavLink` path is taken from `UiRoute` attribute of the type
 - Enum types render inline with `InlineData` using localized labels, and their
   severities are exported to `severities.json` to color their `Tag`
+- Page titles are configured to use large `Avatar` when the route has an icon
 
 #### Properties
 
@@ -192,6 +193,7 @@ experiences, see [UX Feature](ux.md).
 
 - All actions with `ApiAction` attribute get `UiAction` attribute
 - `FormPage` is added for any method at component path `/page/*/*`
+- Page titles are configured to use large `Avatar` when the route has an icon
 - `Content` schema is added to any method, and `SimpleForm` is added for
   non-`GET` actions under contents
 - Each method is wired as a remote data, and each action as a remote action

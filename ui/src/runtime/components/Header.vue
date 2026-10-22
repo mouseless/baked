@@ -5,7 +5,7 @@
         v-if="data"
         :home="!atHome ? sitemap['/'] : null"
         :model="parts"
-        class="!bg-inherit text-sm !p-0"
+        class="!bg-inherit text-xs !p-0"
       >
         <template #item="{ item }">
           <RouterLink

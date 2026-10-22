@@ -37,6 +37,8 @@ configurator.Buildtime.ConfigureGeneratedFileCollection(files =>
 
 This layer introduces following `Generate` phases to the application it is added;
 
+- `Prepare`: This is the first phase of generate, layers use it to provide
+  their configuration targets before domain model is built
 - `Generate`: This phase creates a `IGeneratedAssemblyCollection` instance and
   places it in the application context
 - `Compile`: This phase compiles generated code during above phase, saves

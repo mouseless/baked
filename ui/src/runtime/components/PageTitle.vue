@@ -24,21 +24,22 @@
           <div
             class="
               w-full h-full
-              flex flex-row gap-2
-              items-center justify-center
+              flex flex-row
+              items-baseline justify-center
               max-xs:justify-start
-              md:flex-col md:items-start md:gap-2
+              max-md:gap-2
+              md:flex-col md:items-start
             "
           >
             <AwaitLoading
               :skeleton="{
                 width: '15rem',
-                height: '1.75rem',
-                class: 'max-xs:max-w-[5rem]'
+                height: '1.5rem',
+                class: 'max-xs:max-w-[10rem] mb-1'
               }"
             >
               <div class="grid">
-                <h1 class="font-bold text-xl truncate leading-none">
+                <h1 class="font-bold text-xl truncate">
                   {{ title }}
                 </h1>
               </div>
@@ -143,9 +144,9 @@ onMounted(() => {
     ([e]) => {
       toggleClasses(e.target, e.intersectionRatio < 1,
         [
-          "sticked", "-mx-4", "-mb-4", "p-4",
-          "border-b", "border-slate-300", "dark:border-zinc-800",
-          "drop-shadow", "z-[9]"
+          "sticked", "-mx-4", "-mb-4", "p-4", "z-10",
+          "bg-body/90!", "backdrop-blur",
+          "border-b", "border-slate-300", "dark:border-zinc-800"
         ]
       );
     },
